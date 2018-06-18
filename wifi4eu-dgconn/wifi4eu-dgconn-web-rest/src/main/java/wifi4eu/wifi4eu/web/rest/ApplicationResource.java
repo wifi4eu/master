@@ -334,4 +334,66 @@ public class ApplicationResource {
             return null;
         }
     }
+
+    @ApiOperation(value = "Reject application")
+    @RequestMapping(value = "/reject", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO rejectApplicationVoucherAssigment(@RequestBody final Integer applicationId, HttpServletResponse response) throws IOException {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("rejectApplicationVoucherAssigment");
+            }
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
+            ApplicationDTO resApplication = applicationService.rejectApplicationVoucherAssigment(applicationId);
+            return new ResponseDTO(true, resApplication, null);
+        } catch (AccessDeniedException e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'rejectApplicationVoucherAssigment' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'rejectApplicationVoucherAssigment' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, null);
+        }
+    }
+
+    @ApiOperation(value = "Reject application")
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO selectApplicationVoucherAssigment(@RequestBody final Integer applicationId, HttpServletResponse response) throws IOException {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("selectApplicationVoucherAssigment");
+            }
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
+            ApplicationDTO resApplication = applicationService.selectApplicationVoucherAssigment(applicationId);
+            return new ResponseDTO(true, resApplication, null);
+        } catch (AccessDeniedException e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'selectApplicationVoucherAssigment' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'selectApplicationVoucherAssigment' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, null);
+        }
+    }
 }

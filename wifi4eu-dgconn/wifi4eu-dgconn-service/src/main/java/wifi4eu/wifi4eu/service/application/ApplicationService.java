@@ -8,14 +8,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -61,6 +63,9 @@ public class ApplicationService {
     @Autowired
     CallService callService;
 
+    @Autowired
+    RegistrationWarningRepository registrationWarningRepository;
+
     private static final Logger _log = LoggerFactory.getLogger(ApplicationService.class);
 
     @Autowired
@@ -102,7 +107,7 @@ public class ApplicationService {
                         }
 
                         applicationDTO.setDate(queueTimestamp);
-                        
+
                         applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
 
                         return applicationDTO;
@@ -193,7 +198,7 @@ public class ApplicationService {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
     }
 
-    public ApplicationDTO getApplicationByRegistrationId(int callId, int registrationsId){
+    public ApplicationDTO getApplicationByRegistrationId(int callId, int registrationsId) {
         return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationsId));
     }
 
@@ -229,18 +234,18 @@ public class ApplicationService {
     }
 
     public List<ApplicationDTO> getApplicationsByRegistrationNotInvalidated(int callId) {
-        return  applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
     }
 
     public Integer countApplicationsNotInvalidated(int callId) {
-      return applicationRepository.findApplicationsNotInvalidated(callId);
+        return applicationRepository.findApplicationsNotInvalidated(callId);
     }
 
     public List<ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
         return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateAsc(callId));
     }
 
-    public List<ApplicationDTO> findByCallIdOrderByDateBeforeCallDateAsc(int callId, long startDate){
+    public List<ApplicationDTO> findByCallIdOrderByDateBeforeCallDateAsc(int callId, long startDate) {
         return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateBAsc(callId, startDate));
 
     }
@@ -253,11 +258,11 @@ public class ApplicationService {
         return applicationMapper.toDTOList(applicationRepository.findApplicationsCountry(country, callId));
     }
 
-    public List<Integer> getApplicationsIdByCountryAndNameAndCall(int callId, String country, long date){
+    public List<Integer> getApplicationsIdByCountryAndNameAndCall(int callId, String country, long date) {
         return applicationRepository.findIdApplications(country, callId, date);
     }
 
-    public Integer countApplicationWithSameMunicipalityName(int lauId, int callId, long date){
+    public Integer countApplicationWithSameMunicipalityName(int lauId, int callId, long date) {
         return applicationRepository.countApplicationsBySameMunicipality(lauId, callId, date);
     }
 
@@ -371,30 +376,20 @@ public class ApplicationService {
 
     private void setIssues(List<ApplicantListItemDTO> applicantsList) {
 
-        for (int i = 0; i < applicantsList.size(); i++) {
-            ApplicantListItemDTO applicant = applicantsList.get(i);
-            List<ApplicationIssueUtil> applicationIssueUtilList = registrationService.getRegistrationIssue(applicant.getLauId());
-            if(applicant.getCounter() == 0 && applicationIssueUtilList.size() > 1) {
-                applicant.setIssueStatus(0);
-                applicant.setStatus(ApplicationStatus.KO.getValue());
-            } else if(applicant.getCounter() == 0 && applicationIssueUtilList.size() == 1){
-                applicant.setIssueStatus(registrationService.getIssues(applicationIssueUtilList));
-            } else {
-                applicant.setIssueStatus(registrationService.getIssues(applicationIssueUtilList));
-                applicant.setStatus(registrationService.getStatus(applicationIssueUtilList));
-            }
-            applicantsList.set(i, applicant);
+        for(ApplicantListItemDTO applicantListItemDTO : applicantsList){
+            List<Integer> warnings = registrationWarningRepository.findAllByLauId(applicantListItemDTO.getLauId());
+            applicantListItemDTO.setIssueStatus(warnings);
         }
     }
 
     public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
 
-        if(registration.getAllFilesFlag() != 1){
+        if (registration.getAllFilesFlag() != 1) {
             throw new AppException();
         }
         ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
-        if(applicationDBO == null){
+        if (applicationDBO == null) {
             throw new AppException("Incorrect application id");
         }
 
@@ -424,11 +419,11 @@ public class ApplicationService {
 
     public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO) {
         ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
-        if(applicationDBO == null){
+        if (applicationDBO == null) {
             throw new AppException("Incorrect application id");
         }
         applicationDBO.setStatus(ApplicationStatus.KO.getValue());
-        applicationDBO.setInvalidateReason(applicationDBO.getInvalidateReason());
+        applicationDBO.setInvalidateReason(applicationDTO.getInvalidateReason());
         ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
@@ -516,4 +511,23 @@ public class ApplicationService {
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
     }
+
+    public ApplicationDTO rejectApplicationVoucherAssigment(int applicationId) {
+        ApplicationDTO applicationDTO = getApplicationById(applicationId);
+        if (applicationDTO == null) {
+            throw new AppException("Application not found with id: " + applicationId);
+        }
+        applicationDTO.setRejected(true);
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+    }
+
+    public ApplicationDTO selectApplicationVoucherAssigment(int applicationId) {
+        ApplicationDTO applicationDTO = getApplicationById(applicationId);
+        if (applicationDTO == null) {
+            throw new AppException("Application not found with id: " + applicationId);
+        }
+        applicationDTO.setRejected(false);
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+    }
+
 }

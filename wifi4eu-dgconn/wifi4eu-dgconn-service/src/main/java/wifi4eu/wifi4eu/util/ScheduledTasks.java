@@ -16,7 +16,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
-//import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
+import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -55,8 +55,8 @@ public class ScheduledTasks {
     @Autowired
     private UserService userService;
 
-    //@Autowired
-    //private AzureQueueService azureQueueService;
+    @Autowired
+    private AzureQueueService azureQueueService;
 
     @Autowired
     private ApplicationMapper applicationMapper;
