@@ -150,13 +150,13 @@ public class SupplierResource {
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'createSupplier' operation.", ade);
+                _log.error("AccessDenied on 'updateSupplier' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error on 'createSupplier' operation.", e);
+                _log.error("Error on 'updateSupplier' operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }

@@ -132,13 +132,13 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
 
     private setRegistrationIssue(registration: RegistrationDTOBase, index: number) {
         console.log(index);
-        this.registrationApi.getRegistrationIssue(registration).subscribe(
+        /* this.registrationApi.getRegistrationIssue(registration).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.registrationIssues[index] = response.data;
                 }
             }
-        );
+        ); */
     }
 
     private invalidateMunicipality() {

@@ -15,12 +15,15 @@ public class SimpleMunicipality {
 
     private Integer lau;
 
+    private String name;
+
     public SimpleMunicipality(){}
 
-    public SimpleMunicipality(Integer id, String country, Integer lau) {
+    public SimpleMunicipality(Integer id, String country, Integer lau, String name) {
         this.id = id;
         this.country = country;
         this.lau = lau;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -45,5 +48,13 @@ public class SimpleMunicipality {
 
     public void setLau(Integer lau) {
         this.lau = lau;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

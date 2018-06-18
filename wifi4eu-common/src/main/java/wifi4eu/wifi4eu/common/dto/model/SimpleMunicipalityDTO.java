@@ -7,14 +7,16 @@ public class SimpleMunicipalityDTO implements Serializable {
     private int id;
     private String country;
     private int lau;
+    private String name;
 
     public SimpleMunicipalityDTO() {
     }
 
-    public SimpleMunicipalityDTO(int id, String country, int lauId ) {
+    public SimpleMunicipalityDTO(int id, String country, int lau, String name) {
         this.id = id;
         this.country = country;
-        this.lau = lauId;
+        this.lau = lau;
+        this.name = name;
     }
 
     public int getId() {
@@ -41,12 +43,21 @@ public class SimpleMunicipalityDTO implements Serializable {
         this.lau = lau;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "MunicipalityDTO{" +
                 "id=" + id +
                 ", country='" + country + '\'' +
                 ", lau=" + lau +
+                ", name=" + lau +
                 '}';
     }
 }

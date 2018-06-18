@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class RegistrationDTO implements Serializable {
     private int id;
@@ -26,11 +27,12 @@ public class RegistrationDTO implements Serializable {
     private long uploadTime;
     private int allFilesFlag;
     private int mailCounter;
+    private List<RegistrationWarningDTO> registrationWarningDTOList;
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, long uploadTime, int allFilesFlag, int mailCounter) {
+    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarningDTO> registrationWarningDTOList) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
@@ -46,6 +48,37 @@ public class RegistrationDTO implements Serializable {
         this.uploadTime = uploadTime;
         this.allFilesFlag = allFilesFlag;
         this.mailCounter = mailCounter;
+        this.registrationWarningDTOList = registrationWarningDTOList;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistrationDTO{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", municipalityId=" + municipalityId +
+                ", role='" + role + '\'' +
+                ", status=" + status +
+                ", legalFile1Size=" + legalFile1Size +
+                ", legalFile1Mime='" + legalFile1Mime + '\'' +
+                ", legalFile2Size=" + legalFile2Size +
+                ", legalFile2Mime='" + legalFile2Mime + '\'' +
+                ", legalFile3Size=" + legalFile3Size +
+                ", legalFile3Mime='" + legalFile3Mime + '\'' +
+                ", legalFile4Size=" + legalFile4Size +
+                ", legalFile4Mime='" + legalFile4Mime + '\'' +
+                ", legalFile1='" + legalFile1 + '\'' +
+                ", legalFile2='" + legalFile2 + '\'' +
+                ", legalFile3='" + legalFile3 + '\'' +
+                ", legalFile4='" + legalFile4 + '\'' +
+                ", ipRegistration='" + ipRegistration + '\'' +
+                ", associationName='" + associationName + '\'' +
+                ", organisationId=" + organisationId +
+                ", uploadTime=" + uploadTime +
+                ", allFilesFlag=" + allFilesFlag +
+                ", mailCounter=" + mailCounter +
+                ", registrationWarningDTOList=" + registrationWarningDTOList +
+                '}';
     }
 
     public int getId() {
@@ -68,10 +101,6 @@ public class RegistrationDTO implements Serializable {
         return municipalityId;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
     public void setMunicipalityId(int municipalityId) {
         this.municipalityId = municipalityId;
     }
@@ -82,6 +111,10 @@ public class RegistrationDTO implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public void setStatus(int status) {
@@ -192,20 +225,6 @@ public class RegistrationDTO implements Serializable {
         this.ipRegistration = ipRegistration;
     }
 
-    @Override
-    public String toString() {
-        return "RegistrationDTO{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", municipalityId=" + municipalityId +
-                ", role='" + role + '\'' +
-                ", status=" + status +
-                ", upload_time='" + uploadTime + '\'' +
-                ", allFiles_flag='" + allFilesFlag + '\'' +
-                ", mail_counter='" + mailCounter + '\'' +
-                '}';
-    }
-
     public String getAssociationName() {
         return associationName;
     }
@@ -244,5 +263,13 @@ public class RegistrationDTO implements Serializable {
 
     public void setMailCounter(int mailCounter) {
         this.mailCounter = mailCounter;
+    }
+
+    public List<RegistrationWarningDTO> getRegistrationWarningDTOList() {
+        return registrationWarningDTOList;
+    }
+
+    public void setRegistrationWarningDTOList(List<RegistrationWarningDTO> registrationWarningDTOList) {
+        this.registrationWarningDTOList = registrationWarningDTOList;
     }
 }

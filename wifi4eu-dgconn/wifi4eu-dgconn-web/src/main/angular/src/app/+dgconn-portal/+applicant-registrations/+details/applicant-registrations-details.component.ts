@@ -22,10 +22,11 @@ import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { LegalFileCorrectionReasonDTOBase } from "../../../shared/swagger/model/LegalFileCorrectionReasonDTO";
 import { TranslateService } from "ng2-translate";
 import * as FileSaver from "file-saver";
+import { RegistrationWarningApi } from "../../../shared/swagger";
 
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
-    providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi],
+    providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi],
     animations: [
         trigger(
             'enterSpinner', [
@@ -71,7 +72,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
-    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
+    constructor( private registrationWarningApi: RegistrationWarningApi, private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
@@ -126,7 +127,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                             this.municipalities[i] = municipality;
                                                                             if (this.registrations.length == this.municipalities.length) {
                                                                                 this.registrationIssues[i] = 0;
-                                                                                this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
+                                                                             //   this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
                                                                             }
                                                                             correctCount++;
                                                                             if (correctCount == (applications.length - failCount)) {
@@ -180,16 +181,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private getLegalFileUrl(index: number, fileNumber: number) {
         return this.registrationApi.getLegalFilesByFileType(this.registrations[index].id, fileNumber);
     }
-    private setRegistrationIssue(registration: RegistrationDTOBase, index: number) {
-        this.registrationApi.getRegistrationIssue(registration).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.registrationIssues[index] = response.data;
-                }
-            }
-        );
-    }
-
+ 
     private displayValidateModal(index: number) {
         if (index != null) {
             if (this.applications[index].status != 2) {
