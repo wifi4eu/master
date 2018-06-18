@@ -52,7 +52,7 @@ public class VoucherSimulationExportGenerator<T> {
                     if(fieldNames.get(i).equalsIgnoreCase("changes")){
                         VoucherSimulationDTO voucherSimulationDTO = (VoucherSimulationDTO) obj;
                         ApplicationDTO applicationDTO = voucherSimulationDTO.getApplication();
-                        
+
                         String value;
 
                         if(!applicationDTO.getPreSelectedFlag()){
@@ -143,7 +143,7 @@ public class VoucherSimulationExportGenerator<T> {
             fieldNames.add("municipalityName");
             displayedFieldNames.add("Municipality Name");
             fieldNames.add("issues");
-            displayedFieldNames.add("Issue");            
+            displayedFieldNames.add("Issue");
             fieldNames.add("status");
             displayedFieldNames.add("Status");
             fieldNames.add("numApplications");
