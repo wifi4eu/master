@@ -4,6 +4,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationWarningDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
@@ -51,7 +52,7 @@ public class VoucherSimulationExportGenerator<T> {
                     if(fieldNames.get(i).equalsIgnoreCase("changes")){
                         VoucherSimulationDTO voucherSimulationDTO = (VoucherSimulationDTO) obj;
                         ApplicationDTO applicationDTO = voucherSimulationDTO.getApplication();
-
+                        
                         String value;
 
                         if(!applicationDTO.getPreSelectedFlag()){
@@ -60,6 +61,15 @@ public class VoucherSimulationExportGenerator<T> {
                             value = "-";
                         }
                         cell.setCellValue(value);
+                    }
+                    else if(fieldNames.get(i).equalsIgnoreCase("issues")){
+                      VoucherSimulationDTO voucherSimulationDTO = (VoucherSimulationDTO) obj;
+                      List<RegistrationWarningDTO> warnings = voucherSimulationDTO.getRegistrationWarningDTO();
+
+                      List<String> wList = new ArrayList<String>();
+                      warnings.stream().forEach(x -> wList.add("WARNING " + x.getWarning()));
+
+                      cell.setCellValue(String.join(", ", wList));
                     }
                     else if(fieldNames.get(i).equalsIgnoreCase("registration")){
                         VoucherSimulationDTO voucherSimulationDTO = (VoucherSimulationDTO) obj;
@@ -133,7 +143,7 @@ public class VoucherSimulationExportGenerator<T> {
             fieldNames.add("municipalityName");
             displayedFieldNames.add("Municipality Name");
             fieldNames.add("issues");
-            displayedFieldNames.add("Issue");
+            displayedFieldNames.add("Issue");            
             fieldNames.add("status");
             displayedFieldNames.add("Status");
             fieldNames.add("numApplications");
