@@ -21,4 +21,46 @@ public class LegalFilesService {
 	public LegalFilesDTO getLegalFileByRegistrationIdFileType(Integer registrationId, Integer fileType) {
 		return legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationId, fileType));
 	}
+
+	public static String getBase64Data(String base64String) {
+		String base64Data = null;
+		if (base64String != null) {
+			if (base64String.startsWith("data:") && base64String.indexOf(";base64,") != -1) {
+				base64Data = base64String.substring(base64String.indexOf(";base64,") + 8);
+			}
+		}
+		return base64Data;
+	}
+
+	public static String getMimeType(String base64String) {
+		String mimeType = null;
+		if (base64String != null) {
+			if (base64String.startsWith("data:") && base64String.indexOf(";base64") != -1) {
+				mimeType = base64String.substring(5, (base64String.indexOf(";base64")));
+			}
+		}
+		return mimeType;
+	}
+
+	public static String getValidFileExtension(String base64String) {
+		String fileExtension = null;
+		if (base64String != null) {
+			String mimeType = getMimeType(base64String);
+			switch (mimeType) {
+				case "application/pdf":
+					fileExtension = ".pdf";
+					break;
+				case "image/png":
+					fileExtension = ".png";
+					break;
+				case "image/jpg":
+					fileExtension = ".jpg";
+					break;
+				case "image/jpeg":
+					fileExtension = ".jpeg";
+					break;
+			}
+		}
+		return fileExtension;
+	}
 }
