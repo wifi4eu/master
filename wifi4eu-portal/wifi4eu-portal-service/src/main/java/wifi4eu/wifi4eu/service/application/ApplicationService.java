@@ -593,7 +593,8 @@ public class ApplicationService {
     public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
         CallDTO call = callService.getCallById(callId);
         if (call != null) {
-            if (call.getEndDate() < new Date().getTime()) {
+            long currentTime = new Date().getTime();
+            if (call.getStartDate() < currentTime && call.getEndDate() > currentTime) {
                 List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(call.getId(), ApplicationStatus.PENDING_FOLLOWUP.getValue()));
                 if (!pendingFollowupApps.isEmpty()) {
                     return true;

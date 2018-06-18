@@ -63,7 +63,7 @@ public class RegistrationWarningService {
         for(ApplicationIssueUtil applicationIssueUtil : applicationIssueUtilList) {
             if (ApplicationWarningsChecker.registrationHasWarning1(applicationIssueUtil)) {
                 RegistrationWarning registrationWarnings = new RegistrationWarning();
-                registrationWarnings.setRegistration(Integer.valueOf(applicationIssueUtil.getId()));
+                registrationWarnings.setRegistration(Integer.valueOf(applicationIssueUtil.getRegistrationId()));
                 registrationWarnings.setWarning(1);
                 toSaveList.add(registrationWarnings);
             }
@@ -78,7 +78,7 @@ public class RegistrationWarningService {
 
             if (ApplicationWarningsChecker.registrationHasWarning3(applicationIssueUtil)) {
                 RegistrationWarning registrationWarnings = new RegistrationWarning();
-                registrationWarnings.setRegistration(Integer.valueOf(applicationIssueUtil.getId()));
+                registrationWarnings.setRegistration(Integer.valueOf(applicationIssueUtil.getRegistrationId()));
                 registrationWarnings.setWarning(3);
                 toSaveList.add(registrationWarnings);
             }
