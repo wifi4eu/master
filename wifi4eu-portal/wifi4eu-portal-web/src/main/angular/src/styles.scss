@@ -1735,7 +1735,7 @@ input.email_profile::-ms-clear{
   }
 }
 
-// Created for selectedSupplierDetails component
+// selectedSupplierDetails component
 .logo-size {
   height: 40px;
 }
@@ -1765,9 +1765,11 @@ input.email_profile::-ms-clear{
   font-weight: bold;
 }
 
+.word-break-all {
+  word-break: break-all;
+}
 
-
-// My-voucher component styles
+// my-voucher component
 .my-voucher-datatable {
   thead tr th .ui-column-title {
     color: #74776B;
@@ -1801,9 +1803,6 @@ input.email_profile::-ms-clear{
     td {
       margin: 0;
       padding: 0;
-    }
-    ui-column-title {
-      
     }
   }
 }
