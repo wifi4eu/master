@@ -13,9 +13,6 @@ public class CorrectionRequestEmail {
     @Column(name = "call")
     private Integer callId;
 
-    @Column(name = "application")
-    private Integer applicationId;
-
     @Column(name = "date")
     private Long date;
 
@@ -25,10 +22,9 @@ public class CorrectionRequestEmail {
     public CorrectionRequestEmail() {
     }
 
-    public CorrectionRequestEmail(Integer id, Integer callId, Integer applicationId, Long date, Integer buttonPressedCounter) {
+    public CorrectionRequestEmail(Integer id, Integer callId, Long date, Integer buttonPressedCounter) {
         this.id = id;
         this.callId = callId;
-        this.applicationId = applicationId;
         this.date = date;
         this.buttonPressedCounter = buttonPressedCounter;
     }
@@ -47,14 +43,6 @@ public class CorrectionRequestEmail {
 
     public void setCallId(Integer callId) {
         this.callId = callId;
-    }
-
-    public Integer getApplicationId() {
-        return applicationId;
-    }
-
-    public void setApplicationId(Integer applicationId) {
-        this.applicationId = applicationId;
     }
 
     public Long getDate() {

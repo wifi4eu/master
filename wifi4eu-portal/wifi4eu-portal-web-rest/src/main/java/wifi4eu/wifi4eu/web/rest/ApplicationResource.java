@@ -335,17 +335,10 @@ public class ApplicationResource {
         }
     }
 
-    @ApiOperation(value = "Resource to generate CorrectionRequestEmailDTO")
-    @RequestMapping(value = "/getCorrectionRequestEmail", method = RequestMethod.GET)
-    @ResponseBody
-    public CorrectionRequestEmailDTO getCorrectionRequestEmail() {
-        return new CorrectionRequestEmailDTO();
-    }
-
     @ApiOperation(value = "Send request correction e-mails for a specific call")
     @RequestMapping(value = "/sendCorrectionEmails", method = RequestMethod.POST)
     @ResponseBody
-    public List<CorrectionRequestEmailDTO> sendCorrectionEmails(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+    public ResponseDTO sendCorrectionEmails(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
         try {
             if (_log.isInfoEnabled()) {
                 _log.info("sendCorrectionEmails");
@@ -353,16 +346,17 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
-            return applicationService.sendCorrectionEmails(callId);
+            CorrectionRequestEmailDTO correctionRequest = applicationService.sendCorrectionEmails(callId);
+            return new ResponseDTO(true, correctionRequest, null);
         } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
+            return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'sendCorrectionEmails' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
