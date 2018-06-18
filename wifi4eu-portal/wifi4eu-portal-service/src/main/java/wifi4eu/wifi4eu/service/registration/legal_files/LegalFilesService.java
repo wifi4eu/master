@@ -22,15 +22,15 @@ public class LegalFilesService {
 		return legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationId, fileType));
 	}
 
-	public static String getBase64Data(String base64String) {
-		String base64Data = null;
-		if (base64String != null) {
-			if (base64String.startsWith("data:") && base64String.indexOf(";base64,") != -1) {
-				base64Data = base64String.substring(base64String.indexOf(";base64,") + 8);
-			}
-		}
-		return base64Data;
-	}
+    public static String getBase64Data(String base64String) {
+        String base64Data = null;
+        if (base64String != null) {
+            if (base64String.startsWith("data:") && base64String.indexOf(";base64,") != -1) {
+                base64Data = base64String.substring(base64String.indexOf(";base64,") + 8);
+            }
+        }
+        return base64Data;
+    }
 
 	public static String getMimeType(String base64String) {
 		String mimeType = null;
