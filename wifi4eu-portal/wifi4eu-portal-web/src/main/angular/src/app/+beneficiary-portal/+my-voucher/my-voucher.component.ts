@@ -4,7 +4,7 @@ import { Component } from "@angular/core";
 import { LocalStorageService } from "angular-2-local-storage";
 import { Router } from '@angular/router';
 
-// DTO's imports
+// DTO's & API imports
 import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi } from "../../shared/swagger";
 
 @Component ({
@@ -259,8 +259,15 @@ export class MyVoucherComponent {
     
     /* Redirect to selected supplier details */
     private supplierDetails(event) {
-        console.log("Municipality index is ", event);
-        this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalities[event].id]);
+        // console.log("Municipality index is ", event);
+        // Old routing:
+        // this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalities[event].id]);
+        // New routing:
+        console.log("Info being passed is: ", this.applications);
+        console.log("Event is ", event);
+        console.log("Supplier id is ", this.applications[event].supplierId);
+        this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalities[event].id, this.applications[event].supplierId]);
+
     }
     
     /* Get displayed string date from epoch number */

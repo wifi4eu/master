@@ -29,7 +29,7 @@ import { MyVoucherComponent } from "./+my-voucher/my-voucher.component";
             path: 'additional-info/:municipalityId',
             component: AdditionalInfoComponent
         }, {
-            path: 'selected-supplier-details/:municipalityId',
+            path: 'selected-supplier-details/:municipalityId/:supplierId',
             component: SelectedSupplierDetailsComponent
         }, {
             path: 'select-supplier/:municipalityId',

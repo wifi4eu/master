@@ -6,7 +6,7 @@ import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
 import { LocalStorageService } from "angular-2-local-storage";
 import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
 import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
-import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { MunicipalityDTOBase, MunicipalityDTO } from "../../shared/swagger/model/MunicipalityDTO";
 import { LauApi } from "../../shared/swagger/api/LauApi";
 import { LauDTOBase } from "../../shared/swagger/model/LauDTO";
 import { NutsApi } from "../../shared/swagger/api/NutsApi";
@@ -19,7 +19,7 @@ import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
 import { SupplierDTOBase } from "../../shared/swagger/model/SupplierDTO";
 
 import { Paginator, DataGrid } from 'primeng/primeng';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-+select-supplier',
@@ -34,6 +34,7 @@ export class SelectSupplierComponent {
   private storedRegistrationQueues = [];
   private municipality: MunicipalityDTOBase;
   private municipalities: MunicipalityDTOBase[] = [];
+  private municipalityId: number;
   private registration: RegistrationDTOBase;
   private region: NutsDTOBase = {};
   
@@ -72,9 +73,13 @@ export class SelectSupplierComponent {
     private municipalityApi: MunicipalityApi,
     private lauApi: LauApi,
     private nutsApi: NutsApi,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { 
-    
+
+    const municipalityId: any = route.params.map(p => p.id);
+    this.municipalityId = municipalityId.source.value.municipalityId;
+    console.log("Municipality id is ", this.municipalityId);
     
     
     let storedUser = this.localStorage.get('user');
@@ -97,7 +102,9 @@ export class SelectSupplierComponent {
                         this.hasSupplierAssigned = true;
                       }
 
-                      this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
+                      // Go to get municipalityId from params instead that from registrations[0] (iterable if many municipalities)
+                      // this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
+                      this.municipalityApi.getMunicipalityById(this.municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
                           this.municipalities.push(municipality);
                           this.municipality = municipality;
@@ -182,15 +189,14 @@ export class SelectSupplierComponent {
   /* Access to the supplier details which is the final confirmation screen */
   private assignSupplier() {
     (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true;
-    this.application.supplierId = this.selectedSupplier.id; 
+    this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.selectedSupplier.id]);
     
+    this.application.supplierId = this.selectedSupplier.id; 
     this.applicationApi.assignSupplier(this.application).subscribe(
       (resAplication: ResponseDTOBase) => {
         this.getStringDate(resAplication.data.date);
-        this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipality.id]);
       }
     );
-    this.hasSupplierAssigned = true;
   }
   
   /* Get displayed string date from epoch number */
