@@ -5,28 +5,44 @@
     </CustomLevels>
     <Appenders>
         <Console name="CONSOLE_APPENDER" target="SYSTEM_OUT">
-            <PatternLayout pattern="%-5p | %d [%t] | [%c{1}:%L] - %m%n"/>
+            <PatternLayout pattern="%d - %-5p - [%c{1}:%L] - %m%n"/>
         </Console>
-        <File name="FILE_APPENDER" fileName="../logs/wifi4eu_app.log" append="false">
+        <RollingFile name="FILE_APPENDER" fileName="../logs/wifi4eu_app.log"
+                     filePattern="../logs/wifi4eu_app-%d{yyyy-MM-dd}.log" append="true">
             <PatternLayout>
-                <Pattern>%d [%t] %-5p %c{1} - %x - %m%n</Pattern>
+                <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
             </PatternLayout>
-        </File>
-        <File name="CRON_FILE_APPENDER" fileName="../logs/wifi4eu_cron_app.log" append="false">
+            <TimeBasedTriggeringPolicy />
+        </RollingFile>
+        <RollingFile name="BUSINESS_FILE_APPENDER" fileName="../logs/wifi4eu_business_app.log"
+                     filePattern="../logs/wifi4eu_business_app-%d{yyyy-MM-dd}.log" append="true">
+            <ThresholdFilter level="BUSINESS" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
-                <Pattern>%d [%t] %-5p %c{1} - %x - %m%n</Pattern>
+                <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
             </PatternLayout>
-        </File>
-        <File name="APPLY_FILE_APPENDER" fileName="../logs/wifi4eu_apply_app.log" append="false">
+            <TimeBasedTriggeringPolicy />
+        </RollingFile>
+        <RollingFile name="CRON_FILE_APPENDER" fileName="../logs/wifi4eu_cron_app.log"
+                     filePattern="../logs/wifi4eu_cron_app-%d{yyyy-MM-dd}.log" append="true">
             <PatternLayout>
-                <Pattern>%d [%t] %-5p %c{1} - %x - %m%n</Pattern>
+                <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
             </PatternLayout>
-        </File>
-        <File name="ECAS_CLIENT_FILE" fileName="../logs/ecas-client.log" append="false">
+            <TimeBasedTriggeringPolicy />
+        </RollingFile>
+        <RollingFile name="APPLY_FILE_APPENDER" fileName="../logs/wifi4eu_apply_app.log"
+                     filePattern="../logs/wifi4eu_apply_app-%d{yyyy-MM-dd}.log" append="true">
             <PatternLayout>
-                <Pattern>%d [%t] %-5p %c{1} - %x - %m%n</Pattern>
+                <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
             </PatternLayout>
-        </File>
+            <TimeBasedTriggeringPolicy />
+        </RollingFile>
+        <RollingFile name="ECAS_CLIENT_FILE" fileName="../logs/ecas-client.log"
+                     filePattern="../logs/ecas-client-%d{yyyy-MM-dd}.log" append="true">
+            <PatternLayout>
+                <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy />
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Logger name="eu.cec.digit.ecas.client.j2ee.tomcat" level="info">
@@ -78,6 +94,7 @@
         <Root level="info">
             <Appender-ref ref="CONSOLE_APPENDER"/>
             <Appender-ref ref="FILE_APPENDER"/>
+            <Appender-ref ref="BUSINESS_FILE_APPENDER"/>
         </Root>
     </Loggers>
 </Configuration>
