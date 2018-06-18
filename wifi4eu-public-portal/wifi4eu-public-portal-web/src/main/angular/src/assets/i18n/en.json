@@ -652,11 +652,12 @@
   "dgConn.voucherAssignment.sendNotification.button": "Send notifications to all applicants",
   "dgconn.voucherAssignment.runningSimulation.preSelectedConfirmation.title": "Are you sure?",
   "dgconn.voucherAssignment.runningSimulation.preSelectedConfirmation.text": "You will save this list as pre-selected list",
-  "gconn.voucherAssignment.runningSimulation.preSelectedError.title": "Error",
+  "dgconn.voucherAssignment.runningSimulation.preSelectedError.title": "Error",
   "dgconn.voucherAssignment.runningSimulation.preSelectedError.text": "Pre-list can not be saved due to duplicated or not validated municipalities",
   "dgConn.voucherAssignment.growl.success": "The application was successfully updated",
   "dgConn.voucherAssignment.growl.error": "An error ocurred while trying to update the application",
   "dgConn.voucherAssignment.preList.date": "Saved on {{date}} at {{hour}}",
   "dgConn.voucherAssignment.freezeList.date": "Frozen on {{date}} at {{hour}}. Read only.",
-  "dgConn.voucherAssignment.invalidateReason": "Invalidate Reason"
+  "dgConn.voucherAssignment.invalidateReason": "Invalidate Reason",
+  "dgconn.voucherAssignment.runningSimulation.confirm": "Confirm"
 }

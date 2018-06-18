@@ -99,7 +99,7 @@ public class RegistrationResource {
             _log.info("createRegistration");
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5) {
+            if (userDTO.getType() != 5) {
                 if (userDTO.getId() != registrationDTO.getUserId()) {
                     throw new AccessDeniedException("Incorrect user id");
                 }
@@ -397,8 +397,8 @@ public class RegistrationResource {
     public ResponseDTO getLegalFilesByFileType(@PathVariable("registrationId") final Integer registrationId, @PathVariable("fileType") final Integer fileType, HttpServletResponse response) {
         _log.info("getLegalFilesByFileType: " + registrationId + " " + fileType);
 
-		UserContext userContext = UserHolder.getUser();
-		UserDTO user = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO user = userService.getUserByUserContext(userContext);
 
         RegistrationDTO registration = registrationService.getRegistrationById(registrationId);
         if (registration != null && user != null && (registration.getUserId() == user.getId() || user.getType() == 5)) {
@@ -456,30 +456,6 @@ public class RegistrationResource {
         return new ResponseDTO(true, null, null);
     }
 
-    @ApiOperation(value = "Get issue of registration")
-    @RequestMapping(value = "/getIssue", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO getRegistrationIssue(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
-        try {
-            _log.info("getRegistrationIssue");
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException("");
-            }
-            return new ResponseDTO(true, registrationService.getRegistrationIssue(registrationDTO), null);
-
-        } catch (AccessDeniedException ade) {
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
-
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getRegistrationIssue' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        }
-    }
 
     @ApiOperation(value = "getLegalFile")
     @RequestMapping(value = "/getLegalFile", method = RequestMethod.GET)

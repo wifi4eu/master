@@ -21,4 +21,8 @@ public class SimpleMunicipalityService {
     public List<SimpleMunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(municipalityRepository.findAllMunicipalitiesFromApplications());
     }
+
+    public SimpleMunicipalityDTO getMunicipalityById(int id){
+        return municipalityMapper.toDTO(municipalityRepository.findMunicipalityById(id));
+    }
 }

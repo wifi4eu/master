@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.AzureQueueDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-//import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
+import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,8 +27,8 @@ public class AzureQueueResource {
 
     Logger _log = LoggerFactory.getLogger(MayorResource.class);
 
-    //@Autowired
-    //AzureQueueService azureQueueService;
+    @Autowired
+    AzureQueueService azureQueueService;
 
     /*
 

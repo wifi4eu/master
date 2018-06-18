@@ -1,7 +1,10 @@
 package wifi4eu.wifi4eu.entity.application;
 
+import wifi4eu.wifi4eu.common.dto.model.RegistrationWarningDTO;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.List;
 
 @Entity
 public class ApplicantListItem {
@@ -12,21 +15,19 @@ public class ApplicantListItem {
     private Integer counter;
     private Boolean mediation;
     private Integer status;
-    private Integer issueStatus;
     private Long applicationDate;
     private String invalidateReason;
 
     public ApplicantListItem() {
     }
 
-    public ApplicantListItem(Integer lauId, String countryCode, String name, Integer counter, Boolean mediation, Integer status, Integer issueStatus, Long applicationDate, String invalidateReason) {
+    public ApplicantListItem(Integer lauId, String countryCode, String name, Integer counter, Boolean mediation, Integer status, Long applicationDate, String invalidateReason) {
         this.lauId = lauId;
         this.countryCode = countryCode;
         this.name = name;
         this.counter = counter;
         this.mediation = mediation;
         this.status = status;
-        this.issueStatus = issueStatus;
         this.applicationDate = applicationDate;
         this.invalidateReason = invalidateReason;
     }
@@ -77,14 +78,6 @@ public class ApplicantListItem {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public Integer getIssueStatus() {
-        return issueStatus;
-    }
-
-    public void setIssueStatus(Integer issueStatus) {
-        this.issueStatus = issueStatus;
     }
 
     public Long getApplicationDate() {
