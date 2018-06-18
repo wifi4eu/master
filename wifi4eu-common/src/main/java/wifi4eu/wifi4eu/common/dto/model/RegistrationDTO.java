@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class RegistrationDTO implements Serializable {
     private int id;
@@ -22,11 +23,12 @@ public class RegistrationDTO implements Serializable {
     private long uploadTime;
     private int allFilesFlag;
     private int mailCounter;
+    private List<RegistrationWarningDTO> registrationWarningDTOList;
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, long uploadTime, int allFilesFlag, int mailCounter) {
+    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarningDTO> registrationWarningDTOList) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
@@ -46,6 +48,7 @@ public class RegistrationDTO implements Serializable {
         this.uploadTime = uploadTime;
         this.allFilesFlag = allFilesFlag;
         this.mailCounter = mailCounter;
+        this.registrationWarningDTOList = registrationWarningDTOList;
     }
 
     public int getId() {
@@ -198,6 +201,14 @@ public class RegistrationDTO implements Serializable {
 
     public void setMailCounter(int mailCounter) {
         this.mailCounter = mailCounter;
+    }
+
+    public List<RegistrationWarningDTO> getRegistrationWarningDTOList() {
+        return registrationWarningDTOList;
+    }
+
+    public void setRegistrationWarningDTOList(List<RegistrationWarningDTO> registrationWarningDTOList) {
+        this.registrationWarningDTOList = registrationWarningDTOList;
     }
 
     @Override
