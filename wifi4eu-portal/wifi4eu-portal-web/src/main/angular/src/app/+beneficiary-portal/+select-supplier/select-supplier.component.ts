@@ -190,13 +190,6 @@ export class SelectSupplierComponent {
   private assignSupplier() {
     (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true;
     this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.selectedSupplier.id]);
-    
-    this.application.supplierId = this.selectedSupplier.id; 
-    this.applicationApi.assignSupplier(this.application).subscribe(
-      (resAplication: ResponseDTOBase) => {
-        this.getStringDate(resAplication.data.date);
-      }
-    );
   }
   
   /* Get displayed string date from epoch number */
