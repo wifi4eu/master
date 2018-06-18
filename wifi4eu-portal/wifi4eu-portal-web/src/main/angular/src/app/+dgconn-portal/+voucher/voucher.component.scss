@@ -60,7 +60,7 @@
 }
 
 .voucher-status.saved {
-    background-color: #228854s;
+    background-color: #228854;
 }
 
 .panel-padding-no-margin{
@@ -105,6 +105,22 @@
   font-weight: bold;
   font-size: 16px;
   padding: 11px 17px;
+}
+
+.preSelection-button, .freezeList-button, .sendNotification-button{
+  background-color: #004494;
+  color: #ffffff;
+  border: solid 2px #004494;
+  font-weight: bold;
+  font-size: 16px;
+  width: 100%;
+  padding: 11px 17px;
+}
+
+.dates-voucher-assignment{
+  color: #929292;
+  padding-top: 10px;
+  display: block;
 }
 
 .voucher-dg-screen .panel-dg.panel-dg-voucher .text-center{
@@ -170,6 +186,15 @@
 }
 
 .tableAssignment.table-disabled > *{
+  opacity: 0.5;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.reject-disabled{
   opacity: 0.5;
   -webkit-user-select: none;
   -moz-user-select: none;

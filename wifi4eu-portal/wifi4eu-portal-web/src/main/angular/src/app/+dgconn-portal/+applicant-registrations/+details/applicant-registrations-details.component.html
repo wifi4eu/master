@@ -43,12 +43,13 @@
                         <span *ngIf="applications[i].status == 3" class="entity-subtitle" style="margin-left: 0.5em;">
                             <i class="fa fa-info"></i> <i>{{ 'dgConn.status.pendingFollowup' | translate }}</i>
                         </span>
-                        <span *ngIf="registrationIssues[i] == 1 || registrationIssues[i] == 2" class="badge badge-warning"  style="margin-left: 0.5em;">
-                            {{ 'dgConn.badge.warning' | translate }} {{ registrationIssues[i] }}
-                        </span>
-                        <span *ngIf="registrationIssues[i] == 3" class="badge badge-warning-yellow"  style="margin-left: 0.5em;">
-                            {{ 'dgConn.badge.warning' | translate }} {{ registrationIssues[i] }}
-                        </span>
+                        <div *ngIf="registrations[i].registrationWarningDTOList != null" class="mt-1">
+                            <span *ngFor="let warningObj of registrations[i].registrationWarningDTOList" [class.badge-warning]="warningObj.warning == 1 || warningObj.warning == 2"  [class.badge-warning-yellow]="warningObj.warning == 3" class="badge">
+                                {{ 'dgConn.badge.warning' | translate }} {{warningObj.warning}}
+                            </span>
+        
+                        </div>
+                       
                         <br><br>
                         <span class="entity-subtitle">
                             {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date/1000000 | date:'yyyy-MM-dd'}} {{ applications[i].date/1000000 | date:'shortTime'}}
@@ -64,11 +65,22 @@
                     </span>
                 </div>
                 <div class="row applicantDetailsPanel">
+                    <div class="ui-g-12" *ngIf="applications[i].invalidateReason">
+                        <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'dgConn.voucherAssignment.invalidateReason' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-12">{{applications[i].invalidateReason}}</span>
+                            </p>
+                        </div>
+                    </div>
                     <div class="ui-g-12">
                         <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
                             <p class="applicantDetailsNoMargin municipality-name profileData">
                                 <span class="ui-g-12">{{ 'suppRegistration.legalentity.label' | translate }}</span>
                             </p>
+                         
                             <p class="applicantDetailsNoMargin">
                                 <span class="ui-g-3 ui-sm-6">{{ 'shared.country.label' | translate }}</span>
                                 <span class="ui-g-9 ui-sm-6 profileData">{{ municipality.country }}</span>

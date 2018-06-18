@@ -2,8 +2,10 @@ package wifi4eu.wifi4eu.entity.registration;
 
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
+import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "registrations")
@@ -70,11 +72,15 @@ public class Registration {
     @Column(name = "mail_counter")
     private int mailCounter;
 
+    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "registration_id")
+    private List<RegistrationWarning> registrationWarningList;
+
 
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter) {
+    public Registration(User user, Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -93,6 +99,7 @@ public class Registration {
         this.uploadTime = uploadTime;
         this.allFilesFlag = allFilesFlag;
         this.mailCounter = mailCounter;
+        this.registrationWarningList = registrationWarningList;
     }
 
     public Integer getId() {
@@ -245,5 +252,13 @@ public class Registration {
 
     public void setMailCounter(int mailCounter) {
         this.mailCounter = mailCounter;
+    }
+
+    public List<RegistrationWarning> getRegistrationWarningList() {
+        return registrationWarningList;
+    }
+
+    public void setRegistrationWarningList(List<RegistrationWarning> registrationWarningList) {
+        this.registrationWarningList = registrationWarningList;
     }
 }

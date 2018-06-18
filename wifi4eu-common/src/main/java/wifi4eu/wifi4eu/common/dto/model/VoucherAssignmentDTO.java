@@ -9,17 +9,19 @@ public class VoucherAssignmentDTO {
     private Long executionDate;
     private int status;
     private CallDTO call;
+    private Long notifiedDate;
     private Set<VoucherSimulationDTO> voucherSimulations;
 
     public VoucherAssignmentDTO() {
     }
 
-    public VoucherAssignmentDTO(Integer id, UserDTO user, Long executionDate, int status, CallDTO call, Set<VoucherSimulationDTO> voucherSimulations) {
+    public VoucherAssignmentDTO(Integer id, UserDTO user, Long executionDate, int status, CallDTO call, Long notifiedDate, Set<VoucherSimulationDTO> voucherSimulations) {
         this.id = id;
         this.user = user;
         this.executionDate = executionDate;
         this.status = status;
         this.call = call;
+        this.notifiedDate = notifiedDate;
         this.voucherSimulations = voucherSimulations;
     }
 
@@ -69,6 +71,14 @@ public class VoucherAssignmentDTO {
 
     public void setCall(CallDTO call) {
         this.call = call;
+    }
+
+    public Long getNotifiedDate() {
+        return notifiedDate;
+    }
+
+    public void setNotifiedDate(Long notifiedDate) {
+        this.notifiedDate = notifiedDate;
     }
 
     public Set<VoucherSimulationDTO> getVoucherSimulations() {
