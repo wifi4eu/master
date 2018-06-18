@@ -13,4 +13,5 @@ npm install --prefix ./wifi4eu-dgconn/wifi4eu-dgconn-web/src/main/angular/
 echo "Install ECAS dependency"
 mvn install:install-file -Dfile=wifi4eu-dependencies/ecas-tomcat-8.0-4.22.0.jar  -DgroupId=eu.europa.ec.digit.iam.ecas.client -DartifactId=ecas-tomcat-8.0 -Dversion=4.22.0 -Dpackaging=jar
 echo "Compile project"
-mvn clean install -U -Png-build-jenkins -PTEST
+echo "Environment: $1"
+mvn clean install -U -Png-build-jenkins,$1
