@@ -51,17 +51,16 @@ public class ExcelExportGenerator<T> {
                     if(fieldNames.get(i).equalsIgnoreCase("issueStatus")){
                         ApplicantListItemDTO applicationListItem = (ApplicantListItemDTO) obj;
                         List<String> wList = new ArrayList<String>();
-
                         if(applicationListItem.getWarning1()){
                             wList.add("WARNING 1");
-                        }else if(applicationListItem.getWarning2()){
+                        }
+                        if(applicationListItem.getWarning2()){
                             wList.add("WARNING 2");
-                        }else if(applicationListItem.getWarning3()){
+                        }
+                        if(applicationListItem.getWarning3()){
                             wList.add("WARNING 3");
                         }
-
                         cell.setCellValue(String.join(", ", wList));
-
                     }else{
                         field = obj.getClass().getDeclaredField(fieldNames.get(i));
                         field.setAccessible(true);
