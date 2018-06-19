@@ -7,7 +7,9 @@ import javax.persistence.Id;
 public class ApplicationIssueUtil {
 
     @Id
-    private String id;
+    private Integer applicationId;
+
+    private Integer registrationId;
 
     private String countryCode;
 
@@ -24,14 +26,31 @@ public class ApplicationIssueUtil {
     public ApplicationIssueUtil() {
     }
 
-    public ApplicationIssueUtil(String id, String countryCode, String userEmail, String userEcasEmail, String userLang, String mayorEmail, Integer status) {
-        this.id = id;
+    public ApplicationIssueUtil(Integer applicationId, Integer registrationId, String countryCode, String userEmail, String userEcasEmail, String userLang, String mayorEmail, Integer status) {
+        this.applicationId = applicationId;
+        this.registrationId = registrationId;
         this.countryCode = countryCode;
         this.userEmail = userEmail;
         this.userEcasEmail = userEcasEmail;
         this.userLang = userLang;
         this.mayorEmail = mayorEmail;
         this.status = status;
+    }
+
+    public Integer getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(Integer applicationId) {
+        this.applicationId = applicationId;
+    }
+
+    public Integer getRegistrationId() {
+        return registrationId;
+    }
+
+    public void setRegistrationId(Integer registrationId) {
+        this.registrationId = registrationId;
     }
 
     public String getCountryCode() {
@@ -72,14 +91,6 @@ public class ApplicationIssueUtil {
 
     public void setMayorEmail(String mayorEmail) {
         this.mayorEmail = mayorEmail;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public Integer getStatus() {
