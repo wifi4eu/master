@@ -362,7 +362,7 @@ export class DgConnVoucherComponent {
     if(this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1){
       this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((resp: ResponseDTO) => {
         this.displayConfirmingData = false;
-        this.callVoucherAssignment = resp.data;
+        this.callVoucherAssignment.id = resp.data.id;
         this.loadPage();
         this.loadingSimulation = false;
       }, (error) => {
@@ -403,7 +403,7 @@ export class DgConnVoucherComponent {
   }
 
   rejectApplication(applicationId: number){
-    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment == null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
+    if(this.callVoucherAssignment == null ||  !this.callVoucherAssignment.hasPreListSaved){
       return;
     }
     this.applicationApi.rejectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
@@ -415,7 +415,7 @@ export class DgConnVoucherComponent {
   }
 
   selectApplication(applicationId: number){
-    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment == null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
+    if(this.callVoucherAssignment == null ||  !this.callVoucherAssignment.hasPreListSaved){
       return;
     }
     this.applicationApi.selectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {

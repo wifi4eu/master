@@ -1,12 +1,14 @@
 import { Component, ViewChild } from "@angular/core";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { ActivatedRoute, Router } from '@angular/router';
+import { SharedService } from "../../shared/shared.service";
 import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
 import { CallApi } from "../../shared/swagger/api/CallApi";
 import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { ApplicantListItemDTOBase } from "../../shared/swagger/model/ApplicantListItemDTO";
 import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
+import { CorrectionRequestEmailDTOBase } from "../../shared/swagger/model/CorrectionRequestEmailDTO";
 import { PagingSortingDTOBase } from "../../shared/swagger/model/PagingSortingDTO";
 import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
 import * as FileSaver from "file-saver";
@@ -55,13 +57,20 @@ export class DgConnApplicantRegistrationsComponent {
     private componentURL = '/dgconn-portal/applicant-registrations';
     private findApplicantsSubscription: Subscription = new Subscription();
     @ViewChild("tableApplicants") tableApplicants: DataTable;
+    private correctionRequestsEmailAvailable: boolean = false;
+    private displayCorrectionEmails: boolean = false;
+    private sendingCorrectionEmails: boolean = false;
+    private correctionRequestsEmailCounter: number = 0;
+    private correctionRequestsEmailDate: string = null;
+    private correctionRequestsEmailTime: string = null;
 
-    constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router) {
+    constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService) {
         this.callApi.allCalls().subscribe(
             (calls: CallDTOBase[]) => {
                 if (calls.length > 0) {
                     this.currentCall = calls[0];
                     this.calls = calls;
+                    this.getCorrectionRequestsEmailData(this.currentCall.id);
                     this.nutsApi.getNutsByLevel(0).subscribe(
                         (countries: NutsDTOBase[]) => {
                             this.countries = countries;
@@ -264,6 +273,73 @@ export class DgConnApplicantRegistrationsComponent {
                     }
                 );
             }
+        }
+    }
+
+    private displayCorrectionEmailsModal() {
+        if (this.correctionRequestsEmailAvailable)
+            this.displayCorrectionEmails = true;
+    }
+
+    private sendCorrectionEmails() {
+        if (this.currentCall != null && this.correctionRequestsEmailAvailable) {
+            this.sendingCorrectionEmails = true;
+            this.applicationApi.sendCorrectionEmails(this.currentCall.id).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        if (response.data != null) {
+                            let correctionRequest = response.data;
+                            let timestamp = new Date(correctionRequest.date);
+                            this.correctionRequestsEmailDate = ('0' + timestamp.getUTCDate()).slice(-2) + '/' + ('0' + (timestamp.getUTCMonth() + 1)).slice(-2) + "/" + timestamp.getUTCFullYear();
+                            this.correctionRequestsEmailTime = ('0' + (timestamp.getUTCHours() + 2)).slice(-2) + ':' + ('0' + timestamp.getUTCMinutes()).slice(-2);
+                            this.correctionRequestsEmailCounter = correctionRequest.buttonPressedCounter;
+                        }
+                        this.applicationApi.checkIfCorrectionRequestEmailIsAvailable(this.currentCall.id).subscribe(
+                            (enabled: boolean) => {
+                                if (enabled)
+                                    this.correctionRequestsEmailAvailable = true;
+                                else
+                                    this.correctionRequestsEmailAvailable = false;
+                            }
+                        );
+                        this.sharedService.growlTranslation('An email has been sent to the representants of the legal entities to supply the legal documents for the registration.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success');
+                    } else {
+                        this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the registration. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error', 'error');
+                    }
+                    this.closeModal();
+                }, error => {
+                    this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the registration. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error', 'error');
+                    this.closeModal();
+                }
+            );
+        }
+    }
+
+    private closeModal() {
+        this.sendingCorrectionEmails = false;
+        this.displayCorrectionEmails = false;
+    }
+
+    private getCorrectionRequestsEmailData(callId: number) {
+        if (callId != null) {
+            this.applicationApi.checkIfCorrectionRequestEmailIsAvailable(callId).subscribe(
+                (enabled: boolean) => {
+                    if (enabled)
+                        this.correctionRequestsEmailAvailable = true;
+                    else
+                        this.correctionRequestsEmailAvailable = false;
+                }
+            );
+            this.applicationApi.getLastCorrectionRequestEmail(callId).subscribe(
+                (correctionEmail: CorrectionRequestEmailDTOBase) => {
+                    if (correctionEmail != null) {
+                        let timestamp = new Date(correctionEmail.date);
+                        this.correctionRequestsEmailDate = ('0' + timestamp.getUTCDate()).slice(-2) + '/' + ('0' + (timestamp.getUTCMonth() + 1)).slice(-2) + "/" + timestamp.getUTCFullYear();
+                        this.correctionRequestsEmailTime = ('0' + (timestamp.getUTCHours() + 2)).slice(-2) + ':' + ('0' + timestamp.getUTCMinutes()).slice(-2);
+                        this.correctionRequestsEmailCounter = correctionEmail.buttonPressedCounter;
+                    }
+                }
+            );
         }
     }
 }
