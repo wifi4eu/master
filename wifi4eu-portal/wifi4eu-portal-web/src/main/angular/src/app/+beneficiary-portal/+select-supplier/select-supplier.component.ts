@@ -48,11 +48,13 @@ export class SelectSupplierComponent {
   /* Assigning supplier and feedback settings */
   private application: ApplicationDTOBase;
   private selectedSupplier: SupplierDTOBase;
+  private oldSupplier: SupplierDTOBase;
   private selectionDate: Date;
   private localeDate: Array<String>;
   private displayedDate: String;
-  private displayMessage: boolean = false;
+  private displayConfirmModal: boolean = false;
   private hasSupplierAssigned: boolean = false;
+  private displayChangeModal: boolean = false;
   
   /* Datatable */
   private page: any = 0;
@@ -78,9 +80,7 @@ export class SelectSupplierComponent {
   ) { 
 
     const municipalityId: any = route.params.map(p => p.id);
-    this.municipalityId = municipalityId.source.value.municipalityId;
-    console.log("Municipality id is ", this.municipalityId);
-    
+    this.municipalityId = municipalityId.source.value.municipalityId;    
     
     let storedUser = this.localStorage.get('user');
     this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
@@ -129,9 +129,10 @@ export class SelectSupplierComponent {
         }
       );
     }
-  
-}
+  // End of constructor  
+  }
 
+  /*  --- METHODS ---- */
   /* Part 2: Get all suppliers that supply the specific region of the beneficiary */
   getSuppliers() {
     // Get all suppliers of beneficiary region
@@ -148,6 +149,7 @@ export class SelectSupplierComponent {
                 for(var i = 0; i < this.suppliers.length; i++) {
                   if(this.suppliers[i].id == supplier.id) {
                     this.selectedSupplier = this.suppliers[i];
+                    this.oldSupplier = this.suppliers[i];
                     break;
                   } 
                 }
@@ -177,20 +179,10 @@ export class SelectSupplierComponent {
   }
 
   /* Toggles boolean to allow you select a new supplier */
-  private changeSupplier() {
-    (this.hasSupplierAssigned) ? this.hasSupplierAssigned = false : this.hasSupplierAssigned = true;
-  }
-
-  /* Modal for supplier selection confirmation */
-  private selectSupplier() {
-    (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true; 
-  }
-
-  /* Access to the supplier details which is the final confirmation screen */
-  private assignSupplier() {
-    (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true;
-    this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.selectedSupplier.id]);
-  }
+  // Method removed with new Business Requirements 4.1 
+  // private changeSupplier() {
+  //  (this.hasSupplierAssigned) ? this.hasSupplierAssigned = false : this.hasSupplierAssigned = true;
+  // }
   
   /* Get displayed string date from epoch number */
   private getStringDate(epoch) {
@@ -199,4 +191,37 @@ export class SelectSupplierComponent {
     this.displayedDate = this.localeDate[0];
   }
 
+  /* --- CHANGE SUPPLIER MODAL --- */
+  /* Triggers when user clicks on a new row to detect if he changed supplier */
+  private onRowSelect() {
+    if(this.hasSupplierAssigned) {
+      (this.displayChangeModal) ? this.displayChangeModal = false : this.displayChangeModal = true;
+      console.log(this.selectedSupplier);
+    }
+  }
+
+  private cancelChange() {
+    this.selectedSupplier = this.oldSupplier;
+    this.onRowSelect();
+  }
+
+  private confirmChange() {
+    this.onRowSelect();
+    this.hasSupplierAssigned = false;
+  }
+
+  /* --- CONFIRM SUPPLIER MODAL --- */
+  /* Modal for supplier selection confirmation */
+  private selectSupplier() {
+    (this.displayConfirmModal) ? this.displayConfirmModal = false : this.displayConfirmModal = true; 
+  }
+
+  /* Access to the supplier details which is the final confirmation screen */
+  private confirmSupplier() {
+    (this.displayConfirmModal) ? this.displayConfirmModal = false : this.displayConfirmModal = true;
+    this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalityId, this.selectedSupplier.id]);
+  }
+  
+
+// End of export class
 }

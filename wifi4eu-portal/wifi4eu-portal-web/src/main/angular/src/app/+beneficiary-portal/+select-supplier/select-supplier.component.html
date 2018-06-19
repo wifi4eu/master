@@ -56,9 +56,9 @@
 </div> -->
 
 <!-- Datatable -->
-<p-dataTable class="panel-select-supplier" [value]="suppliers" sortField="name" [sortOrder]="1" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [(selection)]="selectedSupplier" dataKey="name" [responsive]="true">
+<p-dataTable class="panel-select-supplier" [value]="suppliers" sortField="name" [sortOrder]="1" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [(selection)]="selectedSupplier" (onRowSelect)="onRowSelect($event)" dataKey="name" [responsive]="true">
 
-  <p-column *ngIf="!hasSupplierAssigned" selectionMode="single"></p-column>
+  <p-column selectionMode="single"></p-column>
 
   <!-- Datatable index -->
   <!-- <p-column *ngIf="!hasSupplierAssigned" field="i" header="Index" [style]="{'width':'70px'}">
@@ -108,7 +108,8 @@
   </div> -->
     
 <!-- Change selection & select installation company buttons -->
-  <div>
+  <!-- Method removed with new Business Requirements 4.1 -->        
+  <!-- <div>
     <div *ngIf="hasSupplierAssigned">
       <div class="row vertical-align">
         <div class="col-sm-6 col-md-4 col-lg-3 offset-xs-1 offset-sm-2 offset-md-4 offset-lg-6">
@@ -129,11 +130,11 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   
   <div class="row">
-    <div class="col-md-6 offset-md-6 marginTop" *ngIf="!hasSupplierAssigned">      
-      <button class="btn btn-primary text-adjust pull-right" (click)="selectSupplier()" [disabled]="selectedSupplier == null">
+    <div class="col-md-6 marginTop">      
+      <button class="btn btn-primary text-adjust" (click)="selectSupplier()" [disabled]="hasSupplierAssigned">
         <b>{{ 'benefPortal.selectSupplier.buton.select' | translate }}</b>
       </button>
     </div>
@@ -141,12 +142,10 @@
 
 </div>
 
-  
-
 
 <!-- Modal: confirm wifi company selection -->
 <div class="container font" *ngIf="selectedSupplier">
-    <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="true"
+    <p-dialog [(visible)]="displayConfirmModal" [modal]="true" [responsive]="true"
               [resizable]="false" [draggable]="false" [closeOnEscape]="true">
         <div class="beneficiaryTitle center hiddenScroll">
           {{ 'benefPortal.selectSupplier.title' | translate }}
@@ -164,7 +163,31 @@
               {{ 'shared.cancel.button' | translate }}
             </button>
 
-            <button class="btn btn-primary voucherButtonsSimulate" (click)="assignSupplier()">
+            <button class="btn btn-primary voucherButtonsSimulate" (click)="confirmSupplier()">
+              {{ 'suppRegistration.confirm.button' | translate }}
+            </button>
+        </div>
+    </p-dialog>
+</div>
+
+
+<!-- Modal: warn of company selection change -->
+<div class="container font" *ngIf="selectedSupplier">
+    <p-dialog [(visible)]="displayChangeModal" [modal]="true" [responsive]="true"
+              [resizable]="false" [draggable]="false" [closeOnEscape]="false" [closable]="false">
+        <div class="beneficiaryTitle center hiddenScroll">
+          {{ 'benefPortal.selectSupplier.title' | translate }}
+        </div>
+
+        <p class="voucherModal">{{ 'benefPortal.selectSupplier.changeModal.text1' | translate }}</p>
+        <p class="voucherModal">{{ 'benefPortal.selectSupplier.changeModal.text2' | translate:{currentSupplier:selectedSupplier.name,oldSupplier:oldSupplier.name} }}</p>
+
+        <div class="voucherModal md4Dashboard">
+            <button class="btn btn-primary voucherButtonsCancel" (click)="cancelChange()">
+              {{ 'shared.cancel.button' | translate }}
+            </button>
+
+            <button class="btn btn-primary voucherButtonsSimulate" (click)="confirmChange()">
               {{ 'suppRegistration.confirm.button' | translate }}
             </button>
         </div>
