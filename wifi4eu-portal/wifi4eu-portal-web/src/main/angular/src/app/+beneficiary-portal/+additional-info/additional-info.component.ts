@@ -42,6 +42,8 @@ export class AdditionalInfoComponent {
     private doc3: boolean = false;
     private doc4: boolean = false;
 
+    private fileURL: string = '/wifi4eu/api/registration/registrations/';
+
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
@@ -176,10 +178,6 @@ export class AdditionalInfoComponent {
             this.filesUploaded = true;
         }
         this.checkFirstDocuments();
-    }
-
-    private getLegalFileUrl(fileNumber: number) {
-		return this.registrationApi.getLegalFilesByFileType(this.registration.id, fileNumber);
     }
 
     private onSubmit() {
