@@ -129,7 +129,7 @@
     {{ 'benefPortal.selectSupplier.buton.saveAndNotify' | translate }}
   </button>
 
-  <p class="subtitle-discover text-adjust">{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ displayedDate }}</p> 
+  <p *ngIf="displayDate" class="subtitle-discover text-adjust">{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ displayedDate }}</p> 
 
 <!-- closing of container -->
 </div>
