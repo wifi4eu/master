@@ -48,7 +48,6 @@ public class MunicipalityService {
         }
         Collections.sort(municipalities);
         municipalityCacheDTO.setMunicipalities(municipalities);
-        _log.log(Level.getLevel("BUSINESS"), "");
         return municipalityCacheDTO;
     }
 

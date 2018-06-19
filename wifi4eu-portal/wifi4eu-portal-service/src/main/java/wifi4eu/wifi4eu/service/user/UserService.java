@@ -176,14 +176,14 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO deleteUser(int userId) {
+    public UserDTO deleteUser(int userId, HttpServletRequest request) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
         if (userDTO != null) {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
                     removeTempToken(userDTO);
                     for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
-                        municipalityService.deleteMunicipality(municipality.getId());
+                        municipalityService.deleteMunicipality(municipality.getId(), request);
                     }
                     for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
                         userThreadsService.deleteUserThreads(userThread.getId());

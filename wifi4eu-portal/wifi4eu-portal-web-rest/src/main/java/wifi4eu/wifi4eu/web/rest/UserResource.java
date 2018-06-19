@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -175,16 +176,16 @@ public class UserResource {
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseDTO deleteUser(@RequestBody final Integer userId,
-                                  HttpServletResponse response) throws IOException {
+                                  HttpServletResponse response, HttpServletRequest request) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Removing user by id " + userId);
         try {
             //check permission
             permissionChecker.check(RightConstants.USER_TABLE + userId);
-            UserDTO resUser = userService.deleteUser(userId);
+            UserDTO resUser = userService.deleteUser(userId, request);
             resUser.setPassword(null);
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
             return new ResponseDTO(true, resUser, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to remove this user", ade.getMessage());

@@ -18,6 +18,7 @@ import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class MayorService {
     }
 
     @Transactional
-    public MayorDTO createMayor(MayorDTO mayorDTO) {
+    public MayorDTO createMayor(MayorDTO mayorDTO, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         MayorDTO resMayor = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
@@ -61,7 +62,7 @@ public class MayorService {
         if (mayorDTO1 != null) {
             resMayor.setEmail(mayorDTO1.getEmail());
         }
-        _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Mayor created");
+        _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Mayor created");
         return resMayor;
     }
 
@@ -77,13 +78,13 @@ public class MayorService {
     }
 
     @Transactional
-    public MayorDTO deleteMayor(int mayorId) {
+    public MayorDTO deleteMayor(int mayorId, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findOne(mayorId));
         if (mayorDTO != null) {
             mayorRepository.delete(mayorMapper.toEntity(mayorDTO));
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Mayor removed");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Mayor removed");
             return mayorDTO;
         } else {
             return null;

@@ -28,6 +28,7 @@ import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.DateTimeException;
@@ -85,7 +86,7 @@ public class ApplicationService {
      * Service to register the applications coming from the Queue
      */
     public ApplicationDTO registerApplication(int callId, int userId, int registrationId,
-                                              long uploadDocTimestamp, long queueTimestamp) {
+                                              long uploadDocTimestamp, long queueTimestamp, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registering application");
@@ -113,7 +114,7 @@ public class ApplicationService {
                         }
                         applicationDTO.setDate(queueTimestamp);
                         applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                        _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
+                        _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
                         return applicationDTO;
                     } else {
                         _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application existent on the DB, callId: "
@@ -141,7 +142,7 @@ public class ApplicationService {
 
     @Transactional
     @Deprecated
-    public ApplicationDTO createApplication(ApplicationDTO applicationDTO) {
+    public ApplicationDTO createApplication(ApplicationDTO applicationDTO, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating application");
@@ -177,7 +178,7 @@ public class ApplicationService {
                 }
             }
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;
         }
         return null;
@@ -185,14 +186,14 @@ public class ApplicationService {
 
     @Transactional
     @Deprecated
-    public ApplicationDTO deleteApplication(int applicationId) {
+    public ApplicationDTO deleteApplication(int applicationId, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Removing application");
         ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
         if (applicationDTO != null) {
             applicationRepository.delete(applicationMapper.toEntity(applicationDTO));
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Application removed");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application removed");
             return applicationDTO;
         } else {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
@@ -414,7 +415,7 @@ public class ApplicationService {
         }
     }
 
-    public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
+    public ApplicationDTO validateApplication(ApplicationDTO applicationDTO, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Validating application");
@@ -450,11 +451,11 @@ public class ApplicationService {
             }
         }
         */
-        _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - The application is valid");
+        _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is valid");
         return validatedApplication;
     }
 
-    public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO) {
+    public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating application");
@@ -484,11 +485,11 @@ public class ApplicationService {
             }
         }
         */
-        _log.log(Level.getLevel("BUSINESS"),"ECAS Username: " + userConnected.getEcasUsername() + " - The application is invalid due the following reason: " + invalidatedApplication.getInvalidateReason());
+        _log.log(Level.getLevel("BUSINESS"),"[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is invalid due the following reason: " + invalidatedApplication.getInvalidateReason());
         return invalidatedApplication;
     }
 
-    public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
+    public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending legal documents for correction");
@@ -513,7 +514,7 @@ public class ApplicationService {
         applicationDB.setInvalidateReason(null);
         registrationService.saveRegistration(registration);
         ApplicationDTO applicationResponse = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
-        _log.log(Level.getLevel("BUSINESS"),"ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
+        _log.log(Level.getLevel("BUSINESS"),"[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
         return applicationResponse;
     }
 

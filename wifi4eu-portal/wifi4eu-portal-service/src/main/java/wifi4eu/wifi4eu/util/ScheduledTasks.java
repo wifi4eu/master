@@ -23,6 +23,7 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -88,7 +89,7 @@ public class ScheduledTasks {
      * This cron method consumes the messages from the RabbitMQ
      */
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0/10 * * * ?")
-    public void queueConsumer() {
+    public void queueConsumer(HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Consuming messages from the queue");
@@ -115,7 +116,7 @@ public class ScheduledTasks {
                 } else {
 
                     Date wdStartDate = new Date();
-                    long deliveryTag = processQueueMessage(response);
+                    long deliveryTag = processQueueMessage(response, request);
                     Date wdEndDate = new Date();
 
                     //time the process has taken in millisecons
@@ -222,7 +223,7 @@ public class ScheduledTasks {
         }
     }
 
-    private long processQueueMessage(GetResponse response) {
+    private long processQueueMessage(GetResponse response, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending document request");
@@ -236,7 +237,7 @@ public class ScheduledTasks {
             QueueApplicationElement qae = mapper.readValue(body, QueueApplicationElement.class);
 
             ApplicationDTO applicationDTO = applicationService.registerApplication(qae.getCallId(), qae.getUserId(), qae.getRegistrationId(),
-                    qae.getFileUploadTimestamp(), qae.getQueueTimestamp());
+                    qae.getFileUploadTimestamp(), qae.getQueueTimestamp(), request);
 
             long deliveryTag = 0;
 

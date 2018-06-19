@@ -32,6 +32,7 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,35 +108,35 @@ public class RegistrationService {
     }
 
     @Transactional
-    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO) {
+    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
         if (registrationDBO.getAllFilesFlag() != 1) {
             if (registrationDTO.getLegalFile1() == null) {
                 legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 1);
-                _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
                 registrationDBO.setLegalFile1Mime(null);
                 registrationDBO.setLegalFile1Size(0);
             }
 
             if (registrationDTO.getLegalFile2() == null) {
                 legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 2);
-                _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 3");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 3");
                 registrationDBO.setLegalFile2Mime(null);
                 registrationDBO.setLegalFile2Size(0);
             }
 
             if (registrationDTO.getLegalFile3() == null) {
                 legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 3);
-                _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 2");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 2");
                 registrationDBO.setLegalFile3Mime(null);
                 registrationDBO.setLegalFile3Size(0);
             }
 
             if (registrationDTO.getLegalFile4() == null) {
                 legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 4);
-                _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 4");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 4");
                 registrationDBO.setLegalFile4Mime(null);
                 registrationDBO.setLegalFile4Size(0);
             }
@@ -144,7 +145,7 @@ public class RegistrationService {
     }
 
     @Transactional
-    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO) {
+    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
@@ -154,7 +155,7 @@ public class RegistrationService {
             legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
             legalFilesDTO.setFileData(registrationDTO.getLegalFile1());
             legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 1");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 1");
         }
         if (registrationDTO.getLegalFile2() != null && !registrationDTO.getLegalFile2().isEmpty()) {
             LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
@@ -162,7 +163,7 @@ public class RegistrationService {
             legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
             legalFilesDTO.setFileData(registrationDTO.getLegalFile2());
             legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 3");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 3");
         }
         if (registrationDTO.getLegalFile3() != null && !registrationDTO.getLegalFile3().isEmpty()) {
             LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
@@ -170,7 +171,7 @@ public class RegistrationService {
             legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
             legalFilesDTO.setFileData(registrationDTO.getLegalFile3());
             legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 2");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 2");
         }
         if (registrationDTO.getLegalFile4() != null && !registrationDTO.getLegalFile4().isEmpty()) {
             LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
@@ -178,7 +179,7 @@ public class RegistrationService {
             legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
             legalFilesDTO.setFileData(registrationDTO.getLegalFile4());
             legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 4");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 4");
         }
         registrationDBO.setAllFilesFlag(registrationDTO.getAllFilesFlag());
         registrationDBO.setMailCounter(registrationDTO.getMailCounter());
@@ -186,11 +187,11 @@ public class RegistrationService {
     }
 
     @Transactional
-    public RegistrationDTO deleteRegistration(int registrationId) {
+    public RegistrationDTO deleteRegistration(int registrationId, HttpServletRequest request) {
         RegistrationDTO registrationDTO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
         if (registrationDTO != null) {
             for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registrationDTO.getId())) {
-                applicationService.deleteApplication(application.getId());
+                applicationService.deleteApplication(application.getId(),request);
             }
             legalFilesRepository.deleteByRegistration(registrationDTO.getId());
             registrationRepository.delete(registrationMapper.toEntity(registrationDTO));

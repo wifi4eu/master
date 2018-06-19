@@ -121,7 +121,7 @@ public class VoucherResource {
     @ApiOperation(value = "Get voucher assignment by call")
     @RequestMapping(value = "/assignmentaux/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(@PathVariable("callId") final Integer callId) {
+    public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(@PathVariable("callId") final Integer callId, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving the voucher assignment by call id " + callId);
@@ -129,7 +129,8 @@ public class VoucherResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: getVoucherAssignmentAuxiliarByCall");
             }
-            return voucherService.getVoucherAssignmentAuxiliarByCall(callId);
+            VoucherAssignmentAuxiliarDTO response = voucherService.getVoucherAssignmentAuxiliarByCall(callId);
+            return response;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to retrieve the voucher assignment", ade.getMessage());
             return null;
@@ -162,8 +163,9 @@ public class VoucherResource {
             } else {
                 pageable = new PageRequest(page, size, Direction.DESC, field);
             }
+            ResponseDTO response = voucherService.getVoucherSimulationByVoucherAssignment(assignmentId, country, municipality, pageable);
             _log.info("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on retrieving simulation by this voucher assignment");
-            return voucherService.getVoucherSimulationByVoucherAssignment(assignmentId, country, municipality, pageable);
+            return response;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - You have no permissions to retrieve simulation by this voucher assignment", ade.getMessage());
             return new ResponseDTO(false, null, null);

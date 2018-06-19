@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,14 +74,14 @@ public class MunicipalityService {
     }
 
     @Transactional
-    public MunicipalityDTO deleteMunicipality(int municipalityId) {
+    public MunicipalityDTO deleteMunicipality(int municipalityId, HttpServletRequest request) {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         MunicipalityDTO municipalityDTO = municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
         if (municipalityDTO != null) {
             MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipalityDTO.getId());
             if (mayor != null) {
-                mayorService.deleteMayor(mayor.getId());
+                mayorService.deleteMayor(mayor.getId(), request);
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Mayor from this municipality removed");
             } else {
                 _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Mayor from this municipality not found");
@@ -88,7 +89,7 @@ public class MunicipalityService {
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
             if (registration != null) {
                 for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registration.getId())) {
-                    applicationService.deleteApplication(application.getId());
+                    applicationService.deleteApplication(application.getId(), request);
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Application from this municipality removed");
                 }
             } else {

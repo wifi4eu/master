@@ -119,7 +119,7 @@ public class ApplicationResource {
     @ApiOperation(value = "findDgconnApplicantsListByCallId")
     @RequestMapping(value = "/findDgconnApplicantsListByCallId/{callId}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallId(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public ResponseDTO findDgconnApplicantsListByCallId(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn applicants by call id " + callId);
@@ -132,7 +132,7 @@ public class ApplicationResource {
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country, null, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country));
-            _log.info("[ " + userService.getIp(request) + " ] ECAS Username: " + userConnected.getEcasUsername() + " - The DGConn Applicants for this call are retrieved correctly");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - The DGConn Applicants for this call are retrieved correctly");
             return res;
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The DGConn Applicants cannot be retrieved", e.getMessage());
@@ -169,7 +169,7 @@ public class ApplicationResource {
     @ApiOperation(value = "Validate application")
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO validateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO validateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Validating applications");
@@ -178,7 +178,7 @@ public class ApplicationResource {
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            ApplicationDTO resApplication = applicationService.validateApplication(applicationDTO);
+            ApplicationDTO resApplication = applicationService.validateApplication(applicationDTO, request);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Application validated");
             return new ResponseDTO(true, resApplication, null);
         } catch (AccessDeniedException ade) {
@@ -218,7 +218,7 @@ public class ApplicationResource {
     @ApiOperation(value = "Invalidate application")
     @RequestMapping(value = "/invalidate", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO invalidateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO invalidateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating applications");
@@ -227,7 +227,7 @@ public class ApplicationResource {
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            ApplicationDTO resApplication = applicationService.invalidateApplication(applicationDTO);
+            ApplicationDTO resApplication = applicationService.invalidateApplication(applicationDTO, request);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Application invalidated successfully");
             return new ResponseDTO(true, resApplication, null);
         } catch (AccessDeniedException ade) {
@@ -268,7 +268,7 @@ public class ApplicationResource {
     @ApiOperation(value = "Send legal documents correction request")
     @RequestMapping(value = "/sendLegalDocumentsCorrection", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO sendLegalDocumentsCorrection(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO sendLegalDocumentsCorrection(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending legal documents' correction request");
@@ -276,7 +276,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            ApplicationDTO resApplication = applicationService.sendLegalDocumentsCorrection(applicationDTO);
+            ApplicationDTO resApplication = applicationService.sendLegalDocumentsCorrection(applicationDTO, request);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Legal documents correction request sent successfully");
             return new ResponseDTO(true, resApplication, null);
         } catch (AccessDeniedException ade) {
