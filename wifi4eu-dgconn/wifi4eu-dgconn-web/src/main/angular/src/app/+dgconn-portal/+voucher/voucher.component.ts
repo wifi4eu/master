@@ -403,7 +403,7 @@ export class DgConnVoucherComponent {
   }
 
   rejectApplication(applicationId: number){
-    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment == null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
+    if(this.callVoucherAssignment == null ||  !this.callVoucherAssignment.hasPreListSaved){
       return;
     }
     this.applicationApi.rejectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
@@ -415,7 +415,7 @@ export class DgConnVoucherComponent {
   }
 
   selectApplication(applicationId: number){
-    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment == null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
+    if(this.callVoucherAssignment == null ||  !this.callVoucherAssignment.hasPreListSaved){
       return;
     }
     this.applicationApi.selectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
