@@ -37,6 +37,7 @@ import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.util.MailService;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import java.security.SecureRandom;
 import java.util.Date;

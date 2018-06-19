@@ -27,6 +27,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.service.voucher.util.ScenariosService;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -182,7 +183,7 @@ public class VoucherResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: simulateVoucherAssignment");
             }
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on voucher simulation");
+            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername()+ " - Success on voucher simulation");
             return voucherService.simulateVoucherFast(callId);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - You have no permissions to run voucher simulation", ade.getMessage());
