@@ -14,9 +14,11 @@ import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
+import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -68,12 +70,21 @@ public class ApplicationService {
     RegistrationWarningRepository registrationWarningRepository;
 
     @Autowired
+    CorrectionRequestEmailMapper correctionRequestEmailMapper;
+
+    @Autowired
+    CorrectionRequestEmailRepository correctionRequestEmailRepository;
+
+    @Autowired
     VoucherService voucherService;
 
     private static final Logger _log = LoggerFactory.getLogger(ApplicationService.class);
 
     @Autowired
     BeneficiaryService beneficiaryService;
+
+    @Autowired
+    ApplicationIssueUtilRepository applicationIssueUtilRepository;
 
     @Deprecated
     public List<ApplicationDTO> getAllApplications() {
@@ -514,6 +525,87 @@ public class ApplicationService {
         List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, name, pagingSortingData);
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
+    }
+
+    public CorrectionRequestEmailDTO sendCorrectionEmails(Integer callId) throws Exception {
+        List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus.PENDING_FOLLOWUP.getValue());
+        CorrectionRequestEmailDTO correctionRequest = null;
+        CorrectionRequestEmailDTO lastCorrectionRequestEmail = getLastCorrectionRequestEmailInCall(callId);
+        Integer buttonPressedCounter;
+        if (lastCorrectionRequestEmail != null) {
+            buttonPressedCounter = lastCorrectionRequestEmail.getButtonPressedCounter() + 1;
+        } else {
+            buttonPressedCounter = 1;
+        }
+        if (!applications.isEmpty()) {
+            for (ApplicationIssueUtil application : applications) {
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (application.getUserLang() != null) {
+                    locale = new Locale(application.getUserLang());
+                }
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                String subject = bundle.getString("mail.correctionRequestEmail.subject");
+                String msgBody = bundle.getString("mail.correctionRequestEmail.body");
+                String[] correctionReasons = new String[6];
+                correctionReasons[0] = bundle.getString("mail.correctionRequestEmail.reason1");
+                correctionReasons[1] = bundle.getString("mail.correctionRequestEmail.reason2");
+                correctionReasons[2] = bundle.getString("mail.correctionRequestEmail.reason3");
+                correctionReasons[3] = bundle.getString("mail.correctionRequestEmail.reason4");
+                correctionReasons[4] = bundle.getString("mail.correctionRequestEmail.reason5");
+                correctionReasons[5] = bundle.getString("mail.correctionRequestEmail.reason6");
+                String[] documentTypes = {"", "", "", ""};
+                List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
+                for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
+                    String emailString = "";
+                    switch (legalFileCorrectionReason.getType()) {
+                        case 1:
+                            emailString = bundle.getString("mail.correctionRequestEmail.type1");
+                            documentTypes[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                            break;
+                        case 2:
+                            emailString = bundle.getString("mail.correctionRequestEmail.type3");
+                            documentTypes[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                            break;
+                        case 3:
+                            emailString = bundle.getString("mail.correctionRequestEmail.type2");
+                            documentTypes[2] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                            break;
+                        case 4:
+                            emailString = bundle.getString("mail.correctionRequestEmail.type4");
+                            documentTypes[3] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                            break;
+                    }
+                }
+                msgBody = MessageFormat.format(msgBody, documentTypes);
+                mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            }
+            correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
+            correctionRequest = correctionRequestEmailMapper.toDTO(correctionRequestEmailRepository.save(correctionRequestEmailMapper.toEntity(correctionRequest)));
+        }
+        return correctionRequest;
+    }
+
+    public CorrectionRequestEmailDTO getLastCorrectionRequestEmailInCall(Integer callId) {
+        List<CorrectionRequestEmailDTO> correctionRequests = correctionRequestEmailMapper.toDTOList(correctionRequestEmailRepository.findAllByCallIdOrderByDateDesc(callId));
+        if (!correctionRequests.isEmpty()) {
+            return correctionRequests.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
+        CallDTO call = callService.getCallById(callId);
+        if (call != null) {
+            long currentTime = new Date().getTime();
+            if (call.getStartDate() < currentTime && call.getEndDate() > currentTime) {
+                List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(call.getId(), ApplicationStatus.PENDING_FOLLOWUP.getValue()));
+                if (!pendingFollowupApps.isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public ApplicationDTO rejectApplicationVoucherAssigment(int applicationId) {

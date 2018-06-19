@@ -620,3 +620,14 @@ ALTER TABLE applications ADD rejected BIT DEFAULT(0) NOT NULL;
 -- Alter voucher_assignments table
 -- -----------------------------------------------------
 ALTER TABLE voucher_assignments ADD notified_date BIGINT;
+-- -----------------------------------------------------
+-- Table `dbo`.`correction_requests_emails`
+-- -----------------------------------------------------
+CREATE TABLE dbo.correction_requests_emails
+(
+  [id]                      INT NOT NULL IDENTITY,
+  [call]                    INT NULL,
+  [date]                    BIGINT NULL,
+  [button_pressed_counter]  INT NULL,
+  PRIMARY KEY ([id])
+);
