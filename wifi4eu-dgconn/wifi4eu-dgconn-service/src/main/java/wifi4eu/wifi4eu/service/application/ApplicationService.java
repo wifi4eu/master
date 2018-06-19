@@ -369,18 +369,18 @@ public class ApplicationService {
                 break;
         }
 
-        setIssues(applicantsList);
+       // setIssues(applicantsList);
 
         return applicantsList;
     }
 
     private void setIssues(List<ApplicantListItemDTO> applicantsList) {
 
-        for(ApplicantListItemDTO applicantListItemDTO : applicantsList){
-            List<Integer> warnings = registrationWarningRepository.findAllByLauId(applicantListItemDTO.getLauId());
-            applicantListItemDTO.setIssueStatus(warnings);
-        }
-    }
+      for(ApplicantListItemDTO applicantListItemDTO : applicantsList){
+          List<Integer> warnings = registrationWarningRepository.findAllByLauId(applicantListItemDTO.getLauId());
+          applicantListItemDTO.setIssueStatus(warnings);
+      }
+  }
 
     public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
