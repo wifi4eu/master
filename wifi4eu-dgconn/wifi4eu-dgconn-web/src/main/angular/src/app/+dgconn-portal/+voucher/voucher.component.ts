@@ -44,6 +44,7 @@ export class DgConnVoucherComponent {
   private totalRequests: number = 0;
   private displayMessage: boolean = false;
   displayConfirmingData: boolean = false;
+  private preSelectedEnabledButton: Boolean = false;
 
   private countrySelected: NutsDTOBase = {id: 0, code: '0', label: 'All', level: 0, countryCode: "ALL", order: 1, sorting: 1};
   private simulationAssignment = null;
@@ -171,6 +172,11 @@ export class DgConnVoucherComponent {
                   let date = new Date(this.callVoucherAssignment.preListExecutionDate);
                   this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                   this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+                  this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
+                    this.preSelectedEnabledButton = response;
+                  },(error) => {
+                    console.log(error);      
+                  })
                   if(data.hasFreezeListSaved){
                     this.voucherApi.getVoucherAssignmentByCallAndStatus(this.callSelected.id, 3).subscribe(
                      (response: VoucherAssignmentAuxiliarDTO) => {
@@ -397,7 +403,7 @@ export class DgConnVoucherComponent {
   }
 
   rejectApplication(applicationId: number){
-    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment == null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
+    if(this.callVoucherAssignment == null ||  !this.callVoucherAssignment.hasPreListSaved){
       return;
     }
     this.applicationApi.rejectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
@@ -409,7 +415,7 @@ export class DgConnVoucherComponent {
   }
 
   selectApplication(applicationId: number){
-    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment == null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
+    if(this.callVoucherAssignment == null ||  !this.callVoucherAssignment.hasPreListSaved){
       return;
     }
     this.applicationApi.selectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
