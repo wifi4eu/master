@@ -34,9 +34,6 @@ public class NutsResource {
     @RequestMapping(value = "/level/{level}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> getNutsByLevel(@PathVariable("level") final Integer level) {
-        if (_log.isInfoEnabled()) {
-            _log.info("getNutsByLevel: " + level);
-        }
         return nutsService.getNutsByLevel(level);
     }
 
@@ -44,7 +41,6 @@ public class NutsResource {
     @RequestMapping(value = "/countryCode/{countryCode}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> getNutsByCountryCode(@PathVariable("countryCode") final String countryCode) {
-        _log.info("getNutsByCountryCode " + countryCode);
         return nutsService.getNutsByCountryCode(countryCode);
     }
 
@@ -52,10 +48,7 @@ public class NutsResource {
     @RequestMapping(value = "/countryCode/{countryCode}/level/{level}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> getNutsByCountryCodeAndLevelOrderByLabelAsc(@PathVariable("countryCode") final String countryCode, @PathVariable("level") final Integer level) {
-        _log.info("getNutsByCountryCodeAndLevelOrderByLabelAsc " + countryCode + level);
-        _log.error("getNutsByCountryCodeAndLevelOrderByLabelAsc " + countryCode + level);
-        _log.warn("getNutsByCountryCodeAndLevelOrderByLabelAsc " + countryCode + level);
-        _log.log(Level.getLevel("BUSINESS"), "getNutsByCountryCodeAndLevelOrderByLabelAsc " +countryCode +level);
-        return nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode, level);
+        List<NutsDTO> response = nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode, level);
+        return response;
     }
 }

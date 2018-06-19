@@ -39,6 +39,7 @@ import wifi4eu.wifi4eu.util.MailService;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
@@ -107,6 +108,14 @@ public class UserService {
 
     public UserDTO getUserByEcasEmail(String email){
         return userMapper.toDTO(userRepository.findByEcasEmail(email));
+    }
+
+    public String getIp(HttpServletRequest request){
+        String ipAdd = request.getHeader("X-FORWARDED-FOR");
+        if(ipAdd == null){
+            ipAdd = request.getRemoteAddr();
+        }
+        return ipAdd;
     }
 
     @Transactional

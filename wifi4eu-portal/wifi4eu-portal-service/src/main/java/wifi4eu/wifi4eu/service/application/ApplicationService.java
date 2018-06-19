@@ -176,8 +176,9 @@ public class ApplicationService {
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
                 }
             }
+            ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
             _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
-            return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+            return application;
         }
         return null;
     }
@@ -511,8 +512,9 @@ public class ApplicationService {
         }
         applicationDB.setInvalidateReason(null);
         registrationService.saveRegistration(registration);
+        ApplicationDTO applicationResponse = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
         _log.log(Level.getLevel("BUSINESS"),"ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
-        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
+        return applicationResponse;
     }
 
     public List<ApplicationDTO> getApplicationsByCallId(int callId) {

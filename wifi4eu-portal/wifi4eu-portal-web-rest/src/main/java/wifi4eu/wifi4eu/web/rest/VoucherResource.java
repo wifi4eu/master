@@ -27,7 +27,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.service.voucher.util.ScenariosService;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -53,6 +53,7 @@ public class VoucherResource {
 
     UserContext userContext;
     UserDTO userConnected;
+
 
     @ApiOperation(value = "Get all the voucher assignment")
     @RequestMapping(value = "/assignments", method = RequestMethod.GET, produces = "application/json")
@@ -177,14 +178,15 @@ public class VoucherResource {
     @RequestMapping(value = "/assignment/simulate", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO simulateVoucherAssignment(@RequestBody final Integer callId) {
+    public ResponseDTO simulateVoucherAssignment(@RequestBody final Integer callId, HttpServletRequest request) {
         _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Creating voucher assignment");
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: simulateVoucherAssignment");
             }
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername()+ " - Success on voucher simulation");
-            return voucherService.simulateVoucherFast(callId);
+            ResponseDTO response = voucherService.simulateVoucherFast(callId);
+            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on voucher simulation");
+            return response;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - You have no permissions to run voucher simulation", ade.getMessage());
             return new ResponseDTO(false, null, null);
