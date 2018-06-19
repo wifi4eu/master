@@ -384,7 +384,7 @@ public class ApplicationService {
                 break;
         }
 
-        setIssues(applicantsList);
+        //setIssues(applicantsList);
 
         return applicantsList;
     }

@@ -46,9 +46,27 @@ public class ExcelExportGenerator<T> {
                 Row row = sheet.createRow(rowIndex);
                 for (int i = 0; i < fieldNames.size(); i++) {
                     Cell cell = row.createCell(i);
-                    Field field = obj.getClass().getDeclaredField(fieldNames.get(i));
-                    field.setAccessible(true);
-                    cell.setCellValue(generateCellValue(field, obj));
+                    Field field;
+
+                    if(fieldNames.get(i).equalsIgnoreCase("issueStatus")){
+                        ApplicantListItemDTO applicationListItem = (ApplicantListItemDTO) obj;
+                        List<String> wList = new ArrayList<String>();
+                        if(applicationListItem.getWarning1()){
+                            wList.add("WARNING 1");
+                        }
+                        if(applicationListItem.getWarning2()){
+                            wList.add("WARNING 2");
+                        }
+                        if(applicationListItem.getWarning3()){
+                            wList.add("WARNING 3");
+                        }
+                      cell.setCellValue(String.join(", ", wList));
+                    }else{
+                        field = obj.getClass().getDeclaredField(fieldNames.get(i));
+                        field.setAccessible(true);
+                        cell.setCellValue(generateCellValue(field, obj));
+                    }
+
                 }
                 rowIndex++;
             }

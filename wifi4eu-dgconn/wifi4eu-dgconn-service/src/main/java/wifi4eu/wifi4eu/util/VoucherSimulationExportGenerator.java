@@ -4,6 +4,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationWarningDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
@@ -60,6 +61,15 @@ public class VoucherSimulationExportGenerator<T> {
                             value = "-";
                         }
                         cell.setCellValue(value);
+                    }
+                    else if(fieldNames.get(i).equalsIgnoreCase("issues")){
+                      VoucherSimulationDTO voucherSimulationDTO = (VoucherSimulationDTO) obj;
+                      List<RegistrationWarningDTO> warnings = voucherSimulationDTO.getRegistrationWarningDTO();
+
+                      List<String> wList = new ArrayList<String>();
+                      warnings.stream().forEach(x -> wList.add("WARNING " + x.getWarning()));
+
+                      cell.setCellValue(String.join(", ", wList));
                     }
                     else if(fieldNames.get(i).equalsIgnoreCase("registration")){
                         VoucherSimulationDTO voucherSimulationDTO = (VoucherSimulationDTO) obj;

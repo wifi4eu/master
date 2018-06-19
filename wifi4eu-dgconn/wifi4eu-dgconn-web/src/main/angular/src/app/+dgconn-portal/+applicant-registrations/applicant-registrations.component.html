@@ -71,11 +71,15 @@
                 </p-column>
                 <p-column field="issueStatus" [sortable]="false" header="{{ 'dgConn.issues' | translate }}" styleClass="text-center">
                     <ng-template let-row="rowData" pTemplate="body">
-                        <div *ngIf="row.issueStatus != null || row.issueStatus.length > 0">
-                          <span *ngFor="let warning of row.issueStatus" [class.badge-warning]="warning == 1 || warning == 2"  [class.badge-warning-yellow]="warning == 3" class="badge d-block">
-                              {{ 'dgConn.badge.warning' | translate }} {{warning}}
-                          </span>
-                      </div>
+                      <span class="badge badge-warning" *ngIf="row.warning1" style="display: inline-block;">
+                        {{ 'dgConn.badge.warning' | translate }} 1
+                      </span>
+                      <span class="badge badge-warning" *ngIf="row.warning2" style="display: inline-block;">
+                        {{ 'dgConn.badge.warning' | translate }} 2
+                      </span>
+                      <span class="badge badge-warning-yellow" *ngIf="row.warning3" style="display: inline-block;">
+                        {{ 'dgConn.badge.warning' | translate }} 3
+                      </span>
                     </ng-template>
                 </p-column>
                 <p-column field="counter" [sortable]="true" header="{{ 'dgConn.numberOfApplications' | translate }}" styleClass="text-center"></p-column>
