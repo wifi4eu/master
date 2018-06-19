@@ -189,7 +189,7 @@
                           <span pTooltip="{{row.municipalityName}}" tooltipPosition="bottom">{{row.municipalityName}}</span>
                         </ng-template>
                       </p-column>
-                      <p-column field="issues" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.issues' | translate}}"
+                      <p-column field="issues" header="{{'dgConn.voucherAssignment.table.issues' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <div *ngIf="row.registrationWarningDTO.length > 0">
