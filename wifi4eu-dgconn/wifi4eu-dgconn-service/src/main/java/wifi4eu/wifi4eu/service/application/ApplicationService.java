@@ -522,8 +522,10 @@ public class ApplicationService {
             throw new AppException("Application not found with id: " + applicationId);
         }
 
-        if (!voucherService.getVoucherAssignmentAuxiliarByCall(applicationDTO.getCallId()).getHasPreListSaved()) {
-            throw new AppException("Pre List hasn't been save for the call of the application with id: " +
+        VoucherAssignmentAuxiliarDTO voucherAssignmentAuxiliar = voucherService.getVoucherAssignmentAuxiliarByCall
+                (applicationDTO.getCallId());
+        if (voucherAssignmentAuxiliar == null || !voucherAssignmentAuxiliar.getHasPreListSaved()) {
+            throw new AppException("Pre List hasn't been saved for the call of the application with id: " +
                     applicationId);
         }
 
@@ -537,8 +539,10 @@ public class ApplicationService {
             throw new AppException("Application not found with id: " + applicationId);
         }
 
-        if (!voucherService.getVoucherAssignmentAuxiliarByCall(applicationDTO.getCallId()).getHasPreListSaved()) {
-            throw new AppException("Pre List hasn't been save for the call of the application with id: " +
+        VoucherAssignmentAuxiliarDTO voucherAssignmentAuxiliar = voucherService.getVoucherAssignmentAuxiliarByCall
+                (applicationDTO.getCallId());
+        if (voucherAssignmentAuxiliar == null || !voucherAssignmentAuxiliar.getHasPreListSaved()) {
+            throw new AppException("Pre List hasn't been saved for the call of the application with id: " +
                     applicationId);
         }
 
