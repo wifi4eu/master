@@ -166,7 +166,7 @@ public class RegistrationResource {
     @ResponseBody
     public ResponseDTO updateRegistrationDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
         try {
-            _log.info("createRegistration");
+            _log.info("updateRegistration");
 
             UserContext userContext = UserHolder.getUser();
             UserDTO userDTO = userService.getUserByUserContext(userContext);

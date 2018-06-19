@@ -42,17 +42,17 @@ public class HelpdeskIssueResource {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<HelpdeskIssueDTO> allHelpdeskIssues(HttpServletResponse response) throws IOException {
-        try{
+        try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-        } catch (AccessDeniedException ade){
+        } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("AccessDenied on 'allHelpdeskIssues' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e){
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'allHelpdeskIssues' operation.", e);
             }
@@ -70,7 +70,7 @@ public class HelpdeskIssueResource {
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
 
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException("");
             }
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class HelpdeskIssueResource {
             _log.info("createHelpdeskIssue");
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())){
+            if (!userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())) {
                 throw new AccessDeniedException("Invalid access");
             }
 
@@ -102,9 +102,9 @@ public class HelpdeskIssueResource {
 
             HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.createHelpdeskIssue(helpdeskIssueDTO);
             return new ResponseDTO(true, resHelpdeskIssue, null);
-        }catch (AccessDeniedException ade) {
+        } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
-                    _log.error("Access denied on 'deleteHelpdeskIssue' operation.", ade);
+                _log.error("Access denied on 'deleteHelpdeskIssue' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
