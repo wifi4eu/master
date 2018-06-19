@@ -80,7 +80,7 @@ export class SelectSupplierComponent {
   ) { 
 
     const municipalityId: any = route.params.map(p => p.id);
-    this.municipalityId = municipalityId.source.value.municipalityId;    
+    this.municipalityId = Number(municipalityId.source.value.municipalityId);    
     
     let storedUser = this.localStorage.get('user');
     this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
