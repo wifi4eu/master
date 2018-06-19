@@ -11,6 +11,7 @@ import { MunicipalityApi, RegistrationApi, CallApi, ApplicationApi, CallDTOBase,
 // Project DTO's
 import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
 import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { Observable } from "rxjs";
 
 @Component ({
   selector: 'selected-supplier-component',
@@ -40,7 +41,7 @@ export class SelectedSupplierDetailsComponent {
   private selectionDate: Date;
   private localeDate: Array<String>;
   private displayedDate: String;
-
+  private displayDate: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,13 +55,12 @@ export class SelectedSupplierDetailsComponent {
   ) {
 
   /* Observable<string> */
-  const municipalityId: any = route.params.map(p => p.id);
-  this.municipalityId = municipalityId.source.value.municipalityId;
-  console.log("Municipality id is ", this.municipalityId);
-  
-  const supplierId: any = route.params.map(p => p.id);
-  this.supplierId = supplierId.source.value.supplierId;
-  console.log("Supplier id is ", this.supplierId);
+  this.route.params.subscribe(
+    params => {
+        this.municipalityId = Number(params['municipalityId']);
+        this.supplierId = Number(params['supplierId']);
+    }
+  );
   
   this.municipalityApi.getMunicipalityById(this.municipalityId).subscribe(
     (municipality: MunicipalityDTOBase) => {
@@ -85,6 +85,7 @@ export class SelectedSupplierDetailsComponent {
               this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[0].id, this.registration.id).subscribe(
                 (application: ApplicationDTOBase) => {
                   this.application = application;
+                  console.log("Present application is ", this.application);
                   this.getSupplierDetails();  
                 }
               );
@@ -94,19 +95,23 @@ export class SelectedSupplierDetailsComponent {
         }
       );
     }
-        
-  // End of constructor  
+    
+    // End of constructor  
   }
-      
+  
   /*  -- METHODS -- */
+  // Get supplier details from supplierId requested through params
   getSupplierDetails() {
     this.supplierApi.getSupplierDetailsById(this.supplierId).subscribe(
       (supplier: SupplierDTOBase) => {            
         this.supplier = supplier;
       }
     );
-    // Get the date when supplier was selected
-    this.getStringDate(this.application.date);
+    // Get the date when supplier was selected if the supplier hasn't changed his choice
+    if(this.application.supplierId === this.supplierId) {
+      this.getStringDate(this.application.date);
+      this.displayDate = true; 
+    }
   }
 
   /* Get displayed string date from epoch number */
@@ -125,21 +130,27 @@ export class SelectedSupplierDetailsComponent {
   /* Assign supplier to the beneficiary application */
   private saveAndNotify() {
     console.log("Municipality ID is ", this.municipality.id);
-    this.application.supplierId = this.supplierId; 
-    this.applicationApi.assignSupplier(this.application).subscribe(
-      (resAplication: ResponseDTOBase) => {
-        this.getStringDate(resAplication.data.date);
-        
-/*         this.supplierApi.notifySelectedSupplier(this.municipality.id).subscribe(
-          (res: ResponseDTOBase) => {
-            console.log("The result of sending email is ", res);
-          }
-        ); */
-      }
-    );
+    console.log("Previous supplier id was ", this.application.supplierId);
+    console.log("Supplier Id being selected is ", this.supplierId);
+    // this.application.supplierId = this.supplierId;
+
+
+    if(this.application.supplierId !== this.supplierId) {
+      this.applicationApi.assignSupplier(this.application).subscribe(
+        (resAplication: ResponseDTOBase) => {
+          this.getStringDate(resAplication.data.date);
+          console.log("New supplier saved!!");   
+  /*         this.supplierApi.notifySelectedSupplier(this.municipality.id).subscribe(
+            (res: ResponseDTOBase) => {
+              console.log("The result of sending email is ", res);
+            }
+          ); */
+        }
+      );
+    } 
 
     console.log("-- End of method --")
-    // this.router.navigate(['/beneficiary-portal/my-voucher']);
+    this.router.navigate(['/beneficiary-portal/my-voucher']);
   }
 
 // End of exported class
