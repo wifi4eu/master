@@ -205,13 +205,13 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             if (this.selectedFilesTypes[index].length > 0) {
                 for (let i = 0; i < this.selectedFilesTypes[index].length; i++) {
                     switch (this.selectedFilesTypes[index][i]) {
-                        case 1:
+                       /*  case 1:
                             for (let lf of this.legalFiles[index]) {
                                 if (lf.type == 1 && lf.requestCorrection) {
                                     this.selectedReasonTypes[index][i] = lf.correctionReason;
                                 }
                             }
-                            break;
+                            break; */
                         case 2:
                             for (let lf of this.legalFiles[index]) {
                                 if (lf.type == 2 && lf.requestCorrection) {
