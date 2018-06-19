@@ -62,12 +62,13 @@ public class MunicipalityResource {
     @ResponseBody
     public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
         _log.info("getMunicipalityById: " + municipalityId);
-        try{
+        try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
+            RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityId);
+            if (userDTO.getType() != 5 && (registrationDTO.getUserId() != userDTO.getId())) {
                 permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'getMunicipalityById' operation.", e);
             }
@@ -114,7 +115,7 @@ public class MunicipalityResource {
     @RequestMapping(value = "/thread/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MunicipalityDTO getMunicipalityThreadById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
-        MunicipalityDTO municipality =  municipalityService.getMunicipalityById(municipalityId);
+        MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
         municipality.setRegistrations(null);
         return municipality;
     }
@@ -123,27 +124,25 @@ public class MunicipalityResource {
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
     public ResponseDTO updateMunicipalityDetails(@RequestBody final MunicipalityDTO municipalityDTO,
-                                          HttpServletResponse response) throws IOException {
+                                                 HttpServletResponse response) throws IOException {
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-    
+
             RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
-    
-            if(registrationDTO.getUserId() != userDTO.getId()){
+
+            if (registrationDTO.getUserId() != userDTO.getId()) {
                 throw new AccessDeniedException("");
             }
 
             permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityDTO.getId());
             return new ResponseDTO(true, municipalityService.updateMunicipalityDetails(municipalityDTO), null);
-        }
-        catch (AccessDeniedException ade) {
+        } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'updating municipality' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'updateMunicipalityDetails' operation.", e);
             }
@@ -181,12 +180,11 @@ public class MunicipalityResource {
     @RequestMapping(value = "/lauId/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByLauId(@PathVariable("lauId") final Integer lauId, HttpServletResponse response) throws IOException {
-        try{
+        try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
-        }
-        catch (AccessDeniedException ade) {
+        } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'updating municipality' operation.", ade);
             }

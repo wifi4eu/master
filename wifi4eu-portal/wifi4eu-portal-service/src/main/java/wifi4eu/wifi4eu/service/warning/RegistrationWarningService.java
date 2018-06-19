@@ -60,7 +60,7 @@ public class RegistrationWarningService {
         List<ApplicationIssueUtil> applicationIssueUtilList = applicationIssueUtilRepository.findAllApplicationIssueUtil();
         List<RegistrationWarning> toSaveList = new ArrayList<>();
 
-        for(ApplicationIssueUtil applicationIssueUtil : applicationIssueUtilList) {
+        for (ApplicationIssueUtil applicationIssueUtil : applicationIssueUtilList) {
             if (ApplicationWarningsChecker.registrationHasWarning1(applicationIssueUtil)) {
                 RegistrationWarning registrationWarnings = new RegistrationWarning();
                 registrationWarnings.setRegistration(Integer.valueOf(applicationIssueUtil.getRegistrationId()));
