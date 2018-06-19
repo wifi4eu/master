@@ -172,7 +172,7 @@
 
 
 <!-- Modal: warn of company selection change -->
-<div class="container font" *ngIf="selectedSupplier">
+<div class="container font" *ngIf="selectedSupplier && oldSupplier">
     <p-dialog [(visible)]="displayChangeModal" [modal]="true" [responsive]="true"
               [resizable]="false" [draggable]="false" [closeOnEscape]="false" [closable]="false">
         <div class="beneficiaryTitle center hiddenScroll">

@@ -130,11 +130,11 @@ export class SelectedSupplierDetailsComponent {
       (resAplication: ResponseDTOBase) => {
         this.getStringDate(resAplication.data.date);
         
-        this.supplierApi.notifySelectedSupplier(this.municipality.id).subscribe(
+/*         this.supplierApi.notifySelectedSupplier(this.municipality.id).subscribe(
           (res: ResponseDTOBase) => {
             console.log("The result of sending email is ", res);
           }
-        );
+        ); */
       }
     );
 
