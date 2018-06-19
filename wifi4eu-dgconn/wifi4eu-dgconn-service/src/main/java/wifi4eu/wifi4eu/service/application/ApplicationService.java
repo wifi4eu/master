@@ -24,6 +24,7 @@ import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
@@ -65,6 +66,9 @@ public class ApplicationService {
 
     @Autowired
     RegistrationWarningRepository registrationWarningRepository;
+
+    @Autowired
+    VoucherService voucherService;
 
     private static final Logger _log = LoggerFactory.getLogger(ApplicationService.class);
 
@@ -517,6 +521,12 @@ public class ApplicationService {
         if (applicationDTO == null) {
             throw new AppException("Application not found with id: " + applicationId);
         }
+
+        if (!voucherService.getVoucherAssignmentAuxiliarByCall(applicationDTO.getCallId()).getHasPreListSaved()) {
+            throw new AppException("Pre List hasn't been save for the call of the application with id: " +
+                    applicationId);
+        }
+
         applicationDTO.setRejected(true);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
@@ -526,6 +536,12 @@ public class ApplicationService {
         if (applicationDTO == null) {
             throw new AppException("Application not found with id: " + applicationId);
         }
+
+        if (!voucherService.getVoucherAssignmentAuxiliarByCall(applicationDTO.getCallId()).getHasPreListSaved()) {
+            throw new AppException("Pre List hasn't been save for the call of the application with id: " +
+                    applicationId);
+        }
+
         applicationDTO.setRejected(false);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
