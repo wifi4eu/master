@@ -565,7 +565,7 @@
   "dgConn.voucherAssignment.downloadList.button": "Export to Excel",
   "dgConn.voucherAssignment.status.simulation": "Simulation",
   "dgConn.voucherAssignment.status.preSelection": "Pre-selection <br> List Saved",
-  "dgConn.voucherAssignment.status.finalList": "inal List <br> saved",
+  "dgConn.voucherAssignment.status.finalList": "Final List <br> saved",
   "dgConn.voucherAssignment.callInfo": "Call {{index}} information:",
   "dgConn.voucherAssignment.validApplications": "Total of valid applications for the call:",
   "dgConn.voucherAssignment.budgetForeseen": "Total budget foreseen for the all in EUR:",
