@@ -749,9 +749,9 @@ public class VoucherService {
                 simulation.setVoucherAssignment(voucherAssignment.getId());
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO.getId());
-                simulation.setEuRank(i);
+                simulation.setEuRank(Integer.MAX_VALUE);
                 simulation.setSelectionStatus(2);
-                simulation.setCountryRank(countryRankCounter.get(municipalityDTO.getCountry()));
+                simulation.setCountryRank(Integer.MAX_VALUE);
                 simulations.add(simulation);
                 i++;
             }
