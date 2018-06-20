@@ -107,7 +107,7 @@
         <auth-method>BASIC</auth-method>
         <!--auth-method>ECAS</auth-method-->
         <realm-name>myrealm</realm-name>
-        <realm-name>ecas-demo Realm</realm-name>
+        <!--realm-name>ecas-demo Realm</realm-name-->
     </login-config>
 
     <!--security-role>
