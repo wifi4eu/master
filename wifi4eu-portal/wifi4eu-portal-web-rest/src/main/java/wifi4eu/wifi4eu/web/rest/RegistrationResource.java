@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Base64Utils;
+import org.springframework.util.*;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
@@ -19,14 +19,14 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
+import wifi4eu.wifi4eu.service.registration.legal_files.*;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -436,29 +436,6 @@ public class RegistrationResource {
         return new ResponseDTO(true, null, null);
     }
 
-    @ApiOperation(value = "Get issue of registration")
-    @RequestMapping(value = "/getIssue", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO getRegistrationIssue(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting issue of registration");
-        try {
-            UserDTO userDTO = userConnected;
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Issue retrieved successfully");
-            return new ResponseDTO(true, registrationService.getRegistrationIssue(registrationDTO), null);
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this issue", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This issue cannot been retrieved", e.getMessage());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        }
-    }
 
     @ApiOperation(value = "getLegalFile")
     @RequestMapping(value = "/getLegalFile", method = RequestMethod.GET)

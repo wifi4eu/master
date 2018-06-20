@@ -68,7 +68,8 @@ public class MunicipalityResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipality by id " + municipalityId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
+            RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityId);
+            if (userDTO.getType() != 5 && (registrationDTO.getUserId() != userDTO.getId())) {
                 permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             }
         } catch (Exception e) {

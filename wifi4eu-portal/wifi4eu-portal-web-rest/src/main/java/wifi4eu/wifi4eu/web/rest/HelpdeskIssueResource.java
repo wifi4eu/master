@@ -92,8 +92,8 @@ public class HelpdeskIssueResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating helpdesk issue");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            if (!userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())) {
+                throw new AccessDeniedException("Invalid access");
             }
             HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO);
             helpdeskIssueDTO.setCreateDate(new Date().getTime());

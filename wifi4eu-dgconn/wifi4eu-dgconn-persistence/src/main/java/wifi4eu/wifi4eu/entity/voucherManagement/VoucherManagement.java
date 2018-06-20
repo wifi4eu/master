@@ -10,8 +10,9 @@ import java.util.List;
 @Table(name = "voucher_management")
 public class VoucherManagement {
 
-    @Id
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "minimum")
@@ -23,16 +24,24 @@ public class VoucherManagement {
     @Column(name = "member_state")
     private String member_state;
 
+    @Column(name = "country_code")
+    private String countryCode;
+
+    @Column(name = "reserve")
+    private Integer reserve;
+
     @ManyToOne
     @JoinColumn(name = "call_id")
     private Call voucherCall;
 
-    public VoucherManagement(Integer id, Integer minimum, Integer maximum, String member_state, Call voucherCall) {
+    public VoucherManagement(Integer id, Integer minimum, Integer maximum, String member_state, String countryCode, Integer reserve, Call voucherCall) {
         this.id = id;
         this.minimum = minimum;
         this.maximum = maximum;
         this.member_state = member_state;
+        this.reserve = reserve;
         this.voucherCall = voucherCall;
+        this.countryCode = countryCode;
     }
 
     public VoucherManagement() {
@@ -76,5 +85,21 @@ public class VoucherManagement {
 
     public void setVoucherCall(Call voucherCall) {
         this.voucherCall = voucherCall;
+    }
+
+    public Integer getReserve() {
+        return reserve;
+    }
+
+    public void setReserve(Integer reserve) {
+        this.reserve = reserve;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 }

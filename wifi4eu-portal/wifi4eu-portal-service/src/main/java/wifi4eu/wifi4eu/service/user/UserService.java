@@ -171,7 +171,6 @@ public class UserService {
                     RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
 
         }
-
         return userDTO;
     }
 

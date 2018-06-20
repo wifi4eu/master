@@ -2,17 +2,19 @@ package wifi4eu.wifi4eu.service.security;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.RightDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.Right;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.security.RightMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
@@ -51,9 +53,11 @@ public class PermissionChecker {
     public boolean check(UserDTO userDTO, String rightDesc){
 
         List<RightDTO> rightDTOs = rightMapper.toDTOList(Lists.newArrayList(rightRepository.findByRightdescAndUserId(rightDesc,userDTO.getId())));
-
-        if(rightDTOs.isEmpty()){
-            throw new AccessDeniedException("403 FORBIDDEN");
+        if (rightDesc.startsWith(RightConstants.REGISTRATIONS_TABLE) && userDTO.getType() == 5) {
+            return true;
+        }
+        if (rightDTOs.isEmpty()) {
+            throw new AppException("Permission error", HttpStatus.SC_FORBIDDEN, "");
         }
 
         return true;
@@ -73,4 +77,13 @@ public class PermissionChecker {
         }
     }
 
+    public boolean checkIfDashboardUser() {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO currentUserDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
+        if (currentUserDTO.getType() == 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

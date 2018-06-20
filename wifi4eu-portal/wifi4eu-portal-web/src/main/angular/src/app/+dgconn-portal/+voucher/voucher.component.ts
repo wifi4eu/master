@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ViewChild } from "@angular/core";
+import { Component, ViewEncapsulation, ViewChild, ElementRef } from "@angular/core";
 import { CallApi } from "../../shared/swagger/api/CallApi";
 import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
 import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
@@ -8,15 +8,15 @@ import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { Observable } from 'rxJs/Observable';
 import { SharedService } from "../../shared/shared.service";
-import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO } from "../../shared/swagger";
+import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO, VoucherAssignmentAuxiliarDTOBase, RegistrationWarningApi } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
 import { count } from "rxjs/operator/count";
-import { Paginator, MenuItem } from "primeng/primeng";
+import { Paginator, MenuItem, DataTable, TabView } from "primeng/primeng";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as FileSaver from "file-saver";
 
 @Component({
-  templateUrl: 'voucher.component.html', providers: [CallApi, ApplicationApi, NutsApi, VoucherApi],
+  templateUrl: 'voucher.component.html', providers: [ApplicationApi, NutsApi, VoucherApi, RegistrationWarningApi, CallApi],
   styleUrls: ['./voucher.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: [
@@ -52,92 +52,171 @@ export class DgConnVoucherComponent {
   private getApplicationsCall = null;
   private numVoucher = [];
   private percentageBudgetCall = [];
-  private callVoucherAssignment: VoucherAssignmentDTO = null;
+  private callVoucherAssignment: VoucherAssignmentAuxiliarDTO = null;
   private callsLoaded = false;
   private callSelected: CallDTOBase = null;
   private listAssignment: VoucherSimulationDTO[] = [];
   private municipalityMunicipality = null;
   private simulationRequest = null;
   
+  private indexTab = 0;
   private totalRecords: number = null;
   private page = 0;
   private sizePage = 20;
   private sortDirection = 'ASC';
   private sortField = 'euRank';
   private pageLinks: number = null;
+  private rowDisplayOptions = [20, 50, 100]
+  private columns = ['euRank','countryRank','selectionStatus','application.preSelectedFlag','country','municipalityName','issues','numApplications','application.status'];
+
   private loadingSimulation = false;
+  private preSelectedEnabled = null;
+  private confirmationModal = false;
+  private displayFreezeConfirmation = false;
+
+  private dateNumberPreList: string;
+  private hourNumberPreList: string; 
+  private dateNumberFreeze: string;
+  private hourNumberFreeze: string; 
 
   private searchedMunicipality = null;
-
-  private rowDisplayOptions = [20, 50, 100]
-
   private selectedCountry = 'All';
 
-  private msgs = [];
-
-  private items: MenuItem[] = [
-    {
-        label: 'Next',
-        icon: 'fa-chevron-right'
-    },
-    {
-        label: 'Prev',
-        icon: 'fa-chevron-left'
-    }
-  ];
-
   @ViewChild("paginator") paginator: Paginator;
+  @ViewChild("tableVoucher") tableVoucher: DataTable;
+  @ViewChild("tabCalls") tabCalls: TabView;
   private downloadingExcel: boolean = false;
+  @ViewChild("municipalitySearch") municipalitySearch: ElementRef;
 
   constructor(private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
-    private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, ) {
+    private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, private registrationWarningApi: RegistrationWarningApi ) {
     this.callApi.allCalls().subscribe(
       (calls: CallDTOBase[]) => {
         this.callsLoaded = true;
         this.calls = calls;
-        if (this.calls.length > 0) {
-          this.callSelected = this.calls[0];
-          this.loadingSimulation = true;
+        if (calls.length > 0) {
+          this.route.queryParams.subscribe((queryParams) => {
+              var callId = typeof queryParams['call'] === 'undefined' ? this.calls[0].id : parseInt(queryParams['call']);
+              var country = typeof queryParams['country'] === 'undefined' ? 'All' : queryParams['country'];
+              var page = typeof queryParams['page'] === 'undefined' ? this.page : parseInt(queryParams['page']); 
+              
+              var size = typeof queryParams['size'] === 'undefined' ? this.sizePage : parseInt(queryParams['size']);
+              var sortField = typeof queryParams['sortField'] === 'undefined' ? 'euRank' : queryParams['sortField'];
+              var sortDirection = typeof queryParams['sortDirection'] === 'undefined' ? this.sortDirection : queryParams['sortDirection'];
+              var municipality = typeof queryParams['municipality'] === 'undefined' ? 'All' : queryParams['municipality'];
+              if(municipality === ""){
+                municipality == 'All';
+              }
 
-          this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.calls[0].id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
-            this.callVoucherAssignment = data;
-            this.loadPage();
-          })
+              if(page < 0){
+                this.page = 0;
+              }
 
-          this.applicationApi.getApplicationsNotInvalidated(this.calls[0].id).subscribe((data) => {
-            this.validApplications = data;
+              if(size > 100){
+                this.sizePage = 100;
+              }
+              else if(size < 20){
+                this.sizePage = 20;
+              }
+
+              if(!this.columns.some(x => x === sortField)){
+                sortField = this.columns[0];
+              }       
+
+              if(!this.calls.some(call => call.id === callId)){
+                this.callSelected = calls[0];
+              }else{
+                var index = this.calls.findIndex(call => call.id === callId);
+                this.callSelected = calls[index];
+              }
+              this.page = page;
+              this.sizePage = size;
+              this.selectedCountry = country;
+              this.searchedMunicipality = municipality;
+              this.sortField = sortField;
+              this.sortDirection = sortDirection.toUpperCase();
+
+              setTimeout(() => {
+                if(this.searchedMunicipality.toUpperCase() !== 'ALL'){
+                  this.municipalitySearch.nativeElement.value = this.searchedMunicipality;
+                }
+                this.tableVoucher.sortColumn = this.tableVoucher.columns.find(col => col.field === this.sortField);
+                this.tableVoucher.sortField = this.sortField;
+                this.tableVoucher.sortOrder = this.sortDirection === 'ASC' ? 1 : -1;
+                calls.forEach((element, _index) => {
+                  if(element.id === this.callSelected.id){
+                    var selectedTab = this.tabCalls.findSelectedTab();
+                    selectedTab.selected = false;
+                    this.tabCalls.tabs[_index].selected = true;
+                    return;
+                  }
+                });
+                this.tableVoucher.sortSingle();        
+              }, 200);
+
+              this.nutsApi.getNutsByLevel(0).subscribe((countries) => {
+                this.countries = <NutsDTOBase[]>countries;
+                this.countries.splice(0, 0, {id: 0, code: '0', label: 'All', level: 0, countryCode: "ALL", order: 1, sorting: 1});
+                countries.forEach((_country: NutsDTOBase, _index) => {
+                  if(_country.label == country){
+                    this.countrySelected = this.countries[_index];
+                    return;
+                  }
+                });
+              });
+
+              this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callSelected.id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
+                if(data != null){
+                  this.callVoucherAssignment = data;
+                  let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+                  this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                  this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+                  if(data.hasFreezeListSaved){
+                    this.voucherApi.getVoucherAssignmentByCallAndStatus(this.callSelected.id, 3).subscribe(
+                     (response: VoucherAssignmentAuxiliarDTO) => {
+                        if(response != null){
+                          this.callVoucherAssignment.id = response.id;
+                          let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
+                          this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                          this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+                          this.loadPage();
+                        }                    
+                    }, error => {
+                      console.log(error);
+                    });
+                  }
+                  else{
+                    this.loadPage();
+                  }
+                }       
+                else{
+                  this.loadingSimulation = false;
+                  this.listAssignment = [];
+                }     
+              })
+              this.applicationApi.getApplicationsNotInvalidated(this.callSelected.id).subscribe((data) => {
+                this.validApplications = data;
+              })
           })
-         
         }
         let i = 0;
         for (let call of this.calls) {
           this.applicationsInfo[call.id] = [];
-          //this.numVoucher[i] = call.budget / call.budgetVoucher;
           this.percentageBudgetCall[i] = 0;
-          /* this.applicationApi.getApplicationsVoucherInfoByCall(call.id).subscribe(
-            (info: ApplicationVoucherInfoDTOBase[]) => {
-              if (info != null) {
-                this.applicationsInfo[call.id] = info;
-                this.totalRequests += info.length;
-                for (let item of info) {
-                  this.shownApplicationsInfo.push(item);
-                }
-              }
-            }
-          ); */
           i++;
         }
       }
-    );
-    this.nutsApi.getNutsByLevel(0).subscribe((countries) => {
-      this.countries = <NutsDTOBase[]>countries;
-      this.countries.splice(0, 0, {id: 0, code: '0', label: 'All', level: 0, countryCode: "ALL", order: 1, sorting: 1});
-    });
+    ) 
+  }
+
+  filterTable(){
+    this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, page: this.page, size: this.sizePage, municipality: this.searchedMunicipality, country: this.selectedCountry, sortField : this.sortField, sortDirection: this.sortDirection} });
   }
 
   selectCountry(country: NutsDTOBase) {
     this.selectedCountry = country.label;
-    this.loadPage();
+    this.page = 0;
+    this.filterTable();
   }
 
   fillPaginator(response) {
@@ -147,14 +226,16 @@ export class DgConnVoucherComponent {
 
   searchByMunicipality(event) {
     if(event.keyCode == 13) {
-      this.loadPage();
+      this.page = 0;
+      this.searchedMunicipality = this.municipalitySearch.nativeElement.value;
+      this.filterTable();
     }
   }
 
   exportListExcel(){
     this.loadingSimulation = true;
     this.downloadingExcel = true;
-    this.voucherApi.exportExcelVoucherSimulation(this.callVoucherAssignment.id, this.selectedCountry, this.searchedMunicipality === null || this.searchedMunicipality === "" ? 'All' : this.searchedMunicipality, this.page, this.sizePage, this.sortField, this.sortDirection).subscribe((response) => {
+    this.voucherApi.exportExcelVoucherSimulation(this.callVoucherAssignment.id, this.selectedCountry, this.searchedMunicipality === null || this.searchedMunicipality === "" ? 'All' : this.searchedMunicipality, this.sortField, this.sortDirection).subscribe((response) => {
       let blob = new Blob([response], {type: "application/vnd.ms-excel"});
       FileSaver.saveAs(blob, `voucher-simulation-${this.callSelected.event}.xls`);
       this.loadingSimulation = false;
@@ -171,20 +252,21 @@ export class DgConnVoucherComponent {
   paginate(event){
     this.simulationAssignment.unsubscribe();
     this.page = event.page;
-    this.loadPage();
+    this.filterTable();
   }
 
   changeRowSelection(pageSize: number){
     this.sizePage = pageSize;
-    this.loadPage();
+    this.page = 0;
+    this.filterTable();
   }
 
   loadPage(){
     this.loadingSimulation = true;
-    if (this.getApplicationsCall != null) {
+    if (this.getApplicationsCall != null && !this.getApplicationsCall['closed']) {
       this.getApplicationsCall.unsubscribe();
     }
-    if(this.simulationAssignment != null)  {
+    if(this.simulationAssignment != null && !this.simulationAssignment['closed'])  {
       this.simulationAssignment.unsubscribe();
     }
     this.simulationAssignment = this.voucherApi.getVoucherSimulationByVoucherAssignment(this.callVoucherAssignment.id, this.selectedCountry, this.searchedMunicipality === null || this.searchedMunicipality === "" ? 'All' : this.searchedMunicipality, this.page, this.sizePage, this.sortField, this.sortDirection).subscribe((response: ResponseDTO) => {
@@ -194,14 +276,48 @@ export class DgConnVoucherComponent {
     })
   }
 
+  checkPreListEnabled(){
+    if(this.callVoucherAssignment.hasPreListSaved){
+      return;
+    }
+    this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
+      this.preSelectedEnabled = response;
+    },(error) => {
+      console.log(error);      
+    })
+  }
+
+  savePreList(savePreListBtn){
+    savePreListBtn.disabled = true;
+    if(this.callVoucherAssignment.hasPreListSaved){
+      return;
+    }
+    this.voucherApi.savePreListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
+      this.preSelectedEnabled = null;
+      this.callVoucherAssignment.hasPreListSaved = true;
+      this.callVoucherAssignment.preListExecutionDate = response.data.executionDate;
+      let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+      this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+      this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+      savePreListBtn.disabled = false;
+    }, error => {
+      console.log("error => ", error);
+    })
+  }
+
   sortTable(event){
     this.sortField = event.field;
     this.sortDirection = event.order === 1 ? 'ASC' : 'DESC';
-    this.loadPage();
+    this.filterTable();
   }
 
   handleChange(event) {
-    this.loadingSimulation = true;
+    this.callSelected = this.calls[event.index];
+    console.log(this.callSelected);
+    this.sortField = 'euRank';
+    this.sortDirection = 'ASC';
+    this.filterTable();
+    /* this.loadingSimulation = true;
     this.sortField = 'euRank';
     this.sortDirection = 'ASC';
     this.listAssignment = [];
@@ -216,25 +332,15 @@ export class DgConnVoucherComponent {
       this.validApplications = data;
     });
 
-    this.voucherApi.getVoucherAssignmentByCall(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {  
+    this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {  
       this.callVoucherAssignment = data;
       if(data == null){
-        this.simulateVoucherAssignment();
+        //this.simulateVoucherAssignment();
       }
       else{
         this.loadPage();
       }
-    })
-
-    
-  }
-
-  show() {
-    if(this.msgs.length > 0){
-      this.msgs = [];
-    }
-    this.msgs.push({severity:'info', detail:'Simulation complete'});
-    setTimeout(() => this.msgs = [], 6000);
+    }) */
   }
 
   private displayInfo() {
@@ -242,13 +348,15 @@ export class DgConnVoucherComponent {
   }
 
   private simulateVoucherAssignment(){
+    if(this.callVoucherAssignment != null && this.callVoucherAssignment.hasFreezeListSaved){
+      return;
+    }
     this.displayConfirmingData = true;
     this.loadingSimulation = true;
     if(this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1){
       this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((resp: ResponseDTO) => {
         this.displayConfirmingData = false;
         this.callVoucherAssignment = resp.data;
-        //this.show();
         this.loadPage();
         this.loadingSimulation = false;
       }, (error) => {
@@ -275,6 +383,10 @@ export class DgConnVoucherComponent {
     }
   }
 
+  lookupRowStyleClass(rowData: VoucherSimulationDTO) {
+    return rowData.selectionStatus === 2 ? 'rejected-row' : '';
+}
+
   cancelSimulation() {
     this.displayMessage = false;
     this.simulationRequest.unsubscribe();
@@ -282,6 +394,64 @@ export class DgConnVoucherComponent {
 
   private goToMunicipality(lauId: number) {
     this.router.navigate(['../applicant-registrations/', lauId, 'call' ,this.callSelected.id], {relativeTo: this.route});
+  }
+
+  rejectApplication(applicationId: number){
+    if(this.callVoucherAssignment == null ||  !this.callVoucherAssignment.hasPreListSaved){
+      return;
+    }
+    this.applicationApi.rejectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
+      var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
+      this.listAssignment[index].application = <ApplicationDTO>response.data;
+    }, error => {
+      console.log("error => ", error);
+    })
+  }
+
+  selectApplication(applicationId: number){
+    if(this.callVoucherAssignment == null ||  !this.callVoucherAssignment.hasPreListSaved){
+      return;
+    }
+    this.applicationApi.selectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
+      var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
+      this.listAssignment[index].application = <ApplicationDTO>response.data;
+    }, error => {
+      console.log("error => ", error);
+    }) 
+  }
+
+  private freezeList(){
+    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment != null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
+      return;
+    }
+    this.displayFreezeConfirmation = true;
+  }
+
+  private saveFreezeList(saveFreezeBtn){
+    saveFreezeBtn.disabled = true;
+    this.voucherApi.saveFreezeListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
+      this.displayFreezeConfirmation = false;
+      this.callVoucherAssignment.id = response.data.id;
+      this.callVoucherAssignment.hasFreezeListSaved = true;
+      this.callVoucherAssignment.executionDate = response.data.executionDate;  
+      this.callVoucherAssignment.freezeLisExecutionDate = response.data.executionDate;      
+      let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
+      this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+      this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+      this.loadPage();
+      saveFreezeBtn.disabled = false;
+    }, error => {
+      console.log(error);
+    });    
+  }
+
+  sendNotificationToApplicants(){
+    if(!this.callVoucherAssignment.hasFreezeListSaved){
+      return;
+    }
+    this.voucherApi.sendNotificationForApplicants(this.callSelected.id).subscribe((response: ResponseDTO) => {
+      console.log(response);
+    })
   }
 
 }

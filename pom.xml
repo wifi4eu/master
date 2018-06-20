@@ -124,14 +124,17 @@
         <!-- App settings -->
         <schemes>http</schemes>
         <server.address>localhost:8080</server.address>
+        <server.dgconn.address>${server.address}</server.dgconn.address>
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
-        <server.test.port>8090</server.test.port>
+        <server.test.port>8080</server.test.port>
         <mail.serv.enable>false</mail.serv.enable>
         <!--
         <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
         -->
         <server.azure.dev.address>wifi4eu-dev.everincloud.com</server.azure.dev.address>
         <server.azure.dev.dgconn.address>cnect-wifi4eu-dev.everincloud.com</server.azure.dev.dgconn.address>
+        <dgconn.name>dashboard</dgconn.name>
+        <dgconn.context.name>/dashboard</dgconn.context.name>
         <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
         <server.azure.test2.address>wifi4eutest.eu</server.azure.test2.address>
         <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
@@ -196,6 +199,9 @@
                 <ng.env>dev</ng.env>
                 <schemes>https</schemes>
                 <server.address>${server.azure.dev.address}</server.address>
+                <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>
+                <dgconn.name>wifi4eu</dgconn.name>
+                <dgconn.context.name>/wifi4eu</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
@@ -207,7 +213,9 @@
                 <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
+                <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
                 <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
+                <ecas.server.dgconn.address>${server.azure.dev.dgconn.address}</ecas.server.dgconn.address>
                 <ecas.server.port>${server.pro.port}</ecas.server.port>
                 <ecas.config.strength>BASIC</ecas.config.strength>
                 <mail.serv.enable>false</mail.serv.enable>
@@ -226,7 +234,8 @@
             <properties>
                 <ng.env>dev</ng.env>
                 <schemes>https</schemes>
-                <server.address>${server.azure.dev.dgconn.address}</server.address>
+                <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>
+                <dgconn.name>wifi4eu</dgconn.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
@@ -328,7 +337,8 @@
             <properties>
                 <ng.env>prod</ng.env>
                 <schemes>https</schemes>
-                <server.address>${server.azure.pro.dgconn.address}</server.address>
+                <server.dgconn.address>${server.azure.pro.dgconn.address}</server.dgconn.address>
+                <dgconn.name>wifi4eu</dgconn.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
@@ -352,13 +362,18 @@
                 <ng.env>prod</ng.env>
                 <schemes>https</schemes>
                 <server.address>${server.pro.address}</server.address>
+                <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>
+                <dgconn.name>wifi4eu</dgconn.name>
+                <dgconn.context.name>/wifi4eu</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
                 <war.output.directory/>
-                <ecas.server.address>${server.pro.address}</ecas.server.address>
+                <ecas.config.base.url.dgconn>${ecas.config.base.url}</ecas.config.base.url.dgconn>
+                <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
+                <ecas.server.dgconn.address>${server.azure.pro.dgconn.address}</ecas.server.dgconn.address>
                 <ecas.server.port>${server.pro.port}</ecas.server.port>
                 <mail.serv.location>https://www.wifi4eu.eu/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>

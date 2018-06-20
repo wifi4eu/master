@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -198,14 +199,137 @@ public class VoucherResource {
         }
     }
 
+    @ApiOperation(value = "Check pre-selected list enabled")
+    @RequestMapping(value = "/assignment/{assignmentId}/check-prelist-enabled", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public boolean checkSavePreSelectionEnabled(@PathVariable("assignmentId") final Integer assignmentId, HttpServletResponse response) throws IOException {
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: checkSavePreSelectionEnabled");
+            }
+            return voucherService.checkSavePreSelectionEnabled(assignmentId);
+        }
+        catch (AccessDeniedException adex){
+            if(_log.isWarnEnabled()){
+                _log.warn(adex.getMessage());
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return false;
+        }catch (Exception ex){
+            if(_log.isWarnEnabled()){
+                _log.warn(ex.getMessage());
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return false;
+        }
+    }
+
+    @ApiOperation(value = "Save simulation to pre-selected list")
+    @RequestMapping(value = "/assignment/save-prelist", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO savePreListSimulation(@RequestParam("assignmentId") Integer assignmentId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: savePreListSimulation");
+            }
+            VoucherAssignmentDTO result = voucherService.savePreListSimulation(assignmentId, callId);
+            return new ResponseDTO(true, result, null);
+        }
+        catch (AccessDeniedException adex){
+            if(_log.isWarnEnabled()){
+                _log.warn(adex.getMessage());
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }catch (Exception ex){
+            if(_log.isWarnEnabled()){
+                _log.warn(ex.getMessage());
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
+    @ApiOperation(value = "Send notifications  to applicants")
+    @RequestMapping(value = "/assignment/send-notifications", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO sendNotificationForApplicants(@RequestBody final Integer callId){
+
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: saveFreezeListSimulation");
+            }
+            voucherService.sendNotificationForApplicants(callId);
+            return new ResponseDTO(true, null, null);
+        }
+        catch (AccessDeniedException ade){
+
+        }
+        catch (Exception e){
+
+        }
+
+        return new ResponseDTO(false, null, null);
+    }
+
+    @ApiOperation(value = "Freeze simulation list")
+    @RequestMapping(value = "/assignment/freeze-simulation-list", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO saveFreezeListSimulation(@RequestParam("assignmentId") Integer assignmentId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: saveFreezeListSimulation");
+            }
+            VoucherAssignmentDTO result = voucherService.saveFreezeListSimulation(assignmentId, callId);
+            return new ResponseDTO(true, result, null);
+        }
+        catch (AccessDeniedException adex){
+            if(_log.isWarnEnabled()){
+                _log.warn(adex.getMessage());
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }catch (Exception ex){
+            if(_log.isWarnEnabled()){
+                _log.warn(ex.getMessage());
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
+
+    @ApiOperation(value = "Get voucher assignment auxiliar by call and status")
+    @RequestMapping(value = "/assignment/call/{callId}/status/{status}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public VoucherAssignmentAuxiliarDTO getVoucherAssignmentByCallAndStatus(@PathVariable("callId") Integer callId, @PathVariable("status") Integer status, HttpServletResponse response) throws IOException {
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: getVoucherAssignmentByCallAndStatus");
+            }
+            return voucherService.getVoucherAssignmentByCallAndStatus(callId, status);
+        }
+        catch (AccessDeniedException adex){
+            if(_log.isWarnEnabled()){
+                _log.warn(adex.getMessage());
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }catch (Exception ex){
+            if(_log.isWarnEnabled()){
+                _log.warn(ex.getMessage());
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
+        }
+    }
+
     @ApiOperation(value = "Export voucher simulation")
     @RequestMapping(value = "/exportExcel/assignment/{assignmentId}/simulation", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<byte[]> exportExcelVoucherSimulation(@PathVariable("assignmentId") final Integer assignmentId,
                                                                @RequestParam("country") String country,
                                                                @RequestParam("municipality") String municipality,
-                                                               @RequestParam("page") Integer page,
-                                                               @RequestParam("size") Integer size,
                                                                @RequestParam("field") String field,
                                                                @RequestParam("direction") String direction,
                                                                HttpServletResponse response) throws IOException {
@@ -217,9 +341,9 @@ public class VoucherResource {
             }
             Pageable pageable;
             if (direction.equals("ASC") || direction.equals("asc")) {
-                pageable = new PageRequest(page, Integer.MAX_VALUE, Direction.ASC, field);
+                pageable = new PageRequest(0, Integer.MAX_VALUE, Direction.ASC, field);
             } else {
-                pageable = new PageRequest(page, Integer.MAX_VALUE, Direction.DESC, field);
+                pageable = new PageRequest(0, Integer.MAX_VALUE, Direction.DESC, field);
             }
             ResponseEntity<byte[]> responseReturn = null;
             HttpHeaders headers = new HttpHeaders();

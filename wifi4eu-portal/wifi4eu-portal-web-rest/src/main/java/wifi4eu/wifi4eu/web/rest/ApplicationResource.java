@@ -351,4 +351,139 @@ public class ApplicationResource {
             return null;
         }
     }
+
+    @ApiOperation(value = "Send request correction e-mails for a specific call")
+    @RequestMapping(value = "/sendCorrectionEmails", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO sendCorrectionEmails(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("sendCorrectionEmails");
+            }
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
+            CorrectionRequestEmailDTO correctionRequest = applicationService.sendCorrectionEmails(callId);
+            return new ResponseDTO(true, correctionRequest, null);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'sendCorrectionEmails' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Get the last correction request email information")
+    @RequestMapping(value = "/getLastCorrectionRequestEmail", method = RequestMethod.POST)
+    @ResponseBody
+    public CorrectionRequestEmailDTO getLastCorrectionRequestEmail(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("getLastCorrectionRequestEmail");
+            }
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
+            return applicationService.getLastCorrectionRequestEmailInCall(callId);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getLastCorrectionRequestEmail' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+    }
+
+    @ApiOperation(value = "Check if whether the correction request email option is available for a specific call")
+    @RequestMapping(value = "/checkIfCorrectionRequestEmailIsAvailable", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean checkIfCorrectionRequestEmailIsAvailable(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("checkIfCorrectionRequestEmailIsAvailable");
+            }
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
+            return applicationService.checkIfCorrectionRequestEmailIsAvailable(callId);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return false;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'checkIfCorrectionRequestEmailIsAvailable' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return false;
+        }
+    }
+
+    @ApiOperation(value = "Reject application")
+    @RequestMapping(value = "/reject", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO rejectApplicationVoucherAssigment(@RequestBody final Integer applicationId, HttpServletResponse response) throws IOException {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("rejectApplicationVoucherAssigment");
+            }
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
+            ApplicationDTO resApplication = applicationService.rejectApplicationVoucherAssigment(applicationId);
+            return new ResponseDTO(true, resApplication, null);
+        } catch (AccessDeniedException e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'rejectApplicationVoucherAssigment' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'rejectApplicationVoucherAssigment' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, null);
+        }
+    }
+
+    @ApiOperation(value = "Reject application")
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO selectApplicationVoucherAssigment(@RequestBody final Integer applicationId, HttpServletResponse response) throws IOException {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("selectApplicationVoucherAssigment");
+            }
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
+            ApplicationDTO resApplication = applicationService.selectApplicationVoucherAssigment(applicationId);
+            return new ResponseDTO(true, resApplication, null);
+        } catch (AccessDeniedException e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'selectApplicationVoucherAssigment' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'selectApplicationVoucherAssigment' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, null);
+        }
+    }
 }

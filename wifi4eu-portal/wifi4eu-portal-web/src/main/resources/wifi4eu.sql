@@ -468,7 +468,7 @@ CREATE TABLE voucher_management
 ) ON [PRIMARY];
 
 INSERT INTO voucher_management
-  (id, call_id, member_state, minimum, maximum, reserve)
+  (id, call_id, member_state, minimum, maximum, reserve, country_code)
 VALUES
   (1, 1, N'ÖSTERREICH', 15, 95, 15, N'AT'),
   (2, 1, N'BELGIQUE-BELGIË', 15, 95, 15, N'BE'),
@@ -583,7 +583,6 @@ CREATE TABLE dbo.voucher_simulations
   [country]             VARCHAR(255) NULL,
   [municipality]        INT NOT NULL,
   [application]         INT NOT NULL,
-  [issues]              INT NULL,
   [num_applications]    INT DEFAULT 0,
   [rejected]            INT NULL,
   [selection_status]    INT NULL,
@@ -595,4 +594,40 @@ CREATE TABLE dbo.voucher_simulations
   REFERENCES dbo.voucher_assignments ([id])
     ON DELETE CASCADE
     ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `dbo`.`registration_warnings`
+-- -----------------------------------------------------
+CREATE TABLE [dbo].[registration_warnings](
+	[id] [int] IDENTITY NOT NULL,
+	[warning] [int] NULL,
+	[registration_id] [int] NULL,
+  PRIMARY KEY ([id]))
+
+-- -----------------------------------------------------
+-- Delete Applicant List Item.
+-- -----------------------------------------------------
+DELETE TABLE APPLICANTLISTITEM;
+
+-- -----------------------------------------------------
+-- Alter application table
+-- -----------------------------------------------------
+ALTER TABLE applications ADD pre_selected_flag BIT DEFAULT(0) NOT NULL;
+ALTER TABLE applications ADD rejected BIT DEFAULT(0) NOT NULL;
+
+-- -----------------------------------------------------
+-- Alter voucher_assignments table
+-- -----------------------------------------------------
+ALTER TABLE voucher_assignments ADD notified_date BIGINT;
+-- -----------------------------------------------------
+-- Table `dbo`.`correction_requests_emails`
+-- -----------------------------------------------------
+CREATE TABLE dbo.correction_requests_emails
+(
+  [id]                      INT NOT NULL IDENTITY,
+  [call]                    INT NULL,
+  [date]                    BIGINT NULL,
+  [button_pressed_counter]  INT NULL,
+  PRIMARY KEY ([id])
 );

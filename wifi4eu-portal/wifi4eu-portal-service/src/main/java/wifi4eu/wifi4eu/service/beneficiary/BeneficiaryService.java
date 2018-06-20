@@ -444,7 +444,7 @@ public class BeneficiaryService {
                 List<RegistrationDTO> registrations = registrationService.getRegistrationsByLauId(beneficiary.getLauId());
                 for (RegistrationDTO registration : registrations) {
                     if (registration != null) {
-                        beneficiary.setIssueStatus(registrationService.getRegistrationIssue(registration));
+                        // beneficiary.setIssueStatus(registrationService.getRegistrationIssue(registration));
                     }
                 }
             } else {

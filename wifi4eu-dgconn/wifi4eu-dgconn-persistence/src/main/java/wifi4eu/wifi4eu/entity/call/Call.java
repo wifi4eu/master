@@ -9,10 +9,10 @@ import java.util.List;
 @Entity
 @Table(name = "calls")
 public class Call {
-    @Id
-    @SequenceGenerator(name = "call_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "call_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "event")
@@ -23,6 +23,18 @@ public class Call {
 
     @Column(name = "end_date")
     private Long endDate;
+
+    @Column(name = "voucher_value")
+    private Integer voucherValue;
+
+    @Column(name = "reserve")
+    private Integer reserve;
+
+    @Column(name = "number_vouchers")
+    private Integer numberVouchers;
+
+    @Column(name = "max_percent_country")
+    private Integer maxPercentCountry;
 
     @OneToMany(mappedBy = "call")
     private List<Timeline> timelines;
@@ -39,6 +51,18 @@ public class Call {
         this.event = event;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.timelines = timelines;
+    }
+
+    public Call(Integer id, String event, Long startDate, Long endDate, Integer voucherValue, Integer reserve, Integer numberVouchers, Integer maxPercentCountry, List<Timeline> timelines, List<VoucherManagement> voucherManagements) {
+        this.id = id;
+        this.event = event;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.voucherValue = voucherValue;
+        this.reserve = reserve;
+        this.numberVouchers = numberVouchers;
+        this.maxPercentCountry = maxPercentCountry;
         this.timelines = timelines;
         this.voucherManagements = voucherManagements;
     }
@@ -89,5 +113,37 @@ public class Call {
 
     public void setVoucherManagements(List<VoucherManagement> voucherManagements) {
         this.voucherManagements = voucherManagements;
+    }
+
+    public Integer getVoucherValue() {
+        return voucherValue;
+    }
+
+    public void setVoucherValue(Integer voucherValue) {
+        this.voucherValue = voucherValue;
+    }
+
+    public Integer getNumberVouchers() {
+        return numberVouchers;
+    }
+
+    public void setNumberVouchers(Integer numberVouchers) {
+        this.numberVouchers = numberVouchers;
+    }
+
+    public Integer getMaxPercentCountry() {
+        return maxPercentCountry;
+    }
+
+    public void setMaxPercentCountry(Integer maxPercentCountry) {
+        this.maxPercentCountry = maxPercentCountry;
+    }
+
+    public Integer getReserve() {
+        return reserve;
+    }
+
+    public void setReserve(Integer reserve) {
+        this.reserve = reserve;
     }
 }
