@@ -22,8 +22,6 @@
             <Filters>
                 <ThresholdFilter level="BUSINESS" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
-
-
             <TimeBasedTriggeringPolicy />
         </RollingFile>
         <RollingFile name="CRON_FILE_APPENDER" fileName="../logs/wifi4eu_cron_app.log"
