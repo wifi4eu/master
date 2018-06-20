@@ -29,7 +29,7 @@
     <applicationServer>tomcat</applicationServer>
 
         <acceptStrengths>
-            <strength>${ecas.config.strength}</strength>
+            <strength>${ecas.config.strength.dgconn}</strength>
         </acceptStrengths>
 
     <!-- maxConnections equal to the Tomcat threads per instance -->

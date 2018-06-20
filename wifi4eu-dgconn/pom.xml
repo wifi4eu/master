@@ -18,7 +18,7 @@
     </parent>
     
     <properties>
-		<app.context.root>/dashboard</app.context.root>
+		<app.context.root>${dgconn.context.name}</app.context.root>
     </properties>
     
 

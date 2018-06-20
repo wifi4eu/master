@@ -62,7 +62,7 @@ public class UserFilter extends OncePerRequestFilter {
             user = (UserContext) session.getAttribute(Constant.USER);
             UserHolder.setUser(user);
 
-            if (user == null && requestUri.equalsIgnoreCase("/dashboard/")) {
+            if (user == null && (requestUri.equalsIgnoreCase("/dashboard/") || requestUri.equalsIgnoreCase("/wifi4eu/"))) {
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
                 return;
             } else {
