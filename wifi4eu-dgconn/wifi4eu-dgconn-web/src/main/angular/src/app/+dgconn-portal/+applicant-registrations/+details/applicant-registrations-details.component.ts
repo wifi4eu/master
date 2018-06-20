@@ -208,7 +208,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                        case 1:
                             for (let lf of this.legalFiles[index]) {
                                 if (lf.type == 1 && lf.requestCorrection) {
-                                    this.selectedReasonTypes[index][i] = null;
+                                    this.selectedReasonTypes[index][i] = lf.correctionReason;
                                 }
                             }
                             break; 
@@ -327,9 +327,9 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         if (!this.processingRequest) {
             if (this.selectedIndex != null) {
                 this.processingRequest = true;
-
                 let savedFilesCount = 0;
-                for (let i = 0; i < this.selectedFilesTypes[this.selectedIndex].length; i++) {
+                let savedFilesLimit = this.selectedFilesTypes[this.selectedIndex].length;
+                for (let i = 0; i < savedFilesLimit; i++) {
                     let updatedLegalFile = new LegalFileCorrectionReasonDTOBase();
                     let fileType = this.selectedFilesTypes[this.selectedIndex][i];
                     for (let legalFile of this.legalFiles[this.selectedIndex]) {
@@ -346,7 +346,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                         (resLegalFile: LegalFileCorrectionReasonDTOBase) => {
                             savedFilesCount++;
                             if (resLegalFile) {
-                                if (savedFilesCount == this.selectedFilesTypes[this.selectedIndex].length) {
+                                if (savedFilesCount == savedFilesLimit) {
                                     this.applicationApi.sendLegalDocumentsCorrection(this.applications[this.selectedIndex]).subscribe(
                                         (response : ResponseDTOBase) => {
                                             this.selectedFilesTypes[this.selectedIndex] = [];
@@ -362,7 +362,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                             }
                         }, error => {
                             savedFilesCount++;
-                            if (savedFilesCount == this.selectedFilesTypes[this.selectedIndex].length) {
+                            if (savedFilesCount == savedFilesLimit) {
                                 this.applicationApi.sendLegalDocumentsCorrection(this.applications[this.selectedIndex]).subscribe(
                                     (response : ResponseDTOBase) => {
                                         this.selectedFilesTypes[this.selectedIndex] = [];
