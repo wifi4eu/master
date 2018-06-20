@@ -90,7 +90,7 @@ export class SelectSupplierComponent {
     if (this.user != null) {
       this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
         (registrations: RegistrationDTOBase[]) => {
-          this.registration = registrations[0];
+          this.registration = registrations[1];
           
           /* Get current application of the beneficiary */
             this.callApi.allCalls().subscribe(
