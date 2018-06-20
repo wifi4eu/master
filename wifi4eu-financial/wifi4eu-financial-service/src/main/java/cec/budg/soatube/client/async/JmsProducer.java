@@ -33,6 +33,8 @@ import eu.europa.ec.budg.abac.message.v1.MessageHeaderType;
 import eu.europa.ec.budg.abac.soatube.v1.ObjectFactory;
 import eu.europa.ec.budg.abac.soatube.v1.SoatubeRequestType;
 import eu.europa.ec.budg.abac.soatube.v1.SoatubeResponseType;
+import org.slf4j.LoggerFactory;
+import wifi4eu.wifi4eu.service.exportImport.ExportImportFinancialAbacService;
 
 @Stateless(name="JmsProducer")
 public class JmsProducer implements JmsProducerLocal {
@@ -47,6 +49,7 @@ public class JmsProducer implements JmsProducerLocal {
 	private Queue receivingQueue;
 	private JAXBContext soaTubeRequestContext;
 	private JAXBContext soaTubeResponseContext;
+	private final org.slf4j.Logger _log = LoggerFactory.getLogger(ExportImportFinancialAbacService.class);
 
 	@PostConstruct
 	private void init () throws RuntimeException {
@@ -63,6 +66,8 @@ public class JmsProducer implements JmsProducerLocal {
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public HashMap<String, String> sendMessage(String messageCorID) throws BudgSOAException {
 		LOGGER.trace("Preparing to send message with message correlation="+messageCorID);
+
+		_log.info("sendMessage");
 
 		HashMap<String, String> retHashMap = new HashMap<String, String>();
 		QueueSender queueSender = null;

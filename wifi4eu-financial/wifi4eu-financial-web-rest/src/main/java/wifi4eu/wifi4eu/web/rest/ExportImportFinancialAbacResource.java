@@ -37,8 +37,10 @@ public class ExportImportFinancialAbacResource {
 
     public ExportImportFinancialAbacResource() throws NamingException {
         InitialContext ic = new InitialContext();
-        jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
-        soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");
+        jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu/wifi4eu-financial-web/JmsProducer");
+        soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu/wifi4eu-financial-web/SoatubeWSClient");
+        //jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
+        //soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");
     }
 
     @ApiOperation(value = "Import Legal Entity File")
