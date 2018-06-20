@@ -52,7 +52,16 @@
 }
 
 .voucher-status.simulation {
-    background-color:#ffff00;
+    background-color:#ffeb3b;
+}
+
+.voucher-status.simulation .voucher-status-info {
+    text-align: center;
+    color: #fff;
+}
+
+.voucher-status.simulation .voucher-status-info .fa-info{
+    border: 2px solid #000;
 }
 
 .voucher-status.pre-save {
@@ -61,6 +70,15 @@
 
 .voucher-status.saved {
     background-color: #228854;
+}
+
+.voucher-status.saved .voucher-status-info, .voucher-status.pre-save .voucher-status-info {
+    text-align: center;
+    color: #fff;
+}
+
+.voucher-status.saved .voucher-status-info .fa-info, .voucher-status.pre-save .voucher-status-info .fa-info{
+    border: 2px solid #fff;
 }
 
 .panel-padding-no-margin{
