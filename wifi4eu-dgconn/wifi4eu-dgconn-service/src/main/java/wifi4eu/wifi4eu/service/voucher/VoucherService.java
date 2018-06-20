@@ -1,8 +1,8 @@
 package wifi4eu.wifi4eu.service.voucher;
 
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +17,7 @@ import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
-import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
-import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
@@ -47,7 +45,7 @@ import java.util.*;
 @Service("portalVoucherService")
 public class VoucherService {
 
-    private Logger _log = LoggerFactory.getLogger(this.getClass());
+    private Logger _log = LogManager.getLogger(this.getClass());
 
     @Autowired
     VoucherAssignmentMapper voucherAssignmentMapper;
@@ -115,6 +113,8 @@ public class VoucherService {
     @Autowired
     NutsService nutsService;
 
+    UserDTO userConnected;
+
     public List<VoucherAssignmentDTO> getAllVoucherAssignment() {
         return voucherAssignmentMapper.toDTOList(Lists.newArrayList(voucherAssignmentRepository.findAll()));
     }
@@ -155,6 +155,7 @@ public class VoucherService {
     }
 
     public ResponseDTO getVoucherSimulationByVoucherAssignment(int voucherAssignmentId, String country, String municipality, Pageable pageable) {
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving voucher simulations - voucherAssignment: " + voucherAssignmentId + "municipality: " + municipality + ", country: " + country);
         Page<VoucherSimulation> simulationPaged = null;
         List<VoucherSimulationDTO> listSimulation = new ArrayList<>();
         int totalElements = 0;
@@ -191,7 +192,7 @@ public class VoucherService {
     }
 
     public byte[] exportVoucherSimulation(int voucherAssignmentId, String country, String municipalityName, Pageable pageable) {
-
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Downloading excel voucher simulation with parameters - voucherAssignment: " + voucherAssignmentId + "municipality: " + municipalityName + ", country: " + country);
         List<VoucherSimulationDTO> simulationDTOS = (List<VoucherSimulationDTO>) getVoucherSimulationByVoucherAssignment(voucherAssignmentId, country, municipalityName, pageable).getData();
 
         VoucherSimulationExportGenerator excelExportGenerator = new VoucherSimulationExportGenerator(simulationDTOS, VoucherSimulationDTO.class);
@@ -331,7 +332,7 @@ public class VoucherService {
 
     @Transactional
     public ResponseDTO simulateVoucherFast(int callId) {
-
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Executing voucher simulation for call: " + callId);
         HashMap<Integer, SimpleMunicipalityDTO> municipalityHashMap = new HashMap<>();
         HashMap<Integer, SimpleLauDTO> lauHashMap = new HashMap<>();
         HashMap<Integer, SimpleRegistrationDTO> registrationsHashMap = new HashMap<>();
@@ -771,7 +772,7 @@ public class VoucherService {
             voucher.setId(res.getId());
             voucher.setStatus(res.getStatus());
             voucher.setExecutionDate(res.getExecutionDate());
-
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Voucher simulation successfully executed");
             return new ResponseDTO(true, voucher, null);
         }
         return new ResponseDTO(false, "User not defined", null);

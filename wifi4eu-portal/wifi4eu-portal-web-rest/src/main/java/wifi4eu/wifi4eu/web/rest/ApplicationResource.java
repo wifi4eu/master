@@ -63,6 +63,7 @@ public class ApplicationResource {
             _log.error("ECAS Username: " + userConnected.getEcasEmail() + " - Permission not found", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
+
         ApplicationDTO responseApp = applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
         if (responseApp == null) {
             _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");

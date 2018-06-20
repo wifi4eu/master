@@ -1,24 +1,23 @@
 package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.location.NutsService;
@@ -27,6 +26,7 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -54,14 +54,18 @@ public class MunicipalityResource {
     @Autowired
     private NutsService nutsService;
 
+    Logger _log = LogManager.getLogger(MunicipalityResource.class);
 
-    Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
+    UserContext userContext;
+    UserDTO userConnected;
 
     @ApiOperation(value = "Get municipality by specific id")
     @RequestMapping(value = "/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
-        _log.info("getMunicipalityById: " + municipalityId);
+    public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipality by id " + municipalityId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityId);
@@ -69,9 +73,7 @@ public class MunicipalityResource {
                 permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             }
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'getMunicipalityById' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The municipality cannot been retrieved", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return municipalityService.getMunicipalityById(municipalityId);
@@ -115,6 +117,9 @@ public class MunicipalityResource {
     @RequestMapping(value = "/thread/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MunicipalityDTO getMunicipalityThreadById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipality by id " + municipalityId + " for thread");
         MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
         municipality.setRegistrations(null);
         return municipality;
@@ -125,27 +130,24 @@ public class MunicipalityResource {
     @ResponseBody
     public ResponseDTO updateMunicipalityDetails(@RequestBody final MunicipalityDTO municipalityDTO,
                                                  HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating municipality details");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
             RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
-
             if (registrationDTO.getUserId() != userDTO.getId()) {
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-
             permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityDTO.getId());
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Municipality details updated successfully");
             return new ResponseDTO(true, municipalityService.updateMunicipalityDetails(municipalityDTO), null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'updating municipality' operation.", ade);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the details of this municipality", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'updateMunicipalityDetails' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The details of this municipality cannot been updated", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -180,14 +182,15 @@ public class MunicipalityResource {
     @RequestMapping(value = "/lauId/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByLauId(@PathVariable("lauId") final Integer lauId, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipalities by lau id " + lauId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'updating municipality' operation.", ade);
-            }
+            _log.error("User ECAS name: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve these municipalities", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return municipalityService.getMunicipalitiesByLauId(lauId);

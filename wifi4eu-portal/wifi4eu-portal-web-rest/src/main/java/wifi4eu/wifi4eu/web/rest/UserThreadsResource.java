@@ -31,7 +31,6 @@ public class UserThreadsResource {
     @Autowired
     private UserThreadsService userThreadsService;
 
-
     @Autowired
     private UserService userService;
 

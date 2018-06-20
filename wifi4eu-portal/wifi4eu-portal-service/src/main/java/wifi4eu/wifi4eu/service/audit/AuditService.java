@@ -13,9 +13,6 @@ import wifi4eu.wifi4eu.mapper.audit.AuditMapper;
 import wifi4eu.wifi4eu.repository.audit.AuditRepository;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-
 @Service
 public class AuditService {
 
