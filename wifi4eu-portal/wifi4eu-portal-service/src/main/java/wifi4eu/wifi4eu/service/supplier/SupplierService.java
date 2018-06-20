@@ -325,11 +325,11 @@ public class SupplierService {
     public void notifySelectedSupplier(int municipalityId) throws Exception {
         MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
         int registrationId = registrationService.getRegistrationByMunicipalityId(municipalityId).getId();
-        // List<CallDTO> calls = callService.getAllCalls();
-        CallDTO call = callService.getCallById(1);
+        List<CallDTO> calls = callService.getAllCalls();
+        // CallDTO call = callService.getCallById(1);
         // If having an error on calls, check that the calls are not null/empty. 
-        // ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(calls.get(calls.size()-1).getId(), registrationId);
-        ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(call.getId(), registrationId);
+        ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(calls.get(calls.size()-1).getId(), registrationId);
+        // ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(call.getId(), registrationId);
         if(application != null) {
             SupplierDTO supplier = getSupplierById(application.getSupplierId());
             
@@ -353,5 +353,73 @@ public class SupplierService {
             throw new Exception("Application doesn't exist.");
         }
     }
+    
+    // Send email to notify supplier that a beneficiary has rejected him
+    public void notifyRejectedSupplier(int municipalityId) throws Exception {
+        MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
+        int registrationId = registrationService.getRegistrationByMunicipalityId(municipalityId).getId();
+        List<CallDTO> calls = callService.getAllCalls();
+        // CallDTO call = callService.getCallById(1);
+        // If having an error on calls, check that the calls are not null/empty. 
+        ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(calls.get(calls.size()-1).getId(), registrationId);
+        // ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(call.getId(), registrationId);
+        if(application != null) {
+            SupplierDTO supplier = getSupplierById(application.getSupplierId());
+            
+            /* Send email may be commented in the front */
+            UserDTO user = userService.getUserById(supplier.getUserId());
+            if (user != null) {
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (user.getLang() != null) {
+                    locale = new Locale(user.getLang());
+                }
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                String fromAddress = MailService.FROM_ADDRESS;
+                String subject = bundle.getString("mail.notifyRejectedSupplier.subject");
+                String msgBody = bundle.getString("mail.notifyRejectedSupplier.body");
+                msgBody = MessageFormat.format(msgBody, municipality.getName(), municipality.getCountry() );
+                mailService.sendEmail(supplier.getContactEmail(), fromAddress, subject, msgBody);
+            } else {
+                throw new Exception("User doesn't exist.");
+            }
+        } else {
+            throw new Exception("Application doesn't exist.");
+        }
+    }
+
+    // REFERENCE 1 
+/*     public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
+        ApplicationDTO validatedApplication = applicationDTO;
+        RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
+        if (registration != null) {
+            UserDTO user = userService.getUserById(registration.getUserId());
+            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+            if (user != null && municipality != null) {
+                List<ApplicationDTO> repeatedApplications = getApplicationsByCallIdAndLauId(applicationDTO.getCallId(), municipality.getLauId());
+                for (ApplicationDTO repeatedApplication : repeatedApplications) {
+                    if (repeatedApplication.getId() == applicationDTO.getId()) {
+                        repeatedApplication.setStatus(ApplicationStatus.OK.getValue());
+                        repeatedApplication.setInvalidateReason(null);
+                        validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+                        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                        if (user.getLang() != null) {
+                            locale = new Locale(user.getLang());
+                        } */
+                        //Mails deactivated until 1.4.2 phase 2
+                        /*ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                        String subject = bundle.getString("mail.validateApplication.subject");
+                        String msgBody = bundle.getString("mail.validateApplication.body");
+                        msgBody = MessageFormat.format(msgBody, municipality.getName());
+                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);*/
+/*                     } else {
+                        invalidateApplication(repeatedApplication);
+                    }
+                }
+            }
+        }
+        return validatedApplication;
+    }
+ */
+
 
 }

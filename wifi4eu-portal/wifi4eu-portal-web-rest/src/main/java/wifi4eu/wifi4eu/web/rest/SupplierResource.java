@@ -316,7 +316,6 @@ public class SupplierResource {
                 null);
     }
 
-    // New creation
     @ApiOperation(value = "Get suppliers by regionID")
     @RequestMapping(value = "/region/{regionId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -336,6 +335,7 @@ public class SupplierResource {
     // @RequestMapping(value = "/notifySelectedSupplier/", method = RequestMethod.POST, produces = "application/json")
     @RequestMapping(value = "/notifySelectedSupplier", method = RequestMethod.POST)
     // public ResponseDTO notifySelectedSupplier(@RequestParam("municipalityId") final int municipalityId, @RequestParam("callId") final int calId) {
+    @ResponseBody
     public ResponseDTO notifySelectedSupplier(@RequestBody final int municipalityId) {
         _log.info("notify Selected Supplier: " + municipalityId);
         try {
@@ -348,4 +348,61 @@ public class SupplierResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+
+    @ApiOperation(value = "Notify supplier by email that a beneficiary has rejected him")
+    // @RequestMapping(value = "/notifyRejectedSupplier/", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/notifyRejectedSupplier", method = RequestMethod.POST)
+    // public ResponseDTO notifyRejectedSupplier(@RequestParam("municipalityId") final int municipalityId, @RequestParam("callId") final int calId) {
+    @ResponseBody
+    public ResponseDTO notifyRejectedSupplier(@RequestBody final int municipalityId) {
+        _log.info("notify Selected Supplier: " + municipalityId);
+        try {
+            supplierService.notifyRejectedSupplier(municipalityId);
+            return new ResponseDTO(true, null, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'notifyRejectedSupplier' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    // REFERENCE 1
+/*     @ApiOperation(value = "Service to resend email with a link to activate account")
+    @RequestMapping(value = "/resendEmail", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO resendEmail(@RequestBody final String email) {
+        try {
+            _log.info("Resend email to '" + email + "'...");
+            if (userService.resendEmail(email)) {
+                return new ResponseDTO(true, null, null);
+            }
+            return new ResponseDTO(false, null, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'resendEmail' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    } */
+
+    // REFERENCE 2
+/*     @ApiOperation(value = "Validate application")
+    @RequestMapping(value = "/validate", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO validateApplication(@RequestBody final ApplicationDTO applicationDTO) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("validateApplication");
+            }
+            ApplicationDTO resApplication = applicationService.validateApplication(applicationDTO);
+            return new ResponseDTO(true, resApplication, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'validateApplication' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    } */
+
 }

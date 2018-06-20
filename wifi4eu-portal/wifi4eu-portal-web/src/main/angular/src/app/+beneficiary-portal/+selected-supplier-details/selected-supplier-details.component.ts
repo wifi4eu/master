@@ -35,13 +35,14 @@ export class SelectedSupplierDetailsComponent {
   
   // Component specific properties
   private municipalityId: number;
-  private supplierId: number;
+  private paramsSupplierId: number;
+  private changedSupplierChoice: boolean = false;
 
   // Date supplier was selected
   private selectionDate: Date;
   private localeDate: Array<String>;
   private displayedDate: String;
-  private displayDate: boolean;
+  private displayDate: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -58,7 +59,7 @@ export class SelectedSupplierDetailsComponent {
   this.route.params.subscribe(
     params => {
         this.municipalityId = Number(params['municipalityId']);
-        this.supplierId = Number(params['supplierId']);
+        this.paramsSupplierId = Number(params['supplierId']);
     }
   );
   
@@ -76,7 +77,7 @@ export class SelectedSupplierDetailsComponent {
   if (this.user != null) {
     this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
       (registrations: RegistrationDTOBase[]) => {
-        this.registration = registrations[0];
+        this.registration = registrations[1];
         
         // Check if there are Calls
       this.callApi.allCalls().subscribe(
@@ -85,8 +86,11 @@ export class SelectedSupplierDetailsComponent {
               this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[0].id, this.registration.id).subscribe(
                 (application: ApplicationDTOBase) => {
                   this.application = application;
+                  if(this.application.supplierId !== this.paramsSupplierId) {
+                    this.changedSupplierChoice = true;
+                  }
                   console.log("Present application is ", this.application);
-                  this.getSupplierDetails();  
+                  this.getSupplierDetails(this.paramsSupplierId);  
                 }
               );
             }
@@ -101,14 +105,14 @@ export class SelectedSupplierDetailsComponent {
   
   /*  -- METHODS -- */
   // Get supplier details from supplierId requested through params
-  getSupplierDetails() {
-    this.supplierApi.getSupplierDetailsById(this.supplierId).subscribe(
+  getSupplierDetails(supplierId) {
+    this.supplierApi.getSupplierDetailsById(supplierId).subscribe(
       (supplier: SupplierDTOBase) => {            
         this.supplier = supplier;
       }
     );
     // Get the date when supplier was selected if the supplier hasn't changed his choice
-    if(this.application.supplierId === this.supplierId) {
+    if((this.application.supplierId === this.paramsSupplierId) && (this.application.supplierId != (null || undefined || 0)) )  {
       this.getStringDate(this.application.date);
       this.displayDate = true; 
     }
@@ -121,7 +125,6 @@ export class SelectedSupplierDetailsComponent {
     this.displayedDate = this.localeDate[0];
   }
 
-
   /* Allow beneficiary to change selected supplier */
   private changeSupplier() {
     this.router.navigate(['/beneficiary-portal/select-supplier', this.municipality.id]);
@@ -131,26 +134,44 @@ export class SelectedSupplierDetailsComponent {
   private saveAndNotify() {
     console.log("Municipality ID is ", this.municipality.id);
     console.log("Previous supplier id was ", this.application.supplierId);
-    console.log("Supplier Id being selected is ", this.supplierId);
-    // this.application.supplierId = this.supplierId;
+    console.log("Supplier Id being selected is ", this.paramsSupplierId);
+    
+    if(this.application.supplierId == (null || undefined || 0)) {
+      this.application.supplierId = this.paramsSupplierId;
+      this.assignSupplierAndNotify();
+    }
 
-
-    if(this.application.supplierId !== this.supplierId) {
-      this.applicationApi.assignSupplier(this.application).subscribe(
-        (resAplication: ResponseDTOBase) => {
-          this.getStringDate(resAplication.data.date);
-          console.log("New supplier saved!!");   
-  /*         this.supplierApi.notifySelectedSupplier(this.municipality.id).subscribe(
-            (res: ResponseDTOBase) => {
-              console.log("The result of sending email is ", res);
-            }
-          ); */
+    else if(this.changedSupplierChoice) {
+      this.supplierApi.notifyRejectedSupplier(this.municipalityId).subscribe(
+        (res: ResponseDTOBase) => {
+          console.log("Result of rejections is ", res);
+          this.application.supplierId = this.paramsSupplierId;
+          this.assignSupplierAndNotify();
         }
-      );
+      );  
     } 
-
+    
     console.log("-- End of method --")
-    this.router.navigate(['/beneficiary-portal/my-voucher']);
+    this.changedSupplierChoice = false;
+    // this.router.navigate(['/beneficiary-portal/my-voucher']);
+  }
+  
+  assignSupplierAndNotify() {
+    this.applicationApi.assignSupplier(this.application).subscribe(
+      (resAplication: ResponseDTOBase) => {
+        // this.getStringDate(resAplication.data.date);
+        console.log("New supplier saved!!");
+        
+        this.supplierApi.notifySelectedSupplier(this.municipality.id).subscribe(
+          (res: ResponseDTOBase) => {
+            console.log("The result of sending email is ", res);
+          }, error => {
+            console.log("An ERROR ocurred");
+          }
+        );
+
+      }
+    );
   }
 
 // End of exported class
