@@ -102,8 +102,8 @@ public class CallAbac {
 //        }
 
         /*InitialContext ic = new InitialContext();
-        jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
-        soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");*/
+        jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu/wifi4eu-financial-web/JmsProducer");
+        soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu/wifi4eu-financial-web/SoatubeWSClient");*/
 
         buildMessagesContainer();
         buildMessageInfoTable();
@@ -237,8 +237,8 @@ public class CallAbac {
         //}
 
 //        InitialContext ic = new InitialContext();
-//        jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
-//        soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");
+//        jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu/wifi4eu-financial-web/JmsProducer");
+//        soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu/wifi4eu-financial-web/SoatubeWSClient");
 
         buildMessagesContainer();
         buildMessageInfoTable();
