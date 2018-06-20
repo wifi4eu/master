@@ -31,6 +31,39 @@ public class ExportImportWifi4euAbacResource {
 
     private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacResource.class);
 
+    @ApiOperation(value = "Import LEF and BC validates")
+    @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
+    @ResponseBody
+    public ResponseDTO importLegalEntityFBCValidate(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
+        try {
+            _log.info("importLegalEntityFBCValidate");
+            JSONArray jsonArray = new JSONArray(jsonStringFile);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject object = jsonArray.getJSONObject(i);
+                exportImportWifi4euAbacService.importLegalEntityFBCValidate(object.toString());
+            }
+            return new ResponseDTO(true, null, null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on operation.", ade);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Export Beneficiary Information")
+    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public ResponseDTO exportBeneficiaryInformation(final HttpServletResponse response) throws Exception {
+        _log.info("exportBeneficiaryInformation");
+        return exportImportWifi4euAbacService.exportBeneficiaryInformation();
+    }
+
     @ApiOperation(value = "Export registration data")
     @RequestMapping(value = "/exportRegistrationData", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.CREATED)
@@ -72,13 +105,6 @@ public class ExportImportWifi4euAbacResource {
         }
     }
 
-    @ApiOperation(value = "Export Beneficiary Information")
-    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "application/JSON")
-    @ResponseBody
-    public ResponseDTO exportBeneficiaryInformation(final HttpServletResponse response) throws Exception {
-        _log.info("exportBeneficiaryInformation");
-        return exportImportWifi4euAbacService.exportBeneficiaryInformation();
-    }
 
     @ApiOperation(value = "Export Budgetary Commitment")
     @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET, produces = "application/JSON")
@@ -86,31 +112,6 @@ public class ExportImportWifi4euAbacResource {
     public ResponseDTO exportBudgetaryCommitment(final HttpServletResponse response) throws Exception {
         _log.info("exportBudgetaryCommitment");
         return exportImportWifi4euAbacService.exportBudgetaryCommitment();
-    }
-
-    @ApiOperation(value = "Import LEF and BC validates")
-    @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
-    @ResponseBody
-    public ResponseDTO importLegalEntityFBCValidate(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
-        try {
-            _log.info("importLegalEntityFBCValidate");
-            JSONArray jsonArray = new JSONArray(jsonStringFile);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject object = jsonArray.getJSONObject(i);
-                exportImportWifi4euAbacService.importLegalEntityFBCValidate(object.toString());
-            }
-            return new ResponseDTO(true, null, null);
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on operation.", ade);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
-        }
     }
 
 }

@@ -28,7 +28,8 @@ public class NutsService {
     }
 
     public NutsDTO getNutsByCode(String code) {
-        return nutsMapper.toDTO(nutsRepository.findByCode(code));
+        //return nutsMapper.toDTO(nutsRepository.findByCode(code));
+        return nutsMapper.toDTO(nutsRepository.findOne(Integer.parseInt(code)));
     }
 
     @Cacheable(value = "portalGetNutsByLevel")

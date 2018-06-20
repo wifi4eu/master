@@ -92,6 +92,70 @@ public class ExportImportWifi4euAbacService {
 
     private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
 
+    @Transactional
+    public void importLegalEntityFBCValidate(final String jsonStringFile) throws Exception{
+        _log.info("importLegalEntityFBCValidate");
+        ResponseDTO result = new ResponseDTO();
+        Gson gson = new GsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonObject();
+        JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
+        for (int i = 0; i < callsJsonArrayLef.size(); i++) {
+            JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
+            //CallDTO call = gson.fromJson(callJson, CallDTO.class);
+            //JsonArray lefVals = resultJson.getAsJsonArray("idLef");
+            JsonArray lefVals = callJson.getAsJsonArray("idLef");
+            for (int u = 0; u < lefVals.size(); u++) {
+                JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
+                JsonObject lefVal = jsonStringLef.getAsJsonObject("idLef");
+                ValidatedLEF validatedLEF=new ValidatedLEF(Integer.parseInt(lefVal.toString()));
+                validatedLefRepository.save(validatedLEF);
+            }
+        }
+        JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");
+        for (int i = 0; i < callsJsonArrayBc.size(); i++) {
+            JsonObject callJson = callsJsonArrayBc.get(i).getAsJsonObject();
+            //CallDTO call = gson.fromJson(callJson, CallDTO.class);
+            //JsonArray lefBcs = resultJson.getAsJsonArray("idBc");
+            JsonArray lefBcs = callJson.getAsJsonArray("idBc");
+            for (int u = 0; u < lefBcs.size(); u++) {
+                JsonObject jsonStringLef = lefBcs.get(u).getAsJsonObject();
+                JsonObject lefBc = jsonStringLef.getAsJsonObject("idBc");
+                ValidatedBC validatedBC=new ValidatedBC(Integer.parseInt(lefBc.toString()));
+                validatedBcRepository.save(validatedBC);
+            }
+        }
+    }
+
+    public ResponseDTO exportBeneficiaryInformation() throws Exception {
+        _log.info("exportBeneficiaryInformation");
+        ResponseDTO result = new ResponseDTO();
+        Gson gson = new GsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject resultJson = new JsonObject();
+        List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation = exportImportBeneficiaryInformationMapper.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findExportImportBI()));
+        JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
+        if (applicationsBeneficiaryInformation!= null && !applicationsBeneficiaryInformation.isEmpty()) {
+            for (ExportImportBeneficiaryInformationDTO application : applicationsBeneficiaryInformation) {
+//                long exportDate = new Date().getTime();
+//                application.setLefExport(exportDate);
+//                application.setBcExport(exportDate);
+//                application.setLcExport(exportDate);
+//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
+                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
+                applicationsBeneficiaryInformationJsonArray.add(applicationJson);
+            }
+        }
+//        resultJson.addProperty("version", _version);
+        resultJson.addProperty("createTime", new Date().getTime());
+        resultJson.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
+        result.setSuccess(true);
+//        result.setData(resultJson.toString());
+        result.setData("[" + resultJson.toString() + "]");
+        result.setError(null);
+        return result;
+    }
+
     public void exportRegistrationData() throws Exception {
           _log.info("exportRegistrationData");
            List<ExportImportRegistrationDataDTO> exportImportRegistrationDataList = exportImportRegistrationDataMapper.toDTOList(Lists.newArrayList(exportImportRegistrationDataRepository.findExportImportRD()));
@@ -139,35 +203,6 @@ public class ExportImportWifi4euAbacService {
         rF.readExcelFileRegistrationData();
     }
 
-    public ResponseDTO exportBeneficiaryInformation() throws Exception {
-        _log.info("exportBeneficiaryInformation");
-        ResponseDTO result = new ResponseDTO();
-        Gson gson = new GsonBuilder().create();
-        JsonParser parser = new JsonParser();
-        JsonObject resultJson = new JsonObject();
-        List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation = exportImportBeneficiaryInformationMapper.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findExportImportBI()));
-        JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
-        if (applicationsBeneficiaryInformation!= null && !applicationsBeneficiaryInformation.isEmpty()) {
-            for (ExportImportBeneficiaryInformationDTO application : applicationsBeneficiaryInformation) {
-//                long exportDate = new Date().getTime();
-//                application.setLefExport(exportDate);
-//                application.setBcExport(exportDate);
-//                application.setLcExport(exportDate);
-//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
-                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
-                applicationsBeneficiaryInformationJsonArray.add(applicationJson);
-            }
-        }
-//        resultJson.addProperty("version", _version);
-        resultJson.addProperty("createTime", new Date().getTime());
-        resultJson.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
-        result.setSuccess(true);
-//        result.setData(resultJson.toString());
-        result.setData("[" + resultJson.toString() + "]");
-        result.setError(null);
-        return result;
-    }
-
     public ResponseDTO exportBudgetaryCommitment() throws Exception {
         _log.info("exportBudgetaryCommitment");
         ResponseDTO result = new ResponseDTO();
@@ -195,39 +230,6 @@ public class ExportImportWifi4euAbacService {
         result.setData("[" + resultJson.toString() + "]");
         result.setError(null);
         return result;
-    }
-
-    @Transactional
-    public void importLegalEntityFBCValidate(final String jsonStringFile) throws Exception{
-        _log.info("importLegalEntityFBCValidate");
-        ResponseDTO result = new ResponseDTO();
-        Gson gson = new GsonBuilder().create();
-        JsonParser parser = new JsonParser();
-        JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonObject();
-        JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
-        for (int i = 0; i < callsJsonArrayLef.size(); i++) {
-            JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
-            CallDTO call = gson.fromJson(callJson, CallDTO.class);
-            JsonArray lefVals = resultJson.getAsJsonArray("idLef");
-            for (int u = 0; u < lefVals.size(); u++) {
-                JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
-                JsonObject lefVal = jsonStringLef.getAsJsonObject("idLef");
-                ValidatedLEF validatedLEF=new ValidatedLEF(Integer.parseInt(lefVal.toString()));
-                validatedLefRepository.save(validatedLEF);
-            }
-        }
-        JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");
-        for (int i = 0; i < callsJsonArrayBc.size(); i++) {
-            JsonObject callJson = callsJsonArrayBc.get(i).getAsJsonObject();
-            CallDTO call = gson.fromJson(callJson, CallDTO.class);
-            JsonArray lefBcs = resultJson.getAsJsonArray("idBc");
-            for (int u = 0; u < lefBcs.size(); u++) {
-                JsonObject jsonStringLef = lefBcs.get(u).getAsJsonObject();
-                JsonObject lefBc = jsonStringLef.getAsJsonObject("idBc");
-                ValidatedBC validatedBC=new ValidatedBC(Integer.parseInt(lefBc.toString()));
-                validatedBcRepository.save(validatedBC);
-            }
-        }
     }
 
     private Integer setIssueToDgconnBeneficiary(Integer lauId) {

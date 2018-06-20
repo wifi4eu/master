@@ -5,6 +5,7 @@ import cec.budg.soatube.client.util.BudgSOAException;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItemContainer;
 import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.UUID;
 import com.vaadin.ui.Table;
@@ -17,6 +18,7 @@ import wifi4eu.wifi4eu.mapper.exportImport.ValidatedBCMapper;
 import wifi4eu.wifi4eu.mapper.exportImport.ValidatedLEFMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ValidatedBCRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ValidatedLEFRepository;
+import wifi4eu.wifi4eu.service.exportImport.ExportImportFinancialAbacService;
 import wifi4eu.wifi4eu.service.exportImport.messageCall.SoaMessageCall;
 import java.util.HashMap;
 import javax.naming.NamingException;
@@ -47,9 +49,12 @@ public class CallAbac {
     @Autowired
     ValidatedBCRepository validatedBCRepository;
 
+    private final org.slf4j.Logger _log = LoggerFactory.getLogger(ExportImportFinancialAbacService.class);
+
     public CallAbac(){}
 
     public void readImportFileLEF(JmsProducerLocal jmsProducer, String xml) throws NamingException, BudgSOAException, FieldGroup.CommitException {
+        _log.info("readImportFileLEF");
         String message=xml;
 //        String message = "<v3:LegalEntityCreateRequest xmlns:v3=\"http://www.ec.europa.eu/budg/abac/legal_entity/v3\" xmlns:rep=\"http://www.ec.europa.eu/budg/report\">\n" +
 //                    "<v2:MessageHeader xmlns:v2=\"http://www.ec.europa.eu/budg/abac/kernel/v2\"/>\n" +

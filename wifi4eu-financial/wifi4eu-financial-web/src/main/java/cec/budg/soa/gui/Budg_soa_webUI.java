@@ -56,6 +56,7 @@ public class Budg_soa_webUI extends UI {
 			jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu/wifi4eu-financial-web/JmsProducer");
 			soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu/wifi4eu-financial-web/SoatubeWSClient");
 
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
