@@ -165,6 +165,13 @@ public class VoucherSimulationExportGenerator<T> {
             if (dataClass == VoucherSimulationDTO.class || dataClass == VoucherSimulation.class) {
                 ApplicationDTO applicationDTO;
                 switch (field.getName()) {
+                    case "countryRank":
+                    case "euRank":
+                        value = field.get(objectData).toString();
+                        if(value.equalsIgnoreCase(String.valueOf(Integer.MAX_VALUE))){
+                            value = "";
+                        }
+                        break;
                     case "selectionStatus":
                         if((int) field.get(objectData) == SelectionStatus.MAIN_LIST.getValue()){
                             value = "Main list";

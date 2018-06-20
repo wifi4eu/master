@@ -8,7 +8,7 @@ import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { Observable } from 'rxJs/Observable';
 import { SharedService } from "../../shared/shared.service";
-import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO, VoucherAssignmentAuxiliarDTOBase, RegistrationWarningApi } from "../../shared/swagger";
+import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO, VoucherAssignmentAuxiliarDTOBase, RegistrationWarningApi, VoucherAssignmentDTOBase } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
 import { count } from "rxjs/operator/count";
 import { Paginator, MenuItem, DataTable, TabView } from "primeng/primeng";
@@ -362,7 +362,11 @@ export class DgConnVoucherComponent {
     if(this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1){
       this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((resp: ResponseDTO) => {
         this.displayConfirmingData = false;
-        this.callVoucherAssignment.id = resp.data.id;
+        if(this.callVoucherAssignment == null){
+          this.callVoucherAssignment = resp.data;
+        }else{
+          this.callVoucherAssignment.id = resp.data.id;
+        }
         this.loadPage();
         this.loadingSimulation = false;
       }, (error) => {
