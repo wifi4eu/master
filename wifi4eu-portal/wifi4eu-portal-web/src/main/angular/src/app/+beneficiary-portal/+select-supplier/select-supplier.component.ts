@@ -64,8 +64,6 @@ export class SelectSupplierComponent {
   @ViewChild("gridSuppliers") gridSuppliers: DataGrid;
   @ViewChild("paginator") paginator: Paginator;
   
-  /* Search for the registered suppliers in the specific supplied region of the beneficiary */ 
-  /* Part 1: Get region FK specific to the beneficiary */
   constructor(
     private applicationApi: ApplicationApi,
     private supplierApi: SupplierApi,
@@ -78,92 +76,96 @@ export class SelectSupplierComponent {
     private router: Router,
     private route: ActivatedRoute
   ) { 
-
+  /* Search for the registered suppliers in the specific supplied region of the beneficiary */ 
+    /* Get params from URL */
     const municipalityId: any = route.params.map(p => p.id);
     this.municipalityId = Number(municipalityId.source.value.municipalityId);    
     
+    /* Authenticate user */
     let storedUser = this.localStorage.get('user');
     this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
     let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
     this.storedRegistrationQueues = storedRegistrations ? storedRegistrations : [];
-    // Check if there are Calls
+
+    /* Check if user registration municipalities matches params */
     if (this.user != null) {
       this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
         (registrations: RegistrationDTOBase[]) => {
-          this.registration = registrations[1];
-          
+          for(var i = 0; i < registrations.length; i++) {
+            if(registrations[i].municipalityId === this.municipalityId) {
+              this.registration = registrations[i];
+            }
+          }
           /* Get current application of the beneficiary */
             this.callApi.allCalls().subscribe(
               (calls: CallDTOBase[]) => {
-                  this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[0].id, this.registration.id).subscribe(
+                  this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[(calls.length-1)].id, this.registration.id).subscribe(
                     (application: ApplicationDTOBase) => {
                       this.application = application;
+                      
+                      /* Check if the application already has a supplier assigned */
                       if (application.supplierId != (null || undefined || 0)) {
                         this.hasSupplierAssigned = true;
                       }
 
-                      // Go to get municipalityId from params instead that from registrations[0] (iterable if many municipalities)
-                      // this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
-                      this.municipalityApi.getMunicipalityById(this.municipalityId).subscribe(
+                      /* Get regionId of the municipality */
+                      this.municipalityApi.getMunicipalityById(this.registration.municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
                           this.municipalities.push(municipality);
                           this.municipality = municipality;
-                            this.lauApi.getLauById(municipality.lauId).subscribe(
-                              (laus: LauDTOBase) => {
-                                this.nutsApi.getNutsByCode(laus.nuts3).subscribe(
-                                  (nuts: NutsDTOBase) => {
-                                    this.region.id = nuts.id;
-                                    this.getSuppliers();
+                          this.lauApi.getLauById(municipality.lauId).subscribe(
+                            (laus: LauDTOBase) => {
+                              this.nutsApi.getNutsByCode(laus.nuts3).subscribe(
+                                (nuts: NutsDTOBase) => {
+                                  this.region.id = nuts.id;
+                                  
+                                  /* Get all suppliers that supply the beneficiary region */
+                                  if(this.region.id != 0){
+                                    this.supplierApi.getSuppliersListByRegionId(this.region.id).subscribe(
+                                      (suppliers: SupplierDTOBase[]) => {
+                                        this.suppliers = suppliers;
+                                        this.suppliersCopy = this.suppliers;
+                              
+                                        /* Get previously selected supplier (if it exists) */
+                                        if(this.hasSupplierAssigned) {
+                                          this.supplierApi.getSupplierDetailsById(this.application.supplierId).subscribe(
+                                            (supplier: SupplierDTOBase) => {
+                                              for(var i = 0; i < this.suppliers.length; i++) {
+                                                if(this.suppliers[i].id == supplier.id) {
+                                                  this.selectedSupplier = this.suppliers[i];
+                                                  this.oldSupplier = this.suppliers[i];
+                                                  break;
+                                                } 
+                                              }
+                                            }
+                                          );
+                                          /* Get the date when supplier was selected */
+                                          this.getStringDate(this.application.date);
+                                        }
+                                        
+                                      }
+                                    );
                                   }
-                                );    
-                              }
-                            );
+                                  
+                                }
+                              );    
+                            }
+                          );
                         }
-                      );  
-                  
-                    }
-                  );
-              }
-            );
-
+                  );  
+                    
+                }
+              );
+            }
+          );
+              
         }
       );
     }
   // End of constructor  
   }
-
-  /*  --- METHODS ---- */
-  /* Part 2: Get all suppliers that supply the specific region of the beneficiary */
-  getSuppliers() {
-    // Get all suppliers of beneficiary region
-    if(this.region.id != 0){
-      this.supplierApi.getSuppliersListByRegionId(this.region.id).subscribe(
-        (suppliers: SupplierDTOBase[]) => {
-          this.suppliers = suppliers;
-          this.suppliersCopy = this.suppliers;
-
-          // Get previously selected supplier (if already applied)
-          if(this.hasSupplierAssigned) {
-            this.supplierApi.getSupplierDetailsById(this.application.supplierId).subscribe(
-              (supplier: SupplierDTOBase) => {
-                for(var i = 0; i < this.suppliers.length; i++) {
-                  if(this.suppliers[i].id == supplier.id) {
-                    this.selectedSupplier = this.suppliers[i];
-                    this.oldSupplier = this.suppliers[i];
-                    break;
-                  } 
-                }
-              }
-            );
-            // Get the date when supplier was selected
-            this.getStringDate(this.application.date);
-          }
-          
-        }
-      );
-    }
-  }
-
+        
+  /*  --- METHODS ---- */   
   /* Search bar */
   private searchSuppliers() {
     this.suppliers = this.suppliersCopy;
@@ -171,14 +173,14 @@ export class SelectSupplierComponent {
     for (let supplier of this.suppliers) {
       if (supplier.name && supplier.vat) {
         if (supplier.name.toLowerCase().indexOf(this.searchSuppliersInput.toLowerCase()) != -1) {
-              this.displayedSuppliers.push(supplier);
-            }
+          this.displayedSuppliers.push(supplier);
+        }
         this.suppliers = this.displayedSuppliers;
       }
     }
   }
 
-  /* Toggles boolean to allow you select a new supplier */
+  /* Toggles boolean to allow you select a new supplier: REMOVED IN NEW BR 4.1 */
   // Method removed with new Business Requirements 4.1 
   // private changeSupplier() {
   //  (this.hasSupplierAssigned) ? this.hasSupplierAssigned = false : this.hasSupplierAssigned = true;
@@ -196,15 +198,16 @@ export class SelectSupplierComponent {
   private onRowSelect() {
     if(this.hasSupplierAssigned) {
       (this.displayChangeModal) ? this.displayChangeModal = false : this.displayChangeModal = true;
-      console.log(this.selectedSupplier);
     }
   }
 
+  /* Comes back to stato quo (before clicking on any row) */ 
   private cancelChange() {
     this.selectedSupplier = this.oldSupplier;
     this.onRowSelect();
   }
 
+  /* Allows you click again in "Select installation company" button */
   private confirmChange() {
     this.onRowSelect();
     this.hasSupplierAssigned = false;
@@ -222,6 +225,5 @@ export class SelectSupplierComponent {
     this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalityId, this.selectedSupplier.id]);
   }
   
-
-// End of export class
+// End of exported class
 }
