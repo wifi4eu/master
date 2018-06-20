@@ -1,4 +1,4 @@
-package wifi4eu.dgconn.web.rest;
+package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

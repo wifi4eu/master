@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -334,7 +335,7 @@ public class VoucherResource {
                                                                @RequestParam("direction") String direction,
                                                                HttpServletResponse response) throws IOException {
         _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Exporting voucher simulation by assignment id "
-                + assignmentId + ", country " + country + ", municipality " + municipality + ", page " + page + ", size " + size + ", field " + field + " and direction " + direction);
+                + assignmentId + ", country " + country + ", municipality " + municipality + ", field " + field + " and direction " + direction);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: exportExcelVoucherSimulation");

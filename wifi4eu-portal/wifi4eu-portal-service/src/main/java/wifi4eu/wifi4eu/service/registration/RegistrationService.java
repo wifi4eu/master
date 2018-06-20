@@ -8,22 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.enums.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.entity.registration.Registration;
-import wifi4eu.wifi4eu.mapper.registrationWarning.RegistrationWarningMapper;
+import wifi4eu.wifi4eu.common.enums.FileTypes;
+import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.service.application.ApplicationWarningsChecker;
-import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
+import wifi4eu.wifi4eu.mapper.registrationWarning.RegistrationWarningMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
-import wifi4eu.wifi4eu.service.application.ApplicationWarningsChecker;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -35,13 +33,9 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
 import wifi4eu.wifi4eu.util.MailService;
 
-import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
@@ -161,7 +155,7 @@ public class RegistrationService {
     }
 
     @Transactional
-    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) {
+    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) throws Exception {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
@@ -171,8 +165,10 @@ public class RegistrationService {
             byte[] lf1ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf1));
             String lf1Extension = LegalFilesService.getValidFileExtension(lf1);
             if (lf1ByteArray.length > 1024000) {
+                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File size cannot bet greater than 1 MB");
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf1Extension == null) {
+                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File must have a valid extension");
                 throw new Exception("File must have a valid extension.");
             } else {
                 LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE1.getValue()));
@@ -194,8 +190,10 @@ public class RegistrationService {
             byte[] lf2ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf2));
             String lf2Extension = LegalFilesService.getValidFileExtension(lf2);
             if (lf2ByteArray.length > 1024000) {
+                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File size cannot bet greater than 1 MB");
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf2Extension == null) {
+                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File must have a valid extension");
                 throw new Exception("File must have a valid extension.");
             } else {
                 LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE2.getValue()));
@@ -217,8 +215,10 @@ public class RegistrationService {
             byte[] lf3ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf3));
             String lf3Extension = LegalFilesService.getValidFileExtension(lf3);
             if (lf3ByteArray.length > 1024000) {
+                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File size cannot bet greater than 1 MB");
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf3Extension == null) {
+                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File must have a valid extension");
                 throw new Exception("File must have a valid extension.");
             } else {
                 LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE3.getValue()));
@@ -240,8 +240,10 @@ public class RegistrationService {
             byte[] lf4ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf4));
             String lf4Extension = LegalFilesService.getValidFileExtension(lf4);
             if (lf4ByteArray.length > 1024000) {
+                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File size cannot bet greater than 1 MB");
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf4Extension == null) {
+                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File must have a valid extension");
                 throw new Exception("File must have a valid extension.");
             } else {
                 LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE4.getValue()));
