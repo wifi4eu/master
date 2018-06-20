@@ -96,6 +96,20 @@ export class DgConnApplicantRegistrationsComponent {
                                     if (queryParams['page']) {
                                         this.page = queryParams['page'];
                                     }
+                                    if (queryParams['order']) {
+                                        let order = queryParams['order'];
+                                        if (order.toString().toLowerCase().trim() == 'asc')
+                                            this.sortOrder = 1;
+                                        else if (order.toString().toLowerCase().trim() == 'desc')
+                                            this.sortOrder = -1;
+                                    }
+                                    if (queryParams['sortField']) {
+                                        let sortField = queryParams['sortField'].toString().toLowerCase().trim();
+                                        if (sortField == 'countryCode' || sortField == 'counter' || sortField == 'mediation')
+                                            this.sortField = sortField;
+                                        else
+                                            this.sortField = 'name';
+                                    }
                                     this.firstDataDownload = false;
                                     this.searchApplicants();
                                 }
@@ -129,6 +143,8 @@ export class DgConnApplicantRegistrationsComponent {
                         if (response.success) {
                             this.totalItems = response.xtotalCount;
                             this.tableApplicants.totalRecords = this.totalItems;
+                            this.totalPages = this.totalItems / this.itemsPerPage;
+                            this.tableApplicants.pageLinks = this.totalPages;
                             if (this.page > this.totalPages) {
                                 this.page = 0;
                                 this.filterApplicantsSearch();
@@ -205,10 +221,19 @@ export class DgConnApplicantRegistrationsComponent {
             numItems = 20;
         }
         let page = null;
-        if (page != 0) {
+        if (this.page != 0) {
             page = this.page;
         }
-        this.router.navigate([this.componentURL], {queryParams: {name: nameSearched, country: countryCode, items: numItems, page: page}});
+        let order = null;
+        if (this.sortOrder == 1)
+            order = 'asc';
+        else if (this.sortOrder == -1)
+            order = 'desc';
+        let sortField = null;
+        if (this.sortField != null) {
+            sortField = this.sortField;
+        }
+        this.router.navigate([this.componentURL], {queryParams: {name: nameSearched, country: countryCode, items: numItems, page: page, order: order, sortField: sortField}});
     }
 
     private paginateData(event) {
@@ -231,7 +256,7 @@ export class DgConnApplicantRegistrationsComponent {
             this.sortField = event['field'];
         if (event['order'] != null)
             this.sortOrder = event['order'];
-        this.searchApplicants();
+        this.filterApplicantsSearch();
     }
 
     private changeCall(event) {
