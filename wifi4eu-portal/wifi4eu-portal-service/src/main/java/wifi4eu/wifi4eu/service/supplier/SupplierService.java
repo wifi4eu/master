@@ -372,10 +372,7 @@ public class SupplierService {
         MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
         int registrationId = registrationService.getRegistrationByMunicipalityId(municipalityId).getId();
         List<CallDTO> calls = callService.getAllCalls();
-        // CallDTO call = callService.getCallById(1);
-        // If having an error on calls, check that the calls are not null/empty. 
         ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(calls.get(calls.size()-1).getId(), registrationId);
-        // ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(call.getId(), registrationId);
         if(application != null) {
             SupplierDTO supplier = getSupplierById(application.getSupplierId());
             
@@ -405,10 +402,7 @@ public class SupplierService {
         MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
         int registrationId = registrationService.getRegistrationByMunicipalityId(municipalityId).getId();
         List<CallDTO> calls = callService.getAllCalls();
-        // CallDTO call = callService.getCallById(1);
-        // If having an error on calls, check that the calls are not null/empty. 
         ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(calls.get(calls.size()-1).getId(), registrationId);
-        // ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(call.getId(), registrationId);
         if(application != null) {
             SupplierDTO supplier = getSupplierById(application.getSupplierId());
             
