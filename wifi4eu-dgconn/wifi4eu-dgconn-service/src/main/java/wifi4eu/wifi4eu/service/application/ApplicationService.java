@@ -564,7 +564,7 @@ public class ApplicationService {
         PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
         List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, null, pagingSortingData);
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Excel exported");
+        _log.log(Level.getLevel("BUSINESS"),"[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - exporting excel DGConn Applicants List");
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
     }
 
@@ -577,7 +577,7 @@ public class ApplicationService {
         PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
         List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, name, pagingSortingData);
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Excel exported");
+        _log.log(Level.getLevel("BUSINESS"),"[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - export excel DGConn Applicants list with Name");
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
     }
 
@@ -636,6 +636,7 @@ public class ApplicationService {
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
             correctionRequest = correctionRequestEmailMapper.toDTO(correctionRequestEmailRepository.save(correctionRequestEmailMapper.toEntity(correctionRequest)));
         }
+        _log.log(Level.getLevel("BUSINESS"),"[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - send documents correction request");
         return correctionRequest;
     }
 
