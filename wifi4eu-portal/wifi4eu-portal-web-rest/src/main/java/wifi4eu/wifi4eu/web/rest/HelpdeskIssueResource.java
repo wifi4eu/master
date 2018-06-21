@@ -14,7 +14,6 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.HelpdeskIssueValidator;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -95,7 +94,7 @@ public class HelpdeskIssueResource {
                 throw new AccessDeniedException("Invalid access");
             }
 
-            HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO);
+            HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO, nuts);
 
             helpdeskIssueDTO.setCreateDate(new Date().getTime());
             helpdeskIssueDTO.setStatus(0);

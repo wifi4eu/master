@@ -10,13 +10,14 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
+import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.HelpdeskIssueValidator;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
+import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -36,23 +37,26 @@ public class HelpdeskIssueResource {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    NutsService nutsService;
+
     Logger _log = LoggerFactory.getLogger(CallResource.class);
 
     @ApiOperation(value = "Get all the helpdesk issues")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<HelpdeskIssueDTO> allHelpdeskIssues(HttpServletResponse response) throws IOException {
-        try{
+        try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-        } catch (AccessDeniedException ade){
+        } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("AccessDenied on 'allHelpdeskIssues' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e){
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'allHelpdeskIssues' operation.", e);
             }
@@ -70,7 +74,7 @@ public class HelpdeskIssueResource {
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
 
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException("");
             }
         } catch (Exception e) {
@@ -91,20 +95,20 @@ public class HelpdeskIssueResource {
             _log.info("createHelpdeskIssue");
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())){
+            if (!userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())) {
                 throw new AccessDeniedException("Invalid access");
             }
-
-            HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO);
+            List<NutsDTO> nuts = nutsService.getNutsByLevel(0);
+            HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO, nuts);
 
             helpdeskIssueDTO.setCreateDate(new Date().getTime());
             helpdeskIssueDTO.setStatus(0);
 
             HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.createHelpdeskIssue(helpdeskIssueDTO);
             return new ResponseDTO(true, resHelpdeskIssue, null);
-        }catch (AccessDeniedException ade) {
+        } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
-                    _log.error("Access denied on 'deleteHelpdeskIssue' operation.", ade);
+                _log.error("Access denied on 'deleteHelpdeskIssue' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
