@@ -36,17 +36,4 @@ public interface SupplierMapper {
     List<SupplierDTO> toDTOList(List<Supplier> list);
     List<Supplier> toEntityList(List<SupplierDTO> list);
 
-    // Borradooooooooooooooooooooooooooooooooooooooooooor
-/*     @Mappings({
-        @Mapping(target = "bic", ignore=true),
-        @Mapping(target = "accountNumber", ignore=true),
-        @Mapping(target = "contactName", ignore=true),
-        @Mapping(target = "contactPhonePrefix", ignore=true),
-        @Mapping(target = "contactPhoneNumber", ignore=true),
-        @Mapping(target = "contactEmail", ignore=true),
-        @Mapping(target = "legalFile1", ignore=true),
-        @Mapping(target = "legalFile2", ignore=true)
-    })
-    SupplierDTO toDTOLimited(Supplier entity); */
-
 }
