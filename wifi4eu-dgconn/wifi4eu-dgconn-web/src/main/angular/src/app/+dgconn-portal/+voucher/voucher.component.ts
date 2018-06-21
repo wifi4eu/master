@@ -460,7 +460,7 @@ export class DgConnVoucherComponent {
       return;
     }
     this.voucherApi.sendNotificationForApplicants(this.callSelected.id).subscribe((response: ResponseDTO) => {
-      console.log(response);
+      console.log(response.success ? 'Success sending notifications': 'Failed sending notifications');
     })
   }
 

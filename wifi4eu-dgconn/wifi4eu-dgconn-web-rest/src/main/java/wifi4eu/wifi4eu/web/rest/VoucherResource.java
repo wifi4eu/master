@@ -248,20 +248,26 @@ public class VoucherResource {
     @ApiOperation(value = "Send notifications  to applicants")
     @RequestMapping(value = "/assignment/send-notifications", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO sendNotificationForApplicants(@RequestBody final Integer callId){
+    public ResponseDTO sendNotificationForApplicants(@RequestBody final Integer callId, HttpServletResponse response) throws IOException{
 
         try{
             if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("Access denied: saveFreezeListSimulation");
+                throw new AccessDeniedException("Access denied: sendNotificationForApplicants");
             }
             voucherService.sendNotificationForApplicants(callId);
             return new ResponseDTO(true, null, null);
         }
         catch (AccessDeniedException ade){
-
+            if(_log.isWarnEnabled()){
+                _log.warn(ade.getMessage());
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
         catch (Exception e){
-
+            if(_log.isWarnEnabled()){
+                _log.warn("Error on 'sendNotificationForApplicants' operation.", e);
+            }
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
 
         return new ResponseDTO(false, null, null);
