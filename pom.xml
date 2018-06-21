@@ -265,6 +265,9 @@
             <properties>
                 <ng.env>test</ng.env>
                 <schemes>https</schemes>
+                <server.dgconn.address>${server.azure.test.address}</server.dgconn.address>
+                <dgconn.name>wifi4eu</dgconn.name>
+                <dgconn.context.name>/wifi4eu</dgconn.context.name>
                 <server.address>${server.azure.test.address}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
