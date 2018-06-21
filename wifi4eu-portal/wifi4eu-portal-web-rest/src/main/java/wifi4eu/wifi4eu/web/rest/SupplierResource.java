@@ -153,7 +153,6 @@ public class SupplierResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
-    */
 
     @ApiOperation(value = "Update supplier")
     @RequestMapping(method = RequestMethod.POST)
