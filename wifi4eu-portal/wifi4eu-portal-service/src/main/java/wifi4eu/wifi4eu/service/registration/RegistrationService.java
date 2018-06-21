@@ -264,6 +264,13 @@ public class RegistrationService {
         }
     }
 
+
+    public RegistrationDTO invalidateRegistration(int registrationId) {
+        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
+        registrationDBO.setStatus(RegistrationStatus.KO.getValue());
+        return saveRegistration(registrationDBO);
+    }
+
     public List<RegistrationDTO> getRegistrationsByUserId(int userId) {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findByUserId(userId)));
     }

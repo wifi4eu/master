@@ -160,11 +160,11 @@ public class RegistrationService {
             } else if (lf1Extension == null) {
                 throw new Exception("File must have a valid extension.");
             } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE1.getValue()));
+                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE1.getValue()));
                 if (legalFilesDTO == null) {
                     legalFilesDTO = new LegalFilesDTO();
                 }
-                legalFilesDTO.setRegistration(registrationDTO.getId());
+                legalFilesDTO.setRegistration(registrationDBO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
                 legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf1));
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
@@ -182,11 +182,11 @@ public class RegistrationService {
             } else if (lf2Extension == null) {
                 throw new Exception("File must have a valid extension.");
             } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE2.getValue()));
+                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE2.getValue()));
                 if (legalFilesDTO == null) {
                     legalFilesDTO = new LegalFilesDTO();
                 }
-                legalFilesDTO.setRegistration(registrationDTO.getId());
+                legalFilesDTO.setRegistration(registrationDBO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
                 legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf2));
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
@@ -204,11 +204,11 @@ public class RegistrationService {
             } else if (lf3Extension == null) {
                 throw new Exception("File must have a valid extension.");
             } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE3.getValue()));
+                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE3.getValue()));
                 if (legalFilesDTO == null) {
                     legalFilesDTO = new LegalFilesDTO();
                 }
-                legalFilesDTO.setRegistration(registrationDTO.getId());
+                legalFilesDTO.setRegistration(registrationDBO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
                 legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf3));
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
@@ -226,11 +226,11 @@ public class RegistrationService {
             } else if (lf4Extension == null) {
                 throw new Exception("File must have a valid extension.");
             } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE4.getValue()));
+                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE4.getValue()));
                 if (legalFilesDTO == null) {
                     legalFilesDTO = new LegalFilesDTO();
                 }
-                legalFilesDTO.setRegistration(registrationDTO.getId());
+                legalFilesDTO.setRegistration(registrationDBO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
                 legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf4));
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));

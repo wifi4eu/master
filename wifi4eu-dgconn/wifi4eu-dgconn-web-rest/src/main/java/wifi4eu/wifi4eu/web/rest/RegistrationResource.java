@@ -92,10 +92,11 @@ public class RegistrationResource {
 
     @ApiOperation(value = "Create registration")
     @RequestMapping(method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO invalidateRegistration(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO createRegistration(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
         try {
-            _log.info("invalidateRegistration");
+            _log.info("createRegistration");
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
@@ -108,7 +109,7 @@ public class RegistrationResource {
 
             //RegistrationValidator.validate(registrationDTO);
 
-            RegistrationDTO resRegistration = registrationService.invalidateRegistration(registrationDTO.getId());
+            RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);
 
         } catch (AccessDeniedException ade) {
@@ -165,7 +166,7 @@ public class RegistrationResource {
     @ResponseBody
     public ResponseDTO updateRegistrationDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
         try {
-            _log.info("createRegistration");
+            _log.info("updateRegistration");
 
             UserContext userContext = UserHolder.getUser();
             UserDTO userDTO = userService.getUserByUserContext(userContext);
