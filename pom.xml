@@ -11,6 +11,15 @@
     <description>J2EE, SpringMVC, eUI application</description>
 
 
+    <modules>
+        <module>wifi4eu-common</module>
+        <module>wifi4eu-portal</module>
+        <module>wifi4eu-public-portal</module>
+        <module>wifi4eu-dgconn</module>
+        <!--<module>wifi4eu-financial</module>-->
+    </modules>
+
+
     <scm>
         <connection>scm:svn:https://webgate.ec.europa.eu/CITnet/svn/wifi4eu</connection>
         <developerConnection>scm:svn:https://webgate.ec.europa.eu/CITnet/svn/wifi4eu
@@ -159,22 +168,7 @@
 
     <profiles>
 
-		<!-- By default, include all the modules -->
-        <profile>
-            <id>full-build</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>wifi4eu-common</module>
-                <module>wifi4eu-portal</module>
-                <module>wifi4eu-public-portal</module>
-                <module>wifi4eu-dgconn</module>
-                <!--<module>wifi4eu-financial</module>-->
-            </modules>
-        </profile>
-
-		<!-- APP PROFILES -->
+        <!-- APP PROFILES -->
 
 		<profile>
             <id>wifi4eu-portal</id>
