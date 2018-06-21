@@ -10,6 +10,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
+import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -17,6 +18,7 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.HelpdeskIssueValidator;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
+import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +37,9 @@ public class HelpdeskIssueResource {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    NutsService nutsService;
 
     Logger _log = LogManager.getLogger(CallResource.class);
 
@@ -95,7 +100,9 @@ public class HelpdeskIssueResource {
             if (!userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())) {
                 throw new AccessDeniedException("Invalid access");
             }
-            HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO);
+            List<NutsDTO> nuts = nutsService.getNutsByLevel(0);
+            HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO, nuts);
+
             helpdeskIssueDTO.setCreateDate(new Date().getTime());
             helpdeskIssueDTO.setStatus(0);
             HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.createHelpdeskIssue(helpdeskIssueDTO);

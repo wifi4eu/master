@@ -35,6 +35,7 @@ import java.util.List;
 @Api(value = "/registration", description = "Registration object REST API services")
 @RequestMapping("registration")
 public class RegistrationResource {
+
     @Autowired
     private RegistrationService registrationService;
 

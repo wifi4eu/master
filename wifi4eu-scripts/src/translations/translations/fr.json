@@ -612,5 +612,10 @@
   "dgConn.voucherAssignment.preList.date": "Saved on {{date}} at {{hour}}",
   "dgConn.voucherAssignment.freezeList.date": "Frozen on {{date}} at {{hour}}. Read only.",
   "dgConn.voucherAssignment.invalidateReason": "Invalidate Reason",
-  "dgconn.voucherAssignment.runningSimulation.confirm": "Confirm"
+  "dgconn.voucherAssignment.runningSimulation.confirm": "Confirm",
+  "dgconn.sendRequestCorrectionEmails": "Send request for correction e-mails",
+  "dgconn.sendRequestCorrectionEmails.desc": "This button will send an e-mail to all applicants for which correction of supporting documents is requested.",
+  "dgconn.sendRequestCorrectionEmails.modal.desc": "This will send an e-mail to all the applicants for which a correction of documents is requested. Are you sure you want to send the e-mails?",
+  "dgconn.sendRequestCorrectionEmails.requestSentOn": "Request sent on {{date}} at {{time}}",
+  "dgconn.sendRequestCorrectionEmails.lastRequestSentOn": "Last request sent on {{date}} at {{time}}"
 }
