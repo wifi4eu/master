@@ -167,6 +167,19 @@
 
 
     <profiles>
+
+        <!-- APP PROFILES -->
+
+		<profile>
+            <id>wifi4eu-portal</id>
+			<modules>
+			    <module>wifi4eu-common</module>
+                <module>wifi4eu-portal</module>
+            </modules>
+		</profile>
+
+        <!-- ENVIRONMENT PROFILES -->
+
         <profile>
             <id>TEST</id>
             <properties>
