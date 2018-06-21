@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.registration.legal_files.*;
@@ -34,6 +35,10 @@ import java.util.List;
 @Api(value = "/registration", description = "Registration object REST API services")
 @RequestMapping("registration")
 public class RegistrationResource {
+
+    @Autowired
+    RequestIpRetriever requestIpRetriever;
+
     @Autowired
     private RegistrationService registrationService;
 
@@ -109,7 +114,7 @@ public class RegistrationResource {
             }
             //RegistrationValidator.validate(registrationDTO);
             RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Registration created successfully");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Registration created successfully");
             return new ResponseDTO(true, resRegistration, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to create registrations", ade.getMessage());

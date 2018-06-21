@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.service.voucher;
 
 import com.google.common.collect.Lists;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
@@ -39,6 +41,7 @@ import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
 import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -46,6 +49,9 @@ import java.util.*;
 public class VoucherService {
 
     private Logger _log = LogManager.getLogger(this.getClass());
+
+    @Autowired
+    RequestIpRetriever requestIpRetriever;
 
     @Autowired
     VoucherAssignmentMapper voucherAssignmentMapper;
@@ -196,7 +202,7 @@ public class VoucherService {
         List<VoucherSimulationDTO> simulationDTOS = (List<VoucherSimulationDTO>) getVoucherSimulationByVoucherAssignment(voucherAssignmentId, country, municipalityName, pageable).getData();
 
         VoucherSimulationExportGenerator excelExportGenerator = new VoucherSimulationExportGenerator(simulationDTOS, VoucherSimulationDTO.class);
-        return excelExportGenerator.exportExcelFile("voucher_simulation").toByteArray();
+       return excelExportGenerator.exportExcelFile("voucher_simulation").toByteArray();
     }
 
     public List<VoucherSimulationDTO> getVoucherSimulationsByVoucherAssigmentId(int voucherAssignmentId) {
@@ -264,8 +270,7 @@ public class VoucherService {
         }
 
         result.setVoucherSimulations(simulationDTOSet);
-
-        return voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
+         return voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
     }
 
     @Transactional
@@ -323,7 +328,6 @@ public class VoucherService {
             result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
 
             voucherSimulationRepository.updateApplicationsInVoucherSimulationByVoucherAssignment(1, result.getId());
-
             return result;
         } else {
             throw new AppException("Error saving pre-selected list");
