@@ -19,6 +19,7 @@ CREATE TABLE dbo.users
   [type]          INT           NULL     DEFAULT NULL,
   [verified]      SMALLINT      NOT NULL DEFAULT 0,
   [lang]          NVARCHAR(255)          DEFAULT 'en',
+  [csrf_token]    NVARCHAR(255) NULL,
   PRIMARY KEY ([id])
 );
 -- -----------------------------------------------------
@@ -85,10 +86,14 @@ CREATE TABLE dbo.registrations
   [role]             NVARCHAR(500) NULL,
   [_status]          INT           NOT NULL,
   --  0=HOLD; 1=KO; 2=OK
-  [legal_file1]      NVARCHAR(MAX) NULL,
-  [legal_file2]      NVARCHAR(MAX) NULL,
-  [legal_file3]      NVARCHAR(MAX) NULL,
-  [legal_file4]      NVARCHAR(MAX) NULL,
+  [legal_file1_mime]  NVARCHAR(MAX) NULL,
+  [legal_file1_size]  BIGINT NULL,
+  [legal_file2_mime]  NVARCHAR(MAX) NULL,
+  [legal_file2_size]  BIGINT NULL,
+  [legal_file3_mime]  NVARCHAR(MAX) NULL,
+  [legal_file3_size]  BIGINT NULL,
+  [legal_file4_mime]  NVARCHAR(MAX) NULL,
+  [legal_file4_size]  BIGINT NULL,
   [ip_registration]  NVARCHAR(30)  NULL,
   [organisation_id]  INT                    DEFAULT NULL,
   [association_name] NVARCHAR(MAX)          DEFAULT NULL,
@@ -117,10 +122,14 @@ CREATE INDEX [fk_municipality_idx]
 -- -----------------------------------------------------
 CREATE TABLE dbo.calls
 (
-  [id]         INT           NOT NULL IDENTITY,
-  [event]      NVARCHAR(500) NULL,
-  [start_date] BIGINT        NULL,
-  [end_date]   BIGINT        NULL,
+  [id] INT NOT NULL IDENTITY,
+  [event] VARCHAR(500) NULL,
+  [start_date] BIGINT NULL,
+  [end_date] BIGINT NULL,
+  [number_vouchers] INT DEFAULT 0 NOT NULL,
+  [voucher_value] INT DEFAULT 0 NOT NULL,
+  [max_percent_country] INT DEFAULT 10 NOT NULL,
+  [reserve] INT DEFAULT 5 NOT NULL,
   PRIMARY KEY ([id])
 );
 -- -----------------------------------------------------
@@ -446,43 +455,52 @@ VALUES
 -- -----------------------------------------------------
 CREATE TABLE voucher_management
 (
-  [id]           INT           NOT NULL IDENTITY,
-  [call_id]      INT           NOT NULL,
-  [member_state] NVARCHAR(255) NULL,
-  [minimum]      INT           NULL,
-  [maximum]      INT           NULL,
-  PRIMARY KEY ([id])
-);
+  [id] INT NOT NULL IDENTITY,
+  [call_id] INT NOT NULL,
+  [member_state] VARCHAR(255) NULL,
+  [minimum] INT NULL,
+  [maximum] INT NULL,
+  [reserve] INT DEFAULT 50,
+  [country_code] NVARCHAR(255) NULL,
+  PRIMARY KEY CLUSTERED (
+    [id] ASC
+  ) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY];
+
 INSERT INTO voucher_management
-(call_id, member_state, minimum, maximum)
+  (id, call_id, member_state, minimum, maximum, reserve, country_code)
 VALUES
-  (1, 'Austria', 15, 80),
-  (1, 'Belgium', 15, 80),
-  (1, 'Bulgaria', 15, 80),
-  (1, 'Croatia', 15, 80),
-  (1, 'Cyprus', 15, 80),
-  (1, 'Czech Republic', 15, 80),
-  (1, 'Denmark', 15, 80),
-  (1, 'Estonia', 15, 80),
-  (1, 'Finland', 15, 80),
-  (1, 'France', 15, 80),
-  (1, 'Germany', 15, 80),
-  (1, 'Greece', 15, 80),
-  (1, 'Hungary', 15, 80),
-  (1, 'Ireland', 15, 80),
-  (1, 'Italy', 15, 80),
-  (1, 'Latvia', 15, 80),
-  (1, 'Lithuania', 15, 80),
-  (1, 'Luxembourg', 15, 80),
-  (1, 'Malta', 15, 80),
-  (1, 'Netherlands', 15, 80),
-  (1, 'Poland', 15, 80),
-  (1, 'Portugal', 15, 80),
-  (1, 'Romania', 15, 80),
-  (1, 'Slovakia', 15, 80),
-  (1, 'Slovenia', 15, 80),
-  (1, 'Spain', 15, 80),
-  (1, 'Sweden', 15, 80);
+  (1, 1, N'ÖSTERREICH', 15, 95, 15, N'AT'),
+  (2, 1, N'BELGIQUE-BELGIË', 15, 95, 15, N'BE'),
+  (3, 1, N'BULGARIA', 15, 95, 15, N'BG'),
+  (4, 1, N'HRVATSKA', 15, 95, 15, N'HR'),
+  (5, 1, N'KYPROS', 15, 95, 15, N'CY'),
+  (6, 1, N'CESKÁ REPUBLIKA', 15, 95, 15, N'CZ'),
+  (7, 1, N'DANMARK', 15, 95, 15, N'DK'),
+  (8, 1, N'EESTI', 15, 95, 15, N'EE'),
+  (9, 1, N'SUOMI / FINLAND', 15, 95, 15, N'FI'),
+  (10, 1, N'FRANCE', 15, 95, 15, N'FR'),
+  (11, 1, N'DEUTSCHLAND', 15, 95, 15, N'DE'),
+  (12, 1, N'ELLADA', 15, 95, 15, N'EL'),
+  (13, 1, N'MAGYARORSZÁG', 15, 95, 15, N'HU'),
+  (14, 1, N'IRELAND', 15, 95, 15, N'IE'),
+  (15, 1, N'ITALIA', 15, 95, 15, N'IT'),
+  (16, 1, N'LATVIJA', 15, 95, 15, N'LV'),
+  (17, 1, N'LIETUVA', 15, 95, 15, N'LT'),
+  (18, 1, N'LUXEMBOURG', 15, 95, 15, N'LU'),
+  (19, 1, N'MALTA', 15, 95, 15, N'MT'),
+  (20, 1, N'NEDERLAND', 15, 95, 15, N'NL'),
+  (21, 1, N'POLSKA', 15, 95, 15, N'PL'),
+  (22, 1, N'PORTUGAL', 15, 95, 15, N'PT'),
+  (23, 1, N'ROMÂNIA', 15, 95, 15, N'RO'),
+  (24, 1, N'SLOVENSKO', 15, 95, 15, N'SK'),
+  (25, 1, N'SLOVENIJA', 15, 95, 15, N'SI'),
+  (26, 1, N'ESPAÑA', 15, 95, 15, N'ES'),
+  (27, 1, N'SVERIGE', 15, 95, 15, N'SE'),
+  (28, 1, N'UNITED KINGDOM', 15, 95, 15, N'UK'),
+  (29, 1, N'NORWAY', 15, 95, 15, N'NO'),
+  (30, 1, N'ICELAND', 15, 95, 15, N'IS');
+
 -- -----------------------------------------------------
 -- Table `dbo`.`user_threads`
 -- -----------------------------------------------------
@@ -503,11 +521,8 @@ CREATE TABLE dbo.legal_files
 (
   [id]                  INT NOT NULL IDENTITY,
   [registration]        INT NOT NULL,
-  [type]                INT NOT NULL,
   [data]                NVARCHAR(MAX) NULL,
-  [upload_time]         BIGINT DEFAULT NULL,
-  [request_correction]  SMALLINT NULL DEFAULT 0,
-  [correction_reason]   INT NULL DEFAULT NULL,
+  [type]                INT NOT NULL,
   PRIMARY KEY ([id])
   ,
   CONSTRAINT [fk_legal_files_registrations]
@@ -518,3 +533,101 @@ CREATE TABLE dbo.legal_files
 );
 CREATE INDEX [fk_registration_idx]
   ON dbo.legal_files ([registration] ASC);
+
+-- -----------------------------------------------------
+-- Table `dbo`.`legal_files_correction_reason`
+-- -----------------------------------------------------
+CREATE TABLE dbo.legal_files_correction_reason
+(
+  [id]                  INT NOT NULL IDENTITY,
+  [registration]        INT NOT NULL,
+  [type]                INT NOT NULL,
+  [request_correction]  SMALLINT NULL DEFAULT 0,
+  [correction_reason]   INT NULL DEFAULT NULL,
+  PRIMARY KEY ([id])
+  ,
+  CONSTRAINT [fk_legal_files_correction_reason_registrations]
+  FOREIGN KEY ([registration])
+  REFERENCES dbo.registrations ([id])
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `dbo`.`voucher_assignments`
+-- -----------------------------------------------------
+CREATE TABLE dbo.voucher_assignments
+(
+  [id]              INT NOT NULL IDENTITY,
+  [call]            INT NOT NULL,
+  [status]          INT NOT NULL DEFAULT 0,
+  [_user]           INT NOT NULL,
+  [execution_date]  BIGINT NULL,
+  PRIMARY KEY ([id])
+  ,
+  CONSTRAINT [fk_voucher_assignments_calls]
+  FOREIGN KEY ([call])
+  REFERENCES dbo.calls ([id])
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `dbo`.`voucher_simulations`
+-- -----------------------------------------------------
+CREATE TABLE dbo.voucher_simulations
+(
+  [id]                  INT NOT NULL IDENTITY,
+  [eu_rank]             INT NOT NULL,
+  [country_rank]        INT NOT NULL,
+  [country]             VARCHAR(255) NULL,
+  [municipality]        INT NOT NULL,
+  [application]         INT NOT NULL,
+  [num_applications]    INT DEFAULT 0,
+  [rejected]            INT NULL,
+  [selection_status]    INT NULL,
+  [voucher_assignment]  INT NOT NULL,
+  PRIMARY KEY ([id])
+  ,
+  CONSTRAINT [fk_voucher_simulations_assignments]
+  FOREIGN KEY ([voucher_assignment])
+  REFERENCES dbo.voucher_assignments ([id])
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `dbo`.`registration_warnings`
+-- -----------------------------------------------------
+CREATE TABLE [dbo].[registration_warnings](
+	[id] [int] IDENTITY NOT NULL,
+	[warning] [int] NULL,
+	[registration_id] [int] NULL,
+  PRIMARY KEY ([id]))
+
+-- -----------------------------------------------------
+-- Delete Applicant List Item.
+-- -----------------------------------------------------
+DELETE TABLE APPLICANTLISTITEM;
+
+-- -----------------------------------------------------
+-- Alter application table
+-- -----------------------------------------------------
+ALTER TABLE applications ADD pre_selected_flag BIT DEFAULT(0) NOT NULL;
+ALTER TABLE applications ADD rejected BIT DEFAULT(0) NOT NULL;
+
+-- -----------------------------------------------------
+-- Alter voucher_assignments table
+-- -----------------------------------------------------
+ALTER TABLE voucher_assignments ADD notified_date BIGINT;
+-- -----------------------------------------------------
+-- Table `dbo`.`correction_requests_emails`
+-- -----------------------------------------------------
+CREATE TABLE dbo.correction_requests_emails
+(
+  [id]                      INT NOT NULL IDENTITY,
+  [call]                    INT NULL,
+  [date]                    BIGINT NULL,
+  [button_pressed_counter]  INT NULL,
+  PRIMARY KEY ([id])
+);

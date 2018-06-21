@@ -14,7 +14,7 @@
 <c:set var="baseHref" value="${fn:substring(url, 0, fn:length(url) - fn:length(pageContext.request.requestURI))}${pageContext.request.contextPath}" />
 <c:set var="baseTag"><base href="${baseHref}/"></c:set>
 <c:import url="index.html" var="html" />
-${fn:replace(html, '<base href="/">', baseTag)}
+${fn:replace(html, '<base href=\"/\">', baseTag)}
 <%
         }
     } catch (Exception e) {

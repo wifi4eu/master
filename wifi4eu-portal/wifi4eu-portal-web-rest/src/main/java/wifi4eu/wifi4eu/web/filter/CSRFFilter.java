@@ -1,14 +1,18 @@
 package wifi4eu.wifi4eu.web.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.DigestUtils;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +20,10 @@ import java.io.IOException;
 
 public class CSRFFilter extends OncePerRequestFilter {
 
-    Logger _log = LoggerFactory.getLogger(CSRFFilter.class);
+    Logger _log = LogManager.getLogger(CSRFFilter.class);
+
+    //@Autowired
+    private UserService userService;
 
     @Override
     protected String getAlreadyFilteredAttributeName() {
@@ -35,6 +42,12 @@ public class CSRFFilter extends OncePerRequestFilter {
         _log.debug("doFilterInternal : XSRF : getRequestURL: " + request.getRequestURL().toString());
         _log.debug("METHOD: " + request.getMethod());
 
+        if(userService == null){
+            ServletContext servletContext = getServletContext();
+            WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+            userService = webApplicationContext.getBean(UserService.class);
+        }
+
         if(!request.getMethod().equalsIgnoreCase("GET")
                 && !request.getRequestURL().toString().contains("/api/user/ecaslogin")){
 
@@ -45,22 +58,28 @@ public class CSRFFilter extends OncePerRequestFilter {
                 UserContext userContext = UserHolder.getUser();
 
                 if (userContext != null) {
-                    String value = userContext.getUsername() + userContext.getDomain();
-                    String hash = DigestUtils.md5DigestAsHex(value.getBytes());
-                    _log.debug("HASH: " + hash);
-                    _log.debug("Comparision: " + XSRFTOKEN.equalsIgnoreCase(hash));
+                    UserDTO user = userService.getUserByUserContext(userContext);
 
-                    if (!XSRFTOKEN.equalsIgnoreCase(hash)) {
-                        response.sendError(HttpStatus.BAD_REQUEST.value());
+                    if (user != null) {
+                        _log.debug("User stored Token: " + user.getCsrfToken());
+                        _log.debug("Comparision: " + XSRFTOKEN.equalsIgnoreCase(user.getCsrfToken()));
+
+                        if (!XSRFTOKEN.equalsIgnoreCase(user.getCsrfToken())) {
+                            response.sendError(HttpStatus.UNAUTHORIZED.value());
+                            return;
+                        }
+                    } else {
+                        _log.debug("user is NULL");
+                        response.sendError(HttpStatus.UNAUTHORIZED.value());
                         return;
                     }
                 } else {
                     _log.debug("userContext is NULL");
-                    response.sendError(HttpStatus.BAD_REQUEST.value());
+                    response.sendError(HttpStatus.UNAUTHORIZED.value());
                     return;
                 }
             } else {
-                response.sendError(HttpStatus.BAD_REQUEST.value());
+                response.sendError(HttpStatus.UNAUTHORIZED.value());
                 return;
             }
         }
