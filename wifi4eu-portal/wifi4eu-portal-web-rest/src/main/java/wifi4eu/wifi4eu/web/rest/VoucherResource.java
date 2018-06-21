@@ -122,7 +122,9 @@ public class VoucherResource {
     @ApiOperation(value = "Get voucher assignment by call")
     @RequestMapping(value = "/assignmentaux/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(@PathVariable("callId") final Integer callId, HttpServletRequest request) {
+    public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(@PathVariable("callId") final Integer callId, HttpServletResponse httpServletResponse) {
+        httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving the voucher assignment by call id " + callId);
@@ -151,10 +153,14 @@ public class VoucherResource {
                                                                @RequestParam("page") Integer page,
                                                                @RequestParam("size") Integer size,
                                                                @RequestParam("field") String field,
-                                                               @RequestParam("direction") String direction) {
+                                                               @RequestParam("direction") String direction, HttpServletResponse httpServletResponse) {
+
+        httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Retrieving voucher simulation by assignment id " + assignmentId + ", country "
                 + country + ", municiaplity " + municipality + ", page " + page + ", size " + size + ", field " + field + " and direction " + direction);
-        try {
+
+        try{
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: getVoucherSimulationByVoucherAssignment");
             }
@@ -203,6 +209,9 @@ public class VoucherResource {
     @RequestMapping(value = "/assignment/{assignmentId}/check-prelist-enabled", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public boolean checkSavePreSelectionEnabled(@PathVariable("assignmentId") final Integer assignmentId, HttpServletResponse response) throws IOException {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+
         try{
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: checkSavePreSelectionEnabled");
@@ -303,6 +312,9 @@ public class VoucherResource {
     @RequestMapping(value = "/assignment/call/{callId}/status/{status}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentByCallAndStatus(@PathVariable("callId") Integer callId, @PathVariable("status") Integer status, HttpServletResponse response) throws IOException {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+
         try{
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: getVoucherAssignmentByCallAndStatus");
