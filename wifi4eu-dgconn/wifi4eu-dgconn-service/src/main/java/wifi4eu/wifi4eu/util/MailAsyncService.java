@@ -1,11 +1,14 @@
 package wifi4eu.wifi4eu.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
@@ -19,9 +22,15 @@ import javax.mail.internet.MimeMultipart;
 
 public class MailAsyncService implements Runnable {
 
+    @Autowired
+    private UserService userService;
+
     public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
 
-    private final Logger _log = LoggerFactory.getLogger(MailAsyncService.class);
+    private final Logger _log = LogManager.getLogger(MailAsyncService.class);
+
+    UserContext userContext;
+    UserDTO userConnected;
 
     private String toAddress = null;
     private String fromAddress = null;
@@ -39,11 +48,10 @@ public class MailAsyncService implements Runnable {
 
     @Override
     public void run() {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
         try {
-            if (_log.isDebugEnabled()) {
-                _log.debug("Sending async mail: " + fromAddress + " " + subject + " " + msgBody);
-            }
-
             MimeMessage message = mailSender.createMimeMessage();
             message.setSubject(subject, "UTF-8");
             MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -67,8 +75,9 @@ public class MailAsyncService implements Runnable {
             helper.setFrom(fromAddress);
 
             mailSender.send(message);
+            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + toAddress);
         } catch (Exception ex) {
-            _log.error(ex.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex.getMessage());
         }
     }
 }

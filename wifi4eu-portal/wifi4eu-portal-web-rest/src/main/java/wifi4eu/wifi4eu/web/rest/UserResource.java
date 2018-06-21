@@ -2,35 +2,30 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -46,7 +41,10 @@ public class UserResource {
     @Autowired
     private PermissionChecker permissionChecker;
 
-    Logger _log = LoggerFactory.getLogger(UserResource.class);
+    Logger _log = LogManager.getLogger(UserResource.class);
+
+    UserContext userContext;
+    UserDTO userConnected;
 
 /*    @ApiOperation(value = "Get all the users")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -75,9 +73,9 @@ public class UserResource {
     @ResponseBody
     public UserDTO getUserById(@PathVariable("userId") final Integer userId, HttpServletResponse response) {
         UserDTO resUser = userService.getUserById(userId);
-
-        _log.info("getUserById: " + userId);
-        UserDTO userConnected = userService.getUserByUserContext(UserHolder.getUser());
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving user by id " + userId);
         if (userConnected.getType() != 5) {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
         }
@@ -112,31 +110,23 @@ public class UserResource {
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
     public ResponseDTO updateUserDetails(@RequestBody final UserDTO userDTO,
-                                       HttpServletResponse response) throws IOException {
-        try{
+                                         HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating user details by id " + userDTO.getId());
+        try {
             int userId = userDTO.getId();
             permissionChecker.check(RightConstants.USER_TABLE + userId);
-
-            UserContext userContext = UserHolder.getUser();
-            UserDTO userConnected = userService.getUserByUserContext(userContext);
-
-            if(userDTO.getId() != userConnected.getId()){
+            if (userDTO.getId() != userConnected.getId()) {
                 throw new AccessDeniedException("");
             }
-
             return new ResponseDTO(true, userService.updateUserDetails(userConnected, userDTO.getName(), userDTO.getSurname()), null);
-        }
-        catch (AccessDeniedException ade){
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'updateUserDetails' operation.", ade);
-            }
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to update user details", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        }
-        catch (Exception e){
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'updateUserDetails' operation.", e);
-            }
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user details cannot been updated", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -186,25 +176,23 @@ public class UserResource {
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseDTO deleteUser(@RequestBody final Integer userId,
-                                  HttpServletResponse response) throws IOException {
+                                  HttpServletResponse response, HttpServletRequest request) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Removing user by id " + userId);
         try {
-            _log.info("deleteUser: " + userId);
-
             //check permission
             permissionChecker.check(RightConstants.USER_TABLE + userId);
-            UserDTO resUser = userService.deleteUser(userId);
+            UserDTO resUser = userService.deleteUser(userId, request);
             resUser.setPassword(null);
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
             return new ResponseDTO(true, resUser, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'deleteUser' operation.", ade);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to remove this user", ade.getMessage());
             response.sendError(HttpStatus.FORBIDDEN.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteUser' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user cannot been removed", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -226,22 +214,19 @@ public class UserResource {
     @RequestMapping(value = "/ecaslogin", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO ecasLogin(HttpServletResponse response) {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging in with ECAS User");
         try {
-            _log.debug("[i] ecasLogin");
-            UserContext userContext = UserHolder.getUser();
-            UserDTO userDTO = userService.getUserByUserContext(userContext);
-
+            UserDTO userDTO = userConnected;
             Cookie cookie = userService.getCSRFCookie();
             if (cookie != null) {
                 response.addCookie(cookie);
             }
-            _log.debug("[f] ecasLogin");
             return new ResponseDTO(true, userDTO, null);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'login' with ECAS operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.getReasonPhrase()));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot be logged in", e.getMessage());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -249,14 +234,14 @@ public class UserResource {
     @RequestMapping(value = "/ecaslogout", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO ecasLogout() {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging out from ECAS User");
         try {
-            _log.info("[i] ecasLogout");
             return new ResponseDTO(true, userService.getLogoutEnviroment(), null);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'login' with ECAS operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.getReasonPhrase()));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot be logged out", e.getMessage());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -264,14 +249,14 @@ public class UserResource {
     @RequestMapping(value = "/ecasChangePassword", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO ecasChangePassword() {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Changing ECAS password");
         try {
-            _log.info("[i] ecasChangePassword");
             return new ResponseDTO(true, userService.getChangePassword(), null); //permissionChecker.check(RightConstants.USER_TABLE+userId);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'login' with ECAS operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.getReasonPhrase()));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot change ECAS password", e.getMessage());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -315,17 +300,17 @@ public class UserResource {
     @RequestMapping(value = "/resendEmail", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO resendEmail(@RequestBody final String email) {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Resending email to activate account to " + email);
         try {
-            _log.info("Resend email to '" + email + "'...");
             if (userService.resendEmail(email)) {
                 return new ResponseDTO(true, null, null);
             }
             return new ResponseDTO(false, null, null);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'resendEmail' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.getReasonPhrase()));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot resend email to activate ECAS account", e.getMessage());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -349,20 +334,20 @@ public class UserResource {
     @ApiOperation(value = "Logout session")
     @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String doCompleteSignOut()  {
-        _log.debug("Logging out");
-
+    public String doCompleteSignOut() {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging out session");
         final HttpSession session = RecoverHttpSession.session();
         String outMessage = "page.logout";
 
         if (session == null) {
-            _log.info("Session is expired.");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Session has expired");
             outMessage = "page.not.session";
         } else {
-            _log.info("Expiring session.");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Session is expiring");
             doLogout(session);
         }
-
         return outMessage;
     }
 

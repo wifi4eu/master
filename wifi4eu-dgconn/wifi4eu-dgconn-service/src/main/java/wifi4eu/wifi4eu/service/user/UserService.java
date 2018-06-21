@@ -3,8 +3,8 @@ package wifi4eu.wifi4eu.service.user;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.http.HttpStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -28,7 +27,6 @@ import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
@@ -40,6 +38,7 @@ import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.util.MailService;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +49,7 @@ import java.util.ResourceBundle;
 @PropertySource("classpath:env.properties")
 @Service
 public class UserService {
-    private final Logger _log = LoggerFactory.getLogger(UserService.class);
+    private final Logger _log = LogManager.getLogger(UserService.class);
 
     @Value("${mail.server.location}")
     private String baseUrl;
@@ -69,9 +68,6 @@ public class UserService {
 
     @Autowired
     MailService mailService;
-
-    @Autowired
-    RightRepository rightRepository;
 
     @Autowired
     PermissionChecker permissionChecker;
@@ -112,6 +108,7 @@ public class UserService {
     public UserDTO getUserByEcasEmail(String email){
         return userMapper.toDTO(userRepository.findByEcasEmail(email));
     }
+
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
@@ -170,14 +167,14 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO deleteUser(int userId) {
+    public UserDTO deleteUser(int userId, HttpServletRequest request) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
         if (userDTO != null) {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
                     removeTempToken(userDTO);
                     for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
-                        municipalityService.deleteMunicipality(municipality.getId());
+                        municipalityService.deleteMunicipality(municipality.getId(), request);
                     }
                     for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
                         userThreadsService.deleteUserThreads(userThread.getId());

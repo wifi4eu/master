@@ -1,10 +1,8 @@
 package wifi4eu.wifi4eu.web.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,7 +20,7 @@ import java.io.IOException;
 
 public class CSRFFilter extends OncePerRequestFilter {
 
-    Logger _log = LoggerFactory.getLogger(CSRFFilter.class);
+    Logger _log = LogManager.getLogger(CSRFFilter.class);
 
     //@Autowired
     private UserService userService;

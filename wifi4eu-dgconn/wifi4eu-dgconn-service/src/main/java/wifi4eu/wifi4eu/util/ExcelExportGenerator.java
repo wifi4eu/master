@@ -7,7 +7,7 @@ import wifi4eu.wifi4eu.common.dto.model.BeneficiaryListItemDTO;
 import wifi4eu.wifi4eu.entity.application.ApplicantListItem;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class ExcelExportGenerator<T> {
                         if(applicationListItem.getWarning3()){
                             wList.add("WARNING 3");
                         }
-                        cell.setCellValue(String.join(", ", wList));
+                      cell.setCellValue(String.join(", ", wList));
                     }else{
                         field = obj.getClass().getDeclaredField(fieldNames.get(i));
                         field.setAccessible(true);

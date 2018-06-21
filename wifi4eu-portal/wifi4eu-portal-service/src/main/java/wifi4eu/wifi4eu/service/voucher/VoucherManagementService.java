@@ -1,11 +1,8 @@
 package wifi4eu.wifi4eu.service.voucher;
 
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherManagementDTO;
-import wifi4eu.wifi4eu.entity.voucherManagement.VoucherManagement;
 import wifi4eu.wifi4eu.mapper.voucherManagement.VoucherManagementMapper;
 import wifi4eu.wifi4eu.repository.voucherManagement.VoucherManagementRepository;
 

@@ -1,30 +1,31 @@
 package wifi4eu.wifi4eu.web.rest;
 
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
-        import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
-        import org.apache.log4j.Logger;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.context.ApplicationEventPublisher;
-        import org.springframework.http.HttpStatus;
-        import org.springframework.stereotype.Controller;
-        import org.springframework.web.bind.annotation.PathVariable;
-        import org.springframework.web.bind.annotation.RequestBody;
-        import org.springframework.web.bind.annotation.RequestMapping;
-        import org.springframework.web.bind.annotation.RequestMethod;
-        import org.springframework.web.bind.annotation.RequestParam;
-        import org.springframework.web.bind.annotation.ResponseBody;
-        import org.springframework.web.bind.annotation.ResponseStatus;
-        import org.springframework.web.util.UriComponentsBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 @RequestMapping(value = "/foos")
 public class FooController {
 
-    Logger _log = Logger.getLogger(FooController.class);
+    Logger _log = LogManager.getLogger(FooController.class);
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;

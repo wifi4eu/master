@@ -3,23 +3,25 @@ package wifi4eu.wifi4eu.service.voucher.util;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import java.io.*;
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class ScenariosService {
@@ -48,7 +50,7 @@ public class ScenariosService {
     }
 
     @Transactional
-    public void readScenarioExcel(int index, int callId) throws IOException, InvalidFormatException {
+    public void readScenarioExcel(int index, int callId, HttpServletRequest request) throws IOException, InvalidFormatException {
 
         UserContext userContext = UserHolder.getUser();
         UserDTO user = userService.getUserByUserContext(userContext);
@@ -172,7 +174,7 @@ public class ScenariosService {
                         RegistrationDTO resR = registrationService.createRegistration(registrationDTO);
                         applicationDTO.setCallId(callId);
                         applicationDTO.setRegistrationId(resR.getId());
-                        ApplicationDTO resA = applicationService.createApplication(applicationDTO);
+                        ApplicationDTO resA = applicationService.createApplication(applicationDTO, request);
                     }
                     else{
                         lauDTOList = lauService.getLauByName1(mun);
@@ -190,7 +192,7 @@ public class ScenariosService {
                             RegistrationDTO resR = registrationService.createRegistration(registrationDTO);
                             applicationDTO.setCallId(callId);
                             applicationDTO.setRegistrationId(resR.getId());
-                            ApplicationDTO resA = applicationService.createApplication(applicationDTO);
+                            ApplicationDTO resA = applicationService.createApplication(applicationDTO, request);
                         }else{
                             if(mun.contains("-")){
                                 mun = mun.substring(mun.indexOf("-")+1, mun.length());
@@ -211,7 +213,7 @@ public class ScenariosService {
                                 RegistrationDTO resR = registrationService.createRegistration(registrationDTO);
                                 applicationDTO.setCallId(callId);
                                 applicationDTO.setRegistrationId(resR.getId());
-                                ApplicationDTO resA = applicationService.createApplication(applicationDTO);
+                                ApplicationDTO resA = applicationService.createApplication(applicationDTO, request);
                             }else{
                                 mun = mun.concat("%");
 
@@ -230,7 +232,7 @@ public class ScenariosService {
                                     RegistrationDTO resR = registrationService.createRegistration(registrationDTO);
                                     applicationDTO.setCallId(callId);
                                     applicationDTO.setRegistrationId(resR.getId());
-                                    ApplicationDTO resA = applicationService.createApplication(applicationDTO);
+                                    ApplicationDTO resA = applicationService.createApplication(applicationDTO, request);
                                 }
                                 else{
                                   muns.add(mun);
