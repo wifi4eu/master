@@ -96,10 +96,10 @@ public class RegistrationResource {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO createRegistration(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public ResponseDTO invalidateRegistration(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating registration");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating registration");
         try {
             UserDTO userDTO = userConnected;
             if (userDTO.getType() != 5) {
@@ -110,15 +110,15 @@ public class RegistrationResource {
                 permissionChecker.check(userDTO, RightConstants.USER_TABLE + registrationDTO.getUserId());
             }
             //RegistrationValidator.validate(registrationDTO);
-            RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Registration created successfully");
+            RegistrationDTO resRegistration = registrationService.invalidateRegistration(registrationDTO.getId());
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Registration invalidated successfully");
             return new ResponseDTO(true, resRegistration, null);
         } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to create registrations", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to invalidate registrations", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been created", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been invalidated", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
