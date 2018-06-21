@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.web.rest;
+package wifi4eu.wifi4eu.web.rest.financial;
 
 import com.google.common.cache.CacheLoader;
 import io.jsonwebtoken.ExpiredJwtException;

@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.web.rest;
+package wifi4eu.wifi4eu.web.rest.financial;
 
 import javax.json.*;
 import io.swagger.annotations.Api;

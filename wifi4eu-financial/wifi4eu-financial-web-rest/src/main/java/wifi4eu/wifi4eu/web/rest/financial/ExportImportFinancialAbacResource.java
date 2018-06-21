@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.web.rest;
+package wifi4eu.wifi4eu.web.rest.financial;
 
 import cec.budg.soatube.client.async.JmsProducerLocal;
 import cec.budg.soatube.client.sync.SoatubeWSClientLocal;

@@ -132,7 +132,7 @@
                 <apiSources>
                     <apiSource>
                         <springmvc>true</springmvc>
-                        <locations>wifi4eu.wifi4eu.web.rest</locations>
+                        <locations>wifi4eu.wifi4eu.web.rest.financial</locations>
                         <schemes>http</schemes>
                         <host>${server.address}${app.context.root}</host>
                         <basePath>/api</basePath>
