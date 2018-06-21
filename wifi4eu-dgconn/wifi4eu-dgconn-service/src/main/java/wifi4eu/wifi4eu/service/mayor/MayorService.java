@@ -11,6 +11,7 @@ import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.mapper.mayor.MayorMapper;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -22,6 +23,9 @@ import java.util.List;
 
 @Service
 public class MayorService {
+    @Autowired
+    RequestIpRetriever requestIpRetriever;
+
     @Autowired
     MayorMapper mayorMapper;
 
@@ -60,7 +64,7 @@ public class MayorService {
         if (mayorDTO1 != null) {
             resMayor.setEmail(mayorDTO1.getEmail());
         }
-        _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Mayor created");
+        _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Mayor created");
         return resMayor;
     }
 
@@ -82,7 +86,7 @@ public class MayorService {
         MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findOne(mayorId));
         if (mayorDTO != null) {
             mayorRepository.delete(mayorMapper.toEntity(mayorDTO));
-            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Mayor removed");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Mayor removed");
             return mayorDTO;
         } else {
             return null;
