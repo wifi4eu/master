@@ -4,7 +4,6 @@
   <div class="row">
   
     <div class="col-sm-2 col-md-2 col-lg-2">
-        <!-- path: 'select-supplier/:municipalityId' -->
       <a class="link-label" routerLink="/beneficiary-portal/my-voucher" routerLinkActive="active">
         <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
       </a>
@@ -18,13 +17,13 @@
   
   </div>
   
-  <!-- Municipality name, title and explanation text -->
+  <!-- Title and explanation text -->
   <h3 *ngIf="municipality" class="beneficiaryTitle marginTop">{{municipality.name}}</h3>
   <h5 class="beneficiaryMayor counterText" >{{ 'benefPortal.selectSupplier.title' | translate }}</h5>
   <p>{{ 'benefPortal.selectedSupplierDetails.title.text' | translate }}</p>
 
   
-  <!-- WiFi installation company details and Contact details -->
+  <!-- WiFi installation company details -->
   <div class="container marginTop">    
     <div class="marginTop ">
       <p class="municipality-name">{{'benefPortal.selectSupplier.title' | translate }} <span class="text-lowercase">{{'dgConn.details' | translate }}</span></p>
@@ -74,6 +73,7 @@
     </div>
   </div>
 
+    <!-- WiFi installation contact details -->
   <div class="container">
     <div class="marginTop">    
   
@@ -117,7 +117,6 @@
     </div>
   </div>
   
-
   <!-- "Select installation company" and "Save and notify Wi-Fi installation company" buttons -->
   <p class="subtitle-discover text-adjust marginTop">{{ 'benefPortal.selectSupplier.details.endText' | translate }}</p> 
   
@@ -131,5 +130,5 @@
 
   <p *ngIf="displayDate" class="subtitle-discover text-adjust">{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ displayedDate }}</p> 
 
-<!-- closing of container -->
+<!-- closing of main container -->
 </div>

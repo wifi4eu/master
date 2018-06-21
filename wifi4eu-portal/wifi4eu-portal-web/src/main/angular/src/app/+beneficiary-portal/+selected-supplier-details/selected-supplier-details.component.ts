@@ -11,7 +11,6 @@ import { MunicipalityApi, RegistrationApi, CallApi, ApplicationApi, CallDTOBase,
 // Project DTO's
 import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
 import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
-import { Observable } from "rxjs";
 
 @Component ({
   selector: 'selected-supplier-component',
@@ -23,9 +22,7 @@ export class SelectedSupplierDetailsComponent {
   
   /* -- PROPERTIES -- */
   // Project DTO's
-  private municipality: MunicipalityDTOBase;
   private registration: RegistrationDTOBase;
-  private call: CallDTOBase;
   private application: ApplicationDTOBase;
   private supplier: SupplierDTOBase;
 
@@ -48,70 +45,65 @@ export class SelectedSupplierDetailsComponent {
     private route: ActivatedRoute,
     private localStorage: LocalStorageService,
     private router: Router,
-    private municipalityApi: MunicipalityApi,
     private registrationApi: RegistrationApi,
     private callApi: CallApi,
     private applicationApi: ApplicationApi,
     private supplierApi: SupplierApi
   ) {
 
-  /* Observable<string> */
-  this.route.params.subscribe(
-    params => {
-        this.municipalityId = Number(params['municipalityId']);
-        this.paramsSupplierId = Number(params['supplierId']);
-    }
-  );
-  
-  this.municipalityApi.getMunicipalityById(this.municipalityId).subscribe(
-    (municipality: MunicipalityDTOBase) => {
-      this.municipality = municipality;
-    }
-  );    
+    /* Get params from URL */
+    this.route.params.subscribe(
+      params => {
+          this.municipalityId = Number(params['municipalityId']);
+          this.paramsSupplierId = Number(params['supplierId']);
+      }
+    );
 
-  let storedUser = this.localStorage.get('user');
-  this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-  let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
-  this.storedRegistrationQueues = storedRegistrations ? storedRegistrations : [];
+    /* Authenticate user */
+    let storedUser = this.localStorage.get('user');
+    this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+    let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
+    this.storedRegistrationQueues = storedRegistrations ? storedRegistrations : [];
 
-  if (this.user != null) {
-    this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
-      (registrations: RegistrationDTOBase[]) => {
-        this.registration = registrations[1];
-        
-        // Check if there are Calls
-      this.callApi.allCalls().subscribe(
-        (calls: CallDTOBase[]) => {
-          // Get current application of the beneficiary
-              this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[0].id, this.registration.id).subscribe(
+    /* Check if user registration municipalities matches params */
+    if (this.user != null) {
+      this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
+        (registrations: RegistrationDTOBase[]) => {
+          for(var i = 0; i < registrations.length; i++) {
+            if(registrations[i].municipalityId === this.municipalityId) {
+              this.registration = registrations[i];
+            }
+          }
+          
+          /* Get current application of the beneficiary */
+          this.callApi.allCalls().subscribe(
+            (calls: CallDTOBase[]) => {
+              this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[(calls.length-1)].id, this.registration.id).subscribe(
                 (application: ApplicationDTOBase) => {
                   this.application = application;
                   if(this.application.supplierId !== this.paramsSupplierId) {
                     this.changedSupplierChoice = true;
                   }
-                  console.log("Present application is ", this.application);
                   this.getSupplierDetails(this.paramsSupplierId);  
-                }
-              );
-            }
-          );
-          
+                  }
+                );
+              }
+            ); 
         }
       );
     }
-    
     // End of constructor  
   }
   
   /*  -- METHODS -- */
-  // Get supplier details from supplierId requested through params
+  /* Get supplier details from supplierId requested through params */
   getSupplierDetails(supplierId) {
     this.supplierApi.getSupplierDetailsById(supplierId).subscribe(
       (supplier: SupplierDTOBase) => {            
         this.supplier = supplier;
       }
     );
-    // Get the date when supplier was selected if the supplier hasn't changed his choice
+    /* Get the date when supplier was selected if the supplier hasn't changed his choice */
     if((this.application.supplierId === this.paramsSupplierId) && (this.application.supplierId != (null || undefined || 0)) )  {
       this.getStringDate(this.application.date);
       this.displayDate = true; 
@@ -127,15 +119,11 @@ export class SelectedSupplierDetailsComponent {
 
   /* Allow beneficiary to change selected supplier */
   private changeSupplier() {
-    this.router.navigate(['/beneficiary-portal/select-supplier', this.municipality.id]);
+    this.router.navigate(['/beneficiary-portal/select-supplier', this.registration.municipalityId]);
   }
   
   /* Assign supplier to the beneficiary application */
-  private saveAndNotify() {
-    console.log("Municipality ID is ", this.municipality.id);
-    console.log("Previous supplier id was ", this.application.supplierId);
-    console.log("Supplier Id being selected is ", this.paramsSupplierId);
-    
+  private saveAndNotify() {    
     if(this.application.supplierId == (null || undefined || 0)) {
       this.application.supplierId = this.paramsSupplierId;
       this.assignSupplierAndNotify();
@@ -151,25 +139,21 @@ export class SelectedSupplierDetailsComponent {
       );  
     } 
     
-    console.log("-- End of method --")
-    this.changedSupplierChoice = false;
-    // this.router.navigate(['/beneficiary-portal/my-voucher']);
   }
   
   assignSupplierAndNotify() {
     this.applicationApi.assignSupplier(this.application).subscribe(
       (resAplication: ResponseDTOBase) => {
-        // this.getStringDate(resAplication.data.date);
-        console.log("New supplier saved!!");
-        
-        this.supplierApi.notifySelectedSupplier(this.municipality.id).subscribe(
+        this.supplierApi.notifySelectedSupplier(this.application.supplierId).subscribe(
           (res: ResponseDTOBase) => {
-            console.log("The result of sending email is ", res);
+            console.log("The result of Selection is ", res);
+            this.changedSupplierChoice = false;
+            // this.router.navigate(['/beneficiary-portal/my-voucher']);
           }, error => {
-            console.log("An ERROR ocurred");
+            console.log("ERROR on email sending");
           }
         );
-
+        
       }
     );
   }
