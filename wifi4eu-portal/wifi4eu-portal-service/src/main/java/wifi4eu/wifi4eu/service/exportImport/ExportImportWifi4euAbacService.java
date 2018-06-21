@@ -102,28 +102,28 @@ public class ExportImportWifi4euAbacService {
         JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
         for (int i = 0; i < callsJsonArrayLef.size(); i++) {
             JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
-            //CallDTO call = gson.fromJson(callJson, CallDTO.class);
-            //JsonArray lefVals = resultJson.getAsJsonArray("idLef");
-            JsonArray lefVals = callJson.getAsJsonArray("idLef");
-            for (int u = 0; u < lefVals.size(); u++) {
-                JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
-                JsonObject lefVal = jsonStringLef.getAsJsonObject("idLef");
-                ValidatedLEF validatedLEF=new ValidatedLEF(Integer.parseInt(lefVal.toString()));
-                validatedLefRepository.save(validatedLEF);
-            }
+            ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
+            ////JsonArray lefVals = resultJson.getAsJsonArray("idLef");
+            //JsonArray lefVals = callJson.getAsJsonArray("idLef");
+            //for (int u = 0; u < lefVals.size(); u++) {
+              //  JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
+               // JsonObject lefVal = jsonStringLef.getAsJsonObject("idLef");
+               // ValidatedLEF validatedLEF=new ValidatedLEF(Integer.parseInt(lefVal.toString()));
+               // validatedLefRepository.save(validatedLEF);
+            //}
         }
         JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");
         for (int i = 0; i < callsJsonArrayBc.size(); i++) {
             JsonObject callJson = callsJsonArrayBc.get(i).getAsJsonObject();
-            //CallDTO call = gson.fromJson(callJson, CallDTO.class);
-            //JsonArray lefBcs = resultJson.getAsJsonArray("idBc");
-            JsonArray lefBcs = callJson.getAsJsonArray("idBc");
-            for (int u = 0; u < lefBcs.size(); u++) {
-                JsonObject jsonStringLef = lefBcs.get(u).getAsJsonObject();
-                JsonObject lefBc = jsonStringLef.getAsJsonObject("idBc");
-                ValidatedBC validatedBC=new ValidatedBC(Integer.parseInt(lefBc.toString()));
-                validatedBcRepository.save(validatedBC);
-            }
+            ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
+            ////JsonArray lefBcs = resultJson.getAsJsonArray("idBc");
+            //JsonArray lefBcs = callJson.getAsJsonArray("idBc");
+            //for (int u = 0; u < lefBcs.size(); u++) {
+              //  JsonObject jsonStringLef = lefBcs.get(u).getAsJsonObject();
+              //  JsonObject lefBc = jsonStringLef.getAsJsonObject("idBc");
+              //  ValidatedBC validatedBC=new ValidatedBC(Integer.parseInt(lefBc.toString()));
+              //  validatedBcRepository.save(validatedBC);
+            //}
         }
     }
 

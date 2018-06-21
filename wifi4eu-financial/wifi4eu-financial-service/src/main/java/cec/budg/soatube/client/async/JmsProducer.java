@@ -105,6 +105,12 @@ public class JmsProducer implements JmsProducerLocal {
 
 			JAXBElement<SoatubeResponseType> soaTubeResponse;
 			soaTubeResponse = createResponse(receivedText);
+			if(null!=receive) {
+				_log.info("soatubeResponse= " + receive.toString());
+			}
+			if(null!=soaTubeResponse) {
+				_log.info("soatubeResponse= " + soaTubeResponse.toString());
+			}
 			if(soaTubeResponse==null){
 				throw new BudgSOAException("Response message was empty");
 			}
