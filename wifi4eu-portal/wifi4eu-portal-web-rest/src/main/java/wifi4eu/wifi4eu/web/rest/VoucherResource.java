@@ -23,6 +23,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
@@ -49,6 +50,9 @@ public class VoucherResource {
 
     @Autowired
     PermissionChecker permissionChecker;
+
+    @Autowired
+    RequestIpRetriever requestIpRetriever;
 
     Logger _log = LogManager.getLogger(VoucherResource.class);
 
@@ -194,7 +198,7 @@ public class VoucherResource {
                 throw new AccessDeniedException("Access denied: simulateVoucherAssignment");
             }
             ResponseDTO response = voucherService.simulateVoucherFast(callId);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on voucher simulation");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on voucher simulation");
             return response;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - You have no permissions to run voucher simulation", ade.getMessage());

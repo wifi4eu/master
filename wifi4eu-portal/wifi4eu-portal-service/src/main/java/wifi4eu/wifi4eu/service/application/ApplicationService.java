@@ -13,6 +13,7 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
@@ -91,6 +92,9 @@ public class ApplicationService {
     @Autowired
     ApplicationIssueUtilRepository applicationIssueUtilRepository;
 
+    @Autowired
+    RequestIpRetriever requestIpRetriever;
+
     @Deprecated
     public List<ApplicationDTO> getAllApplications() {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findAll()));
@@ -132,7 +136,7 @@ public class ApplicationService {
                         }
                         applicationDTO.setDate(queueTimestamp);
                         applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                        _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
+                        _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
                         return applicationDTO;
                     } else {
                         _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application existent on the DB, callId: "
@@ -196,7 +200,7 @@ public class ApplicationService {
                 }
             }
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;
         }
         return null;
@@ -459,7 +463,7 @@ public class ApplicationService {
             }
         }
         */
-        _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is valid");
+        _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is valid");
         return validatedApplication;
     }
 
@@ -493,7 +497,7 @@ public class ApplicationService {
             }
         }
         */
-        _log.log(Level.getLevel("BUSINESS"),"[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is invalid due the following reason: " + invalidatedApplication.getInvalidateReason());
+        _log.log(Level.getLevel("BUSINESS"),"[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is invalid due the following reason: " + invalidatedApplication.getInvalidateReason());
         return invalidatedApplication;
     }
 
@@ -522,7 +526,7 @@ public class ApplicationService {
         applicationDB.setInvalidateReason(null);
         registrationService.saveRegistration(registration);
         ApplicationDTO applicationResponse = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
-        _log.log(Level.getLevel("BUSINESS"),"[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
+        _log.log(Level.getLevel("BUSINESS"),"[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
         return applicationResponse;
     }
 

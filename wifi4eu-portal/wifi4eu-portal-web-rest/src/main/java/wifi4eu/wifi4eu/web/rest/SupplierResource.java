@@ -24,6 +24,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
@@ -48,6 +49,9 @@ public class SupplierResource {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RequestIpRetriever requestIpRetriever;
 
     Logger _log = LogManager.getLogger(SupplierResource.class);
 
@@ -264,7 +268,7 @@ public class SupplierResource {
                 throw new AppException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             SupplierDTO resSupplier = supplierService.submitSupplierRegistration(supplierDTO);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Supplier registration submitted successfully");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Supplier registration submitted successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been submitted", e.getMessage());

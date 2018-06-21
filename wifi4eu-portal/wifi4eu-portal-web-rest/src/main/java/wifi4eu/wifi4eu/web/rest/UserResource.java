@@ -15,6 +15,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -39,6 +40,9 @@ public class UserResource {
 
     @Autowired
     private PermissionChecker permissionChecker;
+
+    @Autowired
+    private RequestIpRetriever requestIpRetriever;
 
     Logger _log = LogManager.getLogger(UserResource.class);
 
@@ -184,7 +188,7 @@ public class UserResource {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
             UserDTO resUser = userService.deleteUser(userId, request);
             resUser.setPassword(null);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + userService.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
             return new ResponseDTO(true, resUser, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to remove this user", ade.getMessage());

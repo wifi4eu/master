@@ -109,14 +109,6 @@ public class UserService {
         return userMapper.toDTO(userRepository.findByEcasEmail(email));
     }
 
-    public String getIp(HttpServletRequest request){
-        String ipAdd = request.getHeader("X-FORWARDED-FOR");
-        if(ipAdd == null){
-            ipAdd = request.getRemoteAddr();
-        }
-        return ipAdd;
-    }
-
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
         UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
