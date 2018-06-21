@@ -22,6 +22,13 @@ public class CallResource {
 
     Logger _log = LoggerFactory.getLogger(CallResource.class);
 
+    @ApiOperation(value = "getCall")
+    @RequestMapping(value = "/getCall", method = RequestMethod.GET)
+    @ResponseBody
+    public CallDTO getCall() {
+        return new CallDTO();
+    }
+
     @ApiOperation(value = "Get all the calls")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -30,13 +37,5 @@ public class CallResource {
             _log.info("allCalls");
         }
         return callService.getAllCalls();
-    }
-
-    @ApiOperation(value = "Get call by specific id")
-    @RequestMapping(value = "/{callId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public CallDTO getCallById(@PathVariable("callId") final Integer callId) {
-        _log.info("getCallById: " + callId);
-        return callService.getCallById(callId);
     }
 }

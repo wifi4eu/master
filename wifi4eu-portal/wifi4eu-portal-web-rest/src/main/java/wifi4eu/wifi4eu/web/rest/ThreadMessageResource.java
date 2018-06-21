@@ -6,13 +6,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.ThreadMessageDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadMessageService;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
+import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -23,54 +32,45 @@ public class ThreadMessageResource {
     @Autowired
     private ThreadMessageService threadMessageService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserThreadsService userThreadsService;
+
+    @Autowired
+    private PermissionChecker permissionChecker;
+
     Logger _log = LoggerFactory.getLogger(CallResource.class);
-
-    @ApiOperation(value = "Get all the thread messages entries")
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<ThreadMessageDTO> allThreadMessages() {
-        return threadMessageService.getAllThreadMessages();
-    }
-
-    @ApiOperation(value = "Get thread message by specific id")
-    @RequestMapping(value = "/{threadMessageId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public ThreadMessageDTO getThreadMessageById(@PathVariable("threadMessageId") final Integer threadMessageId) {
-        _log.info("getThreadMessageById: " + threadMessageId);
-        return threadMessageService.getThreadMessageById(threadMessageId);
-    }
 
     @ApiOperation(value = "Create thread message")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO createThreadMessage(@RequestBody final ThreadMessageDTO threadMessageDTO) {
+    public ResponseDTO createThreadMessage(@RequestBody final ThreadMessageDTO threadMessageDTO, HttpServletResponse response) throws IOException {
+        _log.info("createThreadMessage");
         try {
-            _log.info("createThreadMessage");
+            UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
+            if (userThreadsService.getByUserIdAndThreadId(user.getId(), threadMessageDTO.getThreadId()) == null && !permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            if(threadMessageDTO.getAuthorId() != user.getId()){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            threadMessageDTO.setCreateDate(new Date().getTime());
             ThreadMessageDTO resThreadMessage = threadMessageService.createThreadMessage(threadMessageDTO);
             return new ResponseDTO(true, resThreadMessage, null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'createThreadMessage' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createThreadMessage' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
-
-    @ApiOperation(value = "Delete thread message by specific id")
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseDTO deleteThreadMessage(@RequestBody final Integer threadMessageId) {
-        try {
-            _log.info("deleteThreadMessage: " + threadMessageId);
-            ThreadMessageDTO resThreadMessage = threadMessageService.deleteThreadMessage(threadMessageId);
-            return new ResponseDTO(true, resThreadMessage, null);
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteThreadMessage' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 }

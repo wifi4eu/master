@@ -160,7 +160,7 @@ export class BeneficiaryProfileComponent {
             this.editedUser.email = this.user.email;
         }
         this.submittingData = true;
-        this.userApi.saveUserChanges(this.editedUser).subscribe(
+        this.userApi.updateUserDetails(this.editedUser).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.user = response.data;
@@ -179,7 +179,7 @@ export class BeneficiaryProfileComponent {
             this.editedMunicipality.name = this.municipalities[this.currentEditIndex].name;
         }
         this.submittingData = true;
-        this.municipalityApi.createMunicipality(this.editedMunicipality).subscribe(
+        this.municipalityApi.updateMunicipalityDetails(this.editedMunicipality).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.municipalities[this.currentEditIndex] = response.data;
@@ -195,7 +195,7 @@ export class BeneficiaryProfileComponent {
             this.editedMayor.email = this.mayors[this.currentEditIndex].email;
         }
         this.submittingData = true;
-        this.mayorApi.createMayor(this.editedMayor).subscribe(
+        this.mayorApi.updateMayorDetails(this.editedMayor).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.mayors[this.currentEditIndex] = response.data;

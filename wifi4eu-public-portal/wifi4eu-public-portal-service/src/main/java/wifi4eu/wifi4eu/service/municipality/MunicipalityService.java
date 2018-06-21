@@ -27,10 +27,6 @@ public class MunicipalityService {
     @Autowired
     NutsService nutsService;
 
-    public MunicipalityDTO getMunicipalityById(int municipalityId) {
-        return municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
-    }
-
     @Cacheable(value = "publicGetMunicipalitiesCountGroupedByLauId")
     public List<Object> getMunicipalitiesCountGroupedByLauId() {
         return Lists.newArrayList(municipalityRepository.findMunicipalitiesCountGroupedByLauId());

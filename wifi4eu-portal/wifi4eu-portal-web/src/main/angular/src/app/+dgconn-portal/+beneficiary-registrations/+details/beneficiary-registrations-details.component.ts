@@ -44,41 +44,44 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     }
 
     private getRegistrationDetailsInfo() {
-        this.municipalityApi.getMunicipalitiesByLauId(this.lauId).subscribe(
-            (municipalities: MunicipalityDTOBase[]) => {
-                for (let i = 0; i < municipalities.length; i++) {
-                    let municipality = municipalities[i];
-                    this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
-                        (mayor: MayorDTOBase) => {
-                            if (mayor) {
-                                this.registrationApi.getRegistrationByMunicipalityId(municipality.id).subscribe(
-                                    (registration: RegistrationDTOBase) => {
-                                        if (registration) {
-                                            this.entitiesChecked.push(false);
-                                            this.registrations.push(registration);
-                                            this.mayors.push(mayor);
-                                            this.municipalities.push(municipality);
-                                            if (this.registrations.length == this.municipalities.length) {
-                                                this.registrationIssues.push(0);
-                                                this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
+        if (this.lauId) {
+            this.clearPageInfo();
+            this.municipalityApi.getMunicipalitiesByLauId(this.lauId).subscribe(
+                (municipalities: MunicipalityDTOBase[]) => {
+                    for (let i = 0; i < municipalities.length; i++) {
+                        let municipality = municipalities[i];
+                        this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
+                            (mayor: MayorDTOBase) => {
+                                if (mayor) {
+                                    this.registrationApi.getRegistrationByMunicipalityId(municipality.id).subscribe(
+                                        (registration: RegistrationDTOBase) => {
+                                            if (registration) {
+                                                this.entitiesChecked.push(false);
+                                                this.registrations.push(registration);
+                                                this.mayors.push(mayor);
+                                                this.municipalities.push(municipality);
+                                                if (this.registrations.length == this.municipalities.length) {
+                                                    this.registrationIssues.push(0);
+                                                    this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
+                                                }
                                             }
                                         }
-                                    }
-                                );
+                                    );
+                                }
                             }
-                        }
-                    );
+                        );
+                    }
                 }
-            }
-        );
-        this.threadApi.getThreadByTypeAndReason(1, String(this.lauId)).subscribe(
-            (thread: ThreadDTOBase) => {
-                if (thread) {
-                    this.discussionThread = thread;
-                    this.displayedMessages = thread.messages;
+            );
+            this.threadApi.getThreadByTypeAndReason(1, String(this.lauId)).subscribe(
+                (thread: ThreadDTOBase) => {
+                    if (thread) {
+                        this.discussionThread = thread;
+                        this.displayedMessages = thread.messages;
+                    }
                 }
-            }
-        );
+            );
+        }
     }
 
     private getLegalFileUrl(index: number, fileNumber: number) {
@@ -107,7 +110,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
         }
     }
 
-    private requestLegalDocuments(index: number) {
+    /*private requestLegalDocuments(index: number) {
         if (index != null) {
             this.registrationApi.requestLegalDocuments(this.registrations[index].id).subscribe(
                 (response: ResponseDTOBase) => {
@@ -119,7 +122,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                 }
             );
         }
-    }
+    }*/
 
     private displayInvalidateModal(index: number) {
         if (index != null) {

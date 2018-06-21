@@ -130,19 +130,19 @@ export class AppComponent {
             }
         );
         this.translateService.get('itemMenu.listSuppliers').subscribe(
-          (translatedString: string) => {
-              this.menuTranslations.set('itemMenu.listSuppliers', translatedString);
-              translatedItems++;
-              if (translatedItems == 8) {
-                  this.stringsTranslated.next();
-              }
-          }
-      );
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.listSuppliers', translatedString);
+                translatedItems++;
+                if (translatedItems == 8) {
+                    this.stringsTranslated.next();
+                }
+            }
+        );
     }
 
     private initChildren() {
         this.stringsTranslated.subscribe(() => {
-            this.children[0] = [
+            /*this.children[0] = [
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.appReg'),
                     url: '/beneficiary-registration'
@@ -152,22 +152,22 @@ export class AppComponent {
                     url: '/supplier-registration'
                 }),
                 new UxLayoutLink({
-                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
-                  url: 'list-suppliers'
+                    label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                    url: 'list-suppliers'
                 })
             ];
             this.children[1] = [
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.suppPortal'),
                     url: '/supplier-portal/voucher'
-                }),
+                }), *//*
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.myAccount'),
                     url: '/supplier-portal/profile'
                 }),
                 new UxLayoutLink({
-                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
-                  url: 'list-suppliers'
+                    label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                    url: 'list-suppliers'
                 })
             ];
             this.children[2] = [
@@ -180,8 +180,8 @@ export class AppComponent {
                     url: '/beneficiary-portal/voucher'
                 }),
                 new UxLayoutLink({
-                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
-                  url: 'list-suppliers'
+                    label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                    url: 'list-suppliers'
                 })
             ];
             this.children[3] = [
@@ -194,8 +194,8 @@ export class AppComponent {
                     url: '/beneficiary-portal/voucher'
                 }),
                 new UxLayoutLink({
-                 label: 'Registered suppliers',
-                  url: 'list-suppliers'
+                    label: 'Registered suppliers',
+                    url: 'list-suppliers'
                 })
             ];
             this.children[4] = [
@@ -203,7 +203,7 @@ export class AppComponent {
                     label: 'Member State Portal',
                     url: '#'
                 })
-            ];
+            ];*/
             this.children[5] = [
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.dgPortal'),
@@ -238,7 +238,7 @@ export class AppComponent {
     private updateHeader() {
         if (this.user) {
             switch (this.user.type) {
-                case 1:
+                /*case 1:
                     this.profileUrl = '/supplier-portal/profile';
                     this.menuLinks = this.children[1];
                     break;
@@ -246,7 +246,7 @@ export class AppComponent {
                 case 3:
                     this.profileUrl = '/beneficiary-portal/profile';
                     this.menuLinks = this.children[2];
-                    break;
+                    break;*/
                 case 5:
                     this.profileUrl = '/dgconn-portal';
                     this.menuLinks = this.children[5];
@@ -277,6 +277,8 @@ export class AppComponent {
         this.localStorageService.remove('public-redirection');
         this.menuLinks = this.children[0];
         this.profileUrl = null;
+
+        window.location.href = environment['logoutUrl'];
 
         this.userApi.doCompleteSignOut().subscribe(
             (response: string) => {

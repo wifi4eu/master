@@ -9,13 +9,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.service.location.LauService;
+import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -23,8 +29,12 @@ import java.util.List;
 @Api(value = "/lau", description = "Lau object REST API services")
 @RequestMapping("lau")
 public class LauResource {
+
     @Autowired
     private LauService lauService;
+
+    @Autowired
+    private UserService userService;
 
     private final static String GET_LAU_BY_ID = "getLauById: ";
     private final static String GET_LAU_BY_COUNTRY_CODE_AND_LAU2 = "getLauByCountryCodeAndLau2: ";
@@ -92,12 +102,33 @@ public class LauResource {
     @ApiOperation(value = "Update Lau Physical Address")
     @RequestMapping(value = "/physicaladdress", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO updatePhysicalAddress(@RequestBody final LauDTO lauDTO) {
+    public ResponseDTO updatePhysicalAddress(@RequestBody final LauDTO lauDTO, HttpServletResponse response) throws IOException {
+        try {
+            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
+                throw new AccessDeniedException("");
+            }
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'updatePhysicalAddress' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        }
+        catch(Exception e){
+          if (_log.isErrorEnabled()) {
+            _log.error("Error on 'updatePhysicalAddress' operation.", e);
+          }
+          response.sendError(HttpStatus.NOT_FOUND.value());
+        }
+
         try {
             LauDTO resLau = lauService.updatePhysicalAddress(lauDTO);
             return new ResponseDTO(true, resLau, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'updatePhysicalAddress' operation.", e);
+            }
+            ErrorDTO errorDTO = new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase());
+            response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, errorDTO);
         }
     }

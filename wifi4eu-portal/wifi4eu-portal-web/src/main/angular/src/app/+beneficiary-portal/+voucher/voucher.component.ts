@@ -58,7 +58,6 @@ export class VoucherComponent {
     private displayError = false;
     private errorMessage = null;
     private rabbitmqURI: string = "/queue";
-    private firebaseURI: string = "https://wifi4eu-dev.firebaseio.com/calls/@1/user/@2/registration/@3.json";
 
     private httpOptions = {
         headers: new Headers({
@@ -235,9 +234,6 @@ export class VoucherComponent {
                     this.registrations[registrationNumber].uploadTime +
                     "}";
 
-                this.sendToFirebase(this.currentCall.id, this.registrations[registrationNumber].id,
-                    this.user.id, this.registrations[registrationNumber].uploadTime);
-
 
                 this.http.post(this.rabbitmqURI, body, this.httpOptions).subscribe(
                     response => {
@@ -315,7 +311,7 @@ export class VoucherComponent {
     private checkForDocuments() {
 
         if (this.isMayor) {
-            this.docsOpen[0] = (this.registrations[0].legalFile1 != null && this.registrations[0].legalFile4 == null && this.registrations[0].legalFile2 == null && this.registrations[0].legalFile3 != null);
+            this.docsOpen[0] = (this.registrations[0].legalFile1 != null && this.registrations[0].legalFile3 != null);
 
             if (this.docsOpen[0]) {
                 let uploaddate = new Date(this.registrations[0].uploadTime);
@@ -336,32 +332,6 @@ export class VoucherComponent {
         }
     }
 
-    private sendToFirebase(callId: number, registrationId: number, userId: number, uploadTime: number) {
-        
-        let body =
-        '{"callId":' +
-        callId +
-        ', "registrationId":' +
-        registrationId +
-        ', "userId":' +
-        userId +
-        ', "fileUploadTimestamp":' +
-        uploadTime +
-        ', "queueTime":{".sv": "timestamp"}' +
-            "}";
-            
-        let url = this.firebaseURI.replace("@1", callId.toString()).replace("@2", userId.toString()).replace("@3", registrationId.toString());
-        
-        this.http.put(url, body, this.httpOptions).subscribe(
-            response => {
-                console.log("firebase success");
-            },
-            error => {
-                console.log("firebase error" + error);
-            }
-        );
-    }
-
     private selectWifiInstallation(i) {
         this.router.navigate(['/beneficiary-portal/select-supplier/', this.registrations[i].municipalityId], {relativeTo: this.route});
     }
@@ -372,4 +342,5 @@ export class VoucherComponent {
         this.localeDate = this.selectionDate.toLocaleDateString().split(' ');
         this.displayedDate = this.localeDate[0];
     }
+
 }
