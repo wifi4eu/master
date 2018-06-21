@@ -125,6 +125,7 @@ public class SupplierResource {
         return supplierDTO;
     }
 
+    /*
     //TODO: is it necessary to be exposed? All the registration have to use submitSupplierRegistration endpoint?
     @ApiOperation(value = "Create supplier")
     @RequestMapping(method = RequestMethod.POST)
@@ -153,6 +154,7 @@ public class SupplierResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
+    */
 
     @ApiOperation(value = "Update supplier")
     @RequestMapping(method = RequestMethod.POST)
