@@ -818,7 +818,7 @@ public class VoucherService {
         return false;
     }
 
-    public VoucherAssignmentDTO sendNotificationForApplicants(int callId) {
+    public void sendNotificationForApplicants(int callId) {
 
         CallDTO callDTO = callService.getCallById(callId);
 
@@ -834,6 +834,10 @@ public class VoucherService {
         List<ApplicationDTO> unsuccessfulApplicants = new ArrayList<>();
 
         VoucherAssignmentAuxiliarDTO finalVoucherAssignment = getVoucherAssignmentByCallAndStatus(callId, VoucherAssignmentStatus.FREEZE_LIST.getValue());
+
+        if(finalVoucherAssignment == null){
+            throw new AppException("Notification could not be sent because there's no freeze list for call with id : " + callId);
+        }
 
         successfulApplicants = applicationMapper.toDTOList(applicationRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.SELECTED.getValue()));
         reserveApplicants = applicationMapper.toDTOList(applicationRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.RESERVE_LIST.getValue()));
@@ -862,6 +866,9 @@ public class VoucherService {
                 //mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
         }
+        if(_log.isWarnEnabled()){
+            _log.warn("Email sended to " + successfulApplicants.size() + " successful applicants");
+        }
 
         for (ApplicationDTO reserveApplicant : reserveApplicants) {
             RegistrationDTO registrationDTO = registrationService.getRegistrationById(reserveApplicant.getRegistrationId());
@@ -879,6 +886,10 @@ public class VoucherService {
             if (!userService.isLocalHost()) {
                 // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
+        }
+
+        if(_log.isWarnEnabled()){
+            _log.warn("Email sended to " + reserveApplicants.size() + " reserve applicants");
         }
 
         for (ApplicationDTO unsuccessfulApplicant : unsuccessfulApplicants) {
@@ -906,10 +917,13 @@ public class VoucherService {
             }
         }
 
+        if(_log.isWarnEnabled()){
+            _log.warn("Email sended to " + unsuccessfulApplicants.size() + " unsuccessful applicants");
+        }
+
         VoucherAssignment voucherAssignment = voucherAssignmentRepository.findByCallIdAndStatusEquals(callDTO.getId(), VoucherAssignmentStatus.FREEZE_LIST.getValue());
         voucherAssignment.setNotifiedDate(new Date().getTime());
-        voucherAssignment = voucherAssignmentRepository.save(voucherAssignment);
-        return voucherAssignmentMapper.toDTO(voucherAssignment);
+        voucherAssignmentRepository.save(voucherAssignment);
     }
 
 }
