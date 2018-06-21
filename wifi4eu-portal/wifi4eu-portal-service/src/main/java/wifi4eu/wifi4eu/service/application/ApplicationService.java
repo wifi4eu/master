@@ -44,9 +44,6 @@ public class ApplicationService {
     private String baseUrl;
 
     @Autowired
-    RequestIpRetriever requestIpRetriever;
-
-    @Autowired
     ApplicantListItemMapper applicantListItemMapper;
 
     @Autowired
@@ -136,7 +133,7 @@ public class ApplicationService {
                         }
                         applicationDTO.setDate(queueTimestamp);
                         applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                        _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
+                        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
                         return applicationDTO;
                     } else {
                         _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application existent on the DB, callId: "
@@ -200,7 +197,7 @@ public class ApplicationService {
                 }
             }
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;
         }
         return null;
@@ -463,7 +460,7 @@ public class ApplicationService {
             }
         }
         */
-        _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is valid");
+        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is valid");
         return validatedApplication;
     }
 
@@ -497,7 +494,7 @@ public class ApplicationService {
             }
         }
         */
-        _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is invalid due the following reason: " + invalidatedApplication.getInvalidateReason());
+        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is invalid due the following reason: " + invalidatedApplication.getInvalidateReason());
         return invalidatedApplication;
     }
 
@@ -526,7 +523,7 @@ public class ApplicationService {
         applicationDB.setInvalidateReason(null);
         registrationService.saveRegistration(registration);
         ApplicationDTO applicationResponse = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
-        _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
+        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
         return applicationResponse;
     }
 

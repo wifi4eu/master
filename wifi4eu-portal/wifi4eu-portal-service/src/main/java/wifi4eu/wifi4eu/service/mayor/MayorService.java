@@ -38,9 +38,6 @@ public class MayorService {
     @Autowired
     PermissionChecker permissionChecker;
 
-    @Autowired
-    RequestIpRetriever requestIpRetriever;
-
     private final Logger _log = LogManager.getLogger(MayorService.class);
 
     UserContext userContext;
@@ -64,7 +61,7 @@ public class MayorService {
         if (mayorDTO1 != null) {
             resMayor.setEmail(mayorDTO1.getEmail());
         }
-        _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Mayor created");
+        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Mayor created");
         return resMayor;
     }
 
@@ -86,7 +83,7 @@ public class MayorService {
         MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findOne(mayorId));
         if (mayorDTO != null) {
             mayorRepository.delete(mayorMapper.toEntity(mayorDTO));
-            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Mayor removed");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Mayor removed");
             return mayorDTO;
         } else {
             return null;

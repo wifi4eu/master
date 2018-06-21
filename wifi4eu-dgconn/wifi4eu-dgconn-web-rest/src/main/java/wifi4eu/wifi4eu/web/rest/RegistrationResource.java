@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.*;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
@@ -20,14 +20,14 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.registration.legal_files.*;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -35,9 +35,6 @@ import java.util.List;
 @Api(value = "/registration", description = "Registration object REST API services")
 @RequestMapping("registration")
 public class RegistrationResource {
-
-    @Autowired
-    RequestIpRetriever requestIpRetriever;
 
     @Autowired
     private RegistrationService registrationService;
@@ -114,7 +111,7 @@ public class RegistrationResource {
             }
             //RegistrationValidator.validate(registrationDTO);
             RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Registration created successfully");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Registration created successfully");
             return new ResponseDTO(true, resRegistration, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to create registrations", ade.getMessage());

@@ -39,8 +39,6 @@ import java.util.List;
 @Api(value = "/voucher", description = "Application object REST API services")
 @RequestMapping("voucher")
 public class VoucherResource {
-    @Autowired
-    RequestIpRetriever requestIpRetriever;
 
     @Autowired
     VoucherService voucherService;
@@ -198,7 +196,7 @@ public class VoucherResource {
                 throw new AccessDeniedException("Access denied: simulateVoucherAssignment");
             }
             ResponseDTO response = voucherService.simulateVoucherFast(callId);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on voucher simulation");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on voucher simulation");
             return response;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - You have no permissions to run voucher simulation", ade.getMessage());

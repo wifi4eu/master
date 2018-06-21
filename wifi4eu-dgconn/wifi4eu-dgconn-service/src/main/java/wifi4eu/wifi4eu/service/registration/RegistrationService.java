@@ -43,9 +43,6 @@ public class RegistrationService {
     private final Logger _log = LogManager.getLogger(RegistrationService.class);
 
     @Autowired
-    RequestIpRetriever requestIpRetriever;
-
-    @Autowired
     RegistrationMapper registrationMapper;
 
     @Autowired
@@ -129,28 +126,28 @@ public class RegistrationService {
         if(registrationDBO.getAllFilesFlag() != 1){
             if (registrationDTO.getLegalFile1Mime() == null || registrationDTO.getLegalFile1Size() <= 0) {
                 legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 1);
-                _log.log(Level.getLevel("BUSINESS"), "[ " +requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
+                _log.log(Level.getLevel("BUSINESS"), "[ " +RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
                 registrationDBO.setLegalFile1Mime(null);
                 registrationDBO.setLegalFile1Size(0);
             }
 
             if (registrationDTO.getLegalFile2Mime() == null || registrationDTO.getLegalFile2Size() <= 0) {
                 legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 2);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 3");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 3");
                 registrationDBO.setLegalFile2Mime(null);
                 registrationDBO.setLegalFile2Size(0);
             }
 
             if (registrationDTO.getLegalFile3Mime() == null || registrationDTO.getLegalFile3Size() <= 0) {
                 legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 3);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 2");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 2");
                 registrationDBO.setLegalFile3Mime(null);
                 registrationDBO.setLegalFile3Size(0);
             }
 
             if (registrationDTO.getLegalFile4Mime() == null || registrationDTO.getLegalFile4Size() <= 0) {
                 legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 4);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 4");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 4");
                 registrationDBO.setLegalFile4Mime(null);
                 registrationDBO.setLegalFile4Size(0);
             }
@@ -186,7 +183,7 @@ public class RegistrationService {
                 registrationDBO.setLegalFile1Mime(LegalFilesService.getMimeType(lf1));
                 registrationDBO.setLegalFile1Size(lf1ByteArray.length);
                 registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 1");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 1");
             }
         }
         String lf2 = registrationDTO.getLegalFile2Mime();
@@ -211,7 +208,7 @@ public class RegistrationService {
                 registrationDBO.setLegalFile2Mime(LegalFilesService.getMimeType(lf2));
                 registrationDBO.setLegalFile2Size(lf2ByteArray.length);
                 registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 2");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 2");
             }
         }
         String lf3 = registrationDTO.getLegalFile3Mime();
@@ -236,7 +233,7 @@ public class RegistrationService {
                 registrationDBO.setLegalFile3Mime(LegalFilesService.getMimeType(lf3));
                 registrationDBO.setLegalFile3Size(lf3ByteArray.length);
                 registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 3");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 3");
             }
         }
         String lf4 = registrationDTO.getLegalFile4Mime();
@@ -261,7 +258,7 @@ public class RegistrationService {
                 registrationDBO.setLegalFile4Mime(LegalFilesService.getMimeType(lf4));
                 registrationDBO.setLegalFile4Size(lf4ByteArray.length);
                 registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 4");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 4");
             }
         }
         if (checkAllFilesFlag(registrationDBO)) {

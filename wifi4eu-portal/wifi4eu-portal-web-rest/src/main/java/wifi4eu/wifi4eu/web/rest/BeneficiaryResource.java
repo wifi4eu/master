@@ -14,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
+import wifi4eu.wifi4eu.common.dto.model.BeneficiaryListItemDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -28,7 +31,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -43,9 +46,6 @@ public class BeneficiaryResource {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private RequestIpRetriever requestIpRetriever;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryResource.class);
 
@@ -77,7 +77,7 @@ public class BeneficiaryResource {
                 ip = request.getRemoteAddr();
             }
             List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO, ip, request);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiary submitted successfully");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiary submitted successfully");
             return new ResponseDTO(true, resRegistrations, null);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary cannot been submitted", e.getMessage());

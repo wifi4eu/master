@@ -43,9 +43,6 @@ import java.util.List;
 public class SupplierResource {
 
     @Autowired
-    RequestIpRetriever requestIpRetriever;
-
-    @Autowired
     private SupplierService supplierService;
 
     @Autowired
@@ -269,7 +266,7 @@ public class SupplierResource {
                 throw new AppException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             SupplierDTO resSupplier = supplierService.submitSupplierRegistration(supplierDTO);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Supplier registration submitted successfully");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Supplier registration submitted successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been submitted", e.getMessage());

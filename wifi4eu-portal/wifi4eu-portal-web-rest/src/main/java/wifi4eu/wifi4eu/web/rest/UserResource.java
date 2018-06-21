@@ -41,9 +41,6 @@ public class UserResource {
     @Autowired
     private PermissionChecker permissionChecker;
 
-    @Autowired
-    private RequestIpRetriever requestIpRetriever;
-
     Logger _log = LogManager.getLogger(UserResource.class);
 
     UserContext userContext;
@@ -188,7 +185,7 @@ public class UserResource {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
             UserDTO resUser = userService.deleteUser(userId, request);
             resUser.setPassword(null);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
             return new ResponseDTO(true, resUser, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to remove this user", ade.getMessage());

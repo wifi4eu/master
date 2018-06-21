@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.service.voucher;
 
 import com.google.common.collect.Lists;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
@@ -41,7 +39,6 @@ import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
 import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -49,9 +46,6 @@ import java.util.*;
 public class VoucherService {
 
     private Logger _log = LogManager.getLogger(this.getClass());
-
-    @Autowired
-    RequestIpRetriever requestIpRetriever;
 
     @Autowired
     VoucherAssignmentMapper voucherAssignmentMapper;

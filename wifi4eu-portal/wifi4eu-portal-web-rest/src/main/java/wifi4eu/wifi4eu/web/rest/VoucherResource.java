@@ -51,9 +51,6 @@ public class VoucherResource {
     @Autowired
     PermissionChecker permissionChecker;
 
-    @Autowired
-    RequestIpRetriever requestIpRetriever;
-
     Logger _log = LogManager.getLogger(VoucherResource.class);
 
     UserContext userContext;
@@ -198,7 +195,7 @@ public class VoucherResource {
                 throw new AccessDeniedException("Access denied: simulateVoucherAssignment");
             }
             ResponseDTO response = voucherService.simulateVoucherFast(callId);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on voucher simulation");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on voucher simulation");
             return response;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - You have no permissions to run voucher simulation", ade.getMessage());

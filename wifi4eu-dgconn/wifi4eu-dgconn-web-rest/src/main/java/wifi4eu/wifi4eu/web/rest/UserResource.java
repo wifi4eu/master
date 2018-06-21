@@ -32,8 +32,6 @@ import java.io.IOException;
 @Api(value = "/user", description = "User object REST API services")
 @RequestMapping("user")
 public class UserResource {
-    @Autowired
-    RequestIpRetriever requestIpRetriever;
 
     @Autowired
     private UserService userService;
@@ -187,7 +185,7 @@ public class UserResource {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
             UserDTO resUser = userService.deleteUser(userId, request);
             resUser.setPassword(null);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + requestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
             return new ResponseDTO(true, resUser, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to remove this user", ade.getMessage());
