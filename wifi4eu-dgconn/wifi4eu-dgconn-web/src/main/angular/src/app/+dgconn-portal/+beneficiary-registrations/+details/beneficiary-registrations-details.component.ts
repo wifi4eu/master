@@ -146,7 +146,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
             this.processingRequest = true;
             if (this.selectedIndex != null) {
                 this.registrations[this.selectedIndex].status = 1;
-                this.registrationApi.invalidateRegistration(this.registrations[this.selectedIndex]).subscribe(
+                this.registrationApi.createRegistration(this.registrations[this.selectedIndex]).subscribe(
                     (response: ResponseDTOBase) => {
                         if (response.success) {
                             if (response.data != null) {
