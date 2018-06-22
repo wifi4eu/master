@@ -25,13 +25,13 @@ public interface ApplicationIssueUtilRepository extends CrudRepository<Applicati
             "inner join mayors may on may.municipality = m.id where a.call_id = ?#{[0]} and a._status = ?#{[1]}", nativeQuery = true)
     List<ApplicationIssueUtil> findApplicationIssueUtilByCallAndStatus(Integer callId, Integer status);
 
-//    @Query(value = "select a.id as applicationId, r.id as registrationId, l.country_code as countryCode, u.email as userEmail, u.ecas_email as userEcasEmail, " +
-//            "u.lang as userLang, may.email as mayorEmail from laus l \n" +
-//            "inner join municipalities m on m.lau = l.id \n" +
-//            "inner join registrations r on r.municipality = m.id \n" +
-//            "inner join users u on r._user = u.id\n" +
-//            "inner join mayors may on may.municipality = m.id where r.id = ?#{[0]}", nativeQuery = true)
-//    ApplicationIssueUtil findRegistrationIssueUtilsByRegistrationId(Integer registrationId);
+    @Query(value = "select 1 as applicationId, r.id as registrationId, l.country_code as countryCode, u.email as userEmail, u.ecas_email as userEcasEmail, " +
+            "u.lang as userLang, may.email as mayorEmail from laus l \n" +
+            "inner join municipalities m on m.lau = l.id \n" +
+            "inner join registrations r on r.municipality = m.id \n" +
+            "inner join users u on r._user = u.id\n" +
+            "inner join mayors may on may.municipality = m.id where r.id = ?#{[0]}", nativeQuery = true)
+    ApplicationIssueUtil findRegistrationIssueUtilsByRegistrationId(Integer registrationId);
 
     @Query(value = "select a.id as applicationId, r.id as registrationId, l.country_code as countryCode, u.email as userEmail, u.ecas_email as userEcasEmail, " +
             "u.lang as userLang, may.email as mayorEmail, a._status as status from laus l \n" +
