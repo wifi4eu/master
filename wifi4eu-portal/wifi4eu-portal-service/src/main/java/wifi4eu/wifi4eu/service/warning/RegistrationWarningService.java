@@ -83,7 +83,7 @@ public class RegistrationWarningService {
     }
 
     public void createWarningsByRegistration(RegistrationDTO registrationDTO) {
-        ApplicationIssueUtil applicationIssueUtil = applicationIssueUtilRepository.findApplicationIssueUtilByRegistrationId(registrationDTO.getId());
+        ApplicationIssueUtil applicationIssueUtil = applicationIssueUtilRepository.findRegistrationIssueUtilsByRegistrationId(registrationDTO.getId());
 
         if (ApplicationWarningsChecker.registrationHasWarning1(applicationIssueUtil)) {
             Registration registration = registrationMapper.toEntity(registrationDTO);
