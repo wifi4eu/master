@@ -53,6 +53,10 @@ public class LauResource {
     @RequestMapping(value = "/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public LauDTO getLauById(@PathVariable("lauId") final Integer lauId) {
+        UserContext user = UserHolder.getUser();
+        if (user == null || userService.getUserByUserContext(user) == null) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
         return lauService.getLauById(lauId);
     }
 
@@ -63,6 +67,10 @@ public class LauResource {
     @RequestMapping(value = "/countryCode/{countryCode}/lau2/{lau2}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public LauDTO getLauByCountryCodeAndLau2(@PathVariable("countryCode") final String countryCode, @PathVariable("lau2") final String lau2) {
+        UserContext user = UserHolder.getUser();
+        if (user == null || userService.getUserByUserContext(user) == null) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
         return lauService.getLauByCountryCodeAndLau2(countryCode, lau2);
     }
 
@@ -73,6 +81,10 @@ public class LauResource {
     @RequestMapping(value = "/countryCode/{countryCode}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<LauDTO> getLausByCountryCode(@PathVariable("countryCode") final String countryCode) {
+        UserContext user = UserHolder.getUser();
+        if (user == null || userService.getUserByUserContext(user) == null) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
         return lauService.getLausByCountryCode(countryCode);
     }
 
@@ -83,6 +95,10 @@ public class LauResource {
     @RequestMapping(value = "/nuts3/{nuts3}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<LauDTO> getLausByNuts3(@PathVariable("nuts3") final String nuts3) {
+        UserContext user = UserHolder.getUser();
+        if (user == null || userService.getUserByUserContext(user) == null) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
         return lauService.getLausByNuts3(nuts3);
     }
 
@@ -93,6 +109,10 @@ public class LauResource {
     @RequestMapping(value = "/countryCode/{countryCode}/name/{name1}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<LauDTO> getLausByCountryCodeAndName1ContainingIgnoreCase(@PathVariable("countryCode") final String countryCode, @PathVariable("name1") final String name1) {
+        UserContext user = UserHolder.getUser();
+        if (user == null || userService.getUserByUserContext(user) == null) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
         return lauService.getLausByCountryCodeAndName1ContainingIgnoreCase(countryCode, name1);
     }
 
