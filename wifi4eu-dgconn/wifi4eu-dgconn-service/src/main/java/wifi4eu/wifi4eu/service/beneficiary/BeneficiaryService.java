@@ -476,7 +476,7 @@ public class BeneficiaryService {
         int totalCount = getCountDistinctMunicipalitiesContainingName(name);
         int pageSize = totalCount;
         List<BeneficiaryListItem> beneficiaries = beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByLauIdAsc(name, 0, pageSize);
-       return generateCSVBeneficiaries(beneficiaries, true);
+        return generateCSVBeneficiaries(beneficiaries, true);
     }
 
     public byte[] exportExcelDGConnBeneficiariesList() {
@@ -492,7 +492,7 @@ public class BeneficiaryService {
         int pageSize = totalCount;
         List<BeneficiaryListItem> beneficiaries = beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByLauIdAsc(name, 0, pageSize);
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(beneficiaries, BeneficiaryListItem.class);
-       return excelExportGenerator.exportExcelFile("beneficiaries").toByteArray();
+        return excelExportGenerator.exportExcelFile("beneficiaries").toByteArray();
     }
 
     private String generateCSVBeneficiaries(List<BeneficiaryListItem> beneficiaryListItems, boolean columnHeaders) {

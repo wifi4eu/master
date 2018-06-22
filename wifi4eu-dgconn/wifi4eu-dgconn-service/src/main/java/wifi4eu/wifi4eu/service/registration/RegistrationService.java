@@ -126,7 +126,7 @@ public class RegistrationService {
         if(registrationDBO.getAllFilesFlag() != 1){
             if (registrationDTO.getLegalFile1Mime() == null || registrationDTO.getLegalFile1Size() <= 0) {
                 legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 1);
-                _log.log(Level.getLevel("BUSINESS"), "[ " +RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
+                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
                 registrationDBO.setLegalFile1Mime(null);
                 registrationDBO.setLegalFile1Size(0);
             }
