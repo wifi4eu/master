@@ -204,18 +204,7 @@ public class VoucherService {
     }
 
     public boolean checkSavePreSelectionEnabled(int voucherAssignmentId) {
-
-        List<VoucherSimulationDTO> simulationList = getVoucherSimulationsByVoucherAssigmentId(voucherAssignmentId);
-
-        for (VoucherSimulationDTO simulation : simulationList) {
-            if (simulation.getNumApplications() > 1) {
-                return false;
-            }
-            if (simulation.getApplication().getStatus() != ApplicationStatus.OK.getValue()) {
-                return false;
-            }
-        }
-        return true;
+        return voucherSimulationRepository.checkIfSimulationIsValid(voucherAssignmentId) == 0;
     }
 
     @Transactional
