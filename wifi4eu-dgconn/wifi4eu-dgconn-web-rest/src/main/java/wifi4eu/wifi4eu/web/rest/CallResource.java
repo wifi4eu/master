@@ -5,9 +5,13 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.CallDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -30,6 +34,10 @@ public class CallResource {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<CallDTO> allCalls() {
+        UserContext user = UserHolder.getUser();
+        if (user == null || userService.getUserByUserContext(user) == null) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
         return callService.getAllCalls();
     }
 
@@ -37,6 +45,10 @@ public class CallResource {
     @RequestMapping(value = "/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public CallDTO getCallById(@PathVariable("callId") final Integer callId) {
+        UserContext user = UserHolder.getUser();
+        if (user == null || userService.getUserByUserContext(user) == null) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
         return callService.getCallById(callId);
     }
 
@@ -44,7 +56,8 @@ public class CallResource {
 //    @RequestMapping(method = RequestMethod.POST)
 //    @ResponseStatus(HttpStatus.CREATED)
 //    @ResponseBody
-//    public ResponseDTO createCall(@RequestBody final CallDTO callDTO, HttpServletResponse response) throws IOException {
+//    public ResponseDTO createCall(@RequestBody final CallDTO callDTO, HttpServletResponse response) throws
+// IOException {
 //
 //        //TODO:check DGConn permissions
 //
@@ -72,7 +85,8 @@ public class CallResource {
 //    @ApiOperation(value = "Delete call by specific id")
 //    @RequestMapping(method = RequestMethod.DELETE)
 //    @ResponseBody
-//    public ResponseDTO deleteCall(@RequestBody final Integer callId, HttpServletResponse response) throws IOException {
+//    public ResponseDTO deleteCall(@RequestBody final Integer callId, HttpServletResponse response) throws
+// IOException {
 //
 //        //TODO: check DGConn permissions
 //        try {
@@ -86,8 +100,6 @@ public class CallResource {
 //        }
 //        catch (AccessDeniedException ade) {
 //            response.sendError(HttpStatus.NOT_FOUND.value());
-//        }
-//        catch (Exception e) {
 //            if (_log.isErrorEnabled()) {
 //                _log.error("Error on 'deleteCall' operation.", e);
 //            }
