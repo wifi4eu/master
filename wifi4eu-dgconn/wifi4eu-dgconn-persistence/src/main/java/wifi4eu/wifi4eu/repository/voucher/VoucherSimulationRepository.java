@@ -39,4 +39,7 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
 
     @Query(value = "SELECT count(*) FROM voucher_simulations vs INNER JOIN municipalities m ON vs.municipality = m.id WHERE vs.voucher_assignment = ?#{[0]} AND LOWER(m.name) LIKE LOWER(CONCAT('%',?#{[1]},'%')) AND LOWER(vs.country) LIKE LOWER(CONCAT('%',?#{[2]},'%'))", nativeQuery = true)
     Integer countAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(Integer voucherAssignmentId, String municipality, String country);
+
+    @Query(value = "SELECT count(*) FROM voucher_simulations vs INNER JOIN applications a ON vs.application = a.id WHERE vs.voucher_assignment = ?1 AND (vs.num_applications > 1 OR a._status != 2)", nativeQuery = true)
+    Integer checkIfSimulationIsValid(int voucherAssignmentId);
 }
