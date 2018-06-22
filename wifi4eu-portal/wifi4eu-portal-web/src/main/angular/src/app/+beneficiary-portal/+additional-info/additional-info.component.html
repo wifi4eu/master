@@ -208,11 +208,9 @@
         <div class="form-group ui-g">
             <div class="ui-lg-3"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <a routerLink="../.." routerLinkActive="active">
-                    <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' |
+                    <button type="button" (click)="confirmClose()" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' |
                         translate }}
                     </button>
-                </a>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                 <button type="submit" class="btn btn-primary publish-button"
@@ -224,6 +222,26 @@
         </div>
 
     </form>
+    <p-dialog [(visible)]="displayConfirmClose">
+        <div class="form-group ui-g">
+            <div class="ui-lg-3"></div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                <button (click)="cancelBack()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' |
+                        translate }}
+                </button>
+            </div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                <a routerLink="../.." routerLinkActive="active">
+                    <button type="button" class="btn btn-primary cancel-button">
+                            {{ 'shared.confirm.button' | translate }}
+                    </button>
+                </a>
+            </div>
+        
+            <div class="ui-lg-3"></div>
+        </div>
+    </p-dialog>
+
     <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false"
               [closable]="false" [closeOnEscape]="false">
