@@ -155,7 +155,7 @@ public class VoucherService {
     }
 
     public ResponseDTO getVoucherSimulationByVoucherAssignment(int voucherAssignmentId, String country, String municipality, Pageable pageable) {
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving voucher simulations - voucherAssignment: " + voucherAssignmentId + "municipality: " + municipality + ", country: " + country);
+        _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Retrieving voucher simulations - voucherAssignment: " + voucherAssignmentId + "municipality: " + municipality + ", country: " + country);
         Page<VoucherSimulation> simulationPaged = null;
         List<VoucherSimulationDTO> listSimulation = new ArrayList<>();
         int totalElements = 0;
@@ -192,7 +192,7 @@ public class VoucherService {
     }
 
     public byte[] exportVoucherSimulation(int voucherAssignmentId, String country, String municipalityName, Pageable pageable) {
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Downloading excel voucher simulation with parameters - voucherAssignment: " + voucherAssignmentId + "municipality: " + municipalityName + ", country: " + country);
+        _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Downloading excel voucher simulation with parameters - voucherAssignment: " + voucherAssignmentId + "municipality: " + municipalityName + ", country: " + country);
         List<VoucherSimulationDTO> simulationDTOS = (List<VoucherSimulationDTO>) getVoucherSimulationByVoucherAssignment(voucherAssignmentId, country, municipalityName, pageable).getData();
 
         VoucherSimulationExportGenerator excelExportGenerator = new VoucherSimulationExportGenerator(simulationDTOS, VoucherSimulationDTO.class);
@@ -330,7 +330,7 @@ public class VoucherService {
 
     @Transactional
     public ResponseDTO simulateVoucherFast(int callId) {
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Executing voucher simulation for call: " + callId);
+        _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Executing voucher simulation for call: " + callId);
         HashMap<Integer, SimpleMunicipalityDTO> municipalityHashMap = new HashMap<>();
         HashMap<Integer, SimpleLauDTO> lauHashMap = new HashMap<>();
         HashMap<Integer, SimpleRegistrationDTO> registrationsHashMap = new HashMap<>();
@@ -340,12 +340,12 @@ public class VoucherService {
         if (userContext != null) {
             CallDTO call = callService.getCallById(callId);
             if (call == null) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Call not exist");
+                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Call not exist");
                 return new ResponseDTO(false, "Call not exist", null);
             }
 
             if (call.getNumberVouchers() == 0) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Simulation stopped due to number of vouchers to be assigned");
+                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Simulation stopped due to number of vouchers to be assigned");
                 return new ResponseDTO(false, "Simulation stopped", null);
             }
 
@@ -365,7 +365,7 @@ public class VoucherService {
             long dateNanoSeconds = call.getStartDate() * 1000000;
             List<ApplicationDTO> listOfApplications = applicationService.findByCallIdOrderByDateBeforeCallDateAsc(call.getId(), dateNanoSeconds);
 
-            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Initializing municipalities, laus & registrations");
+            _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Initializing municipalities, laus & registrations");
 
             List<SimpleMunicipalityDTO> municipalities = simpleMunicipalityService.getAllMunicipalities();
             List<SimpleLauDTO> laus = simpleLauService.getAllLausFromApplications();
@@ -431,7 +431,7 @@ public class VoucherService {
 
             // List of applications cloned to use in the algorithm
             List<ApplicationDTO> supportLOAlist = new ArrayList<>(listOfApplications);
-            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Assigning minimum vouchers");
+            _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Assigning minimum vouchers");
 
             for (String country : participatingCountries) {
 
@@ -478,11 +478,11 @@ public class VoucherService {
                         }
                     }
                 } catch (Exception e) {
-                    _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Error assigning minimum of vouchers to country", e.getMessage());
+                    _log.warn("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Error assigning minimum of vouchers to country", e.getMessage());
                 }
             }
 
-            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Assigning maximum vouchers");
+            _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Assigning maximum vouchers");
 
             for (ApplicationDTO applicationDTO : new ArrayList<>(supportLOAlist)) {
                 try {
@@ -538,11 +538,11 @@ public class VoucherService {
                         removeFromLOA(supportLOAlist, applicationDTO);
                     }
                 } catch (Exception e) {
-                    _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Error assigning maximum of vouchers to country", e.getMessage());
+                    _log.warn("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Error assigning maximum of vouchers to country", e.getMessage());
                 }
             }
 
-            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Filling reserve list");
+            _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Filling reserve list");
             if (!supportLOAlist.isEmpty()) {
                 for (String country : participatingCountries) {
                     country = country.trim();
@@ -599,7 +599,7 @@ public class VoucherService {
                             }
                         }
                     } catch (Exception e) {
-                        _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Error assigning reserve of vouchers to country", e.getMessage());
+                        _log.warn("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Error assigning reserve of vouchers to country", e.getMessage());
                     }
                 }
             }
@@ -719,7 +719,7 @@ public class VoucherService {
                 simulations.add(simulation);
                 i++;
             }
-            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Saving simulation to database");
+            _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Saving simulation to database");
 
             voucherAssignment.setVoucherSimulations(simulations);
             VoucherAssignmentDTO res = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment)));
@@ -727,7 +727,7 @@ public class VoucherService {
             voucher.setId(res.getId());
             voucher.setStatus(res.getStatus());
             voucher.setExecutionDate(res.getExecutionDate());
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Voucher simulation successfully executed");
+            _log.info("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Voucher simulation successfully executed");
             return new ResponseDTO(true, voucher, null);
         }
         return new ResponseDTO(false, "User not defined", null);
@@ -749,7 +749,7 @@ public class VoucherService {
                         appCountry.add(application);
                     }
                 } catch (Exception e) {
-                    _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Error retrieving application by country", e.getMessage());
+                    _log.warn("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Error retrieving application by country", e.getMessage());
                 }
             }
         }
@@ -779,7 +779,7 @@ public class VoucherService {
         CallDTO callDTO = callService.getCallById(callId);
 
         if (callDTO == null) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Call does not exist with id " + callId);
+            _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Call does not exist with id " + callId);
             throw new AppException("Call not found with id: " + callId);
         }
 
@@ -820,7 +820,7 @@ public class VoucherService {
                 //mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
         }
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + successfulApplicants.size() + " successful applicants");
+        _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Email sended to " + successfulApplicants.size() + " successful applicants");
 
         for (ApplicationDTO reserveApplicant : reserveApplicants) {
             RegistrationDTO registrationDTO = registrationService.getRegistrationById(reserveApplicant.getRegistrationId());
@@ -839,7 +839,7 @@ public class VoucherService {
                 // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
         }
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + reserveApplicants.size() + " reserve applicants");
+        _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Email sended to " + reserveApplicants.size() + " reserve applicants");
 
         for (ApplicationDTO unsuccessfulApplicant : unsuccessfulApplicants) {
             RegistrationDTO registrationDTO = registrationService.getRegistrationById(unsuccessfulApplicant.getRegistrationId());
@@ -865,7 +865,7 @@ public class VoucherService {
                 // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
         }
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + unsuccessfulApplicants.size() + " unsuccessful applicants");
+        _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Email sended to " + unsuccessfulApplicants.size() + " unsuccessful applicants");
 
         VoucherAssignment voucherAssignment = voucherAssignmentRepository.findByCallIdAndStatusEquals(callDTO.getId(), VoucherAssignmentStatus.FREEZE_LIST.getValue());
         voucherAssignment.setNotifiedDate(new Date().getTime());
