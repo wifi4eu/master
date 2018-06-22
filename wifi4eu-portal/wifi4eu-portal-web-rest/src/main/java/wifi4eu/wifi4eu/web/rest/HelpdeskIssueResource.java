@@ -173,7 +173,7 @@ public class HelpdeskIssueResource {
 
         _log.info("scheduleHelpdeskIssues");
 
-        boolean isSuccesOperation = true;
+        boolean isSuccessOperation = true;
         Map<String, Boolean> allResults = new HashMap<>();
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
 
@@ -198,25 +198,28 @@ public class HelpdeskIssueResource {
 
                     boolean result = executePost(helpdeskTicketDTO.toString());
                     allResults.put(helpdeskTicketDTO.getUuid(), result);
-                    isSuccesOperation = isSuccesOperation && result;
+                    isSuccessOperation = isSuccessOperation && result;
 
                     if (result) {
                         helpdeskIssue.setTicket(true);
                         helpdeskService.createHelpdeskIssue(helpdeskIssue);
                     } else {
+                        isSuccessOperation = false;
                         _log.error("result that not containt proper text, the " + helpdeskTicketDTO.getUuid() + " helpdesk issue fails");
                     }
                 } else {
+                    isSuccessOperation = false;
                     _log.error("scheduleHelpdeskIssues can't retrieve the user for heldesk issue with Id " + helpdeskIssue.getId());
                 }
 
 
             } catch (Exception e) {
+                isSuccessOperation = false;
                 _log.error("scheduleHelpdeskIssues the helpdesk issue with Id " + helpdeskIssue.getId() + " can't be processed", e);
             }
         }
 
-        return new ResponseDTO(isSuccesOperation, allResults, null);
+        return new ResponseDTO(isSuccessOperation, allResults, null);
     }
 
     @SuppressWarnings("Duplicates")
@@ -234,6 +237,9 @@ public class HelpdeskIssueResource {
                 postRequest.addHeader(HelpdeskConstants.HOST, HelpdeskConstants.HOST_VALUE);
 
                 postRequest.setEntity(new StringEntity(urlParameters, HelpdeskConstants.CHARSET_UTF8));
+                //Avoid send messages to EDCC || For production ¡¡Remove this!!
+                //return true;
+                // Only for production, this allows send messages to EDCC
                 HttpResponse httpResponse = httpClient.execute(postRequest, new BasicHttpContext());
                 if (httpResponse != null) {
                     if (httpResponse.getHeaders(HelpdeskConstants.LOCATION).length > 0) {

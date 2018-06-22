@@ -1,0 +1,11 @@
+C:\Users\dsebastm\azureProject\bin\Debug\netcoreapp2.1\azureProject.deps.json
+C:\Users\dsebastm\azureProject\bin\Debug\netcoreapp2.1\azureProject.runtimeconfig.json
+C:\Users\dsebastm\azureProject\bin\Debug\netcoreapp2.1\azureProject.runtimeconfig.dev.json
+C:\Users\dsebastm\azureProject\bin\Debug\netcoreapp2.1\azureProject.dll
+C:\Users\dsebastm\azureProject\bin\Debug\netcoreapp2.1\azureProject.pdb
+C:\Users\dsebastm\azureProject\obj\Debug\netcoreapp2.1\azureProject.csprojAssemblyReference.cache
+C:\Users\dsebastm\azureProject\obj\Debug\netcoreapp2.1\azureProject.csproj.CoreCompileInputs.cache
+C:\Users\dsebastm\azureProject\obj\Debug\netcoreapp2.1\azureProject.AssemblyInfoInputs.cache
+C:\Users\dsebastm\azureProject\obj\Debug\netcoreapp2.1\azureProject.AssemblyInfo.cs
+C:\Users\dsebastm\azureProject\obj\Debug\netcoreapp2.1\azureProject.dll
+C:\Users\dsebastm\azureProject\obj\Debug\netcoreapp2.1\azureProject.pdb

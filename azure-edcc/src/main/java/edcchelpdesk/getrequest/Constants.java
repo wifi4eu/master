@@ -2,8 +2,9 @@ package edcchelpdesk.getrequest;
 
 public class Constants {
 
-    public static final String URL_GET_TOKEN = "http://localhost:8080/wifi4eu-edcc/oauth/token?grant_type=password&username=wififoreu_public_user&password=q27Dz38WESBeYE9BX6PrySfH";
-    public static final String URL_CALL_EDCC = "http://localhost:8080/wifi4eu-edcc/edcc/helpdesk/?access_token=";
+    private static final String BASE_URL     = "http://wifi4eu.everisdigitalchannels.com:8080/wifi4eu-edcc";
+    public static final String URL_GET_TOKEN = BASE_URL + "/oauth/token?grant_type=password&username=wififoreu_public_user&password=q27Dz38WESBeYE9BX6PrySfH";
+    public static final String URL_CALL_EDCC = BASE_URL + "/edcc/helpdesk/?access_token=";
 
     public static final String GET = "GET";
     public static final String POST = "POST";
