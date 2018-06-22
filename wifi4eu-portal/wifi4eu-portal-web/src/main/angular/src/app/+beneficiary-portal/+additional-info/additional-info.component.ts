@@ -41,6 +41,7 @@ export class AdditionalInfoComponent {
     private doc2: boolean = false;
     private doc3: boolean = false;
     private doc4: boolean = false;
+    private displayConfirmClose: boolean = false;
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
@@ -281,4 +282,13 @@ export class AdditionalInfoComponent {
             this.filesUploaded = false;
         }
     }
+
+    confirmClose(){
+        this.displayConfirmClose = true;
+    }
+
+    cancelBack(){
+        this.displayConfirmClose = false;
+    }
+
 }
