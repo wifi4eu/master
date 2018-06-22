@@ -52,7 +52,6 @@ export class VoucherComponent {
     private displayError = false;
     private errorMessage = null;
     private rabbitmqURI: string = "/queue";
-    private firebaseURI: string = "https://wifi4eu-dev.firebaseio.com/calls/@1/user/@2/registration/@3.json";
 
     private httpOptions = {
         headers: new Headers({
@@ -217,9 +216,6 @@ export class VoucherComponent {
                     this.registrations[registrationNumber].uploadTime +
                     "}";
 
-                this.sendToFirebase(this.currentCall.id, this.registrations[registrationNumber].id,
-                    this.user.id, this.registrations[registrationNumber].uploadTime);
-
 
                 this.http.post(this.rabbitmqURI, body, this.httpOptions).subscribe(
                     response => {
@@ -297,7 +293,7 @@ export class VoucherComponent {
     private checkForDocuments() {
 
         if (this.isMayor) {
-            this.docsOpen[0] = (this.registrations[0].legalFile1 != null && this.registrations[0].legalFile4 == null && this.registrations[0].legalFile2 == null && this.registrations[0].legalFile3 != null);
+            this.docsOpen[0] = (this.registrations[0].legalFile1Size != null && this.registrations[0].legalFile1Size > 0 && this.registrations[0].legalFile3Size != null && this.registrations[0].legalFile3Size > 0);
 
             if (this.docsOpen[0]) {
                 let uploaddate = new Date(this.registrations[0].uploadTime);
@@ -306,7 +302,7 @@ export class VoucherComponent {
             }
         } else {
             for (let i = 0; i < this.registrations.length; i++) {
-                this.docsOpen[i] = (this.registrations[i].legalFile1 != null && this.registrations[i].legalFile3 != null);
+                this.docsOpen[i] = (this.registrations[i].legalFile1Size != null && this.registrations[i].legalFile1Size > 0 && this.registrations[i].legalFile3Size != null && this.registrations[i].legalFile3Size > 0);
                 if (this.docsOpen[i]) {
                     let uploaddate = new Date(this.registrations[i].uploadTime);
                     this.uploadDate[i] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
@@ -318,29 +314,4 @@ export class VoucherComponent {
         }
     }
 
-    private sendToFirebase(callId: number, registrationId: number, userId: number, uploadTime: number) {
-
-        let body =
-            '{"callId":' +
-            callId +
-            ', "registrationId":' +
-            registrationId +
-            ', "userId":' +
-            userId +
-            ', "fileUploadTimestamp":' +
-            uploadTime +
-            ', "queueTime":{".sv": "timestamp"}' +
-            "}";
-
-        let url = this.firebaseURI.replace("@1", callId.toString()).replace("@2", userId.toString()).replace("@3", registrationId.toString());
-
-        this.http.put(url, body, this.httpOptions).subscribe(
-            response => {
-                console.log("firebase success");
-            },
-            error => {
-                console.log("firebase error" + error);
-            }
-        );
-    }
 }

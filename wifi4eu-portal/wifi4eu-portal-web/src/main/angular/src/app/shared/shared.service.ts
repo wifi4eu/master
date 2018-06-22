@@ -115,6 +115,66 @@ export class SharedService {
             }
         );
     }
+
+    getMimeType(base64string: string) {
+        let mimeType = null;
+        if (base64string != null) {
+            if (base64string.startsWith('data:') && base64string.indexOf(';base64') != -1) {
+                mimeType = base64string.substr(5, (base64string.indexOf(';base64') - 5));
+            }
+        }
+        return mimeType;
+    }
+
+    getFileExtension(base64string: string) {
+        let fileExtension = null;
+        if (base64string != null) {
+            let mimeType = this.getMimeType(base64string);
+            switch (mimeType) {
+                case 'text/plain':
+                    fileExtension = '.txt';
+                    break;
+                case 'text/csv':
+                    fileExtension = '.csv';
+                    break;
+                case 'application/msword':
+                    fileExtension = '.doc';
+                    break;
+                case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                    fileExtension = '.docx';
+                    break;
+                case 'application/vnd.ms-excel':
+                    fileExtension = '.xls';
+                    break;
+                case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                    fileExtension = '.xlsx';
+                    break;
+                case 'application/pdf':
+                    fileExtension = '.pdf';
+                    break;
+                case 'image/png':
+                    fileExtension = '.png';
+                    break;
+                case 'image/jpg':
+                    fileExtension = '.jpg';
+                    break;
+                case 'image/jpeg':
+                    fileExtension = '.jpeg';
+                    break;
+            }
+        }
+        return fileExtension;
+    }
+
+    getBase64Data(base64string: string) {
+        let base64Data = null;
+        if (base64string != null) {
+            if (base64string.startsWith('data:') && base64string.indexOf(';base64,') != -1) {
+                base64Data = base64string.substr(base64string.indexOf(';base64,') + 8);
+            }
+        }
+        return base64Data;
+    }
 }
 
 @Injectable()

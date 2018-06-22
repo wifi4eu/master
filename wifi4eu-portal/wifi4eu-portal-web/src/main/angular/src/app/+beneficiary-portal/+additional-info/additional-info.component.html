@@ -73,11 +73,11 @@
                         </div>
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
-                        <span *ngIf="registration.legalFile1 && !documentUrls[0]">
+                        <span *ngIf="registration.legalFile1Size && !documentUrls[0]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
                             <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker"
                                (click)="deleteFromServer(0)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(1)" download><i class="fa fa-download"
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/1" target="_blank"><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
 
@@ -104,11 +104,11 @@
                         </div>
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
-                        <span *ngIf="registration.legalFile2 && !documentUrls[1]">
+                        <span *ngIf="registration.legalFile2Size && !documentUrls[1]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
                             <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(1)"><i
                                     class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(2)" download><i class="fa fa-download"
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/2" target="_blank"><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                         <span *ngIf="documentUrls[1]">
@@ -141,11 +141,11 @@
                         </div>
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
-                        <span *ngIf="registration.legalFile3 && !documentUrls[2]">
+                        <span *ngIf="registration.legalFile3Size && !documentUrls[2]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2
                             <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker"
                                (click)="deleteFromServer(2)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(3)" download><i class="fa fa-download"
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/3" target="_blank"><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                          <span *ngIf="documentUrls[2]">
@@ -173,11 +173,11 @@
                         </div>
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
-                         <span *ngIf="registration.legalFile4 && !documentUrls[3]">
+                         <span *ngIf="registration.legalFile4Size && !documentUrls[3]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
                             <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(3)"><i
                                     class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(4)" download><i class="fa fa-download"
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/4" target="_blank"><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                          <span *ngIf="documentUrls[3]">

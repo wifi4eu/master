@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+    <CustomLevels>
+        <CustomLevel name="BUSINESS" intLevel="250"/>
+    </CustomLevels>
+    <Appenders>
+        <Console name="CONSOLE_APPENDER" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d - %-5p - [%c{1}:%L] - %m%n"/>
+        </Console>
+        <RollingFile name="FILE_APPENDER" fileName="logs/wifi4eu_app.log"
+                     filePattern="logs/wifi4eu_app-%d{yyyy-MM-dd}.log" append="true">
+            <PatternLayout>
+                <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
+            </PatternLayout>
+            <TimeBasedTriggeringPolicy />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="wifi4eu" level="BUSINESS">
+            <Appender-ref ref="FILE_APPENDER"/>
+        </Logger>
+        <Logger name="org.springframework" level="BUSINESS">
+            <Appender-ref ref="FILE_APPENDER"/>
+        </Logger>
+        <Root level="BUSINESS">
+            <Appender-ref ref="CONSOLE_APPENDER"/>
+            <Appender-ref ref="FILE_APPENDER"/>
+        </Root>
+    </Loggers>
+</Configuration>

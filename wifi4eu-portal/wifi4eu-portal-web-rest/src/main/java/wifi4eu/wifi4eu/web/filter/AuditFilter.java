@@ -2,22 +2,28 @@ package wifi4eu.wifi4eu.web.filter;
 
 
 import org.apache.commons.io.output.TeeOutputStream;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;
 import wifi4eu.wifi4eu.common.dto.audit.AuditDataDTO;
-import wifi4eu.wifi4eu.common.security.UserSessionCache;
 import wifi4eu.wifi4eu.service.audit.AuditService;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.*;
 
 //import wifi4eu.wifi4eu.service.security.UserRetrieverHelper;
 
 public class AuditFilter extends OncePerRequestFilter {
 
-    private static final Logger logger = Logger.getLogger(AuditFilter.class);
+    private static final Logger logger = LogManager.getLogger(AuditFilter.class);
 
     @Autowired
     private AuditService auditService;

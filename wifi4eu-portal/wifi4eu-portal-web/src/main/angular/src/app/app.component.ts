@@ -164,8 +164,8 @@ export class AppComponent {
             }
         );
     }
-
-    private initChildren() {
+	
+	private initChildren() {
         this.stringsTranslated.subscribe(() => {
             this.children[0] = [
                 new UxLayoutLink({
@@ -177,8 +177,8 @@ export class AppComponent {
                     url: '/supplier-registration'
                 }),
                 new UxLayoutLink({
-                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
-                  url: 'list-suppliers'
+                    label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                    url: 'list-suppliers'
                 })
             ];
             this.children[1] = [
@@ -191,8 +191,8 @@ export class AppComponent {
                     url: '/supplier-portal/profile'
                 }),
                 new UxLayoutLink({
-                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
-                  url: 'list-suppliers'
+                    label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                    url: 'list-suppliers'
                 })
             ];
             this.children[2] = [
@@ -205,8 +205,8 @@ export class AppComponent {
                     url: '/beneficiary-portal/voucher'
                 }),
                 new UxLayoutLink({
-                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
-                  url: 'list-suppliers'
+                    label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                    url: 'list-suppliers'
                 })
             ];
             this.children[3] = [
@@ -219,20 +219,14 @@ export class AppComponent {
                     url: '/beneficiary-portal/voucher'
                 }),
                 new UxLayoutLink({
-                 label: 'Registered suppliers',
-                  url: 'list-suppliers'
+                    label: 'Registered suppliers',
+                    url: 'list-suppliers'
                 })
             ];
             this.children[4] = [
                 new UxLayoutLink({
                     label: 'Member State Portal',
                     url: '#'
-                })
-            ];
-            this.children[5] = [
-                new UxLayoutLink({
-                    label: this.menuTranslations.get('itemMenu.dgPortal'),
-                    url: 'dgconn-portal'
                 })
             ];
             this.childrenInitialized.next();
@@ -250,7 +244,7 @@ export class AppComponent {
                         this.router.navigateByUrl(String(publicRedirection));
                     }
                     this.sharedService.login(this.user);
-                    if (this.children.length == 6) {
+                    if (this.children.length == 5) {
                         this.updateHeader();
                     } else {
                         this.childrenInitialized.subscribe(() => this.updateHeader());
@@ -271,10 +265,6 @@ export class AppComponent {
                 case 3:
                     this.profileUrl = '/beneficiary-portal/profile';
                     this.menuLinks = this.children[2];
-                    break;
-                case 5:
-                    this.profileUrl = '/dgconn-portal';
-                    this.menuLinks = this.children[5];
                     break;
                 default:
                     this.profileUrl = '/home';
@@ -297,7 +287,14 @@ export class AppComponent {
     }
 
     private logout() {
-        this.removeDataSession()
+        this.user = null;
+        this.localStorageService.remove('user');
+        this.localStorageService.remove('public-redirection');
+        this.menuLinks = this.children[0];
+        this.profileUrl = null;
+
+        window.location.href = environment['logoutUrl'];
+
         this.userApi.doCompleteSignOut().subscribe(
             (response: string) => {
                 window.location.href = environment['logoutUrl'];

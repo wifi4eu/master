@@ -14,6 +14,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface SupplierMapper {
+
     NutsDTO toDTO(Nuts entity);
 
     @Mapping(source = "entity.user.id", target = "userId")
