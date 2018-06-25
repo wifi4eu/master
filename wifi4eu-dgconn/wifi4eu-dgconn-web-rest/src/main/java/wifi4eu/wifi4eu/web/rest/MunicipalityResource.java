@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -24,6 +22,8 @@ import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.thread.ThreadService;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +53,12 @@ public class MunicipalityResource {
 
     @Autowired
     private NutsService nutsService;
+
+    @Autowired
+    private UserThreadsService userThreadsService;
+
+    @Autowired
+    private ThreadService threadService;
 
     Logger _log = LogManager.getLogger(MunicipalityResource.class);
 
@@ -118,11 +124,29 @@ public class MunicipalityResource {
     @ResponseBody
     public MunicipalityDTO getMunicipalityThreadById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipality by id " + municipalityId + " for thread");
+        UserDTO userDTO = userService.getUserByUserContext(userContext);
+
         MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
-        municipality.setRegistrations(null);
-        return municipality;
+        List<UserThreadsDTO> userThreadsDTOList = userThreadsService.getUserThreadsByUserId(userDTO.getId());
+        if (userDTO.getType() == 5) {
+            municipality.setRegistrations(null);
+            return municipality;
+        } else {
+            for (UserThreadsDTO userThread : userThreadsDTOList) {
+                ThreadDTO threadDTO = threadService.getThreadById(userThread.getThreadId());
+                if (threadDTO.getTitle().equals(municipality.getName())) {
+                    if (userThread.getUserId() == userDTO.getId()) {
+                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipality by id " + municipalityId + " for thread");
+                        municipality.setRegistrations(null);
+                        return municipality;
+                    } else {
+                        permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+                    }
+                }
+            }
+            permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            return null;
+        }
     }
 
     @ApiOperation(value = "Update municipality details")
