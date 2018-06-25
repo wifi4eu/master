@@ -120,7 +120,7 @@
   <!-- "Select installation company" and "Save and notify Wi-Fi installation company" buttons -->
   <p class="subtitle-discover text-adjust marginTop">{{ 'benefPortal.selectSupplier.details.endText' | translate }}</p> 
   
-  <button class="btn btn-primary select-installation-button text-adjust" (click)="changeSupplier()">
+  <button class="btn btn-primary select-installation-button text-adjust" (click)="changeSupplier()" [disabled]="hasConfirmedInstallation">
     {{ 'benefPortal.selectSupplier.buton.select' | translate }}
   </button>
 

@@ -34,6 +34,7 @@ export class SelectedSupplierDetailsComponent {
   private municipalityId: number;
   private paramsSupplierId: number;
   private changedSupplierChoice: boolean = false;
+  private hasConfirmedInstallation: boolean = true;
 
   // Date supplier was selected
   private selectionDate: Date;
@@ -72,6 +73,7 @@ export class SelectedSupplierDetailsComponent {
           for(var i = 0; i < registrations.length; i++) {
             if(registrations[i].municipalityId === this.municipalityId) {
               this.registration = registrations[i];
+              this.registration.isConfirmation != (0 || null) ? this.hasConfirmedInstallation = true : this.hasConfirmedInstallation = false;
             }
           }
           
