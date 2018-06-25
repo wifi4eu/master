@@ -66,10 +66,13 @@ public class Application {
     @Column(name = "invalidate_reason")
     private String invalidateReason;
 
+    @Column(name = "select_supplier_date")
+    private Long selectSupplierDate;
+
     public Application() {
     }
 
-    public Application(Integer id, Call call, Registration registration, Supplier supplier, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, Integer status, String invalidateReason) {
+    public Application(Integer id, Call call, Registration registration, Supplier supplier, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, Integer status, String invalidateReason, Long selectSupplierDate) {
         this.id = id;
         this.call = call;
         this.registration = registration;
@@ -87,6 +90,7 @@ public class Application {
         this.lcStatus = lcStatus;
         this.status = status;
         this.invalidateReason = invalidateReason;
+        this.selectSupplierDate = selectSupplierDate;
     }
 
     public Integer getId() {
@@ -223,5 +227,13 @@ public class Application {
 
     public void setInvalidateReason(String invalidateReason) {
         this.invalidateReason = invalidateReason;
+    }
+
+    public Long getSelectSupplierDate() {
+        return selectSupplierDate;
+    }
+    
+    public void setSelectSupplierDate(Long selectSupplierDate) {
+        this.selectSupplierDate = selectSupplierDate;
     }
 }

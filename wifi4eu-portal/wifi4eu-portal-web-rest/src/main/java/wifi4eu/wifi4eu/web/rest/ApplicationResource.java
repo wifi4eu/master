@@ -220,6 +220,7 @@ public class ApplicationResource {
                 _log.info("assignSupplier");
             }
             applicationDTO.setDate(new Date().getTime());
+            applicationDTO.setSelectSupplierDate(new Date().getTime());
             ApplicationDTO resApplication = applicationService.saveApplication(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
         } catch (Exception e) {

@@ -18,11 +18,12 @@ public class ApplicationDTO {
     private int lcStatus;
     private int status;
     private String invalidateReason;
+    private Long selectSupplierDate;
 
     public ApplicationDTO() {
     }
 
-    public ApplicationDTO(int id, int callId, int registrationId, int supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason) {
+    public ApplicationDTO(int id, int callId, int registrationId, int supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, Long selectSupplierDate) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -40,6 +41,7 @@ public class ApplicationDTO {
         this.lcStatus = lcStatus;
         this.status = status;
         this.invalidateReason = invalidateReason;
+        this.selectSupplierDate = selectSupplierDate;
     }
 
     public int getId() {
@@ -169,12 +171,20 @@ public class ApplicationDTO {
     public void setStatus(int status) {
         this.status = status;
     }
-
+    
     public String getInvalidateReason() {
         return invalidateReason;
     }
-
+    
     public void setInvalidateReason(String invalidateReason) {
         this.invalidateReason = invalidateReason;
+    }
+    
+    public Long getSelectSupplierDate() {
+        return selectSupplierDate;
+    }
+    
+    public void setSelectSupplierDate(Long selectSupplierDate) {
+        this.selectSupplierDate = selectSupplierDate;
     }
 }
