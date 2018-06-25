@@ -209,8 +209,7 @@ export class SelectSupplierComponent {
 
   /* Allows you click again in "Select installation company" button */
   private confirmChange() {
-    this.onRowSelect();
-    this.hasSupplierAssigned = false;
+    this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalityId, this.selectedSupplier.id]);
   }
 
   /* --- CONFIRM SUPPLIER MODAL --- */
