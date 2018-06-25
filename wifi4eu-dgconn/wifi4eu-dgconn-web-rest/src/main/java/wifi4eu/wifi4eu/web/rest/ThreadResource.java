@@ -89,7 +89,7 @@ public class ThreadResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been retrieved", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return null;
         }
@@ -115,7 +115,7 @@ public class ThreadResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been set with mediation", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been set with mediation", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }

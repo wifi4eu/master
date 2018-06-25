@@ -93,6 +93,12 @@ public class UserService {
     @Autowired
     UserThreadsService userThreadsService;
 
+    @Autowired
+    UserService userService;
+
+    UserContext userContext;
+    UserDTO userConnected;
+
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
     }
@@ -105,7 +111,7 @@ public class UserService {
         return userMapper.toDTO(userRepository.findByEmail(email));
     }
 
-    public UserDTO getUserByEcasEmail(String email){
+    public UserDTO getUserByEcasEmail(String email) {
         return userMapper.toDTO(userRepository.findByEcasEmail(email));
     }
 
@@ -137,14 +143,12 @@ public class UserService {
 
     @Transactional
     public UserDTO getUserByUserContext(UserContext userContext) {
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         if (userContext == null) {
             throw new AppException("User context not defined", HttpStatus.SC_FORBIDDEN, "");
         }
-
-        if(_log.isDebugEnabled()){
-            _log.debug("user Email: " + userContext.getEmail() + " user PerId: " + userContext.getPerId());
-        }
+        _log.debug(" - ECAS Username: " + userConnected.getEcasUsername() + " - User Email: " + userContext.getEmail() + " and User PerId: " + userContext.getPerId());
 
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
         if (userDTO == null) {
@@ -155,12 +159,10 @@ public class UserService {
             userDTO.setName(userContext.getFirstName());
             userDTO.setSurname(userContext.getLastName());
             userDTO.setEmail(userContext.getEmail());
-
             userDTO = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
 
             permissionChecker.addTablePermissions(userDTO, Integer.toString(userDTO.getId()),
                     RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
-
         }
         return userDTO;
     }
@@ -250,19 +252,15 @@ public class UserService {
 
     @Transactional
     public Cookie getCSRFCookie() throws AppException {
-        _log.debug("[i] getUserByEcasPerId");
-
         Cookie cookie = null;
         cookie = new Cookie("XSRF-TOKEN", generateCSRFToken());
         cookie.setSecure(true);
         cookie.setMaxAge(365 * 24 * 60 * 60);
         cookie.setPath("/");
-
-        _log.debug("[f] getUserByEcasPerId");
         return cookie;
     }
 
-    private String generateCSRFToken() throws AppException{
+    private String generateCSRFToken() throws AppException {
         String token = new TokenGenerator().generate();
 
         if (token != null && token.length() > 0) {

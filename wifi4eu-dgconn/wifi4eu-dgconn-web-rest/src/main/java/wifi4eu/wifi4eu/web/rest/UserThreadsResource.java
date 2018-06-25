@@ -141,7 +141,7 @@ public class UserThreadsResource {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to retrieve users by thread", ade.getMessage());
                 response.sendError(HttpStatus.NOT_FOUND.value());
             } catch (Exception e) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user cannot been retrieved", e.getMessage());
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user cannot been retrieved", e);
                 response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
             }
         }

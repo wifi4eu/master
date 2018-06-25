@@ -74,7 +74,7 @@ public class MailService {
                 mailSender.send(message);
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + toAddress);
             } catch (Exception ex) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex.getMessage());
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex);
             }
         }
     }

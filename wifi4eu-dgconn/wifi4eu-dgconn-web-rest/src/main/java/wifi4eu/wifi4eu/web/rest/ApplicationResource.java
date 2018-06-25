@@ -60,7 +60,7 @@ public class ApplicationResource {
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasEmail() + " - Permission not found", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
 
@@ -90,7 +90,7 @@ public class ApplicationResource {
             return applicationService.getApplicationsVoucherInfoByCall(callId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Applications' voucher information not found on this call", e.getMessage());
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Applications' voucher information not found on this call", e);
                 response.sendError(HttpStatus.NOT_FOUND.value());
             }
             return null;
@@ -136,7 +136,7 @@ public class ApplicationResource {
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - The DGConn Applicants for this call are retrieved correctly");
             return res;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The DGConn Applicants cannot be retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The DGConn Applicants cannot be retrieved", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
@@ -161,7 +161,7 @@ public class ApplicationResource {
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Applicants' searching name retrieved correctly");
             return res;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The applicants' searching name cannot be retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The applicants' searching name cannot be retrieved", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return new ResponseDTO(false, null, null);
@@ -187,7 +187,7 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been validated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been validated", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
@@ -211,7 +211,7 @@ public class ApplicationResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve applications not validated", ade.getMessage());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Applications not validated cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Applications not validated cannot been retrieved", e);
             return null;
         }
     }
@@ -236,7 +236,7 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been invalidated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been invalidated", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, null);
         }
@@ -260,7 +260,7 @@ public class ApplicationResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve these applications", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Applications cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Applications cannot been retrieved", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return null;
@@ -285,7 +285,7 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Request cannot been sent", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Request cannot been sent", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, null);
         }
@@ -316,7 +316,7 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -347,7 +347,7 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -357,22 +357,21 @@ public class ApplicationResource {
     @RequestMapping(value = "/sendCorrectionEmails", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO sendCorrectionEmails(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending request correction e-mails for call id " + callId);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("sendCorrectionEmails");
-            }
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
             CorrectionRequestEmailDTO correctionRequest = applicationService.sendCorrectionEmails(callId);
             return new ResponseDTO(true, correctionRequest, null);
         } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to send the request", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'sendCorrectionEmails' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Request cannot been sent", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
@@ -382,21 +381,20 @@ public class ApplicationResource {
     @RequestMapping(value = "/getLastCorrectionRequestEmail", method = RequestMethod.POST)
     @ResponseBody
     public CorrectionRequestEmailDTO getLastCorrectionRequestEmail(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving last request correction e-mail information for call id " + callId);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("getLastCorrectionRequestEmail");
-            }
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
             return applicationService.getLastCorrectionRequestEmailInCall(callId);
         } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the request", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getLastCorrectionRequestEmail' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Request cannot been retrieved", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -406,21 +404,20 @@ public class ApplicationResource {
     @RequestMapping(value = "/checkIfCorrectionRequestEmailIsAvailable", method = RequestMethod.POST)
     @ResponseBody
     public boolean checkIfCorrectionRequestEmailIsAvailable(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Checking if the correction request email option is available for call id " + callId);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("checkIfCorrectionRequestEmailIsAvailable");
-            }
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
             return applicationService.checkIfCorrectionRequestEmailIsAvailable(callId);
         } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to check the option", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return false;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'checkIfCorrectionRequestEmailIsAvailable' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Option cannot been checked", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return false;
         }
@@ -430,59 +427,49 @@ public class ApplicationResource {
     @RequestMapping(value = "/reject", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO rejectApplicationVoucherAssigment(@RequestBody final Integer applicationId, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Rejecting application");
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("rejectApplicationVoucherAssigment");
-            }
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            UserDTO userDTO = userConnected;
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
             ApplicationDTO resApplication = applicationService.rejectApplicationVoucherAssigment(applicationId);
             return new ResponseDTO(true, resApplication, null);
-        } catch (AccessDeniedException e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'rejectApplicationVoucherAssigment' operation.", e);
-            }
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to reject this application", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, null);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'rejectApplicationVoucherAssigment' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been rejected", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, null);
         }
     }
 
-    @ApiOperation(value = "Reject application")
+    @ApiOperation(value = "Select application")
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO selectApplicationVoucherAssigment(@RequestBody final Integer applicationId, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Selecting application");
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("selectApplicationVoucherAssigment");
-            }
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            UserDTO userDTO = userConnected;
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
             ApplicationDTO resApplication = applicationService.selectApplicationVoucherAssigment(applicationId);
             return new ResponseDTO(true, resApplication, null);
-        } catch (AccessDeniedException e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'selectApplicationVoucherAssigment' operation.", e);
-            }
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to select this application", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, null);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'selectApplicationVoucherAssigment' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been selected", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, null);
         }

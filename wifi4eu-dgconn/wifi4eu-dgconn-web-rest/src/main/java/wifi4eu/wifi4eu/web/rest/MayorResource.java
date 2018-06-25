@@ -124,7 +124,7 @@ public class MayorResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the mayor information", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Mayor information cannot been updated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Mayor information cannot been updated", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
         }
         return new ResponseDTO(false, null, null);
@@ -170,7 +170,7 @@ public class MayorResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the mayor from this municipality", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The mayor from this municipality cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The mayor from this municipality cannot been retrieved", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
         }
         return mayorService.getMayorByMunicipalityId(municipalityId);

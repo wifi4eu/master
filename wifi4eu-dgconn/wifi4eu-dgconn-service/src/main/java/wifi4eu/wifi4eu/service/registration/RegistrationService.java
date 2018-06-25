@@ -166,10 +166,10 @@ public class RegistrationService {
             byte[] lf1ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf1));
             String lf1Extension = LegalFilesService.getValidFileExtension(lf1);
             if (lf1ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File size cannot bet greater than 1 MB");
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf1Extension == null) {
-                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File must have a valid extension");
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
                 throw new Exception("File must have a valid extension.");
             } else {
                 LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE1.getValue()));
@@ -191,10 +191,10 @@ public class RegistrationService {
             byte[] lf2ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf2));
             String lf2Extension = LegalFilesService.getValidFileExtension(lf2);
             if (lf2ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File size cannot bet greater than 1 MB");
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf2Extension == null) {
-                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File must have a valid extension");
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
                 throw new Exception("File must have a valid extension.");
             } else {
                 LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE2.getValue()));
@@ -216,10 +216,10 @@ public class RegistrationService {
             byte[] lf3ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf3));
             String lf3Extension = LegalFilesService.getValidFileExtension(lf3);
             if (lf3ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File size cannot bet greater than 1 MB");
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf3Extension == null) {
-                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File must have a valid extension");
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
                 throw new Exception("File must have a valid extension.");
             } else {
                 LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE3.getValue()));
@@ -241,10 +241,10 @@ public class RegistrationService {
             byte[] lf4ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf4));
             String lf4Extension = LegalFilesService.getValidFileExtension(lf4);
             if (lf4ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File size cannot bet greater than 1 MB");
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf4Extension == null) {
-                _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - File must have a valid extension");
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
                 throw new Exception("File must have a valid extension.");
             } else {
                 LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE4.getValue()));

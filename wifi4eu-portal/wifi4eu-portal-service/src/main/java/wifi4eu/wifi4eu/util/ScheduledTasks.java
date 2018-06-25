@@ -135,7 +135,6 @@ public class ScheduledTasks {
                     } else if (wdProcessTime > 500) {
                         break;
                     }
-
                 }
             }
 
@@ -143,9 +142,8 @@ public class ScheduledTasks {
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue channel has been closed");
             connection.close();
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue connection has been closed");
-
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process the queue", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process the queue", e);
         }
     }
 
@@ -180,9 +178,8 @@ public class ScheduledTasks {
                 } else {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot retrieve the user for this helpdesk issue");
                 }
-
             } catch (Exception e) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process this helpdesk issue", e.getMessage());
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process this helpdesk issue", e);
             }
         }
     }
@@ -218,7 +215,7 @@ public class ScheduledTasks {
                     }
                 }
             } catch (Exception e) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send document rquest for this registration", e.getMessage());
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send document rquest for this registration", e);
             }
         }
     }
@@ -247,7 +244,7 @@ public class ScheduledTasks {
             }
             return deliveryTag;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot read a message from the queue", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot read a message from the queue", e);
             return 0;
         }
     }

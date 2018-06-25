@@ -131,7 +131,7 @@ public class LauResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the physical address", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The physical address cannot been updated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The physical address cannot been updated", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
 
@@ -140,7 +140,7 @@ public class LauResource {
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Physical address updated successfully");
             return new ResponseDTO(true, resLau, null);
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The physical address cannot been updated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The physical address cannot been updated", e);
             ErrorDTO errorDTO = new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, errorDTO);
