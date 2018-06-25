@@ -1,0 +1,224 @@
+
+.voucher_call_tabs .ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li{
+    padding-top: 1.5em;
+    padding-bottom: 1em;
+    padding-left: 0.5em;
+    height: auto;
+    padding-right: 0.5em;
+
+    font-size: 16px;
+    background: #f5f5f5;
+}
+.value-voucher-call{
+  font-size: 17px;
+}
+
+.collection-ticket-icons {
+    position: relative;
+    height: 15px;
+    width: 20px;
+}
+.fa-stroke-width{
+  -webkit-text-stroke-width: 4px;
+  -webkit-text-fill-color: #fff;
+  -webkit-text-stroke-color: #f5f5f5;
+}
+.collection-ticket-icons i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 20px;
+}
+
+.collection-ticket-icons i.ticket-3 {
+  transform: rotate(-67deg) translate(1px, 3px);
+  transform-origin: center;
+}
+
+.collection-ticket-icons i.ticket-2 {
+  transform: rotate(-50deg) translate(-1px, 1px);
+}
+
+.collection-ticket-icons i.ticket-1 {
+  transform: rotate(-27deg) translate(-3px, 1px);
+}
+
+.voucher-status-info span {
+    display: block;
+}
+
+.voucher-status {
+  transition: .2s background-color linear;
+}
+
+.voucher-status.simulation {
+    background-color:#ffeb3b;
+}
+
+.voucher-status.simulation .voucher-status-info {
+    text-align: center;
+    color: #000;
+}
+
+.voucher-status.simulation .voucher-status-info .fa-info{
+    border: 2px solid #000;
+}
+
+.voucher-status.pre-save {
+    background-color: #ff9900;
+}
+
+.voucher-status.saved {
+    background-color: #228854;
+}
+
+.voucher-status.saved .voucher-status-info, .voucher-status.pre-save .voucher-status-info {
+    text-align: center;
+    color: #fff;
+}
+
+.voucher-status.saved .voucher-status-info .fa-info, .voucher-status.pre-save .voucher-status-info .fa-info{
+    border: 2px solid #fff;
+}
+
+.panel-padding-no-margin{
+  margin-bottom: 0;
+}
+
+.download_pre-selection{
+  float: right;
+
+  &.disabled{
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+.panel-dg-voucher{
+  box-shadow: none;
+  border-width: 0px 1px 1px 1px;
+  border-color: rgba(187, 187, 187, 0.6);
+}
+
+.panel-dg-header{
+  padding: 22px 25px;
+  border-color: rgba(187, 187, 187, 0.6);
+  border-width: 1px 1px 0px 1px;
+  border-style: solid;
+  /*  font-family: Verdana; */
+}
+
+.panel-dg-header-title{
+}
+
+.voucher-dg-screen *:not(.fa) {
+  font-family: Verdana!important;
+}
+
+.simulate-button{
+  float: right;
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 11px 17px;
+}
+
+.preSelection-button, .freezeList-button, .sendNotification-button{
+  background-color: #004494;
+  color: #ffffff;
+  border: solid 2px #004494;
+  font-weight: bold;
+  font-size: 16px;
+  width: 100%;
+  padding: 11px 17px;
+}
+
+.dates-voucher-assignment{
+  color: #929292;
+  padding-top: 10px;
+  display: block;
+}
+
+.voucher-dg-screen .panel-dg.panel-dg-voucher .text-center{
+  padding: 1.25rem 0.5rem;
+
+}
+.panel-dg-voucher thead > .ui-state-default > th, .panel-dg-voucher thead > .ui-state-default{
+  border-width: 1px 0px 1px 0px;
+}
+
+
+.ui-overlaypanel{
+  top: 0!important;
+  left: 0!important;
+}
+
+.not-hide-overflow{
+  overflow: visible!important;
+}
+
+.actions-icon{
+  &:hover{
+    cursor: pointer;
+  }
+}
+
+.ui-widget-content .ui-datatable-even .loading-table-cell, .ui-widget-content .ui-datatable-odd .loading-table-cell{
+  /* display: block!important; */
+}
+
+.loading-table-cell{
+  margin-right: 10px;
+  margin: 6px;
+  height: 13px;
+  border-radius: 7px;
+  width: auto;
+  background-image: 
+    linear-gradient(90deg, 
+    rgb(221, 221, 221) 0px, 
+    rgb(232, 232, 232) 40%, 
+    rgb(221, 221, 221) 80%);
+  background-size: 600px;
+  -webkit-animation: shine-lines 2s infinite ease-out;
+  animation: shine-lines 2s infinite ease-out;
+}
+
+@keyframes shine-lines {
+  0% {
+    background-position: 100%;
+  }
+  40%, 100% {
+    background-position: -50%;
+  }
+}
+
+.tableloading .ui-datatable-odd{
+  background-color: #fafafb!important;
+}
+
+
+.hide{
+  display: none;
+}
+
+.tableAssignment.table-disabled > *{
+  opacity: 0.5;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.reject-disabled{
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+  opacity: 0.5;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}

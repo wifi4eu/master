@@ -29,7 +29,7 @@ export class ForgotComponent implements OnInit {
     }
 
     private onSendEmail() {
-        this.userApi.forgotPassword(this.forgotDetails.email).subscribe(
+        /*this.userApi.forgotPassword(this.forgotDetails.email).subscribe(
             data => {
                 if (data['success']) {
                     this.uxService.growl({
@@ -54,11 +54,11 @@ export class ForgotComponent implements OnInit {
                 });
                 console.log('WARNING: Could not add new password', error);
             }
-        );
+        );*/
     }
 
     private onNewPassword() {
-        this.userApi.activateAccount(this.forgotDetails).subscribe(
+        /*this.userApi.activateAccount(this.forgotDetails).subscribe(
             data => {
                 if (data['success']) {
                     this.uxService.growl({
@@ -83,7 +83,7 @@ export class ForgotComponent implements OnInit {
                 });
                 console.log('WARNING: Could not add new password', error);
             }
-        );
+        );*/
     }
 
 }

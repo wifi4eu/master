@@ -3,8 +3,8 @@ package wifi4eu.wifi4eu.service.user;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.http.HttpStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +19,7 @@ import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
@@ -26,7 +27,6 @@ import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
@@ -37,6 +37,8 @@ import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.util.MailService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +49,7 @@ import java.util.ResourceBundle;
 @PropertySource("classpath:env.properties")
 @Service
 public class UserService {
-    private final Logger _log = LoggerFactory.getLogger(UserService.class);
+    private final Logger _log = LogManager.getLogger(UserService.class);
 
     @Value("${mail.server.location}")
     private String baseUrl;
@@ -66,9 +68,6 @@ public class UserService {
 
     @Autowired
     MailService mailService;
-
-    @Autowired
-    RightRepository rightRepository;
 
     @Autowired
     PermissionChecker permissionChecker;
@@ -163,19 +162,18 @@ public class UserService {
                     RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
 
         }
-
         return userDTO;
     }
 
     @Transactional
-    public UserDTO deleteUser(int userId) {
+    public UserDTO deleteUser(int userId, HttpServletRequest request) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
         if (userDTO != null) {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
                     removeTempToken(userDTO);
                     for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
-                        municipalityService.deleteMunicipality(municipality.getId());
+                        municipalityService.deleteMunicipality(municipality.getId(), request);
                     }
                     for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
                         userThreadsService.deleteUserThreads(userThread.getId());
@@ -196,6 +194,15 @@ public class UserService {
         } else {
             return null;
         }
+    }
+
+    @Transactional
+    public UserDTO updateUserDetails(UserDTO userDTO, String name, String surname) {
+
+        userDTO.setName(name);
+        userDTO.setSurname(surname);
+
+        return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
     }
 
     public List<UserDTO> getUsersByType(int type) {
@@ -239,6 +246,44 @@ public class UserService {
         } else {
             throw new Exception("Token doesn't exist.");
         }
+    }
+
+    @Transactional
+    public Cookie getCSRFCookie() throws AppException {
+        _log.debug("[i] getUserByEcasPerId");
+
+        Cookie cookie = null;
+        cookie = new Cookie("XSRF-TOKEN", generateCSRFToken());
+        cookie.setSecure(true);
+        cookie.setMaxAge(365 * 24 * 60 * 60);
+        cookie.setPath("/");
+
+        _log.debug("[f] getUserByEcasPerId");
+        return cookie;
+    }
+
+    private String generateCSRFToken() throws AppException{
+        String token = new TokenGenerator().generate();
+
+        if (token != null && token.length() > 0) {
+            UserContext userContext = UserHolder.getUser();
+            UserDTO user;
+            if (userContext != null) {
+                user = getUserByUserContext(userContext);
+                if (user != null) {
+                    user.setCsrfToken(token);
+                    userRepository.save(userMapper.toEntity(user));
+                } else {
+                    throw new AppException("Contact your administrator", HttpStatus.SC_INTERNAL_SERVER_ERROR, "");
+                }
+            } else {
+                throw new AppException("Contact your administrator", HttpStatus.SC_INTERNAL_SERVER_ERROR, "");
+            }
+        } else {
+            throw new AppException("Contact your administrator", HttpStatus.SC_INTERNAL_SERVER_ERROR, "");
+        }
+
+        return token;
     }
 
     @Transactional

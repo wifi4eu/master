@@ -6,9 +6,9 @@ import eu.cec.digit.ecas.client.EcasUtil;
 import eu.cec.digit.ecas.client.configuration.EcasConfigurationIntf;
 import eu.cec.digit.ecas.client.resolver.service.StatefulServiceResolver;
 import eu.cec.digit.ecas.util.RFC3986PercentCodec;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.ServletContextAware;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class SingleSignoutController implements ServletContextAware {
 
-    private static final Logger logger = Logger.getLogger(SingleSignoutController.class);
+    private static final Logger logger = LogManager.getLogger(SingleSignoutController.class);
 
     private ServletContext servletContext;
 

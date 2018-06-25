@@ -1,17 +1,23 @@
 package wifi4eu.wifi4eu.service.municipality;
 
 import com.google.common.collect.Lists;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +36,18 @@ public class MunicipalityService {
     ApplicationService applicationService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     MayorService mayorService;
+
+    @Autowired
+    MunicipalityService municipalityService;
+
+    UserContext userContext;
+    UserDTO userConnected;
+
+    private final Logger _log = LogManager.getLogger(MayorService.class);
 
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
@@ -46,18 +63,37 @@ public class MunicipalityService {
     }
 
     @Transactional
-    public MunicipalityDTO deleteMunicipality(int municipalityId) {
+    public MunicipalityDTO updateMunicipalityDetails(MunicipalityDTO municipalityDTO) {
+        MunicipalityDTO municipalitySave = municipalityService.getMunicipalityById(municipalityDTO.getId());
+
+        municipalitySave.setAddress(municipalityDTO.getAddress());
+        municipalitySave.setAddressNum(municipalityDTO.getAddressNum());
+        municipalitySave.setPostalCode(municipalityDTO.getPostalCode());
+
+        return municipalityMapper.toDTO(municipalityRepository.save(municipalityMapper.toEntity(municipalitySave)));
+    }
+
+    @Transactional
+    public MunicipalityDTO deleteMunicipality(int municipalityId, HttpServletRequest request) {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         MunicipalityDTO municipalityDTO = municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
         if (municipalityDTO != null) {
             MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipalityDTO.getId());
             if (mayor != null) {
-                mayorService.deleteMayor(mayor.getId());
+                mayorService.deleteMayor(mayor.getId(), request);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Mayor from this municipality removed");
+            } else {
+                _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Mayor from this municipality not found");
             }
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
             if (registration != null) {
                 for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registration.getId())) {
-                    applicationService.deleteApplication(application.getId());
+                    applicationService.deleteApplication(application.getId(), request);
+                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Application from this municipality removed");
                 }
+            } else {
+                _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application from this municipality not found");
             }
             municipalityRepository.delete(municipalityMapper.toEntity(municipalityDTO));
             return municipalityDTO;
@@ -75,6 +111,7 @@ public class MunicipalityService {
         List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userId);
         for (RegistrationDTO registration : registrations) {
             municipalities.add(getMunicipalityById(registration.getMunicipalityId()));
+            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality with id " + registration.getMunicipalityId() + " added to the list");
         }
         return municipalities;
     }

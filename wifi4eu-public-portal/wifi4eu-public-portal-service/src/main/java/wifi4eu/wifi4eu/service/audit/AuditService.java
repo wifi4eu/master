@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.service.audit;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,7 @@ import wifi4eu.wifi4eu.repository.audit.AuditRepository;
 @Service
 public class AuditService {
 
-    private final static Logger _log = Logger.getLogger(AuditService.class);
+    private final static Logger _log = LogManager.getLogger(AuditService.class);
 
     @Autowired
     AuditRepository auditRepository;

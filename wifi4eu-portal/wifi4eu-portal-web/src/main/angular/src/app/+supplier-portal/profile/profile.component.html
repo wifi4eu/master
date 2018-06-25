@@ -126,7 +126,7 @@
     <p-dialog [(visible)]="displayContact" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <p class="beneficiaryMayor center">{{ 'suppRegistration.contact.person' | translate }}</p>
-        <form (ngSubmit)="saveSupplierChanges()" #profileFormContact="ngForm">
+        <form (ngSubmit)="saveContactChanges()" #profileFormContact="ngForm">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
@@ -226,7 +226,7 @@
     <p-dialog [(visible)]="displayCompany" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <p class="beneficiaryMayor center">{{ 'suppRegistration.company.details' | translate }}</p>
-        <form (ngSubmit)="saveSupplierChanges()" #profileFormCompany="ngForm">
+        <form (ngSubmit)="saveDetailsChanges()" #profileFormCompany="ngForm">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
