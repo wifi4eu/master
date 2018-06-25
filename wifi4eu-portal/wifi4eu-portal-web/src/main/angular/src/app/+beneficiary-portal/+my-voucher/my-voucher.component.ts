@@ -5,7 +5,7 @@ import { LocalStorageService } from "angular-2-local-storage";
 import { Router } from '@angular/router';
 
 // DTO's & API imports
-import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi } from "../../shared/swagger";
+import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi, ApplicantListItemDTOBase } from "../../shared/swagger";
 
 @Component ({
     selector: 'my-voucher-component',
@@ -27,10 +27,13 @@ export class MyVoucherComponent {
     private mayor: MayorDTOBase;
     private currentCall: CallDTOBase = new CallDTOBase();
     private municipalities: MunicipalityDTOBase[] = [];
+    
     private applications: ApplicationDTOBase[] = [];
+    private calls: CallDTOBase[] = [];
 
     // Constructor properties
     private isMayor: boolean = false;
+    private confirmButtons: Array<boolean> = [];
 
     // CheckForCalls properties
     private disableQueuing = [];
@@ -52,7 +55,7 @@ export class MyVoucherComponent {
     // Properties for Datatable (TO BE COMPLETED)
     private supplierSelectedDates: Array<String> = [];
     private grantAgreementDates: Array<String> = [];
-    private confirmButtonDisabled: boolean = true;
+    private confirmButtonDisabled: boolean = false;
 
         /* -- voucherCompetitionState values --
     0 = There are no calls created
@@ -72,181 +75,61 @@ export class MyVoucherComponent {
         private applicationApi: ApplicationApi,
         private router: Router,
     ) {
+        /* Authenticate user */
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
         this.storedRegistrationQueues = storedRegistrations ? storedRegistrations : [];
-        // Check if there are Calls
+
+        /* Get all the registrations from the user */
         if (this.user != null) {
             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                 (registrations: RegistrationDTOBase[]) => {
-                    this.registrationsDocs = registrations;
-                    this.checkForCalls(registrations);
-                    if (registrations.length < 2) {
-                        // JUST FOR ONE MUNICIPALITY
-                        this.registration = registrations[0];
-                        this.mayorApi.getMayorByMunicipalityId(registrations[0].municipalityId).subscribe(
-                            (mayor: MayorDTOBase) => {
-                                this.mayor = mayor;
-                                // HERE WE CHECK IF ITS REPRESENTATIVE OR NOT
-                                if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname) {
-                                    this.isMayor = true;
-                                } else {
-                                    this.isMayor = false;
-                                }
-                            }, error => {
-                            }
-                        );
+                    // this.registrationsDocs = registrations;
+                    // this.registrations = registrations;
+                    // this.checkForCalls(registrations);
 
-                    } else {
-                        // MULTIPLE MUNICIPALITIES CONDITIONAL
-                        this.isMayor = false;
-                    }
+                    /* Get application for each municipality */ 
+                    this.callApi.allCalls().subscribe(
+                        (calls: CallDTOBase[]) => {
+                            this.calls = calls;
+                            for(let i = 0; i < registrations.length; i++) {
+                                this.applicationApi.getApplicationByCallIdAndRegistrationId(this.calls[(this.calls.length)-1].id, registrations[i].id).subscribe(
+                                    (application : ApplicationDTOBase) => {
+                                        if (application.id != 0) {
+                                            this.municipalityApi.getMunicipalityById(registrations[i].municipalityId).subscribe(
+                                                (municipality : MunicipalityDTOBase) => {
+                                                    this.applications.push(application);
+                                                    this.registrations.push(registrations[i]);
+                                                    this.municipalities.push(municipality);
+                                                    this.grantAgreementDates.push(this.getStringDate(1529922797000));
+                                                    registrations[i].isSubmission != (0 || null) ? this.confirmButtons.push(false) : this.confirmButtons.push(true);
+                                                    // application.selectSupplierDate != (0 || null) ? this.confirmButtonDisabled = false : this.confirmButtonDisabled = true;
+                                                    console.log("Registrations are ", this.registrations);
+                                                    console.log("First confirmation is ", this.registrations[0].isSubmission);
+                                                }
+                                            );
+                                        }
+                                    }
+                                );
+                            }
+                            console.log("Dates are ", this.grantAgreementDates);
+                            console.log("Applications are ", this.applications);
+                            console.log("Confirm network buttons are ", this.confirmButtons);
+                            
+                        }
+                    );
                 }
             );
         }
     }
 
     /* --- METHODS --- */
-    private checkForCalls(registrations: RegistrationDTOBase[]) {
-        this.callApi.allCalls().subscribe(
-            (calls: CallDTOBase[]) => {
-                this.currentCall = calls[0];
-                for (let registration of registrations) {
-                    console.log("Registration is ", registration);
-                    this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
-                        (municipality: MunicipalityDTOBase) => {
-                            if (municipality != null) {
-                                this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
-                                    (mayor: MayorDTOBase) => {
-                                        if (this.currentCall) {
-                                            this.applicationApi.getApplicationByCallIdAndRegistrationId(this.currentCall.id, registration.id).subscribe(
-                                                (application: ApplicationDTOBase) => {
-                                                    this.registrations.push(registration);
-                                                    this.municipalities.push(municipality);
-                                                    this.mayors.push(mayor);
-                                                    // FAKE - TO BE COMPLETED
-                                                    this.grantAgreementDates.push(this.getStringDate(application.date));
-                                                    this.confirmButton();
-
-                                                    if (application.id != 0) {
-                                                        this.applications.push(application);
-                                                    } else {
-                                                        this.applications.push(null);
-                                                    }
-                                                    // console.log("Applications are ", this.applications);
-                                                    // console.log("Application date for first supplier is ", this.applications[0].date);
-                                                    this.supplierSelectedDates.push(this.getStringDate(application.date));
-                                                    console.log("Application DATES is ", this.supplierSelectedDates);
-                                                    // this.getStringDate(this.applications[].date);
-                                                    var res = this.storedRegistrationQueues.filter((queue) => {
-                                                        return registration.id == queue['idRegistration'];
-                                                    })
-                                                    this.disableQueuing.push(res[0] ? res[0] : null);
-
-                                                    this.loadingButtons.push(false);
-                                                    let date = new Date(this.currentCall.startDate);
-                                                    this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                                                    this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-                                                    if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
-                                                        this.voucherCompetitionState = 2;
-                                                        this.openedCalls = "greyImage";
-                                                    } else {
-                                                        this.voucherCompetitionState = 1;
-                                                    }
-
-                                                    this.checkForDocuments();
-                                                    if (this.applications.length == registrations.length) {
-
-                                                        this.disableQueuing.forEach((element, index) => {
-                                                            if (element) {
-                                                                if (element['expires_in'] < Math.floor(new Date().getTime() / 1000)) {
-                                                                    this.disableQueuing[index] = null;
-                                                                    this.loadingButtons[index] = false;
-                                                                } else {
-                                                                    if (this.applications[index] != null) {
-                                                                        this.loadingButtons[index] = true;
-                                                                        this.disableQueuing[index] = null;
-                                                                    }
-                                                                }
-                                                            }
-                                                        });
-
-                                                        var newStoredRegistrationQueues = [];
-                                                        this.disableQueuing.forEach((disableQueuingEl, index) => {
-                                                            this.loadingButtons[index] = disableQueuingEl ? true : false;
-                                                            if (disableQueuingEl != null) newStoredRegistrationQueues.push(disableQueuingEl);
-                                                        });
-
-                                                        this.storedRegistrationQueues = newStoredRegistrationQueues;
-                                                        this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
-
-                                                        let allApplied = true;
-                                                        for (let app of this.applications) {
-                                                            if (!app) {
-                                                                allApplied = false;
-                                                            }
-                                                        }
-                                                        if (allApplied) {
-                                                            this.voucherCompetitionState = 3;
-                                                            this.voucherApplied = "greyImage";
-                                                        }
-                                                    }
-                                                }
-                                            );
-
-                                        } else {
-                                            this.registrations.push(registration);
-                                            this.municipalities.push(municipality);
-                                            this.mayors.push(mayor);
-                                            this.loadingButtons.push(false);
-                                            this.voucherCompetitionState = 0;
-                                        }
-                                        console.log("Municipalities is ", this.municipalities);
-                                    }
-                                );
-                            }
-                        }
-                    );
-                }
-            },
-            error => {
-                console.log(error);
-                this.currentCall = null;
-                this.voucherCompetitionState = 0;
-            }
-        );
-    }
-
-    private checkForDocuments() {
-        if (this.isMayor) {
-            this.docsOpen[0] = (this.registrations[0].legalFile1 != null && this.registrations[0].legalFile3 != null);
-
-            if (this.docsOpen[0]) {
-                let uploaddate = new Date(this.registrations[0].uploadTime);
-                this.uploadDate[0] = ('0' + uploaddate.getUTCDate()).slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
-                this.uploadHour[0] = ('0' + uploaddate.getHours()).slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
-            }
-        } else {
-            for (let i = 0; i < this.registrations.length; i++) {
-                this.docsOpen[i] = (this.registrations[i].legalFile1 != null && this.registrations[i].legalFile3 != null);
-                if (this.docsOpen[i]) {
-                    let uploaddate = new Date(this.registrations[i].uploadTime);
-                    this.uploadDate[i] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
-                    this.uploadHour[i] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
-                }
-            }
-
-
-        }
-    }
-
-    // Allows beneficiary to select a supplier
+    /* Allows beneficiary to select another supplier supplier */
     private selectWifiInstallation(i) {
         this.router.navigate(['/beneficiary-portal/select-supplier/', this.municipalities[i].id]);
     }
 
-    /* TO BE COMPLETED */
     /* Method that toggles if confirm network button is clickable */
     private confirmButton() {
         if(this.grantAgreementDates) {
@@ -259,7 +142,7 @@ export class MyVoucherComponent {
     /* TO BE COMPLETED */
     /* Confirm and send email to network installation company */ 
     private confirmInstallation() {
-        console.log("Installation was confiremed");
+        console.log("Write a -Confirm Network Installation- method");
     }
     
     /* Redirect to selected supplier details */
@@ -275,8 +158,7 @@ export class MyVoucherComponent {
     }
     /* TO BE COMPLETED */
     private agreementDetails(event) {
-        console.log("Agreement index is ", event);
-        // this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalities[event].id]);
+        console.log("Write a routing to see grant agreement");
     }
 
     /* TO BE COMPLETED */
