@@ -53,16 +53,12 @@ public class VoucherResource {
 
     Logger _log = LogManager.getLogger(VoucherResource.class);
 
-    UserContext userContext;
-    UserDTO userConnected;
-
-
     @ApiOperation(value = "Get all the voucher assignment")
     @RequestMapping(value = "/assignments", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<VoucherAssignmentDTO> allVoucherAssignments() {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving all the voucher assignments");
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -82,8 +78,8 @@ public class VoucherResource {
     @RequestMapping(value = "/assignments/{assignmentId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public VoucherAssignmentDTO getVoucherAssignmentById(@PathVariable("assignmentId") final Integer assignmentId) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving the voucher assignment with id " + assignmentId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -103,8 +99,8 @@ public class VoucherResource {
     @RequestMapping(value = "/assignment/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public VoucherAssignmentDTO getVoucherAssignmentByCall(@PathVariable("callId") final Integer callId) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving the voucher assignment by call id " + callId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -126,8 +122,8 @@ public class VoucherResource {
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(@PathVariable("callId") final Integer callId, HttpServletResponse httpServletResponse, HttpServletRequest request) {
         httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving the voucher assignment by call id " + callId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -158,8 +154,8 @@ public class VoucherResource {
 
         httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving voucher simulation by assignment id " + assignmentId + ", country "
                 + country + ", municiaplity " + municipality + ", page " + page + ", size " + size + ", field " + field + " and direction " + direction);
 
@@ -191,8 +187,8 @@ public class VoucherResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO simulateVoucherAssignment(@RequestBody final Integer callId, HttpServletRequest request) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating voucher assignment");
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -216,8 +212,8 @@ public class VoucherResource {
     public boolean checkSavePreSelectionEnabled(@PathVariable("assignmentId") final Integer assignmentId, HttpServletResponse response) throws IOException {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Checking pre-selected list with assignment id " + assignmentId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -241,8 +237,8 @@ public class VoucherResource {
     @RequestMapping(value = "/assignment/save-prelist", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO savePreListSimulation(@RequestParam("assignmentId") Integer assignmentId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Saving simulation to pre-selected list with assignment id " + assignmentId + " and call id " + callId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -266,8 +262,8 @@ public class VoucherResource {
     @RequestMapping(value = "/assignment/send-notifications", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO sendNotificationForApplicants(@RequestBody final Integer callId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending notification to applicants on call id " + callId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -291,8 +287,8 @@ public class VoucherResource {
     @RequestMapping(value = "/assignment/freeze-simulation-list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO saveFreezeListSimulation(@RequestParam("assignmentId") Integer assignmentId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Freezing simulation list with assignment id " + assignmentId + " and call id " + callId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -319,8 +315,8 @@ public class VoucherResource {
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentByCallAndStatus(@PathVariable("callId") Integer callId, @PathVariable("status") Integer status, HttpServletResponse response) throws IOException {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving voucher assignment auxiliar on call id " + callId + " and status " + status);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -349,8 +345,8 @@ public class VoucherResource {
                                                                @RequestParam("field") String field,
                                                                @RequestParam("direction") String direction,
                                                                HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting voucher simulation by assignment id "
                 + assignmentId + ", country " + country + ", municipality " + municipality + ", field " + field + " and direction " + direction);
         try {

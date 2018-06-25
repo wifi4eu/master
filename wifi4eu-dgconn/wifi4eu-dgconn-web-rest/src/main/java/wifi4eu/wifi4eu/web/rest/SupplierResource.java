@@ -53,9 +53,6 @@ public class SupplierResource {
 
     Logger _log = LogManager.getLogger(SupplierResource.class);
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     /*
     //TODO: limit access to this service
     @ApiOperation(value = "Get all the suppliers")
@@ -88,8 +85,8 @@ public class SupplierResource {
     @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public SupplierDTO getSupplierById(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting supplier by id " + supplierId);
         SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
         try {
@@ -145,8 +142,8 @@ public class SupplierResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO updateSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier");
         try {
             UserDTO userDTO = userConnected;
@@ -170,8 +167,8 @@ public class SupplierResource {
     @RequestMapping(value = "update/contactDetails", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO updateContactDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating contact details");
         try {
             UserDTO userDTO = userConnected;
@@ -199,8 +196,8 @@ public class SupplierResource {
     @RequestMapping(value = "update/supplierDetails", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO updateSupplierDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier details");
         try {
             UserDTO userDTO = userConnected;
@@ -257,8 +254,8 @@ public class SupplierResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Submitting supplier registration");
         try {
             UserDTO userDTO = userConnected;
@@ -280,8 +277,8 @@ public class SupplierResource {
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public SupplierDTO getSupplierByUserId(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting supplier by user id " + userId);
         try {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
@@ -299,8 +296,8 @@ public class SupplierResource {
     @RequestMapping(value = "/similarSuppliers/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<SupplierDTO> findSimilarSuppliers(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -317,8 +314,8 @@ public class SupplierResource {
     @RequestMapping(value = "/requestLegalDocuments/{supplierId}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO requestLegalDocuments(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - requesting legal documents by supplier id " + supplierId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -341,8 +338,8 @@ public class SupplierResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO invalidateSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating supplier");
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -373,8 +370,8 @@ public class SupplierResource {
     @RequestMapping(value = "/findDgconnSuppliersList", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO findDgconnSuppliersList(@RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn suppliers by page " + page + ", count" + count + ", order field" + orderField + " and order type " + orderType);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -396,8 +393,8 @@ public class SupplierResource {
     @RequestMapping(value = "/findDgconnSuppliersListSearchingName", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO findDgconnSuppliersListSearchingName(@RequestParam("name") final String name, @RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn suppliers by page " + page + ", count" + count + ", order field" + orderField + " and order type " + orderType + " and searching name " + name);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {

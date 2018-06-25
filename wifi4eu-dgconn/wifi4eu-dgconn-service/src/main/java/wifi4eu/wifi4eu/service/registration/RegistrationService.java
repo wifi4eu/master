@@ -105,9 +105,6 @@ public class RegistrationService {
         return registrationDTO;
     }
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     @Transactional
     public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
         if (registrationDTO.getId() == 0) {
@@ -120,10 +117,10 @@ public class RegistrationService {
 
     @Transactional
     public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
-        if(registrationDBO.getAllFilesFlag() != 1){
+        if (registrationDBO.getAllFilesFlag() != 1) {
             if (registrationDTO.getLegalFile1Mime() == null || registrationDTO.getLegalFile1Size() <= 0) {
                 legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 1);
                 _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
@@ -157,8 +154,8 @@ public class RegistrationService {
 
     @Transactional
     public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) throws Exception {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
         Long currentTime = new Date().getTime();
         String lf1 = registrationDTO.getLegalFile1Mime();
@@ -276,7 +273,7 @@ public class RegistrationService {
         RegistrationDTO registrationDTO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
         if (registrationDTO != null) {
             for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registrationDTO.getId())) {
-                applicationService.deleteApplication(application.getId(),request);
+                applicationService.deleteApplication(application.getId(), request);
             }
             legalFilesRepository.deleteByRegistration(registrationDTO.getId());
             registrationRepository.delete(registrationMapper.toEntity(registrationDTO));

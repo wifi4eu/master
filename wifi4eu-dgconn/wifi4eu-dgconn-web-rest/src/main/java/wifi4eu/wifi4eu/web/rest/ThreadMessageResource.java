@@ -41,18 +41,15 @@ public class ThreadMessageResource {
     @Autowired
     private PermissionChecker permissionChecker;
 
-    Logger _log = LogManager.getLogger(CallResource.class);
-
-    UserContext userContext;
-    UserDTO userConnected;
+    Logger _log = LogManager.getLogger(ThreadMessageResource.class);
 
     @ApiOperation(value = "Create thread message")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO createThreadMessage(@RequestBody final ThreadMessageDTO threadMessageDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating thread message");
         try {
             UserDTO user = userConnected;

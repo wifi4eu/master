@@ -96,9 +96,6 @@ public class UserService {
     @Autowired
     UserService userService;
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
     }
@@ -143,8 +140,7 @@ public class UserService {
 
     @Transactional
     public UserDTO getUserByUserContext(UserContext userContext) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (userContext == null) {
             throw new AppException("User context not defined", HttpStatus.SC_FORBIDDEN, "");
         }

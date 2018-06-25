@@ -43,8 +43,6 @@ public class LauResource {
     private final static String GET_LAUS_BY_COUNTRY_CODE_AND_NAME1_STARTING_WITH_IGNORE_CASE = "getLausByCountryCodeAndName1StartingWithIgnoreCase: ";
 
     private Logger _log = LogManager.getLogger(LauResource.class);
-    UserContext userContext;
-    UserDTO userConnected;
 
     @ApiOperation(value = "Get lau by specific id")
     @ApiImplicitParams({
@@ -120,8 +118,8 @@ public class LauResource {
     @RequestMapping(value = "/physicaladdress", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO updatePhysicalAddress(@RequestBody final LauDTO lauDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating Lau physical address");
         try {
             if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {

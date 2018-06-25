@@ -143,8 +143,7 @@ public class UserService {
 
     @Transactional
     public UserDTO getUserByUserContext(UserContext userContext) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (userContext == null) {
             throw new AppException("User context not defined", HttpStatus.SC_FORBIDDEN, "");
         }

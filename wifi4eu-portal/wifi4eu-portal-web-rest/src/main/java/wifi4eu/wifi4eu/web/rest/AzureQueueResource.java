@@ -2,8 +2,6 @@ package wifi4eu.wifi4eu.web.rest;
 
 
 import io.swagger.annotations.Api;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,8 +11,6 @@ import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
 @Controller
 @Api(value = "/azurequeue", description = "Manage azure queue operations")
 public class AzureQueueResource {
-
-    Logger _log = LogManager.getLogger(MayorResource.class);
 
     @Autowired
     AzureQueueService azureQueueService;

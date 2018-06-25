@@ -41,17 +41,14 @@ public class HelpdeskIssueResource {
     @Autowired
     NutsService nutsService;
 
-    Logger _log = LogManager.getLogger(CallResource.class);
-
-    UserContext userContext;
-    UserDTO userConnected;
+    Logger _log = LogManager.getLogger(HelpdeskIssueResource.class);
 
     @ApiOperation(value = "Get all the helpdesk issues")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<HelpdeskIssueDTO> allHelpdeskIssues(HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting all the helpdesk issues");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -72,8 +69,8 @@ public class HelpdeskIssueResource {
     @RequestMapping(value = "/{issueId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public HelpdeskIssueDTO getHelpdeskIssueById(@PathVariable("issueId") final Integer issueId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting helpdesk issue by id " + issueId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -92,8 +89,8 @@ public class HelpdeskIssueResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO createHelpdeskIssue(@RequestBody final HelpdeskIssueDTO helpdeskIssueDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating helpdesk issue");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());

@@ -43,9 +43,6 @@ public class MayorResource {
 
     Logger _log = LogManager.getLogger(MayorResource.class);
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     /*
     @ApiOperation(value = "Get all the mayors")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -107,8 +104,8 @@ public class MayorResource {
     @ResponseBody
     public ResponseDTO updateMayorDetails(@RequestBody final MayorDTO mayorDTO,
                                           HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating mayor details");
         try {
             MayorDTO mayorDetails = mayorService.getMayorById(mayorDTO.getId());
@@ -156,8 +153,8 @@ public class MayorResource {
     @RequestMapping(value = "/municipalityId/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MayorDTO getMayorByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting mayor by municipality id " + municipalityId);
         try {
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());

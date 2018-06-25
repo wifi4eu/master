@@ -44,9 +44,6 @@ public class MunicipalityService {
     @Autowired
     MunicipalityService municipalityService;
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     private final Logger _log = LogManager.getLogger(MayorService.class);
 
     public List<MunicipalityDTO> getAllMunicipalities() {
@@ -75,8 +72,8 @@ public class MunicipalityService {
 
     @Transactional
     public MunicipalityDTO deleteMunicipality(int municipalityId, HttpServletRequest request) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         MunicipalityDTO municipalityDTO = municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
         if (municipalityDTO != null) {
             MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipalityDTO.getId());
@@ -107,6 +104,8 @@ public class MunicipalityService {
     }
 
     public List<MunicipalityDTO> getMunicipalitiesByUserId(int userId) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         List<MunicipalityDTO> municipalities = new ArrayList<>();
         List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userId);
         for (RegistrationDTO registration : registrations) {

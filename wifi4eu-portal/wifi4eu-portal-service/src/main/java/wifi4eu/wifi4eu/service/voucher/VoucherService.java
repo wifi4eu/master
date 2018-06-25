@@ -112,9 +112,6 @@ public class VoucherService {
     @Autowired
     NutsService nutsService;
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     public List<VoucherAssignmentDTO> getAllVoucherAssignment() {
         return voucherAssignmentMapper.toDTOList(Lists.newArrayList(voucherAssignmentRepository.findAll()));
     }
@@ -319,14 +316,12 @@ public class VoucherService {
 
     @Transactional
     public ResponseDTO simulateVoucherFast(int callId) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Executing voucher simulation for call: " + callId);
         HashMap<Integer, SimpleMunicipalityDTO> municipalityHashMap = new HashMap<>();
         HashMap<Integer, SimpleLauDTO> lauHashMap = new HashMap<>();
         HashMap<Integer, SimpleRegistrationDTO> registrationsHashMap = new HashMap<>();
-
-        UserContext userContext = UserHolder.getUser();
 
         if (userContext != null) {
             CallDTO call = callService.getCallById(callId);
@@ -726,8 +721,8 @@ public class VoucherService {
                                                            HashMap<Integer, SimpleLauDTO> lausMap,
                                                            HashMap<Integer, SimpleMunicipalityDTO> municipalitiesMap,
                                                            List<ApplicationDTO> apps, String country) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         List<ApplicationDTO> appCountry = new ArrayList<>();
         for (ApplicationDTO application : apps) {
             SimpleRegistrationDTO registrationDTO = registrationsMap.get(application.getRegistrationId());
@@ -766,8 +761,8 @@ public class VoucherService {
     }
 
     public void sendNotificationForApplicants(int callId) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         CallDTO callDTO = callService.getCallById(callId);
         if (callDTO == null) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Call does not exist with id " + callId);

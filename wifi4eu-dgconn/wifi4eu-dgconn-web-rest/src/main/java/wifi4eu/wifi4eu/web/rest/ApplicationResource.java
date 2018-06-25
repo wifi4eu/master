@@ -45,17 +45,14 @@ public class ApplicationResource {
     @Autowired
     UserService userService;
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     Logger _log = LogManager.getLogger(ApplicationResource.class);
 
     @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by call id " + callId + " and registration id " + registrationId);
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
@@ -78,8 +75,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/voucherInfo/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(@PathVariable("callId") final Integer callId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications voucher by call id " + callId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -121,8 +118,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/findDgconnApplicantsListByCallId/{callId}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO findDgconnApplicantsListByCallId(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn applicants by call id " + callId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -147,8 +144,8 @@ public class ApplicationResource {
     @ResponseBody
     public ResponseDTO findDgconnApplicantsListByCallIdSearchingName(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name,
                                                                      @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn applicants searching name by call id " + callId + ", country " + country + " and searching name " + name);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -171,8 +168,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO validateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Validating applications");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -197,8 +194,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/valid/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public Integer getApplicationsNotInvalidated(@PathVariable("callId") final Integer callId) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications voucher information by call id " + callId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -220,8 +217,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/invalidate", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO invalidateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating applications");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -246,8 +243,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/call/{callId}/lau/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(@PathVariable("callId") final Integer callId, @PathVariable("lauId") final Integer lauId, @RequestParam("currentDate") final Long currentDate, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by call id " + callId + " lau id" + lauId + " with date " + currentDate);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -270,8 +267,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/sendLegalDocumentsCorrection", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO sendLegalDocumentsCorrection(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending legal documents' correction request");
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -295,8 +292,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/exportExcelDGConnApplicantsList", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
     @ResponseBody
     public ResponseEntity<byte[]> exportExcelDGConnApplicantsList(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting Excel with DGConn Applicants by call id " + callId + " and country " + country);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -326,8 +323,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/exportExcelDGConnApplicantsListSearchingName", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
     @ResponseBody
     public ResponseEntity<byte[]> exportExcelDGConnApplicantsListSearchingName(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting Excel with DGConn Applicants' searching name by call id " + callId + ",country " + country + " and searching name " + name);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -357,8 +354,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/sendCorrectionEmails", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO sendCorrectionEmails(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending request correction e-mails for call id " + callId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -381,8 +378,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/getLastCorrectionRequestEmail", method = RequestMethod.POST)
     @ResponseBody
     public CorrectionRequestEmailDTO getLastCorrectionRequestEmail(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving last request correction e-mail information for call id " + callId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -404,8 +401,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/checkIfCorrectionRequestEmailIsAvailable", method = RequestMethod.POST)
     @ResponseBody
     public boolean checkIfCorrectionRequestEmailIsAvailable(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Checking if the correction request email option is available for call id " + callId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -427,8 +424,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/reject", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO rejectApplicationVoucherAssigment(@RequestBody final Integer applicationId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Rejecting application");
         try {
             UserDTO userDTO = userConnected;
@@ -453,8 +450,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO selectApplicationVoucherAssigment(@RequestBody final Integer applicationId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Selecting application");
         try {
             UserDTO userDTO = userConnected;

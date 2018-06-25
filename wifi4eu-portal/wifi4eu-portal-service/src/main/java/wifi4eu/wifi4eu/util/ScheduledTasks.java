@@ -71,9 +71,6 @@ public class ScheduledTasks {
 
     private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     private final static String QUEUE_NAME = "wifi4eu_apply";
 
     @Value("${rabbitmq.host}")
@@ -90,8 +87,8 @@ public class ScheduledTasks {
      */
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0/10 * * * ?")
     public void queueConsumer(HttpServletRequest request) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Consuming messages from the queue");
         try {
             ConnectionFactory factory = new ConnectionFactory();
@@ -149,8 +146,8 @@ public class ScheduledTasks {
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Starting helpdesk issues scheduled");
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
         for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
@@ -186,8 +183,8 @@ public class ScheduledTasks {
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 8 ? * MON-FRI")
     public void sendDocRequest() {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending document request");
         List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
         for (RegistrationDTO registrationDTO : registrationDTOS) {
@@ -221,8 +218,8 @@ public class ScheduledTasks {
     }
 
     private long processQueueMessage(GetResponse response, HttpServletRequest request) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending document request");
         try {
             AMQP.BasicProperties props = response.getProps();
