@@ -140,11 +140,10 @@ public class UserService {
 
     @Transactional
     public UserDTO getUserByUserContext(UserContext userContext) {
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (userContext == null) {
             throw new AppException("User context not defined", HttpStatus.SC_FORBIDDEN, "");
         }
-        _log.debug(" - ECAS Username: " + userConnected.getEcasUsername() + " - User Email: " + userContext.getEmail() + " and User PerId: " + userContext.getPerId());
+        _log.debug("User Email: " + userContext.getEmail() + " and User PerId: " + userContext.getPerId());
 
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
         if (userDTO == null) {
