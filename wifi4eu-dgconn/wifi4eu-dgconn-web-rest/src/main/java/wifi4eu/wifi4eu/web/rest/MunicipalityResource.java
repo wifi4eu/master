@@ -121,7 +121,8 @@ public class MunicipalityResource {
     @ResponseBody
     public MunicipalityDTO getMunicipalityThreadById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving municipality by id " + municipalityId + " for thread");
         UserDTO userDTO = userConnected;
         MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
         List<UserThreadsDTO> userThreadsDTOList = userThreadsService.getUserThreadsByUserId(userDTO.getId());
@@ -133,8 +134,7 @@ public class MunicipalityResource {
                 ThreadDTO threadDTO = threadService.getThreadById(userThread.getThreadId());
                 if (threadDTO.getTitle().equals(municipality.getName())) {
                     if (userThread.getUserId() == userDTO.getId()) {
-                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipality by id " + municipalityId + " for thread");
-                        municipality.setRegistrations(null);
+                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving municipality by id " + municipalityId + " for thread id " + threadDTO.getId());                        municipality.setRegistrations(null);
                         return municipality;
                     } else {
                         permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
