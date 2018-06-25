@@ -57,6 +57,12 @@
       <dependency>
           <groupId>jotm</groupId>
           <artifactId>jotm</artifactId>
+          <exclusions>
+              <exclusion>
+                  <artifactId>log4j</artifactId>
+                  <groupId>log4j</groupId>
+              </exclusion>
+          </exclusions>
       </dependency>
       <dependency>
 	  <groupId>javax.resource</groupId>

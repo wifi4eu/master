@@ -2,16 +2,6 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.http.ssl.TrustStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +10,14 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
-import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.HelpdeskIssueValidator;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
+import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.web.rest.constants.HelpdeskConstants;
 
@@ -52,15 +43,24 @@ public class HelpdeskIssueResource {
     @Autowired
     private UserService userService;
 
-    Logger _log = LoggerFactory.getLogger(CallResource.class);
+    @Autowired
+    NutsService nutsService;
+
+    Logger _log = LogManager.getLogger(CallResource.class);
+
+    UserContext userContext;
+    UserDTO userConnected;
 
     @ApiOperation(value = "Get all the helpdesk issues")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<HelpdeskIssueDTO> allHelpdeskIssues(HttpServletResponse response) throws IOException {
-        try{
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting all the helpdesk issues");
+        try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade){
@@ -81,20 +81,19 @@ public class HelpdeskIssueResource {
     @RequestMapping(value = "/{issueId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public HelpdeskIssueDTO getHelpdeskIssueById(@PathVariable("issueId") final Integer issueId, HttpServletResponse response) throws IOException {
-        _log.info("getHelpdeskIssueById: " + issueId);
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting helpdesk issue by id " + issueId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
-            if(userDTO.getType() != 5){
-                response.sendError(HttpStatus.NOT_FOUND.value());
-                return null;
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getHelpdeskIssueById' operation.", e);
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issue cannot been retrieved", e.getMessage());
             }
-            e.printStackTrace();
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
 
         return helpdeskService.getHelpdeskIssueById(issueId);
@@ -105,32 +104,35 @@ public class HelpdeskIssueResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO createHelpdeskIssue(@RequestBody final HelpdeskIssueDTO helpdeskIssueDTO, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating helpdesk issue");
         try {
-            _log.info("createHelpdeskIssue");
-
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())){
+            if (!userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())) {
                 throw new AccessDeniedException("Invalid access");
             }
-
-            HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO);
+            List<NutsDTO> nuts = nutsService.getNutsByLevel(0);
+            HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO, nuts);
 
             helpdeskIssueDTO.setCreateDate(new Date().getTime());
             helpdeskIssueDTO.setStatus(0);
 
             HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.createHelpdeskIssue(helpdeskIssueDTO);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issue created successfully");
             return new ResponseDTO(true, resHelpdeskIssue, null);
         }catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
-                    _log.error("Access denied on 'deleteHelpdeskIssue' operation.", ade);
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to create the helpdesk issue", ade.getMessage());
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error on 'createHelpdeskIssue' operation.", e);
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issue cannot been created", e.getMessage());
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 

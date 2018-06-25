@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.common.ecas;
 
-import org.apache.log4j.Logger;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import org.apache.commons.lang.StringUtils;
@@ -11,12 +10,10 @@ import eu.cec.digit.ecas.client.jaas.SubjectUtil;
 
 
 public class UserHolder {
-    private final static Logger logger = Logger.getLogger(UserHolder.class);
 
     private static final ThreadLocal<UserContext> userHolder = new ThreadLocal<UserContext>();
 
     public static void clearUser() {
-        logger.debug("clearUser");
         userHolder.remove();
     }
 
@@ -25,9 +22,7 @@ public class UserHolder {
     }
 
     public static void setUser(UserContext userContext) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("setUser: {}" + (userContext != null ? userContext.getLogin() : ""));
-        }
+
         userHolder.set(userContext);
     }
     

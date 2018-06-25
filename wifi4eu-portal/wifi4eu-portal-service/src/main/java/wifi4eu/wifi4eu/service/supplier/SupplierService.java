@@ -1,28 +1,29 @@
 package wifi4eu.wifi4eu.service.supplier;
 
 import com.google.common.collect.Lists;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
-import wifi4eu.wifi4eu.entity.supplier.SupplierListItem;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierListItemRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
-import wifi4eu.wifi4eu.service.location.NutsService;
-import wifi4eu.wifi4eu.service.thread.ThreadService;
-import wifi4eu.wifi4eu.service.thread.UserThreadsService;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
@@ -54,16 +55,9 @@ public class SupplierService {
     UserService userService;
 
     @Autowired
-    NutsService nutsService;
-
-    @Autowired
-    ThreadService threadService;
-
-    @Autowired
-    UserThreadsService userThreadsService;
-
-    @Autowired
     MailService mailService;
+
+    private final Logger _log = LogManager.getLogger(SupplierService.class);
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -75,29 +69,49 @@ public class SupplierService {
 
 
     @Transactional
-    public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
-        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-        if (userDTO != null) {
-            if (supplierDTO.getId() == 0) {
-                Integer supplierId = supplierDTO.getId();
-                List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
-                List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
-                supplierDTO.setSuppliedRegions(null);
-                supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
-                supplierId = supplierDTO.getId();
-
-                for (SuppliedRegionDTO region : originalRegions) {
-                    region.setSupplierId(supplierId);
-                    correctRegions.add(region);
-                }
-                supplierDTO.setSuppliedRegions(correctRegions);
-                return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
-
+    public SupplierDTO createSupplier(SupplierDTO supplierDTO) throws Exception {
+        SupplierDTO finalSupplier = new SupplierDTO();
+        finalSupplier.setUserId(supplierDTO.getUserId());
+        finalSupplier.setName(supplierDTO.getName());
+        finalSupplier.setAddress(supplierDTO.getAddress());
+        finalSupplier.setVat(supplierDTO.getVat());
+        finalSupplier.setBic(supplierDTO.getBic());
+        finalSupplier.setAccountNumber(supplierDTO.getAccountNumber());
+        if (supplierDTO.getWebsite() != null) {
+            if (!supplierDTO.getWebsite().trim().isEmpty()) {
+                finalSupplier.setWebsite(supplierDTO.getWebsite());
             } else {
-                return null;
+                finalSupplier.setWebsite(null);
+            }
+        } else {
+            finalSupplier.setWebsite(null);
+        }
+        if (supplierDTO.getLogo() != null) {
+            byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(supplierDTO.getLogo()));
+            String logoMimeType = LegalFilesService.getMimeType(supplierDTO.getLogo());
+            if (logoByteArray.length > 2560000) {
+                throw new Exception("File size cannot bet greater than 2.5 MB.");
+            } else if (!logoMimeType.equals("image/png") && !logoMimeType.equals("image/jpg") && !logoMimeType.equals("image/jpeg")) {
+                throw new Exception("File must have a valid extension.");
+            } else {
+                finalSupplier.setLogo(supplierDTO.getLogo());
             }
         }
-        return null;
+        finalSupplier.setContactName(supplierDTO.getContactName());
+        finalSupplier.setContactSurname(supplierDTO.getContactSurname());
+        finalSupplier.setContactEmail(supplierDTO.getContactEmail());
+        finalSupplier.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
+        finalSupplier.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
+        List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
+        List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
+        finalSupplier.setSuppliedRegions(null);
+        finalSupplier = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(finalSupplier)));
+        for (SuppliedRegionDTO region : originalRegions) {
+            region.setSupplierId(finalSupplier.getId());
+            correctRegions.add(region);
+        }
+        finalSupplier.setSuppliedRegions(correctRegions);
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(finalSupplier)));
     }
 
 
@@ -107,44 +121,31 @@ public class SupplierService {
         supplierDTO.setContactSurname(contactSurname);
         supplierDTO.setContactPhonePrefix(contactPhonePrefix);
         supplierDTO.setContactPhoneNumber(contactPhoneNumber);
-
         return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
     }
 
     @Transactional
-    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String logo) {
-      supplierDTO.setName(name);
-      supplierDTO.setAddress(address);
-      supplierDTO.setVat(vat);
-      supplierDTO.setBic(bic);
-      supplierDTO.setLogo(logo);
-      return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String logo) throws Exception {
+        supplierDTO.setName(name);
+        supplierDTO.setAddress(address);
+        supplierDTO.setVat(vat);
+        supplierDTO.setBic(bic);
+        if (logo != null) {
+            byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(logo));
+            String logoMimeType = LegalFilesService.getMimeType(logo);
+            if (logoByteArray.length > 2560000) {
+                throw new Exception("File size cannot bet greater than 2.5 MB.");
+            } else if (!logoMimeType.equals("image/png") && !logoMimeType.equals("image/jpg") && !logoMimeType.equals("image/jpeg")) {
+                throw new Exception("File must have a valid extension.");
+            } else {
+                supplierDTO.setLogo(logo);
+            }
+        } else {
+            supplierDTO.setLogo(null);
+        }
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
     }
 
-
-    /* OLD ONE
-        @Transactional
-        public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
-            if (supplierDTO.getSuppliedRegions().isEmpty()) {
-                return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
-            } else {
-                Integer supplierId = supplierDTO.getId();
-                List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
-                List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
-                if (supplierId == 0) {
-                    supplierDTO.setSuppliedRegions(null);
-                    supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
-                    supplierId = supplierDTO.getId();
-                }
-                for (SuppliedRegionDTO region : originalRegions) {
-                    region.setSupplierId(supplierId);
-                    correctRegions.add(region);
-                }
-                supplierDTO.setSuppliedRegions(correctRegions);
-                return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
-            }
-        }
-    */
     @Transactional
     public SupplierDTO deleteSupplier(int supplierId) {
         //TODO: change to a soft delete
@@ -163,13 +164,9 @@ public class SupplierService {
 
     @Transactional
     public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
-
         UserDTO userDTO;
-
         SupplierValidator.validateSupplier(supplierDTO);
-
         UserContext userContext = UserHolder.getUser();
-
         if (userContext != null) {
             // with ECAS
             userDTO = userService.getUserByUserContext(userContext);

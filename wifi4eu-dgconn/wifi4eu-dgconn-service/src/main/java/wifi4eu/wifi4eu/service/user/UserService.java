@@ -2,8 +2,9 @@ package wifi4eu.wifi4eu.service.user;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.http.HttpStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -11,30 +12,33 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
+import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.util.MailService;
 
 import javax.servlet.http.Cookie;
-import java.security.MessageDigest;
+import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
@@ -45,8 +49,7 @@ import java.util.ResourceBundle;
 @PropertySource("classpath:env.properties")
 @Service
 public class UserService {
-    private final Logger _log = LoggerFactory.getLogger(UserService.class);
-
+    private final Logger _log = LogManager.getLogger(UserService.class);
 
     @Value("${mail.server.location}")
     private String baseUrl;
@@ -67,9 +70,6 @@ public class UserService {
     MailService mailService;
 
     @Autowired
-    RightRepository rightRepository;
-
-    @Autowired
     PermissionChecker permissionChecker;
 
     @Autowired
@@ -78,11 +78,20 @@ public class UserService {
     @Autowired
     SupplierService supplierService;
 
-    /**
-     * The language used in user browser
-     */
-    private String lang = null;
+    @Autowired
+    SupplierMapper supplierMapper;
 
+    @Autowired
+    SupplierRepository supplierRepository;
+
+    @Autowired
+    SuppliedRegionMapper suppliedRegionMapper;
+
+    @Autowired
+    SuppliedRegionRepository suppliedRegionRepository;
+
+    @Autowired
+    UserThreadsService userThreadsService;
 
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
@@ -95,6 +104,11 @@ public class UserService {
     public UserDTO getUserByEmail(String email) {
         return userMapper.toDTO(userRepository.findByEmail(email));
     }
+
+    public UserDTO getUserByEcasEmail(String email){
+        return userMapper.toDTO(userRepository.findByEcasEmail(email));
+    }
+
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
@@ -125,14 +139,16 @@ public class UserService {
     @Transactional
     public UserDTO getUserByUserContext(UserContext userContext) {
 
-        _log.debug("[i] getUserByEcasPerId");
+        if (userContext == null) {
+            throw new AppException("User context not defined", HttpStatus.SC_FORBIDDEN, "");
+        }
+
+        if(_log.isDebugEnabled()){
+            _log.debug("user Email: " + userContext.getEmail() + " user PerId: " + userContext.getPerId());
+        }
 
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
-
-        _log.debug("after search userDTO: " + userDTO);
-
         if (userDTO == null) {
-
             userDTO = new UserDTO();
             userDTO.setAccessDate(new Date().getTime());
             userDTO.setEcasEmail(userContext.getEmail());
@@ -147,27 +163,27 @@ public class UserService {
                     RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
 
         }
-
-        _log.debug("after create userDTO: " + userDTO);
-
-        _log.debug("[f] getUserByEcasPerId");
         return userDTO;
     }
 
     @Transactional
-    public UserDTO deleteUser(int userId) {
+    public UserDTO deleteUser(int userId, HttpServletRequest request) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
         if (userDTO != null) {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
-                    for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
-                        tempTokenRepository.delete(tempToken);
-                    }
+                    removeTempToken(userDTO);
                     for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
-                        municipalityService.deleteMunicipality(municipality.getId());
+                        municipalityService.deleteMunicipality(municipality.getId(), request);
+                    }
+                    for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
+                        userThreadsService.deleteUserThreads(userThread.getId());
                     }
                     break;
                 case (int) Constant.ROLE_SUPPLIER:
+                    removeTempToken(userDTO);
+                    removeSuppliedRegion(userDTO);
+
                     SupplierDTO supplier = supplierService.getSupplierByUserId(userDTO.getId());
                     if (supplier != null) {
                         supplierService.deleteSupplier(supplier.getId());
@@ -179,6 +195,15 @@ public class UserService {
         } else {
             return null;
         }
+    }
+
+    @Transactional
+    public UserDTO updateUserDetails(UserDTO userDTO, String name, String surname) {
+
+        userDTO.setName(name);
+        userDTO.setSurname(surname);
+
+        return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
     }
 
     public List<UserDTO> getUsersByType(int type) {
@@ -222,6 +247,44 @@ public class UserService {
         } else {
             throw new Exception("Token doesn't exist.");
         }
+    }
+
+    @Transactional
+    public Cookie getCSRFCookie() throws AppException {
+        _log.debug("[i] getUserByEcasPerId");
+
+        Cookie cookie = null;
+        cookie = new Cookie("XSRF-TOKEN", generateCSRFToken());
+        cookie.setSecure(true);
+        cookie.setMaxAge(365 * 24 * 60 * 60);
+        cookie.setPath("/");
+
+        _log.debug("[f] getUserByEcasPerId");
+        return cookie;
+    }
+
+    private String generateCSRFToken() throws AppException{
+        String token = new TokenGenerator().generate();
+
+        if (token != null && token.length() > 0) {
+            UserContext userContext = UserHolder.getUser();
+            UserDTO user;
+            if (userContext != null) {
+                user = getUserByUserContext(userContext);
+                if (user != null) {
+                    user.setCsrfToken(token);
+                    userRepository.save(userMapper.toEntity(user));
+                } else {
+                    throw new AppException("Contact your administrator", HttpStatus.SC_INTERNAL_SERVER_ERROR, "");
+                }
+            } else {
+                throw new AppException("Contact your administrator", HttpStatus.SC_INTERNAL_SERVER_ERROR, "");
+            }
+        } else {
+            throw new AppException("Contact your administrator", HttpStatus.SC_INTERNAL_SERVER_ERROR, "");
+        }
+
+        return token;
     }
 
     @Transactional
@@ -269,12 +332,12 @@ public class UserService {
         UserDTO user = getUserByUserContext(userContext);
 
         if (user == null) {
-      /* validate email variable is not null or empty */
+            /* validate email variable is not null or empty */
             if (email != null && !StringUtils.isEmpty(email)) {
                 UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
-        /* validate if user exist in wifi4eu portal */
+                /* validate if user exist in wifi4eu portal */
                 if (userDTO != null) {
-          /* Create a temporal key for activation and reset password functionalities */
+                    /* Create a temporal key for activation and reset password functionalities */
                     TempTokenDTO tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.findByEmail(email));
                     if (tempTokenDTO == null) {
                         tempTokenDTO = new TempTokenDTO();
@@ -290,7 +353,7 @@ public class UserService {
 
                     tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO));
 
-          /* Send email with */
+                    /* Send email with */
                     String fromAddress = MailService.FROM_ADDRESS;
                     //TODO: translate subject and msgBody
                     String subject = "wifi4eu portal Forgot Password";
@@ -307,29 +370,8 @@ public class UserService {
         }
     }
 
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
-
-    public String getLang() {
-        return this.lang;
-    }
-
     public boolean isLocalHost() {
         return baseUrl.contains(UserConstants.LOCAL);
-    }
-
-    public Locale initLocale() {
-        Locale locale;
-
-        if (lang != null) {
-            locale = new Locale(lang);
-
-        } else {
-            locale = new Locale(UserConstants.DEFAULT_LANG);
-        }
-
-        return locale;
     }
 
     public String getLogoutEnviroment() {
@@ -352,5 +394,19 @@ public class UserService {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+    }
+
+    private void removeTempToken(UserDTO userDTO) {
+        for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
+            tempTokenRepository.delete(tempToken);
+        }
+    }
+
+    private void removeSuppliedRegion(UserDTO userDTO) {
+        SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findByUserId(userDTO.getId()));
+        List<SuppliedRegionDTO> suppliedRegionDTOList = supplierDTO.getSuppliedRegions();
+        for (SuppliedRegionDTO anElementList : suppliedRegionDTOList) {
+            suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(anElementList));
+        }
     }
 }

@@ -63,14 +63,20 @@ public class Application {
     @Column(name = "invalidate_reason")
     private String invalidateReason;
 
+    @Column(name = "pre_selected_flag")
+    private Boolean preSelectedFlag;
+
+    @Column(name = "rejected")
+    private Boolean rejected;
+
     public Application() {
     }
 
-    public Application(Integer id, Integer call, Integer registration, Integer supplier, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, Integer status, String invalidateReason) {
+    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, Boolean preSelectedFlag, Boolean rejected) {
         this.id = id;
-        this.callId = call;
-        this.registrationId = registration;
-        this.supplierId = supplier;
+        this.callId = callId;
+        this.registrationId = registrationId;
+        this.supplierId = supplierId;
         this.voucherAwarded = voucherAwarded;
         this.date = date;
         this.lefExport = lefExport;
@@ -84,6 +90,8 @@ public class Application {
         this.lcStatus = lcStatus;
         this.status = status;
         this.invalidateReason = invalidateReason;
+        this.preSelectedFlag = preSelectedFlag;
+        this.rejected = rejected;
     }
 
     public Integer getId() {
@@ -220,5 +228,21 @@ public class Application {
 
     public void setInvalidateReason(String invalidateReason) {
         this.invalidateReason = invalidateReason;
+    }
+
+    public Boolean getPreSelectedFlag() {
+        return preSelectedFlag;
+    }
+
+    public void setPreSelectedFlag(Boolean preSelectedFlag) {
+        this.preSelectedFlag = preSelectedFlag;
+    }
+
+    public Boolean getRejected() {
+        return rejected;
+    }
+
+    public void setRejected(Boolean rejected) {
+        this.rejected = rejected;
     }
 }

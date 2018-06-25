@@ -1,17 +1,8 @@
 package wifi4eu.wifi4eu.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rabbitmq.client.*;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.http.ssl.TrustStrategy;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +13,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -32,14 +25,16 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
+import com.rabbitmq.client.*;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -74,7 +69,10 @@ public class ScheduledTasks {
     @Autowired
     private CallService callService;
 
-    private static final Logger _log = LoggerFactory.getLogger(ScheduledTasks.class);
+    private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
+
+    UserContext userContext;
+    UserDTO userConnected;
 
     private final static String QUEUE_NAME = "wifi4eu_apply";
 
@@ -91,8 +89,10 @@ public class ScheduledTasks {
      * This cron method consumes the messages from the RabbitMQ
      */
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0/10 * * * ?")
-    public void queueConsumer() {
-        _log.info("[i] queueConsumer");
+    public void queueConsumer(HttpServletRequest request) {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Consuming messages from the queue");
         try {
             ConnectionFactory factory = new ConnectionFactory();
             factory.setHost(rabbitMQHost);
@@ -100,7 +100,6 @@ public class ScheduledTasks {
             factory.setPassword(rabbitPassword);
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
-
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
             boolean autoAck = false;
@@ -112,12 +111,12 @@ public class ScheduledTasks {
                 GetResponse response = channel.basicGet(QUEUE_NAME, autoAck);
                 if (response == null) {
                     // No message retrieved.
-                    _log.info("queue is empty");
+                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue is empty");
                     break;
                 } else {
 
                     Date wdStartDate = new Date();
-                    long deliveryTag = processQueueMessage(response);
+                    long deliveryTag = processQueueMessage(response, request);
                     Date wdEndDate = new Date();
 
                     //time the process has taken in millisecons
@@ -125,14 +124,12 @@ public class ScheduledTasks {
                     long messageCount = response.getMessageCount();
 
                     if (deliveryTag != 0) {
-                        _log.info("send deliveryTag:" + deliveryTag);
+                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sent with delivery tag " + deliveryTag);
                         channel.basicAck(deliveryTag, false); // acknowledge receipt of the message
                     } else {
-                        _log.error("error processing a message, deliveryTag: " + deliveryTag, " response: " + response);
+                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process a message" + response);
                     }
-
-                    _log.info("wdProcessTime: " + wdProcessTime + " messageCount: " + messageCount + " iterationCounter: " + iterationCounter);
-
+                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - wdProcessTime: " + wdProcessTime + " messageCount: " + messageCount + " iterationCounter: " + iterationCounter);
                     if (wdProcessTime < 100 && messageCount > 200 && messageCount % 9 != 1) {
                         i--;
                     } else if (wdProcessTime > 500) {
@@ -143,21 +140,20 @@ public class ScheduledTasks {
             }
 
             channel.close();
-            _log.info("queue channel has been closed");
+            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue channel has been closed");
             connection.close();
-            _log.info("queue connection has been closed");
+            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue connection has been closed");
 
         } catch (Exception e) {
-            _log.error("can't process the queue", e);
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process the queue", e.getMessage());
         }
-        _log.info("[f] queueConsumer");
     }
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
-
-        _log.info("[i] scheduleHelpdeskIssues");
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Starting helpdesk issues scheduled");
         boolean isSuccesOperation = true;
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
 
@@ -171,7 +167,6 @@ public class ScheduledTasks {
                 helpdeskTicketDTO.setUuid(HelpdeskConstants.UUID_WIFI + helpdeskIssue.getId());
 
                 UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
-
 
                 if (userDTO != null) {
                     helpdeskTicketDTO.setFirstname(userDTO.getName());
@@ -190,23 +185,20 @@ public class ScheduledTasks {
                         _log.error("result that not containt proper text, the " + helpdeskTicketDTO.getUuid() + " helpdesk issue fails");
                     }
                 } else {
-                    _log.error("scheduleHelpdeskIssues can't retrieve the user for heldesk issue with Id " + helpdeskIssue.getId());
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot retrieve the user for this helpdesk issue");
                 }
 
-
             } catch (Exception e) {
-                _log.error("scheduleHelpdeskIssues the helpdesk issue with Id " + helpdeskIssue.getId() + " can't be processed", e);
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process this helpdesk issue", e.getMessage());
             }
         }
-        _log.info("[f] scheduleHelpdeskIssues");
     }
-
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 8 ? * MON-FRI")
     public void sendDocRequest() {
-
-        _log.info("[i] sendDocRequest");
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending document request");
         List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
         for (RegistrationDTO registrationDTO : registrationDTOS) {
             try {
@@ -229,22 +221,20 @@ public class ScheduledTasks {
                         int mailCounter = registrationDTO.getMailCounter() - 1;
                         registrationDTO.setMailCounter(mailCounter);
                         registrationService.createRegistration(registrationDTO);
+                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Document request sent for registration with id " + registrationDTO.getId());
                     }
                 }
             } catch (Exception e) {
-                _log.error("sendDocRequest can't be done for registration with Id " + registrationDTO.getId());
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send document rquest for this registration", e.getMessage());
             }
-
         }
-
-        _log.info("[f] sendDocRequest");
     }
 
-    private long processQueueMessage(GetResponse response) {
-
+    private long processQueueMessage(GetResponse response, HttpServletRequest request) {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending document request");
         try {
-            _log.info("[i] processQueueMessage");
-
             AMQP.BasicProperties props = response.getProps();
             byte[] body = response.getBody();
             Envelope envelope = response.getEnvelope();
@@ -253,25 +243,21 @@ public class ScheduledTasks {
             ObjectMapper mapper = new ObjectMapper();
             QueueApplicationElement qae = mapper.readValue(body, QueueApplicationElement.class);
 
-            ApplicationDTO applicatioDTO = applicationService.registerApplication(qae.getCallId(), qae.getUserId(), qae.getRegistrationId(),
-                    qae.getFileUploadTimestamp(), qae.getQueueTimestamp());
+            ApplicationDTO applicationDTO = applicationService.registerApplication(qae.getCallId(), qae.getUserId(), qae.getRegistrationId(),
+                    qae.getFileUploadTimestamp(), qae.getQueueTimestamp(), request);
 
             long deliveryTag = 0;
 
-            if (applicatioDTO != null) {
+            if (applicationDTO != null) {
                 deliveryTag = response.getEnvelope().getDeliveryTag();
-                _log.info("deliveryTag: " + deliveryTag);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The application delivery tag is " + deliveryTag);
             }
-
-            _log.info("[f] processQueueMessage");
             return deliveryTag;
 
         } catch (Exception e) {
-            _log.error("error reading a message from the queue", e);
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot read a message from the queue", e.getMessage());
             return 0;
         }
-
-
     }
 
     @SuppressWarnings("Duplicates")
