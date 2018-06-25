@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 @Api(value = "/user", description = "User object REST API services")
 @RequestMapping("user")
 public class UserResource {
+
     Logger _log = LogManager.getLogger(UserResource.class);
 
     @ApiOperation(value = "getUser")
