@@ -42,12 +42,9 @@ public class MailService {
 
     private final Logger _log = LogManager.getLogger(MailService.class);
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
         if (enableMail) {
             try {
@@ -74,7 +71,7 @@ public class MailService {
                 mailSender.send(message);
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + toAddress);
             } catch (Exception ex) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex.getMessage());
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex);
             }
         }
     }

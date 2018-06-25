@@ -12,7 +12,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.location.NutsService;
@@ -28,10 +27,7 @@ public class NutsResource {
     @Autowired
     NutsService nutsService;
 
-    Logger _log = LogManager.getLogger(LauResource.class);
-
-    UserContext userContext;
-    UserDTO userConnected;
+    Logger _log = LogManager.getLogger(NutsResource.class);
 
     @Autowired
     UserService userService;

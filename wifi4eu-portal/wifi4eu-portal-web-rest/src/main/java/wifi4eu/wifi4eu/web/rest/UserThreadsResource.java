@@ -37,10 +37,7 @@ public class UserThreadsResource {
     @Autowired
     private PermissionChecker permissionChecker;
 
-    Logger _log = LogManager.getLogger(CallResource.class);
-
-    UserContext userContext;
-    UserDTO userConnected;
+    Logger _log = LogManager.getLogger(UserThreadsResource.class);
 
     /*
     @ApiOperation(value = "Get all the userThreads entries")
@@ -55,8 +52,8 @@ public class UserThreadsResource {
     @RequestMapping(value = "/{userThreadsId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public UserThreadsDTO getUserThreadsById(@PathVariable("userThreadsId") final Integer userThreadsId) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving user threads by id " + userThreadsId);
         UserThreadsDTO userThreadsDTO = userThreadsService.getUserThreadsById(userThreadsId);
         permissionChecker.check(RightConstants.USER_TABLE + userThreadsDTO.getUserId());
@@ -108,8 +105,8 @@ public class UserThreadsResource {
     @RequestMapping(value = "/userId/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<UserThreadsDTO> getUserThreadsByUserId(@PathVariable("userId") final Integer userId) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving threads by user id " + userId);
         permissionChecker.check(RightConstants.USER_TABLE + userId);
         return userThreadsService.getUserThreadsByUserId(userId);
@@ -119,8 +116,8 @@ public class UserThreadsResource {
     @RequestMapping(value = "/threadId/{threadId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<UserThreadsDTO> getUserThreadsByThreadId(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving user by thread id " + threadId);
         List<UserThreadsDTO> listUserThreadsDTO = userThreadsService.getUserThreadsByThreadId(threadId);
         boolean isUserThread = false;
@@ -141,7 +138,7 @@ public class UserThreadsResource {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to retrieve users by thread", ade.getMessage());
                 response.sendError(HttpStatus.NOT_FOUND.value());
             } catch (Exception e) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user cannot been retrieved", e.getMessage());
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user cannot been retrieved", e);
                 response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
             }
         }

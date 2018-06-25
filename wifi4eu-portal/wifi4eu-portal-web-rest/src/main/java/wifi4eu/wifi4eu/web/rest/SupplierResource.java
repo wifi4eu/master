@@ -41,6 +41,7 @@ import java.util.List;
 @Api(value = "/supplier", description = "Supplier object REST API services")
 @RequestMapping("supplier")
 public class SupplierResource {
+
     @Autowired
     private SupplierService supplierService;
 
@@ -51,9 +52,6 @@ public class SupplierResource {
     private UserService userService;
 
     Logger _log = LogManager.getLogger(SupplierResource.class);
-
-    UserContext userContext;
-    UserDTO userConnected;
 
     /*
     //TODO: limit access to this service
@@ -87,8 +85,8 @@ public class SupplierResource {
     @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public SupplierDTO getSupplierById(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting supplier by id " + supplierId);
         SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
         try {
@@ -102,7 +100,7 @@ public class SupplierResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this supplier", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been retrieved", e);
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return null;
@@ -144,8 +142,8 @@ public class SupplierResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO updateSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier");
         try {
             UserDTO userDTO = userConnected;
@@ -160,7 +158,7 @@ public class SupplierResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been updated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been updated", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
@@ -169,8 +167,8 @@ public class SupplierResource {
     @RequestMapping(value = "update/contactDetails", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO updateContactDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating contact details");
         try {
             UserDTO userDTO = userConnected;
@@ -189,7 +187,7 @@ public class SupplierResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These contact details cannot been updated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These contact details cannot been updated", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
@@ -198,8 +196,8 @@ public class SupplierResource {
     @RequestMapping(value = "update/supplierDetails", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO updateSupplierDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier details");
         try {
             UserDTO userDTO = userConnected;
@@ -218,7 +216,7 @@ public class SupplierResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier's contact details cannot been updated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier's contact details cannot been updated", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -256,8 +254,8 @@ public class SupplierResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Submitting supplier registration");
         try {
             UserDTO userDTO = userConnected;
@@ -268,7 +266,7 @@ public class SupplierResource {
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Supplier registration submitted successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been submitted", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been submitted", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -279,8 +277,8 @@ public class SupplierResource {
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public SupplierDTO getSupplierByUserId(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting supplier by user id " + userId);
         try {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
@@ -288,7 +286,7 @@ public class SupplierResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this supplier", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been retrieved", e);
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return supplierService.getSupplierByUserId(userId);
@@ -298,8 +296,8 @@ public class SupplierResource {
     @RequestMapping(value = "/similarSuppliers/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<SupplierDTO> findSimilarSuppliers(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -316,8 +314,8 @@ public class SupplierResource {
     @RequestMapping(value = "/requestLegalDocuments/{supplierId}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO requestLegalDocuments(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - requesting legal documents by supplier id " + supplierId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -329,7 +327,7 @@ public class SupplierResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal documents cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal documents cannot been retrieved", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -340,8 +338,8 @@ public class SupplierResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO invalidateSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating supplier");
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -355,7 +353,7 @@ public class SupplierResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been invalidated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been invalidated", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -372,8 +370,8 @@ public class SupplierResource {
     @RequestMapping(value = "/findDgconnSuppliersList", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO findDgconnSuppliersList(@RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn suppliers by page " + page + ", count" + count + ", order field" + orderField + " and order type " + orderType);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -385,7 +383,7 @@ public class SupplierResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Theses suppliers cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Theses suppliers cannot been retrieved", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -395,8 +393,8 @@ public class SupplierResource {
     @RequestMapping(value = "/findDgconnSuppliersListSearchingName", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO findDgconnSuppliersListSearchingName(@RequestParam("name") final String name, @RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn suppliers by page " + page + ", count" + count + ", order field" + orderField + " and order type " + orderType + " and searching name " + name);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -408,7 +406,7 @@ public class SupplierResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Theses suppliers name cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Theses suppliers name cannot been retrieved", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }

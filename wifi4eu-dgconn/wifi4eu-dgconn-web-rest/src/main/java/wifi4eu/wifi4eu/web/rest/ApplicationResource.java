@@ -45,22 +45,19 @@ public class ApplicationResource {
     @Autowired
     UserService userService;
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     Logger _log = LogManager.getLogger(ApplicationResource.class);
 
     @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by call id " + callId + " and registration id " + registrationId);
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasEmail() + " - Permission not found", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
 
@@ -78,8 +75,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/voucherInfo/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(@PathVariable("callId") final Integer callId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications voucher by call id " + callId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -90,7 +87,7 @@ public class ApplicationResource {
             return applicationService.getApplicationsVoucherInfoByCall(callId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Applications' voucher information not found on this call", e.getMessage());
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Applications' voucher information not found on this call", e);
                 response.sendError(HttpStatus.NOT_FOUND.value());
             }
             return null;
@@ -121,8 +118,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/findDgconnApplicantsListByCallId/{callId}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO findDgconnApplicantsListByCallId(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn applicants by call id " + callId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -136,7 +133,7 @@ public class ApplicationResource {
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - The DGConn Applicants for this call are retrieved correctly");
             return res;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The DGConn Applicants cannot be retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The DGConn Applicants cannot be retrieved", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
@@ -147,8 +144,8 @@ public class ApplicationResource {
     @ResponseBody
     public ResponseDTO findDgconnApplicantsListByCallIdSearchingName(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name,
                                                                      @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn applicants searching name by call id " + callId + ", country " + country + " and searching name " + name);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -161,7 +158,7 @@ public class ApplicationResource {
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Applicants' searching name retrieved correctly");
             return res;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The applicants' searching name cannot be retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The applicants' searching name cannot be retrieved", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return new ResponseDTO(false, null, null);
@@ -171,8 +168,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO validateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Validating applications");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -187,7 +184,7 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been validated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been validated", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
@@ -197,8 +194,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/valid/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public Integer getApplicationsNotInvalidated(@PathVariable("callId") final Integer callId) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications voucher information by call id " + callId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -211,7 +208,7 @@ public class ApplicationResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve applications not validated", ade.getMessage());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Applications not validated cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Applications not validated cannot been retrieved", e);
             return null;
         }
     }
@@ -220,8 +217,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/invalidate", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO invalidateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating applications");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -236,7 +233,7 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been invalidated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been invalidated", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, null);
         }
@@ -246,8 +243,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/call/{callId}/lau/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(@PathVariable("callId") final Integer callId, @PathVariable("lauId") final Integer lauId, @RequestParam("currentDate") final Long currentDate, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by call id " + callId + " lau id" + lauId + " with date " + currentDate);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -260,7 +257,7 @@ public class ApplicationResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve these applications", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Applications cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Applications cannot been retrieved", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return null;
@@ -270,8 +267,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/sendLegalDocumentsCorrection", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO sendLegalDocumentsCorrection(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending legal documents' correction request");
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -285,7 +282,7 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Request cannot been sent", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Request cannot been sent", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, null);
         }
@@ -295,8 +292,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/exportExcelDGConnApplicantsList", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
     @ResponseBody
     public ResponseEntity<byte[]> exportExcelDGConnApplicantsList(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting Excel with DGConn Applicants by call id " + callId + " and country " + country);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -316,7 +313,7 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -326,8 +323,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/exportExcelDGConnApplicantsListSearchingName", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
     @ResponseBody
     public ResponseEntity<byte[]> exportExcelDGConnApplicantsListSearchingName(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting Excel with DGConn Applicants' searching name by call id " + callId + ",country " + country + " and searching name " + name);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -347,7 +344,7 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -357,22 +354,21 @@ public class ApplicationResource {
     @RequestMapping(value = "/sendCorrectionEmails", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO sendCorrectionEmails(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending request correction e-mails for call id " + callId);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("sendCorrectionEmails");
-            }
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
             CorrectionRequestEmailDTO correctionRequest = applicationService.sendCorrectionEmails(callId);
             return new ResponseDTO(true, correctionRequest, null);
         } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to send the request", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'sendCorrectionEmails' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Request cannot been sent", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
@@ -382,21 +378,20 @@ public class ApplicationResource {
     @RequestMapping(value = "/getLastCorrectionRequestEmail", method = RequestMethod.POST)
     @ResponseBody
     public CorrectionRequestEmailDTO getLastCorrectionRequestEmail(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving last request correction e-mail information for call id " + callId);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("getLastCorrectionRequestEmail");
-            }
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
             return applicationService.getLastCorrectionRequestEmailInCall(callId);
         } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the request", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getLastCorrectionRequestEmail' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Request cannot been retrieved", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -406,21 +401,20 @@ public class ApplicationResource {
     @RequestMapping(value = "/checkIfCorrectionRequestEmailIsAvailable", method = RequestMethod.POST)
     @ResponseBody
     public boolean checkIfCorrectionRequestEmailIsAvailable(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Checking if the correction request email option is available for call id " + callId);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("checkIfCorrectionRequestEmailIsAvailable");
-            }
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
             return applicationService.checkIfCorrectionRequestEmailIsAvailable(callId);
         } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to check the option", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return false;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'checkIfCorrectionRequestEmailIsAvailable' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Option cannot been checked", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return false;
         }
@@ -430,59 +424,49 @@ public class ApplicationResource {
     @RequestMapping(value = "/reject", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO rejectApplicationVoucherAssigment(@RequestBody final Integer applicationId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Rejecting application");
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("rejectApplicationVoucherAssigment");
-            }
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            UserDTO userDTO = userConnected;
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
             ApplicationDTO resApplication = applicationService.rejectApplicationVoucherAssigment(applicationId);
             return new ResponseDTO(true, resApplication, null);
-        } catch (AccessDeniedException e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'rejectApplicationVoucherAssigment' operation.", e);
-            }
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to reject this application", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, null);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'rejectApplicationVoucherAssigment' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been rejected", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, null);
         }
     }
 
-    @ApiOperation(value = "Reject application")
+    @ApiOperation(value = "Select application")
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO selectApplicationVoucherAssigment(@RequestBody final Integer applicationId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Selecting application");
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("selectApplicationVoucherAssigment");
-            }
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            UserDTO userDTO = userConnected;
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
             ApplicationDTO resApplication = applicationService.selectApplicationVoucherAssigment(applicationId);
             return new ResponseDTO(true, resApplication, null);
-        } catch (AccessDeniedException e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'selectApplicationVoucherAssigment' operation.", e);
-            }
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to select this application", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, null);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'selectApplicationVoucherAssigment' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been selected", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, null);
         }

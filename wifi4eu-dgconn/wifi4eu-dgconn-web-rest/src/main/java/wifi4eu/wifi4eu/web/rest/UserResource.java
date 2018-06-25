@@ -32,7 +32,6 @@ import java.io.IOException;
 @Api(value = "/user", description = "User object REST API services")
 @RequestMapping("user")
 public class UserResource {
-
     @Autowired
     private UserService userService;
 
@@ -43,9 +42,6 @@ public class UserResource {
     private PermissionChecker permissionChecker;
 
     Logger _log = LogManager.getLogger(UserResource.class);
-
-    UserContext userContext;
-    UserDTO userConnected;
 
 /*    @ApiOperation(value = "Get all the users")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -74,8 +70,8 @@ public class UserResource {
     @ResponseBody
     public UserDTO getUserById(@PathVariable("userId") final Integer userId, HttpServletResponse response) {
         UserDTO resUser = userService.getUserById(userId);
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving user by id " + userId);
         if (userConnected.getType() != 5) {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
@@ -106,13 +102,14 @@ public class UserResource {
     }*/
 
 
+
     @ApiOperation(value = "Update user details")
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
     public ResponseDTO updateUserDetails(@RequestBody final UserDTO userDTO,
                                          HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating user details by id " + userDTO.getId());
         try {
             int userId = userDTO.getId();
@@ -126,7 +123,7 @@ public class UserResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user details cannot been updated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user details cannot been updated", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -177,8 +174,8 @@ public class UserResource {
     @ResponseBody
     public ResponseDTO deleteUser(@RequestBody final Integer userId,
                                   HttpServletResponse response, HttpServletRequest request) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Removing user by id " + userId);
         try {
             //check permission
@@ -192,7 +189,7 @@ public class UserResource {
             response.sendError(HttpStatus.FORBIDDEN.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user cannot been removed", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user cannot been removed", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -214,8 +211,8 @@ public class UserResource {
     @RequestMapping(value = "/ecaslogin", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO ecasLogin(HttpServletResponse response) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging in with ECAS User");
         try {
             UserDTO userDTO = userConnected;
@@ -225,7 +222,7 @@ public class UserResource {
             }
             return new ResponseDTO(true, userDTO, null);
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot be logged in", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot be logged in", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
@@ -234,13 +231,13 @@ public class UserResource {
     @RequestMapping(value = "/ecaslogout", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO ecasLogout() {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging out from ECAS User");
         try {
             return new ResponseDTO(true, userService.getLogoutEnviroment(), null);
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot be logged out", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot be logged out", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
@@ -249,13 +246,13 @@ public class UserResource {
     @RequestMapping(value = "/ecasChangePassword", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO ecasChangePassword() {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Changing ECAS password");
         try {
             return new ResponseDTO(true, userService.getChangePassword(), null); //permissionChecker.check(RightConstants.USER_TABLE+userId);
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot change ECAS password", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot change ECAS password", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
@@ -300,8 +297,8 @@ public class UserResource {
     @RequestMapping(value = "/resendEmail", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO resendEmail(@RequestBody final String email) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Resending email to activate account to " + email);
         try {
             if (userService.resendEmail(email)) {
@@ -309,7 +306,7 @@ public class UserResource {
             }
             return new ResponseDTO(false, null, null);
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot resend email to activate ECAS account", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot resend email to activate ECAS account", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
@@ -335,8 +332,8 @@ public class UserResource {
     @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String doCompleteSignOut() {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging out session");
         final HttpSession session = RecoverHttpSession.session();
         String outMessage = "page.logout";
