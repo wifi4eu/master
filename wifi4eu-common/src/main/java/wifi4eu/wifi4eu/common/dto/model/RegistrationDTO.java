@@ -18,11 +18,14 @@ public class RegistrationDTO implements Serializable {
     private long uploadTime;
     private int allFilesFlag;
     private int mailCounter;
+    private Long isSubmission;
+    private Long isRejection;
+    private Long isConfirmation;
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, long uploadTime, int allFilesFlag, int mailCounter) {
+    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, long uploadTime, int allFilesFlag, int mailCounter, Long isSubmission, Long isRejection, Long isConfirmation) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
@@ -38,6 +41,9 @@ public class RegistrationDTO implements Serializable {
         this.uploadTime = uploadTime;
         this.allFilesFlag = allFilesFlag;
         this.mailCounter = mailCounter;
+        this.isSubmission = isSubmission;
+        this.isRejection = isRejection;
+        this.isConfirmation = isConfirmation;
     }
 
     public int getId() {
@@ -176,5 +182,29 @@ public class RegistrationDTO implements Serializable {
 
     public void setMailCounter(int mailCounter) {
         this.mailCounter = mailCounter;
+    }
+
+    public Long getIsSubmission() {
+        return isSubmission; 
+    }
+
+    public void setIsSubmission(Long isSubmission) {
+        this.isSubmission = isSubmission;
+    }
+
+    public Long getIsRejection() {
+        return isRejection;
+    }
+
+    public void setIsRejection(Long isRejection) {
+        this.isRejection = isRejection;
+    }
+
+    public Long getIsConfirmation() {
+        return isConfirmation;
+    }
+
+    public void setIsConfirmation(Long isConfirmation) {
+        this.isConfirmation = isConfirmation;
     }
 }

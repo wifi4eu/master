@@ -58,11 +58,20 @@ public class Registration {
     @Column(name = "mail_counter")
     private int mailCounter;
 
+    @Column(name = "is_submission")
+    private Long isSubmission;
+
+    @Column(name = "is_rejection")
+    private Long isRejection;
+
+    @Column(name = "is_confirmation")
+    private Long isConfirmation;
+
 
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, Long isSubmission, Long isRejection, Long isConfirmation) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -77,6 +86,9 @@ public class Registration {
         this.uploadTime = uploadTime;
         this.allFilesFlag = allFilesFlag;
         this.mailCounter = mailCounter;
+        this.isSubmission = isSubmission;
+        this.isRejection = isRejection;
+        this.isConfirmation = isConfirmation;
     }
 
     public Integer getId() {
@@ -197,5 +209,29 @@ public class Registration {
 
     public void setMailCounter(int mailCounter) {
         this.mailCounter = mailCounter;
+    }
+
+    public Long getIsSubmission() {
+        return isSubmission;
+    }
+
+    public void setIsSubmission(Long isSubmission) {
+        this.isSubmission = isSubmission;
+    }
+
+    public Long getIsRejection() {
+        return isRejection;
+    }
+
+    public void setIsRejection(Long isRejection) {
+        this.isRejection = isRejection;
+    }
+
+    public Long getIsConfirmation() {
+        return isConfirmation;
+    }
+
+    public void setMailCounter(Long isConfirmation) {
+        this.isConfirmation = isConfirmation;
     }
 }
