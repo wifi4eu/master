@@ -105,7 +105,7 @@ export class SelectedSupplierDetailsComponent {
     );
     /* Get the date when supplier was selected if the supplier hasn't changed his choice */
     if((this.application.supplierId === this.paramsSupplierId) && (this.application.supplierId != (null || undefined || 0)) )  {
-      this.getStringDate(this.application.date);
+      this.getStringDate(this.application.selectSupplierDate);
       this.displayDate = true; 
     }
   }
@@ -144,7 +144,9 @@ export class SelectedSupplierDetailsComponent {
   assignSupplierAndNotify() {
     this.applicationApi.assignSupplier(this.application).subscribe(
       (resAplication: ResponseDTOBase) => {
-        this.supplierApi.notifySelectedSupplier(this.application.supplierId).subscribe(
+        console.log(this.application);
+        console.log(resAplication);
+        this.supplierApi.notifySelectedSupplier(this.municipalityId).subscribe(
           (res: ResponseDTOBase) => {
             console.log("The result of Selection is ", res);
             this.changedSupplierChoice = false;
