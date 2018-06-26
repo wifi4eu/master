@@ -499,6 +499,7 @@ public class SupplierResource {
                 null);
     }
 
+    // Get all suppliers that supply a specific region
     @ApiOperation(value = "Get suppliers by regionID")
     @RequestMapping(value = "/region/{regionId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -507,6 +508,22 @@ public class SupplierResource {
         List<SupplierDTO> suppliersList = new ArrayList<>();
         try {
             suppliersList = supplierService.getSuppliersListByRegionId(regionId);
+        }
+        catch (Exception e){
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return suppliersList;
+    }
+
+    // Get validated suppliers that supply a specific region
+    @ApiOperation(value = "Get validated suppliers by regionID")
+    @RequestMapping(value = "/region/{regionId}/validated", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<SupplierDTO> getValidatedSuppliersListByRegionId(@PathVariable("regionId") final Integer regionId, HttpServletResponse response) throws IOException {
+        _log.info("getValidatedSuppliersListByRegionId");
+        List<SupplierDTO> suppliersList = new ArrayList<>();
+        try {
+            suppliersList = supplierService.getValidatedSuppliersListByRegionId(regionId);
         }
         catch (Exception e){
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());

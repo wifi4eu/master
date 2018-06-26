@@ -104,7 +104,7 @@ export class SelectSupplierComponent {
                       this.application = application;
                       
                       /* Check if the application already has a supplier assigned */
-                      if (application.supplierId != (null || undefined || 0)) {
+                      if (application.supplierId) {
                         this.hasSupplierAssigned = true;
                       }
 
@@ -121,7 +121,7 @@ export class SelectSupplierComponent {
                                   
                                   /* Get all suppliers that supply the beneficiary region */
                                   if(this.region.id != 0){
-                                    this.supplierApi.getSuppliersListByRegionId(this.region.id).subscribe(
+                                    this.supplierApi.getValidatedSuppliersListByRegionId(this.region.id).subscribe(
                                       (suppliers: SupplierDTOBase[]) => {
                                         this.suppliers = suppliers;
                                         this.suppliersCopy = this.suppliers;
