@@ -7,18 +7,11 @@ echo "Check angular version"
 #npm config set "//ecdevops.eu/repository/npm-all/:_authToken=828d555c-441f-3ee2-8ec5-8fe715c389f2"
 #npm config set registry https://ecdevops.eu/repository/npm-all/
 echo "NPM install on angular folders"
-if [[ $2 = "" || $2 = *"wifi4eu-portal-web"* ]]; then
 npm install --prefix ./wifi4eu-portal/wifi4eu-portal-web/src/main/angular/
-fi
-if [[ $2 = "" || $2 = *"wifi4eu-public-portal-web"* ]]; then
 npm install --prefix ./wifi4eu-public-portal/wifi4eu-public-portal-web/src/main/angular/
-fi
-if [[ $2 = "" || $2 = *"wifi4eu-dgconn-web"* ]]; then
 npm install --prefix ./wifi4eu-dgconn/wifi4eu-dgconn-web/src/main/angular/
-fi
 echo "Install ECAS dependency"
 mvn install:install-file -Dfile=wifi4eu-dependencies/ecas-tomcat-8.0-4.22.0.jar  -DgroupId=eu.europa.ec.digit.iam.ecas.client -DartifactId=ecas-tomcat-8.0 -Dversion=4.22.0 -Dpackaging=jar
 echo "Compile project"
 echo "Environment: $1"
-echo "Modules: $2"
-mvn clean install -U -Png-build-jenkins,$1,$2
+mvn clean install -U -Png-build-jenkins,$1
