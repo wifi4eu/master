@@ -565,6 +565,7 @@ public class ApplicationService {
         PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
         List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, null, pagingSortingData);
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Excel exported");
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
     }
 
@@ -577,6 +578,7 @@ public class ApplicationService {
         PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
         List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, name, pagingSortingData);
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Excel exported");
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
     }
 

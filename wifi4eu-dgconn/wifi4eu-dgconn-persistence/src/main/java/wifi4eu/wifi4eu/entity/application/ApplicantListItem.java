@@ -4,7 +4,6 @@ import wifi4eu.wifi4eu.common.dto.model.RegistrationWarningDTO;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 import java.util.List;
 
 @Entity
