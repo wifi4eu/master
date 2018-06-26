@@ -125,6 +125,8 @@ public class CallAbac {
             //Assync Call
             HashMap<String,String> retHashMap = jmsProducer.sendMessage(message);
 
+            //Todo: create a file with response status mod/0
+
             msgCall.setDatabaseName(retHashMap.get("DB_NAME"));
             msgCall.setAppVersion(retHashMap.get("APP_VERSION"));
             msgCall.setSuccessfullInvocation(true);

@@ -35,6 +35,7 @@ import eu.europa.ec.budg.abac.soatube.v1.SoatubeRequestType;
 import eu.europa.ec.budg.abac.soatube.v1.SoatubeResponseType;
 import org.slf4j.LoggerFactory;
 import wifi4eu.wifi4eu.service.exportImport.ExportImportFinancialAbacService;
+import eu.europa.ec.budg.abac.legal_entity.v2.LegalEntityCreateRequestType;
 
 @Stateless(name="JmsProducer")
 public class JmsProducer implements JmsProducerLocal {
@@ -146,6 +147,51 @@ public class JmsProducer implements JmsProducerLocal {
 			LOGGER.debug("DB_NAME="+soaTubeResponse.getValue().getDatabaseName());
 			LOGGER.debug("APP_VERSION="+soaTubeResponse.getValue().getApplicationVersion());
 
+//		LegalEntityCreateRequestType legalEntityCreateRequestType = createRequest(messageCorID);
+//		retHashMap.put("MSG_COR_ID", messageCorID);
+
+//		try {
+//			soaTubeRequestXmlString = convertRequestToXmlString(legalEntityCreateRequestType);
+//			queueConnection = queueConnectionFactory.createQueueConnection();
+//			queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+//			queueSender = queueSession.createSender(sendingQueue);
+//			message = queueSession.createTextMessage();
+//			message.setText(soaTubeRequestXmlString);
+//			queueSender.send(message);
+//			jmsMessageIdentifier = message.getJMSMessageID();
+//			retHashMap.put("JMSMessageID", jmsMessageIdentifier);
+//			queueReceiver = queueSession.createReceiver(receivingQueue, "JMSCorrelationID='"+jmsMessageIdentifier+"'");
+//			queueConnection.start();
+//			Message receive = queueReceiver.receive(50000);
+//			if (receive == null) throw new BudgSOAException("Synchronous JMS receive timeout");
+//			receivedText = ((TextMessage)receive).getText();
+//			jmsMessageCorrelation=receive.getJMSCorrelationID();
+//			retHashMap.put("JMSCorID", jmsMessageCorrelation);
+//
+//
+//			JAXBElement<LegalEntityCreateRequestType> soaTubeResponse;
+//			soaTubeResponse = createResponse(receivedText);
+//			if(null!=receive) {
+//				_log.info("soatubeResponse= " + receive.toString());
+//			}
+//			if(null!=soaTubeResponse) {
+//				_log.info("soatubeResponse= " + soaTubeResponse.toString());
+//			}
+//			if(soaTubeResponse==null){
+//				throw new BudgSOAException("Response message was empty");
+//			}
+//
+//			if(soaTubeResponse!=null && soaTubeResponse.getValue()!=null){
+//				if(soaTubeResponse.getValue() ==null ){
+//					retHashMap.put("PERSON_ID", soaTubeResponse.getValue().getVisa().getPersonId());
+//					retHashMap.put("FIRST_NAME", soaTubeResponse.getValue().getPrivatePerson().getFirstName());
+//				}
+//
+//			}
+//
+//			LOGGER.debug("PERSON_ID=" +soaTubeResponse.getValue().getVisa().getPersonId());
+//			LOGGER.debug("FIRST_NAME="+ soaTubeResponse.getValue().getPrivatePerson().getFirstName());
+
 		} catch (JMSException e) {
 			e.printStackTrace();
 			throw new BudgSOAException("Error while sending/receiving message", e );
@@ -177,11 +223,26 @@ public class JmsProducer implements JmsProducerLocal {
 		return request;
 	}
 
+//	public LegalEntityCreateRequestType createRequest(String messageCorID){
+//		LegalEntityCreateRequestType request= new LegalEntityCreateRequestType();
+//		request.setDebug(true);
+//		MessageHeaderType msgHeaderType=new MessageHeaderType();
+//		msgHeaderType.setMessageCorrelationId(messageCorID);
+//		request.setMessageHeader(msgHeaderType);
+//		return request;
+//	}
+
 	public JAXBElement<SoatubeResponseType> createResponse(String responseXmlString) throws JAXBException{
 		if( responseXmlString ==null ) return null;
 		Unmarshaller unmarshaller = soaTubeResponseContext.createUnmarshaller();
 		return (JAXBElement<SoatubeResponseType>) unmarshaller.unmarshal(new StringReader(responseXmlString));
 	}
+
+//	public JAXBElement<LegalEntityCreateRequestType> createResponse(String responseXmlString) throws JAXBException{
+//		if( responseXmlString ==null ) return null;
+//		Unmarshaller unmarshaller = soaTubeResponseContext.createUnmarshaller();
+//		return (JAXBElement<LegalEntityCreateRequestType>) unmarshaller.unmarshal(new StringReader(responseXmlString));
+//	}
 
 	public String convertRequestToXmlString(SoatubeRequestType soaTubeRequestType) throws JAXBException{
 		Marshaller soaMarshaller = soaTubeRequestContext.createMarshaller();
@@ -190,4 +251,12 @@ public class JmsProducer implements JmsProducerLocal {
 		soaMarshaller.marshal(of.createSoatubeRequest(soaTubeRequestType),  sw);
 		return sw.toString();
 	}
+
+//	public String convertRequestToXmlString(LegalEntityCreateRequestType legalEntityCreateRequestType) throws JAXBException{
+//		Marshaller soaMarshaller = soaTubeRequestContext.createMarshaller();
+//		StringWriter sw = new StringWriter();
+//		ObjectFactory of=new ObjectFactory();
+//		soaMarshaller.marshal(of.createSoatubeRequest(legalEntityCreateRequestType),  sw);
+//		return sw.toString();
+//	}
 }
