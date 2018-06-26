@@ -29,6 +29,9 @@ import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 
+import wifi4eu.wifi4eu.repository.supplier.SupplierNotificationEmailRepository;
+import wifi4eu.wifi4eu.entity.supplier.SupplierNotificationEmail;
+
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -72,6 +75,9 @@ public class SupplierService {
 
     @Autowired
     ApplicationService applicationService;
+    
+    @Autowired
+    SupplierNotificationEmailRepository supplierNotificationEmailRepository;
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -399,32 +405,23 @@ public class SupplierService {
     
     // Send email to notify supplier that a beneficiary has rejected him
     public void notifyRejectedSupplier(int municipalityId) throws Exception {
-        MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
-        int registrationId = registrationService.getRegistrationByMunicipalityId(municipalityId).getId();
-        List<CallDTO> calls = callService.getAllCalls();
-        ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(calls.get(calls.size()-1).getId(), registrationId);
-        if(application != null) {
-            SupplierDTO supplier = getSupplierById(application.getSupplierId());
-            
-            /* Send email may be commented in the front */
-            UserDTO user = userService.getUserById(supplier.getUserId());
-            if (user != null) {
-                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                if (user.getLang() != null) {
-                    locale = new Locale(user.getLang());
-                }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String fromAddress = MailService.FROM_ADDRESS;
-                String subject = bundle.getString("mail.notifyRejectedSupplier.subject");
-                String msgBody = bundle.getString("mail.notifyRejectedSupplier.body");
-                msgBody = MessageFormat.format(msgBody, municipality.getName(), municipality.getCountry() );
-                mailService.sendEmail(supplier.getContactEmail(), fromAddress, subject, msgBody);
-            } else {
-                throw new Exception("User doesn't exist.");
+        SupplierNotificationEmail notification = supplierNotificationEmailRepository.findSupplierNotificationEmailDetailsByMunicipalityId(municipalityId);
+        if (notification != null) {
+            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+            if (notification.getUserLang() != null) {
+                locale = new Locale(notification.getUserLang());
             }
-        } else {
-            throw new Exception("Application doesn't exist.");
+            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+            String fromAddress = MailService.FROM_ADDRESS;
+            String subject = bundle.getString("mail.notifyRejectedSupplier.subject");
+            String msgBody = bundle.getString("mail.notifyRejectedSupplier.body");
+            msgBody = MessageFormat.format(msgBody, notification.getMunicipalityName(), notification.getMunicipalityCountry() );
+            mailService.sendEmail(notification.getSupplierEmail(), fromAddress, subject, msgBody);
         }
+        RegistrationDTO registration = registrationService.getRegistrationById(notification.getRegistrationId());
+        registration.setIsRejection(new Date().getTime());
+        registration.setIsSubmission(null);
+        registrationService.saveRegistration(registration);
     }
 
 }
