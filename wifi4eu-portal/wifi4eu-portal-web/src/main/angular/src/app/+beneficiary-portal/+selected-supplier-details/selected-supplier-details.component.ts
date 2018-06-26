@@ -73,7 +73,7 @@ export class SelectedSupplierDetailsComponent {
           for(var i = 0; i < registrations.length; i++) {
             if(registrations[i].municipalityId === this.municipalityId) {
               this.registration = registrations[i];
-              this.registration.isConfirmation != (0 || null) ? this.hasConfirmedInstallation = true : this.hasConfirmedInstallation = false;
+              this.registration.isConfirmation ? this.hasConfirmedInstallation = true : this.hasConfirmedInstallation = false;
             }
           }
           
@@ -106,7 +106,7 @@ export class SelectedSupplierDetailsComponent {
       }
     );
     /* Get the date when supplier was selected if the supplier hasn't changed his choice */
-    if((this.application.supplierId === this.paramsSupplierId) && (this.application.supplierId != (null || undefined || 0)) )  {
+    if((this.application.supplierId === this.paramsSupplierId) && (!this.application.supplierId))  {
       this.getStringDate(this.application.selectSupplierDate);
       this.displayDate = true; 
     }
@@ -126,7 +126,7 @@ export class SelectedSupplierDetailsComponent {
   
   /* Assign supplier to the beneficiary application */
   private saveAndNotify() {    
-    if(this.application.supplierId == (null || undefined || 0)) {
+    if(!this.application.supplierId) {
       this.application.supplierId = this.paramsSupplierId;
       this.assignSupplierAndNotify();
     }
@@ -134,7 +134,6 @@ export class SelectedSupplierDetailsComponent {
     else if(this.changedSupplierChoice) {
       this.supplierApi.notifyRejectedSupplier(this.municipalityId).subscribe(
         (res: ResponseDTOBase) => {
-          console.log("Result of rejections is ", res);
           this.application.supplierId = this.paramsSupplierId;
           this.assignSupplierAndNotify();
         }
@@ -146,11 +145,8 @@ export class SelectedSupplierDetailsComponent {
   assignSupplierAndNotify() {
     this.applicationApi.assignSupplier(this.application).subscribe(
       (resAplication: ResponseDTOBase) => {
-        console.log(this.application);
-        console.log(resAplication);
         this.supplierApi.notifySelectedSupplier(this.municipalityId).subscribe(
           (res: ResponseDTOBase) => {
-            console.log("The result of Selection is ", res);
             this.changedSupplierChoice = false;
             this.router.navigate(['/beneficiary-portal/my-voucher']);
           }, error => {
