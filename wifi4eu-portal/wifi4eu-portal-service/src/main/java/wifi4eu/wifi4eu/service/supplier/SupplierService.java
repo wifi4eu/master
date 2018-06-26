@@ -362,7 +362,7 @@ public class SupplierService {
         return supplierRepository.findSuppliersByRegion(regionId, pageable);
     }
 
-    // Get all supplier that supply a specific region
+    // Get all suppliers that supply a specific region
     public List<SupplierDTO> getSuppliersListByRegionId(int regionId) {
         List<SuppliedRegionDTO> suppliedRegions = suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findByRegionId(regionId)));
         List<SupplierDTO> suppliers = new ArrayList<>();
@@ -370,6 +370,12 @@ public class SupplierService {
             SupplierDTO supplier = getSupplierById(suppliedRegion.getSupplierId());
             suppliers.add(supplier);
         }
+        return suppliers;
+    }
+
+    // Get all validated suppliers that supply a specific region
+    public List<SupplierDTO> getValidatedSuppliersListByRegionId(int regionId) {
+        List<SupplierDTO> suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.getValidatedSuppliersListByRegionId(regionId)));
         return suppliers;
     }
 
@@ -419,8 +425,9 @@ public class SupplierService {
             mailService.sendEmail(notification.getSupplierEmail(), fromAddress, subject, msgBody);
         }
         RegistrationDTO registration = registrationService.getRegistrationById(notification.getRegistrationId());
-        registration.setIsRejection(new Date().getTime());
         registration.setIsSubmission(null);
+        registration.setIsRejection(new Date().getTime());
+        registration.setIsConfirmation(null);
         registrationService.saveRegistration(registration);
     }
 
