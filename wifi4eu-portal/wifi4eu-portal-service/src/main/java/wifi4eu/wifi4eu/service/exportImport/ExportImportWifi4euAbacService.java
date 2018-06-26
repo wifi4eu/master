@@ -101,7 +101,7 @@ public class ExportImportWifi4euAbacService {
         JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonObject();
         JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
         for (int i = 0; i < callsJsonArrayLef.size(); i++) {
-            JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
+            //JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
             ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
             ////JsonArray lefVals = resultJson.getAsJsonArray("idLef");
             //JsonArray lefVals = callJson.getAsJsonArray("idLef");
@@ -112,9 +112,9 @@ public class ExportImportWifi4euAbacService {
                // validatedLefRepository.save(validatedLEF);
             //}
         }
-        JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");
-        for (int i = 0; i < callsJsonArrayBc.size(); i++) {
-            JsonObject callJson = callsJsonArrayBc.get(i).getAsJsonObject();
+        //JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");
+        //for (int i = 0; i < callsJsonArrayBc.size(); i++) {
+            //JsonObject callJson = callsJsonArrayBc.get(i).getAsJsonObject();
             ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
             ////JsonArray lefBcs = resultJson.getAsJsonArray("idBc");
             //JsonArray lefBcs = callJson.getAsJsonArray("idBc");
@@ -124,7 +124,7 @@ public class ExportImportWifi4euAbacService {
               //  ValidatedBC validatedBC=new ValidatedBC(Integer.parseInt(lefBc.toString()));
               //  validatedBcRepository.save(validatedBC);
             //}
-        }
+        //}
     }
 
     public ResponseDTO exportBeneficiaryInformation() throws Exception {
