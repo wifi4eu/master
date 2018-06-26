@@ -101,15 +101,40 @@ export class SupplierProfileComponent {
         Object.assign(this.editedSupplier, this.supplier);
     }
 
-    private saveSupplierChanges() {
+    private saveContactChanges() {
         this.submittingData = true;
-        this.supplierApi.createSupplier(this.editedSupplier).subscribe(
+        this.supplierApi.updateContactDetails(this.editedSupplier).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.supplier = response.data;
                     this.closeModal();
                     this.submittingData = false;
+                } else {
+                    this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
+                    this.submittingData = false;
                 }
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
+                this.submittingData = false;
+            }
+        );
+    }
+
+    private saveDetailsChanges() {
+        this.submittingData = true;
+        this.supplierApi.updateSupplierDetails(this.editedSupplier).subscribe(
+            (response: ResponseDTOBase) => {
+                if (response.success) {
+                    this.supplier = response.data;
+                    this.closeModal();
+                    this.submittingData = false;
+                } else {
+                    this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
+                    this.submittingData = false;
+                }
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
+                this.submittingData = false;
             }
         );
     }
@@ -120,6 +145,10 @@ export class SupplierProfileComponent {
             if (this.logoFile.size > 2560000) {
                 this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 2.5 MB.', 'benefPortal.file.toobig.maxsize', 'warn', {size: '2.5 MB'});
                 this.clearLogoFile();
+                return;
+            }
+            if (this.logoFile.type != "image/png" && this.logoFile.type != "image/jpg" && this.logoFile.type != "image/jpeg") {
+                this.uploadWrong();
                 return;
             }
             let imageStatus = "";
@@ -163,7 +192,7 @@ export class SupplierProfileComponent {
 
     private uploadWrong(): any {
         this.clearLogoFile();
-        this.sharedService.growlTranslation('The file you uploaded is not a valid image file.', 'shared.imageUpload.error', 'error');
+        this.sharedService.growlTranslation('The file you uploaded is not a valid image file.', 'shared.growl.fileNotValid', 'error');
     }
 
     private clearLogoFile() {

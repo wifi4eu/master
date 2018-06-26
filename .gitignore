@@ -38,5 +38,6 @@ npm-debug.log
 .vagrant/
 *.box
 cleanEnv.sh
+.settings/*
 .project
 bin

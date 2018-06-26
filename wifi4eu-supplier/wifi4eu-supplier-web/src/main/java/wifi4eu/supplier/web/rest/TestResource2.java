@@ -25,7 +25,6 @@ public class TestResource2 {
         _log.warn("org.apache.Logger warn is working");
         _log.info("org.apache.Logger info is working");
         _log.debug("org.apache.Logger debug is working");
-        _log.trace("org.apache.Logger trace is working");
         return "hello eUI";
     }
 

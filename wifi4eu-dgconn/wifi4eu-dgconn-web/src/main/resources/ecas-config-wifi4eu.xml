@@ -11,7 +11,7 @@
     <!--<serviceResolver>eu.cec.digit.ecas.client.resolver.service.ReverseProxyAwareServiceResolver</serviceResolver>-->
 
 
-    <serverContextPath>/dashboard</serverContextPath>
+    <serverContextPath>${dgconn.context.name}</serverContextPath>
 
     <requestingUserDetails>true</requestingUserDetails>
 
@@ -19,17 +19,23 @@
     <extraGroupHandler>wifi4eu.wifi4eu.web.util.ecas.RbacEcasExtraGroupHandler</extraGroupHandler>
     -->
 
-    <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
+    <ecasBaseUrl>${ecas.config.base.url.dgconn}</ecasBaseUrl>
     <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
-    <serverProtocol>http</serverProtocol>
-    <cas:serverName>${ecas.server.address}</cas:serverName>
+    <serverProtocol>${schemes}</serverProtocol>
+    <cas:serverName>${ecas.server.dgconn.address}</cas:serverName>
     <serverPort>${ecas.server.port}</serverPort>
+    <serverSSLPort>${ecas.server.port}</serverSSLPort>
 
     <applicationServer>tomcat</applicationServer>
 
         <acceptStrengths>
-            <strength>${ecas.config.strength}</strength>
+            <strength>${ecas.config.strength.dgconn}</strength>
         </acceptStrengths>
+
+    <!-- maxConnections equal to the Tomcat threads per instance -->
+    <maxConnections>200</maxConnections>
+    <connectionTimeout>180000</connectionTimeout>
+
     <!--
             <cas:renew>${ecas.config.renew}</cas:renew>
 

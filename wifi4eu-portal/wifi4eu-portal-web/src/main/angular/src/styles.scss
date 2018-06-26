@@ -1426,6 +1426,19 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   color: $darkish-blue;
 }
 
+.link-disabled {
+  color: #787878;
+  cursor: not-allowed;
+}
+
+.entity-title {
+  font-weight: bold;
+}
+
+.entity-subtitle {
+  color: #8a8a8a;
+}
+
 .blueButton {
   background-color: #004494;
   height: 50px;
@@ -1655,6 +1668,15 @@ p-tabview.white .ui-widget-content.ui-tabview {
 
 input.email_profile::-ms-clear {
   display: none;
+}
+
+.voucher__assignment{
+  margin-top: 4rem;
+}
+
+.manageMunicipalities{
+  padding-top: 1.9em;
+  padding-bottom: 0.9em;
 }
 
 .installation {

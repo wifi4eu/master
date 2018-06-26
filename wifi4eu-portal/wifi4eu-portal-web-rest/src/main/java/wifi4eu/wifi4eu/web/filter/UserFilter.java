@@ -1,8 +1,8 @@
 package wifi4eu.wifi4eu.web.filter;
 
 import eu.cec.digit.ecas.client.jaas.DetailedUser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.filter.OncePerRequestFilter;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
@@ -20,7 +20,7 @@ import java.util.LinkedList;
 
 public class UserFilter extends OncePerRequestFilter {
 
-    Logger _log = LoggerFactory.getLogger(UserFilter.class);
+    Logger _log = LogManager.getLogger(UserFilter.class);
 
     @Override
     protected String getAlreadyFilteredAttributeName() {

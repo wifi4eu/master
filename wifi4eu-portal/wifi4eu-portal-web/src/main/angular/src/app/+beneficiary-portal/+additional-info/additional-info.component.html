@@ -1,4 +1,19 @@
 <div class="container" *ngIf="municipality">
+    <div class="row" *ngIf="registration">
+
+        <div class="ui-g-12 center">
+            <div class="ui-md-8 center">
+                <ux-alert *ngIf="registration.allFilesFlag != 1" styleClass="alert-info">{{
+                    'shared.statusLabel' | translate}} {{
+                    'shared.statusUploadDocs' | translate}}
+                </ux-alert>
+                <ux-alert *ngIf="registration.allFilesFlag == 1" styleClass="alert-info">{{
+                    'shared.statusLabel' | translate}}{{
+                    'shared.statusDocsUploaded' | translate}}
+                </ux-alert>
+            </div>
+        </div>
+    </div>
     <div id="step2-title" class="row">
         <div class="col-sm-6">
             <div id="component-title">
@@ -44,9 +59,8 @@
 
             <div class="row">
                 <div class="col-offset-12">
-                    <label class="label" for="document1">{{ 'benefPortal.request.additionalInfo.doc1.label' | translate
-                        }}
-                    </label>
+                    <label class="label" for="document1"
+                           [innerHTML]="'benefPortal.request.additionalInfo.doc1.label' | translate"></label>
                 </div>
                 <div class="col-offset-12">
                     <div class="left">
@@ -54,15 +68,16 @@
                             <span>{{ 'benefDocs.copyMayorsID' | translate }}</span>
                             <input #document1 id="document1" name="document1"
                                    (change)="uploadFile($event, 0)" type="file" class="upload"
-                                   accept=".doc, .docx, .pdf"
+                                   accept=".png, .jpg, .pdf"
                             />
                         </div>
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
-                        <span *ngIf="registration.legalFile1 && !documentUrls[0]">
+                        <span *ngIf="registration.legalFile1Size && !documentUrls[0]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
-                            <a class="link-label" (click)="deleteFromServer(0)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(1)" download><i class="fa fa-download"
+                            <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker"
+                               (click)="deleteFromServer(0)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/1" target="_blank"><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
 
@@ -75,25 +90,25 @@
             </div>
             <div class="row" *ngIf="!isMayor">
                 <div class="col-offset-12">
-                    <label class="label" for="document2">{{ 'benefPortal.request.additionalInfo.doc3.label' |
-                        translate
-                        }}</label>
+                    <label class="label" for="document2"
+                           [innerHTML]="'benefPortal.request.additionalInfo.doc3.label' | translate"></label>
                 </div>
                 <div class="col-offset-12">
                     <div class="left">
                         <div class="fileUpload btn btn-primary">
                             <span>{{ 'benefDocs.copyYourID' | translate }}</span>
-                            <input #document1 id="document2" name="document3"
+                            <input #document3 id="document3" name="document3"
                                    (change)="uploadFile($event, 1)" type="file" class="upload"
-                                   accept=".doc, .docx, .pdf"
+                                   accept=".png, .jpg, .pdf"
                             />
                         </div>
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
-                        <span *ngIf="registration.legalFile2 && !documentUrls[1]">
+                        <span *ngIf="registration.legalFile2Size && !documentUrls[1]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
-                            <a class="link-label" (click)="deleteFromServer(1)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(2)" download><i class="fa fa-download"
+                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(1)"><i
+                                    class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/2" target="_blank"><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                         <span *ngIf="documentUrls[1]">
@@ -111,9 +126,8 @@
 
             <div class="row">
                 <div class="col-offset-12">
-                    <label class="label" for="document3">{{ 'benefPortal.request.additionalInfo.doc2.label' |
-                        translate
-                        }}</label>
+                    <label class="label" for="document3"
+                           [innerHTML]="'benefPortal.request.additionalInfo.doc2.label' | translate"></label>
                 </div>
                 <div class="col-offset-12">
 
@@ -122,15 +136,16 @@
                             <span>{{ 'benefDocs.proofNomination' | translate }}</span>
                             <input #document2 id="document3" name="document2"
                                    (change)="uploadFile($event, 2)" type="file" class="upload"
-                                   accept=".doc, .docx, .pdf"
+                                   accept=".png, .jpg, .pdf"
                             />
                         </div>
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
-                        <span *ngIf="registration.legalFile3 && !documentUrls[2]">
+                        <span *ngIf="registration.legalFile3Size && !documentUrls[2]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2
-                            <a class="link-label" (click)="deleteFromServer(2)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(3)" download><i class="fa fa-download"
+                            <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker"
+                               (click)="deleteFromServer(2)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/3" target="_blank"><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                          <span *ngIf="documentUrls[2]">
@@ -144,8 +159,8 @@
 
             <div class="row" *ngIf="!isMayor">
                 <div class="col-sm-12 col-lg-12 col-md-12">
-                    <label class="label" for="document4">{{ 'benefPortal.request.additionalInfo.doc4.label' |
-                        translate}}</label>
+                    <label class="label" for="document4"
+                           [innerHTML]="'benefPortal.request.additionalInfo.doc4.label' | translate"></label>
                 </div>
                 <div class="col-offset-12">
                     <div class="left">
@@ -153,15 +168,16 @@
                             <span>{{ 'benefDocs.authorisedSign' | translate }}</span>
                             <input #document4 id="document4" name="document4"
                                    (change)="uploadFile($event, 3)" type="file" class="upload"
-                                   accept=".doc, .docx, .pdf"
+                                   accept=".png, .jpg, .pdf"
                             />
                         </div>
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
-                         <span *ngIf="registration.legalFile4 && !documentUrls[3]">
+                         <span *ngIf="registration.legalFile4Size && !documentUrls[3]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
-                            <a class="link-label" (click)="deleteFromServer(3)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" [href]="getLegalFileUrl(4)" download><i class="fa fa-download"
+                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(3)"><i
+                                    class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/4" target="_blank"><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                          <span *ngIf="documentUrls[3]">
@@ -192,11 +208,9 @@
         <div class="form-group ui-g">
             <div class="ui-lg-3"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <a href="#/beneficiary-portal">
-                    <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' |
+                    <button type="button" (click)="confirmClose()" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' |
                         translate }}
                     </button>
-                </a>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                 <button type="submit" class="btn btn-primary publish-button"
@@ -208,6 +222,26 @@
         </div>
 
     </form>
+    <p-dialog [(visible)]="displayConfirmClose">
+        <div class="form-group ui-g">
+            <div class="ui-lg-3"></div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                <button (click)="cancelBack()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' |
+                        translate }}
+                </button>
+            </div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                <a routerLink="../.." routerLinkActive="active">
+                    <button type="button" class="btn btn-primary cancel-button">
+                            {{ 'shared.confirm.button' | translate }}
+                    </button>
+                </a>
+            </div>
+        
+            <div class="ui-lg-3"></div>
+        </div>
+    </p-dialog>
+
     <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false"
               [closable]="false" [closeOnEscape]="false">

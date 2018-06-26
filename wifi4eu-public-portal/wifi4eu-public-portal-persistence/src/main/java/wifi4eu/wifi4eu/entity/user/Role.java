@@ -7,15 +7,9 @@ import java.util.Date;
 @Table(name="roles")
 public class Role {
 
+    @Column(name = "id")
     @Id
-    @TableGenerator(name = "Role_generator",
-            table = "sequences",
-            pkColumnName = "SEQ_NAME",
-            valueColumnName = "SEQ_NUMBER",
-            pkColumnValue = "SEQUENCE_ROLE",
-            allocationSize=1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Role_generator")
-    @Column(name="id", length = 20, updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="role", length = 75)

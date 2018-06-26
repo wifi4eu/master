@@ -16,10 +16,11 @@
       <version>0.0.1-SNAPSHOT</version>
       <artifactId>wifi4eu</artifactId>
     </parent>
-
+    
     <properties>
-        <app.context.root>/dashboard</app.context.root>
+		<app.context.root>${dgconn.context.name}</app.context.root>
     </properties>
+    
 
     <modules>
         <module>wifi4eu-dgconn-persistence</module>
@@ -27,7 +28,7 @@
         <module>wifi4eu-dgconn-web-rest-swagger</module>
         <module>wifi4eu-dgconn-web-rest</module>
         <module>wifi4eu-dgconn-web</module>
-        <!--<module>wifi4eu-dgconn-ear</module>-->
+        <module>wifi4eu-dgconn-ear</module>
     </modules>
 
 </project>

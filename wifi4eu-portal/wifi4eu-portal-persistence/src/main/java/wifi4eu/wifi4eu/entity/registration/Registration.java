@@ -2,10 +2,12 @@ package wifi4eu.wifi4eu.entity.registration;
 
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
+import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "registrations")
@@ -30,17 +32,29 @@ public class Registration {
     @Column(name = "_status")
     private int status;
 
-    @Column(name = "legal_file1")
-    private String legalFile1;
+    @Column(name = "legal_file1_size")
+    private Long legalFile1Size;
 
-    @Column(name = "legal_file2")
-    private String legalFile2;
+    @Column(name = "legal_file1_mime")
+    private String legalFile1Mime;
 
-    @Column(name = "legal_file3")
-    private String legalFile3;
+    @Column(name = "legal_file2_size")
+    private Long legalFile2Size;
 
-    @Column(name = "legal_file4")
-    private String legalFile4;
+    @Column(name = "legal_file2_mime")
+    private String legalFile2Mime;
+
+    @Column(name = "legal_file3_size")
+    private Long legalFile3Size;
+
+    @Column(name = "legal_file3_mime")
+    private String legalFile3Mime;
+
+    @Column(name = "legal_file4_size")
+    private Long legalFile4Size;
+
+    @Column(name = "legal_file4_mime")
+    private String legalFile4Mime;
 
     @Column(name = "ip_registration")
     private String ipRegistration;
@@ -51,8 +65,27 @@ public class Registration {
     @Column(name = "organisation_id")
     private int organisationId;
 
+    @Column(name = "upload_time")
+    private Long uploadTime;
+
+    @Column(name = "allFiles_flag")
+    private int allFilesFlag;
+
+    @Column(name = "mail_counter")
+    private int mailCounter;
+
+    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "registration_id")
+    private List<RegistrationWarning> registrationWarningList;
+
     @Column(name = "id_status_beneficiary")
     private int idStatusBeneficiary;
+
+    @Column(name = "id_pm")
+    private int idUserPM;
+
+    @Column(name = "id_bpm")
+    private int idUserBPM;
 
     @Column(name = "compliance")
     private boolean compliance;
@@ -63,7 +96,7 @@ public class Registration {
     @Column(name = "member_state", length = 75)
     private String memberState;
 
-    @Column(name = "call_number", length = 75)
+    @Column(name = "call_number" , length = 75)
     private String call;
 
     @Column(name = "action_to_be_taken")
@@ -71,15 +104,6 @@ public class Registration {
 
     @Column(name = "action_taken")
     private int actionTaken;
-
-    @Column(name = "id_pm")
-    private int idUserPM;
-
-    @Column(name = "id_bpm")
-    private int idUserBPM;
-
-    @Column(name = "conformity")
-    private boolean conformity;
 
     @Column(name = "is_submission")
     private Date installationSiteSubmission;
@@ -90,6 +114,9 @@ public class Registration {
     @Column(name = "is_confirmation")
     private Date installationSiteConfirmation;
 
+    @Column(name = "conformity")
+    private boolean conformity;
+
     @Column(name = "first_false_check")
     private Timestamp firstFalseCheck;
 
@@ -99,31 +126,39 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, int idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, int idUserPM, int idUserBPM, boolean conformity, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, Timestamp firstFalseCheck, Timestamp dateRegistered) {
+    public Registration(User user, Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
         this.status = status;
-        this.legalFile1 = legalFile1;
-        this.legalFile2 = legalFile2;
-        this.legalFile3 = legalFile3;
-        this.legalFile4 = legalFile4;
+        this.legalFile1Size = legalFile1Size;
+        this.legalFile1Mime = legalFile1Mime;
+        this.legalFile2Size = legalFile2Size;
+        this.legalFile2Mime = legalFile2Mime;
+        this.legalFile3Size = legalFile3Size;
+        this.legalFile3Mime = legalFile3Mime;
+        this.legalFile4Size = legalFile4Size;
+        this.legalFile4Mime = legalFile4Mime;
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
+        this.uploadTime = uploadTime;
+        this.allFilesFlag = allFilesFlag;
+        this.mailCounter = mailCounter;
+        this.registrationWarningList = registrationWarningList;
         this.idStatusBeneficiary = idStatusBeneficiary;
+        this.idUserPM = idUserPM;
+        this.idUserBPM = idUserBPM;
         this.compliance = compliance;
         this.shortMemberState = shortMemberState;
         this.memberState = memberState;
         this.call = call;
         this.actionToBeTaken = actionToBeTaken;
         this.actionTaken = actionTaken;
-        this.idUserPM = idUserPM;
-        this.idUserBPM = idUserBPM;
-        this.conformity = conformity;
         this.installationSiteSubmission = installationSiteSubmission;
         this.installationSiteRejection = installationSiteRejection;
         this.installationSiteConfirmation = installationSiteConfirmation;
+        this.conformity = conformity;
         this.firstFalseCheck = firstFalseCheck;
         this.dateRegistered = dateRegistered;
     }
@@ -168,36 +203,68 @@ public class Registration {
         this.status = status;
     }
 
-    public String getLegalFile1() {
-        return legalFile1;
+    public Long getLegalFile1Size() {
+        return legalFile1Size;
     }
 
-    public void setLegalFile1(String legalFile1) {
-        this.legalFile1 = legalFile1;
+    public void setLegalFile1Size(Long legalFile1Size) {
+        this.legalFile1Size = legalFile1Size;
     }
 
-    public String getLegalFile2() {
-        return legalFile2;
+    public String getLegalFile1Mime() {
+        return legalFile1Mime;
     }
 
-    public void setLegalFile2(String legalFile2) {
-        this.legalFile2 = legalFile2;
+    public void setLegalFile1Mime(String legalFile1Mime) {
+        this.legalFile1Mime = legalFile1Mime;
     }
 
-    public String getLegalFile3() {
-        return legalFile3;
+    public Long getLegalFile2Size() {
+        return legalFile2Size;
     }
 
-    public void setLegalFile3(String legalFile3) {
-        this.legalFile3 = legalFile3;
+    public void setLegalFile2Size(Long legalFile2Size) {
+        this.legalFile2Size = legalFile2Size;
     }
 
-    public String getLegalFile4() {
-        return legalFile4;
+    public String getLegalFile2Mime() {
+        return legalFile2Mime;
     }
 
-    public void setLegalFile4(String legalFile4) {
-        this.legalFile4 = legalFile4;
+    public void setLegalFile2Mime(String legalFile2Mime) {
+        this.legalFile2Mime = legalFile2Mime;
+    }
+
+    public Long getLegalFile3Size() {
+        return legalFile3Size;
+    }
+
+    public void setLegalFile3Size(Long legalFile3Size) {
+        this.legalFile3Size = legalFile3Size;
+    }
+
+    public String getLegalFile3Mime() {
+        return legalFile3Mime;
+    }
+
+    public void setLegalFile3Mime(String legalFile3Mime) {
+        this.legalFile3Mime = legalFile3Mime;
+    }
+
+    public Long getLegalFile4Size() {
+        return legalFile4Size;
+    }
+
+    public void setLegalFile4Size(Long legalFile4Size) {
+        this.legalFile4Size = legalFile4Size;
+    }
+
+    public String getLegalFile4Mime() {
+        return legalFile4Mime;
+    }
+
+    public void setLegalFile4Mime(String legalFile4Mime) {
+        this.legalFile4Mime = legalFile4Mime;
     }
 
     public String getIpRegistration() {
@@ -222,6 +289,38 @@ public class Registration {
 
     public void setOrganisationId(int organisationId) {
         this.organisationId = organisationId;
+    }
+
+    public Long getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime(Long uploadTime) {
+        this.uploadTime = uploadTime;
+    }
+
+    public int getAllFilesFlag() {
+        return allFilesFlag;
+    }
+
+    public void setAllFilesFlag(int allFilesFlag) {
+        this.allFilesFlag = allFilesFlag;
+    }
+
+    public int getMailCounter() {
+        return mailCounter;
+    }
+
+    public void setMailCounter(int mailCounter) {
+        this.mailCounter = mailCounter;
+    }
+
+    public List<RegistrationWarning> getRegistrationWarningList() {
+        return registrationWarningList;
+    }
+
+    public void setRegistrationWarningList(List<RegistrationWarning> registrationWarningList) {
+        this.registrationWarningList = registrationWarningList;
     }
 
     public int getIdStatusBeneficiary() {
@@ -279,24 +378,6 @@ public class Registration {
     public void setActionTaken(int actionTaken) {
         this.actionTaken = actionTaken;
     }
-
-    /*
-    public boolean isBeneficiaryIndicator() {
-        return beneficiaryIndicator;
-    }
-
-    public void setBeneficiaryIndicator(boolean beneficiaryIndicator) {
-        this.beneficiaryIndicator = beneficiaryIndicator;
-    }
-
-    public boolean isWifiIndicator() {
-        return wifiIndicator;
-    }
-
-    public void setWifiIndicator(boolean wifiIndicator) {
-        this.wifiIndicator = wifiIndicator;
-    }
-    */
 
     public boolean isConformity() {
         return conformity;

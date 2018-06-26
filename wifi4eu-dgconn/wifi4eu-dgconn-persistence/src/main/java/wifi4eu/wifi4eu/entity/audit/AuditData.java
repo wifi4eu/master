@@ -3,33 +3,34 @@ package wifi4eu.wifi4eu.entity.audit;
 import javax.persistence.*;
 
 @Entity
-@Table(name="AUDIT_DATA_T")
+@Table(name = "AUDIT_DATA_T")
 public class AuditData {
 
+
+    @Column(name = "id")
     @Id
-    @SequenceGenerator(name = "audit_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "audit_seq")
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="REQUEST_ENDPOINT")
+    @Column(name = "REQUEST_ENDPOINT")
     private String requestEndpoint;
 
-    @Column(name="REQUEST_METHOD")
+    @Column(name = "REQUEST_METHOD")
     private String requestMethod;
 
     @Lob
-    @Column(name="REQUEST_BODY")
+    @Column(name = "REQUEST_BODY")
     private String requestBody;
 
     @Lob
-    @Column(name="RESPONSE_BODY")
+    @Column(name = "RESPONSE_BODY")
     private String responseBody;
 
     @Column(name = "USER_ID")
     private Long userId;
 
-    public AuditData(){}
+    public AuditData() {
+    }
 
     public AuditData(Integer id, String requestEndpoint, String requestMethod, String requestBody, String responseBody, Long userId) {
         this.id = id;

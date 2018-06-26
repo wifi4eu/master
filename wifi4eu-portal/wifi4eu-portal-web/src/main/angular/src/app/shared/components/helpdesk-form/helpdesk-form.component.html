@@ -13,8 +13,9 @@
                target="_blank"> <span
                     [innerHTML]="'helpdeskform.faq.text2' | translate"></span></a>
         </p>
-        <p class="label" [innerHTML]="'helpdeskform.faq.text3' | translate"></p>
+
         <form *ngIf="!success" (ngSubmit)="sendIssue()" #issueForm="ngForm" style="margin-top: 45px;">
+            <p class="label" [innerHTML]="'helpdeskform.faq.text3' | translate"></p>
             <div class="ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">

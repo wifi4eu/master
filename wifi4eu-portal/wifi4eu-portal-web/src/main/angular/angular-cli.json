@@ -24,6 +24,7 @@
                 "styles.scss"
             ],
             "scripts": [
+              "assets/js/azure-storage.queue.js"
             ],
             "environmentSource": "environments/environment.ts",
             "environments": {
@@ -48,6 +49,9 @@
         }
     },
     "defaults": {
+        "build": {
+          "showCircularDependencies": false
+        },
         "styleExt": "scss",
         "prefixInterfaces": false,
         "inline": {

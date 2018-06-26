@@ -5,10 +5,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
-    @Id
-    @SequenceGenerator(name = "user_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "treatment")
@@ -29,8 +29,11 @@ public class User {
     @Column(name = "postal_code")
     private String postalCode;
 
-    @Column(name = "email")
+    @Column(name = "email", updatable = false)
     private String email;
+
+    @Column(name = "lang")
+    private String lang;
 
     @Column(name = "password")
     private String password;
@@ -53,6 +56,9 @@ public class User {
     @Column(name = "ecas_username")
     private String ecasUsername;
 
+    @Column(name = "csrf_token")
+    private String csrfToken;
+
     @ManyToOne
     @JoinColumn(name = "id_role")
     private Role idRole;
@@ -60,7 +66,8 @@ public class User {
     public User() {
     }
 
-    public User(String treatment, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified, Integer type, String ecasEmail, String ecasUsername, Role idRole) {
+
+    public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken, Role idRole) {
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
@@ -68,13 +75,15 @@ public class User {
         this.addressNum = addressNum;
         this.postalCode = postalCode;
         this.email = email;
+        this.lang = lang;
         this.password = password;
         this.createDate = createDate;
         this.accessDate = accessDate;
-        this.verified = verified;
         this.type = type;
+        this.verified = verified;
         this.ecasEmail = ecasEmail;
         this.ecasUsername = ecasUsername;
+        this.csrfToken = csrfToken;
         this.idRole = idRole;
     }
 
@@ -190,12 +199,28 @@ public class User {
         this.ecasEmail = ecasEmail;
     }
 
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
     public String getEcasUsername() {
         return ecasUsername;
     }
 
     public void setEcasUsername(String ecasUsername) {
         this.ecasUsername = ecasUsername;
+    }
+
+    public String getCsrfToken() {
+        return csrfToken;
+    }
+
+    public void setCsrfToken(String csrfToken) {
+        this.csrfToken = csrfToken;
     }
 
     public Role getIdRole() {

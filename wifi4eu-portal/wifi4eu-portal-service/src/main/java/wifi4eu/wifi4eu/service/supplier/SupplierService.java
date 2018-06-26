@@ -1,24 +1,29 @@
 package wifi4eu.wifi4eu.service.supplier;
 
 import com.google.common.collect.Lists;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.SupplierValidator;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierListItemRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
-import wifi4eu.wifi4eu.service.location.NutsService;
-import wifi4eu.wifi4eu.service.thread.ThreadService;
-import wifi4eu.wifi4eu.service.thread.UserThreadsService;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
@@ -32,7 +37,13 @@ public class SupplierService {
     SupplierMapper supplierMapper;
 
     @Autowired
+    SupplierListItemMapper supplierListItemMapper;
+
+    @Autowired
     SupplierRepository supplierRepository;
+
+    @Autowired
+    SupplierListItemRepository supplierListItemRepository;
 
     @Autowired
     SuppliedRegionMapper suppliedRegionMapper;
@@ -44,16 +55,9 @@ public class SupplierService {
     UserService userService;
 
     @Autowired
-    NutsService nutsService;
-
-    @Autowired
-    ThreadService threadService;
-
-    @Autowired
-    UserThreadsService userThreadsService;
-
-    @Autowired
     MailService mailService;
+
+    private final Logger _log = LogManager.getLogger(SupplierService.class);
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -63,26 +67,83 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.findOne(supplierId));
     }
 
+
     @Transactional
-    public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
-        if (supplierDTO.getSuppliedRegions().isEmpty()) {
-            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+    public SupplierDTO createSupplier(SupplierDTO supplierDTO) throws Exception {
+        SupplierDTO finalSupplier = new SupplierDTO();
+        finalSupplier.setUserId(supplierDTO.getUserId());
+        finalSupplier.setName(supplierDTO.getName());
+        finalSupplier.setAddress(supplierDTO.getAddress());
+        finalSupplier.setVat(supplierDTO.getVat());
+        finalSupplier.setBic(supplierDTO.getBic());
+        finalSupplier.setAccountNumber(supplierDTO.getAccountNumber());
+        if (supplierDTO.getWebsite() != null) {
+            if (!supplierDTO.getWebsite().trim().isEmpty()) {
+                finalSupplier.setWebsite(supplierDTO.getWebsite());
+            } else {
+                finalSupplier.setWebsite(null);
+            }
         } else {
-            Integer supplierId = supplierDTO.getId();
-            List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
-            List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
-            if (supplierId == 0) {
-                supplierDTO.setSuppliedRegions(null);
-                supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
-                supplierId = supplierDTO.getId();
-            }
-            for (SuppliedRegionDTO region : originalRegions) {
-                region.setSupplierId(supplierId);
-                correctRegions.add(region);
-            }
-            supplierDTO.setSuppliedRegions(correctRegions);
-            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+            finalSupplier.setWebsite(null);
         }
+        if (supplierDTO.getLogo() != null) {
+            byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(supplierDTO.getLogo()));
+            String logoMimeType = LegalFilesService.getMimeType(supplierDTO.getLogo());
+            if (logoByteArray.length > 2560000) {
+                throw new Exception("File size cannot bet greater than 2.5 MB.");
+            } else if (!logoMimeType.equals("image/png") && !logoMimeType.equals("image/jpg") && !logoMimeType.equals("image/jpeg")) {
+                throw new Exception("File must have a valid extension.");
+            } else {
+                finalSupplier.setLogo(supplierDTO.getLogo());
+            }
+        }
+        finalSupplier.setContactName(supplierDTO.getContactName());
+        finalSupplier.setContactSurname(supplierDTO.getContactSurname());
+        finalSupplier.setContactEmail(supplierDTO.getContactEmail());
+        finalSupplier.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
+        finalSupplier.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
+        List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
+        List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
+        finalSupplier.setSuppliedRegions(null);
+        finalSupplier = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(finalSupplier)));
+        for (SuppliedRegionDTO region : originalRegions) {
+            region.setSupplierId(finalSupplier.getId());
+            correctRegions.add(region);
+        }
+        finalSupplier.setSuppliedRegions(correctRegions);
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(finalSupplier)));
+    }
+
+
+    @Transactional
+    public SupplierDTO updateContactDetails(SupplierDTO supplierDTO, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber) {
+        supplierDTO.setContactName(contactName);
+        supplierDTO.setContactSurname(contactSurname);
+        supplierDTO.setContactPhonePrefix(contactPhonePrefix);
+        supplierDTO.setContactPhoneNumber(contactPhoneNumber);
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+    }
+
+    @Transactional
+    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String logo) throws Exception {
+        supplierDTO.setName(name);
+        supplierDTO.setAddress(address);
+        supplierDTO.setVat(vat);
+        supplierDTO.setBic(bic);
+        if (logo != null) {
+            byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(logo));
+            String logoMimeType = LegalFilesService.getMimeType(logo);
+            if (logoByteArray.length > 2560000) {
+                throw new Exception("File size cannot bet greater than 2.5 MB.");
+            } else if (!logoMimeType.equals("image/png") && !logoMimeType.equals("image/jpg") && !logoMimeType.equals("image/jpeg")) {
+                throw new Exception("File must have a valid extension.");
+            } else {
+                supplierDTO.setLogo(logo);
+            }
+        } else {
+            supplierDTO.setLogo(null);
+        }
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
     }
 
     @Transactional
@@ -103,11 +164,9 @@ public class SupplierService {
 
     @Transactional
     public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
-
         UserDTO userDTO;
-
+        SupplierValidator.validateSupplier(supplierDTO);
         UserContext userContext = UserHolder.getUser();
-
         if (userContext != null) {
             // with ECAS
             userDTO = userService.getUserByUserContext(userContext);
@@ -150,31 +209,7 @@ public class SupplierService {
     }
 
     public List<SupplierDTO> findSimilarSuppliers(int supplierId) {
-        List<SupplierDTO> similarSuppliers = new ArrayList<>();
-        SupplierDTO originalSupplier = getSupplierById(supplierId);
-        if (originalSupplier != null) {
-            List<SupplierDTO> suppliersVat = getSuppliersByVat(originalSupplier.getVat());
-            for (SupplierDTO suppVat : suppliersVat) {
-                if (suppVat.getId() != originalSupplier.getId()) {
-                    similarSuppliers.add(suppVat);
-                }
-            }
-            List<SupplierDTO> suppliersIban = getSuppliersByAccountNumber(originalSupplier.getAccountNumber());
-            for (SupplierDTO suppIban : suppliersIban) {
-                if (suppIban.getId() != originalSupplier.getId()) {
-                    boolean alreadyAddedd = false;
-                    for (SupplierDTO suppVat : suppliersVat) {
-                        if (suppVat.getId() == suppIban.getId()) {
-                            alreadyAddedd = true;
-                        }
-                    }
-                    if (!alreadyAddedd) {
-                        similarSuppliers.add(suppIban);
-                    }
-                }
-            }
-        }
-        return similarSuppliers;
+        return supplierMapper.toDTOList(supplierRepository.findSimilarSuppliers(supplierId));
     }
 
     @Transactional
@@ -227,39 +262,54 @@ public class SupplierService {
     }
 
     public List<SupplierListItemDTO> findDgconnSuppliersList(String name, int page, int count, String orderField, int orderType) {
-        List<SupplierListItemDTO> suppliersList = new ArrayList<>();
+
         Direction direction;
         if (orderType == -1) {
             direction = Direction.DESC;
         } else {
             direction = Direction.ASC;
         }
-        List<SupplierDTO> suppliers;
-        if (name != null) {
-            if (!name.trim().isEmpty()) {
-                suppliers = supplierMapper.toDTOList(supplierRepository.findByNameContainingIgnoreCase(new PageRequest(page, count, direction, orderField), name).getContent());
-            } else {
-                suppliers = supplierMapper.toDTOList(supplierRepository.findAll(new PageRequest(page, count, direction, orderField)).getContent());
-            }
-        } else {
-            suppliers = supplierMapper.toDTOList(supplierRepository.findAll(new PageRequest(page, count, direction, orderField)).getContent());
+
+        if(name == null || name.trim().isEmpty()){
+            name = "";
         }
-        for (SupplierDTO supplier : suppliers) {
-            SupplierListItemDTO supplierItem = new SupplierListItemDTO(supplier.getId(), supplier.getName(), supplier.getWebsite(), supplier.getVat(), supplier.getAccountNumber(), supplier.getStatus());
-            List<SupplierDTO> similarSuppliers = findSimilarSuppliers(supplierItem.getId());
-            int numberRegistrations = 0;
-            if (supplierItem.getStatus() != 1) {
-                numberRegistrations = 1;
-            }
-            for (SupplierDTO similarSupplier : similarSuppliers) {
-                if (similarSupplier.getStatus() != 1) {
-                    numberRegistrations++;
+        List<SupplierListItemDTO> suppliers;
+
+        switch(orderField){
+            case "website":
+                if(direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteDesc(name, page * count, count));
                 }
-            }
-            supplierItem.setNumberRegistrations(numberRegistrations);
-            suppliersList.add(supplierItem);
+                break;
+            case "vat":
+                if(direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatDesc(name, page * count, count));
+                }
+
+                break;
+            case "status":
+                if(direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusDesc(name, page * count, count));
+                }
+
+                break;
+            case "name":
+            default:
+                if(direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameDesc(name, page * count, count));
+                }
+                break;
+
         }
-        return suppliersList;
+        return suppliers;
     }
 
     public Long getCountAllSuppliers() {
@@ -268,5 +318,12 @@ public class SupplierService {
 
     public Long getCountAllSuppliersContainingName(String name) {
         return supplierRepository.countByNameContainingIgnoreCase(name);
+    }
+
+    public Page<String> getSuppliersByRegionOrCountry(String countryCode, int regionId, Pageable pageable) {
+        if (regionId == 0) {
+            return supplierRepository.findSuppliersByCountryCode(countryCode, pageable);
+        }
+        return supplierRepository.findSuppliersByRegion(regionId, pageable);
     }
 }
