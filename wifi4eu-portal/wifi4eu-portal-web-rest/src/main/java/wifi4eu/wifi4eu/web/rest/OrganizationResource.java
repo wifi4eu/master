@@ -26,11 +26,6 @@ public class OrganizationResource {
     @Autowired
     private OrganizationService organizationService;
 
-    Logger _log = LogManager.getLogger(OrganizationResource.class);
-
-    UserContext userContext;
-    UserDTO userConnected;
-
     @Autowired
     UserService userService;
 

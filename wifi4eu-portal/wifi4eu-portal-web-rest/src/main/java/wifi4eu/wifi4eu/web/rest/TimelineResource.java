@@ -21,8 +21,6 @@ public class TimelineResource {
     @Autowired
     private UserService userService;
 
-    Logger _log = LogManager.getLogger(CallResource.class);
-
     /*
     @ApiOperation(value = "Get all the timeline entries")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")

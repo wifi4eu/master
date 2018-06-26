@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -24,6 +22,8 @@ import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.thread.ThreadService;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,17 +54,20 @@ public class MunicipalityResource {
     @Autowired
     private NutsService nutsService;
 
-    Logger _log = LogManager.getLogger(MunicipalityResource.class);
+    @Autowired
+    private UserThreadsService userThreadsService;
 
-    UserContext userContext;
-    UserDTO userConnected;
+    @Autowired
+    private ThreadService threadService;
+
+    Logger _log = LogManager.getLogger(MunicipalityResource.class);
 
     @ApiOperation(value = "Get municipality by specific id")
     @RequestMapping(value = "/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipality by id " + municipalityId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -73,7 +76,7 @@ public class MunicipalityResource {
                 permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             }
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The municipality cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The municipality cannot been retrieved", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return municipalityService.getMunicipalityById(municipalityId);
@@ -117,12 +120,30 @@ public class MunicipalityResource {
     @RequestMapping(value = "/thread/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MunicipalityDTO getMunicipalityThreadById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipality by id " + municipalityId + " for thread");
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving municipality by id " + municipalityId + " for thread");
+        UserDTO userDTO = userConnected;
         MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
-        municipality.setRegistrations(null);
-        return municipality;
+        List<UserThreadsDTO> userThreadsDTOList = userThreadsService.getUserThreadsByUserId(userDTO.getId());
+        if (userDTO.getType() == 5) {
+            municipality.setRegistrations(null);
+            return municipality;
+        } else {
+            for (UserThreadsDTO userThread : userThreadsDTOList) {
+                ThreadDTO threadDTO = threadService.getThreadById(userThread.getThreadId());
+                if (threadDTO.getTitle().equals(municipality.getName())) {
+                    if (userThread.getUserId() == userDTO.getId()) {
+                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving municipality by id " + municipalityId + " for thread id " + threadDTO.getId());                        municipality.setRegistrations(null);
+                        return municipality;
+                    } else {
+                        permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+                    }
+                }
+            }
+            permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            return null;
+        }
     }
 
     @ApiOperation(value = "Update municipality details")
@@ -130,8 +151,8 @@ public class MunicipalityResource {
     @ResponseBody
     public ResponseDTO updateMunicipalityDetails(@RequestBody final MunicipalityDTO municipalityDTO,
                                                  HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating municipality details");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -147,7 +168,7 @@ public class MunicipalityResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The details of this municipality cannot been updated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The details of this municipality cannot been updated", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -182,8 +203,8 @@ public class MunicipalityResource {
     @RequestMapping(value = "/lauId/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByLauId(@PathVariable("lauId") final Integer lauId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting municipalities by lau id " + lauId);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {

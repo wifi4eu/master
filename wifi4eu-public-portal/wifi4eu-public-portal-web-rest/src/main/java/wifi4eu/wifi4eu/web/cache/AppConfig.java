@@ -1,4 +1,4 @@
-package wifi4eu.pub.web.rest;
+package wifi4eu.wifi4eu.web.cache;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;

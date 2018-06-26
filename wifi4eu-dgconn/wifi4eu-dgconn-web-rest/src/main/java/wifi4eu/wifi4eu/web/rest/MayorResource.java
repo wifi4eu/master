@@ -43,9 +43,6 @@ public class MayorResource {
 
     Logger _log = LogManager.getLogger(MayorResource.class);
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     /*
     @ApiOperation(value = "Get all the mayors")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -107,8 +104,8 @@ public class MayorResource {
     @ResponseBody
     public ResponseDTO updateMayorDetails(@RequestBody final MayorDTO mayorDTO,
                                           HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating mayor details");
         try {
             MayorDTO mayorDetails = mayorService.getMayorById(mayorDTO.getId());
@@ -124,7 +121,7 @@ public class MayorResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the mayor information", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Mayor information cannot been updated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Mayor information cannot been updated", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
         }
         return new ResponseDTO(false, null, null);
@@ -156,8 +153,8 @@ public class MayorResource {
     @RequestMapping(value = "/municipalityId/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MayorDTO getMayorByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting mayor by municipality id " + municipalityId);
         try {
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
@@ -170,7 +167,7 @@ public class MayorResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the mayor from this municipality", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The mayor from this municipality cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The mayor from this municipality cannot been retrieved", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
         }
         return mayorService.getMayorByMunicipalityId(municipalityId);

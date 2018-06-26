@@ -29,9 +29,6 @@ public class MailAsyncService implements Runnable {
 
     private final Logger _log = LogManager.getLogger(MailAsyncService.class);
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     private String toAddress = null;
     private String fromAddress = null;
     private String subject = null;
@@ -48,8 +45,8 @@ public class MailAsyncService implements Runnable {
 
     @Override
     public void run() {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
         try {
             MimeMessage message = mailSender.createMimeMessage();

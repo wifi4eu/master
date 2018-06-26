@@ -28,7 +28,7 @@ public class MunicipalityResource {
         if (_log.isInfoEnabled()) {
             _log.info("getMunicipalitiesGroupedByLauId");
         }
-        return new ResponseDTO(true, municipalityService.getMunicipalitiesCountGroupedByLauId(), null);
+        return new ResponseDTO(true, municipalityService.getMunicipalitiesCountGroupedByLauId().size(), null);
     }
 
     @ApiOperation(value = "Get municipalities of region")

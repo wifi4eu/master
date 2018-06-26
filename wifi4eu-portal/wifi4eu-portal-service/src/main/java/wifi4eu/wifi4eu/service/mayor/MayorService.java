@@ -23,6 +23,7 @@ import java.util.List;
 
 @Service
 public class MayorService {
+
     @Autowired
     MayorMapper mayorMapper;
 
@@ -40,9 +41,6 @@ public class MayorService {
 
     private final Logger _log = LogManager.getLogger(MayorService.class);
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     public List<MayorDTO> getAllMayors() {
         return mayorMapper.toDTOList(Lists.newArrayList(mayorRepository.findAll()));
     }
@@ -53,8 +51,8 @@ public class MayorService {
 
     @Transactional
     public MayorDTO createMayor(MayorDTO mayorDTO, HttpServletRequest request) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         MayorDTO resMayor = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
 
         MayorDTO mayorDTO1 = getMayorByMunicipalityId(mayorDTO.getMunicipalityId());
@@ -67,8 +65,8 @@ public class MayorService {
 
     @Transactional
     public MayorDTO updateMayor(MayorDTO mayorDetails, String name, String surname) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         mayorDetails.setName(name);
         mayorDetails.setSurname(surname);
 
@@ -78,8 +76,8 @@ public class MayorService {
 
     @Transactional
     public MayorDTO deleteMayor(int mayorId, HttpServletRequest request) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findOne(mayorId));
         if (mayorDTO != null) {
             mayorRepository.delete(mayorMapper.toEntity(mayorDTO));

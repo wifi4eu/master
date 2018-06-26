@@ -40,17 +40,14 @@ public class ThreadResource {
     @Autowired
     private PermissionChecker permissionChecker;
 
-    Logger _log = LogManager.getLogger(CallResource.class);
-
-    UserContext userContext;
-    UserDTO userConnected;
+    Logger _log = LogManager.getLogger(ThreadResource.class);
 
     @ApiOperation(value = "Get thread by specific id")
     @RequestMapping(value = "/{threadId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ThreadDTO getThreadById(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting thread by id " + threadId);
         try {
             UserDTO userDTO = userConnected;
@@ -70,8 +67,8 @@ public class ThreadResource {
     @RequestMapping(value = "/type/{type}/reason/{reason}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ThreadDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting thread by type " + type + " and reason " + reason);
         try {
             UserDTO user = userConnected;
@@ -89,7 +86,7 @@ public class ThreadResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been retrieved", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return null;
         }
@@ -99,8 +96,8 @@ public class ThreadResource {
     @RequestMapping(value = "{threadId}/setMediation", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO askMediationThread(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Setting mediation to thread with id " + threadId);
         try {
             UserDTO user = userConnected;
@@ -115,7 +112,7 @@ public class ThreadResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been set with mediation", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been set with mediation", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }

@@ -73,9 +73,6 @@ public class BeneficiaryService {
 
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     private List<Integer> municipalitiesLauIdToHold = new ArrayList<>();
     private final String MAYOR = "Mayor";
     private final String REPRESENTATIVE = "Representative";
@@ -133,8 +130,8 @@ public class BeneficiaryService {
     }
 
     private List<RegistrationDTO> getRegistrationsList(UserDTO userDTO, BeneficiaryDTO beneficiaryDTO, List<MunicipalityDTO> resMunicipalities, String ip, HttpServletRequest request) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         List<RegistrationDTO> registrations = new ArrayList<>();
         for (int i = 0; i < resMunicipalities.size(); i++) {
             MunicipalityDTO municipality = resMunicipalities.get(i);
@@ -162,8 +159,8 @@ public class BeneficiaryService {
     }
 
     private void checkDuplicates(UserDTO userDTO, List<MunicipalityDTO> municipalityDTOs) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         for (MunicipalityDTO municipalityDTO : municipalityDTOs) {
             List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipalityDTO.getLauId());
             permissionChecker.addTablePermissions(userDTO, Integer.toString(municipalityDTO.getId()),
@@ -268,8 +265,8 @@ public class BeneficiaryService {
     }
 
     private RegistrationDTO generateNewRegistration(final String role, final MunicipalityDTO municipality, final int userId) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         RegistrationDTO registration = new RegistrationDTO();
         registration.setRole(role);
         registration.setMunicipalityId(municipality.getId());
@@ -288,8 +285,8 @@ public class BeneficiaryService {
     }
 
     private List<MunicipalityDTO> getMunicipalityList(final BeneficiaryDTO beneficiaryDTO) throws Exception {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         List<MunicipalityDTO> resMunicipalities = new ArrayList<>();
         for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
             /* search for other users registered on the same municipality */
@@ -320,8 +317,8 @@ public class BeneficiaryService {
     }
 
     public List<BeneficiaryListItemDTO> findDgconnBeneficiaresList(String name, int offset, int count, String orderField, int orderType) throws Exception {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         List<BeneficiaryListItemDTO> beneficiariesList;
         switch (orderField) {
             case "name":
@@ -496,8 +493,8 @@ public class BeneficiaryService {
     }
 
     private String generateCSVBeneficiaries(List<BeneficiaryListItem> beneficiaryListItems, boolean columnHeaders) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         StringBuilder sb = new StringBuilder();
         if (columnHeaders) {
             sb.append("Name,LauID,CountryCode,NumberRegistrations,Status,Mediation,IssueStatus,");

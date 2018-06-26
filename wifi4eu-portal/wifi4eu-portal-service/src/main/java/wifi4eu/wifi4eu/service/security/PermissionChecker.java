@@ -44,22 +44,13 @@ public class PermissionChecker {
     @Autowired
     UserService userService;
 
-    UserContext userContext;
-    UserDTO userConnected;
-
-
     public boolean check(String rightDesc){
-
         UserContext userContext = UserHolder.getUser();
-
         UserDTO currentUserDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
-
         return this.check(currentUserDTO, rightDesc);
-
     }
 
     public boolean check(UserDTO userDTO, String rightDesc){
-
         List<RightDTO> rightDTOs = rightMapper.toDTOList(Lists.newArrayList(rightRepository.findByRightdescAndUserId(rightDesc,userDTO.getId())));
         if (rightDesc.startsWith(RightConstants.REGISTRATIONS_TABLE) && userDTO.getType() == 5) {
             return true;
@@ -67,20 +58,18 @@ public class PermissionChecker {
         if (rightDTOs.isEmpty()) {
             throw new AppException("Permission error", HttpStatus.SC_FORBIDDEN, "");
         }
-
         return true;
     }
 
     @Transactional
     public void addTablePermissions(final UserDTO userDTO, final String rowId,
                                     final String destTable, final String logInfo) {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + "- Adding table permissions");
 
         User user = userMapper.toEntity(userDTO);
         Iterable<Right> rightsFound = rightRepository.findByRightdescAndUserId(destTable + rowId, user.getId());
-
         if ( Iterables.isEmpty(rightsFound) ) {
             Right right = new Right(user, destTable + rowId, user.getType());
             rightRepository.save(right);

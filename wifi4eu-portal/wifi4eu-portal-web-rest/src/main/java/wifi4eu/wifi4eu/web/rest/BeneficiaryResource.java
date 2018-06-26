@@ -38,6 +38,7 @@ import java.util.List;
 @Api(value = "/beneficiary", description = "Beneficiary object REST API services")
 @RequestMapping("beneficiary")
 public class BeneficiaryResource {
+
     @Autowired
     private BeneficiaryService beneficiaryService;
 
@@ -49,16 +50,13 @@ public class BeneficiaryResource {
 
     private final Logger _log = LogManager.getLogger(BeneficiaryResource.class);
 
-    UserContext userContext;
-    UserDTO userConnected;
-
     @ApiOperation(value = "Submit beneficiary registration")
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO submitBeneficiaryRegistration(@RequestBody final BeneficiaryDTO beneficiaryDTO, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Submitting beneficiary registration");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -80,7 +78,7 @@ public class BeneficiaryResource {
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiary submitted successfully");
             return new ResponseDTO(true, resRegistrations, null);
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary cannot been submitted", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary cannot been submitted", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -97,8 +95,8 @@ public class BeneficiaryResource {
     @RequestMapping(value = "/findDgconnBeneficiaresList", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO findDgconnBeneficiaresList(@RequestParam("offset") final Integer offset, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn beneficiaries by offset " + offset + ", count" + count + ", order field" + orderField + " and order type " + orderType);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -114,7 +112,7 @@ public class BeneficiaryResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries cannot been retrieved", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
         }
     }
@@ -123,8 +121,8 @@ public class BeneficiaryResource {
     @RequestMapping(value = "/findDgconnBeneficiaresListSearchingName", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO findDgconnBeneficiaresListSearchingName(@RequestParam("name") final String name, @RequestParam("offset") final Integer offset, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn beneficiaries by searching name " + name + ",offset " + offset + ", count" + count + ", order field" + orderField + " and order type " + orderType);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -140,7 +138,7 @@ public class BeneficiaryResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries cannot been retrieved", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
         }
     }
@@ -149,8 +147,8 @@ public class BeneficiaryResource {
     @RequestMapping(value = "/exportCSVDGConnBeneficiariesList", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO exportCSVDGConnBeneficiariesList(HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting CSV from DGConn beneficiaries");
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -172,8 +170,8 @@ public class BeneficiaryResource {
     @RequestMapping(value = "/exportCSVDGConnBeneficiariesListSearchingName", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO exportCSVDGConnBeneficiariesListSearchingName(@RequestParam("name") final String name, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting CSV from DGConn beneficiaries by searching name " + name);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -195,8 +193,8 @@ public class BeneficiaryResource {
     @RequestMapping(value = "/exportExcelDGConnBeneficiariesList", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
     @ResponseBody
     public ResponseEntity<byte[]> exportExcelDGConnBeneficiariesList(HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting Excel from DGConn beneficiaries");
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -222,8 +220,8 @@ public class BeneficiaryResource {
     @RequestMapping(value = "/exportExcelDGConnBeneficiariesListSearchingName", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
     @ResponseBody
     public ResponseEntity<byte[]> exportExcelDGConnBeneficiariesListSearchingName(@RequestParam("name") final String name, HttpServletResponse response) throws IOException {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting Excel from DGConn beneficiaries by searching name" + name);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
