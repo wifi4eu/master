@@ -152,7 +152,7 @@ export class SelectedSupplierDetailsComponent {
           (res: ResponseDTOBase) => {
             console.log("The result of Selection is ", res);
             this.changedSupplierChoice = false;
-            // this.router.navigate(['/beneficiary-portal/my-voucher']);
+            this.router.navigate(['/beneficiary-portal/my-voucher']);
           }, error => {
             console.log("ERROR on email sending");
           }
