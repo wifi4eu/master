@@ -73,7 +73,7 @@ export class SelectedSupplierDetailsComponent {
           for(var i = 0; i < registrations.length; i++) {
             if(registrations[i].municipalityId === this.municipalityId) {
               this.registration = registrations[i];
-              this.registration.isConfirmation ? this.hasConfirmedInstallation = true : this.hasConfirmedInstallation = false;
+              !this.registration.isConfirmation ? this.hasConfirmedInstallation = false : this.hasConfirmedInstallation = true;
             }
           }
           

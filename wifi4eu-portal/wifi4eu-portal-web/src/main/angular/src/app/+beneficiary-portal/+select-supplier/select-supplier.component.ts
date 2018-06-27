@@ -53,7 +53,7 @@ export class SelectSupplierComponent {
   private localeDate: Array<String>;
   private displayedDate: String;
   private displayConfirmModal: boolean = false;
-  private hasSupplierAssigned: boolean = false;
+  private hasSupplierAssigned: boolean = true;
   private displayChangeModal: boolean = false;
   
   /* Datatable */
@@ -104,8 +104,8 @@ export class SelectSupplierComponent {
                       this.application = application;
                       
                       /* Check if the application already has a supplier assigned */
-                      if (application.supplierId) {
-                        this.hasSupplierAssigned = true;
+                      if (!application.supplierId) {
+                        this.hasSupplierAssigned = false;
                       }
 
                       /* Get regionId of the municipality */
