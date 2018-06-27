@@ -10,22 +10,19 @@ import javax.persistence.*;
 @Table(name = "applications")
 public class Application {
 
-    @Column(name = "id")
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "call_id")
-    private Call call;
+    @Column(name = "call_id")
+    private Integer callId;
 
-    @ManyToOne
-    @JoinColumn(name = "registration")
-    private Registration registration;
+    @Column(name = "registration")
+    private Integer registrationId;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier")
-    private Supplier supplier;
+    @Column(name = "supplier")
+    private Integer supplierId;
 
     @Column(name = "voucher_awarded")
     private boolean voucherAwarded;
@@ -60,14 +57,26 @@ public class Application {
     @Column(name = "lc_status")
     private Integer lcStatus;
 
+    @Column(name = "_status")
+    private int status;
+
+    @Column(name = "invalidate_reason")
+    private String invalidateReason;
+
+    @Column(name = "pre_selected_flag")
+    private Boolean preSelectedFlag;
+
+    @Column(name = "rejected")
+    private Boolean rejected;
+
     public Application() {
     }
 
-    public Application(Integer id, Call call, Registration registration, Supplier supplier, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus) {
+    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, Boolean preSelectedFlag, Boolean rejected) {
         this.id = id;
-        this.call = call;
-        this.registration = registration;
-        this.supplier = supplier;
+        this.callId = callId;
+        this.registrationId = registrationId;
+        this.supplierId = supplierId;
         this.voucherAwarded = voucherAwarded;
         this.date = date;
         this.lefExport = lefExport;
@@ -79,6 +88,10 @@ public class Application {
         this.lcExport = lcExport;
         this.lcImport = lcImport;
         this.lcStatus = lcStatus;
+        this.status = status;
+        this.invalidateReason = invalidateReason;
+        this.preSelectedFlag = preSelectedFlag;
+        this.rejected = rejected;
     }
 
     public Integer getId() {
@@ -89,28 +102,28 @@ public class Application {
         this.id = id;
     }
 
-    public Call getCall() {
-        return call;
+    public Integer getCallId() {
+        return callId;
     }
 
-    public void setCall(Call call) {
-        this.call = call;
+    public void setCallId(Integer callId) {
+        this.callId = callId;
     }
 
-    public Registration getRegistration() {
-        return registration;
+    public Integer getRegistrationId() {
+        return registrationId;
     }
 
-    public void setRegistration(Registration registration) {
-        this.registration = registration;
+    public void setRegistrationId(Integer registrationId) {
+        this.registrationId = registrationId;
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    public Integer getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
     }
 
     public boolean isVoucherAwarded() {
@@ -199,5 +212,37 @@ public class Application {
 
     public void setLcStatus(Integer lcStatus) {
         this.lcStatus = lcStatus;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getInvalidateReason() {
+        return invalidateReason;
+    }
+
+    public void setInvalidateReason(String invalidateReason) {
+        this.invalidateReason = invalidateReason;
+    }
+
+    public Boolean getPreSelectedFlag() {
+        return preSelectedFlag;
+    }
+
+    public void setPreSelectedFlag(Boolean preSelectedFlag) {
+        this.preSelectedFlag = preSelectedFlag;
+    }
+
+    public Boolean getRejected() {
+        return rejected;
+    }
+
+    public void setRejected(Boolean rejected) {
+        this.rejected = rejected;
     }
 }
