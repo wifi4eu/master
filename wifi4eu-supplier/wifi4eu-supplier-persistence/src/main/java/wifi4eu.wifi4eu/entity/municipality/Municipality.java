@@ -9,10 +9,10 @@ import java.util.List;
 @Entity
 @Table(name = "municipalities")
 public class Municipality {
-    @Id
-    @SequenceGenerator(name = "municipality_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "municipality_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name")

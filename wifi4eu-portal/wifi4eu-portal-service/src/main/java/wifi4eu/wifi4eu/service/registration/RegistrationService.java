@@ -138,7 +138,7 @@ public class RegistrationService {
     public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
         if (registrationDTO.getId() == 0) {
             registrationDTO.setMailCounter(3);
-    }
+        }
         RegistrationDTO registrationCreated = saveRegistration(registrationDTO);
         registrationWarningService.createWarningsByRegistration(registrationCreated);
         return registrationCreated;
@@ -402,7 +402,8 @@ public class RegistrationService {
 
 
     @Transactional
-    public RegistrationDTO deleteRegistration(int registrationId, HttpServletRequest request) {        RegistrationDTO registrationDTO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
+    public RegistrationDTO deleteRegistration(int registrationId, HttpServletRequest request) {
+        RegistrationDTO registrationDTO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
         if (registrationDTO != null) {
             for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registrationDTO.getId())) {
                 applicationService.deleteApplication(application.getId(), request);
@@ -500,7 +501,7 @@ public class RegistrationService {
             MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
             if (threadDTO.getReason().equals(String.valueOf(municipality.getLauId()))) {
                 return registration;
-        }
+            }
         }
         return null;
     }

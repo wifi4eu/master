@@ -96,9 +96,9 @@ public class MunicipalityResource {
         return municipalityService.getUsersMunicipalityById(municipalityId);
     }
 
-
-
     /*
+    @ApiOperation(value = "Create municipality")
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO createMunicipality(@RequestBody final MunicipalityDTO municipalityDTO,
@@ -231,10 +231,10 @@ public class MunicipalityResource {
         return municipalityService.getMunicipalitiesByLauId(lauId);
     }
 
-
-
-
- /*
+    /*
+    @ApiOperation(value = "Get municipalities by specific user id")
+    @RequestMapping(value = "/userId/{userId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByUserId(@PathVariable("userId") final Integer userId,
                                                            HttpServletResponse response) throws IOException {
         try {
