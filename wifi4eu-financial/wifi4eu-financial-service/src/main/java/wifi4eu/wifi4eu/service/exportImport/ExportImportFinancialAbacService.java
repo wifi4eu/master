@@ -75,28 +75,28 @@ public class ExportImportFinancialAbacService {
 //                application.setLcExport(exportDate);
 //                benPubSupRepository.save(benPubSupMapper.toEntity(application));
                 JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
-                applicationsLEFJsonArray.add(applicationJson);
+                applicationsLEFJsonArray.add(applicationJson+", {\"status\":MOD/0}");
             }
         }
 //        resultJson.addProperty("version", _version);
         resultJson.addProperty("createTime", new Date().getTime());
         resultJson.add("validatedLEF", applicationsLEFJsonArray);
 
-        List<ValidatedBCDTO> applicationsBC = validatedBCMapper.toDTOList(Lists.newArrayList(validatedBCRepository.findBC()));
-        JsonArray applicationsBCJsonArray = new JsonArray();
-        if (applicationsBC != null && !applicationsBC.isEmpty()) {
-            for (ValidatedBCDTO application : applicationsBC) {
-//                long exportDate = new Date().getTime();
-//                application.setLefExport(exportDate);
-//                application.setBcExport(exportDate);
-//                application.setLcExport(exportDate);
-//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
-                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
-                applicationsBCJsonArray.add(applicationJson);
-            }
-        }
-//        resultJson.addProperty("version", _version);
-        resultJson.add("validatedBC", applicationsBCJsonArray);
+//        List<ValidatedBCDTO> applicationsBC = validatedBCMapper.toDTOList(Lists.newArrayList(validatedBCRepository.findBC()));
+//        JsonArray applicationsBCJsonArray = new JsonArray();
+//        if (applicationsBC != null && !applicationsBC.isEmpty()) {
+//            for (ValidatedBCDTO application : applicationsBC) {
+////                long exportDate = new Date().getTime();
+////                application.setLefExport(exportDate);
+////                application.setBcExport(exportDate);
+////                application.setLcExport(exportDate);
+////                benPubSupRepository.save(benPubSupMapper.toEntity(application));
+//                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
+//                applicationsBCJsonArray.add(applicationJson);
+//            }
+//        }
+////        resultJson.addProperty("version", _version);
+//        resultJson.add("validatedBC", applicationsBCJsonArray);
         result.setSuccess(true);
 //        result.setData(resultJson.toString());
         result.setData("[" + resultJson.toString() + "]");

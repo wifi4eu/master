@@ -35,6 +35,7 @@
 		<!-- App settings -->
 		<schemes>http</schemes>
 
+<<<<<<< HEAD
 		<ecas.server.address>wlts0275.cc.cec.eu.int</ecas.server.address>
 		<ecas.server.port>1043</ecas.server.port>
 		<!--<server.address>localhost:8080</server.address> -->
@@ -43,6 +44,16 @@
 		<server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
 		<!--<server.test.port>8080</server.test.port> -->
 		<server.test.port>7001</server.test.port>
+=======
+        <ecas.server.address>wlts0275.cc.cec.eu.int</ecas.server.address>
+        <ecas.server.port>1043</ecas.server.port>
+        <!--<server.address>localhost:8080</server.address>-->
+        <server.address>localhost:7001</server.address>
+        <!--<server.address>wlts0275.cc.cec.eu.int:1043</server.address>-->
+        <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
+        <!--<server.test.port>8080</server.test.port>-->
+        <server.test.port>7001</server.test.port>
+>>>>>>> 23cbade06e169a811a8ec5a4dcaabe8a34c589a8
 
 		<!--<app.context.root>/wifi4eu-financial</app.context.root> -->
 		<!--&lt;!&ndash;jndi.datasource.name>jdbc/wififoreu-financial</jndi.datasource.name&ndash;&gt; -->

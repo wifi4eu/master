@@ -38,6 +38,7 @@ export class AbacComponent {
                                 //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
                                 myWindow.close();
                                 window.alert("Import succesful!");
+                                this.exportLegalEntityFBCValidate();
                             } else {
                                 myWindow.close();
                                 window.alert("Import failed!");
@@ -51,6 +52,7 @@ export class AbacComponent {
                 }
                 reader.readAsText(this.jsonFile);
                 //reader.readAsBinaryString(this.excelFile);
+
             }
     }
 
@@ -93,7 +95,7 @@ export class AbacComponent {
                 (response: ResponseDTO) => {
                     if (response.success) {
                         let blob = new Blob([response.data], {type: 'application/json'});
-                        FileSaver.saveAs(blob, "ExportLefBcValidate.json");
+                        FileSaver.saveAs(blob, "ExportLefValidate.json");
                         myWindow.close();
                         window.alert("Export succesful!");
                     } else {
