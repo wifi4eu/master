@@ -521,15 +521,17 @@ CREATE TABLE [dbo].[global_commitment](
 
 CREATE TABLE [dbo].[VALIDATED_LEF] (
   [idLef] [int] NOT NULL,
+  [stat] [varchar](255) NULL
 ) ON [PRIMARY]
 
 CREATE TABLE [dbo].[VALIDATED_BC] (
   [idBc] [int] NOT NULL,
+  [stat] [varchar](255) NULL
 ) ON [PRIMARY]
 
-INSERT INTO dbo.VALIDATED_LEF (idLef) VALUES (1);
+INSERT INTO dbo.VALIDATED_LEF (idLef, dbo.VALIDATED_LEF.stat) VALUES (1, '(mod/0=0)');
 
-INSERT INTO dbo.VALIDATED_BC (idBc) VALUES (1);
+INSERT INTO dbo.VALIDATED_BC (idBc, dbo.VALIDATED_BC.stat) VALUES (1, '(mod/0=0)');
 
 -- -----------------------------------------------------
 -- Table `dbo`.`beneficiary_information`
