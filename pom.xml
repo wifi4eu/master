@@ -13,11 +13,9 @@
 
     <modules>
         <module>wifi4eu-common</module>
-        <module>wifi4eu-portal</module>
-
-        <!--<module>wifi4eu-public-portal</module>-->
-        <!--<module>wifi4eu-dgconn</module>-->
-        <!--<module>wifi4eu-financial</module>-->
+        
+        <!-- <module>wifi4eu-public-portal</module>
+        <module>wifi4eu-dgconn</module> -->      
     </modules>
 
 
@@ -320,6 +318,26 @@
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
             </properties>
+        </profile>
+        <profile>
+        <id>financial</id>
+         <activation>
+         	<activeByDefault>false</activeByDefault>
+         	
+         </activation>
+        	<modules>
+        		<module>wifi4eu-financial</module>
+        	</modules>
+        </profile>
+        <profile>
+        <id>fin-portal</id>
+         <activation>
+         	<activeByDefault>false</activeByDefault>
+         	
+         </activation>
+        	<modules>
+        		<module>wifi4eu-portal</module>
+        	</modules>
         </profile>
     </profiles>
 
