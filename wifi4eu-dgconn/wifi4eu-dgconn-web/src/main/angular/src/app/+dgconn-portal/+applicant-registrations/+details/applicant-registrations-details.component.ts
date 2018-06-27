@@ -207,28 +207,28 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     switch (this.selectedFilesTypes[index][i]) {
                        case 1:
                             for (let lf of this.legalFiles[index]) {
-                                if (lf.type == 1 && lf.requestCorrection) {
+                                if (lf.type == 1) {
                                     this.selectedReasonTypes[index][i] = lf.correctionReason;
                                 }
                             }
                             break; 
                         case 2:
                             for (let lf of this.legalFiles[index]) {
-                                if (lf.type == 2 && lf.requestCorrection) {
+                                if (lf.type == 2) {
                                     this.selectedReasonTypes[index][i] = lf.correctionReason;
                                 }
                             }
                             break;
                         case 3:
                             for (let lf of this.legalFiles[index]) {
-                                if (lf.type == 3 && lf.requestCorrection) {
+                                if (lf.type == 3) {
                                     this.selectedReasonTypes[index][i] = lf.correctionReason;
                                 }
                             }
                             break;
                         case 4:
                             for (let lf of this.legalFiles[index]) {
-                                if (lf.type == 4 && lf.requestCorrection) {
+                                if (lf.type == 4) {
                                     this.selectedReasonTypes[index][i] = lf.correctionReason;
                                 }
                             }
@@ -526,5 +526,17 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private goBack() {
         this.location.back();
+    }
+
+    private orderList(event, i){
+        this.selectedFilesTypes[i] = this.selectedFilesTypes[i].sort((a,b)=>{
+            if (a < b) {
+            return -1;
+          } else if (a > b) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
     }
 }
