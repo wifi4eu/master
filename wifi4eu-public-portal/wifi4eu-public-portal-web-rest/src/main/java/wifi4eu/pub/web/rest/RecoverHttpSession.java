@@ -9,7 +9,7 @@ public class RecoverHttpSession {
 
     public static HttpSession session() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return attr.getRequest().getSession(false); // true == allow create
+        return attr.getRequest().getSession();
     }
 
 }
