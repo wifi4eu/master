@@ -29,7 +29,8 @@ import wifi4eu.wifi4eu.mapper.registrationWarning.RegistrationWarningMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationRepository;import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
@@ -37,7 +38,8 @@ import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
-import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;import wifi4eu.wifi4eu.service.thread.ThreadService;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
+import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -309,7 +311,7 @@ public class RegistrationService {
 
                 // take origin submitted date
                 if (registration != null && registration.getInstallationSiteSubmission() != null){
-                // if (registration != null && registration.isWifiIndicator()) {
+                    // if (registration != null && registration.isWifiIndicator()) {
                     boolean beneficiaryIndicator = (boolean) map.get("beneficiaryIndicator");
 
                     if (beneficiaryIndicator) {
@@ -360,7 +362,7 @@ public class RegistrationService {
         return true;
     }
 
-     /* Method called when the user confirms/rejects the installation report. This method sends the CNS email to the
+    /* Method called when the user confirms/rejects the installation report. This method sends the CNS email to the
      * supplier.
      *
      * @param registration

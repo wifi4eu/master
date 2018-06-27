@@ -5,27 +5,39 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.cns.CNSManager;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.FileTypes;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
+import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
+import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.mapper.registrationWarning.RegistrationWarningMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
@@ -33,6 +45,7 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
 import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.util.UserUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
@@ -92,6 +105,24 @@ public class RegistrationService {
 
     @Autowired
     LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
+
+    @Autowired
+    CNSManager cnsManager;
+
+    @Autowired
+    ApplicationRepository applicationRepository;
+
+    @Autowired
+    PermissionChecker permissionChecker;
+
+    @Autowired
+    UserUtils userUtils;
+
+    @Autowired
+    SupplierService supplierService;
+
+    @Autowired
+    SupplierMapper supplierMapper;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -267,6 +298,110 @@ public class RegistrationService {
         }
         return saveRegistration(registrationDBO);
     }
+
+
+    public ResponseDTO confirmOrRejectInstallationAndSendCNS(Map<String, Object> map) {
+        ResponseDTO response = new ResponseDTO();
+        if (!map.isEmpty()) {
+            if (map.containsKey("id") && map.containsKey("beneficiaryIndicator")) {
+                Registration registration = registrationRepository.findOne((int) map.get("id"));
+
+                if (!checkPermissionsRegistrations(registration))
+                    return permissionChecker.getAccessDeniedResponse();
+
+                // take origin submitted date
+                if (registration != null && registration.getInstallationSiteSubmission() != null){
+                    // if (registration != null && registration.isWifiIndicator()) {
+                    boolean beneficiaryIndicator = (boolean) map.get("beneficiaryIndicator");
+
+                    if (beneficiaryIndicator) {
+                        registration.setInstallationSiteConfirmation(new java.sql.Date(new Date().getTime()));
+                    } else {
+                        registration.setInstallationSiteRejection(new java.sql.Date(new Date().getTime()));
+                    }
+                    // we save the new indicators
+                    // registration.setWifiIndicator(beneficiaryIndicator ? true : false);
+                    // registration.setBeneficiaryIndicator(beneficiaryIndicator);
+                    if (sendEmailOnConfirmOrReject(registration)) {
+                        registrationRepository.save(registration);
+                        //if everything goes ok it's a success
+                        response.setSuccess(true);
+                        MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipality().getId());
+                        response.setData(municipality);
+                        // response.setData("Beneficiary Indicator updated successfully");
+                        return response;
+                    }
+
+                } else {
+                    response.setSuccess(false);
+                    response.setData("Error querying municipality - registration");
+                    response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
+                }
+            }
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(400, "error.400.invalidFields"));
+
+        } else {
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(400, "error.400.noData"));
+
+        }
+        return response;
+    }
+
+
+    private boolean checkPermissionsRegistrations(Registration registration) {
+        try {
+            UserDTO user = permissionChecker.checkBeneficiaryPermission();
+            if(registration.getUser().getId() != user.getId()){
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    /* Method called when the user confirms/rejects the installation report. This method sends the CNS email to the
+     * supplier.
+     *
+     * @param registration
+     * @return
+     */
+    private boolean sendEmailOnConfirmOrReject(Registration registration) {
+        //sending CNS
+        String beneficiaryName = registration.getMunicipality().getName();
+        Iterable<Application> applicationList = applicationRepository.findByRegistrationId(registration
+                .getId());
+        Supplier supplier = supplierMapper.toEntity(supplierService.getSupplierById(applicationList.iterator().next().getSupplierId()));
+        String name = supplier.getName();
+        String email = supplier.getContactEmail();
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        String lang = userUtils.getUserLangByUserId(supplier.getUser().getId());
+        if(lang != null){
+            locale = new Locale(lang);
+        }
+        //if beneficiary indicator and wifi indicator are true we send a confirmation email
+        if (registration.getInstallationSiteConfirmation() != null) {
+            cnsManager.sendInstallationConfirmationFromBeneficiary(email, name, beneficiaryName, locale);
+            return true;
+        } else {
+            Date dateSubmission = registration.getInstallationSiteSubmission();
+            Date dateReject = registration.getInstallationSiteRejection();
+            if (dateSubmission.before(dateReject)) {
+                // if rejection date is bigger than submission date, send email
+                User user = registration.getUser();
+                String ccName = user.getName();
+                String ccEmail = user.getEmail();
+                cnsManager.sendInstallationRejectionFromBeneficiary(email, name, beneficiaryName, ccEmail,
+                        ccName, locale);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     @Transactional
     public RegistrationDTO deleteRegistration(int registrationId, HttpServletRequest request) {

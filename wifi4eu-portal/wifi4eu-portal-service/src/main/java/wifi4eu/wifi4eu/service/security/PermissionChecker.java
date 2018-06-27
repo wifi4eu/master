@@ -23,7 +23,6 @@ import wifi4eu.wifi4eu.mapper.security.RightMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
-import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.nio.file.AccessDeniedException;
@@ -49,18 +48,14 @@ public class PermissionChecker {
     @Autowired
     UserService userService;
 
-    @Autowired
-    RegistrationService registrationService;
-
-    public boolean check(String rightDesc) {
+    public boolean check(String rightDesc){
         UserContext userContext = UserHolder.getUser();
         UserDTO currentUserDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
         return this.check(currentUserDTO, rightDesc);
     }
 
-    public boolean check(UserDTO userDTO, String rightDesc) {
-        List<RightDTO> rightDTOs = rightMapper.toDTOList(Lists.newArrayList(rightRepository.findByRightdescAndUserId
-                (rightDesc, userDTO.getId())));
+    public boolean check(UserDTO userDTO, String rightDesc){
+        List<RightDTO> rightDTOs = rightMapper.toDTOList(Lists.newArrayList(rightRepository.findByRightdescAndUserId(rightDesc,userDTO.getId())));
         if (rightDesc.startsWith(RightConstants.REGISTRATIONS_TABLE) && userDTO.getType() == 5) {
             return true;
         }
@@ -79,7 +74,7 @@ public class PermissionChecker {
 
         User user = userMapper.toEntity(userDTO);
         Iterable<Right> rightsFound = rightRepository.findByRightdescAndUserId(destTable + rowId, user.getId());
-        if (Iterables.isEmpty(rightsFound)) {
+        if ( Iterables.isEmpty(rightsFound) ) {
             Right right = new Right(user, destTable + rowId, user.getType());
             rightRepository.save(right);
         }
@@ -94,6 +89,7 @@ public class PermissionChecker {
             return false;
         }
     }
+
     /**
      * Forbids petitions that are not from a logged user. It verifies that this user is a beneficiary.
      * This means that in localhost making petitions using postman or any other rest client is not going to work if mr
@@ -117,5 +113,4 @@ public class PermissionChecker {
         response.setError(new ErrorDTO(403, "shared.error.notallowed"));
         return response;
     }
-
 }

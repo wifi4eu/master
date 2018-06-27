@@ -65,10 +65,10 @@ public class BeneficiaryResource {
             }
             String forwardedHeaderIp = request.getHeader("X-Forwarded-For");
             String ip = "";
-            if(forwardedHeaderIp != null) {
+            if (forwardedHeaderIp != null) {
                 String[] forwardedListIp = forwardedHeaderIp.split(", ");
                 ip = forwardedListIp[0];
-                if(!InetAddresses.isInetAddress(ip)){
+                if (!InetAddresses.isInetAddress(ip)) {
                     ip = "0:0:0:0:0:0:0:1";
                 }
             } else {
@@ -81,8 +81,8 @@ public class BeneficiaryResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary cannot been submitted", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-            }
         }
+    }
 
     @ApiOperation(value = "getBeneficiaryListItem")
     @RequestMapping(value = "/getBeneficiaryListItem", method = RequestMethod.GET)
@@ -114,8 +114,8 @@ public class BeneficiaryResource {
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries cannot been retrieved", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
-            }
         }
+    }
 
     @ApiOperation(value = "findDgconnBeneficiaresListSearchingName")
     @RequestMapping(value = "/findDgconnBeneficiaresListSearchingName", method = RequestMethod.POST)
@@ -140,8 +140,8 @@ public class BeneficiaryResource {
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries cannot been retrieved", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
-            }
         }
+    }
 
     @ApiOperation(value = "exportCSVDGConnBeneficiariesList")
     @RequestMapping(value = "/exportCSVDGConnBeneficiariesList", method = RequestMethod.POST)
@@ -153,7 +153,7 @@ public class BeneficiaryResource {
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-    }
+            }
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(beneficiaryService.exportCSVDGConnBeneficiariesList());
             res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalities());

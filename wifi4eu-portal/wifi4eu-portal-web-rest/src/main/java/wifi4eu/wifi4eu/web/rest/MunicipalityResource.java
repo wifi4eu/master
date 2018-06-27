@@ -12,7 +12,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -152,12 +151,12 @@ public class MunicipalityResource {
                         return municipality;
                     } else {
                         permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+                    }
+                }
             }
-            }
-        }
             permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             return null;
-    }
+        }
     }
 
     @ApiOperation(value = "Update municipality details")
@@ -173,7 +172,7 @@ public class MunicipalityResource {
             RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
             if (registrationDTO.getUserId() != userDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
+            }
             permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityDTO.getId());
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Municipality details updated successfully");
             return new ResponseDTO(true, municipalityService.updateMunicipalityDetails(municipalityDTO), null);
@@ -186,7 +185,7 @@ public class MunicipalityResource {
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
-            }
+    }
 
     /* @ApiOperation(value = "Delete municipality by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
@@ -214,7 +213,7 @@ public class MunicipalityResource {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
     })
-    @RequestMapping(value = "/lauId/{lauId}",method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/lauId/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByLauId(@PathVariable("lauId") final Integer lauId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
@@ -223,7 +222,7 @@ public class MunicipalityResource {
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
+            }
         } catch (AccessDeniedException ade) {
             _log.error("User ECAS name: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve these municipalities", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
