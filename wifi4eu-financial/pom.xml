@@ -58,6 +58,7 @@
     </properties>
 
     <modules>
+		<module>wifi4eu-financial-iop</module>
         <module>wifi4eu-financial-persistence</module>
         <module>wifi4eu-financial-service</module>
         <module>wifi4eu-financial-web-rest-swagger</module>
