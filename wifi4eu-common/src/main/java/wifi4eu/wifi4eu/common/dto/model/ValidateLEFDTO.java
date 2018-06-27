@@ -1,17 +1,17 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 
-public class ValidatedLEFDTO {
+public class ValidateLEFDTO {
 
     private Integer idLef;
 
-    private String status;
+    private String stat;
 
-    public ValidatedLEFDTO() {}
+    public ValidateLEFDTO() {}
 
-    public ValidatedLEFDTO(Integer idLef, String status) {
+    public ValidateLEFDTO(Integer idLef, String stat) {
         this.idLef = idLef;
-        this.status = status;
+        this.stat = stat;
     }
 
     public Integer getIdLef() {
@@ -23,10 +23,10 @@ public class ValidatedLEFDTO {
     }
 
     public String getStatus() {
-        return status;
+        return stat;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(String stat) {
+        this.stat = stat;
     }
 }

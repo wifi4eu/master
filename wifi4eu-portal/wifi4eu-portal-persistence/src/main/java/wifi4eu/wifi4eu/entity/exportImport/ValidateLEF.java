@@ -7,15 +7,19 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "VALIDATED_LEF")
-public class ValidatedLEF {
+public class ValidateLEF {
     @Column(name = "idLef")
     @Id
     private Integer idLef;
 
-    public ValidatedLEF() {}
+    @Column(name = "stat")
+    private String stat;
 
-    public ValidatedLEF(Integer idLef) {
+    public ValidateLEF() {}
+
+    public ValidateLEF(Integer idLef, String stat) {
         this.idLef = idLef;
+        this.stat = stat;
     }
 
     public Integer getIdLef() {
@@ -26,4 +30,11 @@ public class ValidatedLEF {
         this.idLef = idLef;
     }
 
+    public String getStat() {
+        return stat;
+    }
+
+    public void setStat(String stat) {
+        this.stat = stat;
+    }
 }

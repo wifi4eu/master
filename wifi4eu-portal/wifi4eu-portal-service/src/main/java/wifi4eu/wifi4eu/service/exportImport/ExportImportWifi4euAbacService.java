@@ -11,7 +11,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportBeneficiaryInformationDTO;
 import wifi4eu.wifi4eu.entity.exportImport.ValidatedBC;
-import wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF;
+import wifi4eu.wifi4eu.entity.exportImport.ValidateLEF;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBeneficiaryInformationMapper;
@@ -101,15 +101,18 @@ public class ExportImportWifi4euAbacService {
         JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonObject();
         JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
         for (int i = 0; i < callsJsonArrayLef.size(); i++) {
-            //JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
+            JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
+            //JsonObject applicationJson = parser.parse(gson.toJson(callsJsonArrayLef.get(i))).getAsJsonObject();
             ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
             ////JsonArray lefVals = resultJson.getAsJsonArray("idLef");
             //JsonArray lefVals = callJson.getAsJsonArray("idLef");
             //for (int u = 0; u < lefVals.size(); u++) {
               //  JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
-               // JsonObject lefVal = jsonStringLef.getAsJsonObject("idLef");
-               // ValidatedLEF validatedLEF=new ValidatedLEF(Integer.parseInt(lefVal.toString()));
-               // validatedLefRepository.save(validatedLEF);
+            int a=Integer.parseInt(callJson.get("idLef").toString());
+            String b=callJson.get("status").toString();
+            //ValidateLEF validatedLEF=new ValidateLEF(Integer.parseInt(callJson.get("idLef").toString()), callJson.get("status").toString());
+            ValidateLEF validatedLEF=new ValidateLEF(a,b);
+            validatedLefRepository.save(validatedLEF);
             //}
         }
         //JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");

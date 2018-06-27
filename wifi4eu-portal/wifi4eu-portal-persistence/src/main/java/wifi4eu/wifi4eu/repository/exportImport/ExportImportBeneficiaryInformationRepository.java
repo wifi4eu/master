@@ -6,7 +6,7 @@ import wifi4eu.wifi4eu.entity.exportImport.ExportImportBeneficiaryInformation;
 
 public interface ExportImportBeneficiaryInformationRepository extends CrudRepository<ExportImportBeneficiaryInformation,Integer> {
     @Query(value = "select \n" +
-            "r.id as id, \n"+
+            "m.id as id, \n"+
             "m.name as mun_OfficialName, \n" +
             "m.address as mun_OfficialAddress, \n" +
             "o.name as org_Name, \n" +

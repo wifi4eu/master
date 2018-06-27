@@ -1,8 +1,8 @@
 package wifi4eu.wifi4eu.mapper.exportImport;
 
 import org.mapstruct.Mapper;
-import wifi4eu.wifi4eu.common.dto.model.ValidatedLEFDTO;
-import wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF;
+import wifi4eu.wifi4eu.common.dto.model.ValidateLEFDTO;
+import wifi4eu.wifi4eu.entity.exportImport.ValidateLEF;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ExportImportValidatedLefMapper {
 
-      ValidatedLEFDTO toDTO(ValidatedLEF entity);
-      ValidatedLEF toEntity(ValidatedLEFDTO vo);
-      List<ValidatedLEFDTO> toDTOList(List<ValidatedLEF> list);
-      List<ValidatedLEF> toEntityList(List<ValidatedLEFDTO> list);
+      ValidateLEFDTO toDTO(ValidateLEF entity);
+      ValidateLEF toEntity(ValidateLEFDTO vo);
+      List<ValidateLEFDTO> toDTOList(List<ValidateLEF> list);
+      List<ValidateLEF> toEntityList(List<ValidateLEFDTO> list);
 
 }

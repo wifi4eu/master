@@ -6,6 +6,6 @@ import wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF;
 
 
 public interface ValidatedLEFRepository extends CrudRepository<ValidatedLEF,Integer> {
-    @Query(value = "SELECT \"idLef\" FROM VALIDATED_LEF", nativeQuery = true)
+    @Query(value = "SELECT \"idLef\", \"STATUS\" FROM VALIDATED_LEF", nativeQuery = true)
     Iterable<ValidatedLEF> findLEF();
 }
