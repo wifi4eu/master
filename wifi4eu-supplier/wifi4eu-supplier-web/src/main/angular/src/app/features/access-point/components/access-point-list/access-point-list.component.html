@@ -27,7 +27,7 @@
                 </p>
             </div>
             <div class="col-md-4 text-right btn-flat-link">
-                <ux-button [isFlat]="true" [isLarge]="true" (click)="openUpdateAccessPoint()" typeClass="link" [isDisabled]="beneficiary.wifiIndicator">+ {{ 'accessPoint.add' | translate }}</ux-button>
+                <ux-button [isFlat]="true" [isLarge]="true" (click)="openUpdateAccessPoint()" typeClass="link" [isDisabled]="disablePermissionsIndicator()">+ {{ 'accessPoint.add' | translate }}</ux-button>
             </div>
         </div>
 

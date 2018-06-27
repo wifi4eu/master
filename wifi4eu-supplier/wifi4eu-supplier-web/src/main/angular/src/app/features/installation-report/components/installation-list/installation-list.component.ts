@@ -129,10 +129,6 @@ export class InstallationListComponent implements OnInit {
     }
 
     disablePermissionsIndicator(){
-        // return true -> not able to click
-        // return false -> able to click
-        console.log("submission : "+this.beneficiaryService.beneficiarySelected.installationSiteSubmission);
-        console.log("rejection : "+this.beneficiaryService.beneficiarySelected.installationSiteRejection);
         if (this.beneficiaryService.beneficiarySelected){
             if (this.beneficiaryService.beneficiarySelected.installationSiteConfirmation){
                 return true;

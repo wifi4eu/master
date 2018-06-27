@@ -71,4 +71,21 @@ export class AccessPointListComponent {
         this.uxService.openModal('updateAccessPoint');
     }
 
+    disablePermissionsIndicator(){
+        if (this.beneficiaryService.beneficiarySelected){
+            if (this.beneficiaryService.beneficiarySelected.installationSiteConfirmation){
+                return true;
+            }
+            if (this.beneficiaryService.beneficiarySelected.installationSiteSubmission && this.beneficiaryService.beneficiarySelected.installationSiteRejection == null){
+                return true;
+            } else {
+                if (this.beneficiaryService.beneficiarySelected.installationSiteRejection && (this.beneficiaryService.beneficiarySelected.installationSiteSubmission > this.beneficiaryService.beneficiarySelected.installationSiteRejection)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
 }
