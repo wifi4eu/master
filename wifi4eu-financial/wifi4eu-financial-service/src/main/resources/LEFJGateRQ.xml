@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+  <env:Header/>
+  <S:Body>
+    <interface:CreateLegalEntityRequest 
+    xmlns:interface="http://ec.europa.eu/rdg/jagate/ws/legalentity/v6/interfaces" 
+    xmlns:lev11="http://ec.europa.eu/research/fp/model/legalentity/V11" 
+    xmlns:heV2="http://ec.europa.eu/research/fp/model/header/V1" 
+    xmlns:persV2="http://ec.europa.eu/research/fp/model/person/V2" 
+    xmlns:persV4="http://ec.europa.eu/research/fp/model/person/V4" 
+    xmlns:scV1="http://ec.europa.eu/research/fp/model/service-context/V2" 
+    xmlns:shV1="http://ec.europa.eu/research/fp/model/service-health/V1" 
+    xmlns:adr="http://ec.europa.eu/research/fp/model/address/V2" 
+    xmlns:ns12="http://ec.europa.eu/research/fp/model/code-ref/V3" 
+    xmlns:ns6="http://ec.europa.eu/research/fp/model/address/V4" 
+    xmlns:ns7="http://ec.europa.eu/research/fp/model/bankaccount/V2" 
+    xmlns:ns11="http://ec.europa.eu/research/fp/model/code-ref/V2" 
+    xmlns:ns2="http://ec.europa.eu/rdg/jagate/ws/domain/legalentity/v6" 
+    xmlns:ns4="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" 
+    xmlns:ns0="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2">
+      <interface:publicLawBody>
+        <ns2:LanguageCode>
+          <ns12:Id>20001224</ns12:Id>
+          <ns12:Abbreviation>pt</ns12:Abbreviation>
+          <ns12:Description>Portuguese</ns12:Description>
+        </ns2:LanguageCode>
+        <ns2:OfficialName>MUNICIPIO ILHAVO</ns2:OfficialName>
+        <ns2:Address>
+          <ns2:Street>AVENIDA 25 DE ABRIL</ns2:Street>
+          <ns2:PoBox>000</ns2:PoBox>
+          <ns2:PostalCode>3830 044</ns2:PostalCode>
+          <ns2:City>ILHAVO</ns2:City>
+          <ns2:Country>
+            <ns12:Id>20000990</ns12:Id>
+            <ns12:Abbreviation>PT</ns12:Abbreviation>
+            <ns12:Description>Portugal</ns12:Description>
+          </ns2:Country>
+        </ns2:Address>
+        <ns2:VAT>PT506920887</ns2:VAT>
+        <ns2:RegistrationInfo>
+          <ns2:RegistrationAuthority>ILHAVO</ns2:RegistrationAuthority>
+          <ns2:RegistrationDate>1990-01-01+01:00</ns2:RegistrationDate>
+          <ns2:RegistrationNumber>506920887</ns2:RegistrationNumber>
+          <ns2:SecondaryRegistrationNumber/>
+        </ns2:RegistrationInfo>
+        <ns2:AccountGroup>OTHER_PUBLIC_BODIES</ns2:AccountGroup>
+        <ns2:AbacLegalForm>
+          <ns12:Id>31043561</ns12:Id>
+          <ns12:Abbreviation>PT_UNK</ns12:Abbreviation>
+          <ns12:Description>UNKNOWN</ns12:Description>
+        </ns2:AbacLegalForm>
+        <ns2:NonProfit>true</ns2:NonProfit>
+      </interface:publicLawBody>
+      <interface:aresDocumentList>
+        <ns0:AresDocument>
+          <ns0:AresReference>Ares(2018)3214293</ns0:AresReference>
+          <ns0:Description>No comments</ns0:Description>
+        </ns0:AresDocument>
+      </interface:aresDocumentList>
+      <interface:visa>
+        <ns4:AgentId>dalesal</ns4:AgentId>
+        <ns4:WorkflowCenterCode>REA_OPERATIONAL</ns4:WorkflowCenterCode>
+        <ns4:DG>31016199</ns4:DG>
+      </interface:visa>
+    </interface:CreateLegalEntityRequest>
+  </S:Body>
+</S:Envelope>
