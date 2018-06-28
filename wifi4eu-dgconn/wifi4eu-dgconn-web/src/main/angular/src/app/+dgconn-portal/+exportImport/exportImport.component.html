@@ -21,9 +21,10 @@
     </div>
     <br/><br/>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div type="file" class="panelItem ui-g-12">
+        <div class="panelItem ui-g-12" style="cursor: initial;">
             <span class="beneficiaryMayor">Import Legal Entities file from ABAC</span>
             <p>This button will import to the portal the legal entities file created in ABAC.</p>
+            <input type="file" class="myButton" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json"/>
         </div>
     </div>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
@@ -78,7 +79,7 @@
     <hr class="genericHr">
     <span class="ui-g-12"><b>Global Commitments</b></span>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12">
+        <div class="panelItem ui-g-12 panelDisabled">
             <span class="beneficiaryMayor">Configure Global Commitments</span>
             <p>Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor.</p>
         </div>
@@ -86,7 +87,13 @@
     <br/><br/>
 </div>
 
-
+<p-dialog [(visible)]="processingOperation" [modal]="true" [responsive]="true" [resizable]="false"
+          [draggable]="false" [closable]="false">
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
+    <div style="text-align: center;font-size: 4em;margin: 1em 0em;">
+        <i [@enterSpinner] class="fa fa-spinner loading-icon" style="text-align: center;"></i>
+    </div>
+</p-dialog>
 
 <!--<html>-->
 <!--<head>-->
