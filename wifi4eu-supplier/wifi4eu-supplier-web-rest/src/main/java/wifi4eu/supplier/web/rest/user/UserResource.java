@@ -2,8 +2,8 @@ package wifi4eu.supplier.web.rest.user;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
-    Logger _log = LoggerFactory.getLogger(UserResource.class);
+    Logger _log = LogManager.getLogger(UserResource.class);
 
     @ApiOperation(value = "Service to do Login with a ECAS User")
     @RequestMapping(value = "/ecaslogin", method = RequestMethod.POST, produces = "application/json")
@@ -35,9 +35,7 @@ public class UserResource {
             UserDTO userDTO = userService.getUserByUserContext(userContext);
             return new ResponseDTO(true, userDTO, null);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'login' with ECAS operation.", e);
-            }
+            _log.error(" - Cannot login with ECAS User", e);
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }

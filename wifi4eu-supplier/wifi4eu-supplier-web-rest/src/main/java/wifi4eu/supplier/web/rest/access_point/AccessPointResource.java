@@ -2,12 +2,15 @@ package wifi4eu.supplier.web.rest.access_point;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.access_point.AccessPoint;
 import wifi4eu.wifi4eu.service.access_point.AccessPointService;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.Map;
 
@@ -19,6 +22,11 @@ public class AccessPointResource {
 
     @Autowired
     AccessPointService accessPointService;
+
+    @Autowired
+    UserService userService;
+
+    Logger _log = LogManager.getLogger(AccessPointResource.class);
 
     @ApiOperation(value = "Get all Access Points per installation site ID")
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = "application/json")
