@@ -679,12 +679,12 @@
   "dgConn.voucherAssignment.warning.noVoucherForCall": "No voucher data found for this call, run the simulation",
   "dgConn.voucherAssignment.error.retrievingList": "Error retrieving list.",
   "dgConn.voucherAssignment.error.rejectingApplication": "An error occurred while rejecting an application.",
-  "dgConn.voucherAssignment.error.selectingApplication": "An error occurred while selecting the list.",
+  "dgConn.voucherAssignment.error.selectingApplication": "An error occurred while selecting an application.",
   "dgConn.voucherAssignment.error.exportExcel": "An error occurred while downloading the list.",
   "dgConn.voucherAssignment.error.sendingNotifications": "An error occurred while sending notifications.",
   "dgConn.voucherAssignment.error.checkPreList": "An error occured while checking if pre-list is enabled",
   "dgConn.voucherAssignment.error.runningSimulation": "An error occurred while simulating.",
-  "dgConn.voucherAssignment.error.savingFreezeList": "An error occurred while freezing list.",
+  "dgConn.voucherAssignment.error.savingFreezeList": "An error occurred while freezing the list.",
   "dgConn.voucherAssignment.error.savingPreList": "An error occurred while saving pre-list.",
   "dgConn.voucherAssignment.error.checkFreezeList": "An error occured while checking if freeze list is enabled"
 }

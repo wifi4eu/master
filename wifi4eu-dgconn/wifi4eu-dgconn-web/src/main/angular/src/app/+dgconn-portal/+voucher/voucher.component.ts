@@ -174,20 +174,16 @@ export class DgConnVoucherComponent {
                   let date = new Date(this.callVoucherAssignment.preListExecutionDate);
                   this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                   this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
-                  if(!data.hasFreezeListSaved && !data.hasPreListSaved){
-                    this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
-                      this.preSelectedEnabledButton = response;
-                      console.log(response);
-                      if(!response){
-                        this.sharedService.growlTranslation('It\'s not possible to pre-save the list with applications left to be validated.', 'dgConn.voucherAssignment.warning.savingPreList', 'warn');
-                      }
-                    },(error) => { 
-                      this.sharedService.growlTranslation('An error occured while checking if pre-list is enabled', 'dgConn.voucherAssignment.error.checkPreList', 'error');
-                    })
-                  }
-                  if(data.hasPreListSaved && !data.hasFreezeListSaved){
-                    this.checkFreezeListEnabled();
-                  }
+                  this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
+                    this.preSelectedEnabledButton = response;
+                  },(error) => { 
+                    this.sharedService.growlTranslation('An error occured while checking if pre-list is enabled', 'dgConn.voucherAssignment.error.checkPreList', 'error');
+                  })
+                  this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
+                    this.freezeButtonEnabled = enabled;
+                  }, (error) => {
+                    this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
+                  });
                   if(data.hasFreezeListSaved){
                     this.voucherApi.getVoucherAssignmentByCallAndStatus(this.callSelected.id, 3).subscribe(
                       (response: VoucherAssignmentAuxiliarDTO) => {
@@ -230,7 +226,7 @@ export class DgConnVoucherComponent {
   private checkFreezeListEnabled(){
     this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
       this.freezeButtonEnabled = enabled;
-      if(enabled){
+      if(!enabled){
         this.sharedService.growlTranslation('It\'s not possible to freeze the list with applications left to be validated.', 'dgConn.voucherAssignment.warning.savingFreezeList', 'warn');
       }
     }, (error) => {
@@ -393,7 +389,11 @@ export class DgConnVoucherComponent {
           this.callVoucherAssignment.id = resp.data.id;
         }
         this.loadPage();
-        this.checkFreezeListEnabled();
+        this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
+          this.freezeButtonEnabled = enabled;
+        }, (error) => {
+          this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
+        });
         this.loadingSimulation = false;
       }, (error) => {
         this.sharedService.growlTranslation('An error occurred while simulating.', 'dgConn.voucherAssignment.error.runningSimulation', 'error');
@@ -441,7 +441,7 @@ export class DgConnVoucherComponent {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
     }, error => {
-      this.sharedService.growlTranslation('An error ocurred while rejecting an application.', 'dgConn.voucherAssignment.error.rejectingApplication', 'error');
+      this.sharedService.growlTranslation('An error occurred while rejecting an application.', 'dgConn.voucherAssignment.error.rejectingApplication', 'error');
     })
   }
 
@@ -453,15 +453,14 @@ export class DgConnVoucherComponent {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
     }, error => {
-      this.sharedService.growlTranslation('An error ocurred while selecting the list.', 'dgConn.voucherAssignment.error.selectingApplication', 'error');
+      this.sharedService.growlTranslation('An error occurred while selecting an application.', 'dgConn.voucherAssignment.error.selectingApplication', 'error');
     }) 
   }
 
   private freezeList(){
-    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment != null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
-      return;
+    if(this.checkFreezeListEnabled()){
+      this.displayFreezeConfirmation = true;
     }
-    this.displayFreezeConfirmation = true;
   }
 
   private saveFreezeList(saveFreezeBtn){
@@ -478,7 +477,7 @@ export class DgConnVoucherComponent {
       this.loadPage();
       saveFreezeBtn.disabled = false;
     }, error => {
-      this.sharedService.growlTranslation('An error occurred while freezing list.', 'dgConn.voucherAssignment.error.savingFreezeList', 'error');
+      this.sharedService.growlTranslation('An error occurred while freezing the list.', 'dgConn.voucherAssignment.error.savingFreezeList', 'error');
     });    
   }
 
