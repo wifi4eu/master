@@ -48,7 +48,7 @@ public class UserFilterMocked extends OncePerRequestFilter {
         } catch (Exception e) {
             throw new AppException(e);
         } finally {
-        UserHolder.clearUser();
-    }
+            UserHolder.clearUser();
+        }
     }
 }

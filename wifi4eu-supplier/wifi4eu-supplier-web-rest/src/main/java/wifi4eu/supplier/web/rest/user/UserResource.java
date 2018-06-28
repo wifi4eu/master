@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 @Api(value = "/user", description = "User object REST API services")
 @RequestMapping("user")
 public class UserResource {
+
     @Autowired
     private UserService userService;
 
