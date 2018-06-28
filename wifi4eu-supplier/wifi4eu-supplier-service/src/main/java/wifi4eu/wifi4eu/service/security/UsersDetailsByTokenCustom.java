@@ -14,11 +14,6 @@ import wifi4eu.wifi4eu.service.user.UserService;
 
 public class UsersDetailsByTokenCustom <T extends Authentication> implements AuthenticationUserDetailsService<T>, InitializingBean {
 
-    @Autowired
-    UserService userService;
-
-    private final Logger _log = LogManager.getLogger(UsersDetailsByTokenCustom.class);
-
     private CacheUserDetailsServiceCustom userDetailsServiceCustom = null;
 
     public UsersDetailsByTokenCustom(CacheUserDetailsServiceCustom userDetailsServiceCustom) {

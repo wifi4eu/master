@@ -29,7 +29,7 @@ import java.util.Locale;
 @Service
 public class UserService {
 
-    private final Logger _log = LogManager.getLogger(SupplierService.class);
+    private final Logger _log = LogManager.getLogger(UserService.class);
 
     @Value("${mail.server.location}")
     private String baseUrl;
@@ -41,14 +41,7 @@ public class UserService {
     UserRepository userRepository;
 
     @Autowired
-    RightRepository rightRepository;
-
-    @Autowired
     PermissionChecker permissionChecker;
-
-    @Autowired
-    SupplierService supplierService;
-
 
     /**
      * The language used in user browser
@@ -66,18 +59,6 @@ public class UserService {
 
     public UserDTO getUserByEmail(String email) {
         return userMapper.toDTO(userRepository.findByEmail(email));
-    }
-
-    @Transactional
-    public UserDTO createUser(UserDTO userDTO) throws Exception {
-        UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
-        if (searchUser != null) {
-            userDTO.setPassword(searchUser.getPassword());
-            throw new Exception("User already registered.");
-        }
-        UserDTO resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
-        /*sendActivateAccountMail(resUser);*/
-        return resUser;
     }
 
     @Transactional

@@ -40,12 +40,12 @@ public class CacheUserDetailsServiceCustom {
 
                 } catch (ExpiredJwtException ex) {
 
-                    _log.info("JWT expired: " + ex.getMessage());
+                    _log.error("JWT expired: " + ex.getMessage(), ex);
                     hashEmail = (String) ex.getClaims().get("email");
                     return new User(hashEmail, "", true, true, false, true, Collections.EMPTY_SET);
 
                 } catch (SignatureException ex) {
-                    _log.info(ex.getMessage(), ex);
+                    _log.error("Signature exception: "+ ex.getMessage(), ex);
                     throw ex;
                 }
 
@@ -63,7 +63,7 @@ public class CacheUserDetailsServiceCustom {
                 throw new BadCredentialsException("Incorrect format header");
             }
         } catch (Exception ex) {
-            _log.info(ex.getMessage(), ex);
+            _log.error(ex.getMessage(), ex);
             return new User(hashEmail, "", true, true, false, true, Collections.EMPTY_SET);
         }
 

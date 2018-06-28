@@ -8,8 +8,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.token.TokenGenerator;
 import wifi4eu.wifi4eu.entity.installation.InstallationSite;
 import wifi4eu.wifi4eu.entity.installation.InstallationSiteWhitelist;
@@ -60,6 +63,9 @@ public class InstallationSiteService {
     private String[] FIELDS_INSTALLATION_SITE_ACCEPT = {"name", "domain_name", "number"};
 
     public ResponseDTO findInstallationSitesByBeneficiariesOrdered(Map<String, Object> map) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+
         ResponseDTO response = new ResponseDTO();
         if (!map.isEmpty()) {
             String order = "asc";
@@ -72,10 +78,15 @@ public class InstallationSiteService {
                     ("id_beneficiary")) == 1) {
 
                 id_beneficiary = (int) map.get("id_beneficiary");
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Searching installation site by " +
+                        "municipality id: ", id_beneficiary);
 
                 // check permissions
-                if (!checkPermissions((int) map.get("id_beneficiary"), null))
+                if (!checkPermissions((int) map.get("id_beneficiary"), null)) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to " +
+                            "access");
                     return permissionChecker.getAccessDeniedResponse();
+                }
 
                 try {
 
@@ -109,16 +120,22 @@ public class InstallationSiteService {
                     mapResult.put("count", countResults);
                     response.setSuccess(true);
                     response.setData(mapResult);
+                    _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Installation Sites retrieved " +
+                            "successfully");
 
                 } catch (Exception ex) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Invalid fields when searching" +
+                            " installation sites by municipality id:" + id_beneficiary + " . ERROR:", ex);
                     response.setSuccess(false);
                     response.setError(new ErrorDTO(400, "error.400.invalidFields"));
                 }
             } else {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiary not found");
                 response.setSuccess(false);
                 response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
             }
         } else {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - No data");
             response.setSuccess(false);
             response.setError(new ErrorDTO(400, "error.400.noData"));
         }
@@ -139,6 +156,8 @@ public class InstallationSiteService {
 
     public ResponseDTO addAndUpdateInstallationSite(Map<String, Object> map) {
         ResponseDTO response = new ResponseDTO();
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (!map.isEmpty()) {
 
             boolean control = true;
@@ -160,12 +179,19 @@ public class InstallationSiteService {
                 InstallationSite installationSite;
                 //if there's no id, we have to create a new installation site
                 if (!map.containsKey("id")) {
+                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding a new installationSite" +
+                            ".");
+
                     //check permissions
-                    if (!checkPermissions((int) map.get("municipality"), null))
+                    if (!checkPermissions((int) map.get("municipality"), null)) {
+                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions " +
+                                "to access");
                         return permissionChecker.getAccessDeniedResponse();
+                    }
 
                     //system should check the URL of the captive portal is unique.
                     if (url != null && installationSiteRepository.countInstallationSiteByUrl(url) >= 1) {
+                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Duplicated URL");
                         response.setSuccess(false);
                         response.setError(new ErrorDTO(409, "error.409.duplicatedUrl"));
                         return response;
@@ -185,14 +211,24 @@ public class InstallationSiteService {
                         token = new TokenGenerator().generate();
                     }
                     installationSite.setIdNetworkSnippet(token);
+                    installationSite.setMunicipality((int) map.get("municipality"));
+                    installationSite.setStatus(1);
 
                 } else {
+                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating the installationSite" +
+                            " with the id: " + (int) map.get("id"));
+
                     // check permissions
-                    if (!checkPermissions((int) map.get("municipality"), (int) map.get("id")))
+                    if (!checkPermissions((int) map.get("municipality"), (int) map.get("id"))) {
+                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions " +
+                                "to access");
                         return permissionChecker.getAccessDeniedResponse();
+                    }
 
                     //system should check the URL of the captive portal is unique.
-                    if (url != null && installationSiteRepository.countInstallationSiteByUrlAndIdNotIn(url, (int) map.get("id")) >= 1) {
+                    if (url != null && installationSiteRepository.countInstallationSiteByUrlAndIdNotIn(url, (int) map
+                            .get("id")) >= 1) {
+                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Duplicated URL");
                         response.setSuccess(false);
                         response.setError(new ErrorDTO(409, "error.409.duplicatedUrl"));
                         return response;
@@ -206,6 +242,7 @@ public class InstallationSiteService {
                     URL uri = new URL(tempUrl);
                     domain = uri.getHost().startsWith("www.") ? uri.getHost().substring(4) : uri.getHost();
                 } catch (MalformedURLException ex) {
+                    _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Malformed URL.");
                     domain = url;
                 }
 
@@ -217,19 +254,23 @@ public class InstallationSiteService {
                     whitelistRepository.save(whitelist);
                 }
 
-                installationSite.setMunicipality((int) map.get("municipality"));
                 installationSite.setName((String) map.get("name"));
                 installationSite.setUrl(url);
                 installationSite.setDomainName(domain);
-                installationSite.setStatus(1);
                 installationSiteRepository.save(installationSite);
                 response.setSuccess(true);
                 response.setData(installationSite);
+
+                _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Successfully added/updated " +
+                        "installationSite!");
+
             } else {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Invalid Fields");
                 response.setSuccess(false);
                 response.setError(new ErrorDTO(400, "error.400.invalidFields"));
             }
         } else {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - No data");
             response.setSuccess(false);
             response.setError(new ErrorDTO(400, "error.400.noData"));
         }
@@ -247,16 +288,25 @@ public class InstallationSiteService {
     }
 
     public ResponseDTO getInstallationReport(int id) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         ResponseDTO response = new ResponseDTO();
         InstallationSite installationSite = installationSiteRepository.findInstallationSiteById(id);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " -  Trying to view the installation site " +
+                "details: " + id);
         if (installationSite != null) {
             // check permissions
-            if (!checkPermissions(installationSite.getMunicipality(), id))
+            if (!checkPermissions(installationSite.getMunicipality(), id)) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to " +
+                        "access");
                 return permissionChecker.getAccessDeniedResponse();
+            }
 
             response.setSuccess(true);
             response.setData(installationSite);
         } else {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Installation site not found, id: " +
+                    id);
             response.setSuccess(false);
             response.setError(new ErrorDTO(404, "error.404.installationSitesNotFound"));
         }
@@ -264,22 +314,35 @@ public class InstallationSiteService {
     }
 
     public ResponseDTO removeInstallationReport(int id) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " -  Trying to remove the installation site: " +
+                "" + id);
+
         ResponseDTO response = new ResponseDTO();
         InstallationSite installationSite = installationSiteRepository.findInstallationSiteById(id);
         if (installationSite != null) {
             // check permissions
-            if (!checkPermissions(installationSite.getMunicipality(), id))
+            if (!checkPermissions(installationSite.getMunicipality(), id)) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to " +
+                        "access");
                 return permissionChecker.getAccessDeniedResponse();
-
+            }
             // the domain will be removed from the whitelist
             if (installationSiteRepository.countInstallationSiteByDomainName(installationSite.getDomainName()) == 1L) {
-                InstallationSiteWhitelist whitelist = installationSiteWhitelistRepository.findInstallationSiteWhitelistByOrigin(installationSite.getDomainName());
+                InstallationSiteWhitelist whitelist = installationSiteWhitelistRepository
+                        .findInstallationSiteWhitelistByOrigin(installationSite.getDomainName());
                 whitelistRepository.delete(whitelist);
             }
             installationSiteRepository.delete(id);
             response.setSuccess(true);
             response.setData("Deleted successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Removed the installation site successfully: " +
+                    "" + id);
+
         } else {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Installation site not found, id: " +
+                    id);
             response.setSuccess(false);
             response.setError(new ErrorDTO(404, "error.404.installationSitesNotFound"));
         }
