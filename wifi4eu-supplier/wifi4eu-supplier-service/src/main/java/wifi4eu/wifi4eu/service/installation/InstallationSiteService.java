@@ -304,6 +304,8 @@ public class InstallationSiteService {
 
             response.setSuccess(true);
             response.setData(installationSite);
+
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Installation site details retrieved successfully");
         } else {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Installation site not found, id: " +
                     id);
