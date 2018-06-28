@@ -450,6 +450,9 @@ export class DgConnVoucherComponent {
   private freezeList(){
     this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
       this.displayFreezeConfirmation = enabled;
+      if(!enabled){
+        this.sharedService.growlTranslation('It\'s not possible to freeze the list with applications left to be validated', 'dgConn.voucherAssignment.warning.savingFreezeList','warn');
+      }
     }, (error) => {
       this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
     });
