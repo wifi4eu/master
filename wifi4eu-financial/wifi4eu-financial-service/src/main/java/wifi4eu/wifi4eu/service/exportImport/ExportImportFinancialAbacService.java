@@ -75,7 +75,8 @@ public class ExportImportFinancialAbacService {
 //                application.setLcExport(exportDate);
 //                benPubSupRepository.save(benPubSupMapper.toEntity(application));
                 JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
-                applicationsLEFJsonArray.add(applicationJson+", {\"status\":MOD/0}");
+                //applicationsLEFJsonArray.add(applicationJson+", {\"status\":MOD/0}");
+                applicationsLEFJsonArray.add(applicationJson);
             }
         }
 //        resultJson.addProperty("version", _version);
