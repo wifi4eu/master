@@ -38,60 +38,72 @@ public class AccessPointService {
     @Autowired
     PermissionChecker permissionChecker;
 
+    @Autowired
+    UserService userService;
+
+    Logger _log = LogManager.getLogger(AccessPointService.class);
+
     // TODO missing field number (not appears on DB)
     // TODO missing device_type field
     private String[] FIELDS_ACCESS_POINTS_ORDER = {"number", "location", "location_type", "device_brand",
             "device_type", "model_number", "serial_number", "mac_address", "isIndoor"};
 
-    @Autowired
-    UserService userService;
-
-    private final Logger _log = LogManager.getLogger(AccessPointService.class);
-
     @Transactional
     public ResponseDTO deleteAccessPointById(int id) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Submitting beneficiary registration");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Removing access point by id " + id);
 
         ResponseDTO response = new ResponseDTO();
         AccessPoint accessPoint = accessPointRepository.findOne(id);
         if (accessPoint != null) {
-            if (!checkPermissions(accessPoint.getIdInstallationSite(), id))
+            if (!checkPermissions(accessPoint.getIdInstallationSite(), id)){
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to remove this access point");
                 return permissionChecker.getAccessDeniedResponse();
+            }
+
             accessPointRepository.delete(id);
             response.setSuccess(true);
             response.setData("Deleted successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Access point removed successfully");
         } else {
             response.setSuccess(false);
             response.setData("Error");
             response.setError(new ErrorDTO(404, "error.404.accessPointNotFound"));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Access point with id "+ id + "cannot been found");
         }
         return response;
     }
 
     @Transactional
     public ResponseDTO getAccessPointById(int id) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving access points by id " + id);
         ResponseDTO response = new ResponseDTO();
         AccessPoint accessPoint = accessPointRepository.findOne(id);
         if (accessPoint != null) {
-
-            if (!checkPermissions(accessPoint.getIdInstallationSite(), id))
+            if (!checkPermissions(accessPoint.getIdInstallationSite(), id)) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
                 return permissionChecker.getAccessDeniedResponse();
-
+            }
             response.setSuccess(true);
-            response.setData(accessPointRepository.findOne(id));
+            response.setData(accessPoint);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Access point retrieved correctly");
         } else {
             response.setSuccess(false);
             response.setData("Error");
             response.setError(new ErrorDTO(404, "error.404.accessPointNotFound"));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Access point with id "+ id + "cannot been found");
         }
         return response;
     }
 
     @Transactional
     public ResponseDTO addOrUpdateAccessPoint(Map<String, Object> map) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding or updating access point");
         ResponseDTO response = new ResponseDTO();
         if (!map.isEmpty()) {
             if (map.containsKey("idInstallationSite") && installationSiteRepository.countInstallationSiteById((int)
@@ -100,24 +112,31 @@ public class AccessPointService {
                     // update access point
                     AccessPoint accessPoint = accessPointRepository.findOne((int) map.get("id"));
                     if (accessPoint != null) {
-                        if (!checkPermissions(accessPoint.getIdInstallationSite(), accessPoint.getId()))
+                        if (!checkPermissions(accessPoint.getIdInstallationSite(), accessPoint.getId())){
+                            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to update access point");
                             return permissionChecker.getAccessDeniedResponse();
+                        }
 
                         if (setAccessPointFields(map, accessPoint, false)) {
                             accessPointRepository.save(accessPoint);
                             response.setSuccess(true);
                             response.setData(accessPoint);
+                            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Access point updated successfully");
                         } else {
                             response.setSuccess(false);
                             response.setError(new ErrorDTO(400, "error.400.invalidFields"));
+                            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The fields are invalid");
                         }
                     } else {
                         response.setSuccess(false);
                         response.setError(new ErrorDTO(404, "error.404.accessPointNotFound"));
+                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Access point cannot been found");
                     }
                 } else {
-                    if (!checkPermissions((int) map.get("idInstallationSite"), null))
+                    if (!checkPermissions((int) map.get("idInstallationSite"), null)){
+                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to add access point");
                         return permissionChecker.getAccessDeniedResponse();
+                    }
 
                     // add new access point
                     AccessPoint accessPoint = new AccessPoint();
@@ -125,18 +144,22 @@ public class AccessPointService {
                         accessPointRepository.save(accessPoint);
                         response.setSuccess(true);
                         response.setData(accessPoint);
+                        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Access point added successfully");
                     } else {
                         response.setSuccess(false);
                         response.setError(new ErrorDTO(400, "error.400.invalidFields"));
+                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The fields are invalid");
                     }
                 }
             } else {
                 response.setSuccess(false);
                 response.setError(new ErrorDTO(404, "error.404.installationSitesNotFound"));
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Installation site not found");
             }
         } else {
             response.setSuccess(false);
             response.setError(new ErrorDTO(400, "error.400.noData"));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Data not found");
         }
 
         return response;
@@ -206,6 +229,9 @@ public class AccessPointService {
 
     @Transactional
     public ResponseDTO findAccessPointsPerInstallationSite(Map<String, Object> map) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Finding access poitns per installation site ");
         ResponseDTO response = new ResponseDTO();
         // we should check if it's null. We don't have the class Validation
         if (!map.isEmpty()) {
@@ -220,8 +246,10 @@ public class AccessPointService {
 
                 id_installationSite = (int) map.get("id_installationSite");
 
-                if (!checkPermissions((int) map.get("id_installationSite"), null))
+                if (!checkPermissions((int) map.get("id_installationSite"), null)){
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
                     return permissionChecker.getAccessDeniedResponse();
+                }
 
                 try {
 
@@ -258,16 +286,18 @@ public class AccessPointService {
                 } catch (Exception ex) {
                     response.setSuccess(false);
                     response.setError(new ErrorDTO(400, "error.400.invalidFields"));
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The fields are invalid");
                 }
             } else {
                 response.setSuccess(false);
                 response.setError(new ErrorDTO(404, "error.404.installationSitesNotFound"));
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Installation site not found");
             }
         } else {
             response.setSuccess(false);
             response.setError(new ErrorDTO(400, "error.400.noData"));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Empty body");
         }
-
         return response;
     }
 
