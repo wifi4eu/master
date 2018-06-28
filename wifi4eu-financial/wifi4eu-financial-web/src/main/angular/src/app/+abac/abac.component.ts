@@ -28,8 +28,8 @@ export class AbacComponent {
                 this.jsonFile = event.target.files['0'];
                 let reader = new FileReader();
                 reader.onload = (e) => {
-                    //var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
-                    var myWindow =window.open("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
+                     var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
+                    //var myWindow =window.open("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
                     this.exportImportApi.importLegalEntityF(reader.result).subscribe(
                         (response: ResponseDTO) => {
                             if (response.success) {
@@ -62,8 +62,8 @@ export class AbacComponent {
             this.jsonFile = event.target.files['0'];
             let reader = new FileReader();
             reader.onload = (e) => {
-                //var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
-                var myWindow =window.open("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
+                var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
+                //var myWindow =window.open("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
                 this.exportImportApi.importBudgetaryCommitment(reader.result).subscribe(
                     (response: ResponseDTO) => {
                         if (response.success) {
@@ -89,8 +89,8 @@ export class AbacComponent {
     }
 
     exportLegalEntityFBCValidate() {
-            //var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
-            var myWindow =window.open("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
+            var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
+            //var myWindow =window.open("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
             this.exportImportApi.exportLegalEntityFBCValidate().subscribe(
                 (response: ResponseDTO) => {
                     if (response.success) {

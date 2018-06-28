@@ -55,6 +55,7 @@ public class CallAbac {
 
     public void readImportFileLEF(JmsProducerLocal jmsProducer, String xml) throws NamingException, BudgSOAException, FieldGroup.CommitException {
         _log.info("readImportFileLEF");
+
         //String message=xml;
         String message = "<v3:LegalEntityCreateRequest xmlns:v3=\"http://www.ec.europa.eu/budg/abac/legal_entity/v3\" xmlns:rep=\"http://www.ec.europa.eu/budg/report\">\n" +
                     "<v2:MessageHeader xmlns:v2=\"http://www.ec.europa.eu/budg/abac/kernel/v2\"/>\n" +
@@ -104,6 +105,7 @@ public class CallAbac {
                     "<v2:WorkflowOrganisationName xmlns:v2=\"http://www.ec.europa.eu/budg/abac/associated_object/v2\">PMO</v2:WorkflowOrganisationName>\n" +
                     "</v3:Visa>\n" +
                     "</v3:LegalEntityCreateRequest>\n";
+
 
         buildMessagesContainer();
         buildMessageInfoTable();
@@ -239,8 +241,8 @@ public class CallAbac {
         //}
 
 //        InitialContext ic = new InitialContext();
-//        jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
-//        soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");
+//        jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu/wifi4eu-financial-web/JmsProducer");
+//        soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu/wifi4eu-financial-web/SoatubeWSClient");
 
         buildMessagesContainer();
         buildMessageInfoTable();

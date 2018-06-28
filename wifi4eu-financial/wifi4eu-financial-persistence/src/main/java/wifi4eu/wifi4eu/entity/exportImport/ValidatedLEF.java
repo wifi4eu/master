@@ -12,10 +12,14 @@ public class ValidatedLEF {
     @Id
     private Integer idLef;
 
+    @Column(name = "STATUS")
+    private String status;
+
     public ValidatedLEF() {}
 
-    public ValidatedLEF(Integer idLef) {
+    public ValidatedLEF(Integer idLef, String status) {
         this.idLef = idLef;
+        this.status = status;
     }
 
     public Integer getIdLef() {
@@ -26,4 +30,11 @@ public class ValidatedLEF {
         this.idLef = idLef;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

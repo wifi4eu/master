@@ -1,18 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>wifi4eu.wifi4eu</groupId>
-        <version>0.0.1-SNAPSHOT</version>
-        <artifactId>wifi4eu-financial</artifactId>
-    </parent>
-    <artifactId>wifi4eu-financial-service</artifactId>
-    <packaging>jar</packaging>
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>wifi4eu.wifi4eu</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<artifactId>wifi4eu-financial</artifactId>
+	</parent>
+	<artifactId>wifi4eu-financial-service</artifactId>
+	<packaging>jar</packaging>
 
-    <name>WiFi4EU Financial Service module</name>
+	<name>WiFi4EU Financial Service module</name>
+
 
 
     <dependencies>
@@ -31,343 +32,355 @@
             <artifactId>spring-expression</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20160212</version>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20160212</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>wifi4eu-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.7</version>
-        </dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>wifi4eu-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>net.sf.supercsv</groupId>
-            <artifactId>super-csv</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.7</version>
+		</dependency>
 
-        <dependency>
-            <groupId>wifi4eu.wifi4eu</groupId>
-            <artifactId>wifi4eu-financial-persistence</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>net.sf.supercsv</groupId>
+			<artifactId>super-csv</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.16</version>
-        </dependency>
+		<dependency>
+			<groupId>wifi4eu.wifi4eu</groupId>
+			<artifactId>wifi4eu-financial-persistence</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.17</version>
-        </dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.16</version>
+		</dependency>
 
-        <dependency>
-            <groupId>eu.europa.ec.budg.soa.abac.service</groupId>
-            <artifactId>soatube-1-write</artifactId>
-            <version>0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.budg.soa.abac.service</groupId>
-            <artifactId>soatube-1-read</artifactId>
-            <version>0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.vaadin</groupId>-->
-            <!--<artifactId>vaadin-server</artifactId>-->
-            <!--<version>7.7.0</version>-->
-        <!--</dependency>-->
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-themes</artifactId>
-            <version>7.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-cdi</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-client-compiled</artifactId>
-            <version>7.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.14</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>javaee</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>5</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--<dependency>-->
-        <!--<groupId>eu.europa.ec.budg.soa.abac.soatube.service.es.sync</groupId>-->
-        <!--<artifactId>v1</artifactId>-->
-        <!--&lt;!&ndash;<version>0.0</version>&ndash;&gt;-->
-        <!--<scope>provided</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>eu.europa.ec.budg.soa.abac.object</groupId>-->
-        <!--<artifactId>thirdparty-3</artifactId>-->
-        <!--<version>0.1</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>eu.europa.ec.budg.soa.abac.dependency</groupId>-->
-        <!--<artifactId>kernel-1</artifactId>-->
-        <!--<version>0.0</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>eu.europa.ec.budg.soa.abac.object</groupId>-->
-        <!--<artifactId>soatube-1</artifactId>-->
-        <!--<version>1.0</version>-->
-        <!--</dependency>-->
-        <dependency>
-            <groupId>eu.europa.ec.budg.abac</groupId>
-            <artifactId>abac-weblogic</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.budg.abac</groupId>
-            <artifactId>abac-app</artifactId>
-            <version>1.2.0</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.budg.soa.abac.dependency</groupId>
-            <artifactId>kernel-1</artifactId>
-            <version>0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.budg.soa.abac.object</groupId>
-            <artifactId>soatube-1</artifactId>
-            <version>1.0</version>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.17</version>
+		</dependency>
 
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-            <resource>
-                <directory>target/generated-resources</directory>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.bsc.maven</groupId>
-                <artifactId>maven-processor-plugin</artifactId>
-                <version>2.2.4</version>
-                <configuration>
-                    <defaultOutputDirectory>
-                        ${project.build.directory}/generated-sources
-                    </defaultOutputDirectory>
-                    <processors>
-                        <processor>org.mapstruct.ap.MappingProcessor</processor>
-                    </processors>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>process</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>process</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.mapstruct</groupId>
-                        <artifactId>mapstruct-processor</artifactId>
-                        <version>1.1.0.Beta2</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <!--<plugin>-->
-            <!--<groupId>org.bsc.maven</groupId>-->
-            <!--<artifactId>maven-processor-plugin</artifactId>-->
-            <!--<version>2.2.4</version>-->
-            <!--<configuration>-->
-            <!--<defaultOutputDirectory>-->
-            <!--${project.build.directory}/generated-sources-->
-            <!--</defaultOutputDirectory>-->
-            <!--<processors>-->
-            <!--<processor>org.mapstruct.ap.MappingProcessor</processor>-->
-            <!--</processors>-->
-            <!--</configuration>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<id>process</id>-->
-            <!--<phase>generate-sources</phase>-->
-            <!--<goals>-->
-            <!--<goal>process</goal>-->
-            <!--</goals>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--<dependencies>-->
-            <!--<dependency>-->
-            <!--<groupId>org.mapstruct</groupId>-->
-            <!--<artifactId>mapstruct-processor</artifactId>-->
-            <!--<version>1.1.0.Beta2</version>-->
-            <!--</dependency>-->
-            <!--</dependencies>-->
-            <!--</plugin>-->
-            <!--plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>2.4.1</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${basedir}/BudgServiceModel</directory>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.10</version>
+		<dependency>
+			<groupId>eu.europa.ec.budg.soa.abac.service</groupId>
+			<artifactId>soatube-1-write</artifactId>
+			<version>0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.budg.soa.abac.service</groupId>
+			<artifactId>soatube-1-read</artifactId>
+			<version>0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!--<dependency> -->
+		<!--<groupId>com.vaadin</groupId> -->
+		<!--<artifactId>vaadin-server</artifactId> -->
+		<!--<version>7.7.0</version> -->
+		<!--</dependency> -->
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-themes</artifactId>
+			<version>7.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-cdi</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiled</artifactId>
+			<version>7.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javaee</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>5</version>
+			<scope>provided</scope>
+		</dependency>
+		<!--<dependency> -->
+		<!--<groupId>eu.europa.ec.budg.soa.abac.soatube.service.es.sync</groupId> -->
+		<!--<artifactId>v1</artifactId> -->
+		<!--&lt;!&ndash;<version>0.0</version>&ndash;&gt; -->
+		<!--<scope>provided</scope> -->
+		<!--</dependency> -->
+		<!--<dependency> -->
+		<!--<groupId>eu.europa.ec.budg.soa.abac.object</groupId> -->
+		<!--<artifactId>thirdparty-3</artifactId> -->
+		<!--<version>0.1</version> -->
+		<!--</dependency> -->
+		<!--<dependency> -->
+		<!--<groupId>eu.europa.ec.budg.soa.abac.dependency</groupId> -->
+		<!--<artifactId>kernel-1</artifactId> -->
+		<!--<version>0.0</version> -->
+		<!--</dependency> -->
+		<!--<dependency> -->
+		<!--<groupId>eu.europa.ec.budg.soa.abac.object</groupId> -->
+		<!--<artifactId>soatube-1</artifactId> -->
+		<!--<version>1.0</version> -->
+		<!--</dependency> -->
+		<dependency>
+			<groupId>eu.europa.ec.budg.abac</groupId>
+			<artifactId>abac-weblogic</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.budg.abac</groupId>
+			<artifactId>abac-app</artifactId>
+			<version>1.2.0</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.budg.soa.abac.dependency</groupId>
+			<artifactId>kernel-1</artifactId>
+			<version>0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.budg.soa.abac.object</groupId>
+			<artifactId>soatube-1</artifactId>
+			<version>1.0</version>
+		</dependency>
 
-                <executions>
-                    <execution>
-                        <id>unpack-xsd</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>unpack-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeGroupIds>eu.europa.ec.budg.soa.abac</includeGroupIds>
-                            <includes>**/*.xsd,**/*.wsdl</includes>
-                            <outputDirectory>target/generated-resources/META-INF/wsdl</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--<plugin>-->
-            <!--<groupId>org.apache.maven.plugins</groupId>-->
-            <!--<artifactId>maven-dependency-plugin</artifactId>-->
-            <!--<version>2.10</version>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<id>unpack-xsd</id>-->
-            <!--<phase>initialize</phase>-->
-            <!--<goals>-->
-            <!--<goal>unpack-dependencies</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-            <!--<includeGroupIds>eu.europa.ec.budg.abac.soatube</includeGroupIds>-->
-            <!--<includes>**/*.xsd,**/*.wsdl</includes>-->
-            <!--<outputDirectory>target/generated-resources/META-INF/wsdl</outputDirectory>-->
-            <!--</configuration>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--</plugin>-->
-            <!--<plugin>-->
-            <!--<groupId>org.codehaus.mojo</groupId>-->
-            <!--<artifactId>jaxws-maven-plugin</artifactId>-->
-            <!--<version>2.4.1</version>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<goals>-->
-            <!--<goal>wsimport</goal>-->
-            <!--</goals>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--<configuration>-->
-            <!--<vmArgs>-->
-            <!--<vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>-->
-            <!--</vmArgs>-->
-            <!--<sourceDestDir>generated-sources/jaxws-wsimport</sourceDestDir>-->
-            <!--<xnocompile>true</xnocompile>-->
-            <!--<verbose>true</verbose>-->
-            <!--<extension>true</extension>-->
-            <!--<sei>/</sei>-->
-            <!--<wsdlDirectory>target/generated-resources/META-INF/wsdl</wsdlDirectory>-->
-            <!--<wsdlFiles>-->
-            <!--<wsdlFile>soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl</wsdlFile>-->
-            <!--</wsdlFiles>-->
-            <!--<wsdlLocation>http://localhost/*</wsdlLocation>-->
-            <!--</configuration>-->
-            <!--</plugin>-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-ejb-plugin</artifactId>
-                <configuration>
-                    <ejbVersion>3.0</ejbVersion>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+		<dependency>
+			<groupId>eu.europa.ec.rdg</groupId>
+			<artifactId>common-ext-client</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>eu.europa.ec.rdg.jagate</groupId>
+			<artifactId>jagate-ext-client</artifactId>
+			<version>8.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>target/generated-resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+				<version>2.2.4</version>
+				<configuration>
+					<defaultOutputDirectory>
+						${project.build.directory}/generated-sources
+					</defaultOutputDirectory>
+					<processors>
+						<processor>org.mapstruct.ap.MappingProcessor</processor>
+					</processors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>process</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>process</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.mapstruct</groupId>
+						<artifactId>mapstruct-processor</artifactId>
+						<version>1.1.0.Beta2</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<!--<plugin> -->
+			<!--<groupId>org.bsc.maven</groupId> -->
+			<!--<artifactId>maven-processor-plugin</artifactId> -->
+			<!--<version>2.2.4</version> -->
+			<!--<configuration> -->
+			<!--<defaultOutputDirectory> -->
+			<!--${project.build.directory}/generated-sources -->
+			<!--</defaultOutputDirectory> -->
+			<!--<processors> -->
+			<!--<processor>org.mapstruct.ap.MappingProcessor</processor> -->
+			<!--</processors> -->
+			<!--</configuration> -->
+			<!--<executions> -->
+			<!--<execution> -->
+			<!--<id>process</id> -->
+			<!--<phase>generate-sources</phase> -->
+			<!--<goals> -->
+			<!--<goal>process</goal> -->
+			<!--</goals> -->
+			<!--</execution> -->
+			<!--</executions> -->
+			<!--<dependencies> -->
+			<!--<dependency> -->
+			<!--<groupId>org.mapstruct</groupId> -->
+			<!--<artifactId>mapstruct-processor</artifactId> -->
+			<!--<version>1.1.0.Beta2</version> -->
+			<!--</dependency> -->
+			<!--</dependencies> -->
+			<!--</plugin> -->
+			<!--plugin> <artifactId>maven-clean-plugin</artifactId> <version>2.4.1</version> 
+				<configuration> <filesets> <fileset> <directory>${basedir}/BudgServiceModel</directory> 
+				</fileset> </filesets> </configuration> </plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+
+				<executions>
+					<execution>
+						<id>unpack-xsd</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeGroupIds>eu.europa.ec.budg.soa.abac</includeGroupIds>
+							<includes>**/*.xsd,**/*.wsdl</includes>
+							<outputDirectory>target/generated-resources/META-INF/wsdl</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--<plugin> -->
+			<!--<groupId>org.apache.maven.plugins</groupId> -->
+			<!--<artifactId>maven-dependency-plugin</artifactId> -->
+			<!--<version>2.10</version> -->
+			<!--<executions> -->
+			<!--<execution> -->
+			<!--<id>unpack-xsd</id> -->
+			<!--<phase>initialize</phase> -->
+			<!--<goals> -->
+			<!--<goal>unpack-dependencies</goal> -->
+			<!--</goals> -->
+			<!--<configuration> -->
+			<!--<includeGroupIds>eu.europa.ec.budg.abac.soatube</includeGroupIds> -->
+			<!--<includes>**/*.xsd,**/*.wsdl</includes> -->
+			<!--<outputDirectory>target/generated-resources/META-INF/wsdl</outputDirectory> -->
+			<!--</configuration> -->
+			<!--</execution> -->
+			<!--</executions> -->
+			<!--</plugin> -->
+			<!--<plugin> -->
+			<!--<groupId>org.codehaus.mojo</groupId> -->
+			<!--<artifactId>jaxws-maven-plugin</artifactId> -->
+			<!--<version>2.4.1</version> -->
+			<!--<executions> -->
+			<!--<execution> -->
+			<!--<goals> -->
+			<!--<goal>wsimport</goal> -->
+			<!--</goals> -->
+			<!--</execution> -->
+			<!--</executions> -->
+			<!--<configuration> -->
+			<!--<vmArgs> -->
+			<!--<vmArg>-Djavax.xml.accessExternalSchema=all</vmArg> -->
+			<!--</vmArgs> -->
+			<!--<sourceDestDir>generated-sources/jaxws-wsimport</sourceDestDir> -->
+			<!--<xnocompile>true</xnocompile> -->
+			<!--<verbose>true</verbose> -->
+			<!--<extension>true</extension> -->
+			<!--<sei>/</sei> -->
+			<!--<wsdlDirectory>target/generated-resources/META-INF/wsdl</wsdlDirectory> -->
+			<!--<wsdlFiles> -->
+			<!--<wsdlFile>soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl</wsdlFile> -->
+			<!--</wsdlFiles> -->
+			<!--<wsdlLocation>http://localhost/*</wsdlLocation> -->
+			<!--</configuration> -->
+			<!--</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ejb-plugin</artifactId>
+				<configuration>
+					<ejbVersion>3.0</ejbVersion>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
