@@ -8,7 +8,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.token.TokenGenerator;
@@ -17,22 +16,17 @@ import wifi4eu.wifi4eu.entity.installation.InstallationSiteWhitelist;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteWhitelistRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
-import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
-import wifi4eu.wifi4eu.repository.status.StatusRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.*;
 
 @Service
 public class InstallationSiteService {
-
 
     @Autowired
     InstallationSiteRepository installationSiteRepository;
@@ -42,9 +36,6 @@ public class InstallationSiteService {
 
     @Autowired
     InstallationSiteWhitelistRepository whitelistRepository;
-
-    @Autowired
-    StatusRepository statusRepository;
 
     @Autowired
     InstallationSiteWhitelistRepository installationSiteWhitelistRepository;
@@ -122,12 +113,10 @@ public class InstallationSiteService {
                 response.setSuccess(false);
                 response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
             }
-
         } else {
             response.setSuccess(false);
             response.setError(new ErrorDTO(400, "error.400.noData"));
         }
-
         return response;
     }
 
@@ -156,7 +145,6 @@ public class InstallationSiteService {
                     break;
                 }
             }
-
             String regExURL = "^[^- ]([a-z0-9-:/.]+\\.)[a-z0-9-:/]*[^-]$";
             String url = (String) map.get("url");
             if (url != null && !url.matches(regExURL)) {
@@ -205,7 +193,6 @@ public class InstallationSiteService {
                         return response;
                     }
                     installationSite = installationSiteRepository.findInstallationSiteById((int) map.get("id"));
-
                 }
 
                 String domain;

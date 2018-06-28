@@ -13,7 +13,6 @@ import wifi4eu.wifi4eu.service.installation.InstallationSiteService;
 
 import java.util.Map;
 
-
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/installation-site", description = "Installation Site object REST API services")
@@ -25,11 +24,10 @@ public class InstallationSiteResource {
 
     private final Logger _log = LoggerFactory.getLogger(InstallationSiteResource.class);
 
-
-    @ApiOperation(value="Get all installation sites by beneficiary")
-    @RequestMapping(value="/list", method = RequestMethod.POST, produces = "application/json")
+    @ApiOperation(value = "Get all installation sites by beneficiary")
+    @RequestMapping(value = "/list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO getInstallationSiteListByBeneficiary(@RequestBody final Map<String, Object> installationText){
+    public ResponseDTO getInstallationSiteListByBeneficiary(@RequestBody final Map<String, Object> installationText) {
         return installationSiteService.findInstallationSitesByBeneficiariesOrdered(installationText);
     }
 
@@ -44,30 +42,30 @@ public class InstallationSiteResource {
     }
 
     @ApiOperation(value = "Add a new installation site")
-    @RequestMapping(value= "/add", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO addInstallationSite(@RequestBody final Map<String, Object> installationText){
+    public ResponseDTO addInstallationSite(@RequestBody final Map<String, Object> installationText) {
         return installationSiteService.addAndUpdateInstallationSite(installationText);
     }
 
     @ApiOperation(value = "Update an installation site")
-    @RequestMapping(value= "/update", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO updateInstallationSite(@RequestBody final Map<String, Object> installationText){
+    public ResponseDTO updateInstallationSite(@RequestBody final Map<String, Object> installationText) {
         return installationSiteService.addAndUpdateInstallationSite(installationText);
     }
 
     @ApiOperation(value = "Get installation site details")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseDTO getInstallationSite(@PathVariable("id") int id){
+    public ResponseDTO getInstallationSite(@PathVariable("id") int id) {
         return installationSiteService.getInstallationReport(id);
     }
 
     @ApiOperation(value = "Remove an installation site")
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseDTO removeInstallSite(@PathVariable("id") int id){
+    public ResponseDTO removeInstallSite(@PathVariable("id") int id) {
         return installationSiteService.removeInstallationReport(id);
     }
 

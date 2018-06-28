@@ -8,27 +8,18 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.cns.CNSManager;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryDisplayedListMapper;
-import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
-import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryDisplayedListRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
-import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.utils.UserUtils;
 
-import javax.xml.ws.Response;
-import java.security.Permission;
 import java.util.Date;
 import java.util.Locale;
 
@@ -45,16 +36,7 @@ public class BeneficiaryDisplayedListService {
     RegistrationRepository registrationRepository;
 
     @Autowired
-    RegistrationMapper registrationMapper;
-
-    @Autowired
     CNSManager cnsManager;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    UserMapper userMapper;
 
     @Autowired
     PermissionChecker permissionChecker;
@@ -73,9 +55,9 @@ public class BeneficiaryDisplayedListService {
         response.setSuccess(true);
         SupplierDTO supplier;
 
-        try{
+        try {
             supplier = permissionChecker.checkSupplierPermission();
-        }catch (Exception e){
+        } catch (Exception e) {
             return permissionChecker.getAccessDeniedResponse();
         }
 
@@ -103,7 +85,7 @@ public class BeneficiaryDisplayedListService {
             response.setData(beneficiaryDisplayedListMapper.toDTO(beneficiaryDisplayedListRepository.findBeneficiaryByRegistrationId(registration.getId())));
             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
             String lang = userUtils.getUserLangByUserId(supplier.getUserId());
-            if(lang != null){
+            if (lang != null) {
                 locale = new Locale(lang);
             }
             cnsManager.sendInstallationConfirmationNotification(email, name, locale);

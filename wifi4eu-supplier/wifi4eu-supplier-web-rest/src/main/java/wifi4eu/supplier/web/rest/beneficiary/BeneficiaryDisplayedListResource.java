@@ -22,26 +22,24 @@ public class BeneficiaryDisplayedListResource {
 
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryDisplayedListResource.class);
 
-
-
     @ApiOperation(value = "Get all beneficiaries")
-    @RequestMapping(value = "/beneficiaries-list", method= RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/beneficiaries-list", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO getBeneficiariesList(){
+    public ResponseDTO getBeneficiariesList() {
         return beneficiaryDisplayedListService.findBeneficiariesList();
     }
 
     @ApiOperation(value = "Confirm wifi indicator municipality (registration table)")
-    @RequestMapping(value = "/confirm-wifindicator/{id}", method= RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/confirm-wifindicator/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO confirmWifiIndicatorByMunicipalityId(@PathVariable("id") int id){
+    public ResponseDTO confirmWifiIndicatorByMunicipalityId(@PathVariable("id") int id) {
         return beneficiaryDisplayedListService.confirmWifiIndicatorByMunicipalityId(id);
     }
 
     @ApiOperation(value = "Edit Beneficiary")
-    @RequestMapping(value="/edit", method= RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/edit", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody
-    public ResponseDTO editBeneficiaryDisplayedListDTO(@RequestBody BeneficiaryDisplayedListDTO request){
+    public ResponseDTO editBeneficiaryDisplayedListDTO(@RequestBody BeneficiaryDisplayedListDTO request) {
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(false);
         response.setData("Not Implemented");

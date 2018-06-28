@@ -5,26 +5,16 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.installation.InstallationSite;
-import wifi4eu.wifi4eu.entity.security.RightConstants;
-import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -41,10 +31,8 @@ public class UserResource {
     @ResponseBody
     public ResponseDTO ecasLogin() {
         try {
-            _log.info("[i] ecasLogin");
             UserContext userContext = UserHolder.getUser();
             UserDTO userDTO = userService.getUserByUserContext(userContext);
-            _log.info("[f] ecasLogin");
             return new ResponseDTO(true, userDTO, null);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
@@ -54,13 +42,10 @@ public class UserResource {
         }
     }
 
-
     @ApiOperation(value = "Logout session")
     @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String doCompleteSignOut() {
-        _log.debug("Logging out");
-
         final HttpSession session = RecoverHttpSession.session();
         String outMessage = "page.logout";
 
@@ -71,7 +56,6 @@ public class UserResource {
             _log.info("Expiring session.");
             session.invalidate();
         }
-
         return outMessage;
     }
 

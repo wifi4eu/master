@@ -8,11 +8,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.common.security.UserSessionCache;
 
-import java.util.*;
+import java.util.Collections;
 
 @Service
 public class CacheUserDetailsServiceCustom {

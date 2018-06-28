@@ -12,7 +12,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-
 @Repository
 @Transactional(readOnly = true)
 public class InstallationSiteRepositoryImpl implements InstallationSiteRepositoryCustom {
@@ -22,23 +21,22 @@ public class InstallationSiteRepositoryImpl implements InstallationSiteRepositor
 
     private final Logger _log = LoggerFactory.getLogger(InstallationSiteRepositoryImpl.class);
 
-
     @Override
     public List<InstallationSite> searchInstallationSitesByBeneficiary(int page, int delta, int id_beneficiary, String fieldName, String orderField) {
-        Query query = generateSqlInstallationSites(page,delta,id_beneficiary,fieldName,orderField, false);
+        Query query = generateSqlInstallationSites(page, delta, id_beneficiary, fieldName, orderField, false);
         return query.getResultList();
     }
 
     @Override
     public int countInstallationSitesByBeneficiary(int page, int delta, int id_beneficiary, String fieldName, String orderField) {
-        Query query = generateSqlInstallationSites(page,delta,id_beneficiary,fieldName,orderField, true);
+        Query query = generateSqlInstallationSites(page, delta, id_beneficiary, fieldName, orderField, true);
         return (int) query.getSingleResult();
     }
 
-    private Query generateSqlInstallationSites(int page, int delta, int id_beneficiary, String fieldName, String orderField, boolean count){
+    private Query generateSqlInstallationSites(int page, int delta, int id_beneficiary, String fieldName, String orderField, boolean count) {
         String queryString = "SELECT i.number, i.id, i.name, i.domain_name FROM installation_site i INNER JOIN municipalities m ON m.id = i.id_municipality WHERE m.id = ?1";
         Query query = null;
-        if (count){
+        if (count) {
             queryString = "SELECT COUNT(i.name) FROM installation_site i INNER JOIN municipalities m ON m.id = i.id_municipality WHERE m.id = ?1";
         }
 

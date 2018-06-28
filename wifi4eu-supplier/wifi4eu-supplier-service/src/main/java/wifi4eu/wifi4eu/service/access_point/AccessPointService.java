@@ -13,8 +13,6 @@ import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
 import wifi4eu.wifi4eu.service.installation.InstallationSiteService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
-import javax.persistence.Access;
-import javax.xml.ws.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +60,7 @@ public class AccessPointService {
     public ResponseDTO getAccessPointById(int id) {
         ResponseDTO response = new ResponseDTO();
         AccessPoint accessPoint = accessPointRepository.findOne(id);
-        if (accessPoint!= null) {
+        if (accessPoint != null) {
 
             if (!checkPermissions(accessPoint.getIdInstallationSite(), id))
                 return permissionChecker.getAccessDeniedResponse();
@@ -144,7 +142,7 @@ public class AccessPointService {
         //checking if macAddress complies with the regex
         String regExMac = "([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";
         String macAddress = (String) map.get("macAddress");
-        if (macAddress!= null && macAddress.matches(regExMac)) {
+        if (macAddress != null && macAddress.matches(regExMac)) {
             accessPoint.setMacAddress(macAddress);
         } else {
             control = false;

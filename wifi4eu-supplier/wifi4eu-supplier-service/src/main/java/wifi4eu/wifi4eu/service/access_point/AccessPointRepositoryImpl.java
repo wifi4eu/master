@@ -2,11 +2,8 @@ package wifi4eu.wifi4eu.service.access_point;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import wifi4eu.wifi4eu.entity.access_point.AccessPoint;
-import wifi4eu.wifi4eu.entity.installation.InstallationSite;
 import wifi4eu.wifi4eu.repository.access_point.AccessPointRepositoryCustom;
-import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepositoryCustom;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,20 +19,20 @@ public class AccessPointRepositoryImpl implements AccessPointRepositoryCustom {
 
     @Override
     public List<AccessPoint> searchAccessPointByInstallationSite(int page, int delta, int id_installationSite, String fieldName, String orderField) {
-        Query query = generateSqlAccessPoint(page,delta,id_installationSite,fieldName,orderField, false);
+        Query query = generateSqlAccessPoint(page, delta, id_installationSite, fieldName, orderField, false);
         return query.getResultList();
     }
 
     @Override
     public int countAccessPointByInstallationSite(int page, int delta, int id_installationSite, String fieldName, String orderField) {
-        Query query = generateSqlAccessPoint(page,delta,id_installationSite,fieldName,orderField, true);
+        Query query = generateSqlAccessPoint(page, delta, id_installationSite, fieldName, orderField, true);
         return (int) query.getSingleResult();
     }
 
-    private Query generateSqlAccessPoint(int page, int delta, int id_installationSite, String fieldName, String orderField, boolean count){
+    private Query generateSqlAccessPoint(int page, int delta, int id_installationSite, String fieldName, String orderField, boolean count) {
         Query query = null;
         String queryString = "SELECT a.* FROM access_points a WHERE a.id_installation_site = ?1";
-        if (count){
+        if (count) {
             queryString = "SELECT COUNT(a.id) FROM access_points a WHERE a.id_installation_site = ?1";
         }
 
