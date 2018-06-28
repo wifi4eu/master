@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.cns.CNSManager;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryDisplayedListMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryDisplayedListRepository;
@@ -58,27 +61,38 @@ public class BeneficiaryDisplayedListService {
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(true);
         SupplierDTO supplier;
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
 
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving beneficiary list successfully");
         try {
             supplier = permissionChecker.checkSupplierPermission();
         } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions " +
+                    "to access");
             return permissionChecker.getAccessDeniedResponse();
         }
 
         response.setData(beneficiaryDisplayedListMapper.toDTOList(Lists.newArrayList(beneficiaryDisplayedListRepository.findBeneficiariesList(supplier.getUserId()))));
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieved beneficiary list successfully");
         return response;
     }
 
     @Transactional
     public ResponseDTO confirmWifiIndicatorByMunicipalityId(int id) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         ResponseDTO response = new ResponseDTO();
         SupplierDTO supplier = permissionChecker.checkSupplierPermission();
         Registration registration = registrationRepository.findByMunicipalityIdAndStatus(id, 2);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Confirming report");
         if (registration != null) {
 
-            if (!checkPermissions(registration))
+            if (!checkPermissions(registration)) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions " +
+                        "to access");
                 return permissionChecker.getAccessDeniedResponse();
-
+            }
             // registration.setWifiIndicator(true);
             // Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             registration.setInstallationSiteSubmission(new java.sql.Date(new Date().getTime()));
@@ -93,7 +107,10 @@ public class BeneficiaryDisplayedListService {
                 locale = new Locale(lang);
             }
             cnsManager.sendInstallationConfirmationNotification(email, name, locale);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Successfully confirmed report");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Confirm installation report email sent");
         } else {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiary not found.");
             response.setSuccess(false);
             response.setData("Error querying municipality - registration");
             response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));

@@ -22,12 +22,9 @@ public class ApplicationService {
     @Autowired
     ApplicationRepository applicationRepository;
 
-    @Autowired
-    UserService userService;
-
-    private final Logger _log = LogManager.getLogger(ApplicationService.class);
-
     public ApplicationDTO getApplicationBySupplierIdAndRegistrationId(int supplierId, int registrationId) {
+        //we only use this method to verify if the user has permissions.
+        //So we don't need to log this.
         return applicationMapper.toDTO(applicationRepository.findBySupplierIdAndRegistrationId(supplierId, registrationId));
     }
 }
