@@ -91,7 +91,6 @@ public class MunicipalityResource {
             "application/json")
     @ResponseBody
     public ResponseDTO getUsersMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId) {
-        _log.info("NOW, MUNICIPALITY ID => "+municipalityId);
         return municipalityService.getUsersMunicipalityById(municipalityId);
     }
 

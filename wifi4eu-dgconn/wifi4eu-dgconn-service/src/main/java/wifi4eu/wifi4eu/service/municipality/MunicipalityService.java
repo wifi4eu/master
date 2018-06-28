@@ -9,10 +9,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;import wifi4eu.wifi4eu.entity.security.RightConstants;import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -20,7 +20,6 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import java.security.Permission;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,19 +63,23 @@ public class MunicipalityService {
     /**
      * This service is used only on the beneficiary-portal/installations page.
      * We need to allow only to return the municipalities that the user is associated with.
+     *
      * @param municipalityId
      * @return
      */
     public ResponseDTO getUsersMunicipalityById(Integer municipalityId) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from municipality with id " +municipalityId);
         ResponseDTO response = new ResponseDTO();
         MunicipalityDTO municipality = getMunicipalityById(municipalityId);
         if (checkPermissions(municipalityId)) {
             response.setSuccess(true);
             response.setData(municipality);
         } else {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
             return permissionChecker.getAccessDeniedResponse();
         }
-
         return response;
     }
 
@@ -85,10 +88,9 @@ public class MunicipalityService {
             //first we check if user logged in is a supplier
             UserDTO user = permissionChecker.checkBeneficiaryPermission();
             //and then we check that it has a relation to this installation site's municipality
-            if (registrationService.getRegistrationByUserAndMunicipality(user.getId(), idMunicipality) == null){
+            if (registrationService.getRegistrationByUserAndMunicipality(user.getId(), idMunicipality) == null) {
                 throw new AccessDeniedException("403 FORBIDDEN");
             }
-
         } catch (Exception e) {
             return false;
         }

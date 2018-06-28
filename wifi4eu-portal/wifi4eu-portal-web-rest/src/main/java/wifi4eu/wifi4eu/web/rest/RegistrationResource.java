@@ -126,8 +126,8 @@ public class RegistrationResource {
     @RequestMapping(value = "/confirmOrRejectReport", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO confirmOrRejectInstallationReport(@RequestBody final Map<String, Object> map) {
-        return registrationService.confirmOrRejectInstallationAndSendCNS(map);
+    public ResponseDTO confirmOrRejectInstallationReport(@RequestBody final Map<String, Object> map, HttpServletRequest request) {
+        return registrationService.confirmOrRejectInstallationAndSendCNS(map, request);
     }
 
     @ApiOperation(value = "Delete legal documents")

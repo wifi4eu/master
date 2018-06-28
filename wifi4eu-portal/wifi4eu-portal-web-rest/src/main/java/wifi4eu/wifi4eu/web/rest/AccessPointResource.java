@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.web.rest.access_point;
+package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +23,7 @@ public class AccessPointResource {
     @ApiOperation(value = "Get all Access Points per installation site ID")
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO getAccessPointPerInstallationSite(@RequestBody final Map<String, Object> map){
+    public ResponseDTO getAccessPointPerInstallationSite(@RequestBody final Map<String, Object> map) {
         return accessPointService.findAccessPointsPerInstallationSite(map);
     }
 
@@ -31,14 +31,14 @@ public class AccessPointResource {
     @ApiOperation(value = "Get Access point by ID")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO getAccessPointById(@PathVariable("id") final int id){
+    public ResponseDTO getAccessPointById(@PathVariable("id") final int id) {
         return accessPointService.getAccessPointById(id);
     }
 
     @ApiOperation(value = "Edit Access Point")
-    @RequestMapping(value="/edit", method= RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/edit", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody
-    public ResponseDTO editBeneficiaryDisplayedListDTO(@RequestBody AccessPoint request){
+    public ResponseDTO editBeneficiaryDisplayedListDTO(@RequestBody AccessPoint request) {
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(false);
         response.setData("Not Implemented");
