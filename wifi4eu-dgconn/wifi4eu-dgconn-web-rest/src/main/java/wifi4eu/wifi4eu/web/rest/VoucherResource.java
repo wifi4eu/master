@@ -24,10 +24,12 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.service.voucher.util.ScenariosService;
+import wifi4eu.wifi4eu.util.MailService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,6 +52,9 @@ public class VoucherResource {
 
     @Autowired
     PermissionChecker permissionChecker;
+
+    @Autowired
+    MailService mailService;
 
     Logger _log = LogManager.getLogger(VoucherResource.class);
 
