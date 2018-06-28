@@ -231,7 +231,7 @@ public class AccessPointService {
     public ResponseDTO findAccessPointsPerInstallationSite(Map<String, Object> map) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Finding access poitns per installation site ");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Finding access points per installation site ");
         ResponseDTO response = new ResponseDTO();
         // we should check if it's null. We don't have the class Validation
         if (!map.isEmpty()) {
@@ -282,7 +282,7 @@ public class AccessPointService {
                     mapResult.put("count", countResults);
                     response.setSuccess(true);
                     response.setData(mapResult);
-
+                    _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Access points retrieved successfully");
                 } catch (Exception ex) {
                     response.setSuccess(false);
                     response.setError(new ErrorDTO(400, "error.400.invalidFields"));
