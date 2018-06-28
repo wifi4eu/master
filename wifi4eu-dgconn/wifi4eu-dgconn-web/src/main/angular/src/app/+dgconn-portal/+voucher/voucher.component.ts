@@ -138,7 +138,6 @@ export class DgConnVoucherComponent {
               this.sortField = sortField;
               this.sortDirection = sortDirection.toUpperCase();
               
-              this.checkFreezeListEnabled();
               
               setTimeout(() => {
                 if(this.searchedMunicipality.toUpperCase() !== 'ALL'){
@@ -157,7 +156,7 @@ export class DgConnVoucherComponent {
                 });
                 this.tableVoucher.sortSingle();        
               }, 200);
-
+              
               this.nutsApi.getNutsByLevel(0).subscribe((countries) => {
                 this.countries = <NutsDTOBase[]>countries;
                 this.countries.splice(0, 0, {id: 0, code: '0', label: 'All', level: 0, countryCode: "ALL", order: 1, sorting: 1});
@@ -168,21 +167,30 @@ export class DgConnVoucherComponent {
                   }
                 });
               });
-
+              
               this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callSelected.id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
                 if(data != null){
                   this.callVoucherAssignment = data;
                   let date = new Date(this.callVoucherAssignment.preListExecutionDate);
                   this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                   this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
-                  this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
-                    this.preSelectedEnabledButton = response;
-                  },(error) => {
-                    console.log(error);      
-                  })
+                  if(!data.hasFreezeListSaved && !data.hasPreListSaved){
+                    this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
+                      this.preSelectedEnabledButton = response;
+                      console.log(response);
+                      if(!response){
+                        this.sharedService.growlTranslation('It\'s not possible to pre-save the list with applications left to be validated.', 'dgConn.voucherAssignment.warning.savingPreList', 'warn');
+                      }
+                    },(error) => { 
+                      this.sharedService.growlTranslation('An error occured while checking if pre-list is enabled', 'dgConn.voucherAssignment.error.checkPreList', 'error');
+                    })
+                  }
+                  if(data.hasPreListSaved && !data.hasFreezeListSaved){
+                    this.checkFreezeListEnabled();
+                  }
                   if(data.hasFreezeListSaved){
                     this.voucherApi.getVoucherAssignmentByCallAndStatus(this.callSelected.id, 3).subscribe(
-                     (response: VoucherAssignmentAuxiliarDTO) => {
+                      (response: VoucherAssignmentAuxiliarDTO) => {
                         if(response != null){
                           this.callVoucherAssignment.id = response.id;
                           let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
@@ -190,17 +198,18 @@ export class DgConnVoucherComponent {
                           this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
                           this.loadPage();
                         }                    
-                    }, error => {
-                      console.log(error);
-                    });
-                  }
-                  else{
-                    this.loadPage();
-                  }
+                      }, error => {
+                        this.sharedService.growlTranslation('Error retrieving list.', 'dgConn.voucherAssignment.error.retrievingList', 'error');
+                      });
+                    }
+                    else{
+                      this.loadPage();
+                    }
                 }       
                 else{
                   this.loadingSimulation = false;
                   this.listAssignment = [];
+                  this.sharedService.growlTranslation('Voucher assignment list not found for this call', 'dgConn.voucherAssignment.warning.noVoucherForCall', 'warn');
                 }     
               })
               this.applicationApi.getApplicationsNotInvalidated(this.callSelected.id).subscribe((data) => {
@@ -217,17 +226,18 @@ export class DgConnVoucherComponent {
       }
     ) 
   }
-
+  
   private checkFreezeListEnabled(){
     this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
       this.freezeButtonEnabled = enabled;
-      console.log(this.freezeButtonEnabled);
-      console.log(enabled);
+      if(enabled){
+        this.sharedService.growlTranslation('It\'s not possible to freeze the list with applications left to be validated.', 'dgConn.voucherAssignment.warning.savingFreezeList', 'warn');
+      }
     }, (error) => {
-      console.log(error);
+      this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
     });
   }
-
+  
   filterTable(){
     this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, page: this.page, size: this.sizePage, municipality: this.searchedMunicipality, country: this.selectedCountry, sortField : this.sortField, sortDirection: this.sortDirection} });
   }
@@ -237,7 +247,7 @@ export class DgConnVoucherComponent {
     this.page = 0;
     this.filterTable();
   }
-
+  
   fillPaginator(response) {
     this.totalRecords = response.xtotalCount;
     this.pageLinks = Math.ceil(this.totalRecords / this.sizePage);
@@ -250,7 +260,7 @@ export class DgConnVoucherComponent {
       this.filterTable();
     }
   }
-
+  
   exportListExcel(){
     this.loadingSimulation = true;
     this.downloadingExcel = true;
@@ -260,26 +270,27 @@ export class DgConnVoucherComponent {
       this.loadingSimulation = false;
       this.downloadingExcel = false;
     }, (error) => {
+      this.sharedService.growlTranslation('An error ocurred while downloading the list', 'dgConn.voucherAssignment.error.exportExcel', 'error');
       this.downloadingExcel = false;
     });
   }
-
+  
   compareFn(n1: NutsDTOBase, n2: NutsDTOBase): boolean {
     return n1 && n2 ? n1.id === n2.id : n1 === n2;
   }
-
+  
   paginate(event){
     this.simulationAssignment.unsubscribe();
     this.page = event.page;
     this.filterTable();
   }
-
+  
   changeRowSelection(pageSize: number){
     this.sizePage = pageSize;
     this.page = 0;
     this.filterTable();
   }
-
+  
   loadPage(){
     this.loadingSimulation = true;
     if (this.getApplicationsCall != null && !this.getApplicationsCall['closed']) {
@@ -294,18 +305,19 @@ export class DgConnVoucherComponent {
       this.fillPaginator(response);
     })
   }
-
+  
   checkPreListEnabled(){
     if(this.callVoucherAssignment.hasPreListSaved){
       return;
     }
     this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
       this.preSelectedEnabled = response;
-    },(error) => {
-      console.log(error);      
-    })
+      if(!response){
+        this.sharedService.growlTranslation('It\'s not possible to pre-save the list with applications left to be validated.', 'dgConn.voucherAssignment.warning.savingPreList', 'warn');
+      }
+    });
   }
-
+  
   savePreList(savePreListBtn){
     savePreListBtn.disabled = true;
     if(this.callVoucherAssignment.hasPreListSaved){
@@ -321,10 +333,10 @@ export class DgConnVoucherComponent {
       this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
       savePreListBtn.disabled = false;
     }, error => {
-      console.log("error => ", error);
+      this.sharedService.growlTranslation('An error ocurred while saving pre-list', 'dgConn.voucherAssignment.error.savingPreList', 'error');
     })
   }
-
+  
   sortTable(event){
     this.sortField = event.field;
     this.sortDirection = event.order === 1 ? 'ASC' : 'DESC';
@@ -333,7 +345,6 @@ export class DgConnVoucherComponent {
 
   handleChange(event) {
     this.callSelected = this.calls[event.index];
-    console.log(this.callSelected);
     this.sortField = 'euRank';
     this.sortDirection = 'ASC';
     this.filterTable();
@@ -385,6 +396,7 @@ export class DgConnVoucherComponent {
         this.checkFreezeListEnabled();
         this.loadingSimulation = false;
       }, (error) => {
+        this.sharedService.growlTranslation('An error occurred while simulating.', 'dgConn.voucherAssignment.error.runningSimulation', 'error');
         this.loadingSimulation = false;
         this.displayConfirmingData = false;
       })
@@ -429,7 +441,7 @@ export class DgConnVoucherComponent {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
     }, error => {
-      console.log("error => ", error);
+      this.sharedService.growlTranslation('An error ocurred while rejecting an application.', 'dgConn.voucherAssignment.error.rejectingApplication', 'error');
     })
   }
 
@@ -441,7 +453,7 @@ export class DgConnVoucherComponent {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
     }, error => {
-      console.log("error => ", error);
+      this.sharedService.growlTranslation('An error ocurred while selecting the list.', 'dgConn.voucherAssignment.error.selectingApplication', 'error');
     }) 
   }
 
@@ -466,7 +478,7 @@ export class DgConnVoucherComponent {
       this.loadPage();
       saveFreezeBtn.disabled = false;
     }, error => {
-      console.log(error);
+      this.sharedService.growlTranslation('An error occurred while freezing list.', 'dgConn.voucherAssignment.error.savingFreezeList', 'error');
     });    
   }
 
@@ -475,7 +487,11 @@ export class DgConnVoucherComponent {
       return;
     }
     this.voucherApi.sendNotificationForApplicants(this.callSelected.id).subscribe((response: ResponseDTO) => {
-      console.log(response.success ? 'Success sending notifications': 'Failed sending notifications');
+      if(!response.success){
+        this.sharedService.growlTranslation('An error occurred while sending notifications.', 'dgConn.voucherAssignment.error.sendingNotifications', 'error');
+      }
+    }, (error) => {
+      this.sharedService.growlTranslation('An error occurred while sending notifications.', 'dgConn.voucherAssignment.error.sendingNotifications', 'error');
     })
   }
 
