@@ -7,7 +7,7 @@
         <Console name="CONSOLE_APPENDER" target="SYSTEM_OUT">
             <PatternLayout pattern="%d - %-5p - [%c{1}:%L] - %m%n"/>
         </Console>
-        <RollingFile name="FILE_APPENDER" fileName="logs/wifi4eu_app.log"
+        <RollingFile name="FILE_APPENDER" fileName="../logs/wifi4eu_app.log"
                      filePattern="logs/wifi4eu_app-%d{yyyy-MM-dd}.log" append="true">
             <PatternLayout>
                 <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
