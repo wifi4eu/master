@@ -2,8 +2,8 @@ package wifi4eu.wifi4eu.service.user;
 
 import com.google.common.collect.Lists;
 import org.apache.http.HttpStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +28,8 @@ import java.util.Locale;
 @Configuration
 @Service
 public class UserService {
-    private final Logger _log = LoggerFactory.getLogger(UserService.class);
 
+    private final Logger _log = LogManager.getLogger(SupplierService.class);
 
     @Value("${mail.server.location}")
     private String baseUrl;
@@ -48,6 +48,7 @@ public class UserService {
 
     @Autowired
     SupplierService supplierService;
+
 
     /**
      * The language used in user browser

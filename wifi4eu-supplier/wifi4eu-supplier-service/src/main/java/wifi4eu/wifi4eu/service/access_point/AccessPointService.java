@@ -1,17 +1,23 @@
 package wifi4eu.wifi4eu.service.access_point;
 
 import com.google.common.collect.Lists;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.access_point.AccessPoint;
 import wifi4eu.wifi4eu.repository.access_point.AccessPointRepository;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
 import wifi4eu.wifi4eu.service.installation.InstallationSiteService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,9 +43,18 @@ public class AccessPointService {
     private String[] FIELDS_ACCESS_POINTS_ORDER = {"number", "location", "location_type", "device_brand",
             "device_type", "model_number", "serial_number", "mac_address", "isIndoor"};
 
+    @Autowired
+    UserService userService;
+
+    private final Logger _log = LogManager.getLogger(AccessPointService.class);
 
     @Transactional
     public ResponseDTO deleteAccessPointById(int id) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Submitting beneficiary registration");
+
         ResponseDTO response = new ResponseDTO();
         AccessPoint accessPoint = accessPointRepository.findOne(id);
         if (accessPoint != null) {

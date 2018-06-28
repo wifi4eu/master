@@ -2,7 +2,8 @@ package wifi4eu.wifi4eu.service.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
@@ -10,13 +11,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.common.security.UserSessionCache;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.Collections;
 
 @Service
 public class CacheUserDetailsServiceCustom {
 
-    private final static Logger logger = Logger.getLogger(CacheUserDetailsServiceCustom.class);
+    @Autowired
+    UserService userService;
+
+    private final Logger _log = LogManager.getLogger(CacheUserDetailsServiceCustom.class);
 
     @Autowired
     private UserSessionCache sessionCache;
@@ -34,12 +40,12 @@ public class CacheUserDetailsServiceCustom {
 
                 } catch (ExpiredJwtException ex) {
 
-                    logger.info("JWT expired: " + ex.getMessage());
+                    _log.info("JWT expired: " + ex.getMessage());
                     hashEmail = (String) ex.getClaims().get("email");
                     return new User(hashEmail, "", true, true, false, true, Collections.EMPTY_SET);
 
                 } catch (SignatureException ex) {
-                    logger.info(ex.getMessage(), ex);
+                    _log.info(ex.getMessage(), ex);
                     throw ex;
                 }
 
@@ -57,7 +63,7 @@ public class CacheUserDetailsServiceCustom {
                 throw new BadCredentialsException("Incorrect format header");
             }
         } catch (Exception ex) {
-            logger.info(ex.getMessage(), ex);
+            _log.info(ex.getMessage(), ex);
             return new User(hashEmail, "", true, true, false, true, Collections.EMPTY_SET);
         }
 

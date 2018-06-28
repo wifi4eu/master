@@ -1,8 +1,8 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,7 @@ import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserConstants;
+import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.utils.UserUtils;
 
 import java.util.Date;
@@ -47,7 +48,10 @@ public class BeneficiaryDisplayedListService {
     @Autowired
     UserUtils userUtils;
 
-    private final Logger _log = LoggerFactory.getLogger(BeneficiaryDisplayedListService.class);
+    @Autowired
+    UserService userService;
+
+    private final Logger _log = LogManager.getLogger(BeneficiaryDisplayedListService.class);
 
     @Transactional
     public ResponseDTO findBeneficiariesList() {

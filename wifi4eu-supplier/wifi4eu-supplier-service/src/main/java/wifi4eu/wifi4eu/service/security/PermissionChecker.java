@@ -2,8 +2,8 @@ package wifi4eu.wifi4eu.service.security;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.mapper.security.RightMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryDisplayedListService;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -30,7 +31,7 @@ import java.util.List;
 @Service
 public class PermissionChecker {
 
-    private final Logger _log = LoggerFactory.getLogger(PermissionChecker.class);
+    private final Logger _log = LogManager.getLogger(PermissionChecker.class);
 
     @Autowired
     UserMapper userMapper;

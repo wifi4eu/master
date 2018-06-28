@@ -1,13 +1,24 @@
 package wifi4eu.wifi4eu.service.security;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
+import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryDisplayedListService;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 public class UsersDetailsByTokenCustom <T extends Authentication> implements AuthenticationUserDetailsService<T>, InitializingBean {
+
+    @Autowired
+    UserService userService;
+
+    private final Logger _log = LogManager.getLogger(UsersDetailsByTokenCustom.class);
+
     private CacheUserDetailsServiceCustom userDetailsServiceCustom = null;
 
     public UsersDetailsByTokenCustom(CacheUserDetailsServiceCustom userDetailsServiceCustom) {
