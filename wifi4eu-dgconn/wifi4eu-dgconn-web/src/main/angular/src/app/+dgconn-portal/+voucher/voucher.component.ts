@@ -223,17 +223,6 @@ export class DgConnVoucherComponent {
     ) 
   }
   
-  private checkFreezeListEnabled(){
-    this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
-      this.freezeButtonEnabled = enabled;
-      if(!enabled){
-        this.sharedService.growlTranslation('It\'s not possible to freeze the list with applications left to be validated.', 'dgConn.voucherAssignment.warning.savingFreezeList', 'warn');
-      }
-    }, (error) => {
-      this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
-    });
-  }
-  
   filterTable(){
     this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, page: this.page, size: this.sizePage, municipality: this.searchedMunicipality, country: this.selectedCountry, sortField : this.sortField, sortDirection: this.sortDirection} });
   }
@@ -324,6 +313,7 @@ export class DgConnVoucherComponent {
       this.callVoucherAssignment.hasPreListSaved = true;
       this.callVoucherAssignment.preListExecutionDate = response.data.executionDate;
       let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+      this.freezeButtonEnabled = true;
       this.filterTable();
       this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
       this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
@@ -458,9 +448,11 @@ export class DgConnVoucherComponent {
   }
 
   private freezeList(){
-    if(this.checkFreezeListEnabled()){
-      this.displayFreezeConfirmation = true;
-    }
+    this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
+      this.displayFreezeConfirmation = enabled;
+    }, (error) => {
+      this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
+    });
   }
 
   private saveFreezeList(saveFreezeBtn){
