@@ -15,10 +15,8 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
-import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
-import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
@@ -41,12 +39,6 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    TempTokenMapper tempTokenMapper;
-
-    @Autowired
-    TempTokenRepository tempTokenRepository;
 
     @Autowired
     RightRepository rightRepository;

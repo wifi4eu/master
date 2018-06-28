@@ -11,11 +11,7 @@ import java.sql.Timestamp;
 @Table(name = "installation_site")
 public class InstallationSite {
 
-    /*@Id
-    @SequenceGenerator(name = "installation_site_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "installation_site_seq")
-    @Column(name = "id"
-     */
+
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

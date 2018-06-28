@@ -6,12 +6,6 @@ import javax.persistence.*;
 @Table(name = "access_points")
 public class AccessPoint {
 
-    /*
-    @Id
-    @SequenceGenerator(name = "access_points_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "access_points_seq")
-    @Column(name = "id")
-    */
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

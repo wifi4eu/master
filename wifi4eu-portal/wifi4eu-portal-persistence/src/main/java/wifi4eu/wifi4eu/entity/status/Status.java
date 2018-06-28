@@ -7,15 +7,9 @@ import java.util.Date;
 @Table(name="status")
 public class Status {
 
+    @Column(name = "id")
     @Id
-    @TableGenerator(name = "Status_generator",
-            table = "sequences",
-            pkColumnName = "SEQ_NAME",
-            valueColumnName = "SEQ_NUMBER",
-            pkColumnValue = "SEQUENCE_STATUS",
-            allocationSize=1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "Status_generator")
-    @Column(name="id", length = 20, updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="status", length = 75)
