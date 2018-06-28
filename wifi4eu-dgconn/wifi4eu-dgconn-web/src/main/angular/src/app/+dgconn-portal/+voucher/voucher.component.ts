@@ -45,6 +45,7 @@ export class DgConnVoucherComponent {
   private displayMessage: boolean = false;
   displayConfirmingData: boolean = false;
   private preSelectedEnabledButton: Boolean = false;
+  private freezeButtonEnabled: Boolean = false;
 
   private countrySelected: NutsDTOBase = {id: 0, code: '0', label: 'All', level: 0, countryCode: "ALL", order: 1, sorting: 1};
   private simulationAssignment = null;
@@ -108,22 +109,22 @@ export class DgConnVoucherComponent {
               if(municipality === ""){
                 municipality == 'All';
               }
-
+              
               if(page < 0){
                 this.page = 0;
               }
-
+              
               if(size > 100){
                 this.sizePage = 100;
               }
               else if(size < 20){
                 this.sizePage = 20;
               }
-
+              
               if(!this.columns.some(x => x === sortField)){
                 sortField = this.columns[0];
               }       
-
+              
               if(!this.calls.some(call => call.id === callId)){
                 this.callSelected = calls[0];
               }else{
@@ -136,7 +137,9 @@ export class DgConnVoucherComponent {
               this.searchedMunicipality = municipality;
               this.sortField = sortField;
               this.sortDirection = sortDirection.toUpperCase();
-
+              
+              this.checkFreezeListEnabled();
+              
               setTimeout(() => {
                 if(this.searchedMunicipality.toUpperCase() !== 'ALL'){
                   this.municipalitySearch.nativeElement.value = this.searchedMunicipality;
@@ -213,6 +216,16 @@ export class DgConnVoucherComponent {
         }
       }
     ) 
+  }
+
+  private checkFreezeListEnabled(){
+    this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
+      this.freezeButtonEnabled = enabled;
+      console.log(this.freezeButtonEnabled);
+      console.log(enabled);
+    }, (error) => {
+      console.log(error);
+    });
   }
 
   filterTable(){
@@ -303,6 +316,7 @@ export class DgConnVoucherComponent {
       this.callVoucherAssignment.hasPreListSaved = true;
       this.callVoucherAssignment.preListExecutionDate = response.data.executionDate;
       let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+      this.filterTable();
       this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
       this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
       savePreListBtn.disabled = false;
@@ -368,6 +382,7 @@ export class DgConnVoucherComponent {
           this.callVoucherAssignment.id = resp.data.id;
         }
         this.loadPage();
+        this.checkFreezeListEnabled();
         this.loadingSimulation = false;
       }, (error) => {
         this.loadingSimulation = false;
