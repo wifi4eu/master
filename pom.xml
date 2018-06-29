@@ -217,12 +217,12 @@
                 <eclipselink.logging.level>WARNING</eclipselink.logging.level>
                 <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
-                <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
                 <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
                 <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
                 <ecas.server.dgconn.address>${server.azure.dev.dgconn.address}</ecas.server.dgconn.address>
                 <ecas.server.port>${server.pro.port}</ecas.server.port>
-                <ecas.config.strength>BASIC</ecas.config.strength>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
                 <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
                 <mail.serv.enable>false</mail.serv.enable>
                 <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
