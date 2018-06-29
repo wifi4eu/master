@@ -11,9 +11,6 @@ import eu.europa.ec.rdg.jagate.ws.legalentity.v6.ILegalEntityService;
 import eu.europa.ec.rdg.jagate.ws.legalentity.v6.interfaces.CheckServiceHealthRequestType;
 import eu.europa.ec.rdg.jagate.ws.legalentity.v6.interfaces.CheckServiceHealthResponseType;
 import eu.europa.ec.research.fp.services.legalentity_status.v1.LegalEntityStatusService;
-import jgate.JaGateServiceBean;
-import jgate.JaGateServiceProducerBean;
-import jgate.LegalEntityStatus;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Item;
@@ -48,7 +45,7 @@ public class Budg_soa_webUI extends UI {
 	private BeanItemContainer<SoaMessageCall> messageContainer;
 	private SoatubeWSClientLocal soaTubeWSClient;
 	private JmsProducerLocal jmsProducer;
-	private JaGateServiceProducerBean jsb ;
+	
 
 	//@WebServlet(value = "/*", asyncSupported = false)
 	@WebServlet(urlPatterns = {"/UIDL","/UIDL/*","/VAADIN","/VAADIN/*"})
@@ -66,11 +63,11 @@ public class Budg_soa_webUI extends UI {
 			//TODO clarify context name - merging properly all to shape
 			jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
 			soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");
-			jsb =(JaGateServiceProducerBean)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JaGateServiceProducerBean");
+			/*jsb =(JaGateServiceProducerBean)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JaGateServiceProducerBean");
 			ILegalEntityService  lesService = jsb.getLegalEntityServiceV6();
 			CheckServiceHealthResponseType statusResponse = lesService.checkServiceHealth(new CheckServiceHealthRequestType());
 			if (statusResponse!=null) System.out.println("\n\n\ncheck health service status success\n\n\n");
-
+*/
 
 		} catch (Exception e) {
 			e.printStackTrace();
