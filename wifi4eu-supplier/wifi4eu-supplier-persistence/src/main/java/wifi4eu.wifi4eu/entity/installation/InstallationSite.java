@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.entity.installation;
 
-import ec.europa.digit.euwifiops.euwifiops.entity.status.Status;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
 import javax.persistence.*;
@@ -52,7 +51,7 @@ public class InstallationSite {
     public InstallationSite() {
     }
 
-    public InstallationSite(Integer id, Municipality municipality, Status status, String idNetworkSnippet, String name, Timestamp dateRegistered, String domainName, String url, Integer number) {
+    public InstallationSite(Integer id, Municipality municipality, String idNetworkSnippet, String name, Timestamp dateRegistered, String domainName, String url, Integer number) {
         this.id = id;
         // this.municipality = municipality;
         // this.status = status;

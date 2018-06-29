@@ -52,14 +52,10 @@ public class User {
     @Column(name = "ecas_username")
     private String ecasUsername;
 
-    @ManyToOne
-    @JoinColumn(name = "id_role")
-    private Role idRole;
-
     public User() {
     }
 
-    public User(String treatment, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified, Integer type, String ecasEmail, String ecasUsername, Role idRole) {
+    public User(String treatment, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified, Integer type, String ecasEmail, String ecasUsername) {
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
@@ -74,7 +70,6 @@ public class User {
         this.type = type;
         this.ecasEmail = ecasEmail;
         this.ecasUsername = ecasUsername;
-        this.idRole = idRole;
     }
 
     public Integer getId() {
@@ -195,13 +190,5 @@ public class User {
 
     public void setEcasUsername(String ecasUsername) {
         this.ecasUsername = ecasUsername;
-    }
-
-    public Role getIdRole() {
-        return idRole;
-    }
-
-    public void setIdRole(Role idRole) {
-        this.idRole = idRole;
     }
 }

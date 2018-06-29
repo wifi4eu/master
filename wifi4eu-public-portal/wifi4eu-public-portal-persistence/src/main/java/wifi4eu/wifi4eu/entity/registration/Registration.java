@@ -57,26 +57,11 @@ public class Registration {
     @Column(name = "compliance")
     private boolean compliance;
 
-    @Column(name = "short_member_state", length = 75)
-    private String shortMemberState;
-
-    @Column(name = "member_state", length = 75)
-    private String memberState;
-
-    @Column(name = "call_number" , length = 75)
-    private String call;
-
     @Column(name = "action_to_be_taken")
     private int actionToBeTaken;
 
     @Column(name = "action_taken")
     private int actionTaken;
-
-    @Column(name = "beneficiary_indicator")
-    private boolean beneficiaryIndicator;
-
-    @Column(name = "wifi_indicator")
-    private boolean wifiIndicator;
 
     @Column(name = "conformity")
     private boolean conformity;
@@ -90,7 +75,7 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String associationName, int organisationId, int idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, int idPM, int idBPM) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String associationName, int organisationId, int idStatusBeneficiary, boolean compliance, int actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, int idPM, int idBPM) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -105,13 +90,8 @@ public class Registration {
         this.idUserPM = idPM;
         this.idUserBPM = idBPM;
         this.compliance = compliance;
-        this.shortMemberState = shortMemberState;
-        this.memberState = memberState;
-        this.call = call;
         this.actionToBeTaken = actionToBeTaken;
         this.actionTaken = actionTaken;
-        this.beneficiaryIndicator = beneficiaryIndicator;
-        this.wifiIndicator = wifiIndicator;
         this.conformity = conformity;
         this.firstFalseCheck = firstFalseCheck;
         this.dateRegistered = dateRegistered;
@@ -221,31 +201,7 @@ public class Registration {
         this.compliance = compliance;
     }
 
-    public String getShortMemberState() {
-        return shortMemberState;
-    }
-
-    public void setShortMemberState(String shortMemberState) {
-        this.shortMemberState = shortMemberState;
-    }
-
-    public String getMemberState() {
-        return memberState;
-    }
-
-    public void setMemberState(String memberState) {
-        this.memberState = memberState;
-    }
-
-    public String getCall() {
-        return call;
-    }
-
-    public void setCall(String call) {
-        this.call = call;
-    }
-
-    public int getActionToBeTaken() {
+     public int getActionToBeTaken() {
         return actionToBeTaken;
     }
 
@@ -259,22 +215,6 @@ public class Registration {
 
     public void setActionTaken(int actionTaken) {
         this.actionTaken = actionTaken;
-    }
-
-    public boolean isBeneficiaryIndicator() {
-        return beneficiaryIndicator;
-    }
-
-    public void setBeneficiaryIndicator(boolean beneficiaryIndicator) {
-        this.beneficiaryIndicator = beneficiaryIndicator;
-    }
-
-    public boolean isWifiIndicator() {
-        return wifiIndicator;
-    }
-
-    public void setWifiIndicator(boolean wifiIndicator) {
-        this.wifiIndicator = wifiIndicator;
     }
 
     public boolean isConformity() {

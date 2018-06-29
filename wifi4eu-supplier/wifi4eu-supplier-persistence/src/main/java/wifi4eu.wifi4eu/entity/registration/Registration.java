@@ -91,15 +91,6 @@ public class Registration {
     @Column(name = "compliance")
     private boolean compliance;
 
-    @Column(name = "short_member_state", length = 75)
-    private String shortMemberState;
-
-    @Column(name = "member_state", length = 75)
-    private String memberState;
-
-    @Column(name = "call_number" , length = 75)
-    private String call;
-
     @Column(name = "action_to_be_taken")
     private int actionToBeTaken;
 
@@ -127,7 +118,7 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
+    public Registration(User user, Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -151,9 +142,6 @@ public class Registration {
         this.idUserPM = idUserPM;
         this.idUserBPM = idUserBPM;
         this.compliance = compliance;
-        this.shortMemberState = shortMemberState;
-        this.memberState = memberState;
-        this.call = call;
         this.actionToBeTaken = actionToBeTaken;
         this.actionTaken = actionTaken;
         this.installationSiteSubmission = installationSiteSubmission;
@@ -338,30 +326,6 @@ public class Registration {
 
     public void setCompliance(boolean compliance) {
         this.compliance = compliance;
-    }
-
-    public String getShortMemberState() {
-        return shortMemberState;
-    }
-
-    public void setShortMemberState(String shortMemberState) {
-        this.shortMemberState = shortMemberState;
-    }
-
-    public String getMemberState() {
-        return memberState;
-    }
-
-    public void setMemberState(String memberState) {
-        this.memberState = memberState;
-    }
-
-    public String getCall() {
-        return call;
-    }
-
-    public void setCall(String call) {
-        this.call = call;
     }
 
     public int getActionToBeTaken() {

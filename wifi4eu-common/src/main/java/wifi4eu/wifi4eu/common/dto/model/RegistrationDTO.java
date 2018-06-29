@@ -31,9 +31,6 @@ public class RegistrationDTO implements Serializable {
     private int idUserBPM;
     private int idStatusBeneficiary;
     private boolean compliance;
-    private String shortMemberState;
-    private String memberState;
-    private String call;
     private int actionToBeTaken;
     private int actionTaken;
     private boolean conformity;
@@ -47,7 +44,15 @@ public class RegistrationDTO implements Serializable {
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarningDTO> registrationWarningDTOList, int idUserPM, int idUserBPM, int idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation) {        this.id = id;
+    public RegistrationDTO(int userId, int municipalityId, String role, int status, long legalFile1Size,
+                           String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size,
+                           String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration,
+                           String associationName, int organisationId, long uploadTime, int allFilesFlag, int
+                                   mailCounter, List<RegistrationWarningDTO> registrationWarningDTOList, int
+                                   idUserPM, int idUserBPM, int idStatusBeneficiary, boolean compliance, int
+                                   actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck,
+                           Timestamp dateRegistered, Date installationSiteSubmission, Date installationSiteRejection,
+                           Date installationSiteConfirmation) {
         this.userId = userId;
         this.municipalityId = municipalityId;
         this.role = role;
@@ -71,9 +76,6 @@ public class RegistrationDTO implements Serializable {
         this.idUserBPM = idUserBPM;
         this.idStatusBeneficiary = idStatusBeneficiary;
         this.compliance = compliance;
-        this.shortMemberState = shortMemberState;
-        this.memberState = memberState;
-        this.call = call;
         this.actionToBeTaken = actionToBeTaken;
         this.actionTaken = actionTaken;
         this.conformity = conformity;
@@ -297,30 +299,6 @@ public class RegistrationDTO implements Serializable {
 
     public void setCompliance(boolean compliance) {
         this.compliance = compliance;
-    }
-
-    public String getShortMemberState() {
-        return shortMemberState;
-    }
-
-    public void setShortMemberState(String shortMemberState) {
-        this.shortMemberState = shortMemberState;
-    }
-
-    public String getMemberState() {
-        return memberState;
-    }
-
-    public void setMemberState(String memberState) {
-        this.memberState = memberState;
-    }
-
-    public String getCall() {
-        return call;
-    }
-
-    public void setCall(String call) {
-        this.call = call;
     }
 
     public int getActionToBeTaken() {

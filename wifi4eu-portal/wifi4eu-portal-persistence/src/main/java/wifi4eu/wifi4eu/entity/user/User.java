@@ -59,15 +59,11 @@ public class User {
     @Column(name = "csrf_token")
     private String csrfToken;
 
-    @ManyToOne
-    @JoinColumn(name = "id_role")
-    private Role idRole;
-
     public User() {
     }
 
 
-    public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken, Role idRole) {
+    public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken) {
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
@@ -84,7 +80,6 @@ public class User {
         this.ecasEmail = ecasEmail;
         this.ecasUsername = ecasUsername;
         this.csrfToken = csrfToken;
-        this.idRole = idRole;
     }
 
     public Integer getId() {
@@ -223,11 +218,4 @@ public class User {
         this.csrfToken = csrfToken;
     }
 
-    public Role getIdRole() {
-        return idRole;
-    }
-
-    public void setIdRole(Role idRole) {
-        this.idRole = idRole;
-    }
 }

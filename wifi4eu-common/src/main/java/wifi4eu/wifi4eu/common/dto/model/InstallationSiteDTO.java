@@ -6,7 +6,6 @@ import java.util.Date;
 public class InstallationSiteDTO implements Serializable {
     private Integer id;
     private MunicipalityDTO municipality;
-    private StatusDTO status;
     private String idNetworkSnippet;
     private String name;
     private String domainName;
@@ -16,10 +15,9 @@ public class InstallationSiteDTO implements Serializable {
 
     }
 
-    public InstallationSiteDTO(Integer id, MunicipalityDTO municipality, StatusDTO status, String idNetworkSnippet, String name, String domainName, String url) {
+    public InstallationSiteDTO(Integer id, MunicipalityDTO municipality, String idNetworkSnippet, String name, String domainName, String url) {
         this.id = id;
         this.municipality = municipality;
-        this.status = status;
         this.idNetworkSnippet = idNetworkSnippet;
         this.name = name;
         this.domainName = domainName;
@@ -41,14 +39,6 @@ public class InstallationSiteDTO implements Serializable {
 
     public void setMunicipality(MunicipalityDTO municipality) {
         this.municipality = municipality;
-    }
-
-    public StatusDTO getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusDTO status) {
-        this.status = status;
     }
 
     public String getIdNetworkSnippet() {
