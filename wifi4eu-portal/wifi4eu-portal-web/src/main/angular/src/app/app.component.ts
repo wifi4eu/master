@@ -259,6 +259,7 @@ export class AppComponent {
         this.initChildren();
         this.childrenInitialized.subscribe(() => this.updateHeader());
         this.updateFooterDate();
+        this.sharedService.emitLanguage.next();
     }
 
     private logout() {

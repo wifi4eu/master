@@ -15,11 +15,13 @@ export class SharedService {
     private emitLogin = new Subject<any>();
     private emitLogout = new Subject<any>();
     private emitClean = new Subject<any>();
+    emitLanguage = new Subject<any>();
 
     updateEmitter = this.emitUpdate.asObservable();
     loginEmitter = this.emitLogin.asObservable();
     logoutEmitter = this.emitLogout.asObservable();
     cleanEmitter = this.emitClean.asObservable();
+    languageEmitter = this.emitLanguage.asObservable();
 
     user: UserDTOBase = null;
 
