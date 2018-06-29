@@ -384,4 +384,31 @@ public class VoucherResource {
         }
     }
 
+    @ApiOperation(value = "Check freeze list is enabled")
+    @RequestMapping(value = "/assignment/check-freeze-enabled/by/call/{callId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Boolean> checkApplicationAreValidForFreezeList(@PathVariable("callId") final Integer callId,
+                                                               HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Checking if freeze list is enabled by call ID " + callId);
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: checkApplicationAreValidForFreezeList");
+            }
+            Boolean enabled = voucherService.checkApplicationAreValidForFreezeList(callId);
+            return new ResponseEntity<>(enabled, HttpStatus.OK);
+        }
+        catch (AccessDeniedException ade){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " -  You have no permissions to check if freeze list is enabled", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }catch (Exception ex){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " -  Error checking if freeze list is enabled" + ex.getMessage() , ex);
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+
+    }
+
 }
