@@ -341,10 +341,12 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                         if (legalFile.type == fileType) {
                             updatedLegalFile = legalFile;
                             updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
-                            if (updatedLegalFile.correctionReason != null)
+                            if (updatedLegalFile.correctionReason != -1){
                                 updatedLegalFile.requestCorrection = true;
-                            else
+                            } else {
+                                updatedLegalFile.correctionReason = null;
                                 updatedLegalFile.requestCorrection = false;
+                            }
                         }
                     }
                     this.registrationApi.saveLegalFile(updatedLegalFile).subscribe(
