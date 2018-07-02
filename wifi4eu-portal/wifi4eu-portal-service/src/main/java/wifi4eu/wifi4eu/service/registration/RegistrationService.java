@@ -353,8 +353,9 @@ public class RegistrationService {
 
     private boolean checkPermissionsRegistrations(Registration registration) {
         try {
-            UserDTO user = permissionChecker.checkBeneficiaryPermission();
-            if (registration.getUser().getId() != user.getId()) {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            permissionChecker.checkBeneficiaryPermission(userDTO.getType(), registration.getMunicipality().getId(), registration.getId());
+            if (registration.getUser().getId() != userDTO.getId()) {
                 throw new AccessDeniedException("403 FORBIDDEN");
             }
         } catch (Exception e) {

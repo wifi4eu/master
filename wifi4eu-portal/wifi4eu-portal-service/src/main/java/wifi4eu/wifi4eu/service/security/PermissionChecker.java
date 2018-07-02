@@ -97,14 +97,13 @@ public class PermissionChecker {
      *
      * @throws AccessDeniedException
      */
-    public UserDTO checkBeneficiaryPermission() throws AccessDeniedException {
-        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-        if (userDTO.getType() != Constant.ROLE_REPRESENTATIVE ) {
+    public void checkBeneficiaryPermission(int userType, int idMunicipality, int idRegistration) throws AccessDeniedException {
+        if (userType != Constant.ROLE_REPRESENTATIVE ) {
             throw new AccessDeniedException("403 FORBIDDEN");
         }
-        check(RightConstants.REGISTRATIONS_TABLE + userDTO.getId());
-        check(RightConstants.MUNICIPALITIES_TABLE + userDTO.getId());
-        return userDTO;
+
+        check(RightConstants.REGISTRATIONS_TABLE + idRegistration);
+        check(RightConstants.MUNICIPALITIES_TABLE +  idMunicipality);
     }
 
     public ResponseDTO getAccessDeniedResponse() {

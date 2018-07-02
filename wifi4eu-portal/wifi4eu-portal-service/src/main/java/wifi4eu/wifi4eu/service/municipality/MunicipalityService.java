@@ -85,12 +85,17 @@ public class MunicipalityService {
 
     public boolean checkPermissions(int idMunicipality) throws AccessDeniedException {
         try {
-            //first we check if user logged in is a supplier
-            UserDTO user = permissionChecker.checkBeneficiaryPermission();
-            //and then we check that it has a relation to this installation site's municipality
-            if (registrationService.getRegistrationByUserAndMunicipality(user.getId(), idMunicipality) == null) {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+
+            //we check that this user has a relation to this installation site's municipality
+            RegistrationDTO registrationDTO = registrationService.getRegistrationByUserAndMunicipality(userDTO.getId(), idMunicipality);
+            if (registrationDTO == null) {
                 throw new AccessDeniedException("403 FORBIDDEN");
             }
+
+            //then we check if user logged in is a beneficiary and has permissions to access this municipality and registration
+            permissionChecker.checkBeneficiaryPermission(userDTO.getType(), idMunicipality, registrationDTO.getId());
+
         } catch (Exception e) {
             return false;
         }
