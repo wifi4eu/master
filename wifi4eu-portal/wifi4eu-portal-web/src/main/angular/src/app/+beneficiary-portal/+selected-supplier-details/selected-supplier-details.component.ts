@@ -86,7 +86,7 @@ export class SelectedSupplierDetailsComponent {
                   if(this.application.supplierId !== this.paramsSupplierId) {
                     this.changedSupplierChoice = true;
                   }
-                  this.getSupplierDetails(this.paramsSupplierId);  
+                  this.getSupplierDetails(this.paramsSupplierId, this.municipalityId);
                   }
                 );
               }
@@ -99,8 +99,10 @@ export class SelectedSupplierDetailsComponent {
   
   /*  -- METHODS -- */
   /* Get supplier details from supplierId requested through params */
-  getSupplierDetails(supplierId) {
-    this.supplierApi.getSupplierDetailsById(supplierId).subscribe(
+  getSupplierDetails(supplierId, municipalityId) {
+    console.log("Supplier Id is ", supplierId);
+    console.log("Municipality Id is ", municipalityId);
+    this.supplierApi.getSupplierDetailsById(supplierId, municipalityId).subscribe(
       (supplier: SupplierDTOBase) => {            
         this.supplier = supplier;
       }

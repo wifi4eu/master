@@ -129,7 +129,7 @@ export class SelectSupplierComponent {
                               
                                         /* Get previously selected supplier (if it exists) */
                                         if(this.hasSupplierAssigned) {
-                                          this.supplierApi.getSupplierDetailsById(this.application.supplierId).subscribe(
+                                          this.supplierApi.getSupplierDetailsById(this.application.supplierId, this.municipalityId).subscribe(
                                             (supplier: SupplierDTOBase) => {
                                               for(var i = 0; i < this.suppliers.length; i++) {
                                                 if(this.suppliers[i].id == supplier.id) {

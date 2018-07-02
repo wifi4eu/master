@@ -105,24 +105,32 @@ public class SupplierResource {
         return null;
     }
 
-    //TODO: limit access to this service
+    // WARNING: Only municipalities that have ever been a awarded a voucher will be able to access
     @ApiOperation(value = "Get supplier details by specific id")
     @RequestMapping(value = "/details/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public SupplierDTO getSupplierDetailsById(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
+    public SupplierDTO getSupplierDetailsById(@PathVariable("supplierId") final Integer supplierId, @RequestParam("municipalityId") Integer municipalityId, HttpServletResponse response) throws IOException {
         SupplierDTO supplierDTO = new SupplierDTO();
         try {
             _log.info("getSupplierDetailsById: " + supplierId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
             supplierDTO = supplierService.getSupplierDetailsById(supplierId);
-        } 
-        catch (Exception e) {
+            return supplierDTO;
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'getSupplierDetailsById' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'getSupplierDetailsById' operation.", e);
             }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
-        return supplierDTO;
+        return null;
     }
 
     /*

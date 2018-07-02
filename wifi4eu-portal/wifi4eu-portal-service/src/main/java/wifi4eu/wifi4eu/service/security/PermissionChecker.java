@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.RightDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -20,8 +22,13 @@ import wifi4eu.wifi4eu.mapper.security.RightMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 
 import java.util.List;
+import java.util.ListIterator;
 
 @Service
 public class PermissionChecker {
@@ -39,6 +46,12 @@ public class PermissionChecker {
 
     @Autowired
     RightRepository rightRepository;
+    
+    @Autowired
+    ApplicationService applicationService;
+    
+    @Autowired
+    RegistrationService registrationService;
 
     public boolean check(String rightDesc){
 
@@ -86,4 +99,21 @@ public class PermissionChecker {
             return false;
         }
     }
+
+    public boolean checkIfVoucherAwarded(UserDTO userDTO, Integer municipalityId) {
+        List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userDTO.getId()); 
+        // registrations = new ArrayList<>();
+        for (int i = 0; i < registrations.size(); i++) {
+            if(registrations.get(i).getMunicipalityId() == municipalityId) {
+                List<ApplicationDTO> applications = applicationService.getApplicationsByRegistrationId(registrations.get(i).getId());
+                for (int j = 0; j < applications.size(); i++) {
+                    if(applications.get(j).isVoucherAwarded()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }
