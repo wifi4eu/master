@@ -152,7 +152,7 @@
                             {{thread.messages[i].authorId}}
                         </p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
-                        <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
+                        <p class="authorTime">{{currentMessage.createDate | date: 'shortTime'}}</p>
                     </div>
                     <div class="col-sm-9 paddingMessages arrow_box">
                         <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
