@@ -144,7 +144,6 @@ public class SupplierService {
       return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
     }
 
-
     /* OLD ONE
         @Transactional
         public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
@@ -168,6 +167,7 @@ public class SupplierService {
             }
         }
     */
+    
     @Transactional
     public SupplierDTO deleteSupplier(int supplierId) {
         //TODO: change to a soft delete
@@ -381,34 +381,23 @@ public class SupplierService {
 
     // Send email to notify supplier that a beneficiary has selected him
     public void notifySelectedSupplier(int municipalityId) throws Exception {
-        MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
-        int registrationId = registrationService.getRegistrationByMunicipalityId(municipalityId).getId();
-        List<CallDTO> calls = callService.getAllCalls();
-        ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(calls.get(calls.size()-1).getId(), registrationId);
-        if(application != null) {
-            SupplierDTO supplier = getSupplierById(application.getSupplierId());
-            
-            /* Send email may be commented in the front */
-            UserDTO user = userService.getUserById(supplier.getUserId());
-            if (user != null) {
-                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                if (user.getLang() != null) {
-                    locale = new Locale(user.getLang());
-                }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String fromAddress = MailService.FROM_ADDRESS;
-                String subject = bundle.getString("mail.notifySelectedSupplier.subject");
-                String msgBody = bundle.getString("mail.notifySelectedSupplier.body");
-                msgBody = MessageFormat.format(msgBody, municipality.getName(), municipality.getCountry() );
-                mailService.sendEmail(supplier.getContactEmail(), fromAddress, subject, msgBody);
-            } else {
-                throw new Exception("User doesn't exist.");
+        SupplierNotificationEmail notification = supplierNotificationEmailRepository.findSupplierNotificationEmailDetailsByMunicipalityId(municipalityId);
+        if (notification != null) {
+            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+            if (notification.getUserLang() != null) {
+                locale = new Locale(notification.getUserLang());
             }
+            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+            String fromAddress = MailService.FROM_ADDRESS;
+            String subject = bundle.getString("mail.notifySelectedSupplier.subject");
+            String msgBody = bundle.getString("mail.notifySelectedSupplier.body");
+            msgBody = MessageFormat.format(msgBody, notification.getMunicipalityName(), notification.getMunicipalityCountry() );
+            mailService.sendEmail(notification.getSupplierEmail(), fromAddress, subject, msgBody);
         } else {
-            throw new Exception("Application doesn't exist.");
+            throw new Exception("Notification doesn't exist.");
         }
     }
-    
+
     // Send email to notify supplier that a beneficiary has rejected him
     public void notifyRejectedSupplier(int municipalityId) throws Exception {
         SupplierNotificationEmail notification = supplierNotificationEmailRepository.findSupplierNotificationEmailDetailsByMunicipalityId(municipalityId);
@@ -423,12 +412,16 @@ public class SupplierService {
             String msgBody = bundle.getString("mail.notifyRejectedSupplier.body");
             msgBody = MessageFormat.format(msgBody, notification.getMunicipalityName(), notification.getMunicipalityCountry() );
             mailService.sendEmail(notification.getSupplierEmail(), fromAddress, subject, msgBody);
+        } else {
+            throw new Exception("Notification doesn't exist.");
         }
+        // Update timestamps
         RegistrationDTO registration = registrationService.getRegistrationById(notification.getRegistrationId());
         registration.setIsSubmission(null);
         registration.setIsRejection(new Date().getTime());
         registration.setIsConfirmation(null);
         registrationService.saveRegistration(registration);
-    }
 
+        // Delete installation report --> TO BE COMPLETED
+    }
 }
