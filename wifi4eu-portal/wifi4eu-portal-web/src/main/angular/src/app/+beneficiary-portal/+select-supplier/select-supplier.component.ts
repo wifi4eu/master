@@ -121,7 +121,7 @@ export class SelectSupplierComponent {
                                   
                                   /* Get all suppliers that supply the beneficiary region */
                                   if(this.region.id != 0){
-                                    this.supplierApi.getValidatedSuppliersListByRegionId(this.region.id).subscribe(
+                                    this.supplierApi.getValidatedSuppliersListByRegionId(this.region.id, this.registration.municipalityId).subscribe(
                                       (suppliers: SupplierDTOBase[]) => {
                                         console.log(suppliers);
                                         this.suppliers = suppliers;

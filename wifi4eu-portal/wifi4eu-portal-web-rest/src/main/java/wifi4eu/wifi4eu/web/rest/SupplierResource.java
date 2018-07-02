@@ -524,19 +524,33 @@ public class SupplierResource {
     }
 
     // Get validated suppliers that supply a specific region
+    // WARNING: only will be able to access municipalities with an awarded voucher
     @ApiOperation(value = "Get validated suppliers by regionID")
     @RequestMapping(value = "/region/{regionId}/validated", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<SupplierDTO> getValidatedSuppliersListByRegionId(@PathVariable("regionId") final Integer regionId, HttpServletResponse response) throws IOException {
-        _log.info("getValidatedSuppliersListByRegionId");
+    public List<SupplierDTO> getValidatedSuppliersListByRegionId(@PathVariable("regionId") final Integer regionId, @RequestParam("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
         List<SupplierDTO> suppliersList = new ArrayList<>();
         try {
+            _log.info("getValidatedSuppliersListByRegionId " + regionId);
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
             suppliersList = supplierService.getValidatedSuppliersListByRegionId(regionId);
-        }
-        catch (Exception e){
+            return suppliersList;
+        } 
+        catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'getValidatedSuppliersListByRegionId' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getValidatedSuppliersListByRegionId' operation.", e);
+            }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
-        return suppliersList;
+        return null;
     }
 
     @ApiOperation(value = "Notify supplier by email that a beneficiary selected him")
