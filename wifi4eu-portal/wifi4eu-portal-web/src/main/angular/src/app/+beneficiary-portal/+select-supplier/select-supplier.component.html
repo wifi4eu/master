@@ -135,7 +135,7 @@
   
   <div class="row">
     <div class="col-md-6 marginTop">      
-      <button class="btn btn-primary text-adjust" (click)="selectSupplier()" [disabled]="hasSupplierAssigned">
+      <button class="btn btn-primary text-adjust" (click)="selectSupplier()" [disabled]="!selectedSupplier">
         <b>{{ 'benefPortal.selectSupplier.buton.select' | translate }}</b>
       </button>
     </div>

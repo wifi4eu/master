@@ -123,6 +123,7 @@ export class SelectSupplierComponent {
                                   if(this.region.id != 0){
                                     this.supplierApi.getValidatedSuppliersListByRegionId(this.region.id).subscribe(
                                       (suppliers: SupplierDTOBase[]) => {
+                                        console.log(suppliers);
                                         this.suppliers = suppliers;
                                         this.suppliersCopy = this.suppliers;
                               
@@ -199,6 +200,7 @@ export class SelectSupplierComponent {
     if(this.hasSupplierAssigned) {
       (this.displayChangeModal) ? this.displayChangeModal = false : this.displayChangeModal = true;
     }
+    this.hasSupplierAssigned = true;
   }
 
   /* Comes back to stato quo (before clicking on any row) */ 
