@@ -43,14 +43,14 @@
             <p-column header="{{'shared.details' | translate }}">
                 <ng-template let-installationSite="rowData" pTemplate="body">
                     <div class="my-center-text">
-                        <ux-button [isFlat]="true" iconClass="fas fa-eye" [routerLink]="['./details', installationSite.id]" routerLinkActive="active">{{ 'shared.view' | translate }}</ux-button>
+                        <ux-button [isFlat]="true" iconClass="fa-eye" [routerLink]="['./details', installationSite.id]" routerLinkActive="active">{{ 'shared.view' | translate }}</ux-button>
                     </div>
                 </ng-template>
             </p-column>
             <p-column field="goToDetails" header="{{'installationReport.accessPoint' | translate }}">
                 <ng-template let-installationSite="rowData" pTemplate="body">
                     <div class="my-center-text">
-                        <ux-button [isFlat]="true" iconClass="fas fa-list-ul" [routerLink]="['./../access-point/', installationSite.id, installationSite.name]"
+                        <ux-button [isFlat]="true" iconClass="fa-list-ul" [routerLink]="['./../access-point/', installationSite.id, installationSite.name]"
                             routerLinkActive="active">{{ 'installationReport.goToAccessPoint' | translate }}</ux-button>
                     </div>
                 </ng-template>

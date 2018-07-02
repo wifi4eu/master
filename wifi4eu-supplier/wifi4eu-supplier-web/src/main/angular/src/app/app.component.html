@@ -15,14 +15,14 @@
                     </span>
                     <span class="logout-button">
                         <a (click)="logout()">{{ 'shared.logout' | translate }}
-                            <i class="header-icons fas fa-sign-out-alt"></i>
+                            <i class="header-icons fa fa-sign-out"></i>
                         </a>
                     </span>
                 </div>
                 <div *ngIf="!user" class="user-infos">
                     <a href="#">
                         <strong class="color-primary">{{'shared.login'|translate}}
-                            <i class="header-icons fas fa-sign-in-alt"></i>
+                            <i class="header-icons fa fa-sign-in"></i>
                         </strong>
                     </a>
                 </div>

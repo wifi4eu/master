@@ -43,9 +43,9 @@
                 <p>{{accessPoint.macAddress}}</p>
             </div>
             <div class="col-md-3 text-right detailsButtons">
-                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-pencil-alt" (click)="openUpdateAccessPoint()" [isDisabled]="beneficiary.wifiIndicator">
+                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-pencil" (click)="openUpdateAccessPoint()" [isDisabled]="beneficiary.wifiIndicator">
                     {{ 'shared.edit' | translate }}</ux-button>
-                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-trash-alt" (click)="openRemoveAccessPoint()" [isDisabled]="beneficiary.wifiIndicator">
+                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-trash" (click)="openRemoveAccessPoint()" [isDisabled]="beneficiary.wifiIndicator">
                     {{ 'shared.remove' | translate }}</ux-button>
             </div>
         </div>
