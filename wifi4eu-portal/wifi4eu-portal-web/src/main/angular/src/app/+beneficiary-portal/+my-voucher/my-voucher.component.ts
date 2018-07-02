@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 // DTO's & API imports
 import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi, ApplicantListItemDTOBase } from "../../shared/swagger";
+import { HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
 
 @Component ({
     selector: 'my-voucher-component',
@@ -102,20 +103,21 @@ export class MyVoucherComponent {
                                                     this.applications.push(application);
                                                     this.registrations.push(registrations[i]);
                                                     this.municipalities.push(municipality);
-                                                    this.grantAgreementDates.push(this.getStringDate(1529922797000));
-                                                    registrations[i].isSubmission != (0 || null) ? this.confirmButtons.push(false) : this.confirmButtons.push(true);
+                                                    if(i === 0) {this.grantAgreementDates.push(this.getStringDate(1529922797000));}  
+                                                    !registrations[i].isSubmission ? this.confirmButtons.push(true) : this.confirmButtons.push(false);
+                                                    
                                                     // application.selectSupplierDate != (0 || null) ? this.confirmButtonDisabled = false : this.confirmButtonDisabled = true;
-                                                    console.log("Registrations are ", this.registrations);
-                                                    console.log("First confirmation is ", this.registrations[0].isSubmission);
+                                                    // console.log("Registrations are ", this.registrations);
+                                                    // console.log("First confirmation is ", this.registrations[0].isSubmission);
                                                 }
                                             );
                                         }
                                     }
                                 );
                             }
-                            console.log("Dates are ", this.grantAgreementDates);
-                            console.log("Applications are ", this.applications);
-                            console.log("Confirm network buttons are ", this.confirmButtons);
+                            // console.log("Dates are ", this.grantAgreementDates);
+                            // console.log("Applications are ", this.applications);
+                            // console.log("Confirm network buttons are ", this.confirmButtons);
                             
                         }
                     );
@@ -159,6 +161,10 @@ export class MyVoucherComponent {
     /* TO BE COMPLETED */
     private agreementDetails(event) {
         console.log("Write a routing to see grant agreement");
+    }
+
+    private signGrantAgreement(index) {
+        this.grantAgreementDates.push(this.getStringDate(1530255941000));
     }
 
     /* TO BE COMPLETED */

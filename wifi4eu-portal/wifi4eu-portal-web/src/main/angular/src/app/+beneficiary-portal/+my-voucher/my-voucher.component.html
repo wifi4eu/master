@@ -99,11 +99,11 @@
                                     <span><a (click)="agreementDetails(i)" class="municipality-name">{{ 'shared.link.seeDetails' | translate }}</a></span>
                                 </div>
                             </div>
-                            <div *ngIf="grantAgreementDates[i] == null" class="align-self-center">
-                                <button class="btn btn-primary text-adjust" id="voucherButton" (click)="selectWifiInstallation(i)">
-                                    {{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate }}
-                                </button>
-                            </div>
+                        </div>
+                        <div *ngIf="!grantAgreementDates[i]" class="align-self-center">
+                            <button class="btn btn-primary text-adjust" id="voucherButton" (click)="signGrantAgreement(i)">
+                                {{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate }}
+                            </button>
                         </div>
                     </template>
                 </p-column>
@@ -111,7 +111,7 @@
                 <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 2" styleClass="text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <div *ngIf="true" class="beneficiarRegistrationCheck">
-                            <div *ngIf="applications[i]" class="align-self-center">
+                            <div *ngIf="applications[i].supplierId" class="align-self-center">
                                 <div class="align-self-center">
                                     <i class="fa fa-wifi municipality-name" aria-hidden="true"></i>
                                 </div>
@@ -119,8 +119,8 @@
                                 <span>{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ applications[i].selectSupplierDate | date:'dd-MM-yyyy' }}.</span>
                                 <span><a (click)="supplierDetails(i)" class="municipality-name">{{ 'shared.link.seeDetails' | translate }}</a></span>
                             </div>
-                            <div *ngIf="!applications[i]" class="align-self-center">
-                                <button class="btn btn-primary text-adjust" id="voucherButton" (click)="selectWifiInstallation(i)">
+                            <div *ngIf="!applications[i].supplierId" class="align-self-center">
+                                <button class="btn btn-primary text-adjust" id="voucherButton" (click)="selectWifiInstallation(i)" [disabled]="!grantAgreementDates[i]">
                                     {{ 'benefPortal.selectSupplier.details.title' | translate }}
                                 </button>
                             </div>
