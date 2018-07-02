@@ -79,7 +79,7 @@
         <Logger name="wifi4eu" level="info">
             <Appender-ref ref="FILE_APPENDER"/>
         </Logger>
-        <Logger name="org.springframework" level="error">
+        <Logger name="org.springframework" level="info">
             <Appender-ref ref="FILE_APPENDER"/>
         </Logger>
         <Root level="info">
