@@ -312,9 +312,9 @@
                         <label for="website">{{ 'suppRegistration.company.web' | translate }}</label>
                         <input id="website" type="text" [pattern]='websitePattern' [(ngModel)]="editedSupplier.website" class="form-control"
                                name="website" ngcontrol="website" #website="ngModel">
-                        <!-- <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
+                        <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
                             {{ 'suppRegistration.webFormat' | translate }}
-                        </div> -->
+                        </div>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
