@@ -171,7 +171,7 @@
                                    #contactPhonePrefix="ngModel" required>
                             <div [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine"
                                  class="alert alert-danger">
-                                {{ 'benefRegistration.phone.required' | translate }}
+                                {{ 'shared.phone.required' | translate }}
                             </div>
                         </div>
                         <div class="ui-g-5">
@@ -185,7 +185,7 @@
                                    #contactPhoneNumber="ngModel" required>
                             <div [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine"
                                  class="alert alert-danger">
-                                {{ 'benefRegistration.phone.required' | translate }}
+                                {{ 'shared.phone.required                                ' | translate }}
                             </div>
                         </div>
                     </div>
@@ -235,7 +235,7 @@
                         <input id="name" type="text" [(ngModel)]="editedSupplier.name" class="form-control"
                                name="name" ngcontrol="name" #name="ngModel" required>
                         <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-                            {{'suppRegistration.company.required' | translate }}
+                            {{'suppregistration.company.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -277,7 +277,7 @@
                         <input id="bic" type="text" [(ngModel)]="editedSupplier.bic" class="form-control"
                                name="bic" ngcontrol="bic" #bic="ngModel" required>
                         <div [hidden]="bic.valid || bic.pristine" class="alert alert-danger">
-                            {{'benefRegistration.bic.required' | translate }}
+                            {{'suppRegistration.bic.required' | translate }}
                         </div>
                     </div>
                 </div>
