@@ -828,6 +828,7 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 
 .progress-indicator {
   padding-top: 5.3em;
+  width: 100%;
 }
 
 #app-header .right-content {
@@ -1677,4 +1678,8 @@ input.email_profile::-ms-clear{
 .manageMunicipalities{
   padding-top: 1.9em;
   padding-bottom: 0.9em;
+}
+
+#top-menu {
+  width: 100%;
 }
