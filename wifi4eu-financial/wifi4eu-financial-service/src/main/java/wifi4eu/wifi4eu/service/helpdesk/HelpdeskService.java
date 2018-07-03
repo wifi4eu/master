@@ -87,7 +87,7 @@ public class HelpdeskService {
 
             for (HelpdeskIssueDTO issue : issues) {
                 _log.info("Issue summary:");
-                _log.info(issue.getIssueSummary());
+                //_log.info(issue.getIssueSummary());
 
                 beanWriter.write(issue, header, processors);
             }

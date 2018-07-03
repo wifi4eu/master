@@ -33,11 +33,15 @@ public class TimelineService {
         return timelineMapper.toDTO(timelineRepository.save(timelineMapper.toEntity(timelineDTO)));
     }
 
-    // @Transactional
-    public TimelineDTO deleteTimeline(TimelineDTO timelineDTO) {
-        _log.info("luciaaaaaaaaaaa:::::::::::::::::::::::::::::::::::::::" + timelineDTO.getTimelineId().toString());
-        timelineRepository.delete(timelineDTO.getTimelineId());
-        return timelineDTO;
+    public TimelineDTO deleteTimeline(int timelineId) {
+        Integer value=timelineId;
+        TimelineDTO timelineDTO = timelineMapper.toDTO(timelineRepository.findOne(value.longValue()));
+        if (timelineDTO != null) {
+            timelineRepository.delete(timelineMapper.toEntity(timelineDTO));
+            return timelineDTO;
+        } else {
+            return null;
+        }
     }
 
 }

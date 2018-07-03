@@ -1,0 +1,453 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] wifi4eu                                                            [pom]
+[INFO] wifi4eu common module                                              [jar]
+[INFO] wifi4eu-financial                                                  [pom]
+[INFO] WiFi4EU Financial Persistence module                               [jar]
+[INFO] WiFi4EU Financial Service module                                   [jar]
+[INFO] WiFi4EU Financial web REST swagger generator module                [jar]
+[INFO] WiFi4EU Financial REST module                                      [jar]
+[INFO] WiFi4EU Financial web module                                       [war]
+[INFO] wifi4eu Financial EAR module                                       [ear]
+[INFO] 
+[INFO] ----------------------< wifi4eu.wifi4eu:wifi4eu >-----------------------
+[INFO] Building wifi4eu 0.0.1-SNAPSHOT                                    [1/9]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ wifi4eu ---
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ wifi4eu ---
+[INFO] Installing C:\Projects\app\pom.xml to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu\0.0.1-SNAPSHOT\wifi4eu-0.0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] -------------------< wifi4eu.wifi4eu:wifi4eu-common >-------------------
+[INFO] Building wifi4eu common module 0.0.1-SNAPSHOT                      [2/9]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ wifi4eu-common ---
+[INFO] Deleting C:\Projects\app\wifi4eu-common\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ wifi4eu-common ---
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ wifi4eu-common ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] Compiling 73 source files to C:\Projects\app\wifi4eu-common\target\classes
+[WARNING] /C:/Projects/app/wifi4eu-common/src/main/java/wifi4eu/wifi4eu/common/security/UserContext.java: C:\Projects\app\wifi4eu-common\src\main\java\wifi4eu\wifi4eu\common\security\UserContext.java uses or overrides a deprecated API.
+[WARNING] /C:/Projects/app/wifi4eu-common/src/main/java/wifi4eu/wifi4eu/common/security/UserContext.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ wifi4eu-common ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory C:\Projects\app\wifi4eu-common\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ wifi4eu-common ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ wifi4eu-common ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ wifi4eu-common ---
+[INFO] Building jar: C:\Projects\app\wifi4eu-common\target\wifi4eu-common-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ wifi4eu-common ---
+[INFO] Installing C:\Projects\app\wifi4eu-common\target\wifi4eu-common-0.0.1-SNAPSHOT.jar to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu-common\0.0.1-SNAPSHOT\wifi4eu-common-0.0.1-SNAPSHOT.jar
+[INFO] Installing C:\Projects\app\wifi4eu-common\pom.xml to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu-common\0.0.1-SNAPSHOT\wifi4eu-common-0.0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] -----------------< wifi4eu.wifi4eu:wifi4eu-financial >------------------
+[INFO] Building wifi4eu-financial 0.0.1-SNAPSHOT                          [3/9]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ wifi4eu-financial ---
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ wifi4eu-financial ---
+[INFO] Installing C:\Projects\app\wifi4eu-financial\pom.xml to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu-financial\0.0.1-SNAPSHOT\wifi4eu-financial-0.0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] -----------< wifi4eu.wifi4eu:wifi4eu-financial-persistence >------------
+[INFO] Building WiFi4EU Financial Persistence module 0.0.1-SNAPSHOT       [4/9]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ wifi4eu-financial-persistence ---
+[INFO] Deleting C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\target
+[INFO] 
+[INFO] --- maven-processor-plugin:2.2.4:process (querydslmetamodel) @ wifi4eu-financial-persistence ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ wifi4eu-financial-persistence ---
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ wifi4eu-financial-persistence ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] Compiling 66 source files to C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ wifi4eu-financial-persistence ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ wifi4eu-financial-persistence ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ wifi4eu-financial-persistence ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ wifi4eu-financial-persistence ---
+[INFO] Building jar: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\target\wifi4eu-financial-persistence-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ wifi4eu-financial-persistence ---
+[INFO] Installing C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\target\wifi4eu-financial-persistence-0.0.1-SNAPSHOT.jar to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu-financial-persistence\0.0.1-SNAPSHOT\wifi4eu-financial-persistence-0.0.1-SNAPSHOT.jar
+[INFO] Installing C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\pom.xml to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu-financial-persistence\0.0.1-SNAPSHOT\wifi4eu-financial-persistence-0.0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] -------------< wifi4eu.wifi4eu:wifi4eu-financial-service >--------------
+[INFO] Building WiFi4EU Financial Service module 0.0.1-SNAPSHOT           [5/9]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ wifi4eu-financial-service ---
+[INFO] Deleting C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\target
+[INFO] 
+[INFO] --- maven-processor-plugin:2.2.4:process (process) @ wifi4eu-financial-service ---
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\helpdesk\HelpdeskCommentMapper.java:12: warning: Unmapped target properties: "id, fromEmail, createDate".
+    HelpdeskCommentDTO toDTO(HelpdeskComment entity);
+                       ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\helpdesk\HelpdeskCommentMapper.java:14: warning: Unmapped target properties: "commentId, type, commentDate".
+    HelpdeskComment toEntity(HelpdeskCommentDTO vo);
+                    ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\location\LauMapper.java:15: warning: Unmapped target properties: "id, physicalAddress".
+    LauDTO toDTO(Lau entity);
+           ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\location\LauMapper.java:17: warning: Unmapped target property: "lauId".
+    Lau toEntity(LauDTO vo);
+        ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\security\RoleMapper.java:14: warning: Unmapped target property: "users".
+    Role toEntity(RoleDTO vo);
+         ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\supplier\InstallationMapper.java:11: warning: Unmapped target property: "accessPoints".
+    InstallationDTO toDTO(Installation entity);
+                    ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\call\CallMapper.java:12: warning: Unmapped target properties: "id, timelines, voucherManagements, voucherValue, numberVouchers, maxPercentCountry, reserve".
+    CallDTO toDTO(Call entity);
+            ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\call\CallMapper.java:14: warning: Unmapped target property: "callId".
+    Call toEntity(CallDTO vo);
+         ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\helpdesk\HelpdeskMapper.java:12: warning: Unmapped target properties: "id, fromEmail, summary, createDate, comments, ticket, lang".
+    HelpdeskIssueDTO toDTO(Helpdesk entity);
+                     ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\helpdesk\HelpdeskMapper.java:14: warning: Unmapped target properties: "issueId, date, from, issueSummary".
+    Helpdesk toEntity(HelpdeskIssueDTO vo);
+             ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\location\NutsMapper.java:22: warning: Unmapped target properties: "id, label".
+    NutsDTO toDTO(Nuts entity);
+            ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\location\NutsMapper.java:24: warning: Unmapped target properties: "nutsId, name, suppliers".
+    Nuts toEntity(NutsDTO vo);
+         ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\timeline\TimelineMapper.java:15: warning: Unmapped target properties: "id, callId, description".
+    TimelineDTO toDTO(Timeline entity);
+                ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\timeline\TimelineMapper.java:17: warning: Unmapped target properties: "timelineId, event".
+    Timeline toEntity(TimelineDTO vo);
+             ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\audit\AuditMapper.java:15: warning: Unmapped target property: "auditDataId".
+    AuditData toEntity(AuditDataDTO vo);
+              ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\security\RightMapper.java:16: warning: Unmapped target properties: "id, userId, rightdesc, type".
+    RightDTO toDTO(Right entity);
+             ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\security\RightMapper.java:18: warning: Unmapped target properties: "rightId, name, roles".
+    Right toEntity(RightDTO vo);
+          ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\supplier\SupplierMapper.java:10: warning: Unmapped target properties: "id, userId, suppliedRegions, legalFile1, legalFile2, status, lang".
+    SupplierDTO toDTO(Supplier entity);
+                ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\supplier\SupplierMapper.java:12: warning: Unmapped target properties: "supplierId, createDate, nutsIds, abacStatus".
+    Supplier toEntity(SupplierDTO vo);
+             ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\voucher\VoucherMapper.java:17: warning: Unmapped target property: "callId".
+    Voucher toEntity(VoucherDTO vo);
+            ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\beneficiary\RepresentativeMapper.java:16: warning: Unmapped target properties: "mayorRepeatEmail, status".
+    RepresentativeDTO toDTO(Representative entity);
+                      ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\beneficiary\MayorMapper.java:15: warning: Unmapped target properties: "id, municipalityId".
+    MayorDTO toDTO(Mayor entity);
+             ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\beneficiary\MayorMapper.java:17: warning: Unmapped target properties: "mayorId, treatment, legalEntityId".
+    Mayor toEntity(MayorDTO vo);
+          ^
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ wifi4eu-financial-service ---
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ wifi4eu-financial-service ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] Compiling 422 source files to C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\target\classes
+[INFO] -------------------------------------------------------------
+[WARNING] COMPILATION WARNING : 
+[INFO] -------------------------------------------------------------
+[WARNING] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/CacheUserDetailsServiceCustom.java: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\security\CacheUserDetailsServiceCustom.java uses unchecked or unsafe operations.
+[WARNING] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/CacheUserDetailsServiceCustom.java: Recompile with -Xlint:unchecked for details.
+[WARNING] Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+[INFO] 3 warnings 
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/FinancialService.java:[86,50] cannot find symbol
+  symbol:   method getCallId()
+  location: variable call of type wifi4eu.wifi4eu.common.dto.model.CallDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/FinancialService.java:[91,29] cannot find symbol
+  symbol:   method getSupplierId()
+  location: variable supplier of type wifi4eu.wifi4eu.common.dto.model.SupplierDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/FinancialService.java:[92,55] cannot find symbol
+  symbol:   method getSupplierId()
+  location: variable supplier of type wifi4eu.wifi4eu.common.dto.model.SupplierDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[53,53] cannot find symbol
+  symbol:   method getEcasEmail()
+  location: variable userDTO of type wifi4eu.wifi4eu.common.dto.security.UserDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[68,31] cannot find symbol
+  symbol:   method getRepresentativeDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[69,39] cannot find symbol
+  symbol:   method getRepresentativeDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[70,31] cannot find symbol
+  symbol:   method setRepresented(boolean)
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[72,39] cannot find symbol
+  symbol:   method getMayorDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[94,38] cannot find symbol
+  symbol:   method getEcasEmail()
+  location: variable userDTO of type wifi4eu.wifi4eu.common.dto.security.UserDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[95,49] incompatible types: possible lossy conversion from long to int
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[96,36] incompatible types: java.util.Date cannot be converted to long
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[97,54] incompatible types: java.util.Date cannot be converted to long
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[106,38] cannot find symbol
+  symbol:   method getEcasEmail()
+  location: variable userDTO of type wifi4eu.wifi4eu.common.dto.security.UserDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[134,61] incompatible types: possible lossy conversion from long to int
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[138,44] incompatible types: java.util.Date cannot be converted to long
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[139,62] incompatible types: java.util.Date cannot be converted to long
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[178,45] long cannot be dereferenced
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[180,110] incompatible types: int cannot be converted to java.lang.Long
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/SecurityService.java:[185,81] cannot find symbol
+  symbol:   method getRightId()
+  location: variable rightDTO of type wifi4eu.wifi4eu.common.dto.security.RightDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/SecurityService.java:[190,29] cannot find symbol
+  symbol:   method setRoles(java.util.List<wifi4eu.wifi4eu.common.dto.security.RoleDTO>)
+  location: variable rightDTO of type wifi4eu.wifi4eu.common.dto.security.RightDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/helpdesk/HelpdeskService.java:[90,32] cannot find symbol
+  symbol:   method getIssueSummary()
+  location: variable issue of type wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[92,55] cannot find symbol
+  symbol:   method getLegalEntityDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[93,43] cannot find symbol
+  symbol:   method getMayorDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[94,61] cannot find symbol
+  symbol:   method getRepresentativeDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[115,21] cannot find symbol
+  symbol:   method setLegalEntityId(long)
+  location: variable mayorDTO of type wifi4eu.wifi4eu.common.dto.model.MayorDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[121,48] cannot find symbol
+  symbol:   method getMayorId()
+  location: variable mayorDTO of type wifi4eu.wifi4eu.common.dto.model.MayorDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[130,54] cannot find symbol
+  symbol:   method getMayorId()
+  location: variable mayorDTO of type wifi4eu.wifi4eu.common.dto.model.MayorDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[157,31] cannot find symbol
+  symbol:   method getRepresentativeDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[158,39] cannot find symbol
+  symbol:   method getRepresentativeDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[159,31] cannot find symbol
+  symbol:   method setRepresented(boolean)
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[160,38] cannot find symbol
+  symbol:   method setRepresented(boolean)
+  location: variable updatedBeneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[161,161] cannot find symbol
+  symbol:   method getRepresentativeDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[162,125] cannot find symbol
+  symbol:   method getMayorDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[164,39] cannot find symbol
+  symbol:   method getMayorDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[165,38] cannot find symbol
+  symbol:   method setRepresented(boolean)
+  location: variable updatedBeneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[166,38] cannot find symbol
+  symbol:   method setRepresentativeDTO(<nulltype>)
+  location: variable updatedBeneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[167,125] cannot find symbol
+  symbol:   method getMayorDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[169,145] cannot find symbol
+  symbol:   method getLegalEntityDTO()
+  location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/timeline/TimelineService.java:[38,89] cannot find symbol
+  symbol:   method getTimelineId()
+  location: variable timelineDTO of type wifi4eu.wifi4eu.common.dto.model.TimelineDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/timeline/TimelineService.java:[39,46] cannot find symbol
+  symbol:   method getTimelineId()
+  location: variable timelineDTO of type wifi4eu.wifi4eu.common.dto.model.TimelineDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/supplier/SupplierService.java:[91,20] cannot find symbol
+  symbol:   method setCreateDate(java.util.Date)
+  location: variable supplierDTO of type wifi4eu.wifi4eu.common.dto.model.SupplierDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/supplier/SupplierService.java:[120,49] cannot find symbol
+  symbol:   method getSupplierId()
+  location: variable perSupplierDTO of type wifi4eu.wifi4eu.common.dto.model.SupplierDTO
+[INFO] 42 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] wifi4eu 0.0.1-SNAPSHOT ............................. SUCCESS [  0.318 s]
+[INFO] wifi4eu common module .............................. SUCCESS [  2.751 s]
+[INFO] wifi4eu-financial .................................. SUCCESS [  0.000 s]
+[INFO] WiFi4EU Financial Persistence module ............... SUCCESS [  1.813 s]
+[INFO] WiFi4EU Financial Service module ................... FAILURE [  5.203 s]
+[INFO] WiFi4EU Financial web REST swagger generator module  SKIPPED
+[INFO] WiFi4EU Financial REST module ...................... SKIPPED
+[INFO] WiFi4EU Financial web module ....................... SKIPPED
+[INFO] wifi4eu Financial EAR module 0.0.1-SNAPSHOT ........ SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 10.300 s
+[INFO] Finished at: 2018-07-03T16:25:57+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:compile (default-compile) on project wifi4eu-financial-service: Compilation failure: Compilation failure: 
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/FinancialService.java:[86,50] cannot find symbol
+[ERROR]   symbol:   method getCallId()
+[ERROR]   location: variable call of type wifi4eu.wifi4eu.common.dto.model.CallDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/FinancialService.java:[91,29] cannot find symbol
+[ERROR]   symbol:   method getSupplierId()
+[ERROR]   location: variable supplier of type wifi4eu.wifi4eu.common.dto.model.SupplierDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/FinancialService.java:[92,55] cannot find symbol
+[ERROR]   symbol:   method getSupplierId()
+[ERROR]   location: variable supplier of type wifi4eu.wifi4eu.common.dto.model.SupplierDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[53,53] cannot find symbol
+[ERROR]   symbol:   method getEcasEmail()
+[ERROR]   location: variable userDTO of type wifi4eu.wifi4eu.common.dto.security.UserDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[68,31] cannot find symbol
+[ERROR]   symbol:   method getRepresentativeDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[69,39] cannot find symbol
+[ERROR]   symbol:   method getRepresentativeDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[70,31] cannot find symbol
+[ERROR]   symbol:   method setRepresented(boolean)
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[72,39] cannot find symbol
+[ERROR]   symbol:   method getMayorDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[94,38] cannot find symbol
+[ERROR]   symbol:   method getEcasEmail()
+[ERROR]   location: variable userDTO of type wifi4eu.wifi4eu.common.dto.security.UserDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[95,49] incompatible types: possible lossy conversion from long to int
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[96,36] incompatible types: java.util.Date cannot be converted to long
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[97,54] incompatible types: java.util.Date cannot be converted to long
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[106,38] cannot find symbol
+[ERROR]   symbol:   method getEcasEmail()
+[ERROR]   location: variable userDTO of type wifi4eu.wifi4eu.common.dto.security.UserDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[134,61] incompatible types: possible lossy conversion from long to int
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[138,44] incompatible types: java.util.Date cannot be converted to long
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[139,62] incompatible types: java.util.Date cannot be converted to long
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[178,45] long cannot be dereferenced
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java:[180,110] incompatible types: int cannot be converted to java.lang.Long
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/SecurityService.java:[185,81] cannot find symbol
+[ERROR]   symbol:   method getRightId()
+[ERROR]   location: variable rightDTO of type wifi4eu.wifi4eu.common.dto.security.RightDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/SecurityService.java:[190,29] cannot find symbol
+[ERROR]   symbol:   method setRoles(java.util.List<wifi4eu.wifi4eu.common.dto.security.RoleDTO>)
+[ERROR]   location: variable rightDTO of type wifi4eu.wifi4eu.common.dto.security.RightDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/helpdesk/HelpdeskService.java:[90,32] cannot find symbol
+[ERROR]   symbol:   method getIssueSummary()
+[ERROR]   location: variable issue of type wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[92,55] cannot find symbol
+[ERROR]   symbol:   method getLegalEntityDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[93,43] cannot find symbol
+[ERROR]   symbol:   method getMayorDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[94,61] cannot find symbol
+[ERROR]   symbol:   method getRepresentativeDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[115,21] cannot find symbol
+[ERROR]   symbol:   method setLegalEntityId(long)
+[ERROR]   location: variable mayorDTO of type wifi4eu.wifi4eu.common.dto.model.MayorDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[121,48] cannot find symbol
+[ERROR]   symbol:   method getMayorId()
+[ERROR]   location: variable mayorDTO of type wifi4eu.wifi4eu.common.dto.model.MayorDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[130,54] cannot find symbol
+[ERROR]   symbol:   method getMayorId()
+[ERROR]   location: variable mayorDTO of type wifi4eu.wifi4eu.common.dto.model.MayorDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[157,31] cannot find symbol
+[ERROR]   symbol:   method getRepresentativeDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[158,39] cannot find symbol
+[ERROR]   symbol:   method getRepresentativeDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[159,31] cannot find symbol
+[ERROR]   symbol:   method setRepresented(boolean)
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[160,38] cannot find symbol
+[ERROR]   symbol:   method setRepresented(boolean)
+[ERROR]   location: variable updatedBeneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[161,161] cannot find symbol
+[ERROR]   symbol:   method getRepresentativeDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[162,125] cannot find symbol
+[ERROR]   symbol:   method getMayorDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[164,39] cannot find symbol
+[ERROR]   symbol:   method getMayorDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[165,38] cannot find symbol
+[ERROR]   symbol:   method setRepresented(boolean)
+[ERROR]   location: variable updatedBeneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[166,38] cannot find symbol
+[ERROR]   symbol:   method setRepresentativeDTO(<nulltype>)
+[ERROR]   location: variable updatedBeneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[167,125] cannot find symbol
+[ERROR]   symbol:   method getMayorDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java:[169,145] cannot find symbol
+[ERROR]   symbol:   method getLegalEntityDTO()
+[ERROR]   location: variable beneficiaryDTO of type wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/timeline/TimelineService.java:[38,89] cannot find symbol
+[ERROR]   symbol:   method getTimelineId()
+[ERROR]   location: variable timelineDTO of type wifi4eu.wifi4eu.common.dto.model.TimelineDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/timeline/TimelineService.java:[39,46] cannot find symbol
+[ERROR]   symbol:   method getTimelineId()
+[ERROR]   location: variable timelineDTO of type wifi4eu.wifi4eu.common.dto.model.TimelineDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/supplier/SupplierService.java:[91,20] cannot find symbol
+[ERROR]   symbol:   method setCreateDate(java.util.Date)
+[ERROR]   location: variable supplierDTO of type wifi4eu.wifi4eu.common.dto.model.SupplierDTO
+[ERROR] /C:/Projects/app/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/supplier/SupplierService.java:[120,49] cannot find symbol
+[ERROR]   symbol:   method getSupplierId()
+[ERROR]   location: variable perSupplierDTO of type wifi4eu.wifi4eu.common.dto.model.SupplierDTO
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <goals> -rf :wifi4eu-financial-service

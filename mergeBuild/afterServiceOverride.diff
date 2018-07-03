@@ -1,0 +1,922 @@
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level1/service/es/sync/v1/BudgetaryCommitmentLevel1.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level1/service/es/sync/v1/BudgetaryCommitmentLevel1.java
+index 80267393c..0db40a55f 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level1/service/es/sync/v1/BudgetaryCommitmentLevel1.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level1/service/es/sync/v1/BudgetaryCommitmentLevel1.java
+@@ -15,7 +15,9 @@ import javax.xml.ws.Service;
+  * 
+  */
+ @WebServiceClient(name = "BudgetaryCommitmentLevel1", 
+-                  wsdlLocation = "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_BudgetaryCommitmentLevel1_ES_Sync_1.wsdl",
++                  //wsdlLocation = "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_BudgetaryCommitmentLevel1_ES_Sync_1.wsdl",
++                  wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel1_ES_Sync_1.wsdl",
++                  //wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel1_ES_Sync_1.wsdl",
+                   targetNamespace = "http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/sync/v1") 
+ public class BudgetaryCommitmentLevel1 extends Service {
+ 
+@@ -26,11 +28,13 @@ public class BudgetaryCommitmentLevel1 extends Service {
+     static {
+         URL url = null;
+         try {
+-            url = new URL("file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_BudgetaryCommitmentLevel1_ES_Sync_1.wsdl");
++            //url = new URL("file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_BudgetaryCommitmentLevel1_ES_Sync_1.wsdl");
++            url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel1_ES_Sync_1.wsdl");
++            //url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel1_ES_Sync_1.wsdl");
+         } catch (MalformedURLException e) {
+             java.util.logging.Logger.getLogger(BudgetaryCommitmentLevel1.class.getName())
+                 .log(java.util.logging.Level.INFO, 
+-                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_BudgetaryCommitmentLevel1_ES_Sync_1.wsdl");
++                     "Can not initialize the default wsdl from {0}", "BUDG_BudgetaryCommitmentLevel1_ES_Sync_1.wsdl");
+         }
+         WSDL_LOCATION = url;
+     }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level2/service/es/async/v1/BudgetaryCommitmentLevel2.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level2/service/es/async/v1/BudgetaryCommitmentLevel2.java
+index aacb73771..f3e78122d 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level2/service/es/async/v1/BudgetaryCommitmentLevel2.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level2/service/es/async/v1/BudgetaryCommitmentLevel2.java
+@@ -15,8 +15,10 @@ import javax.xml.ws.Service;
+  * 
+  */
+ @WebServiceClient(name = "BudgetaryCommitmentLevel2", 
+-                  wsdlLocation = "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_BudgetaryCommitmentLevel2_ES_Async_1.wsdl",
+-                  targetNamespace = "http://www.ec.europa.eu/budg/abac/budgetary_commitment_level2/service/es/async/v1") 
++                  //wsdlLocation = "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_BudgetaryCommitmentLevel2_ES_Async_1.wsdl",
++                  wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Async_1.wsdl",
++                  //wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Async_1.wsdl",
++        targetNamespace = "http://www.ec.europa.eu/budg/abac/budgetary_commitment_level2/service/es/async/v1")
+ public class BudgetaryCommitmentLevel2 extends Service {
+ 
+     public final static URL WSDL_LOCATION;
+@@ -26,11 +28,13 @@ public class BudgetaryCommitmentLevel2 extends Service {
+     static {
+         URL url = null;
+         try {
+-            url = new URL("file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_BudgetaryCommitmentLevel2_ES_Async_1.wsdl");
++            //url = new URL("file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_BudgetaryCommitmentLevel2_ES_Async_1.wsdl");
++            url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Async_1.wsdl");
++            //url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Async_1.wsdl");
+         } catch (MalformedURLException e) {
+             java.util.logging.Logger.getLogger(BudgetaryCommitmentLevel2.class.getName())
+                 .log(java.util.logging.Level.INFO, 
+-                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_BudgetaryCommitmentLevel2_ES_Async_1.wsdl");
++                     "Can not initialize the default wsdl from {0}", "BUDG_BudgetaryCommitmentLevel2_ES_Async_1.wsdl");
+         }
+         WSDL_LOCATION = url;
+     }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level2/service/es/sync/v1/BudgetaryCommitmentLevel2.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level2/service/es/sync/v1/BudgetaryCommitmentLevel2.java
+index eb2b1ad90..721392676 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level2/service/es/sync/v1/BudgetaryCommitmentLevel2.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/budgetary_commitment_level2/service/es/sync/v1/BudgetaryCommitmentLevel2.java
+@@ -15,7 +15,9 @@ import javax.xml.ws.Service;
+  * 
+  */
+ @WebServiceClient(name = "BudgetaryCommitmentLevel2", 
+-                  wsdlLocation = "file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl",
++                  //wsdlLocation = "file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl",
++                  wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl",
++                  //wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl",
+                   targetNamespace = "http://www.ec.europa.eu/budg/abac/budgetary_commitment_level2/service/es/sync/v1") 
+ public class BudgetaryCommitmentLevel2 extends Service {
+ 
+@@ -26,11 +28,13 @@ public class BudgetaryCommitmentLevel2 extends Service {
+     static {
+         URL url = null;
+         try {
+-            url = new URL("file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl");
++            //url = new URL("file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl");
++            url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl");
++            //url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl");
+         } catch (MalformedURLException e) {
+             java.util.logging.Logger.getLogger(BudgetaryCommitmentLevel2.class.getName())
+                 .log(java.util.logging.Level.INFO, 
+-                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl");
++                     "Can not initialize the default wsdl from {0}", "BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl");
+         }
+         WSDL_LOCATION = url;
+     }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_commitment/service/es/async/v1/LegalCommitment.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_commitment/service/es/async/v1/LegalCommitment.java
+index 4e0b0e5f0..6d67c6b4c 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_commitment/service/es/async/v1/LegalCommitment.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_commitment/service/es/async/v1/LegalCommitment.java
+@@ -15,7 +15,9 @@ import javax.xml.ws.Service;
+  * 
+  */
+ @WebServiceClient(name = "LegalCommitment", 
+-                  wsdlLocation = "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalCommitment_ES_Async_1.wsdl",
++                  //wsdlLocation = "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalCommitment_ES_Async_1.wsdl",
++                  wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_LegalCommitment_ES_Async_1.wsdl",
++                  //wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalCommitment_ES_Async_1.wsdl",
+                   targetNamespace = "http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/v1") 
+ public class LegalCommitment extends Service {
+ 
+@@ -26,11 +28,13 @@ public class LegalCommitment extends Service {
+     static {
+         URL url = null;
+         try {
+-            url = new URL("file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalCommitment_ES_Async_1.wsdl");
++            //url = new URL("file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalCommitment_ES_Async_1.wsdl");
++            url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_LegalCommitment_ES_Async_1.wsdl");
++            //url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalCommitment_ES_Async_1.wsdl");
+         } catch (MalformedURLException e) {
+             java.util.logging.Logger.getLogger(LegalCommitment.class.getName())
+                 .log(java.util.logging.Level.INFO, 
+-                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalCommitment_ES_Async_1.wsdl");
++                     "Can not initialize the default wsdl from {0}", "BUDG_LegalCommitment_ES_Async_1.wsdl");
+         }
+         WSDL_LOCATION = url;
+     }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_entity/service/es/async/v1/LegalEntity.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_entity/service/es/async/v1/LegalEntity.java
+index 9264334c6..a1d991ede 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_entity/service/es/async/v1/LegalEntity.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_entity/service/es/async/v1/LegalEntity.java
+@@ -14,7 +14,9 @@ import javax.xml.ws.Service;
+  * Generated source version: 3.1.12
+  */
+ @WebServiceClient(name = "LegalEntity",
+-        wsdlLocation = "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalEntity_ES_Async_2.wsdl",
++        //wsdlLocation = "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalEntity_ES_Async_2.wsdl",
++        wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BBUDG_LegalEntity_ES_Async_2.wsdl",
++        //wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Async_2.wsdl",
+         targetNamespace = "http://www.ec.europa.eu/budg/abac/legal_entity/service/es/async/v1")
+ public class LegalEntity extends Service {
+ 
+@@ -26,11 +28,13 @@ public class LegalEntity extends Service {
+     static {
+         URL url = null;
+         try {
+-            url = new URL("file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalEntity_ES_Async_2.wsdl");
++            //url = new URL("file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalEntity_ES_Async_2.wsdl");
++            url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Async_2.wsdl");
++            //url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Async_2.wsdl");
+         } catch (MalformedURLException e) {
+             java.util.logging.Logger.getLogger(LegalEntity.class.getName())
+                     .log(java.util.logging.Level.INFO,
+-                            "Can not initialize the default wsdl from {0}", "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalEntity_ES_Async_2.wsdl");
++                            "Can not initialize the default wsdl from {0}", "BUDG_LegalEntity_ES_Async_2.wsdl");
+         }
+         WSDL_LOCATION = url;
+     }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_entity/service/es/sync/v2/LegalEntity.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_entity/service/es/sync/v2/LegalEntity.java
+index 6790a00bd..8b95372a1 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_entity/service/es/sync/v2/LegalEntity.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/eu/europa/ec/budg/abac/legal_entity/service/es/sync/v2/LegalEntity.java
+@@ -14,8 +14,11 @@ import javax.xml.ws.Service;
+  * Generated source version: 3.0.4
+  */
+ @WebServiceClient(name = "LegalEntity",
+-        wsdlLocation = "file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_LegalEntity_ES_Sync_2.wsdl",
+-        targetNamespace = "http://localhost:7001")
++        //wsdlLocation = "file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_LegalEntity_ES_Sync_2.wsdl",
++        wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Sync_2.wsdl",
++        //wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Sync_2.wsdl",
++        //targetNamespace = "http://localhost:7001")
++        targetNamespace ="http://www.ec.europa.eu/budg/abac/legal_entity/service/es/sync/v2")
+ public class LegalEntity extends Service {
+ 
+     public final static URL WSDL_LOCATION;
+@@ -26,11 +29,13 @@ public class LegalEntity extends Service {
+     static {
+         URL url = null;
+         try {
+-            url = new URL("file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_LegalEntity_ES_Sync_2.wsdl");
++            //url = new URL("file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_LegalEntity_ES_Sync_2.wsdl");
++            url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Sync_2.wsdl");
++            //url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Sync_2.wsdl");
+         } catch (MalformedURLException e) {
+             java.util.logging.Logger.getLogger(LegalEntity.class.getName())
+                     .log(java.util.logging.Level.INFO,
+-                            "Can not initialize the default wsdl from {0}", "file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_LegalEntity_ES_Sync_2.wsdl");
++                            "Can not initialize the default wsdl from {0}", "BUDG_LegalEntity_ES_Sync_2.wsdl");
+         }
+         WSDL_LOCATION = url;
+     }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/mapper/security/RightMapper.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/mapper/security/RightMapper.java
+index 090311957..454ff0f5b 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/mapper/security/RightMapper.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/mapper/security/RightMapper.java
+@@ -10,9 +10,9 @@ import java.util.List;
+ 
+ @Mapper(componentModel = "spring", uses=RoleMapper.class)
+ public interface RightMapper {
+-    /*@Mappings(
+-            @Mapping(target = "roles", ignore = true)
+-    )*/
++//    @Mappings(
++//            @Mapping(target = "roles", ignore = true)
++//    )
+     RightDTO toDTO(Right entity);
+ 
+     Right toEntity(RightDTO vo);
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/mapper/security/UserMapper.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/mapper/security/UserMapper.java
+index 4f72a462c..a7148cfa9 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/mapper/security/UserMapper.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/mapper/security/UserMapper.java
+@@ -2,8 +2,9 @@ package wifi4eu.wifi4eu.mapper.security;
+ 
+ import org.mapstruct.Mapper;
+ import wifi4eu.wifi4eu.common.dto.security.UserDTO;
++//import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+ import wifi4eu.wifi4eu.entity.security.User;
+-
++//import wifi4eu.wifi4eu.entity.user.User;
+ import java.util.List;
+ 
+ @Mapper(componentModel = "spring", uses = RoleMapper.class)
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java
+index 2007b4728..c5c147bab 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/beneficiary/BeneficiaryService.java
+@@ -13,6 +13,7 @@ import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
+ import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+ import wifi4eu.wifi4eu.common.dto.model.RepresentativeDTO;
+ import wifi4eu.wifi4eu.common.dto.security.UserDTO;
++//import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+ import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
+ import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
+ import wifi4eu.wifi4eu.mapper.beneficiary.RepresentativeMapper;
+@@ -89,90 +90,91 @@ public class BeneficiaryService {
+     public UserDTO create(BeneficiaryDTO beneficiaryDTO) {
+         _log.info("Creating beneficiary...");
+         UserDTO userDTO = new UserDTO();
+-        LegalEntityDTO legalEntityDTO = beneficiaryDTO.getLegalEntityDTO();
+-        MayorDTO mayorDTO = beneficiaryDTO.getMayorDTO();
+-        RepresentativeDTO representativeDTO = beneficiaryDTO.getRepresentativeDTO();
+-        boolean represented = false;
+-        UserDTO mayorUserDTO = null;
+-        UserDTO representativeUserDTO = null;
+-        String mayorMail = mayorDTO.getEmail();
+-        String representativeMail = "";
+-
+-        if (representativeDTO != null && representativeDTO.getEmail() != null && !representativeDTO.getEmail().isEmpty()) {
+-            represented = true;
+-            representativeMail = representativeDTO.getEmail();
+-            representativeUserDTO = userService.getUserByEmail(representativeMail);
+-        }
+-        mayorUserDTO = userService.getUserByEmail(mayorMail);
+-
+-        if (mayorUserDTO == null && representativeUserDTO == null) {
+-            // create LegalEntityDTO
+-            _log.info("create legalEntity: " + legalEntityDTO.toString());
+-            legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(legalEntityDTO)));
+-            _log.info("created legalEntity: " + legalEntityDTO.toString());
+-
+-            // create mayor
+-            mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
+-            mayorDTO = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
+-            mayorUserDTO = new UserDTO();
+-            mayorUserDTO.setEmail(mayorMail);
+-            mayorUserDTO.setCreateDate(new Date());
+-            mayorUserDTO.setUserType(Constant.ROLE_MAYOR);
+-            mayorUserDTO.setUserTypeId(mayorDTO.getMayorId());
+-            String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
+-            mayorUserDTO.setPassword(password);
+-            _log.info("create mayor user: " + mayorUserDTO.toString());
+-            mayorUserDTO = userService.saveUser(mayorUserDTO);
+-            userService.sendActivateAccountMail(mayorUserDTO);
+-
+-            if (represented) {
+-                // create representative
+-                representativeDTO.setMayorId(mayorDTO.getMayorId());
+-                representativeDTO = representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(representativeDTO)));
+-                representativeUserDTO = new UserDTO();
+-                representativeUserDTO.setEmail(representativeMail);
+-                representativeUserDTO.setCreateDate(new Date());
+-                representativeUserDTO.setUserType(Constant.ROLE_REPRESENTATIVE);
+-                representativeUserDTO.setUserTypeId(representativeDTO.getRepresentativeId());
+-                password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
+-                representativeUserDTO.setPassword(password);
+-                _log.info("create representative user: " + representativeUserDTO.toString());
+-                representativeUserDTO = userService.saveUser(representativeUserDTO);
+-                userService.sendActivateAccountMail(representativeUserDTO);
+-                return representativeUserDTO;
+-            } else {
+-                return mayorUserDTO;
+-            }
+-        } else {
+-            _log.error("trying to register the mayor/representative twice");
+-            return null;
+-        }
++//        LegalEntityDTO legalEntityDTO = beneficiaryDTO.getLegalEntityDTO();
++//        MayorDTO mayorDTO = beneficiaryDTO.getMayorDTO();
++//        RepresentativeDTO representativeDTO = beneficiaryDTO.getRepresentativeDTO();
++//        boolean represented = false;
++//        UserDTO mayorUserDTO = null;
++//        UserDTO representativeUserDTO = null;
++//        String mayorMail = mayorDTO.getEmail();
++//        String representativeMail = "";
++//
++//        if (representativeDTO != null && representativeDTO.getEmail() != null && !representativeDTO.getEmail().isEmpty()) {
++//            represented = true;
++//            representativeMail = representativeDTO.getEmail();
++//            representativeUserDTO = userService.getUserByEmail(representativeMail);
++//        }
++//        mayorUserDTO = userService.getUserByEmail(mayorMail);
++//
++//        if (mayorUserDTO == null && representativeUserDTO == null) {
++//            // create LegalEntityDTO
++//            _log.info("create legalEntity: " + legalEntityDTO.toString());
++//            legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(legalEntityDTO)));
++//            _log.info("created legalEntity: " + legalEntityDTO.toString());
++//
++//            // create mayor
++//            mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
++//            mayorDTO = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
++//            mayorUserDTO = new UserDTO();
++//            mayorUserDTO.setEmail(mayorMail);
++//            mayorUserDTO.setCreateDate(new Date());
++//            mayorUserDTO.setUserType(Constant.ROLE_MAYOR);
++//            mayorUserDTO.setUserTypeId(mayorDTO.getMayorId());
++//            String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
++//            mayorUserDTO.setPassword(password);
++//            _log.info("create mayor user: " + mayorUserDTO.toString());
++//            mayorUserDTO = userService.saveUser(mayorUserDTO);
++//            userService.sendActivateAccountMail(mayorUserDTO);
++//
++//            if (represented) {
++//                // create representative
++//                representativeDTO.setMayorId(mayorDTO.getMayorId());
++//                representativeDTO = representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(representativeDTO)));
++//                representativeUserDTO = new UserDTO();
++//                representativeUserDTO.setEmail(representativeMail);
++//                representativeUserDTO.setCreateDate(new Date());
++//                representativeUserDTO.setUserType(Constant.ROLE_REPRESENTATIVE);
++//                representativeUserDTO.setUserTypeId(representativeDTO.getRepresentativeId());
++//                password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
++//                representativeUserDTO.setPassword(password);
++//                _log.info("create representative user: " + representativeUserDTO.toString());
++//                representativeUserDTO = userService.saveUser(representativeUserDTO);
++//                userService.sendActivateAccountMail(representativeUserDTO);
++//                return representativeUserDTO;
++//            } else {
++//                return mayorUserDTO;
++//            }
++//        } else {
++//            _log.error("trying to register the mayor/representative twice");
++//            return null;
++//        }
++        return userDTO;
+     }
+ 
+     public BeneficiaryDTO update(BeneficiaryDTO beneficiaryDTO) {
+         BeneficiaryDTO updatedBeneficiaryDTO = null;
+         if (beneficiaryDTO != null) {
+             updatedBeneficiaryDTO = new BeneficiaryDTO();
+-            String email;
+-            if (beneficiaryDTO.getRepresentativeDTO() != null) {
+-                email = beneficiaryDTO.getRepresentativeDTO().getEmail();
+-                beneficiaryDTO.setRepresented(true);
+-                updatedBeneficiaryDTO.setRepresented(true);
+-                updatedBeneficiaryDTO.setRepresentativeDTO(representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(beneficiaryDTO.getRepresentativeDTO()))));
+-                updatedBeneficiaryDTO.setMayorDTO(mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(beneficiaryDTO.getMayorDTO()))));
+-            } else {
+-                email = beneficiaryDTO.getMayorDTO().getEmail();
+-                updatedBeneficiaryDTO.setRepresented(false);
+-                updatedBeneficiaryDTO.setRepresentativeDTO(null);
+-                updatedBeneficiaryDTO.setMayorDTO(mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(beneficiaryDTO.getMayorDTO()))));
+-            }
+-            updatedBeneficiaryDTO.setLegalEntityDTO(legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(beneficiaryDTO.getLegalEntityDTO()))));
+-
+-            UserDTO userDTO = userService.getUserByEmail(email);
+-            if (userDTO != null) {
+-                /* TODO: update data */
+-                userDTO = userService.saveUser(userDTO);
+-            }
++//            String email;
++//            if (beneficiaryDTO.getRepresentativeDTO() != null) {
++//                email = beneficiaryDTO.getRepresentativeDTO().getEmail();
++//                beneficiaryDTO.setRepresented(true);
++//                updatedBeneficiaryDTO.setRepresented(true);
++//                updatedBeneficiaryDTO.setRepresentativeDTO(representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(beneficiaryDTO.getRepresentativeDTO()))));
++//                updatedBeneficiaryDTO.setMayorDTO(mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(beneficiaryDTO.getMayorDTO()))));
++//            } else {
++//                email = beneficiaryDTO.getMayorDTO().getEmail();
++//                updatedBeneficiaryDTO.setRepresented(false);
++//                updatedBeneficiaryDTO.setRepresentativeDTO(null);
++//                updatedBeneficiaryDTO.setMayorDTO(mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(beneficiaryDTO.getMayorDTO()))));
++//            }
++//            updatedBeneficiaryDTO.setLegalEntityDTO(legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(beneficiaryDTO.getLegalEntityDTO()))));
++//
++//            UserDTO userDTO = userService.getUserByEmail(email);
++//            if (userDTO != null) {
++//                /* TODO: update data */
++//                userDTO = userService.saveUser(userDTO);
++//            }
+         }
+         return updatedBeneficiaryDTO;
+     }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/BudgetaryCommitmentAsync.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/BudgetaryCommitmentAsync.java
+index dba87b1c9..bb319fdcb 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/BudgetaryCommitmentAsync.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/BudgetaryCommitmentAsync.java
+@@ -11,21 +11,21 @@ public class BudgetaryCommitmentAsync {
+ 
+ 
+     public static String bcCreate() throws IOException {
+-        try {
+-
+-            BudgetaryCommitmentLevel2 bc2 = new BudgetaryCommitmentLevel2();
+-
+-            BudgetaryCommitmentLevel2CreateRequestType bccrt = new BudgetaryCommitmentLevel2CreateRequestType();
+-
+-            BusinessRuleMessageResponseType brmrtbc = bc2.getBudgetaryCommitmentLevel2SOAP().create(bccrt);
+-
+-            System.out.println("BUDGETARY COMMITMENT ASYNC :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
+-            System.out.println("PRINTING BUSINES RULE REJECTION RETURN CODE ------------------------------------------" + brmrtbc.getBusinessRuleRejectionReturnCode());
+-
+-            return "true";
+-        } catch (FaultMessage faultMessage) {
+-            faultMessage.printStackTrace();
+-        }
++//        try {
++//
++//            BudgetaryCommitmentLevel2 bc2 = new BudgetaryCommitmentLevel2();
++//
++//            BudgetaryCommitmentLevel2CreateRequestType bccrt = new BudgetaryCommitmentLevel2CreateRequestType();
++//
++//            BusinessRuleMessageResponseType brmrtbc = bc2.getBudgetaryCommitmentLevel2SOAP().create(bccrt);
++//
++//            System.out.println("BUDGETARY COMMITMENT ASYNC :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
++//            System.out.println("PRINTING BUSINES RULE REJECTION RETURN CODE ------------------------------------------" + brmrtbc.getBusinessRuleRejectionReturnCode());
++//
++//            return "true";
++//        } catch (FaultMessage faultMessage) {
++//            faultMessage.printStackTrace();
++//        }
+         return "false";
+     }
+ }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/BudgetaryCommitmentSync.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/BudgetaryCommitmentSync.java
+index 8a78f04df..1172ff523 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/BudgetaryCommitmentSync.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/BudgetaryCommitmentSync.java
+@@ -11,26 +11,26 @@ import java.io.IOException;
+ public class BudgetaryCommitmentSync {
+ 
+     public static String bcSearch() throws IOException {
+-        try {
+-
+-            //SEARCH SERVICE BUDGETARY COMMITMENT
+-
+-
+-            BudgetaryCommitmentLevel1 bc = new BudgetaryCommitmentLevel1();
+-
+-            BudgetaryCommitmentLevel1SearchRequestType bcl1srt = new BudgetaryCommitmentLevel1SearchRequestType();
+-
+-
+-            BudgetaryCommitmentLevel1SearchResponseType bcsr = bc.getBudgetaryCommitmentLevel1SOAP().search(bcl1srt);
+-
+-            System.out.println("BUDGETARY COMMITMENT SYNC :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
+-            System.out.println("PRINTING FULL ROW COUNT ----------------> " + bcsr.getFullRowCount());
+-
+-
+-            return "true";
+-        } catch (FaultMessage faultMessage) {
+-            faultMessage.printStackTrace();
+-        }
++//        try {
++//
++//            //SEARCH SERVICE BUDGETARY COMMITMENT
++//
++//
++//            BudgetaryCommitmentLevel1 bc = new BudgetaryCommitmentLevel1();
++//
++//            BudgetaryCommitmentLevel1SearchRequestType bcl1srt = new BudgetaryCommitmentLevel1SearchRequestType();
++//
++//
++//            BudgetaryCommitmentLevel1SearchResponseType bcsr = bc.getBudgetaryCommitmentLevel1SOAP().search(bcl1srt);
++//
++//            System.out.println("BUDGETARY COMMITMENT SYNC :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
++//            System.out.println("PRINTING FULL ROW COUNT ----------------> " + bcsr.getFullRowCount());
++//
++//
++//            return "true";
++//        } catch (FaultMessage faultMessage) {
++//            faultMessage.printStackTrace();
++//        }
+         return "false";
+     }
+ }
+\ No newline at end of file
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/FinancialService.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/FinancialService.java
+index 84c17aad5..3067d1bd1 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/FinancialService.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/FinancialService.java
+@@ -83,15 +83,20 @@ public class FinancialService {
+                 SupplierDTO supplier = gson.fromJson(applicationJson.getAsJsonObject("supplier"), SupplierDTO.class);
+                 application.setAwarded(applicationJson.get("awarded").getAsBoolean());
+                 application.setDate(new Date(applicationJson.get("date").getAsLong()));
+-                application.setPublicationId(call.getCallId());
++                //application.setPublicationId(call.getCallId());
++                Integer value=call.getId();
++                application.setPublicationId(value.longValue());
+                 application.setBeneficiaryId(legalEntity.getLegalEntityId());
+                 legalEntityRepository.save(legalEntityMapper.toEntity(legalEntity));
+                 mayorRepository.save(mayorMapper.toEntity(mayor));
+                 userRepository.save(userMapper.toEntity(user));
+-                if (supplier.getSupplierId() != null) {
+-                    application.setSupplierId(supplier.getSupplierId());
++//                if (supplier.getSupplierId() != null) {
++//                    application.setSupplierId(supplier.getSupplierId());
++//                if (supplier.getId()) {
++                    Integer value2=supplier.getId();
++                    application.setSupplierId(value2.longValue());
+                     supplierRepository.save(supplierMapper.toEntity(supplier));
+-                }
++//                }
+                 Long importDate = new Date().getTime();
+                 application.setLefImport(importDate);
+                 application.setBcImport(importDate);
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalCommitmentAsync.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalCommitmentAsync.java
+index 757a49afa..580689c7e 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalCommitmentAsync.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalCommitmentAsync.java
+@@ -11,22 +11,22 @@ import java.io.IOException;
+ public class LegalCommitmentAsync {
+ 
+     public static String lcCreate() throws IOException {
+-        try {
+-
+-            LegalCommitment leAsync = new LegalCommitment();
+-
+-
+-            LegalCommitmentCreateBaseRequestType lccbrt = new LegalCommitmentCreateBaseRequestType();
+-
+-            BusinessRuleMessageResponseType bRMRT = leAsync.getLegalCommitment().createBase(lccbrt);
+-            System.out.println("LEGAL COMMITMENT ASYNC:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
+-            System.out.println("PRINTING BUSINES RULE REJECTION RETURN CODE ------------------------------------------" + bRMRT.getBusinessRuleRejectionReturnCode());
+-
+-
+-            return "true";
+-        } catch (FaultMessage faultMessage) {
+-            faultMessage.printStackTrace();
+-        }
++//        try {
++//
++//            LegalCommitment leAsync = new LegalCommitment();
++//
++//
++//            LegalCommitmentCreateBaseRequestType lccbrt = new LegalCommitmentCreateBaseRequestType();
++//
++//            BusinessRuleMessageResponseType bRMRT = leAsync.getLegalCommitment().createBase(lccbrt);
++//            System.out.println("LEGAL COMMITMENT ASYNC:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
++//            System.out.println("PRINTING BUSINES RULE REJECTION RETURN CODE ------------------------------------------" + bRMRT.getBusinessRuleRejectionReturnCode());
++//
++//
++//            return "true";
++//        } catch (FaultMessage faultMessage) {
++//            faultMessage.printStackTrace();
++//        }
+         return "false";
+     }
+ }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalEntityAsync.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalEntityAsync.java
+index 1cf05d03e..e98d45888 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalEntityAsync.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalEntityAsync.java
+@@ -13,23 +13,23 @@ import java.math.BigInteger;
+ public class LegalEntityAsync {
+ 
+     public static String leCreate() throws IOException {
+-        try {
+-
+-            LegalEntityCreateRequestType lecrt = new LegalEntityCreateRequestType();
+-
+-
+-            eu.europa.ec.budg.abac.legal_entity.service.es.async.v1.LegalEntity leAsync = new eu.europa.ec.budg.abac.legal_entity.service.es.async.v1.LegalEntity();
+-
+-
+-            BusinessRuleMessageResponseType bRMRT = leAsync.getLegalEntitySOAP().create(lecrt);
+-            System.out.println("LEGAL ENTITY ASYNC:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
+-            System.out.println("PRINTING BUSINES RULE REJECTION RETURN CODE ------------------------------------------" + bRMRT.getBusinessRuleRejectionReturnCode());
+-
+-
+-            return "true";
+-        } catch (FaultMessage faultMessage) {
+-            faultMessage.printStackTrace();
+-        }
++//        try {
++//
++//            LegalEntityCreateRequestType lecrt = new LegalEntityCreateRequestType();
++//
++//
++//            eu.europa.ec.budg.abac.legal_entity.service.es.async.v1.LegalEntity leAsync = new eu.europa.ec.budg.abac.legal_entity.service.es.async.v1.LegalEntity();
++//
++//
++//            BusinessRuleMessageResponseType bRMRT = leAsync.getLegalEntitySOAP().create(lecrt);
++//            System.out.println("LEGAL ENTITY ASYNC:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
++//            System.out.println("PRINTING BUSINES RULE REJECTION RETURN CODE ------------------------------------------" + bRMRT.getBusinessRuleRejectionReturnCode());
++//
++//
++//            return "true";
++//        } catch (FaultMessage faultMessage) {
++//            faultMessage.printStackTrace();
++//        }
+         return "false";
+     }
+ }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalEntitySync.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalEntitySync.java
+index 697e8673f..f6f6a2258 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalEntitySync.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/financial/LegalEntitySync.java
+@@ -16,21 +16,21 @@ import java.io.IOException;
+ public class LegalEntitySync {
+ 
+     public static String leSearch() throws IOException {
+-        try {
+-
+-            LegalEntity le = new LegalEntity();
+-
+-            LegalEntitySearchRequestType lesrt = new LegalEntitySearchRequestType();
+-
+-            LegalEntitySearchResponseType leSearchResponse = le.getLegalEntitySOAP().search(lesrt);
+-
+-            System.out.println("LEGAL ENTITY SYNC :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
+-            System.out.println("ROW COUNT ---------------------------------------> " + leSearchResponse.getRowCount());
+-
+-            return "true";
+-        } catch (FaultMessage faultMessage) {
+-            faultMessage.printStackTrace();
+-        }
++//        try {
++//
++//            LegalEntity le = new LegalEntity();
++//
++//            LegalEntitySearchRequestType lesrt = new LegalEntitySearchRequestType();
++//
++//            LegalEntitySearchResponseType leSearchResponse = le.getLegalEntitySOAP().search(lesrt);
++//
++//            System.out.println("LEGAL ENTITY SYNC :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
++//            System.out.println("ROW COUNT ---------------------------------------> " + leSearchResponse.getRowCount());
++//
++//            return "true";
++//        } catch (FaultMessage faultMessage) {
++//            faultMessage.printStackTrace();
++//        }
+         return "false";
+     }
+ }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/helpdesk/HelpdeskService.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/helpdesk/HelpdeskService.java
+index 4badad4b2..fcbaa7fd7 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/helpdesk/HelpdeskService.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/helpdesk/HelpdeskService.java
+@@ -87,7 +87,7 @@ public class HelpdeskService {
+ 
+             for (HelpdeskIssueDTO issue : issues) {
+                 _log.info("Issue summary:");
+-                _log.info(issue.getIssueSummary());
++                //_log.info(issue.getIssueSummary());
+ 
+                 beanWriter.write(issue, header, processors);
+             }
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/SecurityService.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/SecurityService.java
+index 91c6c9e8c..103749a10 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/SecurityService.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/SecurityService.java
+@@ -182,12 +182,13 @@ public class SecurityService {
+             for (Right r : rights) {
+                 rightDTO = rightMapper.toDTO(r);
+                 if (isLoadRoles) {
+-                    roles = securityRoleRepository.findByRights_rightId(rightDTO.getRightId());
++                    Integer value=rightDTO.getId();
++                    roles = securityRoleRepository.findByRights_rightId(value.longValue());
+                     roleDTOs = new ArrayList<>();
+                     for (Role role : roles) {
+                         roleDTOs.add(new RoleDTO(role.getName()));
+                     }
+-                    rightDTO.setRoles(roleDTOs);
++                    //rightDTO.setRoles(roleDTOs);
+                     rightDTOs.add(rightDTO);
+                 } else {
+                     rightDTOs.add(rightDTO);
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java
+index b4ec493dc..8c45d71a6 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/security/UserService.java
+@@ -12,6 +12,7 @@ import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
+ import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
+ import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
+ import wifi4eu.wifi4eu.common.dto.security.UserDTO;
++//import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+ import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
+ import wifi4eu.wifi4eu.mapper.security.UserMapper;
+ import wifi4eu.wifi4eu.repository.security.SecurityTempTokenRepository;
+@@ -50,7 +51,7 @@ public class UserService {
+ 
+     public UserDTO login(UserDTO userDTO) {
+ 
+-        UserDTO persUserDTO = getUserByEmail(userDTO.getEcasEmail());
++        UserDTO persUserDTO = getUserByEmail(userDTO.getEmail());
+ 
+         if (persUserDTO != null && userDTO.getPassword().equals(persUserDTO.getPassword())) {
+             persUserDTO.setAccessDate(new Date());
+@@ -61,28 +62,28 @@ public class UserService {
+     }
+ 
+     public void resendEmail(BeneficiaryDTO beneficiaryDTO) {
+-        if (beneficiaryDTO != null) {
+-
+-            String email;
+-
+-            if (beneficiaryDTO.getRepresentativeDTO().getEmail() != null) {
+-                email = beneficiaryDTO.getRepresentativeDTO().getEmail();
+-                beneficiaryDTO.setRepresented(true);
+-            } else {
+-                email = beneficiaryDTO.getMayorDTO().getEmail();
+-            }
+-
+-            UserDTO userDTO = getUserByEmail(email);
+-
+-            if (userDTO != null) {
+-                sendActivateAccountMail(userDTO);
+-            } else {
+-                _log.error("Trying to resend activation account email with an unregistered user");
+-            }
+-
+-        } else {
+-            _log.error("Trying to resend activation account email with an unregistered beneficiary");
+-        }
++//        if (beneficiaryDTO != null) {
++//
++//            String email;
++//
++//            if (beneficiaryDTO.getRepresentativeDTO().getEmail() != null) {
++//                email = beneficiaryDTO.getRepresentativeDTO().getEmail();
++//                beneficiaryDTO.setRepresented(true);
++//            } else {
++//                email = beneficiaryDTO.getMayorDTO().getEmail();
++//            }
++//
++//            UserDTO userDTO = getUserByEmail(email);
++//
++//            if (userDTO != null) {
++//                sendActivateAccountMail(userDTO);
++//            } else {
++//                _log.error("Trying to resend activation account email with an unregistered user");
++//            }
++//
++//        } else {
++//            _log.error("Trying to resend activation account email with an unregistered beneficiary");
++//        }
+     }
+ 
+     public void sendActivateAccountMail(UserDTO userDTO) {
+@@ -91,10 +92,11 @@ public class UserService {
+         Date now = new Date();
+ 
+         TempTokenDTO tempTokenDTO = new TempTokenDTO();
+-        tempTokenDTO.setEmail(userDTO.getEcasEmail());
+-        tempTokenDTO.setUserId(userDTO.getUserId());
+-        tempTokenDTO.setCreateDate(now);
+-        tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS));
++        tempTokenDTO.setEmail(userDTO.getEmail());
++        Long value=userDTO.getUserId();
++        tempTokenDTO.setUserId(value.intValue());
++        tempTokenDTO.setCreateDate(now.getTime());
++        tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
+         SecureRandom secureRandom = new SecureRandom();
+         String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
+         tempTokenDTO.setToken(token);
+@@ -103,7 +105,7 @@ public class UserService {
+         String subject = "Welcome to wifi4eu";
+         String msgBody = "You have successfully registered to wifi4eu, access to the next link and activate your account " + UserService.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
+ 
+-        mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
++        mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+     }
+ 
+ 
+@@ -131,12 +133,13 @@ public class UserService {
+                 if (tempTokenDTO == null) {
+                     tempTokenDTO = new TempTokenDTO();
+                     tempTokenDTO.setEmail(email);
+-                    tempTokenDTO.setUserId(userDTO.getUserId());
++                    Long value=userDTO.getUserId();
++                    tempTokenDTO.setUserId(value.intValue());
+                 }
+ 
+                 Date now = new Date();
+-                tempTokenDTO.setCreateDate(now);
+-                tempTokenDTO.setExpiryDate(DateUtils.addHours(now, TIMEFRAME_ACTIVATE_ACCOUNT_HOURS));
++                tempTokenDTO.setCreateDate(now.getTime());
++                tempTokenDTO.setExpiryDate(DateUtils.addHours(now, TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
+                 SecureRandom secureRandom = new SecureRandom();
+                 String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
+                 tempTokenDTO.setToken(token);
+@@ -175,9 +178,11 @@ public class UserService {
+         if (tempTokenDTO != null) {
+             /* check if it is expired */
+             _log.info("tempToken is not null and expiryDate: " + tempTokenDTO.getExpiryDate());
+-            if (tempTokenDTO.getExpiryDate().after(now)) {
++            //if (tempTokenDTO.getExpiryDate().after(now)) {
++            if (new Date(tempTokenDTO.getExpiryDate()).after(now)) {
+                 /* get user */
+-                UserDTO userDTO = userMapper.toDTO(securityUserRepository.findByUserId(tempTokenDTO.getUserId()));
++                Integer value=tempTokenDTO.getUserId();
++                UserDTO userDTO = userMapper.toDTO(securityUserRepository.findByUserId(value.longValue()));
+ 
+                 /* update password */
+                 userDTO.setPassword(activateAccountDTO.getPassword());
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/supplier/SupplierService.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/supplier/SupplierService.java
+index 459f6a953..404dceecd 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/supplier/SupplierService.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/supplier/SupplierService.java
+@@ -25,6 +25,7 @@ import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
+ import wifi4eu.wifi4eu.service.security.UserService;
+ import wifi4eu.wifi4eu.entity.supplier.Supplier;
+ 
++import java.util.ArrayList;
+ import java.util.Date;
+ import java.util.List;
+ import java.util.UUID;
+@@ -84,51 +85,23 @@ public class SupplierService {
+ 
+     @Transactional
+     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
+-
+-        _log.info("[i] create Supplier");
+-
+-        // set the create date
+-        supplierDTO.setCreateDate(new Date());
+-
+-        /*
+-            TODO: enable a validation to avoid user duplicity
+-        */
+-
+-        // get supplier email
+-        String email = supplierDTO.getContactEmail();
+-
+-        UserDTO persUserDTO = userService.getUserByEmail(email);
+-
+-        if (persUserDTO == null) {
+-            _log.info("Nom: " + supplierDTO.getName());
+-
+-            // create supplier user
+-            UserDTO userDTO = new UserDTO();
+-            userDTO.setCreateDate(new Date());
+-            userDTO.setEmail(email);
+-            userDTO.setUserType(Constant.ROLE_SUPPLIER);
+-
+-            // create temporal password
+-            String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
+-            userDTO.setPassword(password);
+-
+-            Supplier supTemp = supplierMapper.toEntity(supplierDTO);
+-            Supplier savedSupplier = supplierRepository.save(supTemp);
+-            SupplierDTO perSupplierDTO = supplierMapper.toDTO(savedSupplier);
+-
+-            //link supplier and user and store user
+-            userDTO.setUserTypeId(perSupplierDTO.getSupplierId());
+-            userDTO = userService.saveUser(userDTO);
+-
+-            //send activate account mail
+-            userService.sendActivateAccountMail(userDTO);
+-
+-            _log.info("[f] create Supplier");
+-
+-            return perSupplierDTO;
++        if (supplierDTO.getSuppliedRegions().isEmpty()) {
++            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+         } else {
+-            _log.warn("trying to duplicate user");
+-            return null;
++            Integer supplierId = supplierDTO.getId();
++            List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
++            List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
++            if (supplierId == 0) {
++                supplierDTO.setSuppliedRegions(null);
++                supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
++                supplierId = supplierDTO.getId();
++            }
++            for (SuppliedRegionDTO region : originalRegions) {
++                region.setSupplierId(supplierId);
++                correctRegions.add(region);
++            }
++            supplierDTO.setSuppliedRegions(correctRegions);
++            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+         }
+     }
+ 
+diff --git a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/timeline/TimelineService.java b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/timeline/TimelineService.java
+index 6626d9fae..18373cd6b 100644
+--- a/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/timeline/TimelineService.java
++++ b/wifi4eu-financial/wifi4eu-financial-service/src/main/java/wifi4eu/wifi4eu/service/timeline/TimelineService.java
+@@ -33,11 +33,15 @@ public class TimelineService {
+         return timelineMapper.toDTO(timelineRepository.save(timelineMapper.toEntity(timelineDTO)));
+     }
+ 
+-    // @Transactional
+-    public TimelineDTO deleteTimeline(TimelineDTO timelineDTO) {
+-        _log.info("luciaaaaaaaaaaa:::::::::::::::::::::::::::::::::::::::" + timelineDTO.getTimelineId().toString());
+-        timelineRepository.delete(timelineDTO.getTimelineId());
+-        return timelineDTO;
++    public TimelineDTO deleteTimeline(int timelineId) {
++        Integer value=timelineId;
++        TimelineDTO timelineDTO = timelineMapper.toDTO(timelineRepository.findOne(value.longValue()));
++        if (timelineDTO != null) {
++            timelineRepository.delete(timelineMapper.toEntity(timelineDTO));
++            return timelineDTO;
++        } else {
++            return null;
++        }
+     }
+ 
+ }

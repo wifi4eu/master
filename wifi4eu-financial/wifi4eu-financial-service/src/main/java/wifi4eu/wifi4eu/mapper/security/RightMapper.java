@@ -10,9 +10,9 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses=RoleMapper.class)
 public interface RightMapper {
-    /*@Mappings(
-            @Mapping(target = "roles", ignore = true)
-    )*/
+//    @Mappings(
+//            @Mapping(target = "roles", ignore = true)
+//    )
     RightDTO toDTO(Right entity);
 
     Right toEntity(RightDTO vo);
