@@ -41,3 +41,7 @@ cleanEnv.sh
 .settings/*
 .project
 bin
+/commons-diff-developVS2107.txt
+/outputFinancialFinancial2107.txt
+/outputFinancialFinancialCommon.txt
+/outputFinancialFinancialNoRoles.txt
