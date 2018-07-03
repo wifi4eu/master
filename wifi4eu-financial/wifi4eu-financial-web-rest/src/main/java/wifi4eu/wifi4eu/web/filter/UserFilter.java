@@ -1,5 +1,9 @@
 package wifi4eu.wifi4eu.web.filter;
 
+import eu.cec.digit.ecas.client.jaas.DetailedUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -11,9 +15,13 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class UserFilter extends OncePerRequestFilter {
+
+    Logger _log = LoggerFactory.getLogger(UserFilter.class);
 
     @Override
     protected String getAlreadyFilteredAttributeName() {
@@ -28,21 +36,65 @@ public class UserFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        String requestUri = "Unknown resource";
         try {
-            UserContext user = (UserContext) request.getSession(true).getAttribute(Constant.USER);
+            requestUri = request.getRequestURI();
+            HttpSession session = request.getSession();
 
-            if (user == null) {
-                user = UserHolder.getUser();
-                request.getSession().setAttribute(Constant.USER, user);
+            UserContext user = null;
+            DetailedUser ecasPrincipal = (DetailedUser) request.getUserPrincipal();
+            if (ecasPrincipal != null) {
+                user = new UserContext(ecasPrincipal.getDomainUsername());
+                user.setEmail(ecasPrincipal.getEmail());
+                user.setDomain(ecasPrincipal.getDomain());
+                if (ecasPrincipal.getEmployeeNumber() != null) {
+                    user.setPerId(new Long(ecasPrincipal.getEmployeeNumber()));
+                }
+                user.setDetailedUser(ecasPrincipal);
+                user.setFirstName(ecasPrincipal.getFirstName());
+                user.setLastName(ecasPrincipal.getLastName());
+                user.setRoleList(new LinkedList<RoleDTO>());
+
+                session.setAttribute(Constant.USER, user);
+            } else if (_log.isDebugEnabled()) {
+                _log.info("Unauthenticated request: " + requestUri);
             }
 
+            user = (UserContext) session.getAttribute(Constant.USER);
             UserHolder.setUser(user);
-            filterChain.doFilter(request, response);
 
-        } catch (Exception e) {
-            throw new AppException(e);
+            if (user == null && requestUri.equalsIgnoreCase("/wifi4eu-financial/")) {
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
+                return;
+            } else {
+                try {
+                    filterChain.doFilter(request, response);
+                } catch (Exception ex) {
+                    _log.error("Error processing request: " + requestUri, ex);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new AppException(ex);
         } finally {
             UserHolder.clearUser();
         }
+
+        //try {
+          //  UserContext user = (UserContext) request.getSession(true).getAttribute(Constant.USER);
+
+            //if (user == null) {
+              //  user = UserHolder.getUser();
+              //  request.getSession().setAttribute(Constant.USER, user);
+            //}
+
+            //UserHolder.setUser(user);
+            //filterChain.doFilter(request, response);
+
+        //} catch (Exception e) {
+          //  throw new AppException(e);
+        //} finally {
+          //  UserHolder.clearUser();
+        //}
     }
 }

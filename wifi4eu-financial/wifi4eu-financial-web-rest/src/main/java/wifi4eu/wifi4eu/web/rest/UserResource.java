@@ -49,11 +49,11 @@ public class UserResource {
     @ResponseBody
     public ResponseDTO login(@RequestBody final UserDTO userDTO, final HttpServletResponse response) {
         ResponseDTO result;
-        _log.info("userDTO: " + userDTO.getEcasEmail());
+        _log.info("userDTO: " + userDTO.getEmail());
         try {
             UserDTO user = userService.login(userDTO);
 
-            String token = AuthJWTokenizer.encode(user.getEcasEmail());
+            String token = AuthJWTokenizer.encode(user.getEmail());
             sessionCache.userSessionCache.put(token, user);
 
             user.setPassword(""); // Remove password
@@ -89,7 +89,7 @@ public class UserResource {
                 sessionCache.userSessionCache.invalidate(oldToken);
 
                 //Create new token and add it
-                String token = AuthJWTokenizer.encode(user.getEcasEmail());
+                String token = AuthJWTokenizer.encode(user.getEmail());
                 sessionCache.userSessionCache.put(token, user);
 
                 result = new ResponseDTO(true, token, null);
@@ -172,6 +172,8 @@ public class UserResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
+
+
 
 
     @ApiOperation(value = "Service to change password of a user")

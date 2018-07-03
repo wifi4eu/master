@@ -66,7 +66,8 @@ public class DgconnResource {
                 int municipalities = 0;
                 int requests = 0;
                 int awarded = 0;
-                String name = country.getName();
+                //String name = country.getName();
+                String name = "";
                 List<LauDTO> municipalitiesList = locationService.getLauByCountryCode(country.getCountryCode());
                 municipalities = municipalitiesList.size();
                 List<BenPubSupDTO> requestsList = dgconnService.getAllRequests();

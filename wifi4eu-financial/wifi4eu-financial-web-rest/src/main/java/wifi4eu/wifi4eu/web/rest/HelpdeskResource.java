@@ -38,7 +38,8 @@ public class HelpdeskResource {
         List<HelpdeskIssueDTO> issues = helpdeskService.getAllHelpdeskIssues();
         if (issues != null) {
             for (int i = 0; i < issues.size(); i++) {
-                issues.get(i).setComments(helpdeskService.getHelpdeskIssueComments(issues.get(i).getIssueId()));
+                Integer value=issues.get(i).getId();
+                issues.get(i).setComments(helpdeskService.getHelpdeskIssueComments(value.longValue()));
             }
         }
         return issues;
