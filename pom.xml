@@ -13,10 +13,20 @@
 
     <modules>
         <module>wifi4eu-common</module>
+        
+        <!-- TODO 
+        Currently only wifi4eu-portal and wifi4eu-financial are build by this pom
+        there are additional profiles 
+        financial and fin-portal they can not be enabled simultaneously  
+        
+         <module>wifi4eu-public-portal</module>
+        <module>wifi4eu-dgconn</module>       
         <module>wifi4eu-portal</module>
         <module>wifi4eu-public-portal</module>
-        <module>wifi4eu-dgconn</module>
-        <!--<module>wifi4eu-financial</module>-->
+        <module>wifi4eu-dgconn</module> -->
+        
+     
+
     </modules>
 
 
@@ -101,7 +111,9 @@
         <ecas.config.renew>false</ecas.config.renew>
         <ecas.config.server.element/>
         <ecas.config.validate.load_test_specific/>
-        <ecas.config.base.url>https://ecas.ec.europa.eu</ecas.config.base.url>
+        <!-- TODO put properties in financial and fin-portal profiles
+        <ecas.config.base.url>https://ecas.ec.europa.eu</ecas.config.base.url>-->
+        <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
         <ecas.config.strength>PASSWORD</ecas.config.strength>
         <ecas.config.test.certificate.element/>
         <ecas.server.address/>
@@ -398,6 +410,26 @@
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
             </properties>
+        </profile>
+        <profile>
+        <id>financial</id>
+         <activation>
+         	<activeByDefault>false</activeByDefault>
+         	
+         </activation>
+        	<modules>
+        		<module>wifi4eu-financial</module>
+        	</modules>
+        </profile>
+        <profile>
+        <id>fin-portal</id>
+         <activation>
+         	<activeByDefault>false</activeByDefault>
+         	
+         </activation>
+        	<modules>
+        		<module>wifi4eu-portal</module>
+        	</modules>
         </profile>
     </profiles>
 
