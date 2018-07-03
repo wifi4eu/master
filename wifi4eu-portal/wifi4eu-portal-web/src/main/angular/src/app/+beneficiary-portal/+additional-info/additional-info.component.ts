@@ -42,7 +42,7 @@ export class AdditionalInfoComponent {
     private doc3: boolean = false;
     private doc4: boolean = false;
     private displayConfirmClose: boolean = false;
-
+    
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
@@ -104,6 +104,45 @@ export class AdditionalInfoComponent {
 		return true;
     }
 
+    private checkFileMimeType(file: File) : Promise<any>{
+      return new Promise((resolve, reject) => {        
+        var blob = file;
+        var fileReader = new FileReader();
+        fileReader.onloadend = function(e: any) {
+          var arr = (new Uint8Array(e.target.result)).subarray(0, 4);
+          var header = "";
+          for(var i = 0; i < arr.length; i++) {
+            header += arr[i].toString(16);
+          }
+          var type = "";
+          // Check the file signature against known types
+          switch (header) {
+            case "89504e47":
+                type = "image/png";
+                resolve();
+                break;            
+            case "ffd8ffe0":
+            case "ffd8ffe1":
+            case "ffd8ffe2":
+            case "ffd8ffe3":
+            case "ffd8ffe8":
+                type = "image/jpeg";
+                resolve();
+                break;
+            case "25504446":
+                type = "application/pdf";
+                resolve();
+                break;
+            default:
+                // extension not 
+                reject();
+                break;
+          }
+        };
+        fileReader.readAsArrayBuffer(blob);
+      });
+    }
+
     private uploadFile(event: any, index: number = 0) {
         if (this.registration.allFilesFlag != 1) {
             this.filesUploaded = true;
@@ -114,6 +153,7 @@ export class AdditionalInfoComponent {
                     return;
                 }
                 if (event.target.files[0].type == "application/pdf" || event.target.files[0].type == "image/png" || event.target.files[0].type == "image/jpg" || event.target.files[0].type == "image/jpeg") {
+                  this.checkFileMimeType(event.target.files[0]).then(() => {
                     this.documentFiles[index] = event.target.files[0];
                     this.reader.readAsDataURL(this.documentFiles[index]);
                     let subscription = Observable.interval(200).subscribe(
@@ -139,6 +179,11 @@ export class AdditionalInfoComponent {
                             }
                         }
                     );
+                  }).catch(() => {
+                    this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
+                    this.filesUploaded = false;
+                    this.removeFile(index);
+                  });
                 } else {
                     this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
                     this.filesUploaded = false;
