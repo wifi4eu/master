@@ -69,6 +69,14 @@
                 <div class="col-sm-4"><p>{{ 'suppRegistration.bic.label' | translate }}</p></div>
                 <div class="col-sm-8"><p class="profileData">{{supplier.bic}}</div>
             </div>
+            <div class="row">
+                <div class="col-sm-4"><p>{{ 'suppRegistration.bank.account' | translate }}</p></div>
+                <div class="col-sm-8"><p class="profileData">{{supplier.accountNumber}}</div>
+            </div>
+            <div class="row" *ngIf="supplier.website">
+                <div class="col-sm-4"><p>{{ 'suppRegistration.company.web' | translate }}</p></div>
+                <div class="col-sm-8"><p class="profileData">{{supplier.website}}</div>
+            </div>
             <div class="row" *ngIf="supplier.logo">
                 <div class="col-sm-4"><p>{{ 'suppPortal.profile.currentLogo' | translate }}</p></div>
                 <div class="col-sm-8"><p class="profileData"><img [src]="supplier.logo" height="50"></div>
@@ -278,6 +286,34 @@
                                name="bic" ngcontrol="bic" #bic="ngModel" required>
                         <div [hidden]="bic.valid || bic.pristine" class="alert alert-danger">
                             {{'suppRegistration.bic.required' | translate }}
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g-1"></div>
+            </div>
+            <div class="form-group ui-g">
+                <div class="ui-g-1"></div>
+                <div class="ui-g-10">
+                    <div class="form-group">
+                        <label for="accountNumber">{{ 'suppRegistration.bank.account' | translate }}</label>
+                        <input id="accountNumber" type="text" [(ngModel)]="editedSupplier.accountNumber" class="form-control"
+                               name="accountNumber" ngcontrol="accountNumber" #accountNumber="ngModel" required>
+                        <div [hidden]="accountNumber.valid || accountNumber.pristine" class="alert alert-danger">
+                            {{'benefRegistration.accountNumber.required' | translate }}
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g-1"></div>
+            </div>
+            <div class="form-group ui-g">
+                <div class="ui-g-1"></div>
+                <div class="ui-g-10">
+                    <div class="form-group">
+                        <label for="website">{{ 'suppRegistration.company.web' | translate }}</label>
+                        <input id="website" type="text" [pattern]='websitePattern' [(ngModel)]="editedSupplier.website" class="form-control"
+                               name="website" ngcontrol="website" #website="ngModel">
+                        <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
+                            {{ 'suppRegistration.webFormat' | translate }}
                         </div>
                     </div>
                 </div>
