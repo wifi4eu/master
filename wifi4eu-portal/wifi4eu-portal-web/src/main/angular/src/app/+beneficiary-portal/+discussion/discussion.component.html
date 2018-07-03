@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-sm-12">
             <p class="beneficiaryTitle marginTop">{{ 'discussionForum.title' | translate }}</p>
-            <p  [innerHTML]="'discussionForum.description' | translate:{duplicateCount:otherMunicipalities.length, municipality: municipalityName}">{{ 'discussionForum.description' | translate }}</p>
+            <p [innerHTML]="'discussionForum.description' | translate:{duplicateCount:otherMunicipalities.length, municipality: municipalityName}"></p>
             <p class="beneficiaryMayor marginTopCountdown"></p>
             <hr class="beneficiaryHr">
         </div>
