@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -119,6 +120,14 @@ public class RegistrationResource {
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
+    }
+
+    @ApiOperation(value = "Confirm or request revision of installation report")
+    @RequestMapping(value = "/confirmOrRejectReport", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO confirmOrRejectInstallationReport(@RequestBody final Map<String, Object> map, HttpServletRequest request) {
+        return registrationService.confirmOrRejectInstallationAndSendCNS(map, request);
     }
 
     @ApiOperation(value = "Delete legal documents")

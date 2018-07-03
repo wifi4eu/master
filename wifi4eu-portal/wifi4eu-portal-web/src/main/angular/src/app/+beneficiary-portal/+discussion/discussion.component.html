@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-sm-12">
             <p class="beneficiaryTitle marginTop">{{ 'discussionForum.title' | translate }}</p>
-            <p  [innerHTML]="'discussionForum.description' | translate:{duplicateCount:otherMunicipalities.length, municipality: municipalityName}">{{ 'discussionForum.description' | translate }}</p>
+            <p [innerHTML]="'discussionForum.description' | translate:{duplicateCount:otherMunicipalities.length, municipality: municipalityName}"></p>
             <p class="beneficiaryMayor marginTopCountdown"></p>
             <hr class="beneficiaryHr">
         </div>
@@ -152,7 +152,7 @@
                             {{thread.messages[i].authorId}}
                         </p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
-                        <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
+                        <p class="authorTime">{{currentMessage.createDate | date: 'shortTime'}}</p>
                     </div>
                     <div class="col-sm-9 paddingMessages arrow_box">
                         <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>

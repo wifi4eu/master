@@ -86,10 +86,8 @@ public class ApplicationResource {
             }
             return applicationService.getApplicationsVoucherInfoByCall(callId);
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Applications' voucher information not found on this call", e);
-                response.sendError(HttpStatus.NOT_FOUND.value());
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Applications' voucher information not found on this call", e);
+            response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
     }

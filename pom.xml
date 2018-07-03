@@ -16,6 +16,7 @@
         <module>wifi4eu-portal</module>
         <module>wifi4eu-public-portal</module>
         <module>wifi4eu-dgconn</module>
+        <module>wifi4eu-supplier</module>
         <!--<module>wifi4eu-financial</module>-->
     </modules>
 
@@ -153,6 +154,13 @@
         <enable.appinsights.start></enable.appinsights.start>
         <enable.appinsights.end></enable.appinsights.end>
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
+
+        <!-- CNS -->
+        <cns.client.system.key>KEY-WiFi4EU-B49nLE82Cx</cns.client.system.key>
+        <cns.client.system.password>secret</cns.client.system.password>
+        <cns.notification.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/NotificationWebService</cns.notification.service.url>
+        <cns.user.preferences.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/UserPreferencesWebService</cns.user.preferences.service.url>
+        <cns.notification.group.code>WiFi4EU_OP</cns.notification.group.code>
 
         <!-- SMTP -->
         <encrypted.azure.smtp.password>EXdNJgAGhKHJNcH3M9F2XuFcjyY0vx4dsvGcOkv8Bkt5HjXq5uvc6fvMP1/jqDo2</encrypted.azure.smtp.password>

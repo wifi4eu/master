@@ -371,33 +371,43 @@
             </div>
 
             <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-7">
-                    <div class="form-group">
+                <div class="ui-g-12" style="height: 3em;">
+                    <div class="ui-g-1"></div>
+                    <div class="ui-g-7">
                         <label for="address_municipality">{{ 'benefRegistration.address.label' | translate }}
                         </label>
-                        <input id="address_municipality" type="text" [(ngModel)]="editedMunicipality.address"
-                               class="form-control" name="address_municipality"
-                               ngcontrol="address_municipality" #address_municipality="ngModel" required>
-                        <div [hidden]="address_municipality.valid || address_municipality.pristine"
-                             class="alert alert-danger">
-                            {{ 'suppRegistration.address.required' | translate }}
-                        </div>
                     </div>
-                </div>
-                <div class="ui-g-3">
-                    <div class="form-group">
+                    <div class="ui-g-3">
                         <label for="number_municipality">{{ 'shared.number.label' | translate }}</label>
-                        <input id="number_municipality" type="text" [(ngModel)]="editedMunicipality.addressNum"
-                               class="form-control" name="number_municipality"
-                               ngcontrol="number_municipality" #number_municipality="ngModel" required>
-                        <div [hidden]="number_municipality.valid || number_municipality.pristine"
-                             class="alert alert-danger">
-                            {{ 'suppRegistration.address.required' | translate }}
+                    </div>
+                    <div class="ui-g-1"></div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="ui-g-1"></div>
+                    <div class="ui-g-7">
+                        <div class="form-group">
+                            <input id="address_municipality" type="text" [(ngModel)]="editedMunicipality.address"
+                                class="form-control" name="address_municipality"
+                                ngcontrol="address_municipality" #address_municipality="ngModel" required>
+                            <div [hidden]="address_municipality.valid || address_municipality.pristine"
+                                class="alert alert-danger">
+                                {{ 'suppRegistration.address.required' | translate }}
+                            </div>
                         </div>
                     </div>
+                    <div class="ui-g-3">
+                        <div class="form-group">
+                            <input id="number_municipality" type="text" [(ngModel)]="editedMunicipality.addressNum"
+                                class="form-control" name="number_municipality"
+                                ngcontrol="number_municipality" #number_municipality="ngModel" required>
+                            <div [hidden]="number_municipality.valid || number_municipality.pristine"
+                                class="alert alert-danger">
+                                {{ 'suppRegistration.address.required' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-1"></div>
                 </div>
-                <div class="ui-g-1"></div>
             </div>
 
             <div class="form-group ui-g">
