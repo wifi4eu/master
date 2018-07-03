@@ -16,7 +16,7 @@ export class SupplierRegistrationStep1Component {
     @ViewChild('logoInput') private logoInput: any;
     private logoFile: File;
     private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
-
+    private buttonEnabled: boolean = false;
 
     constructor(private sharedService: SharedService) {
         this.supplierChange = new EventEmitter<SupplierDTOBase>();
@@ -89,5 +89,20 @@ export class SupplierRegistrationStep1Component {
         this.logoInput.nativeElement.value = "";
         this.logoFile = null;
         this.supplier.logo = null;
+    }
+
+    private checkButtonEnabled(event){
+            if(this.supplier.name != null && this.supplier.address != null 
+            && this.supplier.accountNumber != null && this.supplier.bic != null
+            && this.supplier.vat != null){
+                if(this.supplier.name.trim() != "" && this.supplier.address.trim() != "" 
+                && this.supplier.accountNumber.trim() != "" && this.supplier.bic.trim() != "" && this.supplier.vat.trim() != ""){
+                    this.buttonEnabled = true;
+                } else {
+                    this.buttonEnabled = false;
+                }
+            } else {
+                this.buttonEnabled = false;
+            }
     }
 }
