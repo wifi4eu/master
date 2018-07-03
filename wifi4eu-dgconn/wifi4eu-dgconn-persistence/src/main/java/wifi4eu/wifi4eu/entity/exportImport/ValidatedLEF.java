@@ -17,6 +17,10 @@ public class ValidatedLEF {
 
     public ValidatedLEF() {}
 
+    public ValidatedLEF(Integer idLef) {
+        this.idLef = idLef;
+    }
+
     public ValidatedLEF(Integer idLef, String stat) {
         this.idLef = idLef;
         this.stat = stat;

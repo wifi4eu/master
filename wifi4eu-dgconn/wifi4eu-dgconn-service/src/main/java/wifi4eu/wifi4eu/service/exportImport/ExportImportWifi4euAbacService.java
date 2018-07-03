@@ -104,9 +104,9 @@ public class ExportImportWifi4euAbacService {
                 //for (int u = 0; u < lefVals.size(); u++) {
                 //  JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
                 int idLef = callJson.get("idLef").getAsInt();
-                String status = callJson.get("status").getAsString();
+//                String status = callJson.get("status").getAsString();
                 //ValidateLEF validatedLEF=new ValidateLEF(Integer.parseInt(callJson.get("idLef").toString()), callJson.get("status").toString());
-                ValidatedLEF validatedLEF = new ValidatedLEF(idLef, status);
+                ValidatedLEF validatedLEF = new ValidatedLEF(idLef);
                 validatedLefRepository.save(validatedLEF);
                 //}
             }
