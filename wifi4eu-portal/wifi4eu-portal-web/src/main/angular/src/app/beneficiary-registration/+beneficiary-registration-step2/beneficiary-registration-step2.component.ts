@@ -37,7 +37,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private css_class_municipalities: string[] = ['notValid'];
     private css_class_email: string[] = ['notValid'];
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
-
+    private buttonEnabled : boolean = false;
     private userEcas: UserDTOBase;
 
     @ViewChild('municipalityForm') municipalityForm: NgForm;
@@ -163,16 +163,17 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     }
 
     private submit() {
-        for (let i = 0; i < this.municipalities.length; i++) {
-            this.municipalities[i].name = this.laus[i].name1;
-            this.municipalities[i].country = this.country.label;
-            this.municipalities[i].lauId = this.laus[i].id;
-        }
-        this.mayorsChange.emit(this.mayors);
-        this.municipalitiesChange.emit(this.municipalities);
-        this.lausChange.emit(this.laus);
-        this.onNext.emit();
-        this.emailsMatch = false;
+      
+            for (let i = 0; i < this.municipalities.length; i++) {
+                this.municipalities[i].name = this.laus[i].name1;
+                this.municipalities[i].country = this.country.label;
+                this.municipalities[i].lauId = this.laus[i].id;
+            }
+            this.mayorsChange.emit(this.mayors);
+            this.municipalitiesChange.emit(this.municipalities);
+            this.lausChange.emit(this.laus);
+            this.onNext.emit();
+            this.emailsMatch = false;
     }
 
     private back() {
@@ -189,5 +190,23 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
 
     private preventPaste(event: any) {
         return false;
+    }
+
+    private checkButtonEnabled(event, index){
+        for (let i = 0; i < this.municipalities.length; i++) {
+            if(this.municipalities[i].address != null && this.municipalities[i].addressNum != null 
+            && this.municipalities[i].postalCode != null && this.mayors[i].name != null
+            && this.mayors[i].surname != null){
+                if(this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" 
+                && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != ""
+                && this.mayors[i].surname.trim() != ""){
+                    this.buttonEnabled = true;
+                } else {
+                    this.buttonEnabled = false;
+                }
+            } else {
+                this.buttonEnabled = false;
+            }
+        }
     }
 }
