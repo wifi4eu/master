@@ -10,21 +10,14 @@ public class MunicipalityDTO implements Serializable {
     private String addressNum;
     private String postalCode;
     private String country;
+    
+    private String jagateKey;
+    private String felId;
+    
     private int lauId;
     private List<RegistrationDTO> registrations;
 
     public MunicipalityDTO() {
-    }
-
-    public MunicipalityDTO(int id, String name, String address, String addressNum, String postalCode, String country, int lauId, List<RegistrationDTO> registrations) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.addressNum = addressNum;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.lauId = lauId;
-        this.registrations = registrations;
     }
 
     public int getId() {
@@ -75,7 +68,23 @@ public class MunicipalityDTO implements Serializable {
         this.country = country;
     }
 
-    public int getLauId() {
+    public String getJagateKey() {
+		return jagateKey;
+	}
+
+	public void setJagateKey(String jagateKey) {
+		this.jagateKey = jagateKey;
+	}
+
+	public String getFelId() {
+		return felId;
+	}
+
+	public void setFelId(String felId) {
+		this.felId = felId;
+	}
+
+	public int getLauId() {
         return lauId;
     }
 
