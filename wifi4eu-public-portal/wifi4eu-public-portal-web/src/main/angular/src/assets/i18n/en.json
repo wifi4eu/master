@@ -800,5 +800,6 @@
   "app.search.button": "Search",
   "shared.close": "Cancel",
   "benefPortal.myVoucher.datatable.signGrantAgreement": "Sign grant agreement",
-  "itemMenu.myVoucher": "My voucher"
+  "itemMenu.myVoucher": "My voucher",
+  "shared.all": "All"
 }
