@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -40,6 +41,9 @@ public class MunicipalityService {
 
     @Autowired
     MayorService mayorService;
+
+    @Autowired
+    RegistrationWarningService registrationWarningService;
 
     @Autowired
     MunicipalityService municipalityService;
@@ -85,6 +89,10 @@ public class MunicipalityService {
             }
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
             if (registration != null) {
+                List<RegistrationWarningDTO> registrationWarningDTOs = registrationWarningService.getWarningsByRegistrationId(registration.getId());
+                if(registrationWarningDTOs.size() > 0){
+                    registrationWarningService.deleteWarningFromRegistration(registrationWarningDTOs);
+                }
                 for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registration.getId())) {
                     applicationService.deleteApplication(application.getId(), request);
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Application from this municipality removed");
