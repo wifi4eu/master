@@ -14,10 +14,11 @@ export class SupplierRegistrationStep4Component {
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
     @Output() private onEdit: EventEmitter<any>;
-    private legalChecks: boolean[] = [false, false];
+    private legalChecks: boolean[] = [false, false, false, false];
     private successCaptcha: boolean = true;
     private displayModal: boolean = false;
     private displayConfirmingData: boolean = false;
+    private allChecked: boolean = false;
 
     constructor() {
         this.onNext = new EventEmitter<any>();
@@ -34,9 +35,20 @@ export class SupplierRegistrationStep4Component {
     }
 
     submit() {
-        if (this.legalChecks && this.successCaptcha) {
+        this.check(this.legalChecks);
+        if (this.allChecked && this.successCaptcha) {
             this.displayConfirmingData = true;
             this.onNext.emit();
+        } else{
+            alert("You must check all the conditions")
+        }
+    }
+
+    check(legalChecks: boolean[]){
+        if(!legalChecks[1]|| !legalChecks[2] || !legalChecks[3] || !legalChecks[4]){
+            this.allChecked = false;
+        }else{
+            this.allChecked = true;
         }
     }
 
