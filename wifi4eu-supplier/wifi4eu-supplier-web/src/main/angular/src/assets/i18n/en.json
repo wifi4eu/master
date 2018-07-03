@@ -798,5 +798,7 @@
   "installationDetails.networkId": "Network ID",
   "shared.confirm": "Confirm",
   "app.search.button": "Search",
-  "shared.close": "Cancel"
+  "shared.close": "Cancel",
+  "benefPortal.myVoucher.datatable.signGrantAgreement": "Sign grant agreement",
+  "itemMenu.myVoucher": "My voucher"
 }
