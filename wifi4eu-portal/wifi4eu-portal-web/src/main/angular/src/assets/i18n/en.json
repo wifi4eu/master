@@ -686,5 +686,6 @@
   "dgConn.voucherAssignment.error.runningSimulation": "An error occurred while simulating.",
   "dgConn.voucherAssignment.error.savingFreezeList": "n error occurred while freezing the list.",
   "dgConn.voucherAssignment.error.savingPreList": "An error occurred while saving pre-list.",
-  "dgConn.voucherAssignment.error.checkFreezeList": "An error occurred while checking if freeze list is enabled"
+  "dgConn.voucherAssignment.error.checkFreezeList": "An error occurred while checking if freeze list is enabled",
+  "shared.condition.avoid":"You must accept all the conditions before submit this registration."
 }

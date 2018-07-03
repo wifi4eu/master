@@ -41,7 +41,7 @@ export class BeneficiaryRegistrationStep4Component {
             this.displayConfirmingData = true;
             this.onNext.emit();
         }else{
-            alert("You must check all the conditions")
+            this.sharedService.growlTranslation('You must accept all the conditions before submit this registration.', 'shared.condition.avoid', 'warn');
         }
     }
 
