@@ -56,7 +56,6 @@ export class DgConnExportImportComponent {
         this.processingOperation = true;
         this.exportImportApi.importRegistrationData().subscribe(
             (response: ResponseDTOBase) => {
-                console.log('importRegistrationData result: ', response);
                 if (response.success)
                     this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
                 else
@@ -107,29 +106,45 @@ export class DgConnExportImportComponent {
         );
      }
 
-     private importLegalEntityFBCValidate(event: any) {
+     private importLegalEntityFBCValidate() {
         this.processingOperation = true;
-        if (event.target.files[0]) {
-            if (event.target.files[0].type == "application/json") {
-                let file = event.target.files[0];
-                console.log(file);
-                let reader = new FileReader();
-                reader.onload = (e) => {
-                    this.exportImportApi.importLegalEntityFBCValidate(reader.result).subscribe(
-                        (response: ResponseDTOBase) => {
-                            if (response.success)
-                                this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
-                            else
-                                this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
-                            this.processingOperation = false;
-                        }, error => {
-                            this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
-                            this.processingOperation = false;
-                        }
-                    );
-                };
-                reader.readAsText(file);
+        this.exportImportApi.importLegalEntityFBCValidate().subscribe(
+            (response: ResponseDTOBase) => {
+                if (response.success)
+                    this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                else
+                    this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
+                this.processingOperation = false;
+            }, error => {
+                this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
+                this.processingOperation = false;
             }
-        }
+        );
      }
+
+//     private importLegalEntityFBCValidate(event: any) {
+//        this.processingOperation = true;
+//        if (event.target.files[0]) {
+//            if (event.target.files[0].type == "application/json") {
+//                let file = event.target.files[0];
+//                console.log(file);
+//                let reader = new FileReader();
+//                reader.onload = (e) => {
+//                    this.exportImportApi.importLegalEntityFBCValidate(reader.result).subscribe(
+//                        (response: ResponseDTOBase) => {
+//                            if (response.success)
+//                                this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+//                            else
+//                                this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
+//                            this.processingOperation = false;
+//                        }, error => {
+//                            this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
+//                            this.processingOperation = false;
+//                        }
+//                    );
+//                };
+//                reader.readAsText(file);
+//            }
+//        }
+//     }
 }

@@ -34,15 +34,10 @@ public class ExportImportWifi4euAbacResource {
     @ApiOperation(value = "Import LEF and BC validates")
     @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
     @ResponseBody
-    public ResponseDTO importLegalEntityFBCValidate(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
+    public ResponseDTO importLegalEntityFBCValidate(final HttpServletResponse response) {
         try {
             _log.info("importLegalEntityFBCValidate");
-            JSONArray jsonArray = new JSONArray(jsonStringFile);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject object = jsonArray.getJSONObject(i);
-                exportImportWifi4euAbacService.importLegalEntityFBCValidate(object.toString());
-            }
-            return new ResponseDTO(true, null, null);
+            return new ResponseDTO(exportImportWifi4euAbacService.importLegalEntityFBCValidate(), null, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on operation.", ade);
@@ -55,6 +50,31 @@ public class ExportImportWifi4euAbacResource {
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
+
+//    @ApiOperation(value = "Import LEF and BC validates")
+//    @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
+//    @ResponseBody
+//    public ResponseDTO importLegalEntityFBCValidate(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
+//        try {
+//            _log.info("importLegalEntityFBCValidate");
+//            JSONArray jsonArray = new JSONArray(jsonStringFile);
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                JSONObject object = jsonArray.getJSONObject(i);
+//                exportImportWifi4euAbacService.importLegalEntityFBCValidate(object.toString());
+//            }
+//            return new ResponseDTO(true, null, null);
+//        } catch (AccessDeniedException ade) {
+//            if (_log.isErrorEnabled()) {
+//                _log.error("Error with permission on operation.", ade);
+//            }
+//            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
+//        } catch (Exception e) {
+//            if (_log.isErrorEnabled()) {
+//                _log.error("Error on operation.", e);
+//            }
+//            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+//        }
+//    }
 
     @ApiOperation(value = "Export Beneficiary Information")
     @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "application/JSON")

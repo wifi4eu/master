@@ -21,11 +21,9 @@
     </div>
     <br/><br/>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" style="cursor: initial;">
+        <div class="panelItem ui-g-12" (click)="importLegalEntityFBCValidate()">
             <span class="beneficiaryMayor">Import Legal Entities file from ABAC</span>
             <p>This button will import to the portal the legal entities file created in ABAC.</p>
-            <input type="file" class="myButton" style="cursor: pointer;"
-                   (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json"/>
         </div>
     </div>
     <div class="ui-g-6 ui-lg-6 ui-md-12">

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportBeneficiaryInformationDTO;
-import wifi4eu.wifi4eu.entity.exportImport.ValidatedBC;
 import wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
@@ -18,10 +17,7 @@ import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBeneficiaryInformationMap
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportBeneficiaryInformationRepository;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBudgetaryCommitmentMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportBudgetaryCommitmentRepository;
-import wifi4eu.wifi4eu.mapper.exportImport.ExportImportValidatedLefMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ValidatedLefRepository;
-import wifi4eu.wifi4eu.mapper.exportImport.ExportImportValidatedBcMapper;
-import wifi4eu.wifi4eu.repository.exportImport.ValidatedBcRepository;
 import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
 import wifi4eu.wifi4eu.service.exportImport.file.ReadFile;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -32,10 +28,12 @@ import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
-
-
 
 @Service
 public class ExportImportWifi4euAbacService {
@@ -58,16 +56,7 @@ public class ExportImportWifi4euAbacService {
     ExportImportBudgetaryCommitmentRepository exportImportBudgetaryCommitmentRepository;
 
     @Autowired
-    ExportImportValidatedLefMapper exportImportValidatedLefMapper;
-
-    @Autowired
     ValidatedLefRepository validatedLefRepository;
-
-    @Autowired
-    ExportImportValidatedBcMapper exportImportValidatedBcMapper;
-
-    @Autowired
-    ValidatedBcRepository validatedBcRepository;
 
     @Autowired
     UserService userService;
@@ -93,6 +82,56 @@ public class ExportImportWifi4euAbacService {
     private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
 
     @Transactional
+    public boolean importLegalEntityFBCValidate() throws Exception {
+        _log.info("importLegalEntityFBCValidate");
+        JFileChooser fc = new JFileChooser();
+        fc.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON Files (*.json)", "json");
+        fc.setFileFilter(filter);
+        int response = fc.showOpenDialog(null);
+        if (response == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            String content = new String(Files.readAllBytes(file.toPath()));
+            JsonParser parser = new JsonParser();
+            JsonObject resultJson = parser.parse(content).getAsJsonObject();
+            JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
+            for (int i = 0; i < callsJsonArrayLef.size(); i++) {
+                JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
+                //JsonObject applicationJson = parser.parse(gson.toJson(callsJsonArrayLef.get(i))).getAsJsonObject();
+                ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
+                ////JsonArray lefVals = resultJson.getAsJsonArray("idLef");
+                //JsonArray lefVals = callJson.getAsJsonArray("idLef");
+                //for (int u = 0; u < lefVals.size(); u++) {
+                //  JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
+                int idLef = callJson.get("idLef").getAsInt();
+                String status = callJson.get("status").getAsString();
+                //ValidateLEF validatedLEF=new ValidateLEF(Integer.parseInt(callJson.get("idLef").toString()), callJson.get("status").toString());
+                ValidatedLEF validatedLEF = new ValidatedLEF(idLef, status);
+                validatedLefRepository.save(validatedLEF);
+                //}
+            }
+            //JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");
+            //for (int i = 0; i < callsJsonArrayBc.size(); i++) {
+            //JsonObject callJson = callsJsonArrayBc.get(i).getAsJsonObject();
+            ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
+            ////JsonArray lefBcs = resultJson.getAsJsonArray("idBc");
+            //JsonArray lefBcs = callJson.getAsJsonArray("idBc");
+            //for (int u = 0; u < lefBcs.size(); u++) {
+            //  JsonObject jsonStringLef = lefBcs.get(u).getAsJsonObject();
+            //  JsonObject lefBc = jsonStringLef.getAsJsonObject("idBc");
+            //  ValidatedBC validatedBC=new ValidatedBC(Integer.parseInt(lefBc.toString()));
+            //  validatedBcRepository.save(validatedBC);
+            //}
+            //}
+            return true;
+        }
+        return false;
+        // ReadFile rF=new ReadFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
+        // rF.readExcelFileRegistrationData();
+    }
+
+    /*
+    @Transactional
     public void importLegalEntityFBCValidate(final String jsonStringFile) throws Exception{
         _log.info("importLegalEntityFBCValidate");
         ResponseDTO result = new ResponseDTO();
@@ -101,30 +140,46 @@ public class ExportImportWifi4euAbacService {
         JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonObject();
         JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
         for (int i = 0; i < callsJsonArrayLef.size(); i++) {
-            //JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
+            JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
+            //JsonObject applicationJson = parser.parse(gson.toJson(callsJsonArrayLef.get(i))).getAsJsonObject();
             ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
             ////JsonArray lefVals = resultJson.getAsJsonArray("idLef");
             //JsonArray lefVals = callJson.getAsJsonArray("idLef");
             //for (int u = 0; u < lefVals.size(); u++) {
-              //  JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
-               // JsonObject lefVal = jsonStringLef.getAsJsonObject("idLef");
-               // ValidatedLEF validatedLEF=new ValidatedLEF(Integer.parseInt(lefVal.toString()));
-               // validatedLefRepository.save(validatedLEF);
+            //  JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
+            int a=Integer.parseInt(callJson.get("idLef").toString());
+            String b=callJson.get("status").getAsString();
+            //ValidateLEF validatedLEF=new ValidateLEF(Integer.parseInt(callJson.get("idLef").toString()), callJson.get("status").toString());
+            ValidateLEF validatedLEF=new ValidateLEF(a,b);
+            validatedLefRepository.save(validatedLEF);
             //}
         }
         //JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");
         //for (int i = 0; i < callsJsonArrayBc.size(); i++) {
-            //JsonObject callJson = callsJsonArrayBc.get(i).getAsJsonObject();
-            ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
-            ////JsonArray lefBcs = resultJson.getAsJsonArray("idBc");
-            //JsonArray lefBcs = callJson.getAsJsonArray("idBc");
-            //for (int u = 0; u < lefBcs.size(); u++) {
-              //  JsonObject jsonStringLef = lefBcs.get(u).getAsJsonObject();
-              //  JsonObject lefBc = jsonStringLef.getAsJsonObject("idBc");
-              //  ValidatedBC validatedBC=new ValidatedBC(Integer.parseInt(lefBc.toString()));
-              //  validatedBcRepository.save(validatedBC);
-            //}
+        //JsonObject callJson = callsJsonArrayBc.get(i).getAsJsonObject();
+        ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
+        ////JsonArray lefBcs = resultJson.getAsJsonArray("idBc");
+        //JsonArray lefBcs = callJson.getAsJsonArray("idBc");
+        //for (int u = 0; u < lefBcs.size(); u++) {
+        //  JsonObject jsonStringLef = lefBcs.get(u).getAsJsonObject();
+        //  JsonObject lefBc = jsonStringLef.getAsJsonObject("idBc");
+        //  ValidatedBC validatedBC=new ValidatedBC(Integer.parseInt(lefBc.toString()));
+        //  validatedBcRepository.save(validatedBC);
         //}
+        //}
+    }
+    */
+
+    @Transactional
+    public void importLegalEntityFBCValidate(final String jsonStringFile) throws Exception {
+        _log.info("importLegalEntityFBCValidate");
+        ResponseDTO result = new ResponseDTO();
+        Gson gson = new GsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonObject();
+        JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
+        for (int i = 0; i < callsJsonArrayLef.size(); i++) {
+        }
     }
 
     public ResponseDTO exportBeneficiaryInformation() throws Exception {
@@ -137,20 +192,13 @@ public class ExportImportWifi4euAbacService {
         JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
         if (applicationsBeneficiaryInformation!= null && !applicationsBeneficiaryInformation.isEmpty()) {
             for (ExportImportBeneficiaryInformationDTO application : applicationsBeneficiaryInformation) {
-//                long exportDate = new Date().getTime();
-//                application.setLefExport(exportDate);
-//                application.setBcExport(exportDate);
-//                application.setLcExport(exportDate);
-//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
                 JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
                 applicationsBeneficiaryInformationJsonArray.add(applicationJson);
             }
         }
-//        resultJson.addProperty("version", _version);
         resultJson.addProperty("createTime", new Date().getTime());
         resultJson.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
         result.setSuccess(true);
-//        result.setData(resultJson.toString());
         result.setData("[" + resultJson.toString() + "]");
         result.setError(null);
         return result;
@@ -197,7 +245,7 @@ public class ExportImportWifi4euAbacService {
     }
 
     @Transactional
-    public void importRegistrationData() throws Exception{
+    public void importRegistrationData() throws Exception {
         _log.info("importRegistrationData");
         ReadFile rF=new ReadFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
         rF.readExcelFileRegistrationData();
@@ -213,20 +261,13 @@ public class ExportImportWifi4euAbacService {
         JsonArray applicationsBudgetaryCommitmentJsonArray = new JsonArray();
         if (applicationsBudgetaryCommitment!= null && !applicationsBudgetaryCommitment.isEmpty()) {
             for (ExportImportBudgetaryCommitmentDTO application : applicationsBudgetaryCommitment) {
-//                long exportDate = new Date().getTime();
-//                application.setLefExport(exportDate);
-//                application.setBcExport(exportDate);
-//                application.setLcExport(exportDate);
-//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
                 JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
                 applicationsBudgetaryCommitmentJsonArray.add(applicationJson);
             }
         }
-//        resultJson.addProperty("version", _version);
         resultJson.addProperty("createTime", new Date().getTime());
         resultJson.add("budgetaryCommitment", applicationsBudgetaryCommitmentJsonArray);
         result.setSuccess(true);
-//        result.setData(resultJson.toString());
         result.setData("[" + resultJson.toString() + "]");
         result.setError(null);
         return result;
@@ -563,18 +604,6 @@ public class ExportImportWifi4euAbacService {
                             }
                             break;
                     }
-
-                    //ToDo: replace it with a count strategy, in case there are a lot of items with the same ip
-                    /*
-                    List<RegistrationDTO> ipRegistrations = registrationService.getRegistrationsByIp(registration.getIpRegistration());
-                    for (RegistrationDTO ipRegistration : ipRegistrations) {
-                        MunicipalityDTO ipMunicipality = municipalityService.getMunicipalityById(ipRegistration.getMunicipalityId());
-                        if (ipRegistration.getId() != registration.getId() &&
-                                ipMunicipality.getLauId() == municipality.getLauId()) {
-                            issueType = 2;
-                        }
-                    }
-                    */
                 } else {
                     return -1;
                 }
