@@ -40,8 +40,6 @@ import java.util.List;
 @RequestMapping("beneficiary")
 public class BeneficiaryResource {
 
-    private static final String RegistrationValidator = null;
-
 	@Autowired
     private BeneficiaryService beneficiaryService;
 

@@ -9,16 +9,9 @@ public class SupplierValidator {
         if (supplierDTO.getStatus() != 0) {
             throw new Exception("Incorrect supplier status");
         }
-        if (supplierDTO.getAccountNumber() != null || supplierDTO.getAddress() != null || supplierDTO.getBic() != null
-                || supplierDTO.getContactEmail() != null || supplierDTO.getContactPhoneNumber() != null ||
-                supplierDTO.getContactPhonePrefix() != null || supplierDTO.getContactSurname() != null || supplierDTO.getName() != null || supplierDTO.getVat() != null) {
-            if (supplierDTO.getAccountNumber().trim().compareTo("") == 0 || supplierDTO.getAddress().trim().compareTo("") == 0 || supplierDTO.getBic().trim().compareTo("") == 0
-                    || supplierDTO.getContactEmail().trim().compareTo("") == 0 || supplierDTO.getContactPhoneNumber().trim().compareTo("") == 0 ||
-                    supplierDTO.getContactPhonePrefix().trim().compareTo("") == 0 || supplierDTO.getContactSurname().trim().compareTo("") == 0 || supplierDTO.getName().trim().compareTo("") == 0 || supplierDTO.getVat().trim().compareTo("") == 0) {
+        if (supplierDTO.getAccountNumber() != null || supplierDTO.getAddress() != null || supplierDTO.getBic() != null || supplierDTO.getContactEmail() != null || supplierDTO.getContactPhoneNumber() != null || supplierDTO.getContactPhonePrefix() != null || supplierDTO.getContactSurname() != null || supplierDTO.getName() != null || supplierDTO.getVat() != null
+             || supplierDTO.getAccountNumber().trim().isEmpty() || supplierDTO.getAddress().trim().isEmpty() || supplierDTO.getBic().trim().isEmpty()  || supplierDTO.getContactEmail().trim().isEmpty() || supplierDTO.getContactPhoneNumber().trim().isEmpty() || supplierDTO.getContactPhonePrefix().trim().isEmpty() || supplierDTO.getContactSurname().trim().isEmpty() || supplierDTO.getName().trim().isEmpty() || supplierDTO.getVat().trim().isEmpty()) {
                 throw new Exception("Some field is empty!");
-            }
-        } else {
-            throw new Exception("Some field is empty!");
         }
     }
 }

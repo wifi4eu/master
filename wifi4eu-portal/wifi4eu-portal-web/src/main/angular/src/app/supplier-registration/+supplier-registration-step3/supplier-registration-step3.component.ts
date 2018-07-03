@@ -47,15 +47,9 @@ export class SupplierRegistrationStep3Component {
     }
     private checkButtonEnabled(event){
         if(this.supplier.contactSurname != null && this.supplier.contactName != null 
-        && this.supplier.contactPhoneNumber != null && this.supplier.contactPhonePrefix != null){
-            if(this.supplier.contactSurname.trim() != "" && this.supplier.contactName.trim() != "" && this.supplier.contactPhoneNumber.trim() != ""
-            && this.supplier.contactPhonePrefix.trim() != ""){
+        && this.supplier.contactPhoneNumber != null && this.supplier.contactPhonePrefix != null
+             && this.supplier.contactSurname.trim() != "" && this.supplier.contactName.trim() != "" && this.supplier.contactPhoneNumber.trim() != "" && this.supplier.contactPhonePrefix.trim() != ""){
                 this.buttonEnabled = true;
-            } else {
-                this.buttonEnabled = false;
-            }
-        } else {
-            this.buttonEnabled = false;
         }
-}
+    }
 }

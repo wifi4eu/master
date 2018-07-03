@@ -94,15 +94,9 @@ export class SupplierRegistrationStep1Component {
     private checkButtonEnabled(event){
             if(this.supplier.name != null && this.supplier.address != null 
             && this.supplier.accountNumber != null && this.supplier.bic != null
-            && this.supplier.vat != null){
-                if(this.supplier.name.trim() != "" && this.supplier.address.trim() != "" 
+            && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != "" 
                 && this.supplier.accountNumber.trim() != "" && this.supplier.bic.trim() != "" && this.supplier.vat.trim() != ""){
                     this.buttonEnabled = true;
-                } else {
-                    this.buttonEnabled = false;
-                }
-            } else {
-                this.buttonEnabled = false;
             }
     }
 }

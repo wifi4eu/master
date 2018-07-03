@@ -194,19 +194,10 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
 
     private checkButtonEnabled(event, index){
         for (let i = 0; i < this.municipalities.length; i++) {
-            if(this.municipalities[i].address != null && this.municipalities[i].addressNum != null 
-            && this.municipalities[i].postalCode != null && this.mayors[i].name != null
-            && this.mayors[i].surname != null){
-                if(this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" 
-                && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != ""
-                && this.mayors[i].surname.trim() != ""){
+            if(this.municipalities[i].address != null && this.municipalities[i].addressNum != null && this.municipalities[i].postalCode != null && this.mayors[i].name != null && this.mayors[i].surname != null 
+                && this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != "" && this.mayors[i].surname.trim() != ""){
                     this.buttonEnabled = true;
-                } else {
-                    this.buttonEnabled = false;
-                }
-            } else {
-                this.buttonEnabled = false;
-            }
+            } 
         }
     }
 }
