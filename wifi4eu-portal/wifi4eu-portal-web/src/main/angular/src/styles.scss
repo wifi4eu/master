@@ -1649,8 +1649,8 @@ p-tabview.white .ui-widget-content.ui-tabview {
 }
 
 .dgConnDetailsHr {
-  background:  none;
-  border-top:  2px solid rgba(0, 0, 0, 0.1);
+  background: none;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
   margin: 0;
 }
 
@@ -1666,8 +1666,8 @@ p-tabview.white .ui-widget-content.ui-tabview {
   text-decoration: underline;
 }
 
-input.email_profile::-ms-clear{
-  display:none;
+input.email_profile::-ms-clear {
+  display: none;
 }
 
 .voucher__assignment{
@@ -1677,4 +1677,18 @@ input.email_profile::-ms-clear{
 .manageMunicipalities{
   padding-top: 1.9em;
   padding-bottom: 0.9em;
+}
+
+.installation {
+  width: 13em;
+  margin-top: 2em;
+  font-size: 1.2em;
+}
+
+.linkNoStyle {
+  color: #000 !important;
+}
+
+.paddingTable {
+  padding-right: 1em;
 }

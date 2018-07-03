@@ -1,0 +1,69 @@
+<div class="container">
+    <div class="back-button">
+        <!-- <a href="#" [routerLink]="['./../access-point/', this.installationSiteId, this.installationSiteName]"> -->
+        <a (click)="location.back()">
+            <i class="fa fa-arrow-left"></i> Back
+        </a>
+    </div>
+    <div class="header">
+        <h1>{{ 'accessPointDetails.title' | translate }}</h1>
+        <p>{{ 'accessPointDetails.subtitle' | translate }}</p>
+    </div>
+    <div class="form-group col-md-12 row">
+        <p>{{ 'shared.beneficiary.label' | translate }}:
+            <span class="font-weight-bold">{{beneficiary.name}}</span>
+            <br> {{ 'accessPoint.installationSite' | translate }}
+            <span class="font-weight-bold">{{installationSiteName}}</span>
+        </p>
+    </div>
+
+    <div class="results">
+        <div class="row results-row">
+            <div class="col-md-2">
+                <p>{{'shared.number.label' | translate}}</p>
+                <p>{{'accessPoint.locationType' | translate }}</p>
+                <p>{{'accessPoint.locationName' | translate }}</p>
+                <p>{{'accessPoint.geoLocation' | translate }}</p>
+                <p>{{'accessPoint.deviceType' | translate }}</p>
+                <p>{{'accessPoint.deviceBrand' | translate }}</p>
+                <p>{{'accessPoint.deviceModel' | translate }}</p>
+                <p>{{'accessPoint.deviceSerial' | translate }}</p>
+                <p>{{'accessPoint.macAddress' | translate }}</p>
+            </div>
+            <div class="col-md-7 font-weight-bold" *ngIf="accessPoint">
+                <p>{{accessPoint.number}}</p>
+                <p>{{accessPoint.locationType}}</p>
+                <p>{{accessPoint.location}}</p>
+                <p>{{accessPoint.latitude}}, {{accessPoint.longitude}}</p>
+                <p *ngIf="accessPoint.indoor; else outdoor"> {{ 'accessPoint.indoor' | translate }}</p>
+                <ng-template #outdoor>{{ 'accessPoint.outdoor' |translate }}</ng-template>
+                <p>{{accessPoint.deviceBrand}}</p>
+                <p>{{accessPoint.modelNumber}}</p>
+                <p>{{accessPoint.serialNumber}}</p>
+                <p>{{accessPoint.macAddress}}</p>
+            </div>
+            <div class="col-md-3 text-right detailsButtons">
+                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-pencil" (click)="openUpdateAccessPoint()" [isDisabled]="beneficiary.wifiIndicator">
+                    {{ 'shared.edit' | translate }}</ux-button>
+                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-trash" (click)="openRemoveAccessPoint()" [isDisabled]="beneficiary.wifiIndicator">
+                    {{ 'shared.remove' | translate }}</ux-button>
+            </div>
+        </div>
+    </div>
+    <update-access-point [isEdit]="true" [accessPoint]="accessPoint"></update-access-point>
+
+    <ux-modal id="removeAccessPoint" titleLabel="{{ 'accessPointDetails.removeTitle' | translate }}" isOverflowVisible="true"
+        [isHandleCloseOnAccept]="false" [isSizeSmall]="false" (onDismiss)="closeRemoveAccessPoint()">
+        <uxModalBody>
+            <div class="text-center">
+                <p>{{'accessPointDetails.removeModalAreYouSure' | translate}}</p>
+                <p>{{'accessPointDetails.removeModalThisAction' | translate}}</p>
+            </div>
+        </uxModalBody>
+        <uxModalFooter>
+            <ux-button typeClass="primary" [isSecondary]="true" (click)="closeRemoveAccessPoint()" [isLarge]="true">{{ 'shared.close' | translate }}</ux-button>
+            <ux-button typeClass="primary" (click)="submitRemoveAccessPoint()" [isLarge]="true"> {{ 'shared.confirm' | translate }}</ux-button>
+        </uxModalFooter>
+    </ux-modal>
+
+</div>

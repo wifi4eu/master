@@ -25,19 +25,12 @@ public class CallResource {
     @Autowired
     private CallService callService;
 
-    @Autowired
-    private UserService userService;
-
     Logger _log = LogManager.getLogger(CallResource.class);
 
     @ApiOperation(value = "Get all the calls")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<CallDTO> allCalls() {
-        UserContext user = UserHolder.getUser();
-        if (user == null || userService.getUserByUserContext(user) == null) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
         return callService.getAllCalls();
     }
 
@@ -45,10 +38,6 @@ public class CallResource {
     @RequestMapping(value = "/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public CallDTO getCallById(@PathVariable("callId") final Integer callId) {
-        UserContext user = UserHolder.getUser();
-        if (user == null || userService.getUserByUserContext(user) == null) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
         return callService.getCallById(callId);
     }
 

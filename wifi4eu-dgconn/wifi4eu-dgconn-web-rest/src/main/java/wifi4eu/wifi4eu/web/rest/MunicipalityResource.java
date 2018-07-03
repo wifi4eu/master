@@ -82,6 +82,18 @@ public class MunicipalityResource {
         return municipalityService.getMunicipalityById(municipalityId);
     }
 
+    @ApiOperation(value = "Get municipality by specific id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType =
+                    "string", paramType = "header")
+    })
+    @RequestMapping(value = "/usersMunicipality/{municipalityId}", method = RequestMethod.GET, produces =
+            "application/json")
+    @ResponseBody
+    public ResponseDTO getUsersMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId) {
+        return municipalityService.getUsersMunicipalityById(municipalityId);
+    }
+
     /*
     @ApiOperation(value = "Create municipality")
     @RequestMapping(method = RequestMethod.POST)

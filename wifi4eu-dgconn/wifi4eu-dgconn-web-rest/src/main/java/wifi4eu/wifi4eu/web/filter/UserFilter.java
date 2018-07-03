@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.filter.OncePerRequestFilter;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.LinkedList;
 
 public class UserFilter extends OncePerRequestFilter {
 
@@ -52,7 +50,6 @@ public class UserFilter extends OncePerRequestFilter {
                 user.setDetailedUser(ecasPrincipal);
                 user.setFirstName(ecasPrincipal.getFirstName());
                 user.setLastName(ecasPrincipal.getLastName());
-                user.setRoleList(new LinkedList<RoleDTO>());
 
                 session.setAttribute(Constant.USER, user);
             } else if (_log.isDebugEnabled()) {
