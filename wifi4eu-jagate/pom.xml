@@ -1,0 +1,100 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>wifi4eu</groupId>
+	<artifactId>wifi4eu-jagate</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Wifi4eu Jagate</name>
+	
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.1.RELEASE</version>
+	</parent>
+	
+	<properties>
+		<java.version>1.7</java.version>
+		<spring.data.jpa.version>1.10.4.RELEASE</spring.data.jpa.version>
+		<ojdbc.version>12.1.3-0-0</ojdbc.version>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+			<exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-jdbc</artifactId>
+                </exclusion>
+            </exclusions>         
+        </dependency>
+	    <dependency>
+	      <groupId>com.oracle.weblogic</groupId>
+		  <artifactId>ojdbc7</artifactId>
+		  <version>${ojdbc.version}</version>
+	    </dependency>
+        <!-- HikariCP connection pool -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>2.6.0</version>
+        </dependency>	    
+		<dependency>
+			<groupId>org.springframework.ws</groupId>
+			<artifactId>spring-ws-core</artifactId>
+		</dependency>	
+	</dependencies>
+	
+	<build>
+		<plugins>		
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>build-helper-maven-plugin</artifactId>
+			    <version>1.9</version>
+			    <executions>
+			        <execution>
+			            <id>add-source</id>
+			            <phase>generate-sources</phase>
+			            <goals>
+			                <goal>add-source</goal>
+			            </goals>
+			            <configuration>
+			                <sources>
+			                    <source>${basedir}/target/generated-sources/src/main/java</source>
+			                </sources>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+			<plugin>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>jaxws-maven-plugin</artifactId>
+			    <version>1.12</version>
+			    <configuration>
+			        <wsdlDirectory>${basedir}/src/main/resources/wsdl</wsdlDirectory>
+			        <!-- <packageName>wifi4eu.generate.ws</packageName> -->
+			        <keep>true</keep>
+			        <sourceDestDir>${basedir}/target/generated-sources/src/main/java</sourceDestDir>
+			    </configuration>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>wsimport</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			</plugin>   
+						
+		</plugins>
+	</build>
+		
+</project>

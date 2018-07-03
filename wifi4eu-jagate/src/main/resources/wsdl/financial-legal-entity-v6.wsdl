@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WL5G3N1:definitions name="LegalEntityServiceV6" targetNamespace="http://ec.europa.eu/rdg/jagate/ws/legalentity/v6" xmlns:WL5G3N0="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:WL5G3N1="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N2="http://ec.europa.eu/rdg/jagate/ws/legalentity/v6/interfaces" xmlns:WL5G3N3="http://ec.europa.eu/rdg/jagate/ws/legalentity/v6" xmlns:WL5G3N4="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+  <wsp:UsingPolicy WL5G3N1:Required="true"/>
+  <wsp:Policy WL5G3N0:Id="digestUsernameToken2004.xml">
+    <sp:Strict wsp:Optional="true" xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"/>
+    <wssp:Identity xmlns:wssp="http://www.bea.com/wls90/security/policy">
+      <wssp:SupportedTokens>
+        <wssp:SecurityToken TokenType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#UsernameToken">
+          <wssp:Claims>
+            <wssp:UsePassword Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest"/>
+          </wssp:Claims>
+        </wssp:SecurityToken>
+      </wssp:SupportedTokens>
+    </wssp:Identity>
+  </wsp:Policy>
+  <WL5G3N1:types>
+    <xs:schema xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="http://ec.europa.eu/rdg/jagate/ws/legalentity/v6/interfaces" xmlns:WL5G3N2="http://ec.europa.eu/rdg/jagate/ws/legalentity/v6" xmlns:WL5G3N3="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:le="http://ec.europa.eu/rdg/jagate/ws/legalentity/v6/interfaces" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/legalentity/v6/interfaces" schemaLocation="http://158.167.240.93:1041/RDGServices/FinancialLegalEntity/v6?SCHEMA%2FEsbJagate%2FResources%2FServices%2Flegalentity%2Fv6%2FLegalEntityInterface"/>
+    </xs:schema>
+  </WL5G3N1:types>
+  <WL5G3N1:message name="SearchLegalEntityRequest">
+    <WL5G3N1:part element="WL5G3N2:SearchLegalEntityRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="SearchLegalEntityResponse">
+    <WL5G3N1:part element="WL5G3N2:SearchLegalEntityResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetBankAccountByFelIdRequest">
+    <WL5G3N1:part element="WL5G3N2:GetBankAccountByFelIdRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetBankAccountByFelIdResponse">
+    <WL5G3N1:part element="WL5G3N2:GetBankAccountByFelIdResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetBankAccountByPicRequest">
+    <WL5G3N1:part element="WL5G3N2:GetBankAccountByPicRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetBankAccountByPicResponse">
+    <WL5G3N1:part element="WL5G3N2:GetBankAccountByPicResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetStatusByFelIdRequest">
+    <WL5G3N1:part element="WL5G3N2:GetStatusByFelIdRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetStatusByFelIdResponse">
+    <WL5G3N1:part element="WL5G3N2:GetStatusByFelIdResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetStatusByPicRequest">
+    <WL5G3N1:part element="WL5G3N2:GetStatusByPicRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetStatusByPicResponse">
+    <WL5G3N1:part element="WL5G3N2:GetStatusByPicResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetEwsByFelIdRequest">
+    <WL5G3N1:part element="WL5G3N2:GetEwsByFelIdRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetEwsByFelIdResponse">
+    <WL5G3N1:part element="WL5G3N2:GetEwsByFelIdResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetEwsByPicRequest">
+    <WL5G3N1:part element="WL5G3N2:GetEwsByPicRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetEwsByPicResponse">
+    <WL5G3N1:part element="WL5G3N2:GetEwsByPicResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="CreateLegalEntityRequest">
+    <WL5G3N1:part element="WL5G3N2:CreateLegalEntityRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="CreateLegalEntityResponse">
+    <WL5G3N1:part element="WL5G3N2:CreateLegalEntityResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="UpdateLegalEntityRequest">
+    <WL5G3N1:part element="WL5G3N2:UpdateLegalEntityRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="UpdateLegalEntityResponse">
+    <WL5G3N1:part element="WL5G3N2:UpdateLegalEntityResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="LegalEntityException">
+    <WL5G3N1:part element="WL5G3N2:LegalEntityException" name="exception"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="CheckServiceHealthRequest">
+    <WL5G3N1:part element="WL5G3N2:CheckServiceHealthRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="CheckServiceHealthResponse">
+    <WL5G3N1:part element="WL5G3N2:CheckServiceHealthResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetLegalEntityBankAccountLinkRequest">
+    <WL5G3N1:part element="WL5G3N2:GetLegalEntityBankAccountLinkRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetLegalEntityBankAccountLinkResponse">
+    <WL5G3N1:part element="WL5G3N2:GetLegalEntityBankAccountLinkResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetAllBankAccountsRequest">
+    <WL5G3N1:part element="WL5G3N2:GetAllBankAccountsRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetAllBankAccountsResponse">
+    <WL5G3N1:part element="WL5G3N2:GetAllBankAccountsResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetMailingAddressesByPicRequest">
+    <WL5G3N1:part element="WL5G3N2:GetMailingAddressesByPicRequest" name="request"/>
+  </WL5G3N1:message>
+  <WL5G3N1:message name="GetMailingAddressesByPicResponse">
+    <WL5G3N1:part element="WL5G3N2:GetMailingAddressesByPicResponse" name="response"/>
+  </WL5G3N1:message>
+  <WL5G3N1:portType name="ILegalEntityService">
+    <WL5G3N1:documentation>Provides Legal Entity related services.</WL5G3N1:documentation>
+    <WL5G3N1:operation name="SearchLegalEntity">
+      <WL5G3N1:input message="WL5G3N3:SearchLegalEntityRequest"/>
+      <WL5G3N1:output message="WL5G3N3:SearchLegalEntityResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetEwsByFelId">
+      <WL5G3N1:documentation>Gets the early warning on legal entities.</WL5G3N1:documentation>
+      <WL5G3N1:input message="WL5G3N3:GetEwsByFelIdRequest"/>
+      <WL5G3N1:output message="WL5G3N3:GetEwsByFelIdResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetEwsByPic">
+      <WL5G3N1:documentation>Gets the early warning on legal entities.</WL5G3N1:documentation>
+      <WL5G3N1:input message="WL5G3N3:GetEwsByPicRequest"/>
+      <WL5G3N1:output message="WL5G3N3:GetEwsByPicResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetBankAccountByFelId">
+      <WL5G3N1:documentation>Gets the early warning on legal entities.</WL5G3N1:documentation>
+      <WL5G3N1:input message="WL5G3N3:GetBankAccountByFelIdRequest"/>
+      <WL5G3N1:output message="WL5G3N3:GetBankAccountByFelIdResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetBankAccountByPic">
+      <WL5G3N1:documentation>Gets the early warning on legal entities.</WL5G3N1:documentation>
+      <WL5G3N1:input message="WL5G3N3:GetBankAccountByPicRequest"/>
+      <WL5G3N1:output message="WL5G3N3:GetBankAccountByPicResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetStatusByFelId">
+      <WL5G3N1:documentation>Gets the Legal Entity statuses.</WL5G3N1:documentation>
+      <WL5G3N1:input message="WL5G3N3:GetStatusByFelIdRequest"/>
+      <WL5G3N1:output message="WL5G3N3:GetStatusByFelIdResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetStatusByPic">
+      <WL5G3N1:documentation>Gets the Legal Entity statuses.</WL5G3N1:documentation>
+      <WL5G3N1:input message="WL5G3N3:GetStatusByPicRequest"/>
+      <WL5G3N1:output message="WL5G3N3:GetStatusByPicResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="CreateLegalEntity">
+      <WL5G3N1:documentation>Creates a legal entity in ABAC.</WL5G3N1:documentation>
+      <WL5G3N1:input message="WL5G3N3:CreateLegalEntityRequest"/>
+      <WL5G3N1:output message="WL5G3N3:CreateLegalEntityResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="UpdateLegalEntity">
+      <WL5G3N1:input message="WL5G3N3:UpdateLegalEntityRequest"/>
+      <WL5G3N1:output message="WL5G3N3:UpdateLegalEntityResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetLegalEntityBankAccountLink">
+      <WL5G3N1:documentation>Gets all BA, LE and links (VALID and INVALID)</WL5G3N1:documentation>
+      <WL5G3N1:input message="WL5G3N3:GetLegalEntityBankAccountLinkRequest"/>
+      <WL5G3N1:output message="WL5G3N3:GetLegalEntityBankAccountLinkResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetAllBankAccounts">
+      <WL5G3N1:documentation>Gets all BA for a given PIC or FEL (VALID and INVALID)</WL5G3N1:documentation>
+      <WL5G3N1:input message="WL5G3N3:GetAllBankAccountsRequest"/>
+      <WL5G3N1:output message="WL5G3N3:GetAllBankAccountsResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="CheckServiceHealth">
+      <WL5G3N1:documentation>Diagnostic operation to monitor service health.</WL5G3N1:documentation>
+      <WL5G3N1:input message="WL5G3N3:CheckServiceHealthRequest"/>
+      <WL5G3N1:output message="WL5G3N3:CheckServiceHealthResponse"/>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetMailingAddressesByPic">
+      <WL5G3N1:documentation>Gets the mailing addresses for a legal entity.</WL5G3N1:documentation>
+      <WL5G3N1:input message="WL5G3N3:GetMailingAddressesByPicRequest"/>
+      <WL5G3N1:output message="WL5G3N3:GetMailingAddressesByPicResponse"/>
+      <WL5G3N1:fault message="WL5G3N3:LegalEntityException" name="LegalEntityException"/>
+    </WL5G3N1:operation>
+  </WL5G3N1:portType>
+  <WL5G3N1:binding name="ILegalEntityServiceBinding" type="WL5G3N3:ILegalEntityService">
+    <WL5G3N4:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <WL5G3N1:operation name="SearchLegalEntity">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetEwsByFelId">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetEwsByPic">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetBankAccountByFelId">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetBankAccountByPic">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetStatusByFelId">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetStatusByPic">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="CreateLegalEntity">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="UpdateLegalEntity">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetLegalEntityBankAccountLink">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetAllBankAccounts">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="GetMailingAddressesByPic">
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+      <WL5G3N1:fault name="LegalEntityException">
+        <WL5G3N4:fault name="LegalEntityException" use="literal"/>
+      </WL5G3N1:fault>
+    </WL5G3N1:operation>
+    <WL5G3N1:operation name="CheckServiceHealth">
+      <WL5G3N4:operation style="document"/>
+      <WL5G3N1:input>
+        <wsp:Policy>
+          <wsp:PolicyReference URI="#digestUsernameToken2004.xml"/>
+        </wsp:Policy>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:input>
+      <WL5G3N1:output>
+        <WL5G3N4:body use="literal"/>
+      </WL5G3N1:output>
+    </WL5G3N1:operation>
+  </WL5G3N1:binding>
+  <WL5G3N1:service name="LegalEntityServiceV6">
+    <WL5G3N1:port binding="WL5G3N3:ILegalEntityServiceBinding" name="LegalEntityServiceBinding">
+      <WL5G3N4:address location="http://158.167.240.93:1041/RDGServices/FinancialLegalEntity/v6"/>
+    </WL5G3N1:port>
+  </WL5G3N1:service>
+</WL5G3N1:definitions>
