@@ -126,60 +126,6 @@ public class ExportImportWifi4euAbacService {
             return true;
         }
         return false;
-        // ReadFile rF=new ReadFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
-        // rF.readExcelFileRegistrationData();
-    }
-
-    /*
-    @Transactional
-    public void importLegalEntityFBCValidate(final String jsonStringFile) throws Exception{
-        _log.info("importLegalEntityFBCValidate");
-        ResponseDTO result = new ResponseDTO();
-        Gson gson = new GsonBuilder().create();
-        JsonParser parser = new JsonParser();
-        JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonObject();
-        JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
-        for (int i = 0; i < callsJsonArrayLef.size(); i++) {
-            JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
-            //JsonObject applicationJson = parser.parse(gson.toJson(callsJsonArrayLef.get(i))).getAsJsonObject();
-            ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
-            ////JsonArray lefVals = resultJson.getAsJsonArray("idLef");
-            //JsonArray lefVals = callJson.getAsJsonArray("idLef");
-            //for (int u = 0; u < lefVals.size(); u++) {
-            //  JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
-            int a=Integer.parseInt(callJson.get("idLef").toString());
-            String b=callJson.get("status").getAsString();
-            //ValidateLEF validatedLEF=new ValidateLEF(Integer.parseInt(callJson.get("idLef").toString()), callJson.get("status").toString());
-            ValidateLEF validatedLEF=new ValidateLEF(a,b);
-            validatedLefRepository.save(validatedLEF);
-            //}
-        }
-        //JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");
-        //for (int i = 0; i < callsJsonArrayBc.size(); i++) {
-        //JsonObject callJson = callsJsonArrayBc.get(i).getAsJsonObject();
-        ////CallDTO call = gson.fromJson(callJson, CallDTO.class);
-        ////JsonArray lefBcs = resultJson.getAsJsonArray("idBc");
-        //JsonArray lefBcs = callJson.getAsJsonArray("idBc");
-        //for (int u = 0; u < lefBcs.size(); u++) {
-        //  JsonObject jsonStringLef = lefBcs.get(u).getAsJsonObject();
-        //  JsonObject lefBc = jsonStringLef.getAsJsonObject("idBc");
-        //  ValidatedBC validatedBC=new ValidatedBC(Integer.parseInt(lefBc.toString()));
-        //  validatedBcRepository.save(validatedBC);
-        //}
-        //}
-    }
-    */
-
-    @Transactional
-    public void importLegalEntityFBCValidate(final String jsonStringFile) throws Exception {
-        _log.info("importLegalEntityFBCValidate");
-        ResponseDTO result = new ResponseDTO();
-        Gson gson = new GsonBuilder().create();
-        JsonParser parser = new JsonParser();
-        JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonObject();
-        JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
-        for (int i = 0; i < callsJsonArrayLef.size(); i++) {
-        }
     }
 
     public ResponseDTO exportBeneficiaryInformation() throws Exception {
@@ -247,7 +193,7 @@ public class ExportImportWifi4euAbacService {
     @Transactional
     public void importRegistrationData() throws Exception {
         _log.info("importRegistrationData");
-        ReadFile rF=new ReadFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
+        ReadFile rF = new ReadFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
         rF.readExcelFileRegistrationData();
     }
 
