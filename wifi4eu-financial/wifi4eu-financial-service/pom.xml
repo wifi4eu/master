@@ -16,6 +16,12 @@
 
 
     <dependencies>
+    	<dependency>
+			<groupId>wifi4eu.wifi4eu</groupId>
+			<artifactId>wifi4eu-financial-iop</artifactId>
+			<version>${project.version}</version>
+    	</dependency>
+    
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
@@ -106,6 +112,21 @@
             <artifactId>wifi4eu-financial-persistence</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-themes</artifactId>
+			<version>7.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-cdi</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiled</artifactId>
+			<version>7.7.0</version>
+		</dependency>
     </dependencies>
 
     <build>
