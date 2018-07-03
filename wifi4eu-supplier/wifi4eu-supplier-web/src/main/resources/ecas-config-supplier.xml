@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<client-config
+        xmlns="https://ecas.ec.europa.eu/cas/schemas/client-config/ecas/"
+        xmlns:cas="https://ecas.ec.europa.eu/cas/schemas/client-config/cas/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://ecas.ec.europa.eu/cas/schemas/client-config/ecas/ https://ecas.ec.europa.eu/cas/schemas/client-config/ecas/
+                           https://ecas.ec.europa.eu/cas/schemas/client-config/cas/ https://ecas.ec.europa.eu/cas/schemas/client-config/cas/">
+
+    <!--<httpRedirector>eu.europa.ec.digitb3.mvc.web.security.ecas.HttpRedirectorSupport</httpRedirector>-->
+
+    <!--<serviceResolver>eu.cec.digit.ecas.client.resolver.service.ReverseProxyAwareServiceResolver</serviceResolver>-->
+
+
+    <serverContextPath>/supplier</serverContextPath>
+
+    <requestingUserDetails>true</requestingUserDetails>
+
+    <!--
+    <extraGroupHandler>wifi4eu.wifi4eu.web.util.ecas.RbacEcasExtraGroupHandler</extraGroupHandler>
+    -->
+
+    <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
+    <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
+    <serverProtocol>http</serverProtocol>
+    <cas:serverName>${ecas.server.address}</cas:serverName>
+    <serverPort>${ecas.server.port}</serverPort>
+
+    <applicationServer>tomcat</applicationServer>
+
+        <acceptStrengths>
+            <strength>${ecas.config.strength}</strength>
+        </acceptStrengths>
+    <!--
+            <cas:renew>${ecas.config.renew}</cas:renew>
+
+
+            ${ecas.config.validate.load_test_specific}
+
+            ${ecas.config.test.certificate.element}
+            -->
+
+</client-config>

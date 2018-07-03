@@ -28,4 +28,6 @@ public interface MunicipalityRepository extends CrudRepository<Municipality, Int
             nativeQuery = true
     )
     Integer countDistinctMunicipalitiesThatAppliedCallContainingName(Integer callId, String country, String name);
+
+    Long countMunicipalitiesById(Integer id);
 }

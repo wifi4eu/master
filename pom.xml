@@ -16,6 +16,7 @@
         <module>wifi4eu-portal</module>
         <module>wifi4eu-public-portal</module>
         <module>wifi4eu-dgconn</module>
+        <module>wifi4eu-supplier</module>
         <!--<module>wifi4eu-financial</module>-->
     </modules>
 
@@ -154,10 +155,17 @@
         <enable.appinsights.end></enable.appinsights.end>
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
 
+        <!-- CNS -->
+        <cns.client.system.key>KEY-WiFi4EU-B49nLE82Cx</cns.client.system.key>
+        <cns.client.system.password>secret</cns.client.system.password>
+        <cns.notification.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/NotificationWebService</cns.notification.service.url>
+        <cns.user.preferences.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/UserPreferencesWebService</cns.user.preferences.service.url>
+        <cns.notification.group.code>WiFi4EU_OP</cns.notification.group.code>
+
         <!-- SMTP -->
-        <encrypted.azure.smtp.password>0I+AzzLAO7Uo524upVthmCTIIGi9uReJDz1IA+eXpYna7foYKvs6pLZBa2P4PJRG</encrypted.azure.smtp.password>
-        <encrypted.smtp.password>Vo+En9fPqmue4igyjP+WcQ==</encrypted.smtp.password>
-        <secret.key.encryption>O04+ylkOgILxTFl/w7q1YoIhaQUAVYebQ9lebKyO75k=</secret.key.encryption>
+        <encrypted.azure.smtp.password>EXdNJgAGhKHJNcH3M9F2XuFcjyY0vx4dsvGcOkv8Bkt5HjXq5uvc6fvMP1/jqDo2</encrypted.azure.smtp.password>
+        <encrypted.smtp.password>rAVMaF9Tq672wijgk9LxfA==</encrypted.smtp.password>
+        <secret.key.encryption>SBy2hecZS9lA7wiIGmoRiA==</secret.key.encryption>
 
         <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
         <mail.smtp.port>587</mail.smtp.port>
@@ -604,19 +612,16 @@
                 <version>${log4j.version}</version>
             </dependency>
 
-
-            <!--<dependency>
+            <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
+                <artifactId>log4j-slf4j-impl</artifactId>
                 <version>${log4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
+                <artifactId>log4j-jcl</artifactId>
                 <version>${log4j.version}</version>
-            </dependency>-->
-
-
+            </dependency>
             <dependency>
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>eclipselink</artifactId>
@@ -797,6 +802,15 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-jcl</artifactId>
         </dependency>
 
 
