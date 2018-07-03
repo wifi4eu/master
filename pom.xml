@@ -10,7 +10,7 @@
     <name>wifi4eu</name>
     <description>J2EE, SpringMVC, eUI application</description>
 
-
+    <!-- test comment added -->
     <modules>
         <module>wifi4eu-common</module>
         
