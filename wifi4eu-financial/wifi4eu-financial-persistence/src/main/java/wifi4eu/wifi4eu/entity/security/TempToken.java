@@ -25,17 +25,17 @@ public class TempToken {
     @Column(name="USER_ID")
     private Long userId;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    //@Temporal(TemporalType.TIMESTAMP)
     @Column(name="CREATE_DATE")
-    private Date createDate;
+    private Long createDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    //@Temporal(TemporalType.TIMESTAMP)
     @Column(name="EXPIRY_DATE")
-    private Date expiryDate;
+    private Long expiryDate;
 
     public TempToken(){}
 
-    public TempToken(Long id, String token, String email, Date createDate, Date expiryDate) {
+    public TempToken(Long id, String token, String email, Long createDate, Long expiryDate) {
         this.id = id;
         this.token = token;
         this.email = email;
@@ -75,19 +75,19 @@ public class TempToken {
         this.userId = userId;
     }
 
-    public Date getCreateDate() {
+    public Long getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Long createDate) {
         this.createDate = createDate;
     }
 
-    public Date getExpiryDate() {
+    public Long getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(Long expiryDate) {
         this.expiryDate = expiryDate;
     }
 }
