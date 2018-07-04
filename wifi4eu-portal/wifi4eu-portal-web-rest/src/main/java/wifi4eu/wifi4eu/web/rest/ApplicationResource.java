@@ -214,15 +214,25 @@ public class ApplicationResource {
     @ApiOperation(value = "Assign supplier")
     @RequestMapping(value = "/assignSupplier", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO assignSupplier(@RequestBody final ApplicationDTO applicationDTO) {
+    public ResponseDTO assignSupplier(@RequestParam ("municipalityId") final int municipalityId, @RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
         try {
             if (_log.isInfoEnabled()) {
                 _log.info("assignSupplier");
+            }
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             applicationDTO.setDate(new Date().getTime());
             applicationDTO.setSelectSupplierDate(new Date().getTime());
             ApplicationDTO resApplication = applicationService.saveApplication(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'assignSupplier' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null; 
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'assignSupplier' operation.", e);

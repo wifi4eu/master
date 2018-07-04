@@ -145,7 +145,7 @@ export class SelectedSupplierDetailsComponent {
   }
   
   assignSupplierAndNotify() {
-    this.applicationApi.assignSupplier(this.application).subscribe(
+    this.applicationApi.assignSupplier(this.registration.municipalityId, this.application).subscribe(
       (resAplication: ResponseDTOBase) => {
         this.supplierApi.notifySelectedSupplier(this.municipalityId).subscribe(
           (res: ResponseDTOBase) => {
