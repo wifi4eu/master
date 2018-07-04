@@ -15,15 +15,21 @@ import {
     CalendarModule,
     MultiSelectModule,
     TabMenuModule,
-    TabViewModule
+    TabViewModule,
+    DropdownModule,
+    FileUploadModule,
+    DataListModule,
+    PaginatorModule
 } from "primeng/primeng";
-import {APP_DIRECTIVES} from "./components/index";
-import {TimelineComponent} from "./components/timeline/timeline.component";
-import {CustomTimelineAccordionBoxComponent} from "./components/timeline/custom-timeline-accordion-box.component";
+// import {APP_DIRECTIVES} from "./components/index";
 import {Ng2GoogleRecaptchaModule} from "ng2-google-recaptcha";
 import {FailureComponent} from "./components/failure/failure.component";
-import {HelpdeskFormComponent} from "../shared/components/helpdesk-form/helpdesk-form.component";
+import {CustomAccordionBoxComponent} from "./components/custom-accordion-box/custom-accordion-box.component";
+import {CustomWizardStepsComponent} from "./components/custom-wizard-steps/custom-wizard-steps";
 import {TimerComponent} from "../shared/components/timer/timer.component";
+import {CustomLayoutHeaderComponent} from "./components/custom-layout-header/custom-layout-header";
+import {CustomLayoutNavBarActionItemComponent} from "./components/custom-layout-nav-bar-action-item/custom-layout-nav-bar-action-item";
+import {CustomLayoutNavBarTopMenuComponent} from "./components/custom-layout-nav-bar-top-menu/custom-layout-nav-bar-top-menu";
 
 export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
     return new UxHttp(backend, defaultOptions);
@@ -44,25 +50,31 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         MultiSelectModule,
         TabMenuModule,
         TabViewModule,
+        DropdownModule,
+        FileUploadModule,
+        DataListModule,
+        PaginatorModule,
         Ng2GoogleRecaptchaModule
     ],
     declarations: [
         UX_DIRECTIVES,
         UxLanguageSelectorComponent,
         UxSearchInputComponent,
-        TimelineComponent,
-        CustomTimelineAccordionBoxComponent,
         FailureComponent,
-        HelpdeskFormComponent,
-        TimerComponent,
-        APP_DIRECTIVES
+        CustomAccordionBoxComponent,
+        CustomWizardStepsComponent,
+        CustomLayoutHeaderComponent,
+        CustomLayoutNavBarActionItemComponent,
+        CustomLayoutNavBarTopMenuComponent,
+        TimerComponent
+        // APP_DIRECTIVES
     ],
     exports: [
         UX_DIRECTIVES,
         UxLanguageSelectorComponent,
         UxSearchInputComponent,
         UxModule,
-        APP_DIRECTIVES,
+        // APP_DIRECTIVES,
         CheckboxModule,
         GrowlModule,
         BlockUIModule,
@@ -74,10 +86,17 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         MultiSelectModule,
         TabMenuModule,
         TabViewModule,
-        TimelineComponent,
-        CustomTimelineAccordionBoxComponent,
+        DropdownModule,
+        FileUploadModule,
+        DataListModule,
+        PaginatorModule,
         FailureComponent,
-        HelpdeskFormComponent,
+        CustomAccordionBoxComponent,
+        CustomWizardStepsComponent,
+        CustomLayoutHeaderComponent,
+        CustomLayoutNavBarActionItemComponent,
+        CustomLayoutNavBarTopMenuComponent,
+        Ng2GoogleRecaptchaModule,
         TimerComponent
     ],
     providers: [
