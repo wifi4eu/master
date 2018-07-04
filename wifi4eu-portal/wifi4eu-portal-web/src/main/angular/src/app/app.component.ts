@@ -339,16 +339,4 @@ export class AppComponent {
         );
     }
 
-    onReload() {
-        // this.user = null;
-        // this.localStorageService.remove('user');
-        // this.localStorageService.remove('public-redirection');
-        // this.menuLinks = this.children[0];
-        // this.profileUrl = null;
-        //
-        // window.location.href = environment['logoutUrl'];
-
-        // window.location.reload();
-    }
-
 }

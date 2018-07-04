@@ -13,8 +13,8 @@
 
     <modules>
         <module>wifi4eu-common</module>
-      <!--   <module>wifi4eu-portal</module>
-        <module>wifi4eu-public-portal</module> -->
+        <module>wifi4eu-portal</module>
+        <module>wifi4eu-public-portal</module>
         <module>wifi4eu-dgconn</module>
         <!--<module>wifi4eu-financial</module>-->
     </modules>
@@ -160,6 +160,11 @@
         <mail.smtp.password></mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
         <mail.serv.enable>true</mail.serv.enable>
+
+        <!-- RabbitMQ -->
+        <rabbitmq.host>localhost</rabbitmq.host>
+        <rabbitmq.username>guest</rabbitmq.username>
+        <rabbitmq.password>guest</rabbitmq.password>
 
         <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
         <!--<war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>-->
@@ -381,6 +386,10 @@
                 <mail.serv.location>https://www.wifi4eu.eu/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
+                <mail.serv.enable>true</mail.serv.enable>
+                <rabbitmq.host>10.0.2.123</rabbitmq.host>
+                <rabbitmq.username>devel</rabbitmq.username>
+                <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password></mail.smtp.password>
             </properties>
