@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "A sua mensagem",
   "shared.back.button": "Anterior",
   "discussionForum.title": "Debate entre autarquias sobre inscrições múltiplas",
-  "discussionForum.description": "O sistema detetou {{duplicateCount}} outros representantes inscritos no nome de {{municipality]] enquanto entidade elegível. Pode dar início a uma conversa com os outros utilizadores inscritos. Caso não cheguem a acordo quanto à inscrição que é válida, pode solicitar a intervenção da Comissão Europeia.",
+  "discussionForum.description": "O sistema detetou {{duplicateCount}} outros representantes inscritos no nome de {{municipality}} enquanto entidade elegível. Pode dar início a uma conversa com os outros utilizadores inscritos. Caso não cheguem a acordo quanto à inscrição que é válida, pode solicitar a intervenção da Comissão Europeia.",
   "discussionForum.beneficiary.registrations": "Inscrições",
   "discussionForum.beneficiary.registration1": "Inscrição {{selfRegistration}} (a sua)",
   "shared.postal-code.label": "Código postal",

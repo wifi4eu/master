@@ -372,8 +372,6 @@
   "shared.company.required": "Es obligatoria la empresa",
   "shared.address.required": "Es obligatoria la dirección",
   "shared.bic.required": "Es obligatorio el BIC",
-  "suppRegistration.vat.required": "VAT es obligatorio",
-  "suppRegistration.bank.required": "La cuenta bancaria es obligatoria",
   "shared.clear.label": "Eliminar",
   "benefPortal.voucher.registrationSuccess.text": "Tenga en cuenta que la inscripción es el primer paso de la presentación de una solicitud de WiFi4EU. Una vez abierta la convocatoria, inicie sesión con su cuenta de usuario EU Login y presente su solicitud de bonos WiFi4EU. Para ello solo tiene que pulsar el botón \"Presente la solicitud\" ya que durante la inscripción se facilitó toda la información necesaria. Tenga en cuenta que la selección de los ganadores de bonos WiFi4EU de cada convocatoria se realiza por orden de llegada de las solicitudes (fecha y hora de la solicitud) y de acuerdo con criterios que garanticen el equilibrio geográfico, tal como se indica en el programa de trabajo de telecomunicaciones del MCE.",
   "suppPortal.accesPoint.name": "Nombre punto de acceso",
