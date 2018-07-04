@@ -41,42 +41,43 @@
                                     </div>
                                 </div>
                             </div>
-                    </uxLayoutHeaderRightContent>
-                </custom-layout-header>
-            </uxLayoutAppMainHeaderContainer>
-            <uxLayoutAppMainNavBarContainer>
-                <ux-layout-nav-bar>
-                    <custom-layout-nav-bar-top-menu [links]="menuLinks" homeUrl="../home"
-                                                    goToHomeButton="true"></custom-layout-nav-bar-top-menu>
-                    <ux-layout-nav-bar-actions>
-                        <div *ngIf="user">
-                            <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
-                                                               isOverlayPanel="true"
-                                                               userInfos="{{ 'shared.loggedin.as' | translate }} {{user.email}}"
-                                                               [links]="menuLinks" homeUrl="/home"
-                                                               goToHomeButton="true">
-                            </custom-layout-nav-bar-action-item>
-                        </div>
-                        <div *ngIf="!user">
-                            <div class="clearfix"></div>
-                            <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
-                                                               isOverlayPanel="true" [links]="menuLinks"
-                                                               homeUrl="/home">
-                                {{ 'shared.logout.label' | translate }}
-                            </custom-layout-nav-bar-action-item>
-                        </div>
-                    </ux-layout-nav-bar-actions>
-                </ux-layout-nav-bar>
-            </uxLayoutAppMainNavBarContainer>
-            <uxLayoutAppMainContentContainer>
-                <router-outlet></router-outlet>
-            </uxLayoutAppMainContentContainer>
-            <uxLayoutAppMainFooterContainer>
-                <ux-layout-footer isCompact="true">
-                    {{ 'home.footer.update' | translate:{version:"2.1.0", versionDate:"29/06/2018"} }}
-                    <a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
-                </ux-layout-footer>
-            </uxLayoutAppMainFooterContainer>
-        </ux-layout-app-main>
-    </uxLayoutAppMainContainer>
-</ux-layout-app>
+                        </uxLayoutHeaderRightContent>
+                    </custom-layout-header>
+                </uxLayoutAppMainHeaderContainer>
+                <uxLayoutAppMainNavBarContainer>
+                    <ux-layout-nav-bar>
+                        <custom-layout-nav-bar-top-menu [links]="menuLinks" homeUrl="../home"
+                                                        goToHomeButton="true"></custom-layout-nav-bar-top-menu>
+                        <ux-layout-nav-bar-actions>
+                            <div *ngIf="user">
+                                <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
+                                                                   isOverlayPanel="true"
+                                                                   userInfos="{{ 'shared.loggedin.as' | translate }} {{user.email}}"
+                                                                   [links]="menuLinks" homeUrl="/home"
+                                                                   goToHomeButton="true">
+                                </custom-layout-nav-bar-action-item>
+                            </div>
+                            <div *ngIf="!user">
+                                <div class="clearfix"></div>
+                                <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
+                                                                   isOverlayPanel="true" [links]="menuLinks"
+                                                                   homeUrl="/home">
+                                    {{ 'shared.logout.label' | translate }}
+                                </custom-layout-nav-bar-action-item>
+                            </div>
+                        </ux-layout-nav-bar-actions>
+                    </ux-layout-nav-bar>
+                </uxLayoutAppMainNavBarContainer>
+                <uxLayoutAppMainContentContainer>
+                    <router-outlet></router-outlet>
+                </uxLayoutAppMainContentContainer>
+                <uxLayoutAppMainFooterContainer>
+                    <ux-layout-footer isCompact="true">
+                        {{ 'home.footer.update' | translate:{version:"2.1.0", versionDate:"29/06/2018"} }}
+                        <a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
+                    </ux-layout-footer>
+                </uxLayoutAppMainFooterContainer>
+            </ux-layout-app-main>
+        </uxLayoutAppMainContainer>
+    </ux-layout-app>
+</div>

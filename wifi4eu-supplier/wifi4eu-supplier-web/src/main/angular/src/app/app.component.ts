@@ -9,11 +9,13 @@ import { CONFIG_TOKEN, AppState, UserState, RouteUpdateAction, getAppState, getU
 import { UserDetailsService } from './core/services/user-details.service';
 import { UserDTOBase, UserApi, ResponseDTOBase } from './shared/swagger';
 import { environment } from '../environments/environment';
+import {WebsockApi} from "./shared/swagger";
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    providers: [UserApi]
+    providers: [UserApi, WebsockApi]
 })
 
 export class AppComponent implements OnInit {
@@ -25,7 +27,9 @@ export class AppComponent implements OnInit {
     userInfos: string = 'NAME Firstname';
     user: UserDTOBase;
 
-    constructor(@Inject(CONFIG_TOKEN) private config: any, private translateService: TranslateService, private uxService: UxService, private store: Store<any>, private userDetailsService: UserDetailsService, private localStorageService: LocalStorageService, private userApi: UserApi) {
+    sessionExpired: Boolean = false;
+
+    constructor(@Inject(CONFIG_TOKEN) private config: any, private translateService: TranslateService, private uxService: UxService, private store: Store<any>, private userDetailsService: UserDetailsService, private localStorageService: LocalStorageService, private userApi: UserApi, private websockApi: WebsockApi, private cookieService: CookieService) {
         translateService.setDefaultLang('en');
         translateService.use('en');
 
@@ -43,6 +47,14 @@ export class AppComponent implements OnInit {
         // custom call for userDetails API -- can also be achived directly to the UX-CORE (config/modules)
         /* this._getUserDetails(); */
         this.getUserData();
+
+        const sessionPolling = 61500;
+        Observable.interval(sessionPolling)
+            .takeWhile(() => !this.sessionExpired)
+            .subscribe(execution => {
+                // This will be called every 10 seconds until `stopCondition` flag is set to true
+                this.isSessionExpired();
+            })
     }
 
     updateMenuTranslations() {
@@ -60,7 +72,6 @@ export class AppComponent implements OnInit {
     }
 
     onLanguageChanged(language: UxLanguage) {
-        console.log(language);
         this.translateService.use(language.code);
     }
 
@@ -148,8 +159,30 @@ export class AppComponent implements OnInit {
              });
      } */
 
+    private reload() {
+        this.removeDataSession()
+        window.location.reload();
+    }
+
+    private removeDataSession() {
+        this.user = null;
+        this.localStorageService.remove('user');
+        this.localStorageService.remove('public-redirection');
+        this.cookieService.deleteAll();
+    }
+
     private goToTop() {
         window.scrollTo(0, 0);
+    }
+
+
+
+    isSessionExpired() {
+        this.websockApi.isInvalidatedSession().subscribe(
+            (sessionStatus: Boolean) => {
+                this.sessionExpired = (sessionStatus == null) || sessionStatus;
+            }
+        );
     }
 
 }
