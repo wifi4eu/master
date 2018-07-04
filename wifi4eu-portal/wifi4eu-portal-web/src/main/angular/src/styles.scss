@@ -828,6 +828,7 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 
 .progress-indicator {
   padding-top: 5.3em;
+  width: 100%;
 }
 
 #app-header .right-content {
@@ -1649,8 +1650,8 @@ p-tabview.white .ui-widget-content.ui-tabview {
 }
 
 .dgConnDetailsHr {
-  background: none;
-  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  background:  none;
+  border-top:  2px solid rgba(0, 0, 0, 0.1);
   margin: 0;
 }
 
@@ -1666,8 +1667,8 @@ p-tabview.white .ui-widget-content.ui-tabview {
   text-decoration: underline;
 }
 
-input.email_profile::-ms-clear {
-  display: none;
+input.email_profile::-ms-clear{
+  display:none;
 }
 
 .voucher__assignment{
@@ -1691,4 +1692,35 @@ input.email_profile::-ms-clear {
 
 .paddingTable {
   padding-right: 1em;
+}
+
+#nav-bar{
+  height:100%;
+  min-height: 55px;
+}
+
+#top-menu {
+  min-height: 55px;
+  display:flex;
+}
+
+#top-menu > ul > li{
+  max-width: 70vw;
+  float:none;
+  vertical-align:top;
+}
+
+@media only screen and (max-width: 1154px) {
+  #top-menu > ul > li{
+    max-width: 31vw;
+    height:100%;
+    min-height: 55px;
+ }
+}
+#top-menu > ul > li > a {
+  height: 100%;
+}
+
+#top-menu ul, #top-menu ul li, #top-menu ul li a{
+  display: inline-block;
 }
