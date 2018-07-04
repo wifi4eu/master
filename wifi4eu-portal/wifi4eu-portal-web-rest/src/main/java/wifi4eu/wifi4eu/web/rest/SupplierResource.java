@@ -554,39 +554,53 @@ public class SupplierResource {
     }
 
     @ApiOperation(value = "Notify supplier by email that a beneficiary selected him")
-    // @RequestMapping(value = "/notifySelectedSupplier/", method = RequestMethod.POST, produces = "application/json")
     @RequestMapping(value = "/notifySelectedSupplier", method = RequestMethod.POST)
-    // public ResponseDTO notifySelectedSupplier(@RequestParam("municipalityId") final int municipalityId, @RequestParam("callId") final int calId) {
     @ResponseBody
     public ResponseDTO notifySelectedSupplier(@RequestBody final int municipalityId) {
         _log.info("notify Selected Supplier: " + municipalityId);
         try {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
             supplierService.notifySelectedSupplier(municipalityId);
             return new ResponseDTO(true, null, null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'notifySelectedSupplier' operation", ade);
+            }
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'notifySelectedSupplier' operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
+        return null;    
     }
 
     @ApiOperation(value = "Notify supplier by email that a beneficiary has rejected him")
-    // @RequestMapping(value = "/notifyRejectedSupplier/", method = RequestMethod.POST, produces = "application/json")
     @RequestMapping(value = "/notifyRejectedSupplier", method = RequestMethod.POST)
-    // public ResponseDTO notifyRejectedSupplier(@RequestParam("municipalityId") final int municipalityId, @RequestParam("callId") final int calId) {
     @ResponseBody
     public ResponseDTO notifyRejectedSupplier(@RequestBody final int municipalityId) {
         _log.info("notify Selected Supplier: " + municipalityId);
         try {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
             supplierService.notifyRejectedSupplier(municipalityId);
             return new ResponseDTO(true, null, null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'notifyRejectedSupplier' operation.", ade);
+            }
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'notifyRejectedSupplier' operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
+        return null;
     }
 
 }
