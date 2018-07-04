@@ -1,11 +1,18 @@
 package wifi4eu.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="MUNICIPALITY")
@@ -27,8 +34,9 @@ public class Municipality {
 	@Column(name="POSTAL_CODE")
 	private String postalCode;
 	
-	@Column(name="COUNTRY")
-	private String country;
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="COUNTRY_CODE")
+	private Country country;
 	
 	@Column(name="JAGATE_KEY")
 	private String jagateKey;
@@ -36,9 +44,10 @@ public class Municipality {
 	@Column(name="FEL_ID")
 	private String felID;
 	
-	@Column(name="COUNTRY_CODE")
-	private String countryCode;
-
+	@Column(name="JAGATE_CREATION_REQUEST_DATE")
+	@Temporal(TemporalType.DATE)
+	private Date jagateCreationRequestDate;
+	
 	public Municipality() {
 		super();
 	}
@@ -83,14 +92,6 @@ public class Municipality {
 		this.postalCode = postalCode;
 	}
 
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
 	public String getJagateKey() {
 		return jagateKey;
 	}
@@ -107,14 +108,20 @@ public class Municipality {
 		this.felID = felID;
 	}
 
-	public String getCountryCode() {
-		return countryCode;
+	public Country getCountry() {
+		return country;
 	}
 
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
+	public Date getJagateCreationRequestDate() {
+		return jagateCreationRequestDate;
+	}
+
+	public void setJagateCreationRequestDate(Date jagateCreationRequestDate) {
+		this.jagateCreationRequestDate = jagateCreationRequestDate;
 	}
 	
-	
-
 }
