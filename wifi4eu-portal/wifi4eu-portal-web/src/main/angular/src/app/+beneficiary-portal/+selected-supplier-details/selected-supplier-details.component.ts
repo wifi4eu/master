@@ -100,8 +100,6 @@ export class SelectedSupplierDetailsComponent {
   /*  -- METHODS -- */
   /* Get supplier details from supplierId requested through params */
   getSupplierDetails(supplierId, municipalityId) {
-    console.log("Supplier Id is ", supplierId);
-    console.log("Municipality Id is ", municipalityId);
     this.supplierApi.getSupplierDetailsById(supplierId, municipalityId).subscribe(
       (supplier: SupplierDTOBase) => {            
         this.supplier = supplier;

@@ -115,7 +115,6 @@ export class SelectSupplierComponent {
                           if(municipality != null) {
                             this.supplierApi.getValidatedSuppliersListByMunicipalityId(this.registration.municipalityId).subscribe(
                             (suppliers: SupplierDTOBase[]) => {
-                              console.log(suppliers);
                               this.suppliers = suppliers;
                               this.suppliersCopy = this.suppliers;
                     
