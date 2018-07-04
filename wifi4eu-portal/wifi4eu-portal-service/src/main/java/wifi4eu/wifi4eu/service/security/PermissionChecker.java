@@ -25,7 +25,9 @@ import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -52,6 +54,9 @@ public class PermissionChecker {
     
     @Autowired
     RegistrationService registrationService;
+
+    @Autowired
+    SupplierService supplierService;
 
     public boolean check(String rightDesc){
 
@@ -102,7 +107,6 @@ public class PermissionChecker {
 
     public boolean checkIfVoucherAwarded(UserDTO userDTO, Integer municipalityId) {
         List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userDTO.getId()); 
-        // registrations = new ArrayList<>();
         for (int i = 0; i < registrations.size(); i++) {
             if(registrations.get(i).getMunicipalityId() == municipalityId) {
                 List<ApplicationDTO> applications = applicationService.getApplicationsByRegistrationId(registrations.get(i).getId());
@@ -111,6 +115,16 @@ public class PermissionChecker {
                         return true;
                     }
                 }
+            }
+        }
+        return false;
+    }
+
+    public boolean checkIfSupplierProvidesMunicipalityRegion(Integer municipalityId, Integer supplierId) {
+        List<SupplierDTO> suppliers = supplierService.getValidatedSuppliersListByMunicipalityId(municipalityId);
+        for(int i = 0; i < suppliers.size(); i++) {
+            if(suppliers.get(i).getId() == supplierId) {
+                return true;
             }
         }
         return false;

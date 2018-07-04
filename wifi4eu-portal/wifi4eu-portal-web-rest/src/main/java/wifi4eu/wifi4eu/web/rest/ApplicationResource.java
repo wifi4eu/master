@@ -20,6 +20,7 @@ import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +44,9 @@ public class ApplicationResource {
 
     @Autowired
     UserService userService;
+    
+    @Autowired
+    SupplierService supplierService;
 
     Logger _log = LoggerFactory.getLogger(ApplicationResource.class);
 
@@ -223,6 +227,9 @@ public class ApplicationResource {
             if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            if(!permissionChecker.checkIfSupplierProvidesMunicipalityRegion(municipalityId, applicationDTO.getSupplierId())) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
             applicationDTO.setDate(new Date().getTime());
             applicationDTO.setSelectSupplierDate(new Date().getTime());
             ApplicationDTO resApplication = applicationService.saveApplication(applicationDTO);
@@ -248,7 +255,6 @@ public class ApplicationResource {
         if (_log.isInfoEnabled()) {
             _log.info("getApplicationsByCallIdAndLauId");
         }
-
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
