@@ -8,7 +8,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.RightDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
@@ -22,6 +25,7 @@ import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
@@ -84,5 +88,29 @@ public class PermissionChecker {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Forbids petitions that are not from a logged user. It verifies that this user is a beneficiary.
+     * This means that in localhost making petitions using postman or any other rest client is not going to work if mr
+     * tester is not type 3. Please change it on your local database.
+     *
+     * @throws AccessDeniedException
+     */
+    public UserDTO checkBeneficiaryPermission() throws AccessDeniedException {
+        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+        if (userDTO.getType() != Constant.ROLE_REPRESENTATIVE ) {
+            throw new AccessDeniedException("403 FORBIDDEN");
+        }
+        check(RightConstants.REGISTRATIONS_TABLE + userDTO.getId());
+        check(RightConstants.MUNICIPALITIES_TABLE + userDTO.getId());
+        return userDTO;
+    }
+
+    public ResponseDTO getAccessDeniedResponse() {
+        ResponseDTO response = new ResponseDTO();
+        response.setSuccess(false);
+        response.setError(new ErrorDTO(403, "shared.error.notallowed"));
+        return response;
     }
 }

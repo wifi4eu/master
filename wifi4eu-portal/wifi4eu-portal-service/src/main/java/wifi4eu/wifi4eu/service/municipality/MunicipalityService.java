@@ -5,9 +5,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
@@ -15,7 +17,9 @@ import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -42,9 +46,15 @@ public class MunicipalityService {
     MayorService mayorService;
 
     @Autowired
+    RegistrationWarningService registrationWarningService;
+
+    @Autowired
     MunicipalityService municipalityService;
 
     private final Logger _log = LogManager.getLogger(MayorService.class);
+
+    @Autowired
+    PermissionChecker permissionChecker;
 
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
@@ -52,6 +62,48 @@ public class MunicipalityService {
 
     public MunicipalityDTO getMunicipalityById(int municipalityId) {
         return municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
+    }
+
+    /**
+     * This service is used only on the beneficiary-portal/installations page.
+     * We need to allow only to return the municipalities that the user is associated with.
+     *
+     * @param municipalityId
+     * @return
+     */
+    public ResponseDTO getUsersMunicipalityById(Integer municipalityId) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from municipality with id " +municipalityId);
+        ResponseDTO response = new ResponseDTO();
+        MunicipalityDTO municipality = getMunicipalityById(municipalityId);
+        if (checkPermissions(municipalityId)) {
+            response.setSuccess(true);
+            response.setData(municipality);
+        } else {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
+            return permissionChecker.getAccessDeniedResponse();
+        }
+        return response;
+    }
+
+    public boolean checkPermissions(int idMunicipality) throws AccessDeniedException {
+        try {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+
+            //we check that this user has a relation to this installation site's municipality
+            RegistrationDTO registrationDTO = registrationService.getRegistrationByUserAndMunicipality(userDTO.getId(), idMunicipality);
+            if (registrationDTO == null) {
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+
+            //then we check if user logged in is a beneficiary and has permissions to access this municipality and registration
+            permissionChecker.checkBeneficiaryPermission(userDTO.getType(), idMunicipality, registrationDTO.getId());
+
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Transactional
@@ -85,6 +137,10 @@ public class MunicipalityService {
             }
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
             if (registration != null) {
+                List<RegistrationWarningDTO> registrationWarningDTOs = registrationWarningService.getWarningsByRegistrationId(registration.getId());
+                if(registrationWarningDTOs.size() > 0){
+                    registrationWarningService.deleteWarningFromRegistration(registrationWarningDTOs);
+                }
                 for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registration.getId())) {
                     applicationService.deleteApplication(application.getId(), request);
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Application from this municipality removed");

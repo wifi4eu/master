@@ -93,9 +93,6 @@ public class UserService {
     @Autowired
     UserThreadsService userThreadsService;
 
-    @Autowired
-    UserService userService;
-
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
     }

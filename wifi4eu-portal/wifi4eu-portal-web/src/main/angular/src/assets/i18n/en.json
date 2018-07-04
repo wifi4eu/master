@@ -801,5 +801,6 @@
   "shared.close": "Cancel",
   "benefPortal.myVoucher.datatable.signGrantAgreement": "Sign grant agreement",
   "itemMenu.myVoucher": "My voucher",
-  "shared.all": "All"
+  "shared.all": "All",
+  "shared.condition.avoid":"You must accept all the conditions before submit this registration."
 }
