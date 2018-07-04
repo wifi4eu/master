@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (http://www.altova.com) by Tasis Michalakopoulos (IT Consultant) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/assertion/V1" targetNamespace="http://ec.europa.eu/research/fp/model/assertion/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xs:complexType name="QualifiedAssertionType">
+		<xs:sequence>
+			<xs:element name="Assertion" type="AssertionType"/>
+			<xs:element name="qualifier" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>List of allowed values: VALID, INVALID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Human text describing the reason for the qualification of the assertion</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AssertionType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Super type for all assertions ser</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+</xs:schema>

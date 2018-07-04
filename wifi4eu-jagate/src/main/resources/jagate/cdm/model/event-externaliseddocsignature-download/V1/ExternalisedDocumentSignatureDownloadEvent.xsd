@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:userRef="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:doc="http://ec.europa.eu/research/fp/model/document/V5" xmlns:fnotif="http://ec.europa.eu/research/fp/model/formalnotification/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://ec.europa.eu/rdg/efp/domain/event-externaliseddocsignature-download/V1" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event-externaliseddocsignature-download/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V5" schemaLocation="../../document/V5/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/formalnotification/V1" schemaLocation="../../formalnotification/V1/FormalNotification.xsd"/>
+	<xs:complexType name="ExternalisedDocumentSignatureDownloadEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when a client has signed for a document having a formal notification during a document download request</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="UserId" type="userRef:UserIdType" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="Document" type="doc:DocumentType" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="FormalNotification" type="fnotif:FormalNotificationType" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

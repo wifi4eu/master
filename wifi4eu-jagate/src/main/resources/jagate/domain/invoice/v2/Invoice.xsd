@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 					xmlns:xs="http://www.w3.org/2001/XMLSchema"
+							xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" 
+							xmlns:invoice="http://ec.europa.eu/rdg/jagate/ws/domain/invoiceBasicData/v2" 
+							xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/invoice/v2"
+							targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/invoice/v2" 
+							elementFormDefault="qualified" 
+							attributeFormDefault="unqualified" 
+							version="2.0.1">
+							
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/invoiceBasicData/v2" schemaLocation="./InvoiceBasicData.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+
+	<xs:complexType name="PrefinCoordinatorInvoiceHeaderType">
+		<xs:annotation>
+			<xs:documentation>Data related to the Invoice Header for Prefin invoice to Coordinator</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="invoice:InvoiceHeaderAmount" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="invoice:InvoiceHeaderDGCode" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PrefinJRCInternalInvoiceHeaderType">
+		<xs:annotation>
+			<xs:documentation>Data related to the Invoice Header for Prefin invoice to JRC</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="invoice:InvoiceHeaderAmount" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="invoice:InvoiceHeaderInvoiceDate" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="invoice:InvoiceHeaderRecoveryOrder" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="invoice:InvoiceHeaderDGCode" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="InvoiceDetails">
+		<xs:sequence>
+			<xs:element ref="invoice:InvoiceHeaderAmount" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="invoice:InvoiceHeaderDGCode" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="invoice:InvoiceHeaderInvoiceDate" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="invoice:InvoiceHeaderECReceptionDate" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="InvoiceHeaderCommitment" type="xs:string" />
+			<xs:element name="InvoiceHeaderLegalEntity" type="xs:string" />
+			<xs:element name="InvoiceHeaderBankAccount" type="xs:string" minOccurs="0" maxOccurs="1" />
+			<xs:element name="InvoiceHeaderRecoveryOrder" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="InvoiceHeaderSpecificBaseLineDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="InvoiceHeaderPreFinNumber" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<!-- Need to create a new version and add this field in the project Data set -->
+			<xs:element name="ResponsibleOrganisation" type="coderef:CodeRefType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrefinInvoiceDetailType">
+		<xs:annotation>
+			<xs:documentation>Data related to the Invoice Details</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="invoice:InvoiceDetailAmount"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PrefinInvoiceDetailJRCType">
+		<xs:annotation>
+			<xs:documentation>Data related to the Invoice Details</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="invoice:InvoiceDetailAmount"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:annotation>
+		<xs:documentation>v2.0.1 - 20170824 - Added new element InvoiceHeaderPreFinNumber to InvoiceDetails</xs:documentation>
+	</xs:annotation>
+</xs:schema>

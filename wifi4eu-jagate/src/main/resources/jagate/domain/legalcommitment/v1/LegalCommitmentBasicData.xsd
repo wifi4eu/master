@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 		xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+						targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/legalCommitmentBasicData/v1" 
+						xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/legalCommitmentBasicData/v1"
+						elementFormDefault="qualified" 
+						attributeFormDefault="unqualified" 
+						version="1.0.0">
+
+	<xs:element name="LegalCommitmentHeaderFirstPrefinFlag">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This data is related with the Legal commitment which is created (and linked) by JAgate before the budgetary
+				commitment..
+			</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="Y|N" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+</xs:schema>

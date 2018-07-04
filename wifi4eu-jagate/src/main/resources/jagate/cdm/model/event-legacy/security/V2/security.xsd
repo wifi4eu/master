@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 (http://www.altova.com) by European Commision - DIGIT (European Commision - DIGIT) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:tns="http://ec.europa.eu/rdg/efp/model/security/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" targetNamespace="http://ec.europa.eu/rdg/efp/model/security/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.2.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../../base/V1/Base.xsd"/>
+	<xs:simpleType name="ActorIDDefType">
+		<xs:annotation>
+			<xs:documentation>
+				This simple type purpose is to qualify the type of Actor
+				(beneficiary's or requester's) ID used: it can be a
+				SYSTEM name, an EMAIL or an ECAS_ID
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SYSTEM"/>
+			<xs:enumeration value="EMAIL"/>
+			<xs:enumeration value="ECAS-ID"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProvisioningActionType">
+		<xs:annotation>
+			<xs:documentation>
+				This simple type enumerates the Action that can be
+				performed, within an IAM relation, by a requester
+				-GRANT, REVOKE or grant PENDING a given RoleScope- to a
+				given beneficiary on one or more given resource(s)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="GRANT"/>
+			<xs:enumeration value="REVOKE"/>
+			<xs:enumeration value="PENDING"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ResourceIDType">
+		<xs:annotation>
+			<xs:documentation>
+				In the scope of IAM, a resource can currently be one of
+				the following kind: project, legal_entity, organisation,
+				theme. Other kinds might be added later.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:annotation>
+				<xs:documentation>
+					The resource ID of a project is the only one that is
+					made of a complex type. All other resources are
+					using a simple string as ID. We must therefore
+					choose between a "project ID" or a string (ID) and a
+					resource type definition.
+				</xs:documentation>
+			</xs:annotation>
+			<xs:sequence>
+				<xs:element name="id" type="xs:string"/>
+				<xs:element name="resourceType" type="tns:ResourceTypeType">
+					<xs:annotation>
+						<xs:documentation>				resourceType can be LEGAL_ENTITY, THEME, ORGANISATION, EXPERT, REVIEWER.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:element name="projectID" type="projectref:ProjectIdType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:simpleType name="ResourceTypeType">
+		<xs:annotation>
+			<xs:documentation>
+							resourceType can be LEGAL_ENTITY, THEME,
+							ORGANISATION, EXPERT, REVIEWER.
+						</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="xs:string">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="LEGAL_ENTITY"/>
+					<xs:enumeration value="THEME"/>
+					<xs:enumeration value="ORGANISATION"/>
+					<xs:enumeration value="EXPERT"/>
+					<xs:enumeration value="REVIEWER"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="RoleType">
+		<xs:annotation>
+			<xs:documentation><!--  IAM roles:
+//participant portal roles
+LEAR                                                                            : Lear
+ACCOUNT_ADMINISTRATOR	                                        : Organisation adminstrator
+COORDINATOR	                                                        : Project coordinator
+PARTICIPANT_CONTACT	                                            : Project participant
+REGISTER_USER	                                                        : Register user
+ADMINISTRATIVE_LEGAL_AND_FINANCIAL_OFFICER	: Administrative legal and financial officer
+SCIENTIFIC_AND_TECHNICAL_OFFICER	                    : Scientific and technical officer
+AUTHORISED_SIGNATORY	                                        : Authorised signatory
+ADMINISTRATIVE_LEGAL_OFFICER                             : Administrative and legal representative
+FINANCIAL_OFFICER                                                    : Financial representative
+ADMIN	IAM Admin
+//ecorda roles
+PC_SECRETARY	  Pc secretary
+THEME_MEMBER	Theme member
+-->
+            </xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="xs:string">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="LEAR"/>
+					<xs:enumeration value="ACCOUNT_ADMINISTRATOR"/>
+					<xs:enumeration value="COORDINATOR"/>
+					<xs:enumeration value="PARTICIPANT_CONTACT"/>
+					<xs:enumeration value="REGISTER_USER"/>
+					<xs:enumeration value="ADMINISTRATIVE_LEGAL_AND_FINANCIAL_OFFICER"/>
+					<xs:enumeration value="SCIENTIFIC_AND_TECHNICAL_OFFICER"/>
+					<xs:enumeration value="AUTHORISED_SIGNATORY"/>
+					<xs:enumeration value="ADMINISTRATIVE_LEGAL_OFFICER"/>
+					<xs:enumeration value="FINANCIAL_OFFICER"/>
+					<xs:enumeration value="ADMIN"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:complexType name="ActorIDType">
+		<xs:annotation>
+			<xs:documentation>
+				An actor ID is made of a string and a description of
+				the kind of ID within the string itself.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="actorID" type="base:ECUserIdType"/>
+			<xs:element name="actorIDType" type="tns:ActorIDDefType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="roleScopeType">
+		<xs:annotation>
+			<xs:documentation>
+				A role and one or more token 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="role" type="xs:string"/>
+			<xs:element name="token" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelationType">
+		<xs:annotation>
+			<xs:documentation>Association between a resource and (a) role(s)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Resource" type="tns:ResourceIDType" nillable="false" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+                                                                This tag identifies the resource upon which the roles list applies.
+                                                                If no resource is specified, it means that the roles apply to all existing resources.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Role" type="tns:RoleType" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProvisioningRelationType">
+		<xs:annotation>
+			<xs:documentation>
+				An relation is a role and one or more token(s)
+				having a certain status (GRANT/REVOKE/PENDING, set by an
+				action, in fact) on one or more resource(s) by an actor
+				(called beneficiary in this case).
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="resourceID" type="tns:ResourceIDType" maxOccurs="unbounded"/>
+			<xs:element name="roleScope" type="tns:roleScopeType"/>
+			<xs:element name="action" type="tns:ProvisioningActionType">
+				<xs:annotation>
+					<xs:documentation>
+						Action could be called "status" in fact. In the
+						context of an event, we are registering a status
+						change (which is an action).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="beneficiary" type="tns:ActorIDType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>2.0.0: 16/07/2010: semantically identical to 1.0.0 but now based on CDM 2.1.3 (this is required for other schemas who import the present file and who are based on CDm 2.1.3)</xs:documentation>
+		<xs:documentation>2.1.0: 16/07/2010: here again: identical to previsous one: we simply now depend on CDM 2.2.0 (no change between 2.1.3 and 2.2.0 impact this file)</xs:documentation>
+		<xs:documentation>2.1.1: renamed the file from "security_v2.1.0.xsd" to "security.xsd" + Migrated dependency on CDM from CDM 2.2.0 to CDM 2.2.1 (fully backward compatible: security related changes between those versions)</xs:documentation>
+		<xs:documentation>2.2.0: Migrated dependency on CDM from CDM 2.2.1 to CDM 3.0.0 (fully backward compatible: neither base.xsd nor ProjectRef.xsd were changed between those versions)</xs:documentation>
+	</xs:annotation>
+</xs:schema>

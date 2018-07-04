@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" version="1.0.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1" targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1" jaxb:version="2.1">
+	<xs:annotation>
+		<xs:documentation>
+			Defines Reference data types.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:simpleType name="EMessageType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INFO" />
+			<xs:enumeration value="WARNING" />
+			<xs:enumeration value="ERROR" />
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="EContractStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Cancelled" />
+			<xs:enumeration value="Ended" />
+			<xs:enumeration value="Draft" />
+			<xs:enumeration value="Terminated" />
+			<xs:enumeration value="Signed by Contractor(s)" />
+			<xs:enumeration value="In Force" />
+			<xs:enumeration value="Submitted" />
+			<xs:enumeration value="Si2 Committed" />
+			<xs:enumeration value="Amended" />
+			<xs:enumeration value="Sent to Contractor" />
+			<xs:enumeration value="Suspended" />
+			<xs:enumeration value="Linked To Commitment" />
+			<xs:enumeration value="Approved" />
+			<xs:enumeration value="Not Applicable" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="EContractTechnicalStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Successfully Verified" />
+			<xs:enumeration value="Not Applicable" />
+			<xs:enumeration value="New" />
+			<xs:enumeration value="Pending" />
+			<xs:enumeration value="Busy" />
+			<xs:enumeration value="Completely processed" />
+			<xs:enumeration value="Error" />
+			<xs:enumeration value="Confirmed" />
+			<xs:enumeration value="Partially processed" />
+			<xs:enumeration value="Submitted" />
+			<xs:enumeration value="Ready" />
+			<xs:enumeration value="Draft" />
+			<xs:enumeration value="Warning" />
+			<xs:enumeration value="To be confirmed" />
+			<xs:enumeration value="To be validated" />
+			<xs:enumeration value="UnSuccessfully Verified" />
+			<xs:enumeration value="Blocked" />
+			<xs:enumeration value="Not Validated" />
+			<xs:enumeration value="Not Confirmed" />
+			<xs:enumeration value="Pre-Draft" />
+		</xs:restriction>
+	</xs:simpleType>
+
+    <xs:simpleType name="FractionDigits">
+        <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="6" />
+        </xs:restriction>
+    </xs:simpleType>
+
+	<xs:simpleType name="EWorkflowStepNameType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="agate_ack" />
+			<xs:enumeration value="agate_invoice_ack" />
+			<xs:enumeration value="waiting_for_abac" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="EMessagingType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Queue" />
+			<xs:enumeration value="Topic" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="EClientTransactionType">
+		<xs:annotation>
+			<xs:documentation>This is client related transaction name like Payment, Invoice, Commitment amd so on..We don't specify whether it
+				is Payment Request or
+				Order, we stay high level.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Contract" />
+			<xs:enumeration value="Commitment" />
+			<xs:enumeration value="Invoice" />
+			<xs:enumeration value="Payment" />
+			<xs:enumeration value="Prefinancing document" />
+			<xs:enumeration value="Audit" />
+			<xs:enumeration value="Recovery order" />
+			<xs:enumeration value="Visa" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="EAgentType">
+		<xs:annotation>
+			<xs:documentation>The agent type giving his approval/refusal. This is
+				based on ABAC security roles. This enumeration lists the possible
+				values
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="IA">
+				<xs:annotation>
+					<xs:documentation>Initiating agent</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DEA">
+				<xs:annotation>
+					<xs:documentation>Data Entry Agent</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OIA">
+				<xs:annotation>
+					<xs:documentation>Operational Initiating Agent</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FIA">
+				<xs:annotation>
+					<xs:documentation>Financial Initiating Agent</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OVA">
+				<xs:annotation>
+					<xs:documentation>Operational Verifying Agent</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FVA">
+				<xs:annotation>
+					<xs:documentation>Financial Verifying Agent</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="EActionCodeType">
+		<xs:annotation>
+			<xs:documentation>The agent type giving his approval/refusal. This is
+				based on ABAC security roles. This enumeration lists the possible
+				values
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FIA">
+				<xs:annotation>
+					<xs:documentation>Financial Initiating Agent</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TA">
+				<xs:annotation>
+					<xs:documentation>TECHNICAL ACCEPTANCE - TA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SC">
+				<xs:annotation>
+					<xs:documentation>REFUS POUR CORRECTION - SC</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TR">
+				<xs:annotation>
+					<xs:documentation>TECHNICAL REJECTION - TR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RE">
+				<xs:annotation>
+					<xs:documentation>REFUS FORMEL - RE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RC">
+				<xs:annotation>
+					<xs:documentation>RECOURS A LA COMMISS. POUR DECISION - RC</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RR">
+				<xs:annotation>
+					<xs:documentation>REFUS DEFINITIF (CONFIRMATION) - RR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RP">
+				<xs:annotation>
+					<xs:documentation>DECISION DE PASSER OUTRE - RP</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AC">
+				<xs:annotation>
+					<xs:documentation>ACCORD - AC</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SP">
+				<xs:annotation>
+					<xs:documentation>SUSPEND - SP</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SR">
+				<xs:annotation>
+					<xs:documentation>REFUS DEFINITIF - SR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CC">
+				<xs:annotation>
+					<xs:documentation>ANNULATION - CC</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PA">
+				<xs:annotation>
+					<xs:documentation>PARAPH ACCEPT - PA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PR">
+				<xs:annotation>
+					<xs:documentation>PARAPH REFUSAL - PR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AF">
+				<xs:annotation>
+					<xs:documentation>VISA CF - AF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AS">
+				<xs:annotation>
+					<xs:documentation>ACCORD CELLULE FIN. - AS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AA">
+				<xs:annotation>
+					<xs:documentation>ACCORD XIX A - AA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AX">
+				<xs:annotation>
+					<xs:documentation>ACCORD COMPTABLE - AX</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PO">
+				<xs:annotation>
+					<xs:documentation>PAS D'OBJECTION - PO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HD">
+				<xs:annotation>
+					<xs:documentation>HELPDESK CORRECTION - HD</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TP">
+				<xs:annotation>
+					<xs:documentation>TECHNICAL ACCEPTANCE (PAYMENT) - TP</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AT">
+				<xs:annotation>
+					<xs:documentation>Accepted without verification L2 ex ante</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CN">
+				<xs:annotation>
+					<xs:documentation>COMPENSATION AGAINST R.O. - CN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OK">
+				<xs:annotation>
+					<xs:documentation>FINAL APPROVAL</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PP">
+				<xs:annotation>
+					<xs:documentation>PASSED FOR PAYMENT</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SU">
+				<xs:annotation>
+					<xs:documentation>SUIVI (FOLLOW-UP) BY TPVT/LEVT</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CA">
+				<xs:annotation>
+					<xs:documentation>ACCEPT - CARRY-FORWARD</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CS">
+				<xs:annotation>
+					<xs:documentation>REFUSAL FOR CORRECTION - CARRY-FORWARD</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="EObjectStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Valid" />
+			<xs:enumeration value="Invalid" />
+			<xs:enumeration value="Blocked" />
+			<xs:enumeration value="Rejected" />
+			<xs:enumeration value="Follow-up" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ERequestType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CREATE_AUDIT" />
+			<xs:enumeration value="UPDATE_AUDIT" />
+			<xs:enumeration value="DELETE_AUDIT" />
+			<xs:enumeration value="CREATE_CONTRACT" />
+			<xs:enumeration value="SYGMA_CONTRACT" />
+			<xs:enumeration value="CREATE_PREFINANCING_DOC" />
+			<xs:enumeration value="CREATE_PAYMENT_REQUEST" />
+			<xs:enumeration value="CREATE_AL_PAYMENT_REQUEST" />
+			<xs:enumeration value="CREATE_LE" />
+			<xs:enumeration value="CREATE_BA" />
+			<xs:enumeration value="CREATE_LEBA_LINK" />
+			<xs:enumeration value="CREATE_RO" />
+			<xs:enumeration value="CREATE_VISA" />
+			<xs:enumeration value="CREATE_INVOICE_COST_CLAIM" />
+			<xs:enumeration value="CREATE_COMMITMENT" />
+			<xs:enumeration value="CREATE_COMMITMENT_LEVEL1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ERequestClient">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PHOENIX" />
+			<xs:enumeration value="SYGMA_CONTRACT" />
+			<xs:enumeration value="ARPS" />
+			<xs:enumeration value="IFLOW" />
+			<xs:enumeration value="FP7_PREFINANCEMENT_DOC" />
+			<xs:enumeration value="FP7_FIN_PAY_COMM" />
+			<xs:enumeration value="FP7_TERM_PAY_COORD" />
+			<xs:enumeration value="CIP_PREFINANCEMENT_DOC" />
+			<xs:enumeration value="FP7_PREFINANCEMENT_PAYMENT" />
+			<xs:enumeration value="CIP_PREFINANCEMENT_PAYMENT" />
+			<xs:enumeration value="CREATE_AL_PAYMENT_REQUEST" />
+			<xs:enumeration value="VISA" />
+			<xs:enumeration value="STATUS_CHECK" />
+			<xs:enumeration value="CREATE_LE_REQUEST" />
+			<xs:enumeration value="CREATE_BA_REQUEST" />
+			<xs:enumeration value="CREATE_LEBA_LINK_REQUEST" />
+			<xs:enumeration value="FP7_INVOICE_COST_CLAIM_REQUEST" />
+			<xs:enumeration value="IFLOW_CREATE_COMMITMENT" />
+			<xs:enumeration value="PHOENIX_CREATE_COMMITMENT" />
+			<xs:enumeration value="SYGMA_CREATE_COMMITMENT" />
+			<xs:enumeration value="SYGMA_UPDATE_COMMITMENT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EWorkflowStepName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="agate_ack" />
+			<xs:enumeration value="agate_invoice_ack" />
+			<xs:enumeration value="waiting_for_abac" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EWorkflowStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PEND3" />
+			<xs:enumeration value="PEND10" />
+			<xs:enumeration value="PEND30" />
+			<xs:enumeration value="FIN0" />
+			<xs:enumeration value="FIN2" />
+			<xs:enumeration value="CLO100" />
+			<xs:enumeration value="FIN100" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EContractorRole">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="COC">
+				<xs:annotation>
+					<xs:documentation>Co-Contractor</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="COO">
+				<xs:annotation>
+					<xs:documentation>Single Contractor / Coordinator</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CTT">
+				<xs:annotation>
+					<xs:documentation>Associate Contractor</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SUB">
+				<xs:annotation>
+					<xs:documentation>Subcontractor</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ERepartitionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PR">
+				<xs:annotation>
+					<xs:documentation>Percent</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MT">
+				<xs:annotation>
+					<xs:documentation>Amount</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

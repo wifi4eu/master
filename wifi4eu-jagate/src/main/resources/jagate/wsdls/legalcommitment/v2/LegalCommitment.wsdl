@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" name="LegalCommitmentWSV2"
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns:legalCommitmentData="http://ec.europa.eu/rdg/jagate/ws/legalcommitment/v2/interfaces"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/legalcommitment/v2"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/legalcommitment/v2">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/legalcommitment/v2/interfaces" schemaLocation="LegalCommitment_ITF.xsd" />
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="CreateGrantLegalCommitmentRequest">
+		<wsdl:part element="legalCommitmentData:CreateGrantLegalCommitmentRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="CreateGrantLegalCommitmentResponse">
+		<wsdl:part element="legalCommitmentData:CreateGrantLegalCommitmentResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="CorrectGrantLegalCommitmentRequest">
+		<wsdl:part element="legalCommitmentData:CorrectGrantLegalCommitmentRequest" name="request" />
+	</wsdl:message>
+	
+	<wsdl:message name="CorrectGrantLegalCommitmentResponse">
+		<wsdl:part element="legalCommitmentData:CorrectGrantLegalCommitmentResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="AmendGrantLegalCommitmentRequest">
+		<wsdl:part element="legalCommitmentData:AmendGrantLegalCommitmentRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="AmendGrantLegalCommitmentResponse">
+		<wsdl:part element="legalCommitmentData:AmendGrantLegalCommitmentResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="GrantLegalCommitmentException">
+		<wsdl:part element="jagate:Exception" name="exception" />
+	</wsdl:message>
+
+	<wsdl:portType name="ILegalCommitmentService">
+		<wsdl:documentation>Manages Legal Commitment in ABAC</wsdl:documentation>
+		<wsdl:operation name="create">
+			<wsdl:input message="CreateGrantLegalCommitmentRequest" />
+			<wsdl:output message="CreateGrantLegalCommitmentResponse" />
+			<wsdl:fault name="GrantLegalCommitmentException" message="GrantLegalCommitmentException" />
+		</wsdl:operation>
+		<wsdl:operation name="correct">
+			<wsdl:input message="CorrectGrantLegalCommitmentRequest" />
+			<wsdl:output message="CorrectGrantLegalCommitmentResponse" />
+			<wsdl:fault name="GrantLegalCommitmentException" message="GrantLegalCommitmentException" />
+		</wsdl:operation>
+		<wsdl:operation name="amend">
+			<wsdl:input message="AmendGrantLegalCommitmentRequest" />
+			<wsdl:output message="AmendGrantLegalCommitmentResponse" />
+			<wsdl:fault name="GrantLegalCommitmentException" message="GrantLegalCommitmentException" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="ILegalCommitmentServiceBindingV2" type="ILegalCommitmentService">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="create">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="GrantLegalCommitmentException">
+				<soap:fault name="GrantLegalCommitmentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="correct">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="GrantLegalCommitmentException">
+				<soap:fault name="GrantLegalCommitmentException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="amend">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="GrantLegalCommitmentException">
+				<soap:fault name="GrantLegalCommitmentException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="LegalCommitmentServiceV2">
+		<wsdl:port binding="ILegalCommitmentServiceBindingV2" name="ILegalCommitmentServiceV2">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/legalcommitment/v2" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

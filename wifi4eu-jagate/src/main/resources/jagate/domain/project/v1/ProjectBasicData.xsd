@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+							xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/project/v1" 
+							targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v1" 
+							elementFormDefault="qualified" 
+							attributeFormDefault="unqualified">
+							
+	<xs:complexType name="ProjectDataType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Old Type used for CommitmentV1 implementation.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Number" type="xs:string" />
+			<xs:element name="Acronym" type="xs:string" />
+			<xs:element name="FrameworkType" type="xs:string" />
+			<xs:element name="Officer" type="xs:string" />
+			<xs:element name="CallReference" type="xs:string" />
+			<xs:element name="DGCode" type="xs:int" />
+			<xs:element name="Title" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ProjectDataTitleType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This data is related with the project and is used to determine the Responsible Organisation based on the field Project Officer.
+				The ABAC user reference field it also based on these values, for example:
+					* Budgetary Commitment (Level 2 Commitment): PROJECT_NUMBER + '-' + PROJECT_ACRONYM + '-' + CALL_REFERENCE 
+					* Legal Commitment: PROJECT_NUMBER + '-' + PROJECT_ACRONYM + '-' + CALL_REFERENCE + '-' + TITLE
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				The project number.
+			</xs:documentation>
+		</xs:annotation>
+			<xs:element name="Number" type="xs:string" />
+			<xs:element name="Acronym" type="xs:string" />
+			<xs:element name="FrameworkType" type="xs:string" />
+			<xs:element name="Officer" type="xs:string" />
+			<xs:element name="CallReference" type="xs:string" />
+			<xs:element name="Title" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ProjectDataPrefinType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This data is related with the project and is used to determine the Responsible Organisation based on the field Project Officer.
+				The ABAC user reference field it also based on these values, for example:
+					* Prefinancing Invoice: PROJECT_NUMBER + '-' + PROJECT_ACRONYM + '-' + CALL_REFERENCE + '-' + PREFIN
+					* Prefinancing Payment Request: PROJECT_NUMBER + '-' + PROJECT_ACRONYM + '-' + CALL_REFERENCE + '-' + PREFIN
+					* Prefinancing Payment Order: PROJECT_NUMBER + '-' + PROJECT_ACRONYM + '-' + CALL_REFERENCE + '-' + PREFIN
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Number" type="xs:string" />
+			<xs:element name="Acronym" type="xs:string" />
+			<xs:element name="FrameworkType" type="xs:string" />
+			<xs:element name="Officer" type="xs:string" />
+			<xs:element name="CallReference" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ProjectDataCL1Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This data is related with the project and is used to determine the DG Client (business class) and to generate the user reference field.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Call" type="xs:string" />
+			<xs:element name="SubCall" type="xs:string" />
+			<xs:element name="Topic" type="xs:string"  minOccurs="0" />			
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

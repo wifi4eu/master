@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by XMLSpy 2008 Enterprise Ed., Installed for 5 users (European Commission DG Regio) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by EC (European Commission) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:code="http://ec.europa.eu/research/fp/model/code/V3" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns="http://ec.europa.eu/research/fp/model/call-wppart/V1" targetNamespace="http://ec.europa.eu/research/fp/model/call-wppart/V1" elementFormDefault="qualified" version="1.0.4">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture all data related to a 'Call for information' prepared and published by a research DG.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code/V3" schemaLocation="../../code/V3/Code.xsd"/>
+	<xs:element name="WpPart" type="WpPartType"/>
+	<xs:complexType name="WpPartType">
+		<xs:complexContent>
+			<xs:extension base="code:CodeType">
+				<xs:sequence>
+					<xs:element name="PublicationDate" type="xs:date" minOccurs="0"/>
+					<xs:element name="ResponsibleUnit" type="coderef:CodeRefType" minOccurs="0"/>
+					<xs:element name="Coordinator" type="xs:string" minOccurs="0"/>
+					<xs:element name="PartNumber" type="xs:string" minOccurs="0"/>
+					<xs:element name="WpPartYear" type="coderef:CodeRefType" minOccurs="0"/>
+					<xs:element name="AnnexeNumber" type="xs:int" minOccurs="0"/>
+					<xs:element name="Texts" type="TextListType" minOccurs="0"/>
+					<xs:element name="Elements" type="ElementListType" minOccurs="0"/>
+					<xs:element name="AmendmentPublicationDate" type="xs:date" minOccurs="0"/>
+					<xs:element name="CoordinatorBackup" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TextListType">
+		<xs:sequence>
+			<xs:element name="Text" type="TextType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TextType">
+		<xs:sequence>
+			<xs:element name="Kind" type="xs:string"/>
+			<xs:element name="Text" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElementListType">
+		<xs:sequence>
+			<xs:element name="Element" type="ElementType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElementType">
+		<xs:sequence>
+			<xs:element name="Rank" type="xs:int"/>
+			<xs:element name="Title" type="xs:string"/>
+			<xs:element name="Elements" type="ElementListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TextElementType">
+		<xs:complexContent>
+			<xs:extension base="ElementType">
+				<xs:sequence>
+					<xs:element name="Text" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ActionElementType">
+		<xs:complexContent>
+			<xs:extension base="ElementType">
+				<xs:sequence>
+					<xs:element name="ActionId" type="coderef:CodeIdType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MasterCallElementType">
+		<xs:complexContent>
+			<xs:extension base="ElementType">
+				<xs:sequence>
+					<xs:element name="MasterCallId" type="coderef:CodeIdType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TopicElementType">
+		<xs:complexContent>
+			<xs:extension base="ElementType">
+				<xs:sequence>
+					<xs:element name="TopicId" type="coderef:CodeIdType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.0.4 - 20161024 - add Coordinator backup</xs:documentation>
+		<xs:documentation>v1.0.3 - 20160325 - add publication amendment date</xs:documentation>
+		<xs:documentation>v1.0.2 - 20160104 - "Other Actions" becomes "Actions" and are no longer part of work programme</xs:documentation>
+		<xs:documentation>v1.0.1 - 20150925 - Made legalEntity a collection of GrantBeneficiaryLEListType in GrantBeneficiaryType, add PrizeToA and EligibilityCriteria in PrizeType</xs:documentation>
+		<xs:documentation>v1.0.0 - 20140808 - Initial version</xs:documentation>
+	</xs:annotation>
+</xs:schema>

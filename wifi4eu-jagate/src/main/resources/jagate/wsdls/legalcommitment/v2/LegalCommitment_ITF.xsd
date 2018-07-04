@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+			xmlns="http://ec.europa.eu/rdg/jagate/ws/legalcommitment/v2/interfaces"
+			targetNamespace="http://ec.europa.eu/rdg/jagate/ws/legalcommitment/v2/interfaces"
+			xmlns:legalCommitmentDataV2="http://ec.europa.eu/rdg/jagate/ws/domain/legalCommitmentBasicData/v2"
+			xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v3"
+			xmlns:contractor="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v3"
+			xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1"
+			xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v3"
+			xmlns:jagateBase="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+			xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" 
+			elementFormDefault="qualified"
+			attributeFormDefault="unqualified"
+			version="1.0.0">
+
+		<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/legalCommitmentBasicData/v2" schemaLocation="../../../domain/legalcommitment/v2/LegalCommitmentBasicData.xsd"/>
+		<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v3" schemaLocation="../../../domain/project/v3/ProjectBasicData.xsd"/>
+		<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v3" schemaLocation="../../../domain/contractor/v3/Contractor.xsd"/>
+		<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" schemaLocation="../../../domain/documents/v1/AresReference.xsd"/>
+		<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v3" schemaLocation="../../../domain/visa/v3/Visa.xsd"/>
+		<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+		<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+		
+		<xs:element name="CreateGrantLegalCommitmentRequest" type="CreateGrantLegalCommitmentRequestType" />
+		<xs:element name="CreateGrantLegalCommitmentResponse" type="CreateGrantLegalCommitmentResponseType" />
+		<xs:element name="CorrectGrantLegalCommitmentRequest" type="CorrectGrantLegalCommitmentRequestType" />
+		<xs:element name="CorrectGrantLegalCommitmentResponse" type="CorrectGrantLegalCommitmentResponseType" />
+
+		<xs:element name="AmendGrantLegalCommitmentRequest" type="AmendGrantLegalCommitmentRequestType" />
+		<xs:element name="AmendGrantLegalCommitmentResponse" type="AmendGrantLegalCommitmentResponseType" />
+	
+		<xs:complexType name="CreateGrantLegalCommitmentRequestType">
+			<xs:sequence>
+				<xs:element name="content" type="CreateGrantLegalCommitmentType" />
+			</xs:sequence>
+		</xs:complexType>
+		
+		<xs:complexType name="CreateGrantLegalCommitmentResponseType">
+			<xs:sequence>
+				<xs:element name="content" type="jagateBase:IdentifiedResponseMessageType" />
+			</xs:sequence>
+		</xs:complexType>
+		
+		<xs:complexType name="CorrectGrantLegalCommitmentRequestType">
+			<xs:sequence>
+				<xs:element name="content" type="CorrectGrantLegalCommitmentType" />
+			</xs:sequence>
+		</xs:complexType>
+		
+		<xs:complexType name="CorrectGrantLegalCommitmentResponseType">
+			<xs:sequence>
+				<xs:element name="content" type="jagateBase:IdentifiedResponseMessageType" />
+			</xs:sequence>
+		</xs:complexType>
+
+		<xs:complexType name="AmendGrantLegalCommitmentRequestType">
+			<xs:sequence>
+				<xs:element name="content" type="AmendGrantLegalCommitmentType" />
+			</xs:sequence>
+		</xs:complexType>
+
+		<xs:complexType name="AmendGrantLegalCommitmentResponseType">
+			<xs:sequence>
+				<xs:element name="content" type="jagateBase:IdentifiedResponseMessageType" />
+			</xs:sequence>
+		</xs:complexType>
+		
+		<xs:complexType name="CorrectGrantLegalCommitmentType">
+			<xs:sequence>
+				<xs:element name="ProjectData" type="project:ProjectDataTitleType" />
+				<xs:element name="LocObjForeignId" type="xs:string" />
+				<xs:element name="CorrectLegalCommitmentData" type="legalCommitmentDataV2:CorrectLegalCommitmentDataType" />
+				<xs:element name="ResponsibleOrganisation" type="coderef:CodeRefType" />
+				<xs:element name="VisaData" type="visa:SingleTransactionVisaEmbeddedType" />
+			</xs:sequence>
+		</xs:complexType>
+	
+		<xs:complexType name="CreateGrantLegalCommitmentType">
+			<xs:sequence>
+				<xs:element name="ProjectData" type="project:ProjectDataTitleType" />
+				<xs:element name="LegalCommitmentData" type="legalCommitmentDataV2:LegalCommitmentDataType" />
+				<xs:element name="ContractorsData" type="contractor:LcContractorsDataType" />
+				<xs:element name="LinkedBudgetaryCommitments" type="legalCommitmentDataV2:LinkedBudgetaryCommitmentsType" />
+				<xs:element name="SupportingDocumentsData" type="documents:AresReferenceDataType" minOccurs="0" />
+				<xs:element name="VisaData" type="visa:SingleTransactionVisaEmbeddedType" />
+			</xs:sequence>
+		</xs:complexType>
+
+		<xs:complexType name="AmendGrantLegalCommitmentType">
+			<xs:sequence>
+				<xs:element name="ProjectData" type="project:ProjectDataTitleType" />
+				<xs:element name="LocObjForeignId" type="xs:string" />
+				<xs:element name="AmendLegalCommitmentData" type="legalCommitmentDataV2:AmendLegalCommitmentDataType" />
+				<xs:element name="ContractorsData" type="contractor:AmendLcContractorsDataType" />
+				<xs:element name="VisaData" type="visa:SingleTransactionVisaEmbeddedType" />
+			</xs:sequence>
+		</xs:complexType>
+</xs:schema>

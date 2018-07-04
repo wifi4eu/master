@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+
+<xs:schema 
+	targetNamespace="http://ec.europa.eu/research/fp/model/officer/V3" 
+	xmlns="http://ec.europa.eu/research/fp/model/officer/V3" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" 
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" 
+	xmlns:user="http://ec.europa.eu/research/fp/model/user/V1" 
+	xmlns:officerref="http://ec.europa.eu/research/fp/model/officer-ref/V2"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified" version="3.0.0">
+
+	<xs:annotation>
+		<xs:documentation>
+		This schema intends to capture all EC officer related data.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user/V1" schemaLocation="../../user/V1/User.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer-ref/V2" schemaLocation="../../officer-ref/V2/OfficerRef.xsd"/>
+	<xs:element name="Officer" type="OfficerType"/>
+	<xs:complexType name="OfficerType">
+		<xs:complexContent>
+			<xs:extension base="user:UserType">
+				<xs:sequence>
+					<xs:element name="DepartmentCode" type="coderef:CodeRefType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="OfficerCoreInfoType">
+		<xs:complexContent>
+			<xs:extension base="user:UserCoreInfoType">
+				<xs:sequence>
+					<xs:element name="DepartmentCode" type="coderef:CodeRefType" minOccurs="0"/>
+					<xs:element name="Role" type="officerref:OfficerRoleType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="OfficerListType">
+		<xs:sequence>
+			<xs:element name="Officer" type="OfficerType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

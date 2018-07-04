@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/project-agrip/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:ns1="http://ec.europa.eu/research/fp/model/project-agrip/V1" xmlns="http://ec.europa.eu/research/fp/model/project-agrip/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:annotation>
+		<xs:documentation>
+			This schema intends to capture all funding scheme specific project data; in this case for projects complying to AGRIP program
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+
+	<xs:element name="AGRIPProjectInfo" type="AGRIPProjectInfoType"/>
+
+	<xs:complexType name="AGRIPProjectInfoType">
+		<xs:annotation>
+			<xs:documentation>Project level data elements specific to AGRIP projects.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TargetMarket" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>AGRIP: This is the target market of the project. Code of classId "TargetMarket"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:annotation>
+		<xs:documentation>20160726 - v1.0.0 - AGRIPProjectInfoType extending the projectType -> fundingSchemeSpecificInfo</xs:documentation>
+	</xs:annotation>
+</xs:schema>

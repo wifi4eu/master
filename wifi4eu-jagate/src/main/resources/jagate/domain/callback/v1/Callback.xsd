@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/callback/v1" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/callback/v1" 
+		   xmlns:transaction="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1"
+		   xmlns:referenceData="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1"
+		   elementFormDefault="qualified" 
+		   attributeFormDefault="unqualified">
+		   
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1" schemaLocation="../../transaction/v1/Transaction.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1" schemaLocation="../../reference/v1/ReferenceData.xsd"/>		   
+
+    <xs:element name="CallbackRequest" type="CallbackRequestType"/>
+    <xs:element name="CallbackResponse" type="CallbackResponseType"/>
+    <xs:element name="CallbackException" type="CallbackExceptionType"/>
+    
+	<xs:complexType name="CallbackRequestType">
+		<xs:sequence>
+			<xs:element name="localObjectForeigId" type="xs:string"/>
+			<!-- <xs:element name="requestId" type="xs:decimal"/> -->
+			<xs:element name="notificationType" type="CallbackNotificationType"/>
+			<xs:element name="transactionSubtype" type="transaction:TransactionSubtype"/>
+			<xs:element name="initialStatus" type="xs:string" minOccurs="0"/>
+			<xs:element name="currentStatus" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CallbackResponseType">
+		<xs:sequence>
+			<xs:element name="acknowledge" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CallbackExceptionType">
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" />
+			<xs:element name="description" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="CallbackNotificationType">
+		<xs:restriction base="xs:string">
+		    <xs:enumeration value="ACKNOWLEDGE"/>
+			<xs:enumeration value="WORKFLOW_INTERMEDIARY_STATUS"/>
+			<xs:enumeration value="WORKFLOW_FINAL_STATUS"/>
+		</xs:restriction>
+	</xs:simpleType> 
+
+	<!-- <xs:simpleType name="CallbackStatusType">
+		<xs:restriction base="xs:string">
+		    <xs:enumeration value="MOD0"/>
+			<xs:enumeration value="PEND3"/>
+			<xs:enumeration value="PEND5"/>
+			<xs:enumeration value="PEND10"/>
+			<xs:enumeration value="PEND20"/>
+			<xs:enumeration value="PEND30"/>
+			<xs:enumeration value="CLO100"/>
+			<xs:enumeration value="FIN100"/>
+		</xs:restriction>
+	</xs:simpleType> -->
+	
+	<!-- Embedded Callback -->
+	<xs:complexType name="CallbackType">
+		<xs:choice>
+			<xs:element name="JmsCallbackSpec" type="JmsCallbackSpecType" />
+			<xs:element name="EjbCallbackSpec" type="EjbCallbackSpecType" />
+			<xs:element name="WebserviceCallbackSpec" type="WebServiceCallbackSpecType" />
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="JmsCallbackSpecType">
+		<xs:sequence>
+			<xs:element name="Type" type="referenceData:EMessagingType" />
+			<xs:element name="JndiName" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WebServiceCallbackSpecType">
+		<xs:sequence>
+			<xs:element name="WsdlUrl" type="xs:anyURI" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EjbCallbackSpecType">
+		<xs:sequence>
+			<xs:element name="JndiName" type="xs:string" />
+			<xs:element name="BusinessInterfaceType" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+
+	
+
+</xs:schema>

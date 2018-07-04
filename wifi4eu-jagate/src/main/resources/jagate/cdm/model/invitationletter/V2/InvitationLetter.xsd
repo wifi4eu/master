@@ -1,0 +1,140 @@
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/invitationletter/V2" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" xmlns:address="http://ec.europa.eu/research/fp/model/address/V4" xmlns:documentref="http://ec.europa.eu/research/fp/model/document-ref/V3" xmlns:templateletter="http://ec.europa.eu/research/fp/model/template/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/invitationletter/V2" elementFormDefault="qualified" version="2.4.4">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="../../document-ref/V3/DocumentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V4" schemaLocation="../../address/V4/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/template/V1" schemaLocation="../../template/V1/TemplateLetter.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:element name="InvitationLetter" type="InvitationLetterType"/>
+	<xs:complexType name="InvitationLetterType">
+		<xs:sequence>
+			<xs:element name="ERLetter" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>values are the abbreviation of CCM codes with classId ERLetterType</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EarlyNegotiation" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="ESRAvailability" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="EthicsReportsAvailability" type="EthicsReportsOptionsType" minOccurs="0"/>
+			<xs:element name="SecurityReportsAvailability" type="SecurityReportsOptionsType" minOccurs="0"/>
+			<xs:element name="FirstMeetingAgenda" type="xs:string" minOccurs="0"/>
+			<xs:element name="FirstMeetingDuration" type="xs:integer" minOccurs="0"/>
+			<xs:element name="FirstMeetingLocation" type="address:AddressType" minOccurs="0"/>
+			<xs:element name="InvitationLetter" type="documentref:DocumentRefType" minOccurs="0"/>
+			<xs:element name="EndOfNegotiations" type="GeneralDateType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>H2020: end date of grant preparation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FirstVersionGpf" type="GeneralDateType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>H2020: deadline of first version of GA data</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FirstMeeting" type="GeneralDateType" minOccurs="0"/>
+			<xs:element name="FirstMeetingTime" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="LEValidation" type="GeneralDateType" minOccurs="0"/>
+			<xs:element name="SignedVersionGpfDow" type="GeneralDateType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>H2020: deadline for the signature of the GA</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TechnicalContentComments" type="xs:string" minOccurs="0"/>
+			<xs:element name="InvitationLetterStatus" type="LockStatusType" minOccurs="0"/>
+			<xs:element name="TemplateLetterData" type="templateletter:TemplateLetterDataType" minOccurs="0"/>
+			<xs:element name="IncludeAnnex" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="GAPTerminationRequestDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>the date when the GAP termination was requested by the consortium coordinator or mono-beneficiary</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FailedEthicsOrigin" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>use codes of CCM2 callsId FailedEthicsOrigin</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SimilarProposalOption" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>use codes of CCM2 classId SimilarProposalOption</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeadlineToRedress" type="GeneralDateType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The date until when a request to redress can be submitted</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EncourageReapplication" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Whether the applicant should be encouraged to submit in another call</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IncludedAnnexes" type="coderef:CodeRefListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>use codes of CCM2 of type AttachmentType in DocGen context</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GeneralDateType">
+		<xs:sequence>
+			<xs:element name="StartRelativeOption" type="StartRelativeOptionType"/>
+			<xs:element name="RelativeNumber" type="xs:integer" minOccurs="0"/>
+			<xs:element name="UnitForRelativeDate" type="UnitForRelativeDateType" minOccurs="0"/>
+			<xs:element name="DateRelativeTo" type="xs:date" minOccurs="0"/>
+			<xs:element name="AbsoluteDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="StartRelativeOptionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="RELATIVE"/>
+			<xs:enumeration value="ABSOLUTE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UnitForRelativeDateType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DAY"/>
+			<xs:enumeration value="WEEK"/>
+			<xs:enumeration value="MONTH"/>
+			<xs:enumeration value="YEAR"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LockStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DRAFT"/>
+			<xs:enumeration value="COMPLETED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EthicsReportsOptionsType">
+		<xs:annotation>
+			<xs:documentation>FP7: ESCR_TO_BE_SENT, ESCR_ENCLOSED, ERR_TO_BE_SENT, ERR_ENCLOSED
+			H2020: ERR_TO_BE_SENT, ERR_ENCLOSED</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ESCR_TO_BE_SENT"/>
+			<xs:enumeration value="ESCR_ENCLOSED"/>
+			<xs:enumeration value="ERR_TO_BE_SENT"/>
+			<xs:enumeration value="ERR_ENCLOSED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SecurityReportsOptionsType">
+		<xs:annotation>
+			<xs:documentation>Only for H2020: SECR_ENCLOSED, NONE</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SECR_ENCLOSED"/>
+			<xs:enumeration value="NONE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>v2.4.4 - 20160530 - Changes by SyGMa to support new ERL: added optional IncludedAnnexes</xs:documentation>
+		<xs:documentation>v2.4.3 - 20160308 - Changes by SyGMa to support new ERL: added DeadlineToRedress and EncourageReapplication optional fields</xs:documentation>
+		<xs:documentation>v2.4.2 - 20150528 - Changes by SyGMa: SimilarProposalOption is a codeRefType, FailedEthicsOrigin is a codeRefType, EvaluationResultLetterType removed the enum values, import coderef schema</xs:documentation>
+		<xs:documentation>v2.4.1 - 20150511 - Changes by SyGMa to support GAP termination: added the new optional field GAPTerminationRequestDate which is date field, added the field  SimilarProposalOption which is a string with possible values defined in SimilarProposalOptionValues, added the field FailedEthicsOrigin which is a string with possible values defined in FailedEthicsOriginValues</xs:documentation>
+		<xs:documentation>v2.4.0 - 20150429 - Changes by SyGMa to support H2020: added the ERLetterType which is a string instead of an enum, added ERL_REJECTION_TERMINATION_LETTER in ERLetterTypeValues, which contains possible values for the new field</xs:documentation>
+		<xs:documentation>v2.3.0 - 20140429 - Changes by SyGMa to support H2020: added the ERLetter and its enum type EvaluationResultLetterType</xs:documentation>
+		<xs:documentation>v2.2.0 - 20140224 - SyGMa - add ESRAvailability flag to support cases where ESR is not enclosed</xs:documentation>
+		<xs:documentation>v2.1.0 - 20140221 - SyGMa - add SecurityReportsAvailability, IncludeAnnex</xs:documentation>
+		<xs:documentation>v2.0.0 - 20131011 - SyGMa - Use ProjectRef v3 </xs:documentation>
+		<xs:documentation>v1.0.0 - 20131010 - SyGMa - creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" targetNamespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" elementFormDefault="qualified" version="3.1.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:simpleType name="LegalEntityIdType">
+		<xs:annotation>
+			<xs:documentation>Identity used by participant systems (PDM). TODO: add restriction pattern</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="LegalEntityFinancialIdType">
+		<xs:annotation>
+			<xs:documentation>Identity used by accounting systems (ABAC). TODO: add restriction pattern</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="SuspendedPICType">
+		<xs:sequence>
+			<xs:element name="SuspendedPIC" type="LegalEntityIdType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DeprecatedPICType">
+		<xs:sequence>
+			<xs:element name="DeprecatedPIC" type="LegalEntityIdType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HierarchyDataType">
+		<xs:sequence>
+			<xs:element name="UTROPIC" type="LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the master UTRO PIC of the legal entity. The PIC in question will always be SUPENDED.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UTROPICList" type="SuspendedPICType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This list contains the suspended PICs that has the current PIC  as a master.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeprecatedPICList" type="DeprecatedPICType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This list contains ONLY the deprecated PICs that were mentioned in the request object.
+For having the complete list of deprecated PICs of a certain pic, use the LegalEntityHierarchy operation in the same service (LegalEntityDetails).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ResponseDataQualityType">
+		<xs:annotation>
+			<xs:documentation>The possible values are:
+				DECLARED The application returns the not validated version
+				VALIDATED: The application returns the last validated version (regardless modification requests that are present)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="WorkFlowStatusType">
+		<xs:annotation>
+			<xs:documentation>The possible values are: WAITING_FOR_VALIDATION, FLAGGED_FOR_VALIDATION, VALIDATION_ONGOING, VALIDATED, VALIDATED_WITH_PENDING_REQUESTS</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="ValidityType">
+		<xs:annotation>
+			<xs:documentation>The possible values are: DECLARED, VALIDATED, SUSPENDED, SLEEPING</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="FactType">
+		<xs:annotation>
+			<xs:documentation>Fact Types existing in PDM. The possible values are:
+CERTIFICATION
+CIP_LEGAL_TYPE
+CONTACT
+CORE
+EAC_ORGANISATION
+FP7_EDUCATION
+EXTRA_COMMUNICATION
+EXTRA_NACE
+EXTRA_DESCRIPTION_OF_CORE_ACTIVITIES
+FINANCIAL_VIABILITY
+FP7_LEGAL_PERSONALITY
+FP7_LEGAL_TYPE
+FP7_IBBA_EXEMPTION
+FP7_ICM
+FP7_INTERNATIONAL_ORGANISATION
+NON_BANKRUPTCY_DECLARATION
+FP7_NON_PROFIT
+FP7_RESEARCH_ORGANISATION
+SME
+STATE_WARRANTY
+CIP_RATIOS
+FP7_RATIOS
+FP6_LEGACY_DATA
+H2020_STATE_WARRANTY
+CIVIL_SOCIETY
+LARGE_INFRASTRUCTURE
+ORG_WITH_OP_GRANTS
+EXTENDED_MANDATE  
+                                    </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>3.0.0 - 20130115 : Removed the NOT_DECLARED possible value for ResponseDataQualityType. It is represented by the absence of the corresponding fact.</xs:documentation>
+		<xs:documentation>3.0.0 - 20130115 : Made all enumerations follow the pattern of "Open Lists" to accomodate foreseen short term change in PDM with the smallest CDM governance impact</xs:documentation>
+		<xs:documentation>3.0.0 - 20130108 : Updated fact type enumeration -</xs:documentation>
+		<xs:documentation>2.0.0 - 20120531 : Complete rewrite for PDM V5</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>3.0.1 _ 20140205: Update the FactType annotation (possible fact types)</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>3.1.0 _ 20141204: Added optional value UTROPICList for HierarchyDataType type</xs:documentation>
+	</xs:annotation>
+</xs:schema>

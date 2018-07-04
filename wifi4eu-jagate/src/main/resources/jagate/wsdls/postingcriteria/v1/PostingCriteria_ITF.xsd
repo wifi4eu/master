@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://ec.europa.eu/rdg/jagate/ws/postingcriteria/v1/interfaces"
+           xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+           xmlns:pc="http://ec.europa.eu/rdg/jagate/ws/domain/postingcriteria/v1"
+           xmlns:health="http://ec.europa.eu/research/fp/model/service-health/V1"
+           targetNamespace="http://ec.europa.eu/rdg/jagate/ws/postingcriteria/v1/interfaces"
+           elementFormDefault="qualified"
+           version="1.0.1">
+
+    <!-- Importing referenced schema -->
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/postingcriteria/v1" schemaLocation="../../../domain/postingcriteria/v1/PostingCriteria.xsd" />
+    <xs:import namespace="http://ec.europa.eu/research/fp/model/service-health/V1" schemaLocation="../../../cdm/model/service-health/V1/ServiceHealth.xsd" />
+
+    <xs:element name="GetPostingCriteriaByBudgetLineRequest" type="GetPostingCriteriaByBudgetLineRequestType" />
+    <xs:element name="GetPostingCriteriaByBudgetLineResponse" type="GetPostingCriteriaByBudgetLineResponseType" />
+    <xs:element name="GetPostingCriteriaByCriteriaTypeCodeRequest" type="GetPostingCriteriaByCriteriaTypeCodeRequestType" />
+    <xs:element name="GetPostingCriteriaByCriteriaTypeCodeResponse" type="GetPostingCriteriaByCriteriaTypeCodeResponseType" />
+    <xs:element name="GetPostingCriteriaByCl2PositionRequest" type="GetPostingCriteriaByCl2PositionRequestType" />
+    <xs:element name="GetPostingCriteriaByCl2PositionResponse" type="GetPostingCriteriaByCl2PositionResponseType" />
+    <xs:element name="PostingCriteriaException" type="jagate:JAgateException" />
+
+    <xs:complexType name="GetPostingCriteriaByBudgetLineRequestType">
+        <xs:sequence>
+            <xs:element name="budgetLine" type="jagate:NonEmptyString" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GetPostingCriteriaByBudgetLineResponseType">
+        <xs:sequence>
+            <xs:element name="budgetLine" type="jagate:NonEmptyString" />
+            <xs:element name="postingCriteriaList" type="pc:PostingCriteriaListType"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="GetPostingCriteriaByCriteriaTypeCodeRequestType">
+    	<xs:sequence>
+    		<xs:element name="criteriaTypeCode" type="jagate:NonEmptyString" />
+            <xs:element name="localSystemCode" type="jagate:NonEmptyString" />
+    	</xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="GetPostingCriteriaByCriteriaTypeCodeResponseType">
+        <xs:sequence>
+            <xs:element name="criteriaTypeCode" type="jagate:NonEmptyString" />
+            <xs:element name="localSystemCode" type="jagate:NonEmptyString" />
+            <xs:element name="postingCriteriaList" type="pc:PostingCriteriaListType"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="GetPostingCriteriaByCl2PositionRequestType">
+    	<xs:sequence>
+	    	<xs:element name="cl2Position" type="jagate:NonEmptyString" />
+    	</xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="GetPostingCriteriaByCl2PositionResponseType">
+        <xs:sequence>
+            <xs:element name="cl2Position" type="jagate:NonEmptyString" />
+            <xs:element name="postingCriteriaList" type="pc:PostingCriteriaListType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="checkServiceHealth">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="checkServiceHealthIn" type="health:CheckServiceHealthInType" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="checkServiceHealthResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="checkServiceHealthOut" type="health:CheckServiceHealthOutType" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:annotation>
+        <xs:documentation>v1.0.1 - 20170302 - used PostingCriteriaListType for the list of Posting Criteria and added the input parameters in the response.</xs:documentation>
+    </xs:annotation>
+</xs:schema>

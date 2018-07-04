@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="ClockWSV1"  
+	xmlns:clock="http://ec.europa.eu/rdg/jagate/ws/clock/v1/interfaces"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/clock/v1"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/clock/v1">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/clock/v1/interfaces" schemaLocation="ClockInterface.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+    <wsdl:message name="AddSuspensionsRequest">
+        <wsdl:part element="clock:AddSuspensionsTransactionRequest" name="request" />
+    </wsdl:message>
+	<wsdl:message name="CreateSuspensionRequest">
+		<wsdl:part element="clock:CreateSuspensionTransactionRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="EndSuspensionTransactionRequest">
+		<wsdl:part element="clock:EndSuspensionTransactionRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="UpdateSuspensionTransactionRequest">
+		<wsdl:part element="clock:UpdateSuspensionTransactionRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CancelSuspensionTransactionRequest">
+		<wsdl:part element="clock:CancelSuspensionTransactionRequest" name="request" />
+	</wsdl:message>
+	
+	<wsdl:message name="ClockTransactionResponse">
+		<wsdl:part element="clock:ClockTransactionResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="ClockTransactionException">
+		<wsdl:part element="clock:ClockTransactionException" name="exception" />
+	</wsdl:message>
+	
+	<wsdl:portType name="IClockService">
+		<wsdl:documentation>Performs clock operations on transaction</wsdl:documentation>
+        <wsdl:operation name="AddSuspensions">
+            <wsdl:documentation>For compass clock</wsdl:documentation>
+            <wsdl:input message="AddSuspensionsRequest" />
+            <wsdl:output message="ClockTransactionResponse" />
+            <wsdl:fault name="ClockTransactionException" message="ClockTransactionException"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateSuspension">
+			<wsdl:documentation>For compass clock</wsdl:documentation>
+			<wsdl:input message="CreateSuspensionRequest" />
+			<wsdl:output message="ClockTransactionResponse" />
+			<wsdl:fault name="ClockTransactionException" message="ClockTransactionException"/>
+		</wsdl:operation>
+		<wsdl:operation name="EndSuspension">
+			<wsdl:documentation>For compass clock</wsdl:documentation>
+			<wsdl:input message="EndSuspensionTransactionRequest" />
+			<wsdl:output message="ClockTransactionResponse" />
+			<wsdl:fault name="ClockTransactionException" message="ClockTransactionException"/>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateSuspension">
+			<wsdl:documentation>For compass clock</wsdl:documentation>
+			<wsdl:input message="UpdateSuspensionTransactionRequest" />
+			<wsdl:output message="ClockTransactionResponse" />
+			<wsdl:fault name="ClockTransactionException" message="ClockTransactionException"/>
+		</wsdl:operation>
+		<wsdl:operation name="CancelSuspension">
+			<wsdl:documentation>For compass clock</wsdl:documentation>
+			<wsdl:input message="CancelSuspensionTransactionRequest" />
+			<wsdl:output message="ClockTransactionResponse" />
+			<wsdl:fault name="ClockTransactionException" message="ClockTransactionException"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="IClockServiceBinding" type="IClockService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="AddSuspensions">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="ClockTransactionException">
+                <soap:fault name="ClockTransactionException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CreateSuspension">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ClockTransactionException">
+				<soap:fault name="ClockTransactionException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="EndSuspension">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ClockTransactionException">
+				<soap:fault name="ClockTransactionException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateSuspension">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ClockTransactionException">
+				<soap:fault name="ClockTransactionException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="CancelSuspension">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ClockTransactionException">
+				<soap:fault name="ClockTransactionException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="ClockService">
+		<wsdl:port binding="IClockServiceBinding" name="ClockServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/clock/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

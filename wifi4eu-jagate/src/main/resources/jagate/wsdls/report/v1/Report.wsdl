@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="ReportWSV1"
+	xmlns:report="http://ec.europa.eu/rdg/jagate/ws/report/v1/interfaces"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/report/v1"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/report/v1">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/report/v1/interfaces" schemaLocation="ReportInterface.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="ReportException">
+        <wsdl:part element="report:ReportException" name="exception" />
+    </wsdl:message>
+
+    <!-- Custom return types -->
+    <wsdl:message name="PrefinancingsPaymentRequestsRequest">
+        <wsdl:part element="report:PrefinancingsPaymentRequestsRequest" name="request" />
+    </wsdl:message>
+    <wsdl:message name="PrefinancingsPaymentRequestsResponse">
+		<wsdl:part element="report:PrefinancingsPaymentRequestsResponse" name="response" />
+	</wsdl:message>
+    <wsdl:message name="CoordinatorsRequest">
+        <wsdl:part element="report:CoordinatorsRequest" name="request" />
+    </wsdl:message>
+    <wsdl:message name="CoordinatorsResponse">
+        <wsdl:part element="report:CoordinatorsResponse" name="response" />
+    </wsdl:message>
+    <wsdl:message name="RecoveryOrderForecastRevenuesRequest">
+        <wsdl:part element="report:RecoveryOrderForecastRevenuesRequest" name="request" />
+    </wsdl:message>
+    <wsdl:message name="RecoveryOrderForecastRevenuesResponse">
+        <wsdl:part element="report:RecoveryOrderForecastRevenuesResponse" name="response" />
+    </wsdl:message>
+    <wsdl:message name="GuaranteesRequest">
+        <wsdl:part element="report:GuaranteesRequest" name="request" />
+    </wsdl:message>
+    <wsdl:message name="GuaranteesResponse">
+        <wsdl:part element="report:GuaranteesResponse" name="response" />
+    </wsdl:message>
+    <wsdl:message name="BudgetaryCommitmentsRequest">
+        <wsdl:part element="report:BudgetaryCommitmentsRequest" name="request" />
+    </wsdl:message>
+    <wsdl:message name="BudgetaryCommitmentsResponse">
+        <wsdl:part element="report:BudgetaryCommitmentsResponse" name="response" />
+    </wsdl:message>
+    <wsdl:message name="InvoicesRequest">
+        <wsdl:part element="report:InvoicesRequest" name="request" />
+    </wsdl:message>
+    <wsdl:message name="InvoicesResponse">
+        <wsdl:part element="report:InvoicesResponse" name="response" />
+    </wsdl:message>
+    <wsdl:message name="PaymentRequestsRequest">
+        <wsdl:part element="report:PaymentRequestsRequest" name="request" />
+    </wsdl:message>
+    <wsdl:message name="PaymentRequestsResponse">
+        <wsdl:part element="report:PaymentRequestsResponse" name="response" />
+    </wsdl:message>
+    <wsdl:message name="PrefinGuaranteeFundsRequest">
+        <wsdl:part element="report:PrefinGuaranteeFundsRequest" name="request" />
+    </wsdl:message>
+    <wsdl:message name="PrefinGuaranteeFundsResponse">
+        <wsdl:part element="report:PrefinGuaranteeFundsResponse" name="response" />
+    </wsdl:message>
+    <wsdl:message name="LegalEntityGuaranteesRequest">
+    	<wsdl:part element="report:LegalEntityGuaranteesRequest" name="request" />
+    </wsdl:message>
+    <wsdl:message name="LegalEntityGuaranteesResponse">
+    	<wsdl:part element="report:LegalEntityGuaranteesResponse" name="response" />
+    </wsdl:message>
+
+
+	<wsdl:portType name="IReportService">
+		<wsdl:documentation>Fetches data from ABAC</wsdl:documentation>
+		<wsdl:operation name="GetPrefinancingsPaymentRequests">
+			<wsdl:documentation>For reporting purposes</wsdl:documentation>
+			<wsdl:input message="PrefinancingsPaymentRequestsRequest" />
+			<wsdl:output message="PrefinancingsPaymentRequestsResponse" />
+			<wsdl:fault name="ReportException" message="ReportException"/>
+		</wsdl:operation>
+        <wsdl:operation name="GetCoordinators">
+            <wsdl:documentation>For reporting purposes</wsdl:documentation>
+            <wsdl:input message="CoordinatorsRequest" />
+            <wsdl:output message="CoordinatorsResponse" />
+            <wsdl:fault name="ReportException" message="ReportException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetRecoveryOrderForecastRevenues">
+            <wsdl:documentation>For reporting purposes</wsdl:documentation>
+            <wsdl:input message="RecoveryOrderForecastRevenuesRequest" />
+            <wsdl:output message="RecoveryOrderForecastRevenuesResponse" />
+            <wsdl:fault name="ReportException" message="ReportException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetGuarantees">
+            <wsdl:documentation>For reporting purposes</wsdl:documentation>
+            <wsdl:input message="GuaranteesRequest" />
+            <wsdl:output message="GuaranteesResponse" />
+            <wsdl:fault name="ReportException" message="ReportException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetBudgetaryCommitments">
+            <wsdl:documentation>For reporting purposes</wsdl:documentation>
+            <wsdl:input message="BudgetaryCommitmentsRequest" />
+            <wsdl:output message="BudgetaryCommitmentsResponse" />
+            <wsdl:fault name="ReportException" message="ReportException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetInvoices">
+            <wsdl:documentation>For reporting purposes</wsdl:documentation>
+            <wsdl:input message="InvoicesRequest" />
+            <wsdl:output message="InvoicesResponse" />
+            <wsdl:fault name="ReportException" message="ReportException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetPaymentRequests">
+            <wsdl:documentation>For reporting purposes</wsdl:documentation>
+            <wsdl:input message="PaymentRequestsRequest" />
+            <wsdl:output message="PaymentRequestsResponse" />
+            <wsdl:fault name="ReportException" message="ReportException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetPrefinGuaranteeFunds">
+            <wsdl:documentation>For reporting purposes</wsdl:documentation>
+            <wsdl:input message="PrefinGuaranteeFundsRequest" />
+            <wsdl:output message="PrefinGuaranteeFundsResponse" />
+            <wsdl:fault name="ReportException" message="ReportException"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetLegalEntityGuarantees">
+        	<wsdl:documentation>For reporting purposes</wsdl:documentation>
+        	<wsdl:input message="LegalEntityGuaranteesRequest"></wsdl:input>
+        	<wsdl:output message="LegalEntityGuaranteesResponse"></wsdl:output>
+        	<wsdl:fault name="ReportException" message="ReportException"/>
+        </wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="IReportServiceBinding" type="IReportService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="GetPrefinancingsPaymentRequests">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ReportException">
+				<soap:fault name="ReportException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+        <wsdl:operation name="GetCoordinators">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="ReportException">
+                <soap:fault name="ReportException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetRecoveryOrderForecastRevenues">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="ReportException">
+                <soap:fault name="ReportException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetGuarantees">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="ReportException">
+                <soap:fault name="ReportException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetBudgetaryCommitments">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="ReportException">
+                <soap:fault name="ReportException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetPrefinGuaranteeFunds">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="ReportException">
+                <soap:fault name="ReportException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetInvoices">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="ReportException">
+                <soap:fault name="ReportException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetPaymentRequests">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="ReportException">
+                <soap:fault name="ReportException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="GetLegalEntityGuarantees">
+        	<wsdl:input>
+        		<soap:body use="literal" />
+        	</wsdl:input>
+        	<wsdl:output>
+        		<soap:body use="literal" />
+        	</wsdl:output>
+        	<wsdl:fault name="ReportException">
+        		<soap:fault name="ReportException" use="literal" />
+        	</wsdl:fault>
+        </wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="ReportService">
+		<wsdl:port binding="IReportServiceBinding" name="ReportServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/report/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

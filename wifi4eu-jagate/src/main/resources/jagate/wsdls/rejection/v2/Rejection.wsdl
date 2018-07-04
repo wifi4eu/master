@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	name="RejectionWSV2"
+	xmlns:reject="http://ec.europa.eu/rdg/jagate/ws/rejection/interfaces/v2"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/rejection/v2"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/rejection/v2">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/rejection/interfaces/v2" schemaLocation="Rejection_ITF.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+	<wsdl:message name="RejectTransactionRequest">
+		<wsdl:part element="reject:RejectTransactionRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="RejectTransactionResponse">
+		<wsdl:part element="reject:RejectTransactionResponse" name="response" />
+	</wsdl:message>
+
+    <wsdl:message name="CheckServiceHealthRequest">
+        <wsdl:part element="reject:CheckServiceHealthRequest" name="request"/>
+    </wsdl:message>
+    <wsdl:message name="CheckServiceHealthResponse">
+        <wsdl:part element="reject:CheckServiceHealthResponse" name="response"/>
+    </wsdl:message>
+
+	<wsdl:message name="RejectTransactionException">
+		<wsdl:part element="reject:RejectTransactionException" name="exception" />
+	</wsdl:message>
+	
+	<wsdl:portType name="IRejectionService">
+		<wsdl:documentation>Performs rejection on transaction</wsdl:documentation>
+		<wsdl:operation name="RejectTransaction">
+			<wsdl:documentation>For compass rejection</wsdl:documentation>
+			<wsdl:input message="RejectTransactionRequest" />
+			<wsdl:output message="RejectTransactionResponse" />
+			<wsdl:fault name="RejectTransactionException" message="RejectTransactionException"/>
+		</wsdl:operation>
+        <wsdl:operation name="CheckServiceHealth">
+            <wsdl:documentation>Diagnostic operation to monitor service health.</wsdl:documentation>
+            <wsdl:input message="CheckServiceHealthRequest"/>
+            <wsdl:output message="CheckServiceHealthResponse"/>
+            <wsdl:fault name="RejectTransactionException" message="RejectTransactionException"/>
+        </wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="IRejectionServiceBindingV2" type="IRejectionService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="RejectTransaction">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="RejectTransactionException">
+				<soap:fault name="RejectTransactionException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+        <wsdl:operation name="CheckServiceHealth">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="RejectTransactionException">
+                <soap:fault name="RejectTransactionException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="RejectionServiceV2">
+		<wsdl:port binding="IRejectionServiceBindingV2" name="RejectionServiceBindingV2">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/rejection/v2"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

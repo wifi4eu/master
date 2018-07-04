@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns="http://ec.europa.eu/rdg/efp/domain/event/document/sealsignature-event/V1"
+	targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/document/sealsignature-event/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" version="1.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd" />
+
+	<xs:complexType name="SealSignatureEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when sealing with signature</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="CorrelationId" type="xs:string" />
+					<xs:element name="Message" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

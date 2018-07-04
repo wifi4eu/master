@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+							xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/workflow/v1" 
+							targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/workflow/v1" 
+							elementFormDefault="qualified" 
+							attributeFormDefault="unqualified">
+							
+	<xs:complexType name="WorkFlowDataType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				The ABAC internal workflow that the commitment should follow. This information is related with the number and the
+				sequentation of
+				the visas that should be provided by the client. Example: WFL A
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="WorkFlowCostCenter" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		xmlns="http://ec.europa.eu/rdg/jagate/ws/clock/v1/interfaces" 
+		targetNamespace="http://ec.europa.eu/rdg/jagate/ws/clock/v1/interfaces"
+		elementFormDefault="qualified"
+		xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1"
+		xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2"
+		xmlns:clock="http://ec.europa.eu/rdg/jagate/ws/domain/clock/v1"
+		xmlns:transaction="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" schemaLocation="../../../domain/visa/v2/Visa.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1" schemaLocation="../../../domain/transaction/v1/Transaction.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" schemaLocation="../../../domain/documents/v1/AresReference.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/clock/v1" schemaLocation="../../../domain/clock/v1/Clock.xsd" />
+
+    <xs:element name="AddSuspensionsTransactionRequest" type="AddSuspensionsTransactionRequestType" />
+	<xs:element name="CreateSuspensionTransactionRequest" type="CreateSuspensionTransactionRequestType" />
+	<xs:element name="UpdateSuspensionTransactionRequest" type="UpdateSuspensionTransactionRequestType" />
+	<xs:element name="EndSuspensionTransactionRequest" type="EndSuspensionTransactionRequestType" />
+	<xs:element name="CancelSuspensionTransactionRequest" type="CancelSuspensionTransactionRequestType" />
+	<xs:element name="ClockTransactionResponse" type="ClockTransactionResponseType" />
+	
+	<xs:element name="ClockTransactionException" type="jagate:JAgateException" />
+
+    <xs:complexType name="AddSuspensionsTransactionRequestType">
+        <xs:annotation>
+            <xs:documentation>Create clock suspensions</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="locObjForeignId" type="xs:string"/>
+            <xs:element name="transactionSubType" type="transaction:TransactionSubtype"/>
+            <xs:sequence>
+                <xs:element name="clockEntry" type= "clock:ClockEntry" minOccurs="1" maxOccurs="unbounded"  />
+            </xs:sequence>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="CreateSuspensionTransactionRequestType">
+		<xs:annotation>
+			<xs:documentation>Create a clock suspension</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="locObjForeignId" type="xs:string"/>
+			<xs:element name="transactionSubType" type="transaction:TransactionSubtype"/>
+			<xs:element name="reasonCode" type="clock:ClockActionReasonCode" minOccurs="0"/>
+			<xs:element name="reasonText" type="xs:string" minOccurs="0"/>
+			<xs:element name="startDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="aresReferenceData" type="documents:AresReferenceDataType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GetSuspensionsRequestType">
+		<xs:annotation>
+			<xs:documentation>Return clock suspensions</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="locObjForeignId" type="xs:string"/>
+			<xs:element name="transactionSubType" type="transaction:TransactionSubtype"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UpdateSuspensionTransactionRequestType">
+		<xs:annotation>
+			<xs:documentation>Create a clock suspension</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="locObjForeignId" type="xs:string"/>
+			<xs:element name="transactionSubType" type="transaction:TransactionSubtype"/>
+			<xs:element name="aresReferenceData" type="documents:AresReferenceDataType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="EndSuspensionTransactionRequestType">
+		<xs:annotation>
+			<xs:documentation>Create a clock suspension</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="locObjForeignId" type="xs:string"/>
+			<xs:element name="transactionSubType" type="transaction:TransactionSubtype"/>
+			<xs:element name="endDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="aresReferenceData" type="documents:AresReferenceDataType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CancelSuspensionTransactionRequestType">
+		<xs:annotation>
+			<xs:documentation>Create a clock suspension</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="locObjForeignId" type="xs:string"/>
+			<xs:element name="transactionSubType" type="transaction:TransactionSubtype"/>
+			<xs:element name="reasonText" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ClockTransactionResponseType">
+		<xs:sequence>
+			<xs:element name="locObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+			
+</xs:schema>

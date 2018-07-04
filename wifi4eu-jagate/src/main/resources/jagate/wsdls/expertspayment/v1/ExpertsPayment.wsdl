@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" name="ExpertsPaymentWSV1"
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns:expertsPayment="http://ec.europa.eu/rdg/jagate/ws/expertspayment/interfaces/v1"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/expertspayment/v1"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/expertspayment/v1">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/expertspayment/interfaces/v1" schemaLocation="ExpertsPayment_ITF.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="CreateExpertsPaymentRequest">
+		<wsdl:part element="expertsPayment:CreateExpertsPaymentRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="CreateExpertsPaymentResponse">
+		<wsdl:part element="expertsPayment:CreateExpertsPaymentResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="GetAbacKeyRequest">
+		<wsdl:part element="expertsPayment:GetAbacKeyRequest" name="request" />
+	</wsdl:message>
+	
+	<wsdl:message name="GetAbacKeyResponse">
+		<wsdl:part element="expertsPayment:GetAbacKeyResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="ExpertsPaymentException">
+		<wsdl:part element="jagate:Exception" name="exception" />
+	</wsdl:message>
+	
+    <wsdl:message name="CheckServiceHealthRequest">
+        <wsdl:part element="expertsPayment:CheckServiceHealthRequest" name="request"/>
+    </wsdl:message>
+    
+    <wsdl:message name="CheckServiceHealthResponse">
+        <wsdl:part element="expertsPayment:CheckServiceHealthResponse" name="response"/>
+    </wsdl:message>
+
+	<wsdl:portType name="IExpertsPaymentService">
+		<wsdl:documentation>Manages Expert payments in ABAC</wsdl:documentation>
+		<wsdl:operation name="createPaymentRequest">
+			<wsdl:input message="CreateExpertsPaymentRequest" />
+			<wsdl:output message="CreateExpertsPaymentResponse" />
+			<wsdl:fault name="ExpertsPaymentException" message="ExpertsPaymentException" />
+		</wsdl:operation>
+		<wsdl:operation name="getAbacKey">
+			<wsdl:input message="GetAbacKeyRequest" />
+			<wsdl:output message="GetAbacKeyResponse" />
+			<wsdl:fault name="ExpertsPaymentException" message="ExpertsPaymentException"></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="CheckServiceHealth">
+			<wsdl:documentation>Diagnostic operation to monitor service health.</wsdl:documentation>
+			<wsdl:input message="CheckServiceHealthRequest"/>
+			<wsdl:output message="CheckServiceHealthResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="IExpertsPaymentServiceBindingV1" type="IExpertsPaymentService">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="createPaymentRequest">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ExpertsPaymentException">
+				<soap:fault name="ExpertsPaymentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getAbacKey">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ExpertsPaymentException">
+				<soap:fault name="ExpertsPaymentException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+        <wsdl:operation name="CheckServiceHealth">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="ExpertsPaymentServiceV1">
+		<wsdl:port binding="IExpertsPaymentServiceBindingV1" name="ExpertsPaymentServiceBindingV1">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/expertspayment/v1" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

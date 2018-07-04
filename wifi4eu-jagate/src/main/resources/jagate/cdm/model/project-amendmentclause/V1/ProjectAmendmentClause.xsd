@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<xs:schema xmlns:specialclause="http://ec.europa.eu/research/fp/model/project-specialclause/V3" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:docref="http://ec.europa.eu/research/fp/model/document-ref/V3" xmlns="http://ec.europa.eu/research/fp/model/project-amendmentclause/V1" targetNamespace="http://ec.europa.eu/research/fp/model/project-amendmentclause/V1" elementFormDefault="qualified" version="1.0.2">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="../../document-ref/V3/DocumentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-specialclause/V3" schemaLocation="../../project-specialclause/V3/ProjectSpecialClause.xsd"/>
+	<xs:element name="AmendmentClause" type="AmendmentClauseType"/>
+	<xs:complexType name="AmendmentClauseType">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>the name of the special clause</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OrderNo" type="xs:int"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>the description of the special clause</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FromDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>date from when special clause enters into force</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ToDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>date until when special clause is applicable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GenerationTemplate" type="docref:DocumentRefType" minOccurs="0"/>
+			<xs:element name="FreeVariable" type="AmendmentClauseFVType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>special clause free variables data</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SemanticRefID" type="xs:string" minOccurs="0"/>
+			<xs:element name="Modifications" type="AmendmentClauseModificationList" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="AppliedToPartners" type="specialclause:AppliedToPartnerListType" minOccurs="0"/>
+			<xs:element name="BusinessReference" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The business reference given at the amendment templates; it is the Amendment Type/Clause reference number (e.g., AT4)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AmendmentClauseFVType">
+		<xs:sequence>
+			<xs:element name="ID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>the ID of the special clause free variable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>the name for the special clause free variable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Value" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>the value for the special clause free variable name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AmendmentClauseModificationList">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AmendmentClauseModification" type="AmendmentClauseModificationType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AmendmentClauseModificationType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ID" type="xs:string"/>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20160601 - v1.0.2 - SYGMA - added optional BusinessReference element for amendment clause</xs:documentation>
+		<xs:documentation>20151124 - v1.0.1 - SYGMA - added optional AppliedToPartners element for amendment clause</xs:documentation>
+		<xs:documentation>20131010 - v1.0.0 - SYGMA - creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/invoice/v2" xmlns:ns1="http://ec.europa.eu/rdg/jagate/ws/domain/invoiceBasicData/v2" targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/invoiceBasicData/v2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xs:element name="InvoiceHeaderType" type="xs:integer">
+		<xs:annotation>
+			<xs:documentation>CDM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+			<xs:documentation>The ABAC values are: Commercial Invoice, Cost Claim, Internal Document, Request For Prefinancing for Commercial Invoice, Request For Prefinancing For Cost Claim, Internal Invoice</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceHeaderAmount" type="xs:decimal">
+		<xs:annotation>
+			<xs:documentation>The Invoice Header Amount</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceHeaderInvoiceDate" type="xs:date">
+		<xs:annotation>
+			<xs:documentation>The Invoice Date</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceHeaderECReceptionDate" type="xs:date">
+		<xs:annotation>
+			<xs:documentation>The Invoice Reception Date</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceHeaderGASignDate" type="xs:date">
+		<xs:annotation>
+			<xs:documentation>The Invoice Reception Date</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceHeaderLegalEntity" type="xs:integer">
+		<xs:annotation>
+			<xs:documentation>Coordinator PIC, CDM value to be transformed by JAgate in ABAC values</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceHeaderDGSapCoReportingCode" type="xs:int">
+		<xs:annotation>
+			<xs:documentation>CDM value to be transformed by JAgate in ABAC values</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceHeaderCommitment" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>The ABAC internal identifier for the Commitment which the invoice is related</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceHeaderDGCode" type="xs:int">
+		<xs:annotation>
+			<xs:documentation>CDM value to be transformed by JAgate in ABAC values</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceHeaderRecoveryOrder" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>Recovery Order related to the invoice</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceDetailAmount" type="xs:decimal">
+		<xs:annotation>
+			<xs:documentation>CDM value to be transformed by JAgate in ABAC values</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceDetailTpCode" type="xs:int">
+		<xs:annotation>
+			<xs:documentation></xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="InvoiceDetailGLAccount" type="xs:int">
+		<xs:annotation>
+			<xs:documentation></xs:documentation>
+		</xs:annotation>
+	</xs:element>	
+	<xs:element name="InvoiceDetailPolicyAreaCode" type="xs:int">
+		<xs:annotation>
+			<xs:documentation></xs:documentation>
+		</xs:annotation>
+	</xs:element>
+</xs:schema>

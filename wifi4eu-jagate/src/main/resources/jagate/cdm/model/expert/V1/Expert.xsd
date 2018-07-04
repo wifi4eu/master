@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns:address="http://ec.europa.eu/research/fp/model/address/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:code="http://ec.europa.eu/research/fp/model/code/V2" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:person="http://ec.europa.eu/research/fp/model/person/V2" xmlns="http://ec.europa.eu/research/fp/model/expert/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" targetNamespace="http://ec.europa.eu/research/fp/model/expert/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.2">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture all EC expert related data.</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>This first version keeps downward compatibility with the CordisExpert class described in the FP7_GEN_QAO_ARCHI_TYPE_DIC_20090602_v19_ADP_2.doc document titled "Framework Program 7 - Type Dictionary"</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V2" schemaLocation="../../person/V2/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V2" schemaLocation="../../address/V2/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:element name="Expert" type="ExpertPersonType"/>
+	<xs:group name="ExpertGeneralGroup">
+		<xs:annotation>
+			<xs:documentation>This group contains everything that is defined in the Original CordisExpert element that could not be mapped in the Common Model PersonType type.
+The "details" element has been defined in the ExpertDetailsGroup elsewhere.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ExpertCandidatureReference" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This is the expert candidature reference (number) that uniquely identifies each expert.Every expert will have such a reference.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LEID" type="legalentityref:LegalEntityFinancialIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the Legal Entity ID for the expert.Can be a temporary one or the final one.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BankAccountIDsList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="BankAccountID" type="xs:string" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>The ABAC ID of the BancAccount.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LastUpdateDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The last date when this expert has updated his profile.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegistrationDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Registration date of the expert </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsProfileComplete" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True if the expert has a compelte profile. There are 2 profile types "normal" and "simplified"  (see IsSimplifiedProfile) and these have different rules to be considered "complete"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MemberStatePermission" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True indicates that the expert has member state permission ( member states role can see the profile of this expert).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="JTIPermission" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True indicates that the expert has JTI permission ( JTI role can see the profile of this expert).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExpertCandidaturePreferences">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ExpertCandidaturePreference" type="ExpertCandidaturePreferenceType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>An expert can choose among many options to work for the Commission.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IsSimplifiedProfile" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>This flag indicates if this expert has a simplified profile. A simplified profile has no CV section (no skills) and is used just for the asministrative aspects (EX: ERC experts that are selected though other means).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Recommendations" type="RecommendationType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The list of recommendations for this expert.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ECAS_ID" type="base:ECUserIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The ECAS id of this expert.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CorrespondenceAddress" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>If the expert wants to use a different correspondance address than his aofficial/pernament address (see Address) he will mention it in this field as a free text.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="ExpertAdditionalInfoGroup">
+		<xs:annotation>
+			<xs:documentation>This group contains complementary information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="ExpertPersonType">
+		<xs:annotation>
+			<xs:documentation>Related to the fields inherited from PersonType, here is teh list of fields that are not used by EMPP: PersonIdentificationList, Position, Department, CountryOfResidenceCode, CountryOfBirthCode,PlaceOfBirth,BirthfamilyName, CountryOfOrigin,TownOfOrigin. The Address contains teh expert permanent/official address.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="person:PersonType">
+				<xs:sequence>
+					<xs:group ref="ExpertGeneralGroup"/>
+					<xs:group ref="ExpertCVGroup"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExpertDiplomaType">
+		<xs:annotation>
+			<xs:documentation>Defined as Diploma type in the original definition.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>To define a list of standard diploma types ( Title of qualification ).Possible values are: Research Doctoral degree/PhD 
+Professional Doctoral degree/MD
+Engineer
+Master
+Bachel or
+No third level qualification
+For old CORDIS expets thsi filed will contain the old data (usualy was tile + field)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Field" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the department/field in which the diploma was obtained. Ex: engineering, law, medicine..</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Year" type="base:YearType"/>
+			<xs:element name="University" type="xs:string" minOccurs="0"/>
+			<xs:element name="Country" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Country where the diploma was obtained.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EmployerOrganisationType">
+		<xs:annotation>
+			<xs:documentation>How this could be absorbed by LegalEntity should be investigated</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Address" type="address:AddressType"/>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Cordis Max length: 70</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeptName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Cordis Max length: 70</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="JobTitle" type="xs:string" minOccurs="0"/>
+			<xs:element name="Type" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This hold as a value a 3 letter acronym. The accepted values and the meaning for these are descrivbed bellow:
+							BES = Non-research Commercial sector including SMEs, among which:
+							BCO = 		Consultancy firms
+							PUS = Non-research Public Sector
+							PNP = Non-research Private Non-profit
+							INO = Non-research International Organisations (Association of States)
+							HES = Higher Education Establishments
+							RPR = Private / Commercial Research Centres
+							RPN = Private Non-profit Research Centres
+							RPU = Public Research Centres, among which:
+							RIO = 		International Research Centres, among which
+							JRC = 					Joint Research Centre
+							OTH = Others
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Size" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This a 2 letter code. Acccespted values and their descriptions are:
+						S1 = 0 employee
+						S2 = 1-9 employees
+						S3 = 10-49 employees
+						S4 = 50-249 employees
+						S5 = 250-499 employees
+						S6 = 500-1999 employees
+						S7 = 2000+ employees
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="From" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date from when the expert started working with this employer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="To" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when the expert stopped working for this employer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CurentOrganisation" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>TRUE is this organisation is the current employer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PIC" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Participant Identification Code. Used to retrieve information from PDM when known</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CVType">
+		<xs:sequence>
+			<xs:element name="Interests" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Max length: 2000. Contains both former and current interests (where separated fields once)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DiplomaList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Diplomas" type="ExpertDiplomaType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Corresponds to diploma in the original defintition.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LanguageList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Languages" type="LanguageType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Corresponds to the language1, language2 and language3 elements of the original definition.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EmploymentHistory" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="EmployersList" type="EmployerOrganisationType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="EmploymentRecord" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Employment history in non structured format. Now is deprecated. Used as read-only. All new employers need to be saved in a structured format: Organisation Type</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AdditionalInfo" type="xs:string" minOccurs="0"/>
+			<xs:element name="PublicationsList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PublicationItems" type="PublicationType" maxOccurs="unbounded"/>
+						<xs:element name="Bibliography" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>This contains the old Bibliography data. This was unstructured data about publications. It is read only in the user interface as it is a deprecated field. All new expert will use only the structured format: PublicationType</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Employed" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>True = employed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProfExperience" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>0=0 to 5 years
+1=5 to 10 years
+2=10 to 15 years
+3=15+ years
+9=not defined</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HighEducation" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>0=0 years
+1=1 to 3 years
+2=4 to 5 years
+3=5+ years
+9=not defined</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FreeKeywordList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="FreeKeyword" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FixedKeywordList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Contains fixed keyword for both FP6 and FP7</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="FixedKeyword" type="FixedKeywordType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ActivityCodeList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>These are the themes/activities used for FP6, FP7 and future FPs (generic). </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ActivityCode" type="coderef:CodeRefType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PreviousResearchDGActivities" type="PreviousResearchDGActivitiesType" minOccurs="0"/>
+			<xs:element name="MajorAchievements" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A free text field that contains a description of major achievements. Used maily by industrial experts that do not have publications.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isIndustrialExpert" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TRUE indicates that this expert has industrial expertise.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="industriaExpertiseDescription" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>If the expert has industrial expertise (see isIndustrialExpert), this hold the description/details of his expertise.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PreviousResearchDGActivitiesType">
+		<xs:annotation>
+			<xs:documentation>This group is used to describe the previous involvement of thie expert with the reseach DGs and agencies. 	
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HasBeenRaporteur" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True indidcates that the expert has been a rapporteur before</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HasBeenChairPerson" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True indicates that the expert has bee a chair person</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HasBeenIdependentObserver" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True indicates that he has worked previously as an independent observer for the commision.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HasBeenEvaluatorOrReviewer" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True indicates that the expert has workes as an Evaluator or Reviewer for the Commission.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="PreviousFP" type="PreviousResearchDGActivityType" minOccurs="0"/>
+			<xs:element name="ProposalEvaluation" type="PreviousResearchDGActivityType" minOccurs="0"/>
+			<xs:element name="ProgrammeCommitteeMember" type="PreviousResearchDGActivityType" minOccurs="0"/>
+			<xs:element name="ProgrammeCommitteeExpert" type="PreviousResearchDGActivityType" minOccurs="0"/>
+			<xs:element name="KeyActionExpert" type="PreviousResearchDGActivityType" minOccurs="0"/>
+			<xs:element name="ProgrammeEvaluationExpert" type="PreviousResearchDGActivityType" minOccurs="0"/>
+			<xs:element name="ProgrammeMonitoringExpert" type="PreviousResearchDGActivityType" minOccurs="0"/>
+			<xs:element name="CrestEurabMember" type="PreviousResearchDGActivityType" minOccurs="0"/>
+			<xs:element name="NationalContactPoint" type="PreviousResearchDGActivityType" minOccurs="0"/>
+			<xs:element name="ProjectReview" type="PreviousResearchDGActivityType" minOccurs="0"/>
+			<xs:element name="OtherActivity" type="PreviousResearchDGActivityType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PreviousResearchDGActivityType">
+		<xs:sequence>
+			<xs:element name="HasParticipated" type="xs:boolean"/>
+			<xs:element name="Description" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FixedKeywordType">
+		<xs:sequence>
+			<xs:element name="Code" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>This points to keywords used for FP6 and FP7</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Level" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>True=Specialist, False=Generalist.Used only for FP6. Shold we drop them ?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LanguageType">
+		<xs:annotation>
+			<xs:documentation>See LanguageSkillType documentation for allowed values.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Language" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>CCM code reference for the language</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Conversation" type="xs:byte">
+				<xs:annotation>
+					<xs:documentation>0=LEVEL_ELEMENTARY / 1=LEVEL_AVERAGE / 2=LEVEL_GOOD / 3=LEVEL_FLUENT / 4=LEVEL_MOTHER_TONGUE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reading" type="xs:byte">
+				<xs:annotation>
+					<xs:documentation>0=LEVEL_ELEMENTARY / 1=LEVEL_AVERAGE / 2=LEVEL_GOOD / 3=LEVEL_FLUENT / 4=LEVEL_MOTHER_TONGUE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Written" type="xs:byte">
+				<xs:annotation>
+					<xs:documentation>0=LEVEL_ELEMENTARY / 1=LEVEL_AVERAGE / 2=LEVEL_GOOD / 3=LEVEL_FLUENT / 4=LEVEL_MOTHER_TONGUE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LangPos" type="xs:byte">
+				<xs:annotation>
+					<xs:documentation>Languages are ordered based on overall proficiency with that specific country.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PublicationType">
+		<xs:sequence>
+			<xs:element name="Title" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Originally set with a max size of 2000</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PubDate" type="xs:date"/>
+			<xs:element name="AuthorType" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>1 = Author. 2 = Co-author</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MediaRef" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Originally set with a max size of 2000</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Keywords" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Originally set with a max size of 2000</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Link" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Originally set with a max size of 2000</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecommendationType">
+		<xs:annotation>
+			<xs:documentation>This records that fact that a Institute made a recommendation for a certain expert for a certain area of expertsie. En expert can be recommended by multiple Institures, and Institutes can make multiple recommendations.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RecommendationReference" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The id/reference of the recommendation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InstituteReference" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The id/refernce to the organisation that made the recommendation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExpertCandidatureNumber" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The id/refernce for the expert.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The date when the recommendation was made.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResearchArea" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The research area for whom teh expert has been recommended</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RecommendedFor" type="ExpertiseSkillType">
+				<xs:annotation>
+					<xs:documentation>Enumerated as "EE" (Evaluator Expert), "RE" (Reviewer Expert) or "ME" (Monitor Expert).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsRecommendedFP6Expert" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True if the recommendation was made for work performed for FP6.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsRecommendedFP7Expert" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True if the recommendation was made for work performed for FP7.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ExpertiseSkillType">
+		<xs:annotation>
+			<xs:documentation>Enumerated as "EE" (Evaluator Expert), "RE" (Reviewer Expert) or "ME" (Monitor Expert).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EE"/>
+			<xs:enumeration value="RE"/>
+			<xs:enumeration value="ME"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CVMonitorKeywordType">
+		<xs:annotation>
+			<xs:documentation>pattern should be \d{2}\.\d{2}\.\d</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:group name="ExpertCVGroup">
+		<xs:annotation>
+			<xs:documentation>This group contains information of the CV in 3 formats: the data entered into the experts database, and URL towards and external, CV, and a CV uploaded inthe experts database as a document (PDF, MS Word, etc)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CV" type="CVType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Corresponds to cv in original definition.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExpertCVURL" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>An URL pointing to any web page that stored in whatever format the expert CV.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:annotation>
+		<xs:documentation>20100518 v1.0.2 - renamed PreviousRTDInvolvmentType to PreviousResearchDGActivity</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Added Publications</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Added ExpertAdditionalInfoGroup</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Renamed CordisExpertGroup to ExpertGeneralGroup</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Instaured the list - - items convention.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="ExpertCandidaturePreferenceType">
+		<xs:annotation>
+			<xs:documentation>This type describes the type of roles the potential expert is interested in. For example he might express his interest to work (in the future) for both FP7 and Non-FP programs
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ResearchProgram" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This can have one of the following values:
+							FP6 = for experts wanting to participate in FP6 ( this is read only from now on )
+							FP7 = for experts that want to participate in PF7
+							Non-FP	= for experts that want to paarticipate in Non-FP programmes
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="LEBAStatusValuesType">
+		<xs:annotation>
+			<xs:documentation>Status values for Legat Entity and Banck Account registration requests.Possible values:Acceptable values: SUBMITTED, MISSING_OR_INACCURATE_INFORMATION, , RESUBMITTED, VALIDATED, REJECTED
+								SUBMITTED the LE/BA request submitted and is beeing analysed by the ABAC validation team
+								MISSING_OR_INACCURATE_INFORMATION = ABAC validation team send the request back to the expert to be corrected/completed
+								RESUBMITTED = the request has been resubmitted after corection ( can be resubmitted and rejected back many times). This status values does not discern between the first, second, third, etc resubmitts.
+								REJECTED = the LE/BA request is not legitimate and was cancelled	
+								VALIDATED = the LE/BA request has been validated by the ABAC validation team 
+						</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SUBMITTED"/>
+			<xs:enumeration value="MISSING_OR_INACCURATE_INFORMATION"/>
+			<xs:enumeration value="RESUBMITTED"/>
+			<xs:enumeration value="REJECTED"/>
+			<xs:enumeration value="VALIDATED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>20120308 - v1.1 - Removed Role from ExpertCandidaturePreferenceType</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20120313 - v1.2 - EmployerOrganisationType, Size and From now non mandatory</xs:documentation>
+	</xs:annotation>
+</xs:schema>

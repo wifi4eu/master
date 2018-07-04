@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/negotiationreport/V1" xmlns:templateletter="http://ec.europa.eu/research/fp/model/template/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/negotiationreport/V1" elementFormDefault="qualified" version="1.1.0">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture the negotiation report data for project</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/template/V1" schemaLocation="../../template/V1/TemplateLetter.xsd"/>
+	<xs:element name="NegotiationReport" type="NegotiationReportType"/>
+	<xs:complexType name="NegotiationReportType">
+		<xs:sequence>
+			<xs:element name="ReportType" type="ReportTypeType" minOccurs="1"/>
+			<xs:element name="NRItem" type="NRItemType" maxOccurs="unbounded"/>
+			<xs:element name="TemplateLetterData" type="templateletter:TemplateLetterDataType" minOccurs="0"/>
+			<xs:element name="NrOfCertifiedDeclarationsSigned" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>for H2020: the number of certified declarations that have been signed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalNrOfCertifiedDeclarations" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>for H2020: the total number of certified declarations that need to be signed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NRItemType">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Title" type="xs:string"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="Order" type="xs:int"/>
+			<xs:element name="Response" type="NRResponseType"/>
+			<xs:element name="Justification" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ReportTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SHORT"/>
+			<xs:enumeration value="LONG"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NRResponseType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Yes"/>
+			<xs:enumeration value="No"/>
+			<xs:enumeration value="N/A"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation> 20140303 - v1.1.0 - SYGMA - added new fields to support the generation of H2020 Grant Prepartion Report (GPR) </xs:documentation>
+		<xs:documentation> 20131010 - v1.0.0 - SYGMA - creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

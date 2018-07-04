@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+        xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/postingcriteria/v2"
+        targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/postingcriteria/v2"
+        elementFormDefault="qualified"
+        version="2.0.0">
+
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd" />
+
+    <xs:complexType name="PostingCriteriaListType">
+        <xs:sequence>
+            <xs:element name="postingCriteria" type="PostingCriteriaType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PostingCriteriaType">
+        <xs:sequence>
+            <xs:element name="typeCode" type="jagate:NonEmptyString" />
+            <xs:element name="code" type="jagate:NonEmptyString" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:annotation>
+        <xs:documentation>v2.0.0 - 20170410 - Create posting criteria type that has the least amount of required fields to add a criteria</xs:documentation>
+    </xs:annotation>
+</xs:schema>

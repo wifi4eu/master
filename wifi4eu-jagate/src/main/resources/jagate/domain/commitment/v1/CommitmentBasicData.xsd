@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+					xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentBasicData/v1" 
+					targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentBasicData/v1" 
+					elementFormDefault="qualified" 
+					attributeFormDefault="unqualified"
+					version="1.0.0">
+
+
+	<xs:element name="CommitmentHeaderPaymentClassType" type="xs:int">
+		<xs:annotation>
+			<xs:documentation>CDM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+			<xs:documentation>The ABAC values are: All, FPM (Fractionated Payments Mixed), SIN (Single Payment), FEC(Fractioned Payments - EU), FTP(Fractioned Payments - TP), MUL(Multiple single Payments)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="CommitmentHeaderBookYearType" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>Book Year for the Commitment header.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="CommitmentHeaderProposedFinalDateImplementationType" type="xs:date">
+		<xs:annotation>
+			<xs:documentation>The date final date of implementation.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="CommitmentHeaderLegalJustificationType" type="xs:int">
+		<xs:annotation>
+			<xs:documentation>CDM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+			<xs:documentation>The ABAC values are: AA (Administrative Autonomy), BF (Basic act/ Financial Decision), IP (Institutional Prerogative), PP(Pilot Project), PA(Preparatory Action), TA(Treaty Action), NA(Not Applicable)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="CommitmentPositionL1CommitmentType" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>The commitment level 1 Position for RG Commitments</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="CommitmentPositionBudgetLineType" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>The Budget line for the Commitment Position. Only for EN Commitments</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="CommitmentPositionAmountType" type="xs:decimal">
+		<xs:annotation>
+			<xs:documentation>The amount in EUROS for the Commitment Position</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="CommitmentPositionPolicyAreaCodeType" type="xs:int">
+		<xs:annotation>
+			<xs:documentation>CDM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+			<xs:documentation>The ABAC values are: ENER (Energy), MOVE (Mobility and Transport), ALL (All Central), JRC(Direct Research), RTD(Research), CNECT(Information society), ENTR(Enterprise)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="CommitmentPositionDGCode" type="xs:int">
+		<xs:annotation>
+			<xs:documentation>CDM Value to be transformed by JAGATE in ABAC values.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+</xs:schema>

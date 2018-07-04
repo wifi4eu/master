@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by XMLSpy 2008 Enterprise Ed., Installed for 5 users (European Commission DG Regio) -->
+<xs:schema xmlns:tns="http://ec.europa.eu/research/fp/model/participantnotificationaudit/interfaces/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:notificationRef="http://ec.europa.eu/research/fp/model/participantnotification/interfaces/V1" xmlns:userref="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" targetNamespace="http://ec.europa.eu/research/fp/model/participantnotificationaudit/interfaces/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/participantnotification/interfaces/V1" schemaLocation="../../participant-notification/V1/ParticipantNotification.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:annotation>
+		<xs:documentation>This schema contains types used for describing a trail of a PNS notification from different perspectives (such as, recipients notified, or messages generated)</xs:documentation>
+	</xs:annotation>
+	<!-- Audit types START -->
+	<xs:complexType name="AuditByRecipientSummaryType">
+		<xs:annotation>
+			<xs:documentation>
+Audit Trails of a PNS Notification from the perspective of the recipients of the notification i.e. persons that were notified by PNS in regard to this notification.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NotificationSummary" type="notificationRef:NotificationSummaryType"/>
+			<xs:element name="RecipientList" type="notificationRef:RecipientsSummaryListType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AuditByRecipientType">
+		<xs:annotation>
+			<xs:documentation>
+Audit Trails of a PNS Notification from the perspective of the recipients of the notification i.e. persons that were notified by PNS in regard to this notification.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NotificationSummary" type="notificationRef:NotificationSummaryType"/>
+			<xs:element name="RecipientFullList" type="notificationRef:RecipientsListFullType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AuditByMessagesType">
+		<xs:annotation>
+			<xs:documentation>
+Audit Trail of a PNS Notification from the perspective of the recipients of the notification i.e. persons that were notified by PNS in regard to this notification.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NotificationSummary" type="notificationRef:NotificationSummaryType"/>
+			<xs:element name="NotificationMessagesList" type="notificationRef:NotificationMessagesListType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AuditRecipientByNotificationsSummaryType">
+		<xs:annotation>
+			<xs:documentation>Audit of a Recipients detailing a list of Notifications for which the user was notified.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NotificationsList" type="notificationRef:NotificationsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AuditTrailType">
+		<xs:annotation>
+			<xs:documentation>Audit Trail of a PNS Notification.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NotificationSummary" type="notificationRef:NotificationSummaryType"/>
+			<xs:element name="AuditTrail" type="tns:AuditRecordListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Audit types END -->
+	<!-- Audit Trail Types START -->
+	<xs:complexType name="AuditRecordListType">
+		<xs:sequence>
+			<xs:element name="AuditRecord" type="tns:AuditRecordType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AuditRecordType">
+		<xs:annotation>
+			<xs:documentation>
+				During the processing of a notification, PNS will generate audit trail records to save usefull debug information generated during this processing in a PNS database table. These records can be inspected for debugging pourpouses in case there is an assumption that there was an issue with a specific notification.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Entity" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The entity for which this audit record was generated. Entities supported: 
+						1. NOTIFICATION - Audit records related to the notification entity (i.e. An audit trail of type NOTIFICATION_CREATED is generated when a notification is saved by PNS in the database).
+						2. NOTIFICATION_MESSAGE - Audit records related to a notification message (i.e. An audit trail of type NOTIFICATION_MESSAGE_UPDATED  and subtype EMAIL_NOTIFICATION_MESSAGE_UPDATED_FOR_RETRY is generated when a notification message is marked for retry by PNS.)
+						3. PARTICIPANT - Audit records related to a Participant/Recipient of a notification (i.e. An audit trail of type PARTICPIANT_NOT_FOUND_IN_LDAP_OR_DISABLED is generated when a user resolved by IAM is not found in LDAP when PNS searches for the user in LDAP)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The type of the audit record. Depending on the type the Atribute list values have different meaning. These attributes are exposed as Key->Value pairs with the Key holding the Attribute Name and Value holding the Attribute Value.
+					Types defined:
+					1. NOTIFICATION_CREATED - Audit generated when a notification request is received and persisted by PNS.
+					2. NOTIFICATION_UPDATED - Audit generated when a notification request is updated by PNS during processing.
+					3. NOTIFICATION_SCHEDULED - Audit generated when a notification is scheduled by PNS for processing.
+					4. REQUEST_TO_IAM_ASSEMBLED - Audit generated when PNS queries the IAM to resolve relations. The payload of the request is saved in the payload of the audit record.
+					5. RESPONSE_FROM_IAM_RECEIVED - Audit generated when PNS receives the response from IAM. The payload of the response is saved in the payload of the audit record.
+					6. PARTICPIANT_NOT_FOUND_IN_LDAP_OR_DISABLED - Audit record generated when a participant/recipient is not found in LDAP.
+					7. NOTIFICATION_PIC_ADDRESSING_LIST_FOR_USER - Audit record generated when PNS analyses the response returned by IAM. During processing a participant can be resolved to multiple roles for multiple PICs. Because the requirements were that a recipient receives only one email from a notification PNS will only store one PIC|ADDRESSING|ROLE combination (i.e. {PIC=514991916,Addressing=TO,ROLE=PARTICIPANT_CONTACT}) in the database and ignore the other. This audit record contains in the payload all the collection of PIC|ADDRESSING|ROLE combinations that the user was resolved by PNS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The subtype of the audit record. One type can have different subtypes to differentiate between audit records.
+					Types -> SubType defined:
+					1. Type: NOTIFICATION_CREATED - Audit generated when a notification request is received and persisted by PNS.
+						Subtype: NOTIFICATION_PERSISTED - The notification was received and saved by PNS without any issues.
+						Subtype: NOTIFICATION_PERSISTED_WITH_INVALID_ROLES - The notification was received and saved by PNS but the request contains invalid roles i.e. roles that do not exist in IAM.
+					2. Type: NOTIFICATION_UPDATED - Audit generated when a notification request is updated by PNS during processing.
+						Subtype: NOTIFICATION_UPDATED - The notification was updated by PNS (for example the status changed from SUBMITTED to PROCESSING).
+						Subtype: NOTIFICATION_UPDATED_APPROVAL_NEEDED - The notification needs approval from the Operations team in order to proceed with processing because it addresses a large population of recipients.
+					3. Type: NOTIFICATION_SCHEDULED - Audit generated when a notification is scheduled by PNS for processing.
+						Subtype: NOTIFICATION_SCHEDULED - The notification was scheduled by PNS for processing after it received the request from the client.
+						Subtype: NOTIFICATION_SCHEDULED_IAM - Notification was scheduled for processing as a result of a GRANT ProvisioningTypeEvent received from IAM.
+					4. Type: REQUEST_TO_IAM_ASSEMBLED - Audit generated when PNS queries the IAM to resolve relations. The payload of the request is saved in the payload of the audit record.
+						Subtype: REQUEST_TO_IAM_ASSEMBLED - Same as the type.
+					5. Type: RESPONSE_FROM_IAM_RECEIVED - Audit generated when PNS receives the response from IAM. The payload of the response is saved in the payload of the audit record.
+						Subtype: RESPONSE_FROM_IAM_RECEIVED - IAM returned the list of receipients without any errors.
+						Subtype: RESPONSE_FROM_IAM_ERROR - There was an error while calling IAM to resolve relations.
+					6. Type: PARTICPIANT_NOT_FOUND_IN_LDAP_OR_DISABLED - Audit record generated when a participant/recipient is not found in LDAP
+						Subtype: Same as the type.
+					7. Type: NOTIFICATION_PIC_ADDRESSING_LIST_FOR_USER - The user was resolved by IAM for the following list of PIC=Addressing=Role.
+						Subtype: Same as type.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Details" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A description about the audit record.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Attributes" type="tns:AuditRecordAttributeListType" minOccurs="0"/>
+			<xs:element name="Payload" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Some audit records (i.e. REQUEST_TO_IAM_ASSEMBLED, NOTIFICATION_PIC_ADDRESSING_LIST_FOR_USER) which need to store larger ammounts of information will store that information in the payload fields which is backed by a LOB in PNS database.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreatedTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>The time when the audit record was generated by PNS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProcessedTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>The time when the audit record was processed and saved PNS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AuditRecordAttributeListType">
+		<xs:annotation>
+					<xs:documentation>A list of attributes of the audit record. Each attribute is a Key->Value pair, with the Key describing the meaning and the Value containing the value. 
+					For example for type: PARTICPIANT_NOT_FOUND_IN_LDAP_OR_DISABLED the audit attribute list contains the following attributes: 1. PARTICIPANT_ID|ECASID 2. NOTIFICATION_MESSAGE_ID|GUID
+					The ECASID is the ecas of the participant that was not found in LDAP. The GUID is the GUID in the PNS database of the notification message that had the user specified beafore with an ecasid as a recipient.</xs:documentation>
+				</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Attribute" type="base:KeyValueType" minOccurs="0" maxOccurs="10"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Audit Trail Types START -->
+	<xs:annotation>
+		<xs:documentation>v1.0.0 - 20160908 - XSD creation</xs:documentation>
+	</xs:annotation>
+</xs:schema>

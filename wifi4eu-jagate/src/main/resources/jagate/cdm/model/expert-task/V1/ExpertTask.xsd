@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/expert-task/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:code="http://ec.europa.eu/research/fp/model/code/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:userref="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:expertref="http://ec.europa.eu/research/fp/model/expert-ref/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" targetNamespace="http://ec.europa.eu/research/fp/model/expert-task/V1" elementFormDefault="qualified" version="1.0.1">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert-ref/V1" schemaLocation="../../expert-ref/V1/ExpertRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:element name="ExpertTaskSummary" type="ExpertTaskSummaryType"/>
+	<xs:complexType name="ExpertTaskSummaryType">
+		<xs:sequence>
+			<xs:element name="TaskType" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The type for the task in the system. CCM type EvaluationTaskType in CDM context.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReviewType" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Type of review: SCIENTIFIC or ETHICS. CCM type EvaluationReviewType in CDM context.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Start date of the period asked (taken from the request)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>End date of the period asked (taken from the request)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Call" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>CCM2 code of the Call Deadline Model</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EvaluationSession" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Evaluation session name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EvaluationPanel" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Evaluation Panel in which the task has been done</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Topic" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Topic associated with the panel. CCM type FPDivision in H2020 context</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TypeOfAction" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Type of Action: Ia, RIA, CSA,.... CCM type Instrument in H2020 context</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActivityType" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Activity type done by the expert. CCM type EvaluationActivityType in CDM context.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TaskState" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The state of the current task. CCM type EvaluationTaskState in CDM context.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExpertReference" type="expertref:ExpertIdType">
+				<xs:annotation>
+					<xs:documentation>Expert reference aka expert candidature reference</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProposalNumber" type="projectref:ProjectNumberType">
+				<xs:annotation>
+					<xs:documentation>ProposalNumber with which the task has been associated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProposalEligibility" type="xs:boolean" default="true">
+				<xs:annotation>
+					<xs:documentation>Indicate if the proposal has been deemed eligible or not.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SignatureList" type="SignatureListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Full list of signatures for this task/expert combination</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SignatureListType">
+		<xs:sequence>
+			<xs:element name="SignatureDate" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The date/time registered in the system for the task signature.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:date">
+							<xs:attribute name="OnBehalf" type="xs:boolean">
+								<xs:annotation>
+									<xs:documentation>Tells whatever the signature was put by the expert or by a coordinator on behalf of the expert.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>2017-03-31 - 1.0.0 - This schema holds elements about expert tasks</xs:documentation>
+		<xs:documentation>2017-09-20 - 1.0.1 - Added SignatureList</xs:documentation>
+	</xs:annotation>
+</xs:schema>

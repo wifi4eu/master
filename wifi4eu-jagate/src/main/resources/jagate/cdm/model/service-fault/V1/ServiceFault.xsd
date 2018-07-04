@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns="http://ec.europa.eu/research/fp/model/service-fault/V1" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://ec.europa.eu/research/fp/model/service-fault/V1" 
+	elementFormDefault="qualified" 
+	version="1.0.0">
+	
+	<xs:annotation>
+		<xs:documentation>FaultInfo types in this schema can be referred to by fault message elements in service definitions. They will be conveniently mapped to exception types in the service implementation.</xs:documentation>
+	</xs:annotation> 
+	<xs:element name="BusinessFaultInfo" type="BusinessFaultInfoType"/>
+	<xs:complexType name="BusinessFaultInfoType">
+		<xs:annotation><xs:documentation>Generic business fault offering reference code and textual description.</xs:documentation></xs:annotation>
+		<xs:sequence>
+			<xs:element name="Code" type="xs:string"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ValidationFaultInfo" type="ValidationFaultInfoType"/>
+	<xs:complexType name="ValidationFaultInfoType">
+		<xs:annotation><xs:documentation>Container fault listing all errors resulting from a service input validation.</xs:documentation></xs:annotation>
+		<xs:sequence>
+			<xs:element name="Error" type="BusinessFaultInfoType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

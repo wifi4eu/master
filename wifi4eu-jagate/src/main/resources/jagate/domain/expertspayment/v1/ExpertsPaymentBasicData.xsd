@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 		xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+						targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/expertspaymentbasicdata/v1" 
+						xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/expertspaymentbasicdata/v1"
+						xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+						xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1"
+						xmlns:base="http://ec.europa.eu/research/fp/model/base/V1"
+						elementFormDefault="qualified" 
+						attributeFormDefault="unqualified" 
+						version="1.0.1">
+						
+					<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+					<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../../cdm/model/base/V1/Base.xsd" />
+					<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" schemaLocation="../../../domain/documents/v1/AresReference.xsd"/>
+					
+					<xs:complexType name="PaymentRequestHeaderType">
+						<xs:sequence>
+							<xs:element name="FinancialRegulation" type="coderef:CodeRefType" />
+							<xs:element name="UserReference" type="xs:string" />
+							<xs:element name="Currency" type="coderef:CodeRefType" minOccurs="0" />
+							<xs:element name="DateForExchangeRate" type="xs:date" minOccurs="0" />
+							<xs:element name="PaymentTotalAmount" type="xs:decimal" />
+							<xs:element name="ECReceptionDate" type="xs:date" />
+							<xs:element name="DueDate" type="xs:date" minOccurs="0" />
+							<xs:element name="LegalEntity" type="xs:string" />
+							<xs:element name="BankAccount" type="xs:string" />
+							<xs:element name="Beneficiary" type="xs:string" minOccurs="0" />
+							<xs:element name="ResponsibleUser" type="base:ECUserIdType" />
+							<xs:element name="ResponsibleOrganization" type="coderef:CodeRefType" />
+							<xs:element name="MessageToBeneficiary1" type="xs:string" />
+							<xs:element name="MessageToBeneficiary2" type="xs:string" minOccurs="0" />
+							<xs:element name="MessageToBeneficiary3" type="xs:string" minOccurs="0" />
+							<xs:element name="MessageToBeneficiary4" type="xs:string" minOccurs="0" />
+							<xs:element name="LateInterestRule" type="coderef:CodeRefType" />
+							<xs:element name="PaymentSuspensionsList" type="PaymentSuspensionsListType" minOccurs="0" />
+							<xs:element name="Remarks" type="xs:string" minOccurs="0" />
+							<xs:element name="JustificationCode" type="coderef:CodeRefType" />
+							<xs:element name="VatExemptionflag" type="xs:boolean" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+					
+					<xs:complexType name="PaymentSuspensionsListType">
+						<xs:sequence>
+							<xs:element name="PaymentSuspension" type="PaymentSuspensionType" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+					
+					<xs:complexType name="PaymentSuspensionType">
+						<xs:sequence>
+							<xs:element name="Number" type="xs:string" />
+							<xs:element name="Code" type="coderef:CodeRefType" />
+							<xs:element name="Reason" type="xs:string" minOccurs="0" />
+							<xs:element name="StartDate" type="xs:date" />
+							<xs:element name="StopDate" type="xs:date" />
+							<xs:element name="AresSuspensionDocumentsList" type="AresDocumentsListType" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+					
+					<xs:complexType name="AresDocumentsListType">
+						<xs:sequence>
+							<xs:element name="AresDocument" type="documents:DocumentEntryType" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+					
+					<xs:complexType name="PaymentRequestDetailListType">
+						<xs:sequence>
+							<xs:element name="PaymentRequestDetail" type="PaymentRequestDetailType" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+					
+					<xs:complexType name="PaymentRequestDetailType">
+						<xs:sequence>
+							<xs:element name="CommitmentPosition" type="xs:string" />
+							<xs:element name="PaymentBudgetLine" type="xs:string" />
+							<xs:element name="PaymentDetailAmount" type="xs:decimal" />
+							<xs:element name="PaymentDetailDG" type="coderef:CodeRefType" />
+							<xs:element name="PostingCriteriaList" type="PostingCriteriaListType" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+					
+					<xs:complexType name="PostingCriteriaListType">
+						<xs:sequence>
+							<xs:element name="PostingCriteria" type="PostingCriteriaType" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+					
+					<xs:complexType name="PostingCriteriaType">
+						<xs:sequence>
+							<xs:element name="PostingCriteriaTypeCode" type="xs:string" />
+							<xs:element name="PostingCriteriaCode" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+					
+					<xs:complexType name="DocumentLocationType">
+						<xs:sequence>
+							<xs:element name="DocLocName" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+					
+					<xs:complexType name="SupportingDocsListType">
+						<xs:sequence>
+							<xs:element name="supportingDocument" type="SupportingDocumentType" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+					<xs:complexType name="SupportingDocumentType">
+						<xs:sequence>
+							<xs:choice>
+								<xs:element name="AresDocument" type="documents:DocumentEntryType" />
+								<xs:element name="DocumentLocation" type="DocumentLocationType" />
+							</xs:choice>
+						</xs:sequence>
+					</xs:complexType>
+	
+					<xs:annotation>
+				        <xs:documentation>v1.0.0 - 20171108 - Initial version</xs:documentation>
+				        <xs:documentation>v1.0.1 - 20180110 - Created SupportingDocumentType - Changed postingcriteria to optional- Changed VATExemptionFlag to optional</xs:documentation>
+				    </xs:annotation>
+
+</xs:schema>

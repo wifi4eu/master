@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V5" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1"
+	xmlns:legalentity="http://ec.europa.eu/research/fp/model/legalentity/V7" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3"
+	targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V5" elementFormDefault="qualified"
+	version="5.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V7" schemaLocation="../../legalentity/V7/LegalEntity.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd" />
+	<xs:complexType name="LegalEntityFactUpdateEvent">
+		<xs:annotation>
+			<xs:documentation>Event Emitted when a fact of the Legal Entity is updated in the system.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="FactList" type="legalentity:ExtendedFactListType" />
+					<xs:element name="PIC" type="legalentityref:LegalEntityIdType" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+		<xs:documentation>v 3.0.0 - 20130109 : Updated imported version of legal-entity and legal-entity-ref. Added PIC to the
+			event.</xs:documentation>
+		<xs:documentation>v 4.0.0 - 20130226 : Correct the type of the fact list to ExtendedFactListType and use V6 of the
+			legal entity.</xs:documentation>
+		<xs:documentation>v 5.0.0 - 20130816: Usage of V7 of the legal entity</xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/minidashboardmessage/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" targetNamespace="http://ec.europa.eu/research/fp/model/minidashboardmessage/V2" elementFormDefault="qualified" version="2.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:complexType name="MiniDashBoardMessageType">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The unstructured text to be displayed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="order" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>The order to be used when displaying the message</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectMiniDashBoardMessageType">
+		<xs:complexContent>
+			<xs:extension base="MiniDashBoardMessageType">
+				<xs:sequence>
+					<xs:element name="PartnerFilter" type="PartnerListType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Optional list of PICs to restrict the visibility of the Message. If no PIC is listed, all partners of Project can see the message</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProjectMiniDashboardMessageListType">
+		<xs:sequence>
+			<xs:element name="ProjectId" type="projectref:ProjectRefType"/>
+			<xs:element name="MessageList" minOccurs="0"> 
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Message" type="ProjectMiniDashBoardMessageType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PartnerListType">
+		<xs:sequence>
+			<xs:element name="PICList">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PIC" type="legalentityref:LegalEntityIdType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v2.0.0 - 20160215 - Making response element optional</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v1.0.0 - 20140324 - Creation</xs:documentation>
+	</xs:annotation>
+</xs:schema>

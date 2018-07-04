@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/address/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" targetNamespace="http://ec.europa.eu/research/fp/model/address/V3" elementFormDefault="qualified" version="3.1.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:element name="Address" type="AddressType"/>
+	<xs:complexType name="PostalAddressType">
+		<xs:sequence>
+			<xs:element name="Street" type="xs:string" minOccurs="0"/>
+			<xs:element name="HouseNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="PoBox" type="xs:string" minOccurs="0"/>
+			<xs:element name="PostalCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="Cedex" type="xs:string" minOccurs="0"/>
+			<xs:element name="City" type="xs:string"/>
+			<xs:element name="Region" type="xs:string" minOccurs="0"/>
+			<xs:element name="NutsCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CountryCode" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The CCM code for the country.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AddressAdditionalContactType">
+		<xs:sequence>
+			<xs:element name="Phone" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Label" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Fax" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Label" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Email" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Label" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AddressType">
+		<xs:sequence>
+			<xs:element name="PostalAddress" type="PostalAddressType"/>
+			<xs:element name="AdditionalContactInformation" type="AddressAdditionalContactType" minOccurs="0"/>
+			<xs:element name="WebLink" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="Label" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>The Interinstitutional style guide states conventions used in the way to display/store addresses, electronic addresses and telephone numbers.</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>Those conventions are available at the following address: http://publications.europa.eu/code/en/en-390000.htm.</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v1.0.1 - 20100903 - Change country so that it is a switch between Country, a string and CountryCode, a coderef type</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v2.0.0 - 20110128 - Add an optional  label to phone/Fax/email/weblink and force the countrycode over the country</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.0.0 - 20120606 - Get rid of the groups and replace them with types. Put some elements mandatory in order to have a valid address</xs:documentation>
+	</xs:annotation>
+		<xs:annotation>
+		<xs:documentation>v3.1.0 - 20130620 - Only keep CountryCode and city as mandatory in PostalAddress</xs:documentation>
+	</xs:annotation>
+</xs:schema>

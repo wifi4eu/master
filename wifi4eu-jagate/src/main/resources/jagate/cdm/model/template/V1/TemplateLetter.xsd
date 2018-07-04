@@ -1,0 +1,40 @@
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/template/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:officer="http://ec.europa.eu/research/fp/model/officer/V3" targetNamespace="http://ec.europa.eu/research/fp/model/template/V1" elementFormDefault="qualified" version="1.2.1">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer/V3" schemaLocation="../../officer/V3/Officer.xsd"/>
+	<xs:element name="TemplateLetter" type="TemplateLetterDataType"/>
+	<xs:complexType name="TemplateLetterDataType">
+		<xs:sequence>
+			<xs:element name="HeaderSignatoryRole" type="xs:string" minOccurs="0"/>
+			<xs:element name="HeaderResponsibleDpt" type="xs:string" minOccurs="0"/>
+			<xs:element name="Location" type="xs:string" minOccurs="0"/>
+			<xs:element name="LetterDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="Initials" type="xs:string" minOccurs="0"/>
+			<xs:element name="MailCC" type="MailCCType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="SignatoryOfficer" type="SignatoryOfficerType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Footer" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MailCCType">
+		<xs:sequence>
+			<xs:element name="DisplayOrder" type="xs:integer"/>
+			<xs:element name="CCPerson" type="TemplateLetterPersonType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SignatoryOfficerType">
+		<xs:sequence>
+			<xs:element name="DisplayOrder" type="xs:integer"/>
+			<xs:element name="Role" type="xs:string" minOccurs="0"/>
+			<xs:element name="Officer" type="TemplateLetterPersonType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TemplateLetterPersonType">
+		<xs:sequence>
+			<xs:element name="TemplatePerson" type="officer:OfficerType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation> 20160408 - v1.2.1 - SYGMA - added Footer in the TemplateLetterDataType</xs:documentation>
+		<xs:documentation> 20140221 - v1.2.0 - made the LetterDate optional</xs:documentation>
+		<xs:documentation> 20140212 - v1.0.1 - changed type of the TemplatePerson to OfficerType in order to be able to export the ECAS id </xs:documentation>
+		<xs:documentation> 20131010 - v1.0.0 - SYGMA - creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

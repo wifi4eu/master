@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="Status" 
+	xmlns:jagstatus="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v2"
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/transaction/v2" 
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/transaction/v2">
+	
+	<wsdl:types>
+		<xsd:schema>
+			<xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v2" schemaLocation="../../../domain/transaction/v2/Transaction.xsd" />
+			<xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="GetStatus">
+		<wsdl:part element="jagstatus:GetStatus" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetROStatus">
+		<wsdl:part element="jagstatus:GetROStatus" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CheckROforInternalPayment">
+		<wsdl:part element="jagstatus:CheckROforInternalPayment" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CheckROByPic">
+		<wsdl:part element="jagstatus:CheckROByPic" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetStatusResponse">
+		<wsdl:part element="jagstatus:GetStatusResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="GetROStatusResponse">
+		<wsdl:part element="jagstatus:GetROStatusResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="CheckROforInternalPaymentResponse">
+		<wsdl:part element="jagstatus:CheckROforInternalPaymentResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="CheckROByPicResponse">
+		<wsdl:part element="jagstatus:CheckROByPicResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="TransactionStatusException">
+		<wsdl:part element="jagate:Exception" name="exception" />
+	</wsdl:message>
+
+	<wsdl:portType name="ITransactionService">
+		<wsdl:operation name="getStatus">
+			<wsdl:input message="GetStatus" />
+			<wsdl:output message="GetStatusResponse" />
+			<wsdl:fault name="TransactionStatusException" message="TransactionStatusException"/>
+		</wsdl:operation>
+		<wsdl:operation name="getROStatus">
+			<wsdl:input message="GetROStatus" />
+			<wsdl:output message="GetROStatusResponse" />
+			<wsdl:fault name="TransactionStatusException" message="TransactionStatusException"/>
+		</wsdl:operation>
+		<wsdl:operation name="checkROforInternalPayment">
+			<wsdl:input message="CheckROforInternalPayment" />
+			<wsdl:output message="CheckROforInternalPaymentResponse" />
+			<wsdl:fault name="TransactionStatusException" message="TransactionStatusException"/>
+		</wsdl:operation>
+		<wsdl:operation name="checkROByPic">
+			<wsdl:input message="CheckROByPic" />
+			<wsdl:output message="CheckROByPicResponse" />
+			<wsdl:fault name="TransactionStatusException" message="TransactionStatusException"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="ITransactionServiceBinding" type="ITransactionService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getStatus">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="TransactionStatusException">
+				<soap:fault name="TransactionStatusException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getROStatus">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="TransactionStatusException">
+				<soap:fault name="TransactionStatusException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="checkROforInternalPayment">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="TransactionStatusException">
+				<soap:fault name="TransactionStatusException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="checkROByPic">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="TransactionStatusException">
+				<soap:fault name="TransactionStatusException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="TransactionServiceV2">
+		<wsdl:port binding="ITransactionServiceBinding" name="TransactionServiceBinding">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

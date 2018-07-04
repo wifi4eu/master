@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/address/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" targetNamespace="http://ec.europa.eu/research/fp/model/address/V1" elementFormDefault="qualified" version="1.0.1">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:element name="Address" type="AddressType"/>
+	<xs:group name="PostalAddressGroup">
+		<xs:sequence>
+			<xs:element name="Street" type="xs:string" minOccurs="0"/>
+			<xs:element name="HouseNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="PoBox" type="xs:string" minOccurs="0"/>
+			<xs:element name="PostalCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="Cedex" type="xs:string" minOccurs="0"/>
+			<xs:element name="City" type="xs:string"/>
+			<xs:element name="Region" type="xs:string" minOccurs="0"/>
+			<xs:element name="Country" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Will be removed in version 3 of the model. See CountryCode Below</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CountryCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>CountryCode will supercede Country in Version 3 of the model. Providers must fill this field starting 09/2010. It is kept as non mandatory for backward compatibility with consumers deployed before 09/2010</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="ContactGroup">
+		<xs:sequence>
+			<xs:element name="Phone" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Fax" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Email" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="AddressType">
+		<xs:sequence>
+			<xs:group ref="PostalAddressGroup"/>
+			<xs:group ref="ContactGroup"/>
+			<xs:element name="WebLink" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

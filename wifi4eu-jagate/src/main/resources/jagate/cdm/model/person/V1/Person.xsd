@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/person/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:address="http://ec.europa.eu/research/fp/model/address/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" targetNamespace="http://ec.europa.eu/research/fp/model/person/V1" elementFormDefault="qualified" version="1.1.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V1" schemaLocation="../../address/V1/Address.xsd"/>
+	<xs:element name="Person" type="PersonType"/>
+	<xs:group name="NameGroup">
+		<xs:sequence>
+			<xs:element name="FamilyName" type="xs:string"/>
+			<xs:element name="FirstName" type="xs:string"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="PersonType">
+		<xs:sequence>
+			<xs:group ref="NameGroup"/>
+			<xs:element name="Gender" type="base:GenderType" minOccurs="0"/>
+			<xs:element name="Title" type="xs:string" minOccurs="0"/>
+			<xs:element name="PersonIdentificationList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PersonIdentification" type="PersonIdentificationType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Position" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: This field is more related to employement than person, candidate for removal?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Department" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: This field is more related to employement than person, candidate for removal?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Address" type="address:AddressType" minOccurs="0"/>
+			<xs:element name="NationalityCode" type="coderef:CodeRefType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>codes of type "Country"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CountryOfResidenceCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>code of type "Country". Current country of residence</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CountryOfBirthCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>code of type "Country"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateOfBirth" type="xs:date" minOccurs="0"/>
+			<xs:element name="PlaceOfBirth" type="xs:string" minOccurs="0"/>
+			<xs:element name="BirthFamilyName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>family name at birth</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CountryOfOrigin" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>should use code reference or just leave as string?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TownOfOrigin" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonIdentificationType">
+		<xs:sequence>
+			<xs:element name="IdentificationType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The type of Identification: PASSPORT, IDCARD</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IdentificationNumber" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The ID number itself</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValidUntil" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--1.1.0 - 20100730 - Added the PersonIdentificationType and a list of PersonIdentifications in the PersonType-->
+</xs:schema>

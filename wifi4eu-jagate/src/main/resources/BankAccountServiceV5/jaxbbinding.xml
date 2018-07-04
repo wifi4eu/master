@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jxb:bindings version="2.1" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<!-- first level -->
+    <jxb:bindings schemaLocation="../jagate/wsdls/bankaccount/v5/BankAccount_ITF.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.model" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <!-- second level -->
+    <jxb:bindings schemaLocation="../jagate/domain/base/v2/JAgateBase.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.ws.domain.base.v2" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    
+    <jxb:bindings schemaLocation="../jagate/domain/bankaccount/v5/BankAccount.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.ws.domain.bankaccount.v5" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+    <jxb:bindings schemaLocation="../jagate/cdm/model/bankaccount/V2/BankAccount.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.model.bankaccount.V2" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="../jagate/domain/visa/v3/Visa.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.ws.domain.visa.v3" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="../jagate/cdm/model/header/V1/Header.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.model.header.V1" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="../jagate/cdm/model/code-ref/V3/CodeRef.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.model.coderef.V3" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="../jagate/cdm/model/service-health/V1/ServiceHealth.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.model.servicehealth.V1" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <!-- third level -->
+    <jxb:bindings schemaLocation="../jagate/domain/constants/v1/Constants.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.ws.domain.constants.v1" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="../jagate/domain/reference/v1/ReferenceData.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.ws.domain.reference.v1" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="../jagate/cdm/model/base/V1/Base.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.model.base.V1" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="../jagate/cdm/model/person/V2/Person.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.model.person.V2" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="../jagate/cdm/model/address/V2/Address.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.model.address.V2" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="../jagate/cdm/model/service-context/V2/ServiceContext.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.model.servicecontext.V2" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="../jagate/cdm/model/code-ref/V2/CodeRef.xsd" node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.jagate.model.coderef.V2" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    
+   
+
+</jxb:bindings>

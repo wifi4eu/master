@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="Status" 
+	xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1"
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/visa/v1" 
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/visa/v1">
+
+	<wsdl:types>
+		<xsd:schema>
+			<xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" schemaLocation="../../../domain/visa/v1/Visa.xsd" />
+			<xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="GiveVisaRequest">
+		<wsdl:part element="visa:GiveVisaRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GiveVisaResponse">
+		<wsdl:part element="visa:GiveVisaResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="VisaException">
+		<wsdl:part element="jagate:Exception" name="exception" />
+	</wsdl:message>
+
+	<wsdl:portType name="IVisaService">
+		<wsdl:operation name="giveVisa">
+			<wsdl:input message="GiveVisaRequest" />
+			<wsdl:output message="GiveVisaResponse" />
+			<wsdl:fault name="VisaException" message="VisaException"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="IVisaServiceBinding" type="IVisaService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="giveVisa">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="VisaException">
+				<soap:fault name="VisaException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="VisaService">
+		<wsdl:port binding="IVisaServiceBinding" name="VisaServiceBinding">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

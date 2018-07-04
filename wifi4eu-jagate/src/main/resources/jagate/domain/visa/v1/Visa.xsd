@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns:transaction="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1"
+	xmlns:constants="http://ec.europa.eu/rdg/jagate/ws/domain/constants/v1"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1" schemaLocation="../../transaction/v1/Transaction.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/constants/v1" schemaLocation="../../constants/v1/Constants.xsd" />
+	
+	<xs:element name="GiveVisaRequest" type="GiveVisaRequestType"/>
+	<xs:element name="GiveVisaResponse" type="GiveVisaResponseType"/>
+	
+	<xs:complexType name="GiveVisaRequestType">
+		<xs:sequence>
+			<xs:element name="localObjectForeigId" type="jagate:NonEmptyString"/>
+			<xs:element name="transactionType" type="transaction:TransactionSubtype"/>
+			<xs:element name="requestingClient" type="constants:JagateClient"/>
+			<xs:element name="visa" type="Visa"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GiveVisaResponseType">
+		<xs:sequence>
+			<xs:element name="response" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BasicVisa">
+		<xs:sequence>
+			<xs:element name="AgentId" type="jagate:NonEmptyString"/>
+			<xs:element name="WorkflowCenterCode" type="jagate:NonEmptyString"/>
+			<xs:element name="DG" type="jagate:NonEmptyString"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Visa">
+		<xs:sequence>
+			<xs:element name="agentId" type="jagate:NonEmptyString"/>
+			<xs:element name="action" type="ActionType"/>
+			<xs:element name="agentType" type="AgentType"/>
+			<xs:element name="agentRole" type="AgentRole"/>
+			<xs:element name="otherAgentId" type="xs:string"/>
+			<xs:element name="WorkflowCenterCode" type="xs:string"/>
+			<xs:element name="DG" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="VisaType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ACCEPT" />
+			<xs:enumeration value="REJECT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AgentRole">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FINANCIAL_AGENT" />
+			<xs:enumeration value="OPERATIONAL_AGENT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AgentType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INITIATING_AGENT" />
+			<xs:enumeration value="VERIFYING_AGENT" />
+			<xs:enumeration value="AUTHORISING_OFFICER" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ACCEPT" />
+			<xs:enumeration value="REFUSAL_FOR_CORRECTION" />
+			<xs:enumeration value="SUSPEND" />
+			<xs:enumeration value="REFUSAL" />
+			<xs:enumeration value="TECHNICAL_REJECTION" />
+			<xs:enumeration value="TECHNICAL_ACCEPTANCE" />
+			<xs:enumeration value="PASSED_FOR_PAYMENT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VisaStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PENDING" />
+			<xs:enumeration value="GIVEN" />
+			<xs:enumeration value="ERROR" />
+			<xs:enumeration value="REQUIRED" />			
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<!-- embedded VISA -->
+	<xs:complexType name="VisaEmbeddedType">
+		<xs:sequence>
+			<xs:element name="AgentId" type="xs:string" />
+			<xs:element name="AgentType" type="xs:string" minOccurs="0" />
+			<xs:element name="TransTypeCd" type="xs:string" minOccurs="0" />
+			<xs:element name="TransAreaCd" type="xs:string" minOccurs="0" />
+			<xs:element name="CostCenterCd" type="xs:string" minOccurs="0" />
+			<xs:element name="OrgName" type="xs:string" minOccurs="0" />
+			<xs:element name="SuppliedAgentName" type="xs:string" minOccurs="0" />
+			<xs:element name="SignAsAgentType" type="xs:string" minOccurs="0" />
+			<xs:element name="ActionCd" type="xs:string" />
+			<xs:element name="Order" type="xs:positiveInteger"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

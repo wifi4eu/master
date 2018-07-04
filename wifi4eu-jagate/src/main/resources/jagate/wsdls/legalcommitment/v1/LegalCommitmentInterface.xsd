@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/legalcommitment/v1/interfaces" targetNamespace="http://ec.europa.eu/rdg/jagate/ws/legalcommitment/v1/interfaces"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" schemaLocation="../../../domain/visa/v1/Visa.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+
+	<xs:element name="UpdateLegalCommitment" type="UpdateLegalCommitmentRequestType" />
+	<xs:element name="UpdateLegalCommitmentResponse" type="UpdateLegalCommitmentResponseType" />
+
+	<xs:complexType name="UpdateLegalCommitmentRequestType">
+		<xs:sequence>
+			<xs:element ref="jagate:LocObjForeignId" />
+			<xs:element name="ContractSignDate" type="xs:date" />
+			<xs:element name="VisaData" type="visa:VisaEmbeddedType" />
+			<xs:element name="callback" type="jagate:CallbackType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UpdateLegalCommitmentResponseType">
+		<xs:complexContent>
+			<xs:extension base="jagate:IdentifiedResponseMessageType"/>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

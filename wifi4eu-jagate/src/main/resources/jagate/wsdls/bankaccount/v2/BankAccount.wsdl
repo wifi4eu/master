@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="bankAccountWS" 
+	xmlns:jag="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" 
+	xmlns:ba="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v2"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/bankaccount/v2" 
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/bankaccount/v2">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v2" schemaLocation="../../../domain/bankaccount/v2/BankAccount.xsd" />
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+	<wsdl:message name="GetBankAccountByNationalNumberRequest">
+		<wsdl:part element="ba:GetBankAccountByNationalNumberRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetBankAccountByIbanRequest">
+		<wsdl:part element="ba:GetBankAccountByIbanRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetBankAccountResponse">
+		<wsdl:part element="ba:GetBankAccountResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="BankAccountException">
+		<wsdl:part element="jag:Exception" name="exception" />
+	</wsdl:message>
+
+	<!-- Port definition -->
+	<wsdl:portType name="IBankAccountService">
+		<wsdl:documentation>Provides Bank Account related services.</wsdl:documentation>
+		<wsdl:operation name="getBankAccountByIban">
+			<wsdl:documentation>Gets the bank account holder for a given IBAN.</wsdl:documentation>
+			<wsdl:input message="GetBankAccountByIbanRequest" />
+			<wsdl:output message="GetBankAccountResponse" />
+			<wsdl:fault name="BankAccountException" message="BankAccountException" />
+		</wsdl:operation>
+		<wsdl:operation name="getBankAccountByNationalNumber">
+			<wsdl:documentation>Gets the bank account holder for a given national number.</wsdl:documentation>
+			<wsdl:input message="GetBankAccountByNationalNumberRequest" />
+			<wsdl:output message="GetBankAccountResponse" />
+			<wsdl:fault name="BankAccountException" message="BankAccountException" />
+		</wsdl:operation>		
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="IBankAccountServiceBinding" type="IBankAccountService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getBankAccountByIban">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="BankAccountException">
+				<soap:fault name="BankAccountException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getBankAccountByNationalNumber">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="BankAccountException">
+				<soap:fault name="BankAccountException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>		
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="BankAccountService">
+		<wsdl:port binding="IBankAccountServiceBinding" name="BankAccountServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/bankaccount/v2" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

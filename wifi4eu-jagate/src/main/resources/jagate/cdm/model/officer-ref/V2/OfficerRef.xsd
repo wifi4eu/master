@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/officer-ref/V2" xmlns:userref="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/officer-ref/V2" elementFormDefault="qualified" version="2.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:simpleType name="OfficerIdType">
+		<xs:restriction base="userref:UserIdType"/>
+	</xs:simpleType>
+	<xs:simpleType name="OfficerRoleType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Auditor"/>
+			<xs:enumeration value="Backup Financial Officer"/>
+			<xs:enumeration value="Backup Legal Officer"/>
+			<xs:enumeration value="Backup Project Officer"/>
+			<xs:enumeration value="Call Coordinator"/>
+			<xs:enumeration value="EWS Coordinator"/>
+			<xs:enumeration value="EWS Correspondent"/>
+			<xs:enumeration value="Expert Correspondent"/>
+			<xs:enumeration value="Financial Officer"/>
+			<xs:enumeration value="Legal Officer"/>
+			<xs:enumeration value="Panel Coordinator"/>
+			<xs:enumeration value="Project Officer"/>
+			<xs:enumeration value="PSEF Correspondent"/>
+			<xs:enumeration value="Negotiator"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:annotation>
+		<xs:documentation>v1.0.2 - 20100903 - Added "Negotiator" to the OfficeRoleType enumeration</xs:documentation>
+	</xs:annotation>
+</xs:schema>

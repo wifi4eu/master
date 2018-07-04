@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 2 (http://www.altova.com) by eFP7 Architects notebook (European Commision - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by European Commission (European Commission) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/base/V1" targetNamespace="http://ec.europa.eu/research/fp/model/base/V1" elementFormDefault="qualified" version="1.6.0">
+	<xs:complexType name="DateIntervalType">
+		<xs:sequence>
+			<xs:element name="FromDate" type="xs:dateTime"/>
+			<xs:element name="ToDate" type="xs:dateTime"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PageDescriptionType">
+		<xs:annotation>
+			<xs:documentation>Boundaries of requested data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="pageNumber" type="CountType"/>
+			<xs:element name="pageSize" type="CountType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClockType">
+		<xs:annotation>
+			<xs:documentation>Timer keeping count of time spent on a certain task</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="xs:positiveInteger"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="StartTime" type="xs:dateTime"/>
+			<xs:element name="TargetTime" type="xs:dateTime"/>
+			<xs:element name="Running" type="xs:boolean"/>
+			<xs:element name="DaysSpent" type="CountType"/>
+			<xs:element name="DaysLeft" type="CountType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocalRefType">
+		<xs:annotation>
+			<xs:documentation>Technical unique identifier, within the context of a particular application.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Source" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Source application name, managing amendment data under a technical identifier. E.g. NEF.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Id" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Technical identifier value used by source application to uniquely identify amendment. E.g. NEF excerciseid.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="URL" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VersionType">
+		<xs:sequence>
+			<xs:element name="Major" type="xs:positiveInteger"/>
+			<xs:element name="Minor" type="xs:positiveInteger" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectPeriodType">
+		<xs:annotation>
+			<xs:documentation>any period during the project</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FromMonth" type="MonthNumberType">
+				<xs:annotation>
+					<xs:documentation>period starts from this month in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ToMonth" type="MonthNumberType">
+				<xs:annotation>
+					<xs:documentation>period ends until this month in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="KeyValueType">
+		<xs:annotation>
+			<xs:documentation>Type used to hold a key-value pair.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Key" type="xs:string"/>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TemplateLegalInfoType">
+		<xs:annotation>
+			<xs:documentation>Type used to hold the legal version and legal name of a template (as published by the legal unit), e.g. .</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TemplateLegalName" type="xs:string"/>
+			<xs:element name="TemplateLegalVersion" type="VersionType"/>
+			<xs:element name="TemplateImplementationTag" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Field used to hold a tag of a template version implemented.</xs:documentation>
+				</xs:annotation>			
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AmountType">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="14"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PercentageType">
+		<xs:restriction base="xs:decimal"/>
+	</xs:simpleType>
+	<xs:simpleType name="GenderType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Female"/>
+			<xs:enumeration value="Male"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MonthNumberType">
+		<xs:restriction base="xs:positiveInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="YearType">
+		<xs:restriction base="xs:integer">
+			<xs:minExclusive value="1900"/>
+			<xs:maxInclusive value="9999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CountType">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProgramType">
+		<xs:annotation>
+			<xs:documentation>Legal Framework Program. Allowed values: 
+			FP6, FP7, CIP
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="RDGType">
+		<xs:annotation>
+			<xs:documentation>Research Directorate General. Allowed values:
+			 ENTR, FISH, CNECT (ex INFSO), RTD, MOV, ENER, REA, ERCEA
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="SystemsType">
+		<xs:annotation>
+			<xs:documentation>Identifies the IT systems that re used. Allowed values:
+			 AL2, EMI, EMPP, NEF, SYGMA, CPM, etc. Should this be changed to an enumeration ?	</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="ECUserIdType">
+		<xs:annotation>
+			<xs:documentation>Commission user identity allowing for single sign on (ECAS)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>v1.6.0 - 20160503 - SYGMA - Added complex type TemplateLegalInfoType which can be used to hold the legal version and legal name of a template</xs:documentation>
+		<xs:documentation>v1.5.0 - Added type KeyValueType which can be used to represent a key-value pair</xs:documentation>
+		<xs:documentation>v1.4.0 - SYGMA - changed the amount type restrictions to 14 total digits </xs:documentation>
+		<xs:documentation>v1.3.0 - SYGMA - added ProjectPeriodType complex type </xs:documentation>
+		<xs:documentation>v1.2.3 - Added SYGMA, CPM  as possible values in SystemsType annotation</xs:documentation>
+		<xs:documentation>v1.2.2 - Added CNECT as a possible value in RDGType annotation</xs:documentation>
+		<xs:documentation>v1.2.1 - Added SystemsType</xs:documentation>
+		<xs:documentation>v1.2.0 - PercentageType changed to decimal, MonthNumberType changed to positive integer with no restriction.</xs:documentation>
+		<xs:documentation>v1.1.0 - added LocalRefType </xs:documentation>
+		<xs:documentation>v1.0.1 - </xs:documentation>
+		<xs:documentation>v1.0.2 - 20100903 - Added REA and ERCEA to annotation of RDGType's allowed value</xs:documentation>
+		<xs:documentation>v1.0.3 - 20110201 - Added VersionType</xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,873 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by XMLSpy 2008 Enterprise Ed., Installed for 5 users (European Commission DG Regio) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/report/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:riskmitigation="http://ec.europa.eu/research/fp/model/project-risk-mitigation/V1" xmlns:deliverableref="http://ec.europa.eu/research/fp/model/project-deliverable-ref/V1" xmlns:milestoneref="http://ec.europa.eu/research/fp/model/project-milestone-ref/V1" xmlns:costbreakdown="http://ec.europa.eu/research/fp/model/project-costbreakdown/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:document="http://ec.europa.eu/research/fp/model/document/V5" xmlns:expertref="http://ec.europa.eu/research/fp/model/expert-ref/V1" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" xmlns:projectmariecurie="http://ec.europa.eu/research/fp/model/project-mariecurie/V5" targetNamespace="http://ec.europa.eu/research/fp/model/report/V3" elementFormDefault="qualified" version="3.3.9">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture all data related to project related reports</xs:documentation>
+	</xs:annotation>
+	
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V5" schemaLocation="../../document/V5/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert-ref/V1" schemaLocation="../../expert-ref/V1/ExpertRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-milestone-ref/V1" schemaLocation="../../project-milestone-ref/V1/ProjectMilestoneRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable-ref/V1" schemaLocation="../../project-deliverable-ref/V1/ProjectDeliverableRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" schemaLocation="../../project-reportingperiod/V4/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V3" schemaLocation="../../project-costbreakdown/V3/ProjectCostBreakdown.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-risk-mitigation/V1" schemaLocation="../../project-risk-mitigation/V1/ProjectRiskMitigation.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-mariecurie/V5" schemaLocation="../../project-mariecurie/V5/ProjectMarieCurie.xsd"/>
+	
+	<xs:simpleType name="ReportIdType">
+		<xs:restriction base="xs:positiveInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="ReportStatusType">
+		<xs:annotation>
+			<xs:documentation>In SESAM there are slightly other statuses used: Uncompleted, Completed, (NEW to come for PICo: Validated (by system)), Submitted, Rejected.
+		</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Accepted"/>
+			<xs:enumeration value="Draft"/>
+			<xs:enumeration value="Rejected"/>
+			<xs:enumeration value="Submitted"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ReportType" type="ReportType">
+		<xs:annotation>
+			<xs:documentation> type to be used for the final distribution report</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ReportType">
+		<xs:sequence>
+			<xs:group ref="ReportGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="ReportGroup">
+		<xs:sequence>
+			<xs:element name="Created" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="CreatorUser" type="base:ECUserIdType" minOccurs="0"/>
+			<xs:element name="DueInMonth" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Due In Month is the contractual month in project due for the report to be submitted. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DueDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The due date is either put or calculated from DueInMonth and startDate of the project.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeliveryDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The delivery date is the date the report is delivered.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="PeriodicReportType">
+		<xs:annotation>
+			<xs:documentation>type to be used for periodic report</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="ReportGroup"/>
+			<xs:element name="CreatorPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="CreatedForPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" nillable="0"/>
+			<xs:element name="Content">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CoverPage" type="ReportCoverPageType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Mandatory for SyGMa-generated Reports</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="AchievementsDeclaration" type="AchievementsDeclarationType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Mandatory for SyGMa-generated FP7 Reports</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PublishableSummary" type="PublishableSummaryType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>PublishableSummary element is made optional, because ERC Periodic Reports will not use it</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="CoreDocument" type="document:DocumentType" minOccurs="0"/>
+						<xs:element name="Deliverable" type="deliverableref:DeliverableRefType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="DeliverablesRemarks" type="xs:string" minOccurs="0"/>
+						<xs:element name="Milestone" type="milestoneref:MilestoneRefType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="FinancialSummaryAndUOR" type="FinancialSummaryAndUORType" minOccurs="0"/>
+						<xs:element name="FinancialSummaryDocument" type="document:DocumentCoreType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Check if this could be moved inside the FinancialSummaryAndUORType</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="FinancialStatements" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+									<xs:element name="UTROPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+									<xs:element name="TPPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+									<xs:element name="FormCDocument">
+										<xs:complexType>
+											<xs:complexContent>
+												<xs:extension base="document:DocumentCoreType"/>
+											</xs:complexContent>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="AdjustmentFormC" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="AdjustedReportingPeriod" type="reportingperiod:ReportingPeriodNumberType"/>
+												<xs:element name="Document" type="document:DocumentCoreType"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="FinancialStatementCertificate" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+									<xs:element name="UTROPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+									<xs:element name="TPPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+									<xs:element name="Document" type="document:DocumentCoreType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="DeclaredAmountForJRC" type="base:AmountType" minOccurs="0"/>
+						<xs:element name="Status" type="ReportStatusType" minOccurs="0"/>
+						<xs:element name="StatusUpdated" type="xs:dateTime" minOccurs="0"/>
+						<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+						<xs:element name="Questionnaires" type="QuestionnairesType" minOccurs="0"/>
+						<xs:element name="CriticalRisks" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Header" type="SectionHeaderType"/>
+									<xs:element name="UnforeseenRiskMitigation" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:complexContent>
+												<xs:extension base="riskmitigation:RiskMitigationDefinitionType">
+													<xs:attribute name="isNew" type="xs:boolean" default="false"/>
+												</xs:extension>
+											</xs:complexContent>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="StateOfPlay" type="StateOfPlayType" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="FundsAvailabilityList" type="FundsAvailabilityListType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>List of Availability of Funds in case of multiprefinacing </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="MultiplePrefinancing" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation> Declared consumption of the previous prefinancing</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="ConsumptionPrevAmount" type="base:AmountType" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation> Declared consumption of the previous prefinancing as amount</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="ConsumptionPrevPerc" type="base:PercentageType">
+										<xs:annotation>
+											<xs:documentation> Declared consumption of the previous prefinancing as percentage</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="FinalFinancialSummary" type="FinancialSummaryAndUORType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Consolidated Financial Summary for the whole project, to be submitted in the last Periodic Report</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PeriodicReportKind" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It will be used to differentiate between ERC Scientific and 'Standard' periodic reports</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinalReportType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the final report.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="ReportGroup"/>
+			<xs:element name="CreatorPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="CreatedForPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="Content">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PublishableSummary" type="PublishableSummaryType"/>
+						<xs:element name="UseAndDissemination">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Document" type="document:DocumentCoreType" minOccurs="0"/>
+									<xs:element name="Publication" type="PublicationType" minOccurs="0" maxOccurs="unbounded"/>
+									<xs:element name="Patent" type="PatentType" minOccurs="0" maxOccurs="unbounded"/>
+									<xs:element name="ExploitableForeground" type="ExploitableForegroundType" minOccurs="0" maxOccurs="unbounded"/>
+									<xs:element name="DisseminationActivity" type="DisseminationActivityType" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="SocietalImplication" type="document:DocumentType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>these are the questionnaires</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Status" type="ReportStatusType" minOccurs="0"/>
+						<xs:element name="StatusUpdated" type="xs:dateTime" minOccurs="0"/>
+						<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinalDistributionReportType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the final funding distribution report.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="ReportGroup"/>
+			<xs:element name="CreatorPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="CreatedForPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="Content">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Status" type="ReportStatusType" minOccurs="0"/>
+						<xs:element name="StatusUpdated" type="xs:dateTime" minOccurs="0"/>
+						<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="ScientificActivityGroup">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:positiveInteger"/>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Reporting Period Number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Created" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Timestamp of creation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreatorUser" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The User which created it</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>PENDING, VALIDATED</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StatusUpdated" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Timestamp of when the status was updated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Partner" type="legalentityref:LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>PIC</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Version" type="xs:positiveInteger"/>
+			<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="Patent" type="PatentType"/>
+	<xs:complexType name="PatentType">
+		<xs:sequence>
+			<xs:group ref="ScientificActivityGroup"/>
+			<xs:element name="Applicants" type="xs:string"/>
+			<xs:element name="Reference" type="xs:string"/>
+			<xs:element name="Subject" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Type of IP rights: Patents, Trademarks, Registered designs, Utility models, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Type of IP rights: Patents, Trademarks, Registered designs, Utility models, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ConfidentialFlag" type="xs:boolean"/>
+			<xs:element name="ForeseenEmbargoDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="URL" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ExploitableForeground" type="ExploitableForegroundType"/>
+	<xs:complexType name="ExploitableForegroundType">
+		<xs:sequence>
+			<xs:group ref="ScientificActivityGroup"/>
+			<xs:element name="Type" type="xs:string"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="ConfidentialFlag" type="xs:boolean"/>
+			<xs:element name="Owner" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Owner and other beneficiaries involved</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ForeseenEmbargoDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="Patents" type="xs:string"/>
+			<xs:element name="Product" type="xs:string"/>
+			<xs:element name="Sector" type="xs:string"/>
+			<xs:element name="Timetable" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Publication" type="PublicationType"/>
+	<xs:complexType name="PublicationType">
+		<xs:sequence>
+			<xs:group ref="ScientificActivityGroup"/>
+			<xs:element name="Order" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Sequential numbering for display</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Author" type="xs:string"/>
+			<xs:element name="PeriodicNumber" type="xs:string"/>
+			<xs:element name="PeriodicTitle" type="xs:string"/>
+			<xs:element name="PermanentIds" type="xs:string" minOccurs="0"/>
+			<xs:element name="Place" type="xs:string" minOccurs="0"/>
+			<xs:element name="Publisher" type="xs:string" minOccurs="0"/>
+			<xs:element name="RelevantPages" type="xs:string"/>
+			<xs:element name="Title" type="xs:string"/>
+			<xs:element name="DateOfPublication" type="xs:date"/>
+			<xs:element name="AccessOpen" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indicates confidentiality</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DisseminationActivity" type="DisseminationActivityType"/>
+	<xs:complexType name="DisseminationActivityType">
+		<xs:annotation>
+			<xs:documentation>used in CP and BSG funding schemes</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="ScientificActivityGroup"/>
+			<xs:element name="Order" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Sequential numbering of the dissemination activity for display</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Title" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Title of the activity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Date of the activity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Place" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Place of the activity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActivityType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Type of activity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AudienceTypeList" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Type of audience</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AudienceType" type="AudienceType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AudienceSize" type="xs:nonNegativeInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Size of audience</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CountriesAddressed" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Countries addressed by the dissemination activity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AudienceType">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Value" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PublishableSummarySectionType">
+		<xs:sequence>
+			<xs:element name="Order" type="xs:int"/>
+			<xs:element name="Title" type="xs:string"/>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>ProjectContext, WorkPerformed, ExpectedResults, PublicWebsiteURL</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Body" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PublishableSummaryBodyType">
+		<xs:sequence>
+			<xs:element name="PublishableSummarySection" type="PublishableSummarySectionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PublishableSummaryType">
+		<xs:sequence>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="PublishableSummaryBody" type="PublishableSummaryBodyType"/>
+			<xs:element name="Document" type="document:DocumentCoreType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReviewType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the project review.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Number" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>This is the review session Id which exists only when the session is created</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SessionTitle" type="xs:string"/>
+			<xs:element name="SessionStartDate" type="xs:date"/>
+			<xs:element name="SessionEndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="SessionPlanned" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A flag to indicate if the review session was planned or not</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SessionStatus" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>status can be OPEN, CLOSED, DELETED</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Report" type="ReviewReportType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReviewReportType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the review report done by expert</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="ReportIdType"/>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Individual, Consolidated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="ReportStatusType" minOccurs="0"/>
+			<xs:element name="StatusUpdated" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+			<xs:element name="Expert" type="expertref:ExpertIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReportCoverPageType">
+		<xs:sequence>
+			<xs:element name="AnnexIDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Mandatory for FP7 reports</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Version" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Mandatory for H2020 reports</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResearcherSupervisor" type="projectmariecurie:ResearcherSupervisorType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Researcher Supervisor for Marie Curie Individual Fellowships</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ObjectivesAchievementType">
+		<xs:annotation>
+			<xs:documentation>Level of Achievement for the Project Objectives</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FULLY_ACHIEVED"/>
+			<xs:enumeration value="MOSTLY_ACHIEVED"/>
+			<xs:enumeration value="FAILED_TO_ACHIEVE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AchievementsDeclarationType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the FP7 Coordinator Declaration about Project Achievements</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ObjectivesAchievement" type="ObjectivesAchievementType"/>
+			<xs:element name="PublicWebsiteUpToDate" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinancialSummaryAndUORType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the Periodic Report Financial Summary</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FinancialSummaryAndUORPerPartner" type="FinancialSummaryAndUORPerPartnerType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Aggregated information from all the Form Cs related to a partner</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinancialSummaryProjectTotals" type="costbreakdown:ActivityCostBreakDownType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Aggregated costs from all the submitted Form Cs ('Total' row of the Financial Summary)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinancialSummaryAndUORPerPartnerType">
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="UTROPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="TPPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="FinancialSummaryPerPartnerFormC" type="FinancialSummaryPerPartnerFormCType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Aggregated information about a single Form C submitted by a partner (1 row of the Financial Summary)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UseOfResourcesPerPartner" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="UseOfResource" type="costbreakdown:UseOfResourceWithCostCategory" maxOccurs="unbounded"/>
+						<xs:element name="UseOfResourcesTotal" type="base:AmountType"/>
+						<xs:element name="IsAdjustment" type="xs:boolean" minOccurs="0"/>
+						<xs:element name="AdjustmentPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="UseOfResourcesPerPartnerH2020FS" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Each of these elements corresponds to the UOR for a Financial Statement submitted by the legal entity</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="UseOfResourcePerPartnerCategoryH2020" type="costbreakdown:UseOfResourceH2020Type" maxOccurs="unbounded"/>
+						<xs:element name="isAdjustment" type="xs:boolean" minOccurs="0"/>
+						<xs:element name="AdjustmentPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinancialSummaryPerPartnerFormCType">
+		<xs:annotation>
+			<xs:documentation>type that contains the information of a Form C that will be used in a Financial Summary</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="IsAdjustment" type="xs:boolean"/>
+			<xs:element name="ActivityCost" type="costbreakdown:ActivityCostBreakDownType" maxOccurs="unbounded"/>
+			<xs:element name="InterestAmount" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="AdjustmentPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0"/>
+			<xs:element name="AdjustmentType" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:element name="ReimbursementRate" type="base:PercentageType" minOccurs="0"/>
+			<xs:element name="HasLRICertificate" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="IsCFSRequired" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="HasCFS" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QuestionnairesType">
+		<xs:sequence>
+			<xs:element name="SMEPhase1" type="SMEPhase1QuestionnaireType" minOccurs="0"/>
+			<xs:element name="DisseminationAndCommunication" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Header" type="SectionHeaderType"/>
+						<xs:element name="TotalFunding" type="QuestionType"/>
+						<xs:element name="NumberOfActivities" type="StructuredQuestionType"/>
+						<xs:element name="EstimatedAudienceReach" type="StructuredQuestionType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Innovation" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Header" type="SectionHeaderType"/>
+						<xs:element name="DevelopedActivities" type="StructuredQuestionType" minOccurs="0"/>
+						<xs:element name="InnovationToTheMarket" type="StructuredQuestionType" minOccurs="0"/>
+						<xs:element name="PrivateCompanies" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="InnovatingMarket" type="QuestionType"/>
+									<xs:element name="InnovatingMarketSMEs" type="QuestionType"/>
+									<xs:element name="InnovatingCompany" type="QuestionType"/>
+									<xs:element name="InnovatingCompanySMEs" type="QuestionType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Gender" type="GenderQuestionnaireType" minOccurs="0"/>
+			<xs:element name="OpenResearchData" type="OpenResearchDataQuestionnaireType" minOccurs="0"/>
+			<xs:element name="IPR" type="IPRQuestionnaireType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SMEPhase1QuestionnaireType">
+		<xs:sequence>
+			<xs:element name="Header" type="SectionHeaderType"/>
+			<xs:element name="CoachingActivities">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DidBenefit" type="QuestionType"/>
+						<xs:element name="Rating" type="QuestionType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IdeaPursuit">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="WillPursue" type="QuestionType"/>
+						<xs:element name="ReasonsToNotPursue" type="StructuredQuestionType" minOccurs="0"/>
+						<xs:element name="SourceOfFinance" type="StructuredQuestionType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EstimatedForecast">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Label" type="xs:string"/>
+						<xs:element name="SMEGrowth" type="SMESurveyListType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GrantResults" type="StructuredQuestionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SectionHeaderType">
+		<xs:sequence>
+			<xs:element name="SectionNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="SectionTitle" type="xs:string"/>
+			<xs:element name="NoDataLabel" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QuestionType">
+		<xs:sequence>
+			<xs:element name="OrderNumber" type="xs:int" minOccurs="0"/>
+			<xs:element name="Label" type="xs:string"/>
+			<xs:choice>
+				<xs:element name="Value" type="xs:string"/>
+				<xs:element name="BoolValue" type="xs:boolean"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StructuredQuestionType">
+		<xs:sequence>
+			<xs:element name="OrderNumber" type="xs:int" minOccurs="0"/>
+			<xs:element name="Label" type="xs:string" minOccurs="0"/>
+			<xs:element name="SubQuestion" type="QuestionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StateOfPlayType">
+		<xs:sequence>
+			<xs:element name="RiskMitigationRef" type="riskmitigation:RiskMitigationRefType"/>
+			<xs:element name="PeriodNumber" type="reportingperiod:ReportingPeriodNumberType"/>
+			<xs:element name="AppliedMeasures" type="xs:boolean"/>
+			<xs:element name="RiskMaterialise" type="xs:boolean"/>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="isNew" type="xs:boolean" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="GenderQuestionnaireType">
+		<xs:sequence>
+			<xs:element name="Header" type="SectionHeaderType"/>
+			<xs:element name="GenderDimension" type="QuestionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OpenDataSetType">
+		<xs:sequence>
+			<xs:element name="DOI" type="xs:string" minOccurs="0"/>
+			<xs:element name="Identifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="Accessible" type="xs:boolean"/>
+			<xs:element name="Reusable" type="xs:boolean"/>
+			<xs:element name="RelatedPublicationDOI" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="isNew" type="xs:boolean" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="OpenResearchDataQuestionnaireType">
+		<xs:sequence>
+			<xs:element name="Header" type="SectionHeaderType"/>
+			<xs:element name="OpenDataSet" type="OpenDataSetType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SMESurveyType">
+		<xs:sequence>
+			<xs:element name="SurveyType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Possible values: BEGINNING_OF_PROJECT, ACCOUNTABILITY_PERIOD. YEARLY_FORECAST </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SurveyPeriod" type="xs:integer" minOccurs="0"/>
+			<xs:element name="Turnover" type="xs:string"/>
+			<xs:element name="Employment" type="xs:string"/>
+		</xs:sequence>
+		<xs:attribute name="newToReport" type="xs:boolean" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="SMESurveyListType">
+		<xs:sequence>
+			<xs:element name="SMESurvey" type="SMESurveyType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPRQuestionnaireType">
+		<xs:sequence>
+			<xs:element name="Header" type="SectionHeaderType"/>
+			<xs:element name="IPRApplicationList" type="IPRApplicationListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPRApplicationListType">
+		<xs:sequence>
+			<xs:element name="IPRApplication" type="IPRApplicationType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPRApplicationType">
+		<xs:sequence>
+			<xs:element name="IPRType" type="xs:string"/>
+			<xs:element name="AppRefPrefix" type="xs:string" minOccurs="0"/>
+			<xs:element name="AppRefIdentifier" type="xs:string"/>
+			<xs:element name="AppDate" type="xs:date"/>
+			<xs:element name="AppTitle" type="xs:string"/>
+			<xs:element name="ApplicantList" type="ApplicantListType"/>
+			<xs:element name="IsAwarded" type="xs:string"/>
+			<xs:element name="AwardPrefix" type="xs:string" minOccurs="0"/>
+			<xs:element name="AwardIdentifier" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="isNew" type="xs:boolean" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="ApplicantListType">
+		<xs:sequence>
+			<xs:element name="Applicant" type="xs:string" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FundsAvailabilityListType">
+		<xs:annotation>
+			<xs:documentation> List of Funds of Availability for each beneficiary(top level, third party or UTRO)  in case of multiple prefinancing during the first reporting period</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FundsAvailabilityTotalAmount" type="base:AmountType">
+				<xs:annotation>
+					<xs:documentation> Total amount of the Funds Availability for all beneficiaries, third parties and UTRO</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FundsAvailability" type="FundsAvailabilityType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FundsAvailabilityType">
+		<xs:annotation>
+			<xs:documentation> Funds of Availability at top beneficiary level in case of multiple prefinancing during the first reporting period, it shows the availability amount for each PIC</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="UTROPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="TPPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="Amount" type="base:AmountType"/>
+			<xs:element name="LeadProcurerPIC" type="legalentityref:LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Only mandatory for PCP-PPI, COFUND-PCP, COFUND-PPI</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InKindContributionAmount" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Only for Third Parties for PCP-PPI, COFUND-PCP, COFUND-PPI</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InKindContributionBenPIC" type="legalentityref:LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Only for Third Parties for PCP-PPI, COFUND-PCP, COFUND-PPI</xs:documentation>
+				</xs:annotation>
+			</xs:element>			
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20100607 - v1.0.1</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>Bump LegalEntityRef, Document</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v2.0.0 - changed the type of Number to string, removed IsDelivered element and added Status, DueInMonth, DueDate, Version in DeliverableCoreType and DeliverableType. removed version from ReportType. New DeliverableRefType. New PublishableSummaryType. Changed the ReportType (added dueDate, dueInMonth, deliveryDate, document, removed binaryContent, partnerRelated changed to LegalEntityIdType ie use PIC). add also a choice between ReportingPeriod or a specific period start-end date. ReportType is a common type which is extended by PeriodicReportType and ReviewReportType. Changes in PeriodicReportType, added ReviewReportType</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v2.1.0 - DisseminationActivityType->AudienceSize is now minoccurs 0</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.0.0 - Updated to Document V5, legalentity-ref V3, project-reportingperiod V3</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.1.0 - added reference to project-costbreakdown V3; updated with elements needed for FP7 Periodic Reporting: added types ReportCoverPageType, ObjectivesAchievementType, AchievementsDeclarationType, FinancialSummaryAndUORType, FinancialSummaryAndUORPerPartnerType, FinancialSummaryPerPartnerFormCType, PublishableSummarySectionType, PublishableSummaryBodyType; added ReportCoverPage, AchievementsDeclaration, DeliverablesRemark, FinancialSummaryAndUOR elements in PeriodicReporting/content ; updated PublishableSummaryType with the PublishableSummaryBodyType, plus the Description has been made optional; the UTROPIC and TPPIC has been added to FinancialStatementType and FinancialStatementCertificateType; CoreDocument, FinancialSummaryDocument and FinancialStatements have been set as optional (because the structure will be used also to generate only the Financial Part or only the Technical Part </xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.1.1 - fix type of InterestAmount </xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.2.0 - added Import of riskmitigation namespace; updated ReportCoverPageType to support H2020, where both AnnexIDate (mandatory for FP7) and a new Version element (mandatory for H2020) are available; CriticalRisks and Questionnaires sections have been added to PeriodicReportType\Content; for Critical Risks, a StateOfPlayType has been added; for the Questionnaires: QuestionnairesType, SMEPhase1QuestionnaireType, SMESurveyType and SMESurveyListType (for the SME Phase 1 and SME Impact Questionnaires), GenderQuestionnaireType, OpenResearchDataQuestionnaireType, SectionHeaderType, QuestionType and QuestionStructuredType have been added;
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.2.1 - fix type of EstimatedForecast.Label and SurveyType.TurnOver;
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation> 20141127 - v3.2.2 - added by SyGMa
+		fixed typeof ReviewType.sessionTitle, StateOfPlay.periodNumber;
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.3.0 - added DeclaredAmountForJRC element in the PeriodicReport Content; added UseOfResourcesPerPartnerH2020FS to hold the use of resources for H2020 for a single Financial Statement of a Partner; added the AdjustmentPeriod to the FinancialSummaryPerPartnerFormCType; added DisseminationAndCommunication and Innovation elements in the Questionnaires; changed UseOfResourcesPerPartner to take into account Adjustment Form Cs: it is unbounded and includes isAdjustment and AdjustmentPeriod elements; added IPRApplicationListType, added ApplicantListType
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.3.1 - small fix to set element IPRApplicationList as optional
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.3.2 - small fix to set put back FinancialSummaryPerPartnerFormCType.AdjustmentPeriod where it was (changing order of elements in a sequence might be a problem for existing consumer implementations)
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.3.3 - 20150911 -  added a few elements to FinancialSummaryPerPartnerFormCType: ReimbursementRate, HasLRICertificate, AdjustmentType, IsCFSRequired, HasCFS; also added the import of CodeRef schema
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.3.4 - 20160210 -  added a few elements to Content for Multiple Prefinancing :  MultiplePrefinancing, FundsAvailabilityList, FundsAvailabilityType
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.3.5 - 20160212 -  added TTPIC and UTROPIC elements in FundsAvailabilityType, FundsAvailabilityTotalAmount element in FundsAvaibilityListType</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.3.6 - 20160512 - added FinalFinancialSummary as a new element of PeriodicReportType/Content
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.3.7 - 20160722 - added ResearcherSupervisor as a new element of PeriodicReportType/Content/CoverPage, optional (used for MarieCurie Individual Fellowship projects)
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.3.8 - 20170227 - added PeriodicReportKind as a new element of PeriodicReportType, optional (used for ERC Scientific Periodic Reports); PublishableSummary is made optional (because of ERC Periodic Reports)
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.3.9 - 20170421 - added a few elements to FundsAvailabilityType for PCP-PPI, COFUND-PCP, COFUND-PPI to manage the FundsAvailability Lead procurer and In Kind Contributions for Third Parties; the new elements are LeadProcurerPIC, InKindContributionAmount, InKindContributionBenPIC; all of them are optional
+		</xs:documentation>
+	</xs:annotation>	
+</xs:schema>

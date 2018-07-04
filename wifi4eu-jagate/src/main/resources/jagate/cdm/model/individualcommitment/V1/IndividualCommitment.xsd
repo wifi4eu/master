@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+
+<xs:schema	targetNamespace="http://ec.europa.eu/research/fp/model/individualcommitment/V1" 
+	xmlns="http://ec.europa.eu/research/fp/model/individualcommitment/V1" 
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified"  version="1.1.0">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:complexType name="IndividualCommitmentType">
+		<xs:sequence>
+			<xs:element name="InividualCommitmentKey" type="CommitmentKeyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The InividualCommitmentKey does not exist if the individual commitment is not yet created in ABAC.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CommitmentHeader" type="CommitmentHeaderType"/>
+			<xs:element name="CommitmentPositions" type="CommitmentPositionListType"/>
+			<xs:element name="multipleCL1possitionsWithAvailableBudget" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+					true: if it has been chosen a CL1 (NOT an appropriation) to initialize CL2, and there are more than one CL1 positions with available budget.
+					false: if it has been chosen a CL1 (NOT an appropriation) to initialize CL2, and there is at most one CL1 position with available budget.
+					not used: if it has been chosen an appropriation to initialize CL2
+				</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CommitmentHeaderType">
+		<xs:annotation>
+			<xs:documentation>Data related Commitment Header.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PaymentClass" type="coderef:CodeRefType"/>
+			<xs:element name="FDI" type="xs:date"/>
+			<xs:element name="LegalJustification" type="coderef:CodeRefType"/>
+			<xs:element name="CL1OrBLAbacReference" type="xs:string" minOccurs="0"/>
+			<xs:element name="AbacReferenceType" type="AbacReferenceTypeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This should always be filled when the CL1OrBLAbacReference is filled</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AbacReferenceTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CL1"/>
+			<xs:enumeration value="BL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CommitmentPositionListType">
+		<xs:sequence>
+			<xs:element name="CommitmentPosition" type="CommitmentPositionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CommitmentPositionType">
+		<xs:annotation>
+			<xs:documentation>Data related Commitment Positions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PositionKey" type="CommitmentKeyType" minOccurs="0"/>
+			<xs:choice>
+				<xs:element name="GlobalCommitmentPositionKey" type="CommitmentKeyType">
+					<xs:annotation>
+						<xs:documentation>The ABAC Foreign Object key for the Commitement Level 1.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Appropriation" type="AppropriationKeyType"/>
+			</xs:choice>
+			<xs:element name="Amount" type="base:AmountType"/>
+			<xs:element name="PolicyArea" type="coderef:CodeRefType"/>
+			<xs:element name="DGCode" type="coderef:CodeRefType"/>
+			<xs:element name="BookYear" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CommitmentKeyType">
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>The ABAC foreign id for commitment level 1 (global commitment) or commitment level 2 (individual commitment)</xs:documentation>
+			</xs:annotation>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AppropriationKeyType">
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>The ABAC key for Budget lines or appropriations.</xs:documentation>
+			</xs:annotation>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:annotation>
+		<xs:documentation> 20131010 - v1.0.0 - SYGMA - creation </xs:documentation>
+		<xs:documentation> 20140512 - v1.1.0 - SYGMA - added the AbacReferenceType </xs:documentation>
+	</xs:annotation>	
+
+	
+</xs:schema>

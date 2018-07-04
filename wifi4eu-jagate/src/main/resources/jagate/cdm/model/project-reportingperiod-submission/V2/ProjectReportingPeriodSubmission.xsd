@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Cyril Brigant (European Commission) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/project-reportingperiod-submission/V2" xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" xmlns:costclaim="http://ec.europa.eu/research/fp/model/costclaim/V3" xmlns:document="http://ec.europa.eu/research/fp/model/document/V3" xmlns:costanalysis="http://ec.europa.eu/research/fp/model/costanalysis/V2" xmlns:submission="http://ec.europa.eu/research/fp/model/project-artefact-submission/V2" xmlns="http://ec.europa.eu/research/fp/model/project-reportingperiod-submission/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0.1">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-artefact-submission/V2" schemaLocation="../../project-artefact-submission/V2/ProjectArtefactSubmission.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costanalysis/V2" schemaLocation="../../costanalysis/V2/CostAnalysis.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim/V3" schemaLocation="../../costclaim/V3/CostClaim.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V3" schemaLocation="../../document/V3/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" schemaLocation="../../project-reportingperiod/V3/ProjectReportingPeriod.xsd"/>
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture all data related to the submission</xs:documentation>
+	</xs:annotation>
+	<xs:element name="ProjectReportingPeriodSubmission" type="ProjectReportingPeriodSubmissionType" substitutionGroup="submission:ProjectArtefactSubmission"/>
+	<xs:complexType name="ProjectReportingPeriodSubmissionType">
+		<xs:complexContent>
+			<xs:extension base="submission:ProjectArtefactSubmissionType">
+				<xs:sequence>
+					<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" nillable="false"/>
+					<xs:element name="InvoiceKeyList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A submission may have various invoices.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="InvoiceKeys" type="costanalysis:LinkedFinancialTransactionRefType" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="DocumentList">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Document" type="document:DocumentType" minOccurs="0" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>Document Type: SummaryFormC, SummaryUseOfResources</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="PartnerCostClaimList">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="PartnerCostClaim" type="costclaim:PartnerCostClaimType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ClarificationText" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Response of the coordinator to a clarification request</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SuspensionList" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Suspension" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="startDate" type="xs:dateTime"/>
+											<xs:element name="stopDate" type="xs:dateTime" minOccurs="0"/>
+											<xs:element name="reason" type="xs:string" minOccurs="0"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="PaymentDate" type="xs:dateTime" minOccurs="0"/>
+					<xs:element name="ElectronicOnly" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="Clock" type="xs:integer" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>1.0.0 - creatation of the model - 20/07/2012</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>1.0.1 - The import to ProjectArtefactSubmissionRef was referencing a path above "model" - 29/01/2013</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>2.0.0 - PaymentDate added and import v2 of the  ProjectArtefactSubmission- 06/03/2013</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>2.0.1 - Remove the local definition of the event</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>2.0.2 - add new element ElectronicOnly - 10/07/2013</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>2.0.3 - add new elements SuspensionList and Clock - 01/09/2013</xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns:contractor="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v4"
+		xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v4"
+		targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v4"
+		elementFormDefault="qualified"
+		attributeFormDefault="unqualified"
+	    version="4.0">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v4" schemaLocation="../../contractor/v4/ContractorBasicData.xsd"/>
+
+	<xs:complexType name="AbstractContractorsDataType">
+		<xs:annotation>
+			<xs:documentation>Data related Commitment Contractors.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Primary Contractor: 1 It's mandatory.</xs:documentation>
+			</xs:annotation>
+			<xs:element name="principalContractors" type="AbstractPrincipalContractorListType" />
+			<xs:element name="secondaryContractors" type="AbstractSecondaryContractorListType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AbstractPrincipalContractorListType">
+		<xs:sequence>
+			<xs:element name="principalContractor" type="AbstractPrincipalContractorType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AbstractPrincipalContractorType">
+		<xs:annotation>
+			<xs:documentation>A Primary Contractor.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>The primary Contractor PIC (PDM Code), from this value gets the FelId.</xs:documentation>
+			</xs:annotation>
+            <xs:element ref="contractor:contractorPic" minOccurs="0"/>
+			<xs:element name="bankAccount" type="contractor:ContractorBankAccountType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="AbstractSecondaryContractorListType">
+        <xs:sequence>
+            <xs:element name="secondaryContractor" type="AbstractSecondaryContractorType"  minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="AbstractSecondaryContractorType">
+        <xs:sequence>
+            <xs:annotation>
+                <xs:documentation>For secondary contractors only the PIC is needed.</xs:documentation>
+            </xs:annotation>
+            <xs:element ref="contractor:contractorPic"/>
+        </xs:sequence>
+	</xs:complexType>
+
+	<xs:annotation>
+		<xs:documentation>v4.0 - 20180321 - Created abstract contractor types that can be extended to create other contractor types </xs:documentation>
+	</xs:annotation>
+
+</xs:schema>

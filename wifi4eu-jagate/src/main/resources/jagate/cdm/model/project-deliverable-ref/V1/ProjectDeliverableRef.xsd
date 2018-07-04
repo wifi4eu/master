@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/project-deliverable-ref/V1" xmlns="http://ec.europa.eu/research/fp/model/project-deliverable-ref/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:annotation>
+		<xs:documentation>
+		This schema intends to capture the project deliverable data. (externalised from report.xsd)
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:simpleType name="DeliverableNumberType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="DeliverableRefType">
+		<xs:sequence>
+			<xs:element name="Number" type="DeliverableNumberType"/>
+			<xs:element name="ForecastDeliveryDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>expected date of submitting deliverable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

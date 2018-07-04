@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by C.Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/eacea/model/projectDescription/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/eacea/model/projectDescription/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:element name="ProjectDescription" type="ProjectDescriptionType"/>
+	<xs:complexType name="ProjectDescriptionType">
+		<xs:sequence>
+			<xs:element name="Language" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Language of description</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Project description</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20140910 - v1.0.0</xs:documentation>
+	</xs:annotation>
+</xs:schema>

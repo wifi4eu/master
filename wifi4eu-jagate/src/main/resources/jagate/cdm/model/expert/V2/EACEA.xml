@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types>
+<EmployerOrganisationTypeTypes>
+	<EmployerOrganisationTypeType>ADE</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>ASS</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>CUS</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>EIA</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>INO</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>MES</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>NGO</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>NPS</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>PPE</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>PRS</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>PBS</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>OTH</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>SDE</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>SDE</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>SOP</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>HIE</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>VET</EmployerOrganisationTypeType>
+</EmployerOrganisationTypeTypes>
+<!--
+ADE	Adult education
+ASS	Associations
+CUS	Cultural sector
+EIA	EU Institution/Agency
+INO	International Organisation
+MES	Media sector
+NGO	Non-governmental organisation (NGO)
+NPS	Non-profit sector
+PPE	Pre-primary and primary education
+PRS	Private sector
+PBS	Public sector
+OTH	Others
+SDE	Secondary education
+SOP	Social partners (trade unions, etc.)
+HIE	Higher education
+VET	Vocational education and training
+ -->
+
+<CVType>
+	<PreviousActivitiesType>
+		<Activity>
+			<ActivityType>PE</ActivityType><!-- Proposal evaluator -->
+			<ActivityType>REE</ActivityType><!-- Reports evaluator -->
+			<ActivityType>LEX</ActivityType><!-- Lead experts -->
+			<ActivityType>EDI</ActivityType><!-- Editor -->
+			<ActivityType>CMA</ActivityType><!-- Conducting monitoring and audit activities-->
+			<ActivityType>CSS</ActivityType><!-- Conducting studies and surveys -->
+			<ActivityType>SEE</ActivityType><!-- Speaker at EU events -->
+			<ActivityType>OTH</ActivityType><!-- Other -->
+		</Activity>
+	</PreviousActivitiesType>
+</CVType>
+</Types>
+

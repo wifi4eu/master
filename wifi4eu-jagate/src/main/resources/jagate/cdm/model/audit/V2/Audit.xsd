@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/audit/V2" 
+	xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" 
+	xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" 
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" 
+	xmlns:docref="http://ec.europa.eu/research/fp/model/document-ref/V3" 
+	targetNamespace="http://ec.europa.eu/research/fp/model/audit/V2" elementFormDefault="qualified" version="2.0.1">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="../../document-ref/V3/DocumentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+
+	<xs:simpleType name="AllowedSuggestion">
+		<xs:annotation>
+			<xs:documentation>Values allowed for suggestion<br/>
+				<ul>
+					<li>TO_COST: explanation</li>
+					<li>TO_FUNDING: explanation</li>
+				</ul>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TO_COST"/>
+			<xs:enumeration value="TO_FUNDING"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SourceType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EXA"/>
+			<xs:enumeration value="EXTRA"/>
+			<xs:enumeration value="CDC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RecommendationStatusType">
+		<xs:annotation>
+			<xs:documentation>Only open and closed recommendations are provided by the service (the cancelled ones are not included)<br/>
+				<ul>
+					<li>OPEN: explanation</li>
+					<li>CLOSED: explanation</li>
+					<li>CANCELLED: explanation</li>
+					<li>SUSPENDED: explanation</li>
+				</ul>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OPEN"/>
+			<xs:enumeration value="CLOSED"/>
+			<xs:enumeration value="CANCELLED"/>
+			<xs:enumeration value="SUSPENDED" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CostStatementStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NO_COST_STATEMENT_RECEIVED"/>
+			<xs:enumeration value="SOME_COST_STATEMENTS_RECEIVED"/>
+			<xs:enumeration value="ALL_COST_STATEMENTS_RECEIVED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FavourType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BENEFICIARY"/>
+			<xs:enumeration value="COMMISSION"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AdjustmentType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PEN"/>
+			<xs:enumeration value="RO"/>
+			<xs:enumeration value="RNP"/>
+			<xs:enumeration value="WA"/>
+			<xs:enumeration value="NR"/>
+			<xs:enumeration value="PO"/>
+			<xs:enumeration value="NP"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="RecommendationType">
+		<xs:sequence>
+			<xs:element name="RecommendationInfo">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RecommendationId" type="xs:string"/>
+						<xs:element name="Source" type="SourceType" minOccurs="0"/>
+						<xs:element name="RecommendationStatus" type="RecommendationStatusType" minOccurs="0"/>
+						<xs:element name="SuspensionReason" type="xs:string" minOccurs="0"/>
+						<xs:element name="ResponsibleDpt" type="coderef:CodeRefType" minOccurs="0"/>
+						<xs:element name="RecAssignmentDate" type="xs:date" minOccurs="0"/>
+						<xs:element name="ImplementationDeadline" type="xs:date" minOccurs="0"/>
+						<xs:element name="RecClosingDate" type="xs:date" minOccurs="0"/>
+						<xs:element name="AosdResponsible" type="base:ECUserIdType" minOccurs="0"/>
+						<xs:element name="DelegatedAloList" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="DelegatedAlo" type="base:ECUserIdType" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ExtraCostStatements" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CstReceptionDeadline" type="xs:date" minOccurs="0"/>
+						<xs:element name="CstFollowupStatus" type="CostStatementStatusType" minOccurs="0"/>
+						<xs:element name="CstRevisionDate" type="xs:date" minOccurs="0"/>
+						<xs:element name="CstRevisionComment" type="xs:string" minOccurs="0"/>
+						<xs:element name="CstReceptionDate" type="xs:date" minOccurs="0"/>
+						<xs:element name="AdjExpectedInNextCst" type="xs:boolean" minOccurs="0"/>
+						<xs:element name="TotalAdjustementToCostStatement" type="base:AmountType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AdjustmentFollowup" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="InFavourOf" type="FavourType" minOccurs="0"/>
+						<xs:element name="AmountOfEcShareToBeAdjusted" type="base:AmountType" minOccurs="0"/>
+						<xs:element name="ForecastOfRevenue" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="ForecastAmount" type="base:AmountType" minOccurs="0"/>
+									<xs:element name="ForecastAbacRef" type="xs:string" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="LiquidatedDamagesApplied" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="AmountOfLiquidatedDamages" type="base:AmountType" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="ImplementationOfAdjustmen" type="AdjustmentType" minOccurs="0"/>
+						<xs:element name="ReasonForTheImplOfTheAdjustment" type="xs:string" minOccurs="0"/>
+						<xs:element name="AbacRef" type="xs:string" minOccurs="0"/>
+						<xs:element name="AmountAdjusted" type="base:AmountType" minOccurs="0"/>
+						<xs:element name="FollowupComment" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AuditResults" type="AuditResultType">
+		<xs:annotation>
+			<xs:documentation>Only audits  that have resulted in recommendations concerning follow-up of adjustments for RTD contracts are provided by this service. And only information pertinent to this follow-up is included.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Audit" type="AuditType">
+		<xs:annotation>
+			<xs:documentation>Only audits  that have resulted in recommendations concerning follow-up of adjustments for RTD contracts are provided by this service. And only information pertinent to this follow-up is included.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="AuditList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Audit" type="AuditType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Metadata" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="AuditType">
+		<xs:sequence>
+			<xs:element name="AuditInformation" type="AuditInformationType"/>
+			<xs:element name="ControlledContractList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ControlledContract" type="ControlledContractType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AuditInformationType">
+		<xs:sequence>
+			<xs:element name="AuditID" type="xs:string"/>
+			<xs:element name="LegalEntityPic" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="FrameworkProgram" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Framework Programme</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AuditReportReference" type="docref:DocumentRefType" minOccurs="0"/>
+			<xs:element name="OriginDG" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>DG, DIR, UNIT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateOfConclusionLetter" type="xs:date" minOccurs="0"/>
+			<xs:element name="BatchCluster" type="xs:string" minOccurs="0"/>
+			<xs:element name="BatchClusterSequence" type="xs:int" minOccurs="0"/>
+			<xs:element name="ManagedBy" type="base:ECUserIdType" minOccurs="0"/>
+			<xs:element name="SeriousnessOfFindings" type="xs:string" minOccurs="0"/>
+			<xs:element name="NatureOfFindings" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ControlledContractType">
+		<xs:sequence>
+			<xs:element name="ProjectNumber" type="projectref:ProjectNumberType"/>
+			<xs:element name="AuditResult" type="AuditResultType" minOccurs="0"/>
+			<xs:element name="Recommendation" type="RecommendationType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AuditResultType">
+		<xs:sequence>
+			<xs:element name="CostAcceptedByFO" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="AuditedCost" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="EligibleCost" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="ReceiptsAcceptByFO" type="base:AmountType" minOccurs="0"/>
+            <xs:element name="ReceiptsAcceptByAudit" type="base:AmountType" minOccurs="0"/>
+            <xs:element name="InterestAcceptByFO" type="base:AmountType" minOccurs="0"/>
+            <xs:element name="InterestAcceptByAudit" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="CDCAuditResults" type="CDCAuditResultsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CDCAuditResultsType">
+		<xs:sequence>
+			<xs:element name="AuditPeriodTo" type="xs:date" minOccurs="0"/>
+			<xs:element name="AuditPeriodFrom" type="xs:date" minOccurs="0"/>
+			<xs:element name="ExtrapolationSuggested" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="TransactionsAffected" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="ErrorType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ErrorRate" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="ErrorLevel" type="xs:string" minOccurs="0"/>
+			<xs:element name="AdjSuggestedByCourt" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="AdjSuggested" type="AllowedSuggestion" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20140701 - V2.0.1 - Added SUSPENDED in RecommendationStatusType; Added ReceiptsAcceptByFO, ReceiptsAcceptByAudit, InterestAcceptByFO, InterestAcceptByAudit to AuditResultType</xs:documentation>
+		<xs:documentation>20130901 - V2.0.0 - Document Creation</xs:documentation>
+	</xs:annotation>	
+</xs:schema>

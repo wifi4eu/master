@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+					xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentqueries/v1"
+					xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" 
+					targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentqueries/v1"
+					xmlns:commitmentData="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentBasicData/v1"
+					xmlns:legalCommitment="http://ec.europa.eu/rdg/jagate/ws/domain/legalCommitment/v1"
+					xmlns:callback="http://ec.europa.eu/rdg/jagate/ws/domain/callback/v1"
+					xmlns:contractor="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v1"
+					xmlns:workflow="http://ec.europa.eu/rdg/jagate/ws/domain/workflow/v1"
+					xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v1"
+					xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" 
+					xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1"
+					xmlns:reference="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1"					
+					elementFormDefault="qualified" 
+					attributeFormDefault="unqualified"
+					version="2.0.0">
+					
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1" schemaLocation="../../reference/v1/ReferenceData.xsd" />
+
+	<xs:element name="GetL1ByLocObjForeignIdRequest" type="GetL1ByLocObjForeignIdRequestType" />
+	<xs:element name="GetL1ByLocObjForeignIdResponse" type="GetL1ByLocObjForeignIdResponseType" />
+	
+	<xs:element name="GetCommitmentPositions" type="GetCommitmentPositionsRequestType" />
+	<xs:element name="GetCommitmentPositionsResponse" type="GetCommitmentPositionsResponse" />
+	<xs:element name="GetOpenCommitmentByIban" type="GetOpenCommitmentByIbanRequestType" />
+	<xs:element name="GetOpenCommitmentByIbanResponse" type="GetOpenCommitmentByIbanResponse" />
+	
+	<xs:element name="BudgetLineRequest" type="BudgetLineRequestType"/>
+	<xs:element name="BudgetLineResponse" type="BudgetLineResponseType" />
+	
+	<xs:element name="Level1CommitmentPositionRequest" type="Level1CommitmentPositionRequestType"/>
+	<xs:element name="Level1CommitmentPositionResponse" type="Level1CommitmentPositionResponseType"/>
+	
+	
+	<xs:complexType name="GetL1ByLocObjForeignIdRequestType">
+		<xs:sequence>
+			<xs:element name="localObjectForeigId" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GetL1ByLocObjForeignIdResponseType">
+		<xs:sequence>
+			<xs:element name="commitment" type="CommitmentL1HeaderType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CommitmentL1HeaderType">
+		<xs:sequence>
+			<xs:element name="LocalObjectForeigId" type="xs:string" />
+			<xs:element name="Title" type="xs:string" />
+			<xs:element name="FinalDueDate" type="xs:date" minOccurs="0" />
+			<xs:element name="LegalJustification" type="jagate:Ccm2Code" minOccurs="0" />
+			<xs:element name="Status" type="reference:EObjectStatusType" minOccurs="0" />
+			<xs:element name="Position" type="CommitmentL1PositionType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="CommitmentL1PositionType">
+		<xs:sequence>
+			<xs:element name="LocalObjectForeigId" type="xs:string" />
+			<xs:element name="DG" type="jagate:Ccm2Code" minOccurs="0" />
+			<xs:element name="PolicyArea" type="jagate:Ccm2Code" minOccurs="0" />
+			<xs:element name="BookYear" type="xs:string" minOccurs="0" />
+			<xs:element name="AcceptedAmount" type="xs:decimal" minOccurs="0" />
+			<xs:element name="ConsumedAmount" type="xs:decimal" minOccurs="0" />
+			<xs:element name="CarryForwardFlag" type="xs:boolean" minOccurs="0" />
+			<xs:element name="Appropriation" type="AppropriationType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>	
+					
+	<xs:complexType name="GetCommitmentPositionsRequestType">
+		<xs:sequence>
+			<xs:element ref="jagate:LocObjForeignId" />
+		</xs:sequence>
+	</xs:complexType>					
+					
+	<xs:complexType name="GetCommitmentPositionsResponse">
+		<xs:sequence>
+			<xs:element name="response" type="GetCommitmentPositionsResponseType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GetCommitmentPositionsResponseType">
+		<xs:sequence>
+			<xs:element name="CommitmentHeaderInfo" type="CommitmentHeaderInfoType" />
+			<xs:element name="Positions">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PositionInfo" type="PositionInfoType" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LegalEntities">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="LegalEntityInfo" type="LegalEntityInfoType" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CommitmentHeaderInfoType">
+		<xs:sequence>
+			<xs:element ref="jagate:LocObjForeignId" />
+			<xs:element name="UserReference" type="xs:string" />
+			<xs:element name="Status" type="xs:string" />
+			<xs:element name="ProposedFDI" type="xs:date" minOccurs="0" />
+			<xs:element name="FDI" type="xs:date" minOccurs="0" />
+			<xs:element name="FDIDelimiter" type="xs:string" minOccurs="0" />
+			<xs:element name="ContractSignatureDate" type="xs:date" minOccurs="0" />
+			<xs:element name="ContractEntryInForceDate" type="xs:date" minOccurs="0" />
+			<xs:element name="LegalJustification" type="jagate:Ccm2Code" />
+			<xs:element name="PaymentClass" type="jagate:Ccm2Code" />
+			<xs:element name="SupportingDocumentRef" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>	
+					
+	<xs:complexType name="PositionInfoType">
+		<xs:sequence>
+			<xs:element ref="jagate:LocObjForeignId" />
+			<xs:element name="CommitmentLevel1Link" type="xs:string" minOccurs="0" />
+			<xs:element name="Appropriation" type="xs:string" />
+			<xs:element name="AppropriationFundSource" type="xs:string" />
+			<xs:element name="DG" type="jagate:Ccm2Code" />
+			<xs:element name="PolicyArea" type="jagate:Ccm2Code" />
+			<xs:element name="BookYear" type="xs:string" />
+			<xs:element name="InWorkflowAmount" type="xs:decimal" />
+			<xs:element name="AcceptedAmount" type="xs:decimal" />
+			<xs:element name="ConsumedAmount" type="xs:decimal" />
+			<xs:element name="CarryForwardFlag" type="xs:boolean" />
+		</xs:sequence>
+	</xs:complexType>
+			
+	<xs:complexType name="LegalEntityInfoType">
+		<xs:sequence>
+			<xs:element ref="jagate:LocObjForeignId" minOccurs="0" />
+			<xs:element name="LegalName" type="xs:string" minOccurs="0" />
+			<xs:element name="IsPrincipalContractor" type="xs:boolean" />
+		</xs:sequence>
+	</xs:complexType>			
+			
+	<xs:complexType name="GetOpenCommitmentByIbanRequestType">
+		<xs:sequence>
+			<xs:element name="Iban" type="xs:string" />
+			<xs:element name="OnlyPrimaryContractors" type="xs:boolean" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GetOpenCommitmentByIbanResponse">
+		<xs:sequence>
+			<xs:element name="response" type="GetOpenCommitmentByIbanResponseType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetOpenCommitmentByIbanResponseType">
+		<xs:sequence>
+			<xs:element name="CommitmentHeaderInfo" type="CommitmentHeaderInfoType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Level1CommitmentPositionRequestType">
+		<xs:sequence>
+			<xs:element name="localObjectForeignId" type="xs:string"/>
+			<xs:element name="policyArea" type="jagate:Ccm2Code" minOccurs="0"/>
+			<xs:element name="DG" type="jagate:Ccm2Code" minOccurs="0"/>
+			<xs:element name="BookYear" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Level1CommitmentPositionResponseType">
+		<xs:sequence>
+			<xs:element name="position" type="Level1CommitmentPositionResultsType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Level1CommitmentPositionResultsType">
+		<xs:sequence>
+			<xs:element name="localKey" type="xs:string" />
+			<xs:element name="budgetLine" type="xs:string" />
+			<xs:element name="title" type="xs:string" />
+			<xs:element name="AcceptedAmount" type="xs:decimal"/>
+			<xs:element name="ConsumedAmount" type="xs:decimal"/>
+			<xs:element name="DG" type="jagate:Ccm2Code" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="BudgetLineRequestType">
+		<xs:annotation>
+			<xs:documentation>The query is restricted to budget lines on which we can create Commitment, i.e. their consumption type contains 'C' standing for Commitment
+				!
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="BudgetStructure" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Additionally to the other criteria, a 'like' filter will be applied on this field before returning the results.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FundingManagementArea" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>An exact matching (full search) is performed on this field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BudgetRegime" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>An exact matching (full search) is performed on this field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BudgetaryYear" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>If provided, it will be used, if not provided we'll use the parameterized value for the financial year and if parameter not defined,
+						we'll use the jvm system date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BudgetPosition" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A partial matching (partial search) is performed on this field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FundSource" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>An exact matching (full search) is performed on this field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FundManagementCenter" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>An exact matching (full search) is performed on this field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Localposition" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>An exact matching (full search) is performed on this field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>An exact matching (full search) is performed on this field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="BudgetLineResponseType">
+		<xs:sequence>
+			<xs:element name="BudgetLine"  type="BudgetLineResultsType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BudgetLineResultsType">
+		<xs:sequence>
+			<xs:element name="BudgetLine" type="xs:string" nillable="false"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="FundSource" type="xs:string"/>
+			<xs:element name="AcceptedAmount" type="xs:decimal"/>
+			<xs:element name="ConsumedAmount" type="xs:decimal"/>
+			<xs:element name="CurrentAvailableAmount" type="xs:decimal"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AppropriationType">
+		<xs:sequence>
+			<xs:element name="LocalObjectForeigId" type="xs:string"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="FundingSource" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

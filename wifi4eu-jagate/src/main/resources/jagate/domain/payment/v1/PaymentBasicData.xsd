@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 		xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+						targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/paymentBasicData/v1" 
+						xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/paymentBasicData/v1"
+						xmlns:base="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+						elementFormDefault="qualified" 
+						attributeFormDefault="unqualified" 
+						version="1.0.0">
+						
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd" />
+
+	<xs:element name="PaymentRequestHeaderType" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>CCM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+			<xs:documentation>The ABAC values are: Normal, Prefinancing, Negative Payment, Regularisation, Correction expense to Pre-financing, Pre-financing Correction</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestHeaderPaymentType" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>CCM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+			<xs:documentation>Field required for the Prefin payment and for the Correction expense to Pre-financing: values in ABAC: Prefinancing EU or Prefinancing Third Parties </xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestHeaderBudgetYear" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>Budgetary Year: 2012,2013...</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestHeaderGrossAmount" type="xs:decimal">
+		<xs:annotation>
+			<xs:documentation>Gross Amount to pay</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestHeaderNetAmount" type="xs:decimal">
+		<xs:annotation>
+			<xs:documentation>Net Amount to pay</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestHeaderLegalEntity" type="xs:integer">
+		<xs:annotation>
+			<xs:documentation>Coordinator PIC, CDM value to be transformed by JAgate in ABAC values</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestHeaderBankAccount" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>IBAN to be transformed by JAgate in ABAC code</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="PaymentRequestHeaderBankAccountNationalNumber" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>Bank Account national number (not IBAN) used in prefinV2.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="PaymentRequestHeaderLateInterestRule" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>Late interest rule to be applied.</xs:documentation>
+			<xs:documentation>CDM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestHeaderLatePaymentMethod" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>CDM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+			<xs:documentation>Values in ABAC: Interest paid after payment of principal payment and Interest paid with principal payment</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestHeaderECReceptionDate" type="xs:date">
+		<xs:annotation>
+			<xs:documentation>EC Reception Date</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestHeaderInvoiceReference" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>The Invoice related with the Payment</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestDetailPostingType" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>CDM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+			<xs:documentation>Commitment, Commitment on Envelope, non-Budgetary Detail, Income Detail, Vat Detail, Offset Detail</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestDetailAmount" type="xs:decimal">
+		<xs:annotation>
+			<xs:documentation>The amount for the detail</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestDetailNegativeAmount" type="base:negativeDecimal">
+		<xs:annotation>
+			<xs:documentation>The negative amount for the detail</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestDetailCommitmentPosition" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>The Commitment related to the payment line</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestDetailBudgetLine" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>The payment budget line related with the commitment position</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestDetailGLAccount" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>The GLAccount llinked to the payment line</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestDetailDGCode" type="xs:integer">
+		<xs:annotation>
+			<xs:documentation>CDM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+			<xs:documentation>The responsible DG/Organization for the payment detail line</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestDetailPolicyAreaCode" type="xs:integer">
+		<xs:annotation>
+			<xs:documentation>The policy that applies to the transaction</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PaymentRequestHeaderEWSJustification" type="xs:string" >
+		<xs:annotation>
+			<xs:documentation>The EWS Justification related with the Payment</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+</xs:schema>

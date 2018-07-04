@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema"
+					xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancingqueries/v1"
+					targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancingqueries/v1"
+					elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+
+	<xs:complexType name="CommitmentBudgetLinesType">
+		<xs:sequence>
+			<xs:element name="CommitmentBudgetLine" type="CommitmentBudgetLineType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="CommitmentBudgetLineType">
+		<xs:sequence>
+			<xs:element name="Budgetline" type="xs:string"/>
+			<xs:element name="CommitmentPosition" type="xs:string"/>
+			<xs:element name="AvailableAmount" type="xs:decimal"/>
+			<xs:element name="PaymentBudgetLines" type="PaymentBudgetLinesType" maxOccurs="unbounded"/>
+		</xs:sequence>	
+	</xs:complexType>
+
+
+	<xs:complexType name="PaymentBudgetLinesType">
+		<xs:sequence>
+			<xs:element name="PaymentBudgetLine" type="PaymentBudgetLineType" maxOccurs="unbounded"/>
+		</xs:sequence>	
+	</xs:complexType>
+
+	<xs:complexType name="PaymentBudgetLineType">
+		<xs:sequence>
+			<xs:element name="Budgetline" type="xs:string"/>
+			<xs:element name="FundingSource" type="xs:string"/>
+			<xs:element name="AvailableAmount" type="xs:decimal"/>
+		</xs:sequence>		
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/report/v1"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/report/v1"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:complexType name="ReportBaseData">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Base data for report query
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AbacId" type="xs:string" />
+			<xs:element name="Type" minOccurs="0" type="xs:string" />
+			<xs:element name="UserReference" minOccurs="0" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PrefinGuaranteeFund">
+		<xs:annotation>
+			<xs:documentation>Garantee fund detail object</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ReportBaseData">
+				<xs:sequence>
+					<xs:element name="BudgetLine" type="xs:string" />
+					<xs:element name="ReleaseGuaranteeFundBudgetLine" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="PrefinancingPaymentRequest">
+		<xs:annotation>
+			<xs:documentation>Prefinancing detail object</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ReportBaseData">
+				<xs:sequence>
+					<xs:element name="LegalEntityId" type="xs:string" />
+					<xs:element name="BankValueDate" type="xs:date" minOccurs="0" />
+					<xs:element name="WorkflowAmount" type="xs:decimal" />
+					<xs:element name="AcceptedAmount" type="xs:decimal" />
+					<xs:element name="ClearingAmount" type="xs:decimal" />
+					<xs:element name="OpenAmount" type="xs:decimal" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:simpleType name="GuaranteeStatusType">
+        <xs:restriction base="xs:string">
+        	<xs:enumeration value="INVALID"/>
+            <xs:enumeration value="IN_PROGRESS"/>
+            <xs:enumeration value="FINISHED"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+	<xs:complexType name="LegalEntityGuarantee">
+		<xs:annotation>
+			<xs:documentation>Legal Entity Guarantee detail object</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ReportBaseData">
+				<xs:sequence>
+					<xs:element name="Pic" type="xs:string" />
+					<xs:element name="Fel" type="xs:string" />
+					<xs:element name="GuaranteedAmount" type="xs:decimal" />
+					<xs:element name="ClaimedAmount" type="xs:decimal" minOccurs="0" />
+					<xs:element name="ReleasedAmount" type="xs:decimal" minOccurs="0" />
+					<xs:element name="AvailableAmount" type="xs:decimal" minOccurs="0" />
+					<xs:element name="ValidityStart" type="xs:date" />
+					<xs:element name="ValidityEnd" type="xs:date" minOccurs="0" />
+					<xs:element name="WorkflowStatus" type="xs:string" />
+					<xs:element name="AresReference" type="xs:string" minOccurs="0"/>
+					<xs:element name="GuaranteeStatus" type="GuaranteeStatusType" minOccurs="0" />
+					<xs:element name="AoVisaGiven" type="xs:date" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="PaymentRequest">
+		<xs:annotation>
+			<xs:documentation>Payment request detail object</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ReportBaseData">
+				<xs:sequence>
+					<xs:element name="LegalEntityId" type="xs:string" />
+					<xs:element name="BankValueDate" type="xs:string" minOccurs="0" />
+					<xs:element name="WorkflowAmount" type="xs:decimal" />
+					<xs:element name="AcceptedAmount" type="xs:decimal" />
+					<xs:element name="EntryAmount" type="xs:decimal" />
+					<xs:element name="PaymentOrderStatus" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="Invoice">
+		<xs:annotation>
+			<xs:documentation>Invoice Credit Note detail object
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ReportBaseData">
+				<xs:sequence>
+					<xs:element name="LegalEntityId" type="xs:string" />
+					<xs:element name="Created" type="xs:date" />
+					<xs:element name="GrossEntryAmount" type="xs:decimal" />
+					<xs:element name="GrossWorkflowAmount" type="xs:decimal" />
+					<xs:element name="GrossAmount" type="xs:decimal" />
+					<xs:element name="CertifiedAmount" type="xs:decimal" />
+					<xs:element name="Complete" type="xs:string" />
+					<xs:element name="WorkflowStatus" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="BudgetaryCommitment">
+		<xs:annotation>
+			<xs:documentation>Budgetary detail object</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ReportBaseData">
+				<xs:sequence>
+					<xs:element name="LegalEntityId" type="xs:string"
+						maxOccurs="unbounded" />
+					<xs:element name="Fdi" type="xs:date" />
+					<xs:element name="WorkflowAmount" type="xs:decimal" />
+					<xs:element name="CommittedAmount" type="xs:decimal" />
+					<xs:element name="ConsumptionWorkflow" type="xs:decimal" />
+					<xs:element name="ConsumedAmount" type="xs:decimal" />
+					<xs:element name="DecommittedAmount" type="xs:decimal" />
+					<xs:element name="OpenAmount" type="xs:decimal" />
+					<xs:element name="WorkflowStatus" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="Guarantee">
+		<xs:annotation>
+			<xs:documentation>Payment request detail object</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ReportBaseData">
+				<xs:sequence>
+					<xs:element name="State" type="xs:string" />
+					<xs:element name="ValidityStart" type="xs:date" />
+					<xs:element name="Currency" type="xs:string" />
+					<xs:element name="GuaranteedAmount" type="xs:decimal" />
+					<xs:element name="ReleasedAmount" type="xs:decimal" />
+					<xs:element name="ClaimedAmount" type="xs:decimal" />
+					<xs:element name="AvailableAmount" type="xs:decimal" />
+					<xs:element name="WorkflowStatus" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="RecoveryOrderForecastRevenue">
+		<xs:annotation>
+			<xs:documentation>Payment request detail object</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ReportBaseData">
+				<xs:sequence>
+					<xs:element name="ContractFile" type="xs:string" />
+					<xs:element name="LegalEntityId" type="xs:string" />
+					<xs:element name="Deadline" type="xs:date" />
+					<xs:element name="Cashing" type="xs:date" minOccurs="0" />
+					<xs:element name="TotalAccepted" type="xs:decimal" />
+					<xs:element name="CashedOffset" type="xs:decimal" />
+					<xs:element name="WaveCancelAdjust" type="xs:decimal" />
+					<xs:element name="Open" type="xs:decimal" />
+					<xs:element name="WorkflowStatus" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
+	<xs:complexType name="Coordinator">
+		<xs:annotation>
+			<xs:documentation>Prefinancing detail object</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="BankAccountId" type="xs:string" />
+			<xs:element name="BankAccountStatus" type="xs:string" />
+			<xs:element name="LegalEntityId" type="xs:string" />
+			<xs:element name="LegalEntityStatus" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+
+</xs:schema>

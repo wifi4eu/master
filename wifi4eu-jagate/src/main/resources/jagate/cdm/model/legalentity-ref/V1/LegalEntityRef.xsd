@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" elementFormDefault="qualified" version="1.1.1">
+	<xs:simpleType name="LegalEntityIdType">
+		<xs:annotation>
+			<xs:documentation>Identity used by participant systems (PDM). TODO: add restriction pattern</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="LegalEntityFinancialIdType">
+		<xs:annotation>
+			<xs:documentation>Identity used by accounting systems (ABAC). TODO: add restriction pattern</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:group name="LegalEntityRefGroup">
+		<xs:sequence>
+			<xs:element name="PIC" type="LegalEntityIdType"/>
+			<xs:element name="UTROPIC" type="LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the master PIC of the legal entity, in case of PIC Status SUSPENDED_UTRO. // UTROPIC is the pic to whom the partner (PIC) has been transferred to (and it will be the last in the tree, for example. A utro B utro C, we will have for PIC:A, UTROPIC: C)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FELId" type="LegalEntityFinancialIdType" minOccurs="0"/>
+			<xs:element name="LegalName" type="xs:string"/>
+			<xs:element name="Timestamp" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Time of last synchronization with LE source data</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Aliases" type="AliasesType" minOccurs="0"/>
+			<xs:element name="LocalReference" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="LegalEntityRef" type="LegalEntityRefType"/>
+	<xs:complexType name="LegalEntityRefType">
+		<xs:sequence>
+			<xs:group ref="LegalEntityRefGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="LegalEntityLocalId" type="LegalEntityLocalIdType"/>
+	<xs:complexType name="LegalEntityLocalIdType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="qualifier" default="OMM"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="AliasesType">
+		<xs:sequence>
+			<xs:element name="AliasPic" type="LegalEntityIdType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>1.1.1 - Add a new "AliasesType" for the Aliases elements. Apparently, this solves a Problem with an older version of Weblogic wsdlc. (20100729)</xs:documentation>
+	</xs:annotation>
+</xs:schema>

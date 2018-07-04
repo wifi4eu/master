@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+        xmlns:health="http://ec.europa.eu/research/fp/model/service-health/V1"
+        xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+        xmlns:base="http://ec.europa.eu/research/fp/model/base/V1"
+        xmlns="http://ec.europa.eu/rdg/jagate/ws/legalcommitmentqueries/v1/interfaces/"
+        targetNamespace="http://ec.europa.eu/rdg/jagate/ws/legalcommitmentqueries/v1/interfaces/"
+        elementFormDefault="qualified"
+        version="5.0">
+
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+               schemaLocation="../../../domain/base/v2/JAgateBase.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1"
+               schemaLocation="../../../cdm/model/base/V1/Base.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3"
+               schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/research/fp/model/service-health/V1"
+               schemaLocation="../../../cdm/model/service-health/V1/ServiceHealth.xsd"/>
+    <!-- Elements -->
+    <xs:element name="GetTrustFundsRequest" type="GetTrustFundsRequestType"/>
+    <xs:element name="GetTrustFundsResponse" type="GetTrustFundsResponseType"/>
+    <xs:element name="LegalCommitmentQueryException" type="jagate:JAgateException"/>
+
+    <xs:element name="CheckServiceHealthRequest" type="CheckServiceHealthRequestType"/>
+    <xs:element name="CheckServiceHealthResponse" type="CheckServiceHealthResponseType"/>
+
+    <xs:complexType name="GetTrustFundsRequestType">
+        <xs:sequence>
+            <xs:element name="LocalKeyPrefix" type="coderef:CodeRefType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>AbacTrustFundPrefixType code type. Prefix for trust funds</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="LocalKey" type="xs:string" minOccurs="0"/>
+            <xs:element name="UserReference" type="xs:string" minOccurs="0"/>
+            <xs:element name="AmountBiggerThan" type="xs:nonNegativeInteger" minOccurs="0"/>
+            <xs:element name="AmountLowerThan" type="xs:positiveInteger" minOccurs="0"/>
+            <xs:element name="ContractSignedAfterDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="ContractSignedBeforeDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="BeneficiaryLegalEntityID" type="xs:positiveInteger" minOccurs="0"/>
+            <xs:element name="BeneficiaryName" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GetTrustFundsResponseType">
+        <xs:sequence>
+            <xs:element name="LegalCommitmentList" type="LegalCommitmentListType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LegalCommitmentListType">
+        <xs:sequence>
+            <xs:element name="LegalCommitment" type="LegalCommitmentType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LegalCommitmentType">
+        <xs:sequence>
+            <xs:element name="ContractSignDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="InForceDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="LocalKey" type="xs:string"/>
+            <xs:element name="VersionLocalKey" type="xs:string"/>
+            <xs:element name="UserReference" type="xs:string" />
+            <xs:element name="Amount" type="base:AmountType" minOccurs="0"/>
+            <xs:element name="Type" type="xs:string" />
+            <xs:element name="TrustFund" type="xs:string" />
+            <xs:element name="ResponsibleOrganisation" type="xs:string" minOccurs="0"/>
+            <xs:element name="ManagingEntity" type="xs:string" minOccurs="0"/>
+            <xs:element name="FinancialTransparencySystem" type="FinancialTransparencySystemType" minOccurs="0"/>
+            <xs:element name="ClassificationCategory" type="xs:string" minOccurs="0"/>
+            <xs:element name="Beneficiaries" type="BeneficiaryListType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="FinancialTransparencySystemType">
+        <xs:sequence>
+            <xs:element name="FtsGeographicalZoneCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="FtsGeographicalActionLocation" type="xs:string" minOccurs="0"/>
+            <xs:element name="FtsSubject" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+
+    </xs:complexType>
+
+
+    <xs:complexType name="BeneficiaryListType">
+        <xs:sequence>
+            <xs:element name ="Beneficiary" type= "BeneficiaryType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="BeneficiaryType">
+        <xs:sequence>
+            <xs:element name="Role" type="xs:string"/>
+        <xs:element name="LocalKey" type="xs:string" />
+        <xs:element name="AccountGroup" type="xs:string" />
+        <xs:element name="LanguageCode" type="xs:string" minOccurs="0"/>
+        <xs:element name="OfficialName" type="xs:string" />
+        <xs:element name="OfficialAddress" type="OfficialAddressType" minOccurs="0"/>
+        <xs:element name="RegistrationInfo" type="RegistrationInfoType" minOccurs="0"/>
+        <xs:choice>
+            <xs:element name="NaturalPerson" type="NaturalPersonType" minOccurs="0"/>
+            <xs:element name="LegalBody" type="LegalBodyType" minOccurs="0"/>
+        </xs:choice>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="OfficialAddressType">
+<xs:sequence>
+    <xs:element name="City" type="xs:string" minOccurs="0"/>
+    <xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+    <xs:element name="POBox" type="xs:string" minOccurs="0"/>
+    <xs:element name="PostCode" type="xs:string" minOccurs="0"/>
+    <xs:element name="Street" type="xs:string" minOccurs="0"/>
+    <xs:element name="County" type="xs:string" minOccurs="0"/>
+    <xs:element name="Street2" type="xs:string" minOccurs="0"/>
+    <xs:element name="Street3" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RegistrationInfoType">
+<xs:sequence>
+    <xs:element name="RegistrationAuthority" type="xs:string" minOccurs="0"/>
+    <xs:element name="RegistrationDate" type="xs:date" minOccurs="0"/>
+    <xs:element name="RegistrationNumber" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="NaturalPersonType">
+<xs:sequence>
+    <xs:element name="BirthCountryCode" type="xs:string" minOccurs="0"/>
+    <xs:element name="BirthDate" type="xs:date" minOccurs="0"/>
+    <xs:element name="FirstName" type="xs:string" minOccurs="0"/>
+    <xs:element name="IdentificationNumber" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="LegalBodyType">
+        <xs:sequence>
+            <xs:element name="Acronym" type="xs:string" minOccurs="0"/>
+            <xs:element name="FpoTypeCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="IsNgo" type="xs:string" minOccurs="0"/>
+            <xs:element name="MainVatNumber" type="xs:string" minOccurs="0"/>
+            <xs:element name="OfficialName4" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CheckServiceHealthRequestType">
+        <xs:sequence>
+            <xs:element name="CheckServiceHealthIn" type="health:CheckServiceHealthInType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CheckServiceHealthResponseType">
+        <xs:sequence>
+            <xs:element name="CheckServiceHealthOut" type="health:CheckServiceHealthOutType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

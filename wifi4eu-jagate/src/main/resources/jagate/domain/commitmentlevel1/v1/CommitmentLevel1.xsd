@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentlevel1/v1"
+			xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentlevel1/v1"
+			xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+			elementFormDefault="qualified" 
+			attributeFormDefault="unqualified" 
+			version="1.0.0">
+
+	<xs:complexType name="CommitmentLevel1RequestType">	
+		<xs:sequence>
+			<xs:element name="commitmentHeader" type="CommitmentLevel1HeaderType"/>
+			<xs:element name="commitmentPositions" type="CommitmentLevel1PosisitionType" minOccurs="1" maxOccurs="4"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CommitmentLevel1HeaderType">
+		<xs:sequence>
+			<xs:element name="responsibleUser" type="xs:string"/>
+			<xs:element name="finalDateOfImplementation" type="xs:date"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CommitmentLevel1PosisitionType">
+		<xs:sequence>
+			<xs:element name="budgetLine" type="xs:string"/>
+			<xs:element name="amount" type="xs:decimal"/>
+			<xs:element name="dgCode" type="xs:int"/>
+		</xs:sequence>
+	</xs:complexType>	
+
+</xs:schema>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		   xmlns:prefinqueries="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancingqueries/v1"
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/prefinancingqueries/v1/interfaces" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/prefinancingqueries/v1/interfaces"
+		   elementFormDefault="qualified">
+
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancingqueries/v1" schemaLocation="../../../domain/prefinancingqueries/v1/PrefinancingQueries.xsd" />
+
+	<!-- Elements -->
+	<xs:element name="GetPaymentLinesRequest" type="GetPaymentLinesRequestType" />
+	<xs:element name="GetPaymentLinesResponse" type="GetPaymentLinesResponseType" />
+	<xs:element name="GetPaymentLinesException" type="jagate:JAgateException" />
+
+	<!-- types -->
+	<xs:complexType name="GetPaymentLinesRequestType">
+		<xs:sequence>
+			<xs:element name="CommitmentLocObjForeignId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GetPaymentLinesResponseType">
+		<xs:sequence>
+			<xs:element name="CommitmentId" type="xs:string"/>
+			<xs:element name="CommitmentBudgetLines" type="prefinqueries:CommitmentBudgetLinesType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

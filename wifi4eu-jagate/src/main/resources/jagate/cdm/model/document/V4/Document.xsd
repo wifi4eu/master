@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<!-- edited with XMLSpy v2010 (http://www.altova.com) by Th. A. (European Commission - DG INFSO) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/document/V4" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:documentref="http://ec.europa.eu/research/fp/model/document-ref/V3" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:ns1="http://ec.europa.eu/research/fp/model/document/V4" targetNamespace="http://ec.europa.eu/research/fp/model/document/V4" elementFormDefault="qualified" version="4.0.0">
+	<xs:annotation>
+		<xs:documentation>
+			Document as discussed by the Common Model Working Group of 2011-01-28
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="../../document-ref/V3/DocumentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:element name="Document" type="DocumentType"/>
+	<xs:complexType name="DocumentType">
+		<xs:sequence>
+			<xs:group ref="documentref:DocumentRefGroup"/>
+			<xs:element name="Type" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>ClassId is GenDocumentType</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MetaData" type="DocumentMetaDataType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Metadata should be consistent with the Document Type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VersionList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Version" type="DocumentVersionType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DocumentCore" type="DocumentCoreType"/>
+	<xs:complexType name="DocumentCoreType">
+		<xs:sequence>
+			<xs:group ref="documentref:DocumentRefGroup"/>
+			<xs:group ref="DocumentInfoGroup"/>
+			<!--<xs:element name="Type" type="DocumentTypeType"/>-->
+			<xs:element name="Type" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>ClassId is GenDocumentType</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DocumentAttachment" type="DocumentAttachmentType"/>
+	<xs:complexType name="DocumentAttachmentType">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:string"/>
+			<xs:element name="Name" type="xs:string" minOccurs="0"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="MimeType" type="xs:string" minOccurs="0"/>
+			<xs:element name="BinaryContent" type="xs:base64Binary" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Printable report data (typically pdf). This should be only used for "light" attachments</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AttachmentType" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>ClassId is AttachmentType</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LanguageCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ClassId is Language</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MetaData" type="DocumentMetaDataType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Metadata should be consistent with the Document Type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Size" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						it is the size of attachment in bytes
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="URI" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The URL+URN. A uniform resource name (URN) functions like a person's name, while a Uniform Resource Locator (URL) resembles that person's street address. In other words: the URN defines an item's identity, while the URL provides a method for finding it. (i.e. http:// = URL)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentAttachmentRefType">
+		<xs:choice>
+			<xs:element name="AttachmentId" type="xs:string"/>
+			<xs:element name="AttachmentRef" type="AttachmentRefType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="AttachmentRefType">
+		<xs:sequence>
+			<xs:group ref="documentref:DocumentRefGroup"/>
+			<xs:element name="AttachmentName" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--<xs:simpleType name="DocumentTypeType">
+		<xs:annotation>
+			<xs:documentation>document type; e.g.	NEGOTIATION_TECHNICAL_ANNEX, ORGANISATION_SUPPORTING_DOCUMENT</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>-->
+	<xs:simpleType name="DocumentSecurityClassType">
+		<xs:annotation>
+			<xs:documentation>document security classification; e.g. Public, EU Classified</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:element name="DocumentMetaData" type="DocumentMetaDataType"/>
+	<xs:complexType name="DocumentMetaDataType">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:int"/>
+			<xs:element name="Name" type="xs:string" minOccurs="0"/>
+			<xs:element name="Value" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DocumentClassification" type="DocumentClassificationType"/>
+	<xs:complexType name="DocumentClassificationType" abstract="true">
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="ProjectClassification" type="ProjectClassificationType"/>
+	<xs:complexType name="ProjectClassificationType">
+		<xs:complexContent>
+			<xs:extension base="DocumentClassificationType">
+				<xs:sequence>
+					<xs:element name="Project" type="projectref:ProjectIdType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="OrganisationClassification" type="OrganisationClassificationType"/>
+	<xs:complexType name="OrganisationClassificationType">
+		<xs:complexContent>
+			<xs:extension base="DocumentClassificationType">
+				<xs:sequence>
+					<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+					<xs:element name="LocalReference" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AccessibilityClassification" type="AccessibilityClassificationType"/>
+	<xs:complexType name="AccessibilityClassificationType">
+		<xs:complexContent>
+			<xs:extension base="DocumentClassificationType">
+				<xs:sequence>
+					<xs:element name="Action" type="xs:string"/>
+					<xs:element name="Role" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DocumentStorageType">
+		<xs:sequence>
+			<xs:element name="Repository" type="xs:string"/>
+			<xs:element name="RepositoryId" type="documentref:DocumentRepositoryIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the ID of this instance inside the repository. MANDATORY when retrieving data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Attachment" type="DocumentAttachmentType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="CreationTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>this is the business date of the document</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentVersionType">
+		<xs:sequence>
+			<xs:element name="VersionNumber" type="xs:string"/>
+			<xs:group ref="DocumentInfoGroup"/>
+			<xs:element name="MetaData" type="DocumentMetaDataType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Metadata should be consistent with the Document Type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Classification" type="DocumentClassificationType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="StorageList">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Storage" type="DocumentStorageType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="DocumentInfoGroup">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="Author" type="base:ECUserIdType" minOccurs="0"/>
+			<xs:element name="SecurityClass" type="DocumentSecurityClassType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:annotation>
+		<xs:documentation>20100607 - v2.0.1</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Bump ProjectRef, Coderef, LegalEntityRef</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20110131 - v3.0.0 - New document concept.</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20110314 - v3.0.1 - add a BinaryContent and Size element to the DocumentAttachmentType</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.0.2 - change the ID in the DocumentAttachmentType to string</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.1.0 - Add Metadata at Document and attachment levels. Add AttachmentType at Attachment level. This version covers PDMV5 needs (Note: this file is using legalentityref V1 but it is only for using LegalEntityIDType which has not changed in V2 of legalentityref.xsd</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v4.0.0 - Add LanguageCode in Attachment as optional. Add flag to indicate if attachment is an annex or not (default is main, false value for IsAnnex). AttachmentType is only one, not a list. Created new complexType DocumentAttachmentRefType and AttachmentRefType. Change DocumentType and AttachmentType to be CodeRefType. Import code-ref V3 (bump version)</xs:documentation>
+	</xs:annotation>
+</xs:schema>

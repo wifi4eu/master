@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		xmlns="http://ec.europa.eu/rdg/jagate/ws/recoveryorder/v2/interfaces" 
+		targetNamespace="http://ec.europa.eu/rdg/jagate/ws/recoveryorder/v2/interfaces"
+		elementFormDefault="qualified"
+		xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2"
+		xmlns:transaction="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1"
+		xmlns:health="http://ec.europa.eu/research/fp/model/service-health/V1"
+		xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v3"
+		xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+		version="2.0">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" schemaLocation="../../../domain/visa/v2/Visa.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1" schemaLocation="../../../domain/transaction/v1/Transaction.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v3" schemaLocation="../../../domain/project/v3/ProjectBasicData.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/service-health/V1" schemaLocation="../../../cdm/model/service-health/V1/ServiceHealth.xsd"/>
+	
+	<xs:element name="CreateRecoveryOrderRequest" type="CreateRecoveryOrderRequestType" />
+	<xs:element name="CreateRecoveryOrderResponse" type="CreateRecoveryOrderResponseType" />
+	<xs:element name="CheckServiceHealthRequest" type="CheckServiceHealthRequestType"/>
+	<xs:element name="CheckServiceHealthResponse" type="CheckServiceHealthResponseType"/>
+	<xs:element name="RecoveryOrderException" type="jagate:JAgateException" />
+	
+	<xs:complexType name="CreateRecoveryOrderRequestType">
+		<xs:annotation>
+			<xs:documentation>Create recovery order</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataType"/>
+			<xs:element name="RecoveryOrderHeaderData" type="RecoveryOrderHeaderDataType" />
+			<xs:element name="RecoveryOrderDetailsData" type="RecoveryOrderDetailsDataType" />
+			<xs:element name="AresDocuments" type="AresDocumentListType" minOccurs="0" />
+			<xs:element name="ScannedDocuments" type="ScannedDocumentListType" minOccurs="0" />
+			<xs:element name="VisaData" type="visa:SingleTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AresDocumentListType">
+		<xs:sequence>
+			<xs:element name="AresDocumentList" type="jagate:AresDocument" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ScannedDocumentListType">
+		<xs:sequence>
+			<xs:element name="ScannedDocumentList" type="jagate:ScannedDocument" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CreateRecoveryOrderResponseType">
+		<xs:sequence>
+			<xs:element name="Content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RecoveryOrderHeaderDataType">
+		<xs:sequence>
+			<xs:element name="CommitmentLocObjForeignId" type="xs:string" />
+			<xs:element name="Amount" type="xs:decimal" />
+			<xs:element name="LegalEntity" type="xs:string" minOccurs="0" />
+			<xs:element name="GuaranteeFundToCommissionRecovery" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Put this flag to true if the recovery order is created to recover money from the guarantee fund to the Commission. Otherwise false.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DebitNoteReason" type="xs:string" />
+			<xs:element name="ThirdPartyContact" type="xs:string" minOccurs="0" />
+			<xs:element name="PreliminaryInfo" type="xs:string" minOccurs="0" />
+			<xs:element name="LegalEntityMailingAddressLineNumber" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Indicate 0 for default address line number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RecoveryOrderDetailsDataType">
+		<xs:annotation>
+			<xs:documentation>Can be either PrefinancingDetailsList, ExpenditureDetailsList or both</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PrefinancingDetailsList" type="PrefinancingDetailListType" minOccurs="0" />
+			<xs:element name="ExpenditureDetailsList" type="ExpenditureDetailListType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrefinancingDetailListType">
+		<xs:sequence>
+			<xs:element name="PrefinancingDetail" type="PrefinancingDetailType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrefinancingDetailType">
+		<xs:sequence>
+			<xs:element name="Amount" type="xs:decimal" />
+			<xs:element name="Remarks" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ExpenditureDetailListType">
+		<xs:sequence>
+			<xs:element name="ExpenditureDetail" type="ExpenditureDetailType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ExpenditureDetailType">
+		<xs:sequence>
+			<xs:element name="QualificationCode" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>CCM Type: InvoiceRecoveryContextQualification | Context: GEN</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CommittingYear" type="xs:string" />
+			<xs:element name="DetectionYear" type="xs:string" />
+			<xs:element name="DetectedByCode" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>CCM Type: InvoiceRecoveryContextDetectedBy | Context: GEN</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ErrorCode" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>CCM Type: InvoiceRecoveryContextError | Context: GEN</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Amount" type="xs:decimal" />
+			<xs:element name="Remarks" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CheckServiceHealthRequestType">
+		<xs:sequence>
+			<xs:element name="checkServiceHealthIn" type="health:CheckServiceHealthInType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CheckServiceHealthResponseType">
+		<xs:sequence>
+			<xs:element name="checkServiceHealthOut" type="health:CheckServiceHealthOutType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:annotation>
+        <xs:documentation>v2.0 - 20180214 - Initial version</xs:documentation>
+        <xs:documentation>v2.1 - 20180322 - Add Ares documents - make scanned documents optional - add mailingaddress</xs:documentation>
+        <xs:documentation>v2.1 - 20180329 - Make prefinancingdetails, expendituredetails, aresDocumentList and ScannedDocumentList optional</xs:documentation>
+    </xs:annotation>
+			
+</xs:schema>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="BankAccountServiceV5" 
+	xmlns:ba="http://ec.europa.eu/rdg/jagate/ws/bankaccount/interfaces/v5"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/bankaccount/v5" 
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/bankaccount/v5">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/bankaccount/interfaces/v5" schemaLocation="BankAccount_ITF.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+	<wsdl:message name="GetBankAccountByNationalNumberRequest">
+		<wsdl:part element="ba:GetBankAccountByNationalNumberRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetAllBankAccountsByNationalNumberRequest">
+		<wsdl:part element="ba:GetAllBankAccountsByNationalNumberRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetBankAccountByIbanRequest">
+		<wsdl:part element="ba:GetBankAccountByIbanRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetAllBankAccountsByIbanRequest">
+		<wsdl:part element="ba:GetAllBankAccountsByIbanRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetAllBankAccountsByAbacIdRequest">
+		<wsdl:part element="ba:GetAllBankAccountsByAbacIdRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetBankAccountResponse">
+		<wsdl:part element="ba:GetBankAccountResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="CreateBankAccountRequest">
+		<wsdl:part element="ba:CreateBankAccountRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CreateBankAccountResponse">
+		<wsdl:part element="ba:CreateBankAccountResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="FollowUpBankAccountRequest">
+		<wsdl:part element="ba:FollowUpBankAccountRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="FollowUpBankAccountResponse">
+		<wsdl:part element="ba:FollowUpBankAccountResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="CheckCreateBankAccountRequest">
+		<wsdl:part element="ba:CheckCreateBankAccountRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CheckCreateBankAccountResponse">
+		<wsdl:part element="ba:CheckCreateBankAccountResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="CreateLEBALinkRequest">
+		<wsdl:part element="ba:CreateLEBALinkRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CreateLEBALinkResponse">
+		<wsdl:part element="ba:CreateLEBALinkResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="CheckBankAccountFormatRequest">
+		<wsdl:part element="ba:CheckBankAccountFormatRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CheckBankAccountFormatResponse">
+		<wsdl:part element="ba:CheckBankAccountFormatResponse" name="response" />
+	</wsdl:message>
+    <wsdl:message name="CheckServiceHealthRequest">
+        <wsdl:part element="ba:CheckServiceHealthRequest" name="request"/>
+    </wsdl:message>
+    <wsdl:message name="CheckServiceHealthResponse">
+        <wsdl:part element="ba:CheckServiceHealthResponse" name="response"/>
+    </wsdl:message>
+
+	<wsdl:message name="BankAccountException">
+		<wsdl:part element="ba:BankAccountException" name="exception" />
+	</wsdl:message>
+
+	<!-- Port definition -->
+	<wsdl:portType name="IBankAccountService">
+		<wsdl:documentation>Provides Bank Account related services.</wsdl:documentation>
+		<wsdl:operation name="getBankAccountByIban">
+			<wsdl:documentation>Gets the bank account holder for a given IBAN.</wsdl:documentation>
+			<wsdl:input message="GetBankAccountByIbanRequest" />
+			<wsdl:output message="GetBankAccountResponse" />
+			<wsdl:fault name="BankAccountException" message="BankAccountException" />
+		</wsdl:operation>
+		<wsdl:operation name="getBankAccountByNationalNumber">
+			<wsdl:documentation>Gets the bank account holder for a given national number.</wsdl:documentation>
+			<wsdl:input message="GetBankAccountByNationalNumberRequest" />
+			<wsdl:output message="GetBankAccountResponse" />
+			<wsdl:fault name="BankAccountException" message="BankAccountException" />
+		</wsdl:operation>
+		<wsdl:operation name="createBankAccount">
+			<wsdl:documentation>Creates a Bank Account in ABAC.</wsdl:documentation>
+			<wsdl:input message="CreateBankAccountRequest" />
+			<wsdl:output message="CreateBankAccountResponse" />
+			<wsdl:fault name="BankAccountException" message="BankAccountException"/>
+		</wsdl:operation>
+		<wsdl:operation name="followUpBankAccount">
+			<wsdl:documentation>Follows up a Bank Account in ABAC.</wsdl:documentation>
+			<wsdl:input message="FollowUpBankAccountRequest" />
+			<wsdl:output message="FollowUpBankAccountResponse" />
+			<wsdl:fault name="BankAccountException" message="BankAccountException"/>
+		</wsdl:operation>
+        <wsdl:operation name="checkCreateBankAccount">
+            <wsdl:documentation>Checks if a Bank Account can be createdin ABAC.</wsdl:documentation>
+            <wsdl:input message="CheckCreateBankAccountRequest" />
+            <wsdl:output message="CheckCreateBankAccountResponse" />
+            <wsdl:fault name="BankAccountException" message="BankAccountException"/>
+        </wsdl:operation>
+		<wsdl:operation name="createLEBALink">
+			<wsdl:documentation>Creates a Bank Account in ABAC.</wsdl:documentation>
+			<wsdl:input message="CreateLEBALinkRequest" />
+			<wsdl:output message="CreateLEBALinkResponse" />
+			<wsdl:fault name="BankAccountException" message="BankAccountException" />		
+		</wsdl:operation>
+		<wsdl:operation name="getAllBankAccountsByIban">
+			<wsdl:documentation>Gets all the bank account holders for a given IBAN.</wsdl:documentation>
+			<wsdl:input message="GetAllBankAccountsByIbanRequest" />
+			<wsdl:output message="GetBankAccountResponse" />
+			<wsdl:fault name="BankAccountException" message="BankAccountException" />
+		</wsdl:operation>	
+		<wsdl:operation name="getAllBankAccountsByNationalNumber">
+			<wsdl:documentation>Gets all the bank account holders for a given national number.</wsdl:documentation>
+			<wsdl:input message="GetAllBankAccountsByNationalNumberRequest" />
+			<wsdl:output message="GetBankAccountResponse" />
+			<wsdl:fault name="BankAccountException" message="BankAccountException" />
+		</wsdl:operation>		
+		<wsdl:operation name="getAllBankAccountsByAbacId">
+			<wsdl:documentation>Gets all the bank account holders for a given ABAC ID.</wsdl:documentation>
+			<wsdl:input message="GetAllBankAccountsByAbacIdRequest" />
+			<wsdl:output message="GetBankAccountResponse" />
+			<wsdl:fault name="BankAccountException" message="BankAccountException" />
+		</wsdl:operation>
+		<wsdl:operation name="checkBankAccountFormat">
+			<wsdl:documentation>Checks if the provided bank account number format is valid.</wsdl:documentation>
+			<wsdl:input message="CheckBankAccountFormatRequest" />
+			<wsdl:output message="CheckBankAccountFormatResponse" />
+			<wsdl:fault name="BankAccountException" message="BankAccountException" />
+		</wsdl:operation>
+		<wsdl:operation name="CheckServiceHealth">
+			<wsdl:documentation>Diagnostic operation to monitor service health.</wsdl:documentation>
+			<wsdl:input message="CheckServiceHealthRequest"/>
+			<wsdl:output message="CheckServiceHealthResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="IBankAccountServiceBindingV5" type="IBankAccountService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getBankAccountByIban">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="BankAccountException">
+				<soap:fault name="BankAccountException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getBankAccountByNationalNumber">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="BankAccountException">
+				<soap:fault name="BankAccountException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="createBankAccount">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="BankAccountException">
+				<soap:fault name="BankAccountException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="followUpBankAccount">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="BankAccountException">
+				<soap:fault name="BankAccountException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+        <wsdl:operation name="checkCreateBankAccount">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="BankAccountException">
+                <soap:fault name="BankAccountException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+		<wsdl:operation name="createLEBALink">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="BankAccountException">
+				<soap:fault name="BankAccountException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getAllBankAccountsByIban">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="BankAccountException">
+				<soap:fault name="BankAccountException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getAllBankAccountsByNationalNumber">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="BankAccountException">
+				<soap:fault name="BankAccountException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getAllBankAccountsByAbacId">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="BankAccountException">
+				<soap:fault name="BankAccountException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="checkBankAccountFormat">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="BankAccountException">
+				<soap:fault name="BankAccountException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+        <wsdl:operation name="CheckServiceHealth">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="BankAccountServiceV5">
+		<wsdl:port binding="IBankAccountServiceBindingV5" name="BankAccountServiceBindingV5">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/bankaccount/v5" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

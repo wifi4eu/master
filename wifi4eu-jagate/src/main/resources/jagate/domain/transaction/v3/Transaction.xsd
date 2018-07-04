@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v3"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v3"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="3.0">
+	
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd"/>
+	
+	<xs:element name="GetStatus" type="GetStatusRequestType"/>
+	<xs:element name="GetROStatus" type="GetROStatusRequestType"/>
+	<xs:element name="CheckROforInternalPayment" type="CheckROforInternalPaymentRequestType"/>
+	<xs:element name="CheckROByPic" type="CheckROByPicRequestType"/>
+	
+	<xs:element name="GetStatusResponse" type="GetStatusResponseList"/>
+	<xs:element name="GetROStatusResponse" type="GetROStatusResponse"/>
+	<xs:element name="CheckROforInternalPaymentResponse" type="CheckROforInternalPaymentResponse"/>
+	<xs:element name="CheckROByPicResponse" type="CheckROByPicResponse"/>
+	
+	<xs:complexType name="GetStatusRequestType">
+		<xs:sequence>
+			<xs:element name="localObjectForeigId" type="xs:string"/>
+			<xs:element name="transactionType" type="TransactionSubtype"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GetStatusResponseList">
+		<xs:sequence>
+			<xs:element name="response" type="StatusResponseType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GetROStatusRequestType">
+		<xs:sequence>
+			<xs:element name="localObjectForeigId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GetROStatusResponse">
+		<xs:sequence>
+			<xs:element name="response" type="RecoveryOrderStatusResponseType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CheckROforInternalPaymentRequestType">
+		<xs:sequence>
+			<xs:element name="localObjectForeigId" type="xs:string"/>
+			<xs:element name="recoveryOrderamount" type="xs:decimal"/>		
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CheckROforInternalPaymentResponse">
+		<xs:sequence>
+			<xs:element name="response" type="CheckROStatusResponseType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="CheckROByPicRequestType">
+		<xs:sequence>
+			<xs:element name="pic" type="xs:string" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CheckROByPicResponse">
+		<xs:sequence>
+			<xs:element name="RecoveryOrders" type="CheckROByPicResponseType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="StatusResponseType">
+		<xs:annotation>
+		  <xs:documentation xml:lang="en">
+		  	The status field is only implemented for Invoices=> transactionType=INVOICE.
+		  </xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="localObjectForeigId" type="xs:string"/>
+			<xs:element name="transactionStatus" type="xs:string"/>
+			<xs:element name="workflowStatus" type="xs:string"/>
+			<xs:element name="workflowLevel" type="xs:long"/>
+			<xs:element name="modifDate" type="xs:dateTime"/>
+			<xs:element name="transactionType" type="TransactionSubtype"/>
+			<xs:element name="status" type="ClientStatusType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RecoveryOrderStatusResponseType">
+		<xs:sequence>
+			<xs:element name="recoveryOrderStatus" type="xs:string"/>
+			<xs:element name="recoveryOrderamount" type="xs:double"/>
+			<xs:element name="modifDate" type="xs:dateTime"/>
+			<xs:element name="invoices" type="InvoicesResponseType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="legalEntity" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CheckROStatusResponseType">
+		<xs:sequence>
+			<xs:element name="recoveryOrderStatus" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CheckROByPicResponseType">
+		<xs:sequence>
+			<xs:element name="pic" type="xs:string"/>
+			<xs:element name="recoveryOrder" type="RecoveriesByPartnerType" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="RecoveriesByPartnerType">
+		<xs:sequence>
+			<xs:element name="localObjectForeignId" type="xs:string"/>
+			<xs:element name="recoveryOrderAmount" type="xs:double"/>
+			<xs:element name="dueDate" type="xs:dateTime"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="InvoicesResponseType">
+		<xs:sequence>
+			<xs:element name="invoicelocalObjectForeigId" type="xs:string"/>
+			<xs:element name="invoiceStatus" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="ClientStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="COMPLETED"/>
+			<xs:enumeration value="CANCELED"/>
+			<xs:enumeration value="PENDING"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+
+	<xs:simpleType name="TransactionSubtype">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CREATE_CONTRACT"/>
+			<xs:enumeration value="LEGAL_COMMITMENT"/>
+			<xs:enumeration value="PAYMENT_ORDER"/>
+			<xs:enumeration value="PAYMENT_REQUEST"/>
+			<xs:enumeration value="COMMITMENT_LEVEL_2"/>
+			<xs:enumeration value="INVOICE"/>
+			<xs:enumeration value="LEGAL_COMMITMENT"/>
+			<xs:enumeration value="LEGAL_ENTITY_CREATE"/>
+			<xs:enumeration value="PAYMENT_REQUEST_JRC"/>
+			<xs:enumeration value="RECOVERY_ORDER"/>
+			<xs:enumeration value="LEGAL_ENTITY_UPDATE"/>
+			<xs:enumeration value="INVOICE_JRC"/>
+			<xs:enumeration value="PAYMENT_REQUEST_JRC"/>
+			<xs:enumeration value="PAYMENT_ORDER_JRC"/>
+			<xs:enumeration value="PAYMENT_REQUEST_JRC_GF"/>
+			<xs:enumeration value="PAYMENT_ORDER_JRC_GF"/>
+			<xs:enumeration value="AL_PAYMENT_REQUEST_CREATE"/>
+			<xs:enumeration value="AL_PAYMENT_ORDER_CREATE"/>
+			<xs:enumeration value="COMMITMENT_LEVEL_1"/>
+			<xs:enumeration value="BANK_ACCOUNT"/>
+            <xs:enumeration value="CLOCK"/>
+			<xs:enumeration value="CREATE_RECOVERY_ORDER"/>
+			<xs:enumeration value="GRANT_LEGAL_COMMITMENT"/>
+			<xs:enumeration value="BANK_ACCOUNT_CREATE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:annotation>
+           <xs:documentation>v3.0 - 20171004 - Added BANK_ACCOUNT_CREATE to TransactionSubtype</xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/legalentity-nofacts/V1" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:legalentity="http://ec.europa.eu/research/fp/model/legalentity/V8" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:address="http://ec.europa.eu/research/fp/model/address/V4" xmlns:certificate="http://ec.europa.eu/research/fp/model/certificate/V4" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/legalentity-nofacts/V1" elementFormDefault="qualified" version="1.6.2">
+	<xs:annotation>
+		<xs:documentation>This is continuation from the model/legalentity/V2 representing the legal entity data without facts....</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V8" schemaLocation="../../legalentity/V8/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V4" schemaLocation="../../address/V4/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/certificate/V4" schemaLocation="../../certificate/V4/Certificate.xsd"/>
+	<xs:complexType name="LegalEntityNoFactsType">
+		<xs:sequence>
+			<xs:element name="LegalName" type="xs:string"/>
+			<xs:element name="SME" type="SMEType" minOccurs="0"/>
+			<xs:element name="InterestYieldingBankAccount" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates whether this Legal Entity is exempt from the obligation to open an interest-bearing bank account for the pre-financing or not. If the flag is true this Legal Entity is exempt otherwise it is not. Only applied for FP7</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InternationalOrganisation" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates that the Legal Entity is an international organisation(true).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EuropeanInterest" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates that the Legal Entity is a international organisation of european interest(true).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HigherOrSecondaryEducationEstablishment" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates that the Legal Entity is a higher or secondary education establishment(true).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResearchOrganisation" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates that the Legal Entity is a research organisation(true).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NonProfit" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates that the Legal Entity is a non-profit(true).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IndirectCostMethod" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The CCM2 code of the Legal Entity's indirect cost method. Indirect costs, also called overheads, are all the eligible costs which cannot be identified by thebeneficiary as directly attributed to the project, but can be identified and justified by its accounting system as being incurred in direct relationship with the eligible direct costs of the project.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PublicBody" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LegalPersonality" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>FP7 Legal Personality</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LegalPersonStatus" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Indicates that the Entity is a legal person (TRUE) or a natural person (value is FALSE)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StateWarranty" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>State warranty for FP7</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StateWarrantyH2020" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>state warranty for H2020</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LargeResearchInfrastructure" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Large research infrastructure</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OrgWithOperatingGrants" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Organisation with Operating grants</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CivilSocietyOrganisation" type="legalentity:CivilSocietyFactType" minOccurs="0"/>
+			<xs:element name="FinancialData" type="FinancialDataType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="FP7Ratios" type="legalentity:RatiosFactType" minOccurs="0"/>
+			<xs:element name="EWS" type="EarlyWarningSystemType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ABACLegalForm" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:element name="DepartmentWithDelegatedAuthority" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="BusinessName" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The full business name in the official language</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="NotAvailable" default="false">
+								<xs:annotation>
+									<xs:documentation>True or false. In case the data is not known yet.It needs to be replaced by N/A or real data to be able to get validated.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="VAT" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The VAT (Value Added Tax) number</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="NotApplicable" default="false">
+								<xs:annotation>
+									<xs:documentation>True or false. The value might be empty when no VAT, but then the NotApplicable Attribute must be set to TRUE.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RegistrationNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The national registration number of the organization</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegistrationAuthority" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Authority where the Legal Entity is registered</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegistrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The date when the Legal Entity was registered</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LegalAddress" type="address:AddressType" minOccurs="0"/>
+			<xs:element name="NaceCode" type="legalentity:ExtraNaceFactType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The CCM2 Nace code. The statistical classification of economic activities in the European Community (in French: Nomenclature statistique des activités économiques dans la Communauté européenne), commonly referred to as NACE, is a European industry standard classification system consisting of a 6 digit code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CertificateOnMethodology" type="certificate:CertificateOnMethodologyType" minOccurs="0"/>
+			<xs:element name="Lear" type="legalentity:ContactFactType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ContactType=LEAR</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LEARExtendedMandate" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="HierarchyData" type="legalentityref:HierarchyDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Core data filled in but the deprecatedList will contain ALL the deprecated pics (and not only the ones mentioned in the request).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValidityType" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:element name="ValidityDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Validity Date in case of Type=SUSPENDED or VALIDATED or SLEEPING</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IndustryGroupingMember" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>True if the entity is a member in an industry group</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResearchGroupingMember" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>True if the entity is a member in a research group</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AcademicSector" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>True if the entity is in the academic sector</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EFPIAMember" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>True if the associated partner is member of European Federation of Pharmaceutical Industries and Associations</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UpTo500MilionAnnualTurnover" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>True if the associated partner has an annual turnover up to EUR 500 millions which are not affiliated entities of companies with an annual turnover of more than EUR 500 millions</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PatientOrganization" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>True if the associated partner is a Patients Organisation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegulatoryAgency" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>True if the associated partner is a Regulatory Agency</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SMEType">
+		<xs:sequence>
+			<xs:element name="Year" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>the latest year where SME data are there
+				</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValidatedSME" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>To indicate if it is an SME or not
+				</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SMEAssessmentType" type="SMEAssessmentTypeEnum">
+				<xs:annotation>
+					<xs:documentation>the level of assessment that has been done related to the ValidatedSME flag
+				Enumeration values of: SelfAssement, QuestionnaireAssessment, VSassessment
+				</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EarlyWarningSystemType">
+		<xs:sequence>
+			<xs:element name="EWScode" type="xs:string"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="ValidFrom" type="xs:date"/>
+			<xs:element name="ValidTo" type="xs:date"/>
+			<xs:element name="OrderNo" type="xs:integer"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinancialDataType">
+		<xs:sequence>
+			<xs:element name="DataStatus" type="legalentityref:ResponseDataQualityType"/>
+			<xs:element name="FinancialData" type="legalentity:FinancialDataFactType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SMEAssessmentTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SelfAssessment"/>
+			<xs:enumeration value="QuestionnaireAssessment"/>
+			<xs:enumeration value="VSassessment"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>20170131 - v1.6.2 - SYGMA  removed boolean AssociatedPartner in the LegalEntityNoFactsType. An explicit type(AssociatedPartner was created in PrrojectPartner)</xs:documentation>
+		<xs:documentation>20161026 - v1.6.1 - SYGMA  added extra legal entity facts EFPIAMember,AssociatedPartner,UpTo500MilionAnnualTurnover,PatientOrganization,RegulatoryAgency in the LegalEntityNoFactsType</xs:documentation>
+		<xs:documentation>20150621 - v1.6.0 - SYGMA  added one more field to support MSC H2020 partners: AcademicSector
+		</xs:documentation>
+		<xs:documentation>20150205 - v1.5.0 - SYGMA  added two more fields to support JUs for H2020: IndustryGroupingMember, ResearchGroupingMember
+		</xs:documentation>
+		<xs:documentation> 20140408 - v1.4.0 - SYGMA  added one more field the OrderNo in EarlyWarningSystemType
+		</xs:documentation>
+		<xs:documentation> 20131202 - v1.3.0 - SYGMA  updated SMEtype to reflect the most updated information for H2020
+		</xs:documentation>
+		<xs:documentation> 20131120 - v1.2.0 - SYGMA  updated CivilSocietyOrganisation type
+		</xs:documentation>
+		<xs:documentation> 20131028 - v1.1.0 - SYGMA - added H2020 fields: StateWarrantyH2020, CivilSocietyOrganisation, LargeResearchInfrastructure, OrgWithOperatingGrants, some annotations </xs:documentation>
+		<xs:documentation> 20131010 - v1.0.0 - SYGMA - creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

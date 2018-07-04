@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/project-representative/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:person="http://ec.europa.eu/research/fp/model/person/V2" targetNamespace="http://ec.europa.eu/research/fp/model/project-representative/V3" elementFormDefault="qualified" version="3.0.01">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture 'full' view on project representative related data.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V2" schemaLocation="../../person/V2/Person.xsd"/>
+	<xs:complexType name="ProjectRepresentativeCoreInfoType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:annotation>
+					<xs:documentation>Reason for the choice: the representative might not have registered him/herself within the ECAS system (hence he has no UserID yet).</xs:documentation>
+				</xs:annotation>
+				<xs:element name="UserId" type="base:ECUserIdType">
+					<xs:annotation>
+						<xs:documentation>We reuse the ECUserIDType because this is in fact an "ECASid".</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Email" type="xs:string"/>
+			</xs:choice>
+			<xs:group ref="person:NameGroup" minOccurs="0"/>
+			<!-- is this the same as DepartmentCode? -->
+			<xs:element name="Role" type="ProjectRepresentativeRoleType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectRepresentativeType">
+		<xs:complexContent>
+			<xs:extension base="person:PersonType">
+				<xs:sequence>
+					<xs:choice>
+						<xs:annotation>
+							<xs:documentation>Reason for the choice: the representative might not have registered him/herself within the ECAS system (hence he has no UserID yet).</xs:documentation>
+						</xs:annotation>
+						<xs:element name="UserId" type="base:ECUserIdType">
+							<xs:annotation>
+								<xs:documentation>We reuse the ECUserIDType because this is in fact an "ECASid".</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Email" type="xs:string"/>
+					</xs:choice>
+					<xs:element name="Role" type="ProjectRepresentativeRoleType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="ProjectRepresentativeRoleType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Participant Representative"/>
+			<xs:enumeration value="Authorised Signatory"/>
+			<xs:enumeration value="Second Authorised Signatory"/>
+			<xs:enumeration value="Administrative and Legal Representative"/>
+			<xs:enumeration value="Financial Representative"/>
+			<xs:enumeration value="Scientific Representative"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--v3.0.0 - 20110128 - Use person V2-->
+	<!--v3.0.1 - 20121009 - Add "Second Authorised Signatory" to the ProjectRepresentativeRoleType enum-->
+</xs:schema>

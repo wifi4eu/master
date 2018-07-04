@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema
+	xmlns="http://ec.europa.eu/research/fp/model/user/V2"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1"
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+	xmlns:address="http://ec.europa.eu/research/fp/model/address/V4"
+	xmlns:person="http://ec.europa.eu/research/fp/model/person/V4"
+	xmlns:userref="http://ec.europa.eu/research/fp/model/user-ref/V1"
+	targetNamespace="http://ec.europa.eu/research/fp/model/user/V2"
+	elementFormDefault="qualified"
+	version="2.0.0">
+
+	<xs:annotation>
+		<xs:documentation>
+		This schema intends to capture all EC registered user (officer or external) related data.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V4" schemaLocation="../../address/V4/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V4" schemaLocation="../../person/V4/Person.xsd"/>
+	<xs:element name="User" type="UserType"/>
+	<xs:complexType name="UserType">
+		<xs:complexContent>
+			<xs:extension base="person:PersonType">
+				<xs:sequence>
+					<xs:element name="UserId" type="userref:UserIdType"/>
+					<xs:element name="UserRegisteredEmail" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Email address that the user registered in ECAS</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UserCoreInfoType">
+		<xs:sequence>
+			<xs:element name="UserId" type="userref:UserIdType"/>
+			<xs:group ref="person:NameGroup"/>
+			<xs:element name="AdditionalContactInformation" type="address:AddressAdditionalContactType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserListType">
+		<xs:sequence>
+			<xs:element name="User" type="UserType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserPreferenceListType">
+		<xs:sequence>
+			<xs:element name="UserPreference" type="UserPreferenceType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserPreferenceType">
+		<xs:sequence>
+			<xs:element name="Code" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The CCM2 code for the user preference.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Value" type="UserPreferenceValueType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UserPreferenceValueType">
+		<xs:annotation>
+			<xs:documentation>The value of the user preference. It is a CCM2 code when the user preference only allows discrete values and a primitive data type element otherwise</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="String" type="xs:string"/>
+			<xs:element name="Code" type="coderef:CodeRefType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.1.0 - 20131010 - added optional element UserRegisteredEmail to UserType</xs:documentation>
+		<xs:documentation>v2.0.0 - 20160105 - added UserPreferenceType and UserPreferenceValueType types</xs:documentation>
+	</xs:annotation>
+</xs:schema>

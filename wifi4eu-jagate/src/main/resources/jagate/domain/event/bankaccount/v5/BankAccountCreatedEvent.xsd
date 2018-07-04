@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/event/bankaccount/created/v5"
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/bankaccount/created/v5"
+           xmlns:eventbase="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v3"
+           xmlns:visaStatus="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/visastatus/v3"
+           xmlns:ba="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v5"
+		   elementFormDefault="qualified"
+		   attributeFormDefault="unqualified"
+		   version="5.0">
+
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/visastatus/v3" schemaLocation="../../base/v3/VisaStatusEvent.xsd" />
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v3" schemaLocation="../../base/v3/JagateBaseEvent.xsd" />
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v5" schemaLocation="../../../bankaccount/v5/BankAccount.xsd" />
+
+
+    <xs:complexType name="BankAccountCreatedEvent">
+		<xs:complexContent>
+            <xs:extension base="eventbase:JagateEvent">
+                <xs:sequence>
+                    <xs:element name="visaStatus" type="visaStatus:VisaStatus" minOccurs="0"/>
+                    <xs:element name="requestId" type="xs:string" />
+                    <xs:element name="legalEntity" type="xs:string" />
+                    <xs:element name="bankAccount" type="xs:string" />
+                    <xs:element name="RejectionInfo" type="ba:RejectedBankAccountInfoType" minOccurs="0"/>
+                    <xs:element name="FollowUpInfo" type="ba:FollowUpBankAccountInfoType" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

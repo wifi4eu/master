@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions name="ContractWS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:contractitf="http://ec.europa.eu/rdg/jagate/ws/wsdls/contract-itf/v2" xmlns:fault="http://ec.europa.eu/research/fp/model/service-fault/V1" xmlns:jag="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/contract/v2" xmlns="http://ec.europa.eu/rdg/jagate/ws/contract/v2" xmlns:ba="http://ec.europa.eu/rdg/jagate/ws/bankaccount/v3/interfaces">
+
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/wsdls/contract-itf/v2" schemaLocation="Contract_ITF.xsd" />
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+			<xs:import namespace="http://ec.europa.eu/research/fp/model/service-fault/V1" schemaLocation="../../../model/common-model/service-fault/V1/ServiceFault.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="ContractException">
+		<wsdl:part element="contractitf:ContractException" name="exception" />
+	</wsdl:message>
+	<wsdl:message name="ValidationFaultInfo">
+		<wsdl:part element="fault:ValidationFaultInfo" name="validationException" />
+	</wsdl:message>
+	<wsdl:message name="CreateContractRequest">
+		<wsdl:part element="contractitf:CreateContractRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CreateContractResponse">
+		<wsdl:part element="contractitf:CreateContractResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="UpdateContractRequest">
+		<wsdl:part element="contractitf:UpdateContractRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="UpdateContractResponse">
+		<wsdl:part element="contractitf:UpdateContractResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="GetContractStatusRequest">
+		<wsdl:part element="contractitf:GetContractStatusRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetContractStatusResponse">
+		<wsdl:part element="contractitf:GetContractStatusResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="PingRequest">
+		<wsdl:part element="contractitf:PingRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="PingResponse">
+		<wsdl:part element="contractitf:PingResponse" name="response" />
+	</wsdl:message>
+
+
+	<wsdl:portType name="IContractService">
+		<wsdl:documentation>Provides Contract related services.</wsdl:documentation>
+		<wsdl:operation name="createContract">
+			<wsdl:documentation>Creates a Contract in ABAC Contract.</wsdl:documentation>
+			<wsdl:input message="CreateContractRequest" />
+			<wsdl:output message="CreateContractResponse" />
+			<wsdl:fault name="ValidationFaultInfo" message="ValidationFaultInfo" />
+			<wsdl:fault name="ContractException" message="ContractException" />
+		</wsdl:operation>		
+		<wsdl:operation name="updateContract">
+			<wsdl:documentation>Updates a Contract in ABAC Contract.</wsdl:documentation>
+			<wsdl:input message="UpdateContractRequest" />
+			<wsdl:output message="UpdateContractResponse" />
+			<wsdl:fault name="ValidationFaultInfo" message="ValidationFaultInfo" />
+			<wsdl:fault name="ContractException" message="ContractException" />
+		</wsdl:operation>
+		<wsdl:operation name="getContractStatus">
+			<wsdl:documentation>Get Contract in ABAC Contract.</wsdl:documentation>
+			<wsdl:input message="GetContractStatusRequest" />
+			<wsdl:output message="GetContractStatusResponse" />
+			<wsdl:fault name="ContractException" message="ContractException" />
+		</wsdl:operation>
+		<wsdl:operation name="ping">
+			<wsdl:documentation>This operation exists for the purpose of check if the service is up and runnig and it's accessible.</wsdl:documentation>
+			<wsdl:input message="PingRequest" />
+			<wsdl:output message="PingResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="ContractBinding" type="IContractService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="createContract">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ValidationFaultInfo">
+				<soap:fault name="ValidationFaultInfo" use="literal" />
+			</wsdl:fault>
+			<wsdl:fault name="ContractException">
+				<soap:fault name="ContractException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="updateContract">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ValidationFaultInfo">
+				<soap:fault name="ValidationFaultInfo" use="literal" />
+			</wsdl:fault>
+			<wsdl:fault name="ContractException">
+				<soap:fault name="ContractException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getContractStatus">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ContractException">
+				<soap:fault name="ContractException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="ping">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="ContractServiceV2">
+		<wsdl:port name="ContractServiceBinding" binding="ContractBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/contract/v1" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

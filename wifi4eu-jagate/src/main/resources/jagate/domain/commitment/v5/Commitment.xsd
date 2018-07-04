@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+					xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/commitment/v5"
+					xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" 
+					targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitment/v5"
+					xmlns:commitmentData="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentBasicData/v5"
+					xmlns:contractor="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v3"
+					xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v3"
+					xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v3" 
+					xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1"
+					elementFormDefault="qualified" 
+					attributeFormDefault="unqualified"
+					xmlns:constants="http://ec.europa.eu/rdg/jagate/ws/domain/constants/v1"
+					xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+					version="1.1.0">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentBasicData/v5" schemaLocation="../v5/CommitmentBasicData.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v3" schemaLocation="../../contractor/v3/Contractor.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v3" schemaLocation="../../project/v3/ProjectBasicData.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v3" schemaLocation="../../visa/v3/Visa.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" schemaLocation="../../documents/v1/AresReference.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/constants/v1" schemaLocation="../../constants/v1/Constants.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+
+	<xs:element name="CreateCommitment" type="CreateCommitmentRequestType" />
+	<xs:element name="CreateCommitmentResponse" type="CreateCommitmentResponseType" />
+	<xs:element name="UpdateCommitment" type="UpdateCommitmentRequestType" />
+	<xs:element name="UpdateCommitmentResponse" type="UpdateCommitmentResponseType" />
+	<xs:element name="DecommitCommitment" type="DecommitCommitmentRequestType" />
+	<xs:element name="DecommitCommitmentResponse" type="DecommitCommitmentResponseType" />
+	<xs:element name="UnCompleteCommitment" type="UnCompleteCommitmentRequestType" />
+	<xs:element name="UnCompleteCommitmentResponse" type="UnCompleteCommitmentResponseType" />
+
+	<xs:complexType name="CreateCommitmentRequestType">
+		<xs:sequence>
+			<xs:element name="content" type="CreateCommitmentType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CreateCommitmentResponseType">
+		<xs:sequence>
+			<xs:element name="content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UpdateCommitmentRequestType">
+		<xs:sequence>
+			<xs:element name="content" type="UpdateCommitmentType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UpdateCommitmentResponseType">
+		<xs:sequence>
+			<xs:element name="content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="DecommitCommitmentRequestType">
+		<xs:sequence>
+			<xs:element name="content" type="DecommitCommitmentType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="DecommitCommitmentResponseType">
+		<xs:sequence>
+			<xs:element name="content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UnCompleteCommitmentRequestType">
+		<xs:sequence>
+			<xs:element name="content" type="UnCompleteCommitmentType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UnCompleteCommitmentResponseType">
+		<xs:sequence>
+			<xs:element name="content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="CreateCommitmentType">
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataTitleType">
+			<xs:annotation>
+				<xs:documentation>Commitment Header Data.</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="CommitmentHeaderData" type="CommitmentHeaderType" >
+			<xs:annotation>
+				<xs:documentation>Commitment Position Data. Cardinality 1..N</xs:documentation>
+			</xs:annotation>			
+			</xs:element>
+			<xs:element name="CommitmentPositionDataList" type="CommitmentPositionDataListType">
+			<xs:annotation>
+				<xs:documentation>Commitment Contractors information.</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="ContractorsData" type="contractor:ContractorsDataBasicType" />
+			<xs:element name="SupportingDocumentsData" type="documents:AresReferenceDataType">
+				<xs:annotation>
+					<xs:documentation>The visa/workflow cost center for the given transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VisaData" type="visa:SingleTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CommitmentPositionDataListType">
+		<xs:sequence>
+			<xs:element name="CommitmentPosition" type="CommitmentPositionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="UpdateCommitmentType">
+		<xs:sequence>
+			<xs:element ref="jagate:LocObjForeignId"/>
+			<xs:element name="ProjectData" type="project:ProjectDataTitleType"/>
+			<xs:element name="CommitmentHeaderData" type="UpdateCommitmentHeaderType" />
+			<xs:element name="ContractorsData" type="contractor:ContractorsDataBasicType" />
+			<xs:element name="VisaData" type="visa:SingleTransactionVisaEmbeddedType"/>			
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="DecommitCommitmentType">
+		<xs:sequence>
+			<xs:element ref="jagate:LocObjForeignId"/>
+			<xs:element name="VisaData" type="visa:SingleTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UnCompleteCommitmentType">
+		<xs:sequence>
+			<xs:element ref="jagate:LocObjForeignId"/>
+			<xs:element name="CompletionReason" type="xs:string" />
+			<xs:element name="VisaData" type="visa:SingleTransactionVisaEmbeddedType"/>			
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UnCompleteCommitmentResponseMessageType">
+		<xs:sequence>
+			<xs:element name="CommitmentLocObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- Commitment types -->
+	<xs:complexType name="CommitmentHeaderType">
+		<xs:annotation>
+			<xs:documentation>Data related Commitment Header.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="commitmentData:CommitmentHeaderProposedFinalDateImplementation"/>
+			<xs:element name="ResponsibleOrganisation" type="coderef:CodeRefType" />
+			<xs:element name="OperatingGrant" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="UpdateType" type="xs:boolean">
+		<xs:annotation>
+			<xs:documentation>If the contractor is JRC.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:complexType name="CommitmentPositionType">
+		<xs:annotation>
+			<xs:documentation>Data related Commitment Positions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Each Commitment Position is based on a COMMITMENT LEVEL 1 POSITION or on a BUDGET LINE.</xs:documentation>
+			</xs:annotation>
+			<xs:element name="CommitmentPositionL1CommitmentOrBudgetLine" type="CommitmentPositionL1CommitmentOrBudgetLineType" />
+			<xs:element ref="commitmentData:CommitmentPositionAmount">
+			<xs:annotation>
+				<xs:documentation>The Commitment position amount.</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="CommitmentPositionDG" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The Commitment position DG Code. This value is a CCM code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CommitmentPositionL1CommitmentOrBudgetLineType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="commitmentData:CommitmentPositionL1Commitment" >
+					<xs:annotation>
+						<xs:documentation>Commitment Level 1 Postion (e.g. JAG.12454.1.B2014)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="commitmentData:CommitmentPositionBudgetLine">
+					<xs:annotation>
+						<xs:documentation>Budget line (e.g. BGUE-B2017-08.020201-C1-RTD 833 D0)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UpdateCommitmentHeaderType">
+		<xs:annotation>
+			<xs:documentation>Data related to a Commitment Header for an update of a CL2.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="commitmentData:CommitmentHeaderProposedFinalDateImplementation"/>
+			<xs:element name="ResponsibleOrganisation" type="coderef:CodeRefType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:annotation>
+		<xs:documentation>v1.1.0 - 20170607 - Updated UpdateCommitmentRequestType</xs:documentation>
+	</xs:annotation>
+</xs:schema>

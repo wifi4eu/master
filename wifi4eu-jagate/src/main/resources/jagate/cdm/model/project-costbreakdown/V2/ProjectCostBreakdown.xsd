@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Cyril Brigant (European Commission) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V2" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/project-costbreakdown/V2" elementFormDefault="qualified" version="2.2.0">
+	<xs:annotation>
+		<xs:documentation>v2.1 - Added an element ActivityCostBreakdown to be reusable. Added the ICMRatePercentage as optional in the CostBreakDownType, renamed MaximumReimbursementIndirectCosts, added OtherDirectCosts. Refined the list of types of activities in the ActivityCostBreakdownType. Added requestedEcContribution per activity	</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v2.1.1 -  20120717 - Added an element ActivityCostBreakdown code 26,27,28 and 29 to annotation</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v2.2 -  20130606 - Added type CostType, TypeOfCostType, DetailCostType, UseOfResourceType, OtherUseOfResourceType, ActivityCostsType, ActivityCostBreakDownDetailsType</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>
+			This schema intends to capture all project data related to cost break downs both at project level as well as partner level
+			</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:complexType name="CostBreakDownType">
+		<xs:sequence>
+			<xs:element name="FundingPercentage" type="base:PercentageType" minOccurs="0"/>
+			<xs:element name="ICPCLumpSumUsed" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="IndirectCostMethod" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:element name="ICMRatePercentage" type="base:PercentageType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the value/rate (in percentage) for a specific ICM</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActivityCostBreakDown" type="ActivityCostBreakDownType" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- IndirectCostMethod is already in LegalEntity model, but anyway repeated in Project/contract model -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ActivityCostBreakdown" type="ActivityCostBreakDownType"/>
+	<xs:complexType name="ActivityCostBreakDownType">
+		<xs:sequence>
+			<xs:element name="TypeOfActivityCode" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>1: RTD Activities
+2: Demonstration Activities
+3: Training Activities (for MC)
+4: Management Activities (for MC this includes the CFS)
+5: Coordination activities
+6: Other Activities
+7: Total of all the Activities
+8: Specific Activities Transactional access (for Infrastructure TA)
+9: Specific Activities Other (for Infrastructure TA)
+10: Coordination/Networking (Other Specific Activities I3)
+11: Transactional access (Other Specific Activities I3)
+12: Connectivity (Other Specific Activities I3)
+13: Other including Specific Service Activities for CND (Other Specific Activities I3)
+14: Other Eligible Activities, specific conditions (for MC)
+15: Support Activities
+16: National contributions to the joint call (EranetPlus)
+17: Innovation Activities (for MC, CIP-EIP-TN)
+18: Coordination, Support Activities
+19: Living, Mobility Allowance (for MC)
+20: Travel Allowance (for MC)
+21: Career exploratory Allowance (for MC)
+22: Participation expenses of eligible researchers (for MC)
+23: Research, training, transfer of knowledge expenses (for MC)
+24: Conferences, workshops, events expenses (for MC)
+25: Overheads (for MC)
+26: Combined Management Overheads
+27: Leaving
+28: Household
+29:Living, no mobility
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MaximumAllowableECContribution" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="Receipts" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is an FP6 only element (was named TotalReceipts)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence>
+				<xs:element name="TotalCosts" type="base:AmountType" minOccurs="0"/>
+				<xs:element name="LumpSum" type="base:AmountType" minOccurs="0"/>
+				<xs:element name="DirectCosts" type="base:AmountType" minOccurs="0"/>
+				<xs:element name="SubcontractedOfDirectCosts" type="base:AmountType" minOccurs="0"/>
+				<xs:element name="OtherDirectCosts" type="base:AmountType" minOccurs="0"/>
+				<xs:element name="IndirectCosts" type="base:AmountType" minOccurs="0"/>
+				<xs:element name="MaximumReimbursementIndirectCosts" type="base:AmountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>This is used in CSA-Coordination funding scheme.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="PersonnelCosts" type="base:AmountType" minOccurs="0"/>
+				<xs:element name="SubcontractedRTDPerformerCosts" type="base:AmountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>only for BSG</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="AccessCosts" type="base:AmountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>only for CP-CSA and CP-CSA-Infra</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TransNationalProjectCosts" type="base:AmountType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>only for ERANET-Plus: Total funding of the Joint Selection List of Trans-National Projects</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NationalContribution" type="xs:decimal" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>This is a field in the ARTEMIS GPFs in page A3.1. and A3.2. It represents the funding provided to beneficiary by the member states. It is applied only to JTI ARTEMIS projects. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<!-- Split up into list of cost(/receipt) groups-->
+				<!-- Start with a fixed list of well-known cost(/receipt) groups -->
+			</xs:sequence>
+			<xs:element name="RequestedEcContribution" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the requested EC contribution for the specific activity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- should we add TypeOfActivity name/description element? -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Cost" type="CostType"/>
+	<xs:complexType name="CostType">
+		<xs:sequence>
+			<xs:element name="TotalCosts" type="base:AmountType">
+				<xs:annotation>
+					<xs:documentation>Total cost requested to the EC</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalCostsOverride" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Total cost override by the EC</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DetailCost" type="DetailCostType"/>
+	<xs:complexType name="DetailCostType">
+		<xs:complexContent>
+			<xs:extension base="CostType">
+				<xs:sequence>
+					<xs:element name="UseOfResourceList" type="UseOfResourceListType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UseOfResourceListType">
+		<xs:sequence>
+			<xs:element ref="UseOfResource" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="UseOfResource" type="UseOfResourceType"/>
+	<xs:complexType name="UseOfResourceType">
+		<xs:sequence>
+			<xs:element name="Cost" type="base:AmountType"/>
+			<xs:element name="Explanation" type="xs:string" minOccurs="0"/>
+			<xs:element name="WorkPackageInfo" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="OtherCostCategoryType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DURABLE_EQUIPMENT"/>
+			<xs:enumeration value="CONSUMABLES"/>
+			<xs:enumeration value="TRAVELLING"/>
+			<xs:enumeration value="COMPUTING"/>
+			<xs:enumeration value="OTHER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="OtherUseOfResource" type="OtherUseOfResourceType" substitutionGroup="UseOfResource"/>
+	<xs:complexType name="OtherUseOfResourceType">
+		<xs:annotation>
+			<xs:documentation>In case of Cost of OtherDirectCosts the use of resources will be of that type</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="UseOfResourceType">
+				<xs:sequence>
+					<xs:element name="OtherCostCategory" type="OtherCostCategoryType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="CostsCategoryType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DirectCosts"/>
+			<xs:enumeration value="SubcontractedOfDirectCosts"/>
+			<xs:enumeration value="OtherDirectCosts"/>
+			<xs:enumeration value="MaximumReimbursementIndirectCosts"/>
+			<xs:enumeration value="PersonnelCosts"/>
+			<xs:enumeration value="SubcontractedRTDPerformerCosts"/>
+			<xs:enumeration value="AccessCosts"/>
+			<xs:enumeration value="TransNationalProjectCosts"/>
+			<xs:enumeration value="LumpSum"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ActivityCostsType">
+		<xs:sequence>
+			<xs:element name="TypeOfActivityCode" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>	1: RTD Activities
+										2: Demonstration Activities
+										3: Training Activities (for MC)
+										4: Management Activities (for MC this includes the CFS)
+										5: Coordination activities
+										6: Other Activities
+										7: Total of all the Activities
+										8: Specific Activities Transactional access (for Infrastructure TA)
+										9: Specific Activities Other (for Infrastructure TA)
+										10: Coordination/Networking (Other Specific Activities I3)
+										11: Transactional access (Other Specific Activities I3)
+										12: Connectivity (Other Specific Activities I3)
+										13: Other including Specific Service Activities for CND (Other Specific Activities I3)
+										14: Other Eligible Activities, specific conditions (for MC)
+										15: Support Activities
+										16: National contributions to the joint call (EranetPlus)
+										17: Innovation Activities (for MC, CIP-EIP-TN)
+										18: Coordination, Support Activities
+										19: Living, Mobility Allowance (for MC)
+										20: Travel Allowance (for MC)
+										21: Career exploratory Allowance (for MC)
+										22: Participation expenses of eligible researchers (for MC)
+										23: Research, training, transfer of knowledge expenses (for MC)
+										24: Conferences, workshops, events expenses (for MC)
+										25: Overheads (for MC)
+										26: Combined Management Overheads
+										27: Leaving
+										28: Household
+										29:Living, no mobility
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CostsCategory" type="CostsCategoryType"/>
+			<xs:element name="UseOfResourceList" type="UseOfResourceListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActivityCostBreakDownDetailsType">
+		<xs:sequence>
+			<xs:element name="TypeOfActivityCode" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>	1: RTD Activities
+										2: Demonstration Activities
+										3: Training Activities (for MC)
+										4: Management Activities (for MC this includes the CFS)
+										5: Coordination activities
+										6: Other Activities
+										7: Total of all the Activities
+										8: Specific Activities Transactional access (for Infrastructure TA)
+										9: Specific Activities Other (for Infrastructure TA)
+										10: Coordination/Networking (Other Specific Activities I3)
+										11: Transactional access (Other Specific Activities I3)
+										12: Connectivity (Other Specific Activities I3)
+										13: Other including Specific Service Activities for CND (Other Specific Activities I3)
+										14: Other Eligible Activities, specific conditions (for MC)
+										15: Support Activities
+										16: National contributions to the joint call (EranetPlus)
+										17: Innovation Activities (for MC, CIP-EIP-TN)
+										18: Coordination, Support Activities
+										19: Living, Mobility Allowance (for MC)
+										20: Travel Allowance (for MC)
+										21: Career exploratory Allowance (for MC)
+										22: Participation expenses of eligible researchers (for MC)
+										23: Research, training, transfer of knowledge expenses (for MC)
+										24: Conferences, workshops, events expenses (for MC)
+										25: Overheads (for MC)
+										26: Combined Management Overheads
+										27: Leaving
+										28: Household
+										29:Living, no mobility
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MaximumAllowableECContribution" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="Receipts" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is an FP6 only element (was named TotalReceipts)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence>
+				<xs:element name="TotalCosts" type="CostType" minOccurs="0"/>
+				<xs:element name="LumpSum" type="DetailCostType" minOccurs="0"/>
+				<xs:element name="DirectCosts" type="DetailCostType" minOccurs="0"/>
+				<xs:element name="SubcontractedOfDirectCosts" type="DetailCostType" minOccurs="0"/>
+				<xs:element name="OtherDirectCosts" type="DetailCostType" minOccurs="0"/>
+				<xs:element name="IndirectCosts" type="CostType" minOccurs="0"/>
+				<xs:element name="MaximumReimbursementIndirectCosts" type="CostType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>This is used in CSA-Coordination funding scheme.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="PersonnelCosts" type="DetailCostType" minOccurs="0"/>
+				<xs:element name="SubcontractedRTDPerformerCosts" type="DetailCostType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>only for BSG</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="AccessCosts" type="DetailCostType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>only for CP-CSA and CP-CSA-Infra</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TransNationalProjectCosts" type="DetailCostType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>only for ERANET-Plus: Total funding of the Joint Selection List of Trans-National Projects</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NationalContribution" type="CostType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>This is a field in the ARTEMIS GPFs in page A3.1. and A3.2. It represents the funding provided to beneficiary by the member states. It is applied only to JTI ARTEMIS projects. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<!-- Split up into list of cost(/receipt) groups-->
+				<!-- Start with a fixed list of well-known cost(/receipt) groups -->
+			</xs:sequence>
+			<xs:element name="RequestedEcContribution" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the requested EC contribution for the specific activity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- should we add TypeOfActivity name/description element? -->
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

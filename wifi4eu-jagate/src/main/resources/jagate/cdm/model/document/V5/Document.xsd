@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:documentref="http://ec.europa.eu/research/fp/model/document-ref/V3" xmlns="http://ec.europa.eu/research/fp/model/document/V5" targetNamespace="http://ec.europa.eu/research/fp/model/document/V5" elementFormDefault="qualified" version="5.14.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="../../document-ref/V3/DocumentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:element name="Document" type="DocumentType"/>
+	<xs:complexType name="DocumentListType">
+		<xs:sequence>
+			<xs:element name="Document" type="DocumentType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentType">
+		<xs:sequence>
+			<xs:group ref="documentref:DocumentRefGroup"/>
+			<xs:element name="Type" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>ClassId is GenDocumentType</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MetaData" type="DocumentMetaDataType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Metadata should be consistent with the Document Type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VersionList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Version" type="DocumentVersionType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DocumentCore" type="DocumentCoreType"/>
+	<xs:complexType name="DocumentCoreType">
+		<xs:sequence>
+			<xs:group ref="documentref:DocumentRefGroup"/>
+			<xs:group ref="DocumentInfoGroup"/>
+			<xs:element name="Type" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>ClassId is GenDocumentType</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--<xs:element name="Type" type="DocumentTypeType"/>-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DocumentAttachment" type="DocumentAttachmentType"/>
+	<xs:complexType name="DocumentAttachmentType">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:string"/>
+			<xs:element name="Name" type="xs:string" minOccurs="0"/>
+			<xs:element name="UserReadableName" type="xs:string" minOccurs="0"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="MimeType" type="xs:string" minOccurs="0"/>
+			<xs:element name="BinaryContent" type="xs:base64Binary" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Printable report data (typically pdf). This should be only used for "light" attachments</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AttachmentType" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>ClassId is AttachmentType</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LanguageCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ClassId is Language</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MetaData" type="DocumentMetaDataType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Metadata should be consistent with the Document Type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Size" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						it is the size of attachment in bytes
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="URI" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The URL+URN. A uniform resource name (URN) functions like a person's name, while a Uniform Resource Locator (URL) resembles that person's street address. In other words: the URN defines an item's identity, while the URL provides a method for finding it. (i.e. http:// = URL)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentAttachmentRefType">
+		<xs:annotation>
+			<xs:documentation>A rerefence to an attachment, there is two ways to identify an attachment, the first is the document id plus attachment id
+				and the second is document id plus attachment name</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="documentref:DocumentRefGroup"/>
+			<xs:choice>
+				<xs:element name="AttachmentId" type="AttachmentIdType"/>
+				<xs:element name="AttachmentName" type="AttachmentNameType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AttachmentIdType">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AttachmentNameType">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--<xs:simpleType name="DocumentTypeType">
+		<xs:annotation>
+			<xs:documentation>document type; e.g.	NEGOTIATION_TECHNICAL_ANNEX, ORGANISATION_SUPPORTING_DOCUMENT</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>-->
+	<xs:simpleType name="DocumentSecurityClassType">
+		<xs:annotation>
+			<xs:documentation>document security classification; e.g. Public, EU Classified</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:element name="DocumentMetaData" type="DocumentMetaDataType"/>
+	<xs:complexType name="DocumentMetaDataType">
+		<xs:sequence>
+			<xs:element name="MetaDataRef" type="coderef:CodeRefType"/>
+			<xs:element name="Value" type="MetaDataValueType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MetaDataValueType">
+		<xs:choice>
+			<xs:element name="String" type="StringType"/>
+			<xs:element name="Date" type="DateTimeType"/>
+			<xs:element name="Boolean" type="BooleanType"/>
+			<xs:element name="Integer" type="IntegerType"/>
+			<xs:element name="Decimal" type="DecimalType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="StringType">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BooleanType">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DateTimeType">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:dateTime"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IntegerType">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:integer"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DecimalType">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:decimal"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DocumentClassification" type="DocumentClassificationType"/>
+	<xs:complexType name="DocumentClassificationType" abstract="true">
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="ProjectClassification" type="ProjectClassificationType"/>
+	<xs:complexType name="ProjectClassificationType">
+		<xs:complexContent>
+			<xs:extension base="DocumentClassificationType">
+				<xs:sequence>
+					<xs:element name="Project" type="projectref:ProjectIdType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="OrganisationClassification" type="OrganisationClassificationType"/>
+	<xs:complexType name="OrganisationClassificationType">
+		<xs:complexContent>
+			<xs:extension base="DocumentClassificationType">
+				<xs:sequence>
+					<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+					<xs:element name="LocalReference" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AccessibilityClassification" type="AccessibilityClassificationType"/>
+	<xs:complexType name="AccessibilityClassificationType">
+		<xs:complexContent>
+			<xs:extension base="DocumentClassificationType">
+				<xs:sequence>
+					<xs:element name="Action" type="xs:string"/>
+					<xs:element name="Role" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DocumentStorageType">
+		<xs:sequence>
+			<xs:element name="Repository" type="xs:string"/>
+			<xs:element name="RepositoryId" type="documentref:DocumentRepositoryIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the ID of this instance inside the repository. MANDATORY when retrieving data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Attachment" type="DocumentAttachmentType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="CreationTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>this is the business date of the document</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentVersionType">
+		<xs:sequence>
+			<xs:element name="VersionNumber" type="xs:string"/>
+			<xs:group ref="DocumentInfoGroup"/>
+			<xs:element name="MetaData" type="DocumentMetaDataType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Metadata should be consistent with the Document Type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Classification" type="DocumentClassificationType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="StorageList">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Storage" type="DocumentStorageType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="sendersRecipients" type="SendersRecipients"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="DocumentInfoGroup">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="Author" type="base:ECUserIdType" minOccurs="0"/>
+			<xs:element name="SecurityClass" type="DocumentSecurityClassType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="SendersRecipients">
+		<xs:sequence>
+			<xs:element name="Senders" type="SenderType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of senders</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Recipients" type="RecipientType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of recipients</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SenderType">
+		<xs:sequence>
+			<xs:element name="Entity" type="EntityType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecipientType">
+		<xs:sequence>
+			<xs:element name="Entity" type="EntityType"/>
+			<xs:element name="Code" type="TransmitType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="TransmitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TO"/>
+			<xs:enumeration value="CC"/>
+			<xs:enumeration value="BCC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="EntityType">
+		<xs:choice>
+			<xs:element name="Internal" type="InternalEntityType"/>
+			<xs:element name="External" type="ExternaLEntityType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="InternalEntityType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Person" type="PersonType"/>
+				<xs:element name="Organisation" type="InternalOrganisationType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExternaLEntityType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Person" type="ExternalPersonType"/>
+				<xs:element name="OrganisationName" type="xs:string"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExternalPersonType">
+		<xs:sequence>
+			<xs:element name="FirstName" type="xs:string"/>
+			<xs:element name="LastName" type="xs:string"/>
+			<xs:element name="OrganizationName" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonType">
+		<xs:sequence>
+			<xs:element name="EcasId" type="base:ECUserIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InternalOrganisationType">
+		<xs:sequence>
+			<xs:element name="Code" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocalDocumentType">
+		<xs:sequence>
+			<xs:group ref="documentref:DocumentRefGroup"/>
+			<xs:element name="Type" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>ClassId is GenDocumentType</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Externalized" type="xs:boolean"/>
+			<xs:element name="ExternalizationType" type="ExternalizationType" minOccurs="0"/>
+			<xs:element name="MetaData" type="DocumentMetaDataType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Metadata should be consistent with the Document Type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SendersRecipients" type="SendersRecipients" minOccurs="0"/>
+			<xs:element name="Attachments" type="AttachmentType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of attachments</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LinkedDocuments" type="LinkedDocumentType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="MailType" type="MailTypeType" minOccurs="0"/>
+			<xs:element name="ExternalizationDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Externalisation date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TagInfo" type="TagInfoType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tag info</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DocumentAccessLogEntryType">
+		<xs:sequence>
+			<xs:element name="User" type="xs:string"/>
+			<xs:element name="SecurityPolicy" type="xs:string"/>
+			<xs:element name="requestTime" type="xs:dateTime"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LocalFileType">
+		<xs:sequence>
+			<xs:element name="FileId" type="xs:string"/>
+			<xs:element name="IsSubFile" type="xs:boolean"/>
+			<xs:element name="IsDocumentFilingAllowed" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="Path" type="xs:string"/>
+			<xs:element name="ChefDeFile" type="xs:string" minOccurs="0"/>
+			<xs:element name="HeadingCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="FileCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="SpecificCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="Status" type="xs:string" minOccurs="0"/>
+			<xs:element name="ParentId" type="xs:string" minOccurs="0"/>
+			<xs:element name="MultiLingualNames" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MultiLingualName" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Language" type="xs:string"/>
+									<xs:element name="Value" type="xs:string"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="UserFileRoles" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="UserFileRole" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="HasSubFiles" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="Readers" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Reader" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Users" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="User" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Editors" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Editor" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EnglishComments" type="xs:string" minOccurs="0"/>
+			<xs:element name="FrenchComments" type="xs:string" minOccurs="0"/>
+			<xs:element name="GermanComments" type="xs:string" minOccurs="0"/>
+			<xs:element name="DeskOfficer" type="xs:string" minOccurs="0"/>
+			<xs:element name="Limited" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="Cupboard" type="xs:string" minOccurs="0"/>
+			<xs:element name="Office" type="xs:string" minOccurs="0"/>
+			<xs:element name="Binder" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreationDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="ActivationDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="ClosingDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="TransferDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="DestroyDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="RestoreDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="Category" type="CategoryType" minOccurs="0"/>
+			<xs:element name="SystemHasSubFiles" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="SystemContainsDocuments" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CategoryType">
+		<xs:sequence>
+			<xs:element name="CategoryId" type="xs:string"/>
+			<xs:element name="CategoryKey" type="xs:string"/>
+			<xs:element name="Code" type="xs:string"/>
+			<xs:element name="EnglishName" type="xs:string"/>
+			<xs:element name="FrenchName" type="xs:string"/>
+			<xs:element name="Version" type="xs:int"/>
+			<xs:element name="Type" type="xs:string"/>
+			<xs:element name="EnglishDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="FrenchDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="EnglishObservations" type="xs:string" minOccurs="0"/>
+			<xs:element name="FrenchObservations" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LinkedDocumentType">
+		<xs:sequence>
+			<xs:element name="LinkedDocument" type="documentref:DocumentRefType"/>
+			<xs:element name="LinkType" type="LinkTypeType"/>
+			<xs:element name="Reason" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="LinkTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DUPLICATE"/>
+			<xs:enumeration value="GENERAL"/>
+			<xs:enumeration value="REQUEST"/>
+			<xs:enumeration value="RESPONSE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AttachmentType">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Information of the attachment</xs:documentation>
+			</xs:annotation>
+			<xs:element name="Id" type="xs:string"/>
+			<xs:element name="attachmentType" type="coderef:CodeRefType"/>
+			<xs:element name="language" type="xs:string"/>
+			<xs:element name="kind" type="KindType"/>
+			<xs:element name="contentType" type="xs:string"/>
+			<xs:element name="attachmentName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This is the key of the attachment. It is unique within the document</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="userReadableName" type="xs:string" minOccurs="0"/>
+			<xs:element name="rendition" type="xs:boolean"/>
+			<xs:element name="extension" type="xs:string" minOccurs="0"/>
+			<xs:element name="externalized" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="createUser" type="xs:string" minOccurs="0"/>
+			<xs:element name="createDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="Attributes" type="AttachmentAttributeListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>List of attributes defined for the attachment</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lastUploadDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date of the last upload of the binary file. Not to be confused with create date or last update date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="KindType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MAIN"/>
+			<xs:enumeration value="COVER_LETTER"/>
+			<xs:enumeration value="ANNEX"/>
+			<xs:enumeration value="TRANSLATION"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="AttachmentsOrder" type="AttachmentsOrderType"/>
+	<xs:complexType name="AttachmentsOrderType">
+		<xs:sequence>
+			<xs:element name="AttachmentOrder" type="AttachmentsOrderListType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AttachmentsOrderListType">
+		<xs:list itemType="coderef:CodeIdType"/>
+	</xs:simpleType>
+	<xs:simpleType name="ExternalizationType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FULL"/>
+			<xs:enumeration value="PARTIAL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MailTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INCOMING"/>
+			<xs:enumeration value="INTERNAL"/>
+			<xs:enumeration value="OUTGOING"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="AssignmentTask" type="AssignmentTaskType"/>
+	<xs:complexType name="AssignmentTaskType">
+		<xs:sequence>
+			<xs:element name="AssigneeId" type="xs:string"/>
+			<xs:element name="Deadline" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="Instructions" type="xs:string" minOccurs="0"/>
+			<xs:element name="Critical" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="Code" type="AssignmentTaskCodeType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AssignmentTaskListType">
+		<xs:sequence>
+			<xs:element name="AssignmentTask" type="AssignmentTaskType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AssignmentTaskCodeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ASOC"/>
+			<xs:enumeration value="AUT"/>
+			<xs:enumeration value="CF"/>
+			<xs:enumeration value="CF_CAB"/>
+			<xs:enumeration value="CF_CBC"/>
+			<xs:enumeration value="CF_CDP"/>
+			<xs:enumeration value="CF_CIS"/>
+			<xs:enumeration value="CF_DAD"/>
+			<xs:enumeration value="CF_PET"/>
+			<xs:enumeration value="CF_QP"/>
+			<xs:enumeration value="CLASS"/>
+			<xs:enumeration value="CONTR"/>
+			<xs:enumeration value="EMET"/>
+			<xs:enumeration value="INFO"/>
+			<xs:enumeration value="RET"/>
+			<xs:enumeration value="SIGNAT"/>
+			<xs:enumeration value="VALID"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="AssignmentWorkflow" type="AssignmentWorkflowType"/>
+	<xs:complexType name="AssignmentWorkflowType">
+		<xs:sequence>
+			<xs:element name="Active" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="DocumentId" type="xs:string"/>
+			<xs:element name="WorkflowId" type="xs:int"/>
+			<xs:element name="Tasks" type="AssignmentWorkflowTaskListType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AssignmentWorkflowTaskListType">
+		<xs:sequence>
+			<xs:element name="AssignmentWorkflowTask" type="AssignmentWorkflowTaskType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AssignmentWorkflowTaskType">
+		<xs:sequence>
+			<xs:element name="Code" type="AssignmentTaskCodeType"/>
+			<xs:element name="Active" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="Assignee" type="WorkflowUserType"/>
+			<xs:element name="CloseDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="Closer" type="WorkflowUserType" minOccurs="0"/>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+			<xs:element name="Critical" type="xs:boolean"/>
+			<xs:element name="Deleted" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="DeadlineDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="Instructions" type="xs:string" minOccurs="0"/>
+			<xs:element name="ReadDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="Reader" type="WorkflowUserType" minOccurs="0"/>
+			<xs:element name="Sender" type="WorkflowUserType"/>
+			<xs:element name="SentDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="Status" type="WorkflowStatusType"/>
+			<xs:element name="TaskId" type="xs:int"/>
+			<xs:element name="WorkflowId" type="xs:int"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WorkflowUserType">
+		<xs:sequence>
+			<xs:element name="Address" type="xs:string" minOccurs="0"/>
+			<xs:element name="FullName" type="xs:string"/>
+			<xs:element name="OrganizationCode" type="xs:string"/>
+			<xs:element name="Phone" type="xs:string" minOccurs="0"/>
+			<xs:element name="UserName" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="WorkflowStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ACTIVE"/>
+			<xs:enumeration value="BYPASSED"/>
+			<xs:enumeration value="CLOSED"/>
+			<xs:enumeration value="DECLINED"/>
+			<xs:enumeration value="DELEGATED"/>
+			<xs:enumeration value="DRAFT"/>
+			<xs:enumeration value="LAUNCHED"/>
+			<xs:enumeration value="MANUAL"/>
+			<xs:enumeration value="RETURNED_TO_SENDER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="AttachmentAttribute" type="AttachmentAttributeType"/>
+	<xs:complexType name="AttachmentAttributeType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="value" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AttachmentAttributeListType">
+		<xs:sequence>
+			<xs:element ref="AttachmentAttribute" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TagInfoType">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>
+                    An enhacement of a tag id (LocalDocumentType ->documentref:DocumentRefGroup -> Tag ).
+                    It has the same identifier (combination of System and Title) plus Description,
+                    Date (provided by users, so doesn’t need to be the actual date of tagging operation),
+                    HashCode (to identify if there were changes in the documents between tags) and VersionNo (for ordering purposes).
+                    System is acorrelated with TagType.Context and Title with TagType.Tag</xs:documentation>
+			</xs:annotation>
+			<xs:element name="System" type="xs:string"/>
+			<xs:element name="Title" type="xs:string"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="Date" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="HashCode" type="xs:long" minOccurs="0"/>
+			<xs:element name="VersionNo" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v5.14.0 - ERIS integ - Added element LastUploadDate to AttachmentType</xs:documentation>
+		<xs:documentation>v5.13.0 - ERIS integ - Added element TagInfo in LocalDocumentType</xs:documentation>
+		<xs:documentation>v5.12.0 - ERIS integ - Added element Attribtes in AttachmentType</xs:documentation>
+		<xs:documentation>v5.11.0 - ERIS integ - Added element ExternalizationDate in LocalDocumentType</xs:documentation>
+		<xs:documentation>v5.10.0 - ERIS integ - Added elements createDate and createUser in AttachmentType</xs:documentation>
+		<xs:documentation>v5.9.0 - ERIS integ - Added optional UserReadableName on AttachmentType and DocumentAttachmentType</xs:documentation>
+		<xs:documentation>v5.8.0 - ERIS integ - Made optional the tag value on AttachmentAttributeType</xs:documentation>
+		<xs:documentation>v5.7.0 - ERIS integ - Added elements and types to support the AttachmentAttributes: AttachmentAttribute, AttachmentAttributeType, AttachmentAttributeListType</xs:documentation>
+		<xs:documentation>v5.6.0 - ERIS integ - Added elements and types to support the addAssignments operation: AssignmentTask, AssignmentTaskType, AssignmentTaskCodeType, AssignmentWorkflow, AssignmentWorkflowType, AssignmentWorkflowTaskListType, AssignmentWorkflowTaskType, WorkflowUserType, WorkflowStatusType</xs:documentation>
+		<xs:documentation>v5.5.0 - ERIS integ - Added Externalization and MailType as optional to LocalDocumentType, added externalized as optional to AttachmentType </xs:documentation>
+		<xs:documentation>v5.4.0 - ERIS integ - Added REQUEST to possible LinkTypeType</xs:documentation>
+		<xs:documentation>v5.3.0 - ERIS integ - Add DocumentAccessLogEntryType</xs:documentation>
+		<xs:documentation>v5.2.0 - ERIS integ - Add LocalFileType, which will hold the result of the createFile operation</xs:documentation>
+		<xs:documentation>v5.1.1 - ERIS integ - Make value of metadata optional, needed to be able to delete a metadata</xs:documentation>
+		<xs:documentation>v5.1.0 - ERIS integ - Add general usage types for ERIS LocalDocumentType, LinkedDocumentType, AttachmentType, KindType, AttachmentsOrderType and List</xs:documentation>
+		<xs:documentation>v5.0.0 - ERIS integ</xs:documentation>
+		<xs:documentation>v4.0.0 - Add LanguageCode in Attachment as optional. Add flag to indicate if attachment is an annex or not (default is main, false value for IsAnnex). AttachmentType is only one, not a list. Created new complexType DocumentAttachmentRefType and AttachmentRefType. Change DocumentType and AttachmentType to be CodeRefType. Import code-ref V3 (bump version)</xs:documentation>
+		<xs:documentation>v3.1.0 - Add Metadata at Document and attachment levels. Add AttachmentType at Attachment level. This version covers PDMV5 needs (Note: this file is using legalentityref V1 but it is only for using LegalEntityIDType which has not changed in V2 of legalentityref.xsd</xs:documentation>
+		<xs:documentation>v3.0.2 - change the ID in the DocumentAttachmentType to string</xs:documentation>
+		<xs:documentation>20110314 - v3.0.1 - add a BinaryContent and Size element to the DocumentAttachmentType</xs:documentation>
+		<xs:documentation>20110131 - v3.0.0 - New document concept.</xs:documentation>
+		<xs:documentation>+ Bump ProjectRef, Coderef, LegalEntityRef</xs:documentation>
+		<xs:documentation>20100607 - v2.0.1</xs:documentation>
+	</xs:annotation>
+</xs:schema>

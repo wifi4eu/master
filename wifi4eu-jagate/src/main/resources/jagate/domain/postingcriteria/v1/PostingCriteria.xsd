@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+        xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+        xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/postingcriteria/v1"
+        targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/postingcriteria/v1"
+        elementFormDefault="qualified"
+        version="1.0.1">
+
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd" />
+    <xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+
+    <xs:complexType name="PostingCriteriaListType">
+        <xs:sequence>
+            <xs:element name="postingCriteria" type="PostingCriteriaType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PostingCriteriaType">
+        <xs:sequence>
+            <xs:element name="typeCode" type="jagate:NonEmptyString"/>
+            <xs:element name="localSystemCode" type="xs:string" />
+            <xs:element name="mandatory" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="central" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="documentType" type="coderef:CodeRefType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Using CCM2 codes with type 'ABACPostingCriteriaDocumentType' and Context 'RTDAPP'.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="description" type="jagate:NonEmptyString"/>
+            <xs:element name="code" type="jagate:NonEmptyString" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:annotation>
+        <xs:documentation>v1.0.1 - 20170302 - added PostingCriteriaListType and changed documentType to use CCM2 codes</xs:documentation>
+    </xs:annotation>
+</xs:schema>

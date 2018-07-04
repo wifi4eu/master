@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:assessment="http://ec.europa.eu/eacea/model/assessment-core/V1" xmlns:projectDescription="http://ec.europa.eu/eacea/model/projectDescription/V1" xmlns:proposal="http://ec.europa.eu/research/fp/model/project-proposal/V2" xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:officer="http://ec.europa.eu/research/fp/model/officer/V3" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" xmlns:partner="http://ec.europa.eu/research/fp/model/project-partner/V4" xmlns="http://ec.europa.eu/research/fp/model/project-core/V4" targetNamespace="http://ec.europa.eu/research/fp/model/project-core/V4" elementFormDefault="qualified" version="4.3.4">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer/V3" schemaLocation="../../officer/V3/Officer.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V4" schemaLocation="../../project-partner/V4/ProjectPartner.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" schemaLocation="../../project-reportingperiod/V4/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-proposal/V2" schemaLocation="../../project-proposal/V2/ProjectProposal.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/eacea/model/projectDescription/V1" schemaLocation="../../project-description/V1/ProjectDescription.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/eacea/model/assessment-core/V1" schemaLocation="../../project-assessment-core/V1/AssessmentCore.xsd"/>
+	<xs:annotation>
+		<xs:documentation>This schema intends to hold a view on all 'core' project data, i.e. all data that will stay constant over FP versions.
+		It is a trimmed down version of the 'full' project data view in ProjectType.
+		TODO: improve reuse of definitions; eliminate duplication
+		</xs:documentation>
+	</xs:annotation>
+	<xs:element name="ProjectCore" type="ProjectCoreType"/>
+	<xs:complexType name="ProjectCoreType">
+		<xs:sequence>
+			<xs:group ref="projectref:ProjectIdGroup"/>
+			<xs:group ref="GeneralCoreGroup" minOccurs="0"/>
+			<xs:group ref="LifeCycleCoreGroup" minOccurs="0"/>
+			<xs:group ref="GrantingResponsibilityCoreGroup" minOccurs="0"/>
+			<xs:group ref="ConsortiumCoreGroup" minOccurs="0"/>
+			<xs:group ref="FinancialCoreGroup" minOccurs="0"/>
+			<xs:group ref="FundingSchemeCoreGroup" minOccurs="0"/>
+			<xs:group ref="proposal:ProposalGroup" minOccurs="0"/>
+			<xs:group ref="assessment:AssesmentGroup" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="GeneralCoreGroup">
+		<xs:sequence>
+			<xs:element name="Acronym" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						acronym for project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Title" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						title of the project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Abstract" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						abstract for the project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FullReference" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Full reference of the project as printed in the contract (EACEA)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectDescription" type="projectDescription:ProjectDescriptionType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+						Description of the project and language used for description (EACEA)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MasterCall" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:element name="Call" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>
+						Reference to call, which is code of type "Call"
+						(CCM type "Call" CCM program "FP7" or CCM type
+						"Call" CCM program "FP6")
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Topic" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						topic of the project. applicable for H2020
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ECKeywords" type="coderef:CodeRefType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="FreeKeywords" type="xs:string" minOccurs="0"/>
+			<xs:element name="ActivityList" type="ActivityListType" minOccurs="0"/>
+			<xs:element name="ReportingPeriodList" type="ReportingPeriodListType" minOccurs="0"/>
+			<xs:element name="EthicalIssues" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="SecurityIssues" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="ActivityListType">
+		<xs:sequence>
+			<xs:element name="ActivityCodes" type="coderef:CodeRefType" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation>max 3 activity codes selected in a project (CCM
+						type ???) program ????)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReportingPeriodListType">
+		<xs:sequence>
+			<xs:element name="ReportingPeriod" type="reportingperiod:FinancialReportingPeriodType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="LifeCycleCoreGroup">
+		<xs:sequence>
+			<xs:element name="Phase" type="ProjectPhaseType">
+				<xs:annotation>
+					<xs:documentation>Possible phases:
+Submission
+Evaluation
+Ranking
+Information
+Negotiation
+Grant Management
+Archive
+NOTE: ProjectPhaseType and ProjectStatusType are bound to become CCM2 codes in the next major version of Project/ProjectCore (v5). In the mean time, new class IDs for phase and status will be created. A taxonomy will also be created so as to map the correct statuses for each phase. Whenever this is done, the abbreviations of the relevant phase/status should be looked up and used for phase and status.
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="ProjectStatusType">
+				<xs:annotation>
+					<xs:documentation>current status of the project. The possible statuses are depending on the current phase:
+• PHASE Submission
+	Draft
+	Final
+	Submitted
+	Withdrawn
+	Deleted
+• PHASE Evaluation
+	Inadmissible
+	Ineligible
+	Withdrawn
+	Duplicate
+	Accepted (above threshold)
+	Rejected (below threshold)
+• PHASE Ranking
+	Main list
+	Reserved
+	Rejected (Low funding)
+• PHASE Information
+	Rejected
+	Main list
+	Reserved
+	Accepted stage 1
+• PHASE Negotiation
+	Draft
+	Completed
+	Rejected
+• PHASE Grant Management
+	Active
+	Suspended
+	Closed
+	Terminated
+• PHASE Archive
+	Archived
+	Cancelled
+NOTE: ProjectPhaseType and ProjectStatusType are bound to become CCM2 codes in the next major version of Project/ProjectCore (v5). In the mean time, new class IDs for phase and status will be created. A taxonomy will also be created so as to map the correct statuses for each phase. Whenever this is done, the abbreviations of the relevant phase/status should be looked up and used for phase and status.
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Process" type="BusinessProcessType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>doubtful; keeping this for Participant Portal needs</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>date when project starts</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Duration" type="base:CountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>duration of the project in months</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ECSignatureDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>date when the Commission signs the grant agreement</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ContractVersion" type="xs:string" minOccurs="0"/>
+			<xs:element name="LocalStatus" type="LocalStatusType" minOccurs="0"/>
+			<xs:element name="EntryIntoForceDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date of entry into force of the Grant.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="GrantingResponsibilityCoreGroup">
+		<xs:sequence>
+			<xs:element name="ResponsibleDGCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>code of type ECHierarchy (e.g. RTD, CNECT)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResponsibleDepartmentCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>code of type unit (e.g. TREN/C/02) (CCM type "ECHierarchy" program "FP7" or "ECHierarchy" program "GEN")</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Officer" type="officer:OfficerCoreInfoType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>list of officers and their role in the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GrantingAuthority" type="coderef:CodeRefType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="ConsortiumCoreGroup">
+		<xs:sequence>
+			<xs:element name="Partner" type="partner:LegalPartnerCoreType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>list of partners in project consortium</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="FinancialCoreGroup">
+		<xs:sequence>
+			<xs:element name="RequestedECContribution" type="base:AmountType"/>
+			<xs:element name="TotalCosts" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For some MarieCurie projects, there are no total costs. TODO: which subfunding schemes?
+H2020: the total costs overall</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalCostsEligFunding" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>These are the total costs eligible for funding (H2020: the total overall costs excluding the total costs of those not receiving funding)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="FundingSchemeCoreGroup">
+		<xs:sequence>
+			<xs:element name="FundingScheme" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>ClassId is 'Instrument' - used in FP7 and H2020</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubFundingScheme" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ClassId is 'ProjectType' - used in FP7</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="BusinessProcessType">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Status" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ProjectPhaseType">
+		<xs:annotation>
+			<xs:documentation>
+NOTE: ProjectPhaseType and ProjectStatusType are bound to become CCM2 codes in the next major version of Project/ProjectCore (v5). In the mean time, new class IDs for phase and status will be created. A taxonomy will also be created so as to map the correct statuses for each phase. Whenever this is done, the abbreviations of the relevant phase/status should be looked up and used for phase and status.
+					</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="ProjectStatusType">
+		<xs:annotation>
+			<xs:documentation>
+NOTE: ProjectPhaseType and ProjectStatusType are bound to become CCM2 codes in the next major version of Project/ProjectCore (v5). In the mean time, new class IDs for phase and status will be created. A taxonomy will also be created so as to map the correct statuses for each phase. Whenever this is done, the abbreviations of the relevant phase/status should be looked up and used for phase and status.
+					</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="LocalStatusType">
+		<xs:annotation>
+			<xs:documentation>Local status given by the called system </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Status" type="ProjectStatusType"/>
+			<xs:element name="SystemSrc" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20160712 - v4.3.4 - SYGMA
+		Added EntryIntoForceDate in the LifeCycleCoreGroup
+		</xs:documentation>
+		<xs:documentation>20160624 - v4.3.3 - CDM
+		Document "Archived" status in Archive phase of Project (documentation update)
+		</xs:documentation>
+		<xs:documentation>20151127 - v4.3.2 - SYGMA
+		New element TotalCostsEligFunding in parallel to TotalCosts to distinguish the total costs overal of the project vs the total costs eligible for EU funding.
+		</xs:documentation>
+		<xs:documentation>20150831 - v4.3.1 - SYGMA/SEP/ODS
+		Update the annotation of the Status: SEP is also using SUBMITTED and DELETE in the Submission phase.
+		</xs:documentation>
+		<xs:documentation>20150610 - v4.3.0 - SYGMA/SEP/ODS
+		Remove the enumeration on the project phase. Eventually, Phase/Status will be integrated as CCM codes+taxonomy
+		</xs:documentation>
+		<xs:documentation>20140912 - v4.2.2 - SYGMA/SEP 
+		Added Inadmissible status for project at evaluation phase
+		</xs:documentation>
+		<xs:documentation>20140225 - v4.2.1 - EACEA 
+		Added FullReference, ProjectDescription (specific to EACEA) 
+		</xs:documentation>
+		<xs:documentation>20140225 - v4.2.0 - SYGMA 
+		ResponsibleDepartmentCode becomes optional 
+		</xs:documentation>
+		<xs:documentation>20140206 - v4.1.0 - SYGMA 
+		Use ProjectProposal V2 
+		</xs:documentation>
+		<xs:documentation>20131112 - v4.0.3 - SYGMA 
+		created explicit type for elements with embedded complex type to avoid problems with jaxb and wsimport
+		</xs:documentation>
+		<xs:documentation>v4.0.2- sygma changes: added Topic, MasterCall, SubFundingScheme becomes optional, removed DG from GrantingResponsibilityCoreGroup and added instead ResponsibleDGCode</xs:documentation>
+		<xs:documentation>v4.0.1- sygma changes: ReportingPeriodType changed to FinancialReportingPeriodType</xs:documentation>
+		<xs:documentation>v4.0.0- sygma changes. references to latest versions of /model</xs:documentation>
+		<xs:documentation>v3.2.0- </xs:documentation>
+		<xs:documentation>v3.1.1- Change status annotation to cover SEP - Sygma needs</xs:documentation>
+		<xs:documentation>v3.1.0- Proposal related data</xs:documentation>
+		<xs:documentation>v3.1.0- moved the SubfundingScheme to the FundingSchemeCoreGroup,  removed from FinancialCoreGroup all partner related info as they are now moved under ConsortiumGroup and make the totalCosts optional</xs:documentation>
+		<xs:documentation>v3.0.0- reference to ReportingPeriod v3 - new type to use ReportingPeriodNumber</xs:documentation>
+		<xs:documentation>v2.0.2 - ReportingPeriod becomes a list of unbounded</xs:documentation>
+		<xs:documentation>v2.0.1 - Bump the base.xsd</xs:documentation>
+		<xs:documentation>+ Put more detailed documentation about the statuses and phases.</xs:documentation>
+		<xs:documentation>+ Bump LegalEntityRef</xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:address="http://ec.europa.eu/research/fp/model/address/V2" xmlns:code="http://ec.europa.eu/research/fp/model/code/V2" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns="http://ec.europa.eu/research/fp/model/expertappointment/V1" xmlns:doc="http://ec.europa.eu/research/fp/model/document/V3" xmlns:expertref="http://ec.europa.eu/research/fp/model/expert-ref/V1" xmlns:expertappointmentref="http://ec.europa.eu/research/fp/model/expertappointment-ref/V1" targetNamespace="http://ec.europa.eu/research/fp/model/expertappointment/V1" elementFormDefault="qualified" version="1.3.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expertappointment-ref/V1" schemaLocation="../../expertappointment-ref/V1/ExpertAppointmentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V3" schemaLocation="../../document/V3/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert-ref/V1" schemaLocation="../../expert-ref/V1/ExpertRef.xsd"/>
+	<xs:element name="ExpertAppointment" type="ExpertAppointmentType"/>
+	<xs:complexType name="ExpertAppointmentType">
+		<xs:annotation>
+			<xs:documentation>[CH]Originally named ExpertAppointmentLetterType. There is much more information than the AL itself here. So a more general name is suggested.[/CH]</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AppointmentId" type="expertappointmentref:GlobalIDType"/>
+			<xs:element name="ExpertCandidatureReference" type="expertref:ExpertIdType">
+				<xs:annotation>
+					<xs:documentation>This is the expert candidature number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OwnerDG" type="base:RDGType">
+				<xs:annotation>
+					<xs:documentation>Identifies the owner DG. Based on DG the appointmet may be treated differently..</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AppointmentStatus" type="ExpertAppointmentStatusType">
+				<xs:annotation>
+					<xs:documentation>Defines the status of an  Appointment Letter. Accepted values are: GENERATED, OPEN, CANCELLED, CLOSED.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PointOfOrigin" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The point of origin for the travel that the expert will make.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TaskLocation" type="TaskLocationType">
+				<xs:annotation>
+					<xs:documentation>The location of the task/work performed. One of: CENTRAL, REMOTE, CENTRAL_AND_REMOTE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MaxNoOfWorkingDays" type="ExpertWorkingDaysType"/>
+			<xs:element name="Validity" type="base:DateIntervalType">
+				<xs:annotation>
+					<xs:documentation>The time interval for whom this appointment is valid.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TaskType" type="TaskTypeType">
+				<xs:annotation>
+					<xs:documentation>Holds the type of the task that needs to be performed by the expert</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MaxNumberOfReimbursementRequestsAllowed" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Defines how many reimbursement requests are allowed for this AL. It is set up by the back-office when the AL is generated. Can be removed if there is a unique behaviour per DG/Agency , and we have the Ownner DG information</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ALDoc" type="AppointmentLetterDocumentRefType">
+				<xs:annotation>
+					<xs:documentation>The latest version of the AL doc is kept (i.e. the one with the highest signature status)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AmendmentList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The list of ammendments for this AL.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AmendmentDoc" type="AppointmentLetterDocumentRefType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>1 or more amendments can be generated for a certain AL</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ReimbursementRequestList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Th reimbursement requests submitted by the expert.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ReimbursementRequests" type="ReimbursementRequestType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="What" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This is a text that will be displayed to the expert indicating him what he will work on. EX: evaluation of cal ABC ...</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Where" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This is a text that will be displayed to the expert idicating him whre he will be performing teh work. EX: Bruxelles, Place Rogier Covent Garden </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="When" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This is a text that will be displayed to the expert to indicate the period/interval when he must perform the work. Ex: from 28-Nov-2011 to 02-Dec-2011</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReimbursementRequestType">
+		<xs:sequence>
+			<xs:element name="ReimbursementRequestId" type="expertappointmentref:ReimbursementRequestIDType"/>
+			<xs:element name="OwnerDG" type="base:RDGType">
+				<xs:annotation>
+					<xs:documentation>Identifies the business owner of this reimbursement request.Can be one of research family DGs and agencies</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AttendanceSessionID" type="AttendanceSessionIDType">
+				<xs:annotation>
+					<xs:documentation>Identifies and attendance session for whom the expert submitted this request.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- this should be developed into a full blown session type -->
+			<xs:element name="AppointmentId" type="expertappointmentref:GlobalIDType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>[CH]For use in standalone mode of the type[/CH]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExpertCandidatureReference" type="expertref:ExpertIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>[CH]For use in standalone mode of the type[/CH]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BankAccountID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>[CH]The Common Model declares a bankaccount type but it conveys much more information than this simple ID. Note that the exact format of this ID is not explained here[/CH]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="ReimbursementRequestStatusType"/>
+			<xs:element name="ClaimLumpSum" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Boolean flag to indicate if the expert want to be paid for executing his task(s). </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ClaimAllocation" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Boolean flag to indicate if the expert wants to receieve money for meals, city transport, ect ( dailly allocation )</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ClaimAccomodation" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Boolean flag to indicate if teh expert wants to receive mobey for sleeping accomodation (hotel).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ClaimTransport" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Boolean flag to indicate if the expert wants to be reimbursed for the cost of the transport (only for tasks performed centrally)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WorkingDays" type="ExpertWorkingDaysType">
+				<xs:annotation>
+					<xs:documentation>Number of days works that need to be payed through this reimbursement request.It is smaller or equal to teh max number of working days defined in the expert appointment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TravelSessionList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TravelSessions" type="TravelSessionType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Usualy therer is one travel session per reimbursement request. In practice can also be 2 ( not sure about more )</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CostStatement" type="doc:DocumentStorageType" minOccurs="0"/>
+			<xs:element name="SubmittedOnPaper" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True if this is a reimbursement submitted by paper and then displayed in the portal.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TravelSessionType">
+		<xs:annotation>
+			<xs:documentation>A travel session is a retorn (both ways) journey from/to the place of executing the task.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TravelSessionID" type="expertappointmentref:TravelSessionIDType" fixed="1"/>
+			<xs:element name="ReimbursementRequestID" type="expertappointmentref:ReimbursementRequestIDType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>[CH]For use in standalone mode of the type[/CH]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AppointmentId" type="expertappointmentref:GlobalIDType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>[CH]For use in standalone mode of the type[/CH]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- not sure that we need this here, it can be obtainned  from the reimbursement request -->
+			<xs:element name="ExpertCandidatureReference" type="expertref:ExpertIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>[CH]For use in standalone mode of the type[/CH]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- not sure that we need this here, it can be obtainned  from the reimbursement request -->
+			<xs:element name="PlaceOfTask" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The place of task for the part that involved travel.[L] maybe should be moved to teh reimbursement request level [L]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ArrivalDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The date of arrival to the place of task.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- should we used xs;dateTime type ? -->
+			<xs:element name="DepartureDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The date of departure from the place of task.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MeetingStartDate" type="xs:date"/>
+			<xs:element name="MeetingEndDate" type="xs:date"/>
+			<xs:element name="Comments" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Free text filled in by the expert to submit usefull information to the Commission.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TransportationMeanList">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TransportationMeans" type="TransportationMeanType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>[CH]Originally defined with an upper limit of 10. Is this a business rule?[/CH]</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TransportationMeanType">
+		<xs:annotation>
+			<xs:documentation>Defines all teh fields for all categories of transport. This type covers all transportations means ( no subtypes )</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TravelSessionID" type="expertappointmentref:TravelSessionIDType" minOccurs="0"/>
+			<xs:element name="TravelType" type="TravelTypeType">
+				<xs:annotation>
+					<xs:documentation>one way or return</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PlaceOfDeparture" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>For each travel segment, the place of departure should be mentioned. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PlaceOfArrival" type="xs:string"/>
+			<xs:element name="SupportingDocuments" type="SupportingDocumentRefType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>[CH]Was originally set as "1..10" occurence. Is this a business rule?[/CH]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TypeOfFare" type="TypeOfAirFareType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For air travel. Can be business or economy</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Price" type="xs:float" minOccurs="0"/>
+			<xs:element name="Currency" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The currency used to made the purchase.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- this should be defined as a simple type or complex type with all ISO codes for the currencies accepted by the commission -->
+			<xs:element name="Kilometers" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Just for personal car travel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+			<xs:element name="TransportationMeanCategory" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The accepted values are:AIRPLANE, TRAIN, BOAT, BUS, PRIVATE_CAR, OTHER</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SupportingDocumentRefType">
+		<xs:sequence>
+			<xs:element name="DocumentID" type="doc:DocumentStorageType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AppointmentLetterDocumentRefType">
+		<xs:annotation>
+			<xs:documentation>Used to identify the appointment letter document or the amendment document (to an appointment letter)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DocumentID" type="doc:DocumentStorageType"/>
+			<xs:element name="SignatureStatus" type="AppointmentLetterSignatureStatusType">
+				<xs:annotation>
+					<xs:documentation>Stores the status of the document in regards to the signature.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExpertWorkingDaysType">
+		<xs:sequence>
+			<xs:element name="Local" type="xs:float">
+				<xs:annotation>
+					<xs:documentation>Days worked in a central location (Bruxelles or Luxembourg)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Remote" type="xs:float">
+				<xs:annotation>
+					<xs:documentation>Days worked in a remote location (usualy the home or working place of teh expert)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AttendanceSessionType">
+		<xs:sequence>
+			<xs:element name="SessionID" type="AttendanceSessionIDType">
+				<xs:annotation>
+					<xs:documentation>The ID of the attendance session as it is generated by the back office</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element name="Atendees" type="AttendeeType">
+					<xs:annotation>
+						<xs:documentation>The list of experts that have attended this session.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:element name="From" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The date when the session started.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="To" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The date when the session ended.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AppointmentLetterSignatureStatusType">
+		<xs:annotation>
+			<xs:documentation>Defines the status of the signature for the AL or AL amendment document.Can take one of the values:
+							PREPARED = the document is not yet signed by anybody (as generated by the back office)
+							COMMISSION_SIGNED = the document is signed by the DG )
+							EXPERT_SIGNED = the document is signed by the expert)		
+							FULLY_SIGNED = both the Commission and the expert have signed the document
+					</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PREPARED"/>
+			<xs:enumeration value="COMMISSION_SIGNED"/>
+			<xs:enumeration value="EXPERT_SIGNED"/>
+			<xs:enumeration value="FULLY_SIGNED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaskLocationType">
+		<xs:annotation>
+			<xs:documentation>The location of the task/work performed.Can take one of the values:
+					CENTRAL = it means that the work is performed in Bruxelles or Luxembourg
+					REMOTE = it means that the work is performed at the location of the expert (home usualy)
+					CENTRAL_AND_REMOTE =  part of work is performed centrally, part of work is performed remotely
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CENTRAL"/>
+			<xs:enumeration value="REMOTE"/>
+			<xs:enumeration value="CENTRAL_AND_REMOTE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExpertAppointmentStatusType">
+		<xs:annotation>
+			<xs:documentation>Defines the status of an  Appointment Letter. Accepted values are:
+			GENERATED = has been generated by the back office but is not yet fully signed
+			OPEN = it is fully signed and reimbursement requests can be submitted for this AL
+			TERMINATED = the appointment has been terminated for abnormal reasons and cannot be used anymore
+			CLOSED = the AL cannot be used anymore (no reimbursements are allowed from this point on) </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="GENERATED"/>
+			<xs:enumeration value="OPEN"/>
+			<xs:enumeration value="TERMINATED"/>
+			<xs:enumeration value="CLOSED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaskTypeType">
+		<xs:annotation>
+			<xs:documentation>Defines the type of the task that needs to be performed by the expert. Accepted values are:
+			EVALUATION = the expert works on evaluation of proposals
+			REVIEW = the expert is working on reviewing work submitted by a project
+			MONITORING = the expert is monitoring the evaluation process 
+			ADVISORY_GROUP = the expert is working in the advisory group</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EVALUATION"/>
+			<xs:enumeration value="REVIEW"/>
+			<xs:enumeration value="MONITORING"/>
+			<xs:enumeration value="ADVISORY_GROUP"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TypeOfAirFareType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BUSINESS"/>
+			<xs:enumeration value="ECONOMY"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TravelTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ONE_WAY"/>
+			<xs:enumeration value="RETURN"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ReimbursementRequestStatusType">
+		<xs:annotation>
+			<xs:documentation>This type defines all the details related to the status of the reimbursement request.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StatusValue" type="ReimbursementRequestStatusValuesType"/>
+			<xs:element name="StatusChangeDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Timestamp made when the last status change has occured</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StatusReason" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This field is used for just 2 states:
+							MISSING_INFORMATION = contains the instructions for teh expert on what data is missing or inacurate
+							REJECTED = the reason of the rejection
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AttendeeType">
+		<xs:sequence>
+			<xs:element name="ExpertCandidatureReference" type="expertref:ExpertIdType">
+				<xs:annotation>
+					<xs:documentation>Expert ID. The expert candidature number/reference</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AppointmentID" type="expertappointmentref:GlobalIDType">
+				<xs:annotation>
+					<xs:documentation>The AL for whom the expert can submit a reimbursement request </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DerogationPOOType">
+		<xs:annotation>
+			<xs:documentation>This type contains the detaisl of a derogation request made by teh expert for teh change in the Point Of Origin</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="expertId" type="expertref:ExpertIdType">
+				<xs:annotation>
+					<xs:documentation>The expert candiudature reference.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expertAppointmentRef" type="expertappointmentref:GlobalIDType">
+				<xs:annotation>
+					<xs:documentation>The reference to the appointment for whom teh expert submits this derogation request. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="newPOO" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The new Point Of Origin.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="oldPOO" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The old/actual Point Of  Origin.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="reasonForChange" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The reasonf for whom the expert requests the change in the Point Of Origin.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AttendanceSessionIDType">
+		<xs:annotation>
+			<xs:documentation>This uniquely identifies an attendance session Is composed from the Internal ID of the session plus the owner app/system</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AttendanceSessionInternalID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This is the id of the attendance session as generated by the back office app (EMI, AL2)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SystemID" type="base:SystemsType">
+				<xs:annotation>
+					<xs:documentation>This identifies the system/application that issued the session (EMI, AL2, etc).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ReimbursementRequestStatusValuesType">
+		<xs:annotation>
+			<xs:documentation>Possible values:  SUBMITTED / MISSING_OR_INACCURATE_INFORMATION / RESUBMITTED / REJECTED / PAID
+								SUBMITTED the reimbursement has been submitted and is beeing analysed oin the back office
+								MISSING_OR_INACCURATE_INFORMATION = back office rejected the reimbursement back to the expert to be corrected/completed
+								RESUBMITTED = the request has been resubmitted after corection ( can be resubmitted and rejected back many times). This status values does not discern between the first, second, third, etc resubmitts.
+								REJECTED = the reimbursement is not legitimate and was cancelled	
+								PAID = the reimbursement has been approved and paid by ABAC 
+						</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SUBMITTED"/>
+			<xs:enumeration value="MISSING_OR_INACCURATE_INFORMATION"/>
+			<xs:enumeration value="RESUBMITTED"/>
+			<xs:enumeration value="REJECTED"/>
+			<xs:enumeration value="PAID"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>0.0.8 - 20101010 - ExpertWorkingDaysType.Local and Remote from xs:positiveInteger to xs:float  Reason: experts can work and claim half days also. / TransportationMeanType.Price from xs:positiveInteger to xs:float Reason: prices have 2 decimals / TransportationMeanType.TransportationMeanCategory  xs:string / Reason: there is no type defined for the element now
+</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>1.1.0 - 20110128 - Use address V2</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>1.2.0 - 20140121 - Add ADVISORY_GROUP to tasktype enum, fix version number</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>1.3.0 - 20140520 - Add AppointmentLetterSignatureStatusType</xs:documentation>
+	</xs:annotation>
+</xs:schema>

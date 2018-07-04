@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+
+<xs:schema 
+	targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/call/callphase-event/V2"  
+	xmlns="http://ec.europa.eu/rdg/efp/domain/event/call/callphase-event/V2" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" 
+	xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" 
+	xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" 
+	xmlns:code="http://ec.europa.eu/research/fp/model/code-ref/V3"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified" version="2.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:complexType name="CallPhaseEventType">
+		<xs:annotation>
+			<xs:documentation>Event Generated when a Call changes of Phase</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="CallID" type="code:CodeRefType"/>
+					<xs:element name="Deadline" type="xs:dateTime" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The deadline of the PHASE/STEP couple</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Phase" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>The phase that the Call is LEAVING. i.e. the END of SUBMISSION ¦ EVALUATION ¦ RANKING</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Step" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>In the EVALUATION phase, this field is the STEP (i.e. 1 or 2). In the SUBMISSION phase, this field is used for "STAGE" (i.e. 1 or 2). In case of PHASE: RANKING, it can be "RANKING VALIDATED" or "RANKING FINAL"</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ProposalIDList" type="projectref:ProposalIDListType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20131011 - v2.0.0 - SYGMA - Use ProjectRef v3 </xs:documentation>
+	</xs:annotation>
+</xs:schema>

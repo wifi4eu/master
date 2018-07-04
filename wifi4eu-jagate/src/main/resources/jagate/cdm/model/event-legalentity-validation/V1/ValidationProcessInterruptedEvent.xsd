@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 (x64) (http://www.altova.com) by alex (alex) -->
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/legalentity/validation/process/interrupted-event/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/validation/process/interrupted-event/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:complexType name="ValidationProcessInterruptedEvent">
+		<xs:annotation>
+			<xs:documentation>Event Emitted when a process is interrupted in Compass.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="ProcessInterrupted" type="ProcessInterruptedType"/>
+					<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProcessInterruptedType">
+		<xs:sequence>
+			<xs:element name="ProcessReference" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Process reference in Compass</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InterruptionDetails" type="InterruptionDetailsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InterruptionDetailsType">
+		<xs:sequence>
+			<xs:element name="InterruptionType" type="InterruptionTypeType">
+				<xs:annotation>
+					<xs:documentation>Possible values are: INFO_REQUESTED, CANCELLATION, FOLLOW_UP, REJECTION, ERROR or OTHER.
+					FOLLOW_UP and REJECTION are interruption events triggered by ABAC.
+					INFO_REQUESTED and CANCELLATION are designed for the Validation Service when it needs additional information or want to cancel a Bank Account request before 
+					it is sent to ABAC.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TriggerBy" type="TriggerByType">
+				<xs:annotation>
+					<xs:documentation>Possible values are: VALIDATION_SERVICE, ABAC</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ErrorMessage" type="xs:string" minOccurs="0"/>
+			<xs:element name="Reason" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="InterruptionTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INFO_REQUESTED"/>
+			<xs:enumeration value="CANCELLATION"/>
+			<xs:enumeration value="FOLLOW_UP"/>
+			<xs:enumeration value="REJECTION"/>
+			<xs:enumeration value="ERROR"/>
+			<xs:enumeration value="OTHER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TriggerByType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="VALIDATION_SERVICE"/>
+			<xs:enumeration value="ABAC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0 - 20170831: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

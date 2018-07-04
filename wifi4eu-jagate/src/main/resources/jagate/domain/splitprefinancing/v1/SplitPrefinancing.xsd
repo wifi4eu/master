@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/splitprefinancing/v1"
+	xmlns:payment="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v1"
+	xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1"
+	xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2"
+	xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v2"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/splitprefinancing/v1"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v1"
+		schemaLocation="../../payment/v1/Payment.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v2"
+		schemaLocation="../../project/v2/ProjectBasicData.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1"
+		schemaLocation="../../documents/v1/AresReference.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2"
+		schemaLocation="../../visa/v2/Visa.xsd" />
+	
+	<xs:complexType name="CreateSplitPrefinancingType">
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataPrefinType"/>
+			<xs:element name="PrefinancingData" type="SplitPrefinancingDataType"/>
+			<xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="SplitPrefinancingDataType">
+		<xs:annotation>
+			<xs:documentation>Prefinancing Transaction Data for the Coordinator
+				no JRC involved</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="LegalEntity" type="xs:integer" />
+			<xs:element name="BaseLineDate" type="xs:date" />
+			<xs:element name="Commitment" type="xs:string" />
+			<xs:element name="InvoiceReference" type="xs:string" />
+			<xs:element name="Payment" type="SplitPrefinPaymentType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="SplitPrefinPaymentType">
+		<xs:sequence>
+			<xs:element name="PaymentHeader" type="payment:PrefinPaymentHeaderTypeV2" />
+			<xs:element name="PaymentDetail" type="payment:PrefinPaymentDetailsType"
+				minOccurs="1" maxOccurs="unbounded" />
+			<xs:element name="PaymentNegativeDetail"
+				type="payment:PrefinPaymentNegativeDetailsType" minOccurs="0"
+				maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

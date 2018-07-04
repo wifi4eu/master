@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Cyril Brigant (European Commission) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/project-artefact-submission-ref/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" targetNamespace="http://ec.europa.eu/research/fp/model/project-artefact-submission-ref/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture the all data related to the project artefact submission</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:element name="ProjectArtefactSubmissionRef" type="ProjectArtefactSubmissionRefType"/>
+	<xs:complexType name="ProjectArtefactSubmissionRefType">
+		<xs:sequence>
+			<xs:element name="ProjectRef" type="projectref:ProjectRefType"/>
+			<xs:element name="SubmissionId" type="xs:string"/>
+			<xs:element name="SubmissionKind" type="xs:token">
+				<xs:annotation>
+					<xs:documentation>Type of the submission: SINGLE, EXCEPTIONAL, PRE_SINGLE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubmissionDate" type="xs:date"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>4.0.0 - creatation of the model - 20/07/2012</xs:documentation>
+	</xs:annotation>
+</xs:schema>

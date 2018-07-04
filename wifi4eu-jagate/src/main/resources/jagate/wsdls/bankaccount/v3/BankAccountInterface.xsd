@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns:ba="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v3"
+	xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1"
+	xmlns:cdm="http://ec.europa.eu/research/fp/model/bankaccount/V2" 
+	xmlns:jagref="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/bankaccount/v3/interfaces" 
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/bankaccount/v3/interfaces"
+	elementFormDefault="qualified">
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V2" schemaLocation="../../../cdm/model/bankaccount/V2/BankAccount.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1" schemaLocation="../../../domain/reference/v1/ReferenceData.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v3" schemaLocation="../../../domain/bankaccount/v3/BankAccount.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" schemaLocation="../../../domain/visa/v1/Visa.xsd" />
+
+	<!-- Elements -->
+	<xs:element name="GetBankAccountByNationalNumberRequest" type="GetBankAccountByNationalNumberRequestType" />
+	<xs:element name="GetBankAccountByIbanRequest" type="GetBankAccountByIbanRequestType" />
+	<xs:element name="GetBankAccountResponse" type="GetBankAccountResponseType" />
+
+	<xs:element name="CreateBankAccountRequest" type="CreateBankAccountRequestType" />
+	<xs:element name="CreateBankAccountResponse" type="CreateBankAccountResponseType" />
+	
+	<xs:element name="CreateLEBALinkRequest" type="CreateLEBALinkRequestType" />
+	<xs:element name="CreateLEBALinkResponse" type="CreateLEBALinkResponseType" />
+	
+	<xs:element name="BankAccountException" type="jagate:JAgateException" />
+	
+	<xs:complexType name="CreateLEBALinkRequestType">
+		<xs:sequence>
+			<xs:element name="legalEntityId" type="jagate:NonEmptyString" />
+			<xs:element name="bankAccountId" type="jagate:NonEmptyString" />
+			<xs:element name="callback" type="jagate:CallbackType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateLEBALinkResponseType">
+		<xs:sequence>
+			<xs:element name="LocalObjectForeignId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Types -->
+	<xs:complexType name="CreateBankAccountRequestType">
+		<xs:sequence>
+			<xs:element name="bankAccount" type="ba:JagateBankAccountType" />
+			<xs:choice>
+				<xs:element name="aresDocumentList" type="jagate:AresDocumentList"/>
+				<xs:element name="scannedDocumentList" type="jagate:ScannedDocumentList"/>	
+			</xs:choice>	
+			<xs:element name="visa" type="visa:BasicVisa" />
+			<xs:element name="callback" type="jagate:CallbackType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="CreateBankAccountResponseType">
+		<xs:sequence>
+			<xs:element name="LocalObjectForeignId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="GetBankAccountByNationalNumberRequestType">
+		<xs:sequence>
+			<xs:element name="nationalNumber" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountByIbanRequestType">
+		<xs:sequence>
+			<xs:element name="iban" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountResponseType">
+		<xs:sequence>
+			<xs:element name="bankAccountHolder" type="ba:BankAccountHolderType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>	
+</xs:schema>

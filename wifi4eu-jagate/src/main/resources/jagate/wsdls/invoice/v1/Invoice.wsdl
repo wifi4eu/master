@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="InvoiceWSV1"  
+	xmlns:invoice="http://ec.europa.eu/rdg/jagate/ws/invoice/v1/interfaces"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/invoice/v1"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/invoice/v1">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/invoice/v1/interfaces" schemaLocation="InvoiceInterface.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+	<wsdl:message name="RegisterInvoiceRequest">
+		<wsdl:part element="invoice:RegisterInvoiceRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="RegisterInvoiceResponse">
+		<wsdl:part element="invoice:RegisterInvoiceResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="ReRegisterInvoiceRequest">
+		<wsdl:part element="invoice:ReRegisterInvoiceRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="ReRegisterInvoiceResponse">
+		<wsdl:part element="invoice:ReRegisterInvoiceResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="InvoiceException">
+		<wsdl:part element="invoice:InvoiceException" name="exception" />
+	</wsdl:message>
+	
+	<wsdl:message name="UnRegisterInvoiceRequest">
+		<wsdl:part element="invoice:UnRegisterInvoiceRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="UnRegisterInvoiceResponse">
+		<wsdl:part element="invoice:UnRegisterInvoiceResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="CloseInvoiceRequest">
+		<wsdl:part element="invoice:CloseInvoiceRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="CloseInvoiceResponse">
+		<wsdl:part element="invoice:CloseInvoiceResponse" name="response" />
+	</wsdl:message>
+
+    <wsdl:message name="ReopenInvoiceRequest">
+        <wsdl:part element="invoice:ReopenInvoiceRequest" name="request" />
+    </wsdl:message>
+
+    <wsdl:message name="ReopenInvoiceResponse">
+        <wsdl:part element="invoice:ReopenInvoiceResponse" name="response" />
+    </wsdl:message>
+
+    <wsdl:message name="InvalidateInvoiceRequest">
+        <wsdl:part element="invoice:InvalidateInvoiceRequest" name="request" />
+    </wsdl:message>
+
+    <wsdl:message name="InvalidateInvoiceResponse">
+        <wsdl:part element="invoice:InvalidateInvoiceResponse" name="response" />
+    </wsdl:message>    
+
+	<wsdl:portType name="IInvoiceService">
+		<wsdl:documentation>Invoice operations.</wsdl:documentation>
+		<wsdl:operation name="RegisterInvoice">
+			<wsdl:documentation>Register invoice</wsdl:documentation>
+			<wsdl:input message="RegisterInvoiceRequest" />
+			<wsdl:output message="RegisterInvoiceResponse" />
+			<wsdl:fault name="InvoiceException" message="InvoiceException"/>
+		</wsdl:operation>
+		<wsdl:operation name="UnRegisterInvoice">
+			<wsdl:documentation>UnRegister invoice</wsdl:documentation>
+			<wsdl:input message="UnRegisterInvoiceRequest" />
+			<wsdl:output message="UnRegisterInvoiceResponse" />
+			<wsdl:fault name="InvoiceException" message="InvoiceException"/>
+		</wsdl:operation>
+		<wsdl:operation name="ReRegisterInvoice">
+			<wsdl:documentation>UnRegister invoice</wsdl:documentation>
+			<wsdl:input message="ReRegisterInvoiceRequest" />
+			<wsdl:output message="ReRegisterInvoiceResponse" />
+			<wsdl:fault name="InvoiceException" message="InvoiceException"/>
+		</wsdl:operation>
+		<wsdl:operation name="CloseInvoice">
+			<wsdl:documentation>Close invoice</wsdl:documentation>
+			<wsdl:input message="CloseInvoiceRequest" />
+			<wsdl:output message="CloseInvoiceResponse" />
+			<wsdl:fault name="InvoiceException" message="InvoiceException"/>
+		</wsdl:operation>
+        <wsdl:operation name="ReopenInvoice">
+            <wsdl:documentation>Close invoice</wsdl:documentation>
+            <wsdl:input message="ReopenInvoiceRequest" />
+            <wsdl:output message="ReopenInvoiceResponse" />
+            <wsdl:fault name="InvoiceException" message="InvoiceException"/>
+        </wsdl:operation>
+        <wsdl:operation name="InvalidateInvoice">
+            <wsdl:documentation>Invalidate invoice</wsdl:documentation>
+            <wsdl:input message="InvalidateInvoiceRequest" />
+            <wsdl:output message="InvalidateInvoiceResponse" />
+            <wsdl:fault name="InvoiceException" message="InvoiceException"/>
+        </wsdl:operation>
+
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="IInvoiceServiceBinding" type="IInvoiceService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="RegisterInvoice">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="InvoiceException">
+				<soap:fault name="InvoiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="UnRegisterInvoice">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="InvoiceException">
+				<soap:fault name="InvoiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="ReRegisterInvoice">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="InvoiceException">
+				<soap:fault name="InvoiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="CloseInvoice">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="InvoiceException">
+				<soap:fault name="InvoiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+        <wsdl:operation name="ReopenInvoice">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="InvoiceException">
+                <soap:fault name="InvoiceException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="InvalidateInvoice">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="InvoiceException">
+                <soap:fault name="InvoiceException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="InvoiceServiceV1">
+		<wsdl:port binding="IInvoiceServiceBinding" name="InvoiceServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws//v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

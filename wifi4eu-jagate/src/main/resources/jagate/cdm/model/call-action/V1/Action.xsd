@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2015 rel. 4 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by EC (European Commission) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:code="http://ec.europa.eu/research/fp/model/code/V3" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns="http://ec.europa.eu/research/fp/model/call-action/V1" targetNamespace="http://ec.europa.eu/research/fp/model/call-action/V1" elementFormDefault="qualified" version="1.0.4">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture all data related to a 'Action' prepared and published by a research DG.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code/V3" schemaLocation="../../code/V3/Code.xsd"/>
+	<xs:element name="Action" type="ActionType"/>
+	<xs:complexType name="ActionType">
+		<xs:complexContent>
+			<xs:extension base="code:CodeType">
+				<xs:sequence>
+					<xs:element name="ResponsibleUnit" type="coderef:CodeRefType" minOccurs="0"/>
+					<xs:element name="Coordinator" type="xs:string" minOccurs="0"/>
+					<xs:element name="WpPartYear" type="coderef:CodeRefType" minOccurs="0"/>
+					<xs:element name="Texts" type="TextListType" minOccurs="0"/>
+					<xs:element name="Type" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Type of actions are:
+								EC("Expert Contracts","EC"),  standard 
+								GB("Grant to Identified beneficiary","GB"),  sub-class  
+								PP("Public Procurement","PP"),  sub-class 
+								P("Prize","P"),  sub-class 
+								FI("Financial Instrument","FI"),  standard  
+								S("Subscription","S"),  standard 
+								DA("Delegation Agreement","DA"),  standard 
+								CO("CORDIS services","CO"),  standard 
+								JRC("Provision of technical/scientific services by the Joint Research Centre","JRC"),  standard
+								SGA("Specific Grant Agreement","SGA"),  sub-class
+								ESA("Indirect Management by ESA","ESA")  standard </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Timetable" type="xs:string" minOccurs="0"/>
+					<xs:element name="BudgetYears" type="BudgetYearListType" minOccurs="0"/>
+					<xs:element name="PublicationDate" type="xs:date" minOccurs="0"/>
+					<xs:element name="IsPublishedOnPP" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="AmendmentPublicationDate" type="xs:date" minOccurs="0"/>
+					<xs:element name="CoordinatorBackup" type="xs:string" minOccurs="0"/>
+					<xs:element name="FocusArea" type="coderef:CodeRefType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TextListType">
+		<xs:sequence>
+			<xs:element name="Text" type="TextType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TextType">
+		<xs:sequence>
+			<xs:element name="Kind" type="xs:string"/>
+			<xs:element name="Text" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GrantBeneficiaryType">
+		<xs:complexContent>
+			<xs:extension base="ActionType">
+				<xs:sequence>
+					<xs:element name="LegalEntities" type="GrantBeneficiaryLEListType" minOccurs="0"/>
+					<xs:element name="TypeOfAction" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GrantBeneficiaryLEListType">
+		<xs:sequence>
+			<xs:element name="GrantBeneficiaryLE" type="GrantBeneficiaryLEType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GrantBeneficiaryLEType">
+		<xs:sequence>
+			<xs:element name="LegalEntity" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PrizeType">
+		<xs:complexContent>
+			<xs:extension base="ActionType">
+				<xs:sequence>
+					<xs:element name="Opening" type="xs:string" minOccurs="0"/>
+					<xs:element name="SubmissionDeadline" type="xs:string" minOccurs="0"/>
+					<xs:element name="DemonstrationDate" type="xs:string" minOccurs="0"/>
+					<xs:element name="AwardDecision" type="xs:string" minOccurs="0"/>
+					<xs:element name="PrizeToA" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PublicProcurementType">
+		<xs:complexContent>
+			<xs:extension base="ActionType">
+				<xs:sequence>
+					<xs:element name="ContractType" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SpecificGrantAgreementType">
+		<xs:complexContent>
+			<xs:extension base="ActionType">
+				<xs:sequence>
+					<xs:element name="ToaText" type="xs:string" minOccurs="0"/>
+					<xs:element name="SgaToa" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BudgetYearType">
+		<xs:sequence>
+			<xs:element name="BudgetLine" type="xs:string" minOccurs="0"/>
+			<xs:element name="Budget" type="xs:double"/>
+			<xs:element name="Year" type="xs:int"/>
+			<xs:element name="Text" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BudgetYearListType">
+		<xs:sequence>
+			<xs:element name="BudgetYear" type="BudgetYearType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.0.0 - 20160104 - Initial version</xs:documentation>
+		<xs:documentation>v1.0.1 - 20160121 - add AwardDecision to ActionType</xs:documentation>
+		<xs:documentation>v1.0.2 - 20160325 - add publication and amendment date and IsPublishedOnPP indicating if the action needs to be published on PP</xs:documentation>
+		<xs:documentation>v1.0.3 - 20161024 - add coordinator backup</xs:documentation>
+		<xs:documentation>v1.0.4 - 20170824 - add focus area, it will be used as a filter on the participant portal.
+					Needed by CaP through the webservices it uses to get call information
+		</xs:documentation>
+	</xs:annotation>
+</xs:schema>

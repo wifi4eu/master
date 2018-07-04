@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+					xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/abaclinks/v1"
+					targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/abaclinks/v1"
+					xmlns:transaction="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1"
+					elementFormDefault="qualified" 
+					attributeFormDefault="unqualified"
+					xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" 
+					version="1.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1" schemaLocation="../../transaction/v1/Transaction.xsd"/>
+
+	<xs:element name="GetAbacLinkRequest" type="GetAbacLinkRequestType"/>
+	<xs:element name="GetAbacLinkResponse" type="GetAbacLinkResponseType"/>	
+	<xs:element name="GetPrintOutLinkRequest" type="GetAbacLinkRequestType"/>
+	<xs:element name="GetPrintOutLinkResponse" type="GetAbacLinkResponseType"/>	
+	
+
+	<xs:complexType name="GetAbacLinkRequestType">
+		<xs:sequence>
+			<xs:element name="localObjectForeigId" type="xs:string"/>
+			<xs:element name="transactionType" type="transaction:TransactionSubtype"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GetAbacLinkResponseType">
+		<xs:sequence>
+			<xs:element name="transactionLink" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

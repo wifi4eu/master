@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 (http://www.altova.com) by Mark Heeren (Xtra Mile) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/service-ping/V1" xmlns:hdr="http://ec.europa.eu/research/fp/model/header/V1" targetNamespace="http://ec.europa.eu/research/fp/model/service-ping/V1" elementFormDefault="qualified" version="1.0.0">
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/header/V1" schemaLocation="../../header/V1/Header.xsd"/>
+	<xsd:complexType name="pingType">
+		<xsd:sequence>
+			<xsd:element name="Header" type="hdr:HeaderType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="pingResponseType">
+		<xsd:sequence>
+			<xsd:element name="Header" type="hdr:HeaderType"/>
+			<xsd:element name="Message" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The version number.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--20120607 v1.0.0-->
+</xsd:schema>

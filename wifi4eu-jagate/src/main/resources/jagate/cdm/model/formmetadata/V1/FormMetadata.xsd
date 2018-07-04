@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<!-- edited with XMLSpy v2011 (http://www.altova.com) by julien goffaux (arhs developments) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/rtd/model/formmetadata/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/rtd/model/formmetadata/V1" xmlns:document="http://ec.europa.eu/research/fp/model/document/V3" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" elementFormDefault="qualified" version="1.0.1" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>v1.0.1 - changed the AccessModeType to simple type with enumerations
+			</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>
+			This schema intends to capture data related to form metadata for PADME integration at RTD
+			</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V3" schemaLocation="../../document/V3/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" schemaLocation="../../project-reportingperiod/V3/ProjectReportingPeriod.xsd"/>
+	<xs:element name="FormMetaData" type="FormMetadataType">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="FormMetadataType">
+		<xs:sequence>
+			<xs:element name="FormId" type="xs:string" minOccurs="0"/>
+			<xs:element name="Title" type="xs:string"/>
+			<xs:element name="FormType" type="FormTypeType">
+				<xs:annotation>
+					<xs:documentation>the type and subtype are defined by the back office systems</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>to be defined/checked with the back office systems. FORCE has: Draft, Submitted to Coordinator, Submitted to EC, Request For Revision, Archived         SESAM has: Draft, Ready for Submission, Submitted, Rejected, Deleted, Archived</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SelfManaged" type="xs:boolean"/>
+			<xs:element name="Mandatory" type="xs:boolean"/>
+			<xs:element name="AccesMethod" type="AccessMethodType" maxOccurs="4"/>
+			<xs:element name="Owner" minOccurs="0">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="Individual">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="IndividualContextType">
+										<xs:sequence>
+											<xs:element name="FirstName" minOccurs="0"/>
+											<xs:element name="LastName" minOccurs="0"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Organisation">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="OrganisationContextType">
+										<xs:sequence>
+											<xs:element name="LegalName" minOccurs="0"/>
+											<xs:element name="ShortName" minOccurs="0"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ConcernedPeriod" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>such a period will be used to offer the possibility to group forms in a period which has a business meaning in back offices</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Period">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="GroupingPeriodType"/>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="AdjustedReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>In case of adjustment form</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DueDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="SubmissionDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ReferredDocument" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Type" type="document:DocumentTypeType"/>
+						<xs:element name="StorageList" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Storage" type="document:DocumentStorageType" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Mandatory" type="xs:boolean"/>
+						<xs:element name="MultipleFilesAllowed" type="xs:boolean"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccessMethodType">
+		<xs:sequence>
+			<xs:element name="Mode" type="AccessModeType"/>
+			<xs:element name="URL" type="xs:string"/>
+			<xs:element name="AccessRight" type="AccessRightType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AccessModeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EDIT"/>
+			<xs:enumeration value="VIEW"/>
+			<xs:enumeration value="VIEW_PDF"/>
+			<xs:enumeration value="CREATE_ADJUSTMENTFORM"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="FormTypeType">
+		<xs:sequence>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>SESAM types: REPORT, QUESTIONNAIRE, REVIEW REPORT, ASSESSMENT REPORT, DECLARATION, AMENDMENT REQUEST, NOTIFICATION, CONSOLIDATED REVIEW REPORT                            FORCE types: NORMAL FORMC, ADJUSTMENT FORMC</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubType" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccessRightType">
+		<xs:sequence>
+			<xs:element name="IAMPermission" type="xs:string" maxOccurs="unbounded"/>
+			<xs:element name="Context" type="ContextType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContextType" abstract="false">
+		<xs:choice>
+			<xs:element name="IndividualContext" type="IndividualContextType"/>
+			<xs:element name="OrganisationContext" type="OrganisationContextType"/>
+			<xs:element name="ProjectContext" type="projectref:ProjectRefType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="IndividualContextType">
+		<xs:sequence>
+			<xs:element name="UserId" type="base:ECUserIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OrganisationContextType">
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GroupingPeriodType">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Identifier of the period, either a ReportingPeriod or a  session period</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="Title" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V3" xmlns:legalentity="http://ec.europa.eu/research/fp/model/legalentity/V5" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V3" elementFormDefault="qualified" version="3.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V5" schemaLocation="../../legalentity/V5/LegalEntity.xsd"/>
+	<xs:complexType name="LegalEntityCreationEvent">
+		<xs:annotation>
+			<xs:documentation>Event Emitted when a Legal Entity was created in the system.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="LegalEntity" type="legalentity:ExtendedFactListType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+		<xs:documentation>v 3.0.0 - 20130109: Updated the imported version of legal entity.</xs:documentation>
+	</xs:annotation>
+</xs:schema>

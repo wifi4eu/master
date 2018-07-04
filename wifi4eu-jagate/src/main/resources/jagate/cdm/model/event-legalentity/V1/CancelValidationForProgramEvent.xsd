@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/legalentity/cancelvalidationforprogram-event/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/cancelvalidationforprogram-event/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V2" schemaLocation="../../legalentity-ref/V2/LegalEntityRef.xsd"/>
+	<xs:complexType name="CancelValidationForProgramEvent">
+		<xs:annotation>
+			<xs:documentation>Event Received when a remote system requests the cancelation of validation on the facts associated to a Progam.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+					<xs:element name="Program" type="base:ProgramType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

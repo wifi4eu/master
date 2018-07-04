@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		xmlns="http://ec.europa.eu/rdg/jagate/ws/payment/v2/interfaces"
+		targetNamespace="http://ec.europa.eu/rdg/jagate/ws/payment/v2/interfaces"
+		elementFormDefault="qualified"
+		xmlns:payment="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v3"
+		xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v2"
+		xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2"
+		xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1"
+		version="2.0.1">
+
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v2" schemaLocation="../../../domain/project/v2/ProjectBasicData.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" schemaLocation="../../../domain/visa/v2/Visa.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/invoice/v1" schemaLocation="../../../domain/invoice/v1/Invoice.xsd" />
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v3" schemaLocation="../../../domain/payment/v3/Payment.xsd" />
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" schemaLocation="../../../domain/documents/v1/AresReference.xsd" />
+						
+	<xs:element name="RegisterPaymentResponse" type="RegisterPaymentResponseType" />
+	<xs:element name="RegisterPaymentRequest" type="RegisterPaymentRequestType" />
+    <xs:element name="PaymentRequestDetailsResponse" type="PaymentRequestDetailsResponseType" />
+    <xs:element name="PaymentRequestDetailsRequest" type="PaymentRequestDetailsRequestType" />
+    <xs:element name="CheckPaymentCreditAvailabilityResponse" type="CheckPaymentCreditAvailabilityResponseType" />
+    <xs:element name="CheckPaymentCreditAvailabilityRequest" type="CheckPaymentCreditAvailabilityRequestType" />
+	<xs:element name="PaymentException" type="jagate:JAgateException" />
+	
+	<xs:complexType name="RegisterPaymentRequestType">
+        <xs:annotation>
+            <xs:documentation>Register Payment Request</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="ProjectData" type="project:ProjectDataPrefinType"/>
+            <xs:element name="PaymentData" type="payment:PaymentDataType"/>
+            <xs:element name="AresReferenceData" type="documents:AresReferenceDataType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+        </xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RegisterPaymentResponseType">
+        <xs:sequence>
+            <xs:element name="paymentLocObjForeignId" type="xs:string"/>
+            <xs:element name="paymentOrdObjForeignId" type="xs:string"/>
+            <xs:element name="returnCode" type="xs:long"/>
+            <xs:element name="message" type="xs:string"/>
+        </xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="PaymentRequestDetailsRequestType">
+        <xs:annotation>
+            <xs:documentation>Register Payment Request</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="PaymentReqObjForeignId" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PaymentRequestDetailsResponseType">
+        <xs:sequence>
+            <xs:element name="PaymentRequestDetails" type="payment:PaymentRequestDetailsType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="CheckPaymentCreditAvailabilityRequestType">
+        <xs:annotation>
+            <xs:documentation>Check in ABAC if there is enough commitment and payment credit to ventilate the payment.</xs:documentation>
+        </xs:annotation>
+	    <xs:sequence>   
+	        <xs:element name="PaymentDetailsForCreditCheck" type="payment:PaymentDetailsForCreditCheckListType" minOccurs="0" /> 
+	    </xs:sequence> 
+    </xs:complexType>
+
+	<xs:complexType name="CheckPaymentCreditAvailabilityResponseType">
+	  <xs:sequence>
+	       <xs:element name="PaymentResponseMessage" type="payment:PaymentResponseMessageType"/>
+	  </xs:sequence>
+	</xs:complexType>    
+    
+    <xs:annotation>
+        <xs:documentation>v2.0.1 - 20170801 - Added new elements CheckPaymentCreditAvailibilityRequest and CheckPaymentCreditAvailibilityResponse</xs:documentation>
+    </xs:annotation>
+	
+</xs:schema>

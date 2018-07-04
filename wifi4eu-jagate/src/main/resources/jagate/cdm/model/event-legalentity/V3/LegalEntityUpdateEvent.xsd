@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/legalentity/update-event/V2" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:ns1="http://ec.europa.eu/rdg/efp/domain/event/legalentity/update-event/V3" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/update-event/V3" elementFormDefault="qualified" version="3.0.1">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:complexType name="LegalEntityUpdateEvent">
+		<xs:annotation>
+			<xs:documentation>Event emitted when there is a change of validity on the Legal Entity level</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+					<xs:element name="ValidityType" type="coderef:CodeRefType">
+						<xs:annotation>
+							<xs:documentation>The possible values are: DECLARED, VALIDATED, SUSPENDED, SLEEPING, BLOCKED</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="HierarchyData" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>In case of validityType=SUSPENDED and DEPRECATED, the HierarchyData will be filled in together with the EffectiveDate</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:choice>
+								<xs:element name="UTROPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+								<xs:element name="MasterPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ValidityDate" type="xs:date" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+		<xs:documentation>v 2.0.0 - 20130109 : Updated imported version of legal-entity-ref </xs:documentation>
+		<xs:documentation>v 3.0.0 - 20130517 : Validity type becomes a CCM code</xs:documentation>
+		<xs:documentation>v 3.0.1 - 20130517 : Document that BLOCKED becomes a possible Validity Type value</xs:documentation>		
+	</xs:annotation>
+</xs:schema>

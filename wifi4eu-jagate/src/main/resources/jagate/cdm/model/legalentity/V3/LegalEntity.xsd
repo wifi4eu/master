@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/legalentity/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:address="http://ec.europa.eu/research/fp/model/address/V3" xmlns:person="http://ec.europa.eu/research/fp/model/person/V2" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:certificate="http://ec.europa.eu/research/fp/model/certificate/V2" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V2" xmlns:legalentitycore="http://ec.europa.eu/research/fp/model/legalentity-core/V2" targetNamespace="http://ec.europa.eu/research/fp/model/legalentity/V3" elementFormDefault="qualified" version="3.0.0">
+	<xs:annotation>
+		<xs:documentation>
+		This schema intends to capture all legal entity related data.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V2" schemaLocation="../../person/V2/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/certificate/V2" schemaLocation="../../certificate/V2/Certificate.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V2" schemaLocation="../../legalentity-ref/V2/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-core/V2" schemaLocation="../../legalentity-core/V2/LegalEntityCore.xsd"/>
+	<xs:element name="LegalEntity" type="LegalEntityType"/>
+	<xs:complexType name="AbstractFactType">
+		<xs:sequence>
+			<xs:element name="WorkFlowStatus" type="legalentityref:WorkFlowStatusType">
+				<xs:annotation>
+					<xs:documentation>The possible values are: WAITING_FOR_VALIDATION, FLAGGED_FOR_VALIDATION, VALIDATION_ONGOING, VALIDATED, VALIDATED_WITH_PENDING_REQUESTS</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DataStatus" type="legalentityref:ResponseDataQualityType">
+				<xs:annotation>
+					<xs:documentation>The possible values are: NOT DECLARED, DECLARED, VALIDATED
+- NOT DECLARED The fact data is not existing (yet)
+- DECLARED The application returns the not validated version
+- VALIDATED: The application returns the last validated version (regardless modification requests that are present)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EffectiveDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateAbstractFactType">
+		<xs:sequence>
+			<xs:element name="EffectiveDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExtendedFactListType">
+		<xs:sequence>
+			<xs:element name="CoreFact" type="ExtendedCoreFactType"/>
+			<xs:element name="ExtraLegalInfoFact" type="ExtendedExtraLegalInfoFactType" minOccurs="0"/>
+			<xs:element name="CommunicationFact" type="ExtendedCommunicationFactType" minOccurs="0"/>
+			<xs:element name="ContactFactList" type="ExtendedContactFactListType" minOccurs="0"/>
+			<xs:element name="FP7LegalEntityTypeFact" type="ExtendedFP7LegalEntityTypeFactType" minOccurs="0"/>
+			<xs:element name="NonProfitFact" type="ExtendedNonProfitFactType" minOccurs="0"/>
+			<xs:element name="ResearchOrganisationFact" type="ExtendedResearchOrganisationFactType" minOccurs="0"/>
+			<xs:element name="EducationFact" type="ExtendedEducationFactType" minOccurs="0"/>
+			<xs:element name="InternationalOrganisationFact" type="ExtendedInternationalOrganisationFactType" minOccurs="0"/>
+			<xs:element name="IBBAExemptionFact" type="ExtendedIBBAExemptionFactType" minOccurs="0"/>
+			<xs:element name="ICMFact" type="ExtendedICMFactType" minOccurs="0"/>
+			<xs:element name="SMEFactList" type="ExtendedSMEFactListType" minOccurs="0"/>
+			<xs:element name="CertificationFactList" type="ExtendedCertificationFactListType" minOccurs="0"/>
+			<xs:element name="BalanceSheetFactList" type="ExtendedBalanceSheetFactListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateFactListType">
+		<xs:sequence>
+			<xs:element name="CoreFact" type="CreateUpdateCoreFactType"/>
+			<xs:element name="ExtraLegalInfoFact" type="CreateUpdateExtraLegalInfoFactType" minOccurs="0"/>
+			<xs:element name="CommunicationFact" type="CreateUpdateCommunicationFactType" minOccurs="0"/>
+			<xs:element name="ContactFactList" type="CreateUpdateContactFactListType" minOccurs="0"/>
+			<xs:element name="FP7LegalEntityTypeFact" type="CreateUpdateFP7LegalEntityTypeFactType" minOccurs="0"/>
+			<xs:element name="NonProfitFact" type="CreateUpdateNonProfitFactType" minOccurs="0"/>
+			<xs:element name="ResearchOrganisationFact" type="CreateUpdateResearchOrganisationFactType" minOccurs="0"/>
+			<xs:element name="EducationFact" type="CreateUpdateEducationFactType" minOccurs="0"/>
+			<xs:element name="InternationalOrganisationFact" type="CreateUpdateInternationalOrganisationFactType" minOccurs="0"/>
+			<xs:element name="IBBAExemptionFact" type="CreateUpdateIBBAExemptionFactType" minOccurs="0"/>
+			<xs:element name="ICMFact" type="CreateUpdateICMFactType" minOccurs="0"/>
+			<xs:element name="SMEFactList" type="CreateUpdateSMEFactListType" minOccurs="0"/>
+			<xs:element name="CertificationFactList" type="CreateUpdateCertificationFactListType" minOccurs="0"/>
+			<xs:element name="BalanceSheetFactList" type="CreateUpdateBalanceSheetFactListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- DISPLAY EXTENTIONS -->
+	<xs:complexType name="ExtendedCoreFactType">
+		<xs:complexContent>
+			<xs:extension base="AbstractFactType">
+				<xs:sequence>
+					<xs:element name="CoreFactDetails" type="legalentitycore:LegalEntityCoreType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtendedExtraLegalInfoFactType">
+		<xs:complexContent>
+			<xs:extension base="AbstractFactType">
+				<xs:sequence>
+					<xs:element name="ExtraLegalInfoFactDetails" type="ExtraLegalInfoFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtendedCommunicationFactType">
+		<xs:complexContent>
+			<xs:extension base="AbstractFactType">
+				<xs:sequence>
+					<xs:element name="CommunicationFactDetails" type="CommunicationFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtendedContactFactListType">
+		<xs:sequence>
+			<xs:element name="ContactFact" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="AbstractFactType">
+							<xs:sequence>
+								<xs:element name="ContactFactDetails" type="ContactFactType"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExtendedFP7LegalEntityTypeFactType">
+		<xs:complexContent>
+			<xs:extension base="AbstractFactType">
+				<xs:sequence>
+					<xs:element name="FP7LegalEntityTypeFactDetails" type="FP7LegalEntityTypeFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtendedNonProfitFactType">
+		<xs:complexContent>
+			<xs:extension base="AbstractFactType">
+				<xs:sequence>
+					<xs:element name="NonProfitFactDetails" type="NonProfitFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtendedResearchOrganisationFactType">
+		<xs:complexContent>
+			<xs:extension base="AbstractFactType">
+				<xs:sequence>
+					<xs:element name="ResearchOrganisationFactDetails" type="ResearchOrganisationFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtendedEducationFactType">
+		<xs:complexContent>
+			<xs:extension base="AbstractFactType">
+				<xs:sequence>
+					<xs:element name="EducationFactDetails" type="EducationFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtendedInternationalOrganisationFactType">
+		<xs:complexContent>
+			<xs:extension base="AbstractFactType">
+				<xs:sequence>
+					<xs:element name="InternationalOrganisationFactDetails" type="InternationalOrganisationFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtendedCertificationFactListType">
+		<xs:sequence>
+			<xs:element name="CertificationFact" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="AbstractFactType">
+							<xs:sequence>
+								<xs:element name="CertificationFactDetails" type="certificate:CertificateOnMethodologyType"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExtendedIBBAExemptionFactType">
+		<xs:complexContent>
+			<xs:extension base="AbstractFactType">
+				<xs:sequence>
+					<xs:element name="IBBAExemptionFactDetails" type="IBBAExemptionFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtendedICMFactType">
+		<xs:complexContent>
+			<xs:extension base="AbstractFactType">
+				<xs:sequence>
+					<xs:element name="ICMFactDetails" type="ICMFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtendedSMEFactListType">
+		<xs:sequence>
+			<xs:element name="SMEFact" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="AbstractFactType">
+							<xs:sequence>
+								<xs:element name="SMEFactDetails" type="SMEFactType"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExtendedBalanceSheetFactListType">
+		<xs:sequence>
+			<xs:element name="BalanceSheetFact" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="AbstractFactType">
+							<xs:sequence>
+								<xs:element name="BalanceSheetFactDetails" type="BalanceSheetFactType"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- CREATE UPDATE EXTENTIONS -->
+	<xs:complexType name="CreateUpdateCoreFactType">
+		<xs:complexContent>
+			<xs:extension base="CreateUpdateAbstractFactType">
+				<xs:sequence>
+					<xs:element name="CoreFactDetails" type="legalentitycore:LegalEntityCoreType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateExtraLegalInfoFactType">
+		<xs:complexContent>
+			<xs:extension base="CreateUpdateAbstractFactType">
+				<xs:sequence>
+					<xs:element name="ExtraLegalInfoFactDetails" type="ExtraLegalInfoFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateCommunicationFactType">
+		<xs:complexContent>
+			<xs:extension base="CreateUpdateAbstractFactType">
+				<xs:sequence>
+					<xs:element name="CommunicationFactDetails" type="CommunicationFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateContactFactListType">
+		<xs:sequence>
+			<xs:element name="ContactFact" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="CreateUpdateAbstractFactType">
+							<xs:sequence>
+								<xs:element name="ContactFactDetails" type="ContactFactType"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateFP7LegalEntityTypeFactType">
+		<xs:complexContent>
+			<xs:extension base="AbstractFactType">
+				<xs:sequence>
+					<xs:element name="FP7LegalEntityTypeFactDetails" type="FP7LegalEntityTypeFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateNonProfitFactType">
+		<xs:complexContent>
+			<xs:extension base="CreateUpdateAbstractFactType">
+				<xs:sequence>
+					<xs:element name="NonProfitFactDetails" type="NonProfitFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateResearchOrganisationFactType">
+		<xs:complexContent>
+			<xs:extension base="CreateUpdateAbstractFactType">
+				<xs:sequence>
+					<xs:element name="ResearchOrganisationFactDetails" type="ResearchOrganisationFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateEducationFactType">
+		<xs:complexContent>
+			<xs:extension base="CreateUpdateAbstractFactType">
+				<xs:sequence>
+					<xs:element name="EducationFactDetails" type="EducationFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateInternationalOrganisationFactType">
+		<xs:complexContent>
+			<xs:extension base="CreateUpdateAbstractFactType">
+				<xs:sequence>
+					<xs:element name="InternationalOrganisationFactDetails" type="InternationalOrganisationFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateCertificationFactListType">
+		<xs:sequence>
+			<xs:element name="CertificationFactList">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="CreateUpdateAbstractFactType">
+							<xs:sequence>
+								<xs:element name="CertificationFactDetails" type="certificate:CertificateOnMethodologyType" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateIBBAExemptionFactType">
+		<xs:complexContent>
+			<xs:extension base="CreateUpdateAbstractFactType">
+				<xs:sequence>
+					<xs:element name="IBBAExemptionFactDetails" type="IBBAExemptionFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateICMFactType">
+		<xs:complexContent>
+			<xs:extension base="CreateUpdateAbstractFactType">
+				<xs:sequence>
+					<xs:element name="ICMFactDetails" type="ICMFactType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateSMEFactListType">
+		<xs:sequence>
+			<xs:element name="SMEFact" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="CreateUpdateAbstractFactType">
+							<xs:sequence>
+								<xs:element name="SMEFactDetails" type="SMEFactType"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateUpdateBalanceSheetFactListType">
+		<xs:sequence>
+			<xs:element name="BalanceSheetFact" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="CreateUpdateAbstractFactType">
+							<xs:sequence>
+								<xs:element name="BalanceSheetFactDetails" type="BalanceSheetFactType"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- DETAILS-->
+	<xs:complexType name="CommunicationFactType">
+		<xs:sequence>
+			<xs:element name="Phone1" type="xs:string" minOccurs="0"/>
+			<xs:element name="Phone2" type="xs:string" minOccurs="0"/>
+			<xs:element name="Fax" type="xs:string" minOccurs="0"/>
+			<xs:element name="Email" type="xs:string" minOccurs="0"/>
+			<xs:element name="InternetAddress" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FP7LegalEntityTypeFactType">
+		<xs:sequence>
+			<xs:element name="Natural" type="xs:boolean"/>
+			<xs:element name="Public" type="xs:boolean"/>
+			<xs:element name="Enterprise" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NonProfitFactType">
+		<xs:sequence>
+			<xs:element name="NonProfit" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indicates that the Legal Entity is a non-profit(true).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResearchOrganisationFactType">
+		<xs:sequence>
+			<xs:element name="ResearchOrganisation" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indicates that the Legal Entity is a research organisation(true).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EducationFactType">
+		<xs:sequence>
+			<xs:element name="HigherOrSecondaryEducationEstablishment" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indicates that the Legal Entity is a higher or secondary education establishment(true).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InternationalOrganisationFactType">
+		<xs:sequence>
+			<xs:element name="InternationalOrganisation" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indicates that the Legal Entity is an international organisation(true).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InternationalOrganisationOfEuropeanInterest" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indicates that the Legal Entity is a international organisation of european interest(true).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BalanceSheetFactType">
+		<xs:annotation>
+			<xs:documentation>An annual balance sheet of a Legal Entity.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ValidityDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Indicative final date of validity of this balance sheet. Declared by the LEAR.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Year" type="base:YearType">
+				<xs:annotation>
+					<xs:documentation>The year that this balance sheet represennts</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CurrencyCode" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The CCM2 code fo the currency used in this balance sheet.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ClosingDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The closing date of this balance sheet.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DurationInMonths" type="base:CountType">
+				<xs:annotation>
+					<xs:documentation>The number of months covered by this balance sheet</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BalanceSheetAmounts" type="BalanceSheetAmountsType" minOccurs="0"/>
+			<xs:element name="Metrics" type="BalanceSheetMetricsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BalanceSheetAmountsType">
+		<xs:sequence>
+			<xs:element name="SubscribedCapitalUnpaid" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Subscribed capital unpaid</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IntangibleFixedAssets" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Intangible fixed assets</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TangibleFixedAssets" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tangible fixed assets</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinancialAssets" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Financial assets</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Stocks" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Stocks</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DebtorsDueInOneYear" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Debtors due within one year</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DebtorsDueAfterOneYear" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Debtors due after one year</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CashBankAndHand" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Cash at bank and in hand</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OtherCurrentAssets" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Other current assets</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubscribedCapital" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Subscribed capital</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reserves" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Reserves</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProfitLossPrevYears" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Profit and loss brought forward from the previous years</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProfitLossFinanicalYear" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Profit and loss brought forward for the financial year</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LongTermNonBankDebt" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Long term non-bank debt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LongTermBankDebt" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Long term bank debt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ShortTermNonBankDebt" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Short term non-bank debt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ShortTermBankDebt" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Short term bank debt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Turnover" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Turnover</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VariationInStocks" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Variation in stocks</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OtherOperatingIncome" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Other operating income</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CostMaterialsConsumables" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Cost of materials and consumables</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OtherOperatingCharges" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Other operating charges</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RenumerationAndCharges" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Remuneration and charges (staff costs)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdjustNonFclAssets" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Depreciation and value adjustments on non-financial assets</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdjustFclAssets" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Financial income and value adjustments on financial assets</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InterestPaid" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Interest paid</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SimilarCharges" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Similar charges</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExtraordinaryIncome" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Extraordinary income</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExtraordinaryCharges" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Extraordinary charges</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TaxesOnProfit" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Taxes on profits</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BalanceSheetMetricsType">
+		<xs:sequence>
+			<xs:element name="Liquidity" type="BalanceSheetMetricType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>(debtors due in one year + cash at bank and in hand + other current assets) / (short term non-bank debt + short term bank debt)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Autonomy" type="BalanceSheetMetricType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Interest Paid / Gross Operating Profit/Loss</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProfitabilityGross" type="BalanceSheetMetricType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Gross Operating Profit/Loss / TurnOver or Operating Income (if TurnOver = 0)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProfitabilityNet" type="BalanceSheetMetricType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Net Operating Profit/Loss / TurnOver or Operating Income (if TurnOver = 0)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Solvency" type="BalanceSheetMetricType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Total Debt / (Capital and Reserves - (Intangible assets / 2))</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Equity" type="BalanceSheetMetricType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Equal to Solvency, but with different qualification</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ConciseAnalysis" type="BalanceSheetMetricType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Overall score for financial capacity, based on concise financial viability and co-financing checks using previous ratios</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DepthAnalysis" type="BalanceSheetMetricType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Overall score for financial capacity, based on in-depth financial viability and co-financing checks using previous ratios</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BalanceSheetMetricType">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Metric value calculated from formula based on various fields of balance sheet.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Quote" type="base:CountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Numeric qualification of metric value (higher is better)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Qualification" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Verbal qualification of metric value. INSUFFICIENT or WEAK or ACCEPTABLE or GOOD</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SMEFactType">
+		<xs:sequence>
+			<xs:element name="Year" type="xs:integer"/>
+			<xs:element name="AnnualBalanceSheet" type="xs:integer"/>
+			<xs:element name="AnnualTurnover" type="xs:integer"/>
+			<xs:element name="NumberOfEmployees" type="xs:integer"/>
+			<xs:element name="FiancialYearEndDate" type="xs:integer"/>
+			<xs:element name="Autonomous" type="xs:boolean"/>
+			<xs:element name="SelfDeclaredSME" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="LightValidation" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="SMEValidated" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContactFactType">
+		<xs:complexContent>
+			<xs:extension base="person:PersonType">
+				<xs:sequence>
+					<xs:element name="ContactType" type="ContactType">
+						<xs:annotation>
+							<xs:documentation>The possible values are: ON_BEHALF_OFF, SELF_REGISTRANT, ADMIN_ACCOUNT, LEAR</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EcasLogin" type="xs:string" minOccurs="0"/>
+					<xs:element name="LEARActiveFrom" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The date when this LEAR is active from.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LEARActiveTo" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The last date when this LEAR is active.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExtraLegalInfoFactType">
+		<xs:sequence>
+			<xs:element name="OfficialLanguageCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The CCM2 code of the official language of the Legal Entity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--xs:element name="TranslatedName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The full business name in the translated language</xs:documentation>
+				</xs:annotation>
+			</xs:element-->
+			<xs:element name="TranslationLanguageCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The CCM2 code of the language used for the TranslatedName</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NaceCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The CCM2 Nace code. The statistical classification of economic activities in the European Community (in French: Nomenclature statistique des activités économiques dans la Communauté européenne), commonly referred to as NACE, is a European industry standard classification system consisting of a 6 digit code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StateWaranty" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IBBAExemptionFactType">
+		<xs:sequence>
+			<xs:element name="InterestYieldingBankAccount" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indicates whether this Legal Entity is exempt from the obligation to open an interest-bearing bank account for the pre-financing or not. If the flag is true this Legal Entity is exempt otherwise it is not</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ICMFactType">
+		<xs:sequence>
+			<xs:element name="IndirectCostMethod" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The CCM2 code of the Legal Entity's indirect cost method. Indirect costs, also called overheads, are all the eligible costs which cannot be identified by thebeneficiary as directly attributed to the project, but can be identified and justified by its accounting system as being incurred in direct relationship with the eligible direct costs of the project.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LegalEntityType">
+		<xs:complexContent>
+			<xs:extension base="ExtendedFactListType">
+				<xs:sequence>
+					<xs:element name="ValidityType" type="legalentityref:ValidityType">
+						<xs:annotation>
+							<xs:documentation>The possible values are: DECLARED,VALIDATED, SUSPENDED, SLEEPING (DEPRECATED will never appear)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ValidityDate" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Validity Date in case of Type=SUSPENDED or VALIDATED or SLEEPING</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="HierarchyData" type="legalentityref:HierarchyDataType">
+						<xs:annotation>
+							<xs:documentation>Core data filled in but the deprecatedList will contain ALL the deprecated pics (and not only the ones mentioned in the request).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="ContactType">
+		<xs:annotation>
+			<xs:documentation>The possible values are: ON_BEHALF_OFF, SELF_REGISTRANT, ADMIN_ACCOUNT, LEAR</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ON_BEHALF_OF"/>
+			<xs:enumeration value="SELF_REGISTRANT"/>
+			<xs:enumeration value="ADMIN_ACCOUNT"/>
+			<xs:enumeration value="LEAR"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>20100527 - V1.1.0</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Added FP6 necessary data note that at least one of FP6 or FP7 related data</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Gave a "default value" to FP7ValidationStatus in order to ensure compatibility with older version of the xsd.</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20100201 _ v2.0.0</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Registration country changed to coderef type</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Adress country changed to coderef type</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20100228 - v2.0.1</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Documentation annotations</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20120320 _ v3.0.0</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>Complete redesign - meant to be used by multiple clients for multiple programs</xs:documentation>
+	</xs:annotation>
+</xs:schema>

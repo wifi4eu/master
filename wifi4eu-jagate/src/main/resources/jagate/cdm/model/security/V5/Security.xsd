@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/security/V5" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:res="http://ec.europa.eu/research/fp/model/resource/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:userRef="http://ec.europa.eu/research/fp/model/user-ref/V1" targetNamespace="http://ec.europa.eu/research/fp/model/security/V5" elementFormDefault="qualified" attributeFormDefault="unqualified" version="5.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/resource/V1" schemaLocation="../../resource/V1/Resource.xsd"/>
+	<xs:complexType name="RoleListType">
+		<xs:annotation>
+			<xs:documentation>A list of IAM roles</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Role" type="coderef:CodeRefType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GrantedRoleType">
+		<xs:annotation>
+			<xs:documentation>
+				A role is granted to a user for a given resource and possibly one or more given sub-resource(s).
+				The role can also be directly granted to the user without any target resource.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UserRef" type="userRef:UserRefType">
+				<xs:annotation>
+					<xs:documentation>
+                        This tag identifies the user that is granted.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResourceId" type="res:ResourceIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+                        This tag identifies the resource id on which the user is granted a role (resource can be a project, legal entity, etc).
+                        A user can be granted a role without specifying a target resource id (e.g. user is granted the role of EXPERT).
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubResourceIdSet" type="SubResourceIdSetType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+			    		This tag identifies the sub-resource id(s) on which the user is granted.
+			    		For example, the resource id corresonds to a project and the sub-resource id is the PIC of a legal entity participating in the project consortium.
+			    		More than one sub-resource ids can be added (logical operator between these ids is always 'AND').
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Role" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>
+                        The role that is granted.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+                        The comment associated to the granted role.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RoleAuthorisationType">
+		<xs:annotation>
+			<xs:documentation>
+				A role is enabled or disabled for a given resource and possibly one or more given sub-resource(s).
+				Authorisation can target an explicit or implicit role.
+				For example, if implicit role PAA (acronym of Project Account Administrator) is authorised for beneficiary B in project P
+				then any user which is account administrator of legal entity B is also implicitly PAA on project P for legal entity B.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ResourceId" type="res:ResourceIdType">
+				<xs:annotation>
+					<xs:documentation>
+                        This tag identifies the resource id targeted by the role authorisation (resource can be project, legal entity, etc) .
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubResourceIdSet" type="SubResourceIdSetType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+			    		This tag identifies the sub-resource id(s) for which the role is authorised.
+			    		For example, the resource id corresponds to a project and the sub-resource id is the PIC of a legal entity participating in the project consortium.
+			    		More than one sub-resource ids can be added (logical operator between these ids is always 'AND').
+			    	</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Role" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>
+                        The role that is authorised.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+                        The comment associated to the role authorisation.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResourceRoleRelationListType">
+		<xs:sequence>
+			<xs:element name="ResourceRoleRelation" type="ResourceRoleRelationType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResourceRoleRelationType">
+		<xs:annotation>
+			<xs:documentation>
+				Association between a resource id (with optionally one or more set of sub-resource ids) and one or more role(s).
+				The logical operator between multiple roles is always 'OR'.
+				The logical operator between multiple sub-resource id sets is always 'OR'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ResourceId" type="res:ResourceIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+                        This tag identifies the resource id (project, legal entity, etc) to which the role list applies.
+                        If no resource is specified then it means that the role list applies to all existing resources.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubResourceIdSetList" type="SubResourceIdSetListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+			    		This tag identifies the sub-resource id(s) to which the role list applies.
+			    		For example, the resource is a project and the sub-resource id list contains the PIC of a legal entity participating in the consortium.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RoleList" type="RoleListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+			    		The list of roles.
+			    		If no role is specified then it means that all roles compatible with the resource type are taken into account.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubResourceIdSetType">
+		<xs:annotation>
+			<xs:documentation>
+				In the scope of IAM, roles are granted on a specific resource and possibly one or more specific sub-resource(s).
+				For example, a PARTICIPANT_CONTACT role is granted on specific project (i.e. the main resource) and legal entity (i.e. the sub-resource).
+				Sub-resource ids can be multiple and are grouped under an element of type SubResourceIdSetType.
+				The logical operator between multiple sub-resource ids is always 'AND'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SubResourceId" type="res:ResourceIdType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubResourceSetType">
+		<xs:annotation>
+			<xs:documentation>
+				In the scope of IAM, roles are granted on a specific resource and possibly one or more specific sub-resource(s).
+				For example, a PARTICIPANT_CONTACT role is granted on specific project (i.e. the main resource) and legal entity (i.e. the sub-resource).
+				Sub-resources can be multiple and are grouped under an element of type SubResourceSetType.
+				The logical operator between multiple sub-resources is always 'AND'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SubResource" type="res:ResourceType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubResourceIdSetListType">
+		<xs:annotation>
+			<xs:documentation>
+				A list of SubResourceIdSet elements.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SubResourceIdSet" type="SubResourceIdSetType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v3.0.0 - 20141110 - define ResourceIdType, ProjectRefType, LegalEntityRefType, ProposalRefType, DefaultRefType, RoleRefType and ResourceRoleRelationType types</xs:documentation>
+		<xs:documentation>v4.0.0 - 20150904 - allow multiple SubResource elements in ResourceRoleRelationType type</xs:documentation>
+		<xs:documentation>v5.0.0 - 20160105 - move ResourceIdType in ../resource/Resource.xsd</xs:documentation>
+		<xs:documentation>                  - replace multiple sub-resource elements by SubResourceIdSetListType in ResourceRoleRelationType type</xs:documentation>
+		<xs:documentation>                  - define GrantedRoleType and RoleAuthorisationType types</xs:documentation>
+	</xs:annotation>
+</xs:schema>

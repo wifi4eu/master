@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by European Commission (European Commission) -->
+<!-- edited with XMLSpy v2010 (http://www.altova.com) by Mark Heeren (Xtra Mile) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/project-mariecurie/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:person="http://ec.europa.eu/research/fp/model/person/V1" xmlns:legalentity="http://ec.europa.eu/research/fp/model/legalentity/V1" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:project="http://ec.europa.eu/research/fp/model/project/V2" xmlns:partner="http://ec.europa.eu/research/fp/model/project-partner/V2" xmlns:representative="http://ec.europa.eu/research/fp/model/project-representative/V2" targetNamespace="http://ec.europa.eu/research/fp/model/project-mariecurie/V2" elementFormDefault="qualified" version="2.0.1">
+	<xs:annotation>
+		<xs:documentation>
+			This schema intends to capture all funding scheme specific project data; in this case for projects complying to Marie Curie funding schemes
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V1" schemaLocation="../../legalentity/V1/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V1" schemaLocation="../../person/V1/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project/V2" schemaLocation="../../project/V2/Project.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V2" schemaLocation="../../project-partner/V2/ProjectPartner.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-representative/V2" schemaLocation="../../project-representative/V2/ProjectRepresentative.xsd"/>
+	<xs:element name="MarieCurieProjectInfo" type="MarieCurieProjectInfoType"/>
+	<xs:complexType name="MarieCurieProjectInfoType">
+		<xs:annotation>
+			<xs:documentation>Project level data elements specific to MarieCurie projects.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="project:FundingSchemeSpecificProjectInfoType">
+				<xs:sequence>
+					<xs:element name="ResearchClassifiedAsLaboratoryBased" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="ScientificPanelCode" type="coderef:CodeRefType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>code of type "ScientificArea"</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="FinancialContributionPerYear" type="MarieCurieFinancialContributionPerYearType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="FinancialContribution" type="MarieCurieFinancialContributionType"/>
+					<xs:element name="EthicalIssues" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="ActionCode" type="coderef:CodeRefType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>code of type "MCActionCode"</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>CoFundFellowship if SubFundingScheme is COFUND</xs:documentation>
+						</xs:annotation>
+						<xs:sequence>
+							<xs:element name="Fellowship" type="MarieCurieFellowshipType"/>
+							<xs:element name="CoFundFellowship" type="MarieCurieCoFundFellowshipType"/>
+						</xs:sequence>
+					</xs:choice>
+					<xs:element name="IndividualResearcher" type="ResearcherType"/>
+					<xs:element name="ResearcherOverview" type="MarieCurieResearcherOverviewType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>This is used in SubFundingSchemes IAPP and ITN to have an overview of all researchers in the project.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AverageTravelAllowance" type="base:AmountType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>This is used in SubFundingScheme IAPP in case the travel distance is unknown.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MarieCurieResearcherOverviewType">
+		<xs:sequence>
+			<xs:element name="TotalMonths" type="base:CountType"/>
+			<xs:element name="TotalEventDays" type="base:CountType"/>
+			<xs:element name="TotalNumberOfEvents" type="base:CountType"/>
+			<xs:element name="CategoryDetails" type="ITNIAPPResearchersInfo" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Improve naming? -->
+	<xs:complexType name="ITNIAPPResearchersInfo">
+		<xs:sequence>
+			<xs:element name="ResearcherCategory" type="MarieCurieCategoryType"/>
+			<xs:element name="Months" type="base:CountType"/>
+			<xs:element name="Researchers" type="base:CountType"/>
+			<xs:element name="FixedAmountContract" type="base:AmountType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MarieCurieFellowshipType">
+		<xs:sequence>
+			<xs:element name="ResearcherCategory" type="MarieCurieFellowshipCategoryType">
+				<xs:annotation>
+					<xs:documentation>This is the Researcher Category such as ESR: Early Stage Researcher, ER04: Experienced Researcher (4-10 years), ER10: Experienced Researcher (>10 years),  VS04: Visiting Scientist (4-10 years), VS10: Visiting Scientist (>10 years)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Duration" type="base:CountType"/>
+			<xs:element name="Financial" type="MarieCurieFinancialContributionType"/>
+			<xs:element name="PercFellowshipMonths" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is used (at least) in SubFundingScheme IAPP. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MarieCurieCoFundFellowshipType">
+		<xs:sequence>
+			<xs:element name="FellowshipCategory" type="MarieCurieCoFundFellowshipCategoryType">
+				<xs:annotation>
+					<xs:documentation>FellowshipCategory such as INCOMING, OUTGOING, RE-INTEGRATION. It is the type of mobility</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Duration" type="base:CountType"/>
+			<xs:element name="Financial" type="MarieCurieFinancialContributionType"/>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Fellowship referenced name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NumberOfFellows" type="base:CountType" minOccurs="0"/>
+			<xs:element name="EligibleFellowsPerYear" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Number of eligible fellows / year</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalCost" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="RequestedECcontribution" type="base:AmountType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="MarieCurieFellowshipCategoryType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="INCOMING"/>
+			<xs:enumeration value="OUTGOING"/>
+			<xs:enumeration value="RETURNPHASE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MarieCurieCoFundFellowshipCategoryType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="INCOMING"/>
+			<xs:enumeration value="OUTGOING"/>
+			<xs:enumeration value="RE-INTEGRATION"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="MarieCuriePartnerInfoType">
+		<xs:annotation>
+			<xs:documentation>Partner level data elements specific to MarieCurie projects.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="partner:FundingSchemeSpecificPartnerInfoType">
+				<xs:sequence>
+					<xs:element name="FinancialContributionPerYear" type="MarieCurieFinancialContributionPerYearType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="FinancialContribution" type="MarieCurieFinancialContributionType" minOccurs="0"/>
+					<xs:element name="FellowOverview" type="MarieCurieFellowOverviewType" minOccurs="0"/>
+					<xs:element name="ResearcherOverview" type="MarieCurieResearcherOverviewType" minOccurs="0"/>
+					<xs:element name="Event" type="MarieCurieEventType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="ExchangedStaff" type="MarieCurieExchangeStaffType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>If SubFundingScheme is IRSES-IOF</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MarieCurieFellowOverviewType">
+		<xs:sequence>
+			<xs:element name="Fellow" type="MarieCurieFellowType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MarieCurieFellowType">
+		<xs:sequence>
+			<xs:element name="FellowshipNumber" type="base:CountType" minOccurs="0"/>
+			<xs:element name="FellowshipCategory" type="MarieCurieFellowshipCategoryType" minOccurs="0"/>
+			<xs:element name="RecrSecPartNumber" type="base:CountType" minOccurs="0"/>
+			<xs:element name="ContractType" type="MarieCurieContractType" minOccurs="0"/>
+			<xs:element name="ResearcherCategory" type="MarieCurieCategoryType" minOccurs="0"/>
+			<xs:element name="MobilityAllowance" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="TravelAllowance" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="StartDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="Duration" type="base:CountType" minOccurs="0"/>
+			<xs:element name="Financial" type="MarieCurieFinancialContributionType" minOccurs="0"/>
+			<xs:element name="HostCountryCode" type="coderef:CodeRefType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MarieCurieExchangeStaffType">
+		<xs:sequence>
+			<xs:element name="HostingEntityRef" type="legalentityref:LegalEntityIdType">
+				<xs:annotation>
+					<xs:documentation>A PIC.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Direction" type="MarieCurieExchangeStaffDirectionType"/>
+			<xs:element name="SecondedStaff" type="MarieCurieSecondedStaffType"/>
+			<xs:element name="FellowshipMonths" type="base:CountType"/>
+			<xs:element name="ECContributionPerFellowMonth" type="base:AmountType"/>
+			<xs:element name="PartnerContributionPerFellowMonth" type="base:AmountType"/>
+			<xs:element name="TotalECContribution" type="base:AmountType"/>
+			<xs:element name="TotalPartnerContribution" type="base:AmountType"/>
+			<xs:element name="Total" type="base:AmountType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="MarieCurieSecondedStaffType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="ESR"/>
+			<xs:enumeration value="EXR"/>
+			<xs:enumeration value="MS"/>
+			<xs:enumeration value="TS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="MarieCurieFinancialContributionType">
+		<xs:sequence>
+			<xs:element name="LivingAllowance" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="TravelAllowance" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="MobilityAllowance" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="CareerExploratoryAllowance" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="ParticipationFees" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="Training" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="ManagementAndAuditCertification" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: The name of this should be checked</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Overhead" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="TransferOfKnowledge" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="OtherExpenses" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="Conferences" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="MaximumECContribution" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="ResearchCost" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="Total" type="base:AmountType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MarieCurieFinancialContributionPerYearType">
+		<xs:sequence>
+			<xs:element name="Year" type="base:YearType"/>
+			<xs:element name="FinancialContribution" type="MarieCurieFinancialContributionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="MarieCurieContractType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="B"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MarieCurieCategoryType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="ESR"/>
+			<xs:enumeration value="ESRSec"/>
+			<xs:enumeration value="ER04"/>
+			<xs:enumeration value="ER04Sec"/>
+			<xs:enumeration value="ER10"/>
+			<xs:enumeration value="ER10Sec"/>
+			<xs:enumeration value="VS04"/>
+			<xs:enumeration value="VS10"/>
+			<xs:enumeration value="TOTAL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MarieCurieExchangeStaffDirectionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INCOMING"/>
+			<xs:enumeration value="OUTGOING"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="MarieCurieEventType">
+		<xs:sequence>
+			<xs:element name="EventNumber" type="base:CountType"/>
+			<xs:element name="Type" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Type of event.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Month" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Project month number when the event will take place.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResDays" type="base:CountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Number of researcher days for researchers out of the network.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Contribution" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Contribution to the organization of event.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResearcherType">
+		<xs:annotation>
+			<xs:documentation>used in Marie Curie projects</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="person:PersonType">
+				<xs:sequence>
+					<xs:element name="LessFavouredRegionResidenceCode" type="coderef:CodeRefType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>TODO: is it used?</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DurationOfTheFellowship" type="base:CountType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>TODO: keep it here?</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="FamilyAllowance" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>TODO: keep it here?</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="UniversityDegree" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>date when university degree awarded</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Doctorate" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Date when doctorate awarded</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DoctorateExpectedDate" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>date when doctorate award is expected</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="FullTimePostgraduateResearchExperience" type="base:CountType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Full Time Postgrad Research Experience in months</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OtherAcademicQualifications" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Date when other academic qualifications awarded</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MarieCurieActionContractNumber" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>TODO: what is it?</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WorkingPeriod" type="ResearcherWorkingPeriod" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>place of activity/place of residence - activities in the previous 5 years</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EligibleContract" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Reference to a Marie Curie contract/project number in previous employment</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EligibleCallId" type="coderef:CodeRefType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Reference to a Marie Curie call in previous employment</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EmploymentStart" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>date when previous employment started</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="EmploymentEnd" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>date when previous employment ended</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="HasSubmittedOtherProposals" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>TODO: is it used?</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SubmittedProposal" type="ResearcherSubmittedProposalType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>TODO: is it used?</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ResearcherSubmittedProposalType">
+		<xs:sequence>
+			<xs:element name="Action" type="xs:string" minOccurs="0"/>
+			<xs:element name="ContractNumber" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResearcherWorkingPeriod">
+		<xs:sequence>
+			<xs:element name="From" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>activity from this date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="To" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>activity until this date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CountryCode" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>country where activity took place</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MarieCurieHostingEntityType">
+		<xs:annotation>
+			<xs:documentation>LegalEntity are missing. These information are used to store the contact persons responsible of "hosting entities"</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="Shortname" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Short name for partner - unique in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:annotation>
+					<xs:documentation>partner LE PICs should be unique per project</xs:documentation>
+					<xs:documentation>partner LE data can be transfered either by value or by reference</xs:documentation>
+				</xs:annotation>
+				<xs:element name="LegalEntityRef" type="legalentityref:LegalEntityRefType" minOccurs="0"/>
+				<xs:element name="LegalEntity" type="legalentity:LegalEntityType" minOccurs="0"/>
+			</xs:choice>
+			<xs:choice>
+				<xs:annotation>
+					<xs:documentation>TODO: CHECK IF WE NEED THIS!!!! Each partner designates one or more individuals that have particular defined roles within the consortium. The basic default role is the "Participant representative", i.e. the person of contact for that particular participant in this particular project. (Reason for the choice: We have the choice of carrying the whole Representative information or the minimum information currently needed by the portal).</xs:documentation>
+				</xs:annotation>
+				<xs:element name="ProjectRepresentativeRefs" type="representative:ProjectRepresentativeCoreInfoType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="ProjectRepresentatives" type="representative:ProjectRepresentativeType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:choice>
+			<xs:element name="ProjectEnterDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner enters the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectExitDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner exits the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OrderNumber" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Partner number in project, eg. 1, 2, etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20100603 - v2.0.1 - Add the MarieCurieHostingEntityType and related stuff</xs:documentation>
+	</xs:annotation>
+</xs:schema>

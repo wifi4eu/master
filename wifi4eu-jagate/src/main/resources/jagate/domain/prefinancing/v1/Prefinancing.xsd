@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 sp1 (x64) (http://www.altova.com) by European Commission - DG INFSO (European Commission - DG INFSO) -->
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+					xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancing/v1" 
+					xmlns:payment="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v1" 
+					xmlns:invoice="http://ec.europa.eu/rdg/jagate/ws/domain/invoice/v1" 
+					xmlns:callback="http://ec.europa.eu/rdg/jagate/ws/domain/callback/v1" 
+					xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v1" 
+					xmlns:workflow="http://ec.europa.eu/rdg/jagate/ws/domain/workflow/v1"
+					xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1"
+					xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1"
+					targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancing/v1"
+					elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/invoice/v1" schemaLocation="../../invoice/v1/Invoice.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v1" schemaLocation="../../payment/v1/Payment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/callback/v1" schemaLocation="../../callback/v1/Callback.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v1" schemaLocation="../../project/v1/ProjectBasicData.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/workflow/v1" schemaLocation="../../workflow/v1/Workflow.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" schemaLocation="../../documents/v1/AresReference.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" schemaLocation="../../visa/v1/Visa.xsd"/>
+	
+	<!-- Elements -->
+	<xs:element name="CreatePrefinancingRequest" type="PrefinancingRequestType" />
+	<xs:element name="CreatePrefinancingJRCRequest" type="PrefinancingJRCRequestType" />
+	<xs:element name="CreatePrefinancingResponse" type="PrefinancingResponseType" />
+	
+	<xs:complexType name="PrefinancingResponseType">
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="invoiceRequestId" type="xs:string"/>
+			<xs:element name="paymentLocObjForeignId" type="xs:string"/>
+			<xs:element name="paymentOrdObjForeignId" type="xs:string"/>
+			<xs:element name="paymentRequestId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CreatePrefinancingType">
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataPrefinType"/>
+			<xs:element name="WorkflowData" type="PrefinWorkflowType"/>
+			<xs:element name="PrefinancingData" type="PrefinancingDataType"/>
+			<xs:element name="AresReferenceData" type="documents:AresReferenceDataType"/>
+			<xs:element name="VisaData" type="visa:VisaEmbeddedType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CreatePrefinancingJRCType">
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataPrefinType"/>
+			<xs:element name="WorkflowData" type="PrefinWorkflowType"/>
+			<xs:element name="PrefinancingData" type="PrefinancingJRCDataType"/>
+			<xs:element name="AresReferenceData" type="documents:AresReferenceDataType"/>
+			<xs:element name="VisaData" type="visa:VisaEmbeddedType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrefinancingRequestType">
+		<xs:annotation>
+			<xs:documentation>Prefinancing Transaction For the Coordinator no JRC involved</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Prefinancing" type="CreatePrefinancingType" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PrefinancingJRCRequestType">
+		<xs:annotation>
+			<xs:documentation>Prefinancing Transaction For the Coordinator JRC involved</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Prefinancing" type="CreatePrefinancingJRCType" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrefinancingDataType">
+		<xs:annotation>
+			<xs:documentation>Prefinancing Transaction Data for the Coordinator no JRC involved</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="LegalEntity" type="xs:integer"/>
+			<xs:element name="GASignDate" type="xs:date"/>
+			<xs:element name="Commitment" type="xs:string"/>
+			<xs:element name="Invoice" type="PrefinInvoiceType"/>
+			<xs:element name="Payment" type="PrefinPaymentType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrefinancingJRCDataType">
+		<xs:annotation>
+			<xs:documentation>Prefinancing Transaction Data for the Coordinator no JRC involved</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GASignDate" type="xs:date"/>
+			<xs:element name="Commitment" type="xs:string"/>
+			<xs:element name="Invoice" type="PrefinJRCInvoiceType"/>
+			<xs:element name="Payment" type="PrefinJRCPaymentType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="PrefinWorkflowType">
+		<xs:sequence>
+			<xs:element name="WorkflowInvoice" type="workflow:WorkFlowDataType" />
+			<xs:element name="WorkflowPaymentRequest" type="workflow:WorkFlowDataType" />
+			<xs:element name="WorkflowPaymentOrder" type="workflow:WorkFlowDataType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrefinInvoiceType">
+		<xs:sequence>
+			<xs:element name="InvoiceHeader" type="invoice:PrefinCoordinatorInvoiceHeaderType" />
+			<xs:element name="InvoiceDetail" type="invoice:PrefinInvoiceDetailType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrefinJRCInvoiceType">
+		<xs:sequence>
+			<xs:element name="InvoiceHeader" type="invoice:PrefinJRCInternalInvoiceHeaderType" />
+			<xs:element name="InvoiceDetail" type="invoice:PrefinInvoiceDetailJRCType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrefinPaymentType">
+		<xs:sequence>
+			<xs:element name="PaymentHeader" type="payment:PrefinPaymentHeaderType" />
+			<xs:element name="PaymentDetail" type="payment:PrefinPaymentDetailsType" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="PaymentNegativeDetail" type="payment:PrefinPaymentNegativeDetailsType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrefinJRCPaymentType">
+		<xs:sequence>
+			<xs:element name="PaymentHeader" type="payment:PrefinPaymentJRCHeaderType" />
+			<xs:element name="PaymentDetail" type="payment:PrefinPaymentDetailsType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema>

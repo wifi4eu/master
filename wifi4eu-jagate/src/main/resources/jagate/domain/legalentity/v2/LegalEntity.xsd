@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		   xmlns:mdl="http://ec.europa.eu/research/fp/model/bankaccount/V2"
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/legalentity/v2" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/legalentity/v2"
+		   elementFormDefault="qualified">
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V2" schemaLocation="../../../cdm/model/bankaccount/V2/BankAccount.xsd" />
+
+
+	<!-- Elements -->
+	<xs:element name="GetEwsByFelIdRequest" type="GetEwsByFelIdRequestType" />
+	<xs:element name="GetEwsByFelIdResponse" type="GetEwsByFelIdResponseType" />
+	<xs:element name="GetEwsByPicRequest" type="GetEwsByPicRequestType" />
+	<xs:element name="GetEwsByPicResponse" type="GetEwsByPicResponseType" />
+		
+	<xs:element name="GetBankAccountByFelIdRequest" type="GetBankAccountByFelIdRequestType" />
+	<xs:element name="GetBankAccountByFelIdResponse" type="GetBankAccountByFelIdResponseType" />
+	<xs:element name="GetBankAccountByPicRequest" type="GetBankAccountByPicRequestType" />
+	<xs:element name="GetBankAccountByPicResponse" type="GetBankAccountByPicResponseType" />
+	
+	
+	<xs:element name="GetStatusByFelIdRequest" type="GetStatusByFelIdRequestType" />
+	<xs:element name="GetStatusByFelIdResponse" type="GetStatusByFelIdResponseType" />
+	<xs:element name="GetStatusByPicRequest" type="GetStatusByPicRequestType" />
+	<xs:element name="GetStatusByPicResponse" type="GetStatusByPicResponseType" />
+	
+	<xs:element name="LegalEntityException" type="LegalEntityExceptionType" />
+
+	<xs:complexType name="GetBankAccountByPicRequestType">
+		<xs:sequence>
+			<xs:element name="pic" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountByPicResponseType">
+		<xs:sequence>
+			<xs:element name="bankAccount" type="LegalEntityBankAccountType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountByFelIdRequestType">
+		<xs:sequence>
+			<xs:element name="felId" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountByFelIdResponseType">
+		<xs:sequence>
+			<xs:element name="bankAccount" type="LegalEntityBankAccountType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GetStatusByPicRequestType">
+		<xs:sequence>
+			<xs:element name="pic" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetStatusByPicResponseType">
+		<xs:sequence>
+			<xs:element name="status" type="LegalEntityStatusType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetStatusByFelIdRequestType">
+		<xs:sequence>
+			<xs:element name="felId" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetStatusByFelIdResponseType">
+		<xs:sequence>
+			<xs:element name="status" type="LegalEntityStatusType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GetEwsByPicRequestType">
+		<xs:sequence>
+			<xs:element name="pic" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetEwsByPicResponseType">
+		<xs:sequence>
+			<xs:element name="legalEntity" type="LegalEntityEwsType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetEwsByFelIdRequestType">
+		<xs:sequence>
+			<xs:element name="felId" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetEwsByFelIdResponseType">
+		<xs:sequence>
+			<xs:element name="legalEntity" type="LegalEntityEwsType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="LegalEntityEwsType">
+		<xs:sequence>
+			<xs:element name="identifier" type="jagate:NonEmptyString" />
+			<xs:element name="legalEntityName" type="xs:string" minOccurs="0"/>
+			<xs:element name="earlyWarning" type="EarlyWarningType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EarlyWarningType">
+		<xs:sequence>
+			<xs:element name="code" type="EarlyWarningCodeType" />
+			<xs:element name="validFrom" type="xs:date" />
+			<xs:element name="validTo" type="xs:date" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EarlyWarningCodeType">
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" />
+			<xs:element name="description" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="LegalEntityExceptionType">
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" />
+			<xs:element name="description" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="LegalEntityBankAccountType">
+		<xs:sequence>
+			<xs:element name="bankAccount" type="mdl:BankAccountType" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="identifier" type="xs:string" use="required" />
+	</xs:complexType>
+	<xs:complexType name="LegalEntityStatusType">
+		<xs:sequence>
+			<xs:element name="status" type="xs:string" />
+			<xs:element name="description" type="xs:string" />
+		</xs:sequence>
+		<xs:attribute name="identifier" type="xs:string" use="required" />
+	</xs:complexType>
+</xs:schema>

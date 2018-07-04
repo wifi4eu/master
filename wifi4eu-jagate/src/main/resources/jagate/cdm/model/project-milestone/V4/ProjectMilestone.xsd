@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 sp1 (http://www.altova.com) by - (European Commission DG INFSO (R3)) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/project-milestone/V4" xmlns:deliverable="http://ec.europa.eu/research/fp/model/project-deliverable/V2" xmlns:workpackage="http://ec.europa.eu/research/fp/model/project-workpackage/V3" xmlns:leref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/project-milestone/V4" elementFormDefault="qualified" version="4.1.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-workpackage/V3" schemaLocation="../../project-workpackage/V3/ProjectWorkPackage.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable/V2" schemaLocation="../../project-deliverable/V2/ProjectDeliverable.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:element name="Milestone" type="MilestoneDefinitionType"/>
+	<xs:complexType name="MilestoneDefinitionType">
+		<xs:sequence>
+			<xs:element name="MilestoneRef" type="MilestoneRefType">
+				<xs:annotation>
+					<xs:documentation>unique identifier inside the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>name of milestone agreed within consortium</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:positiveInteger"/>
+			<xs:element name="DueDateInMonth" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>The due date in month of project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="LeadBeneficiaryPIC" type="leref:LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>partner who leads this milestone</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WPIRef" type="workpackage:WPIRefType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>reference to the work plan item</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeliverableRef" type="deliverable:DeliverableRefType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>reference to the deliverable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DueDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>calculated from DueInMonth and StartDate of project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="MilestoneRefType"> 
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>20140624 - v4.1.0 - SYGMA - added back DueDate (needed for the Periodic Reporting document generation)</xs:documentation>
+		<xs:documentation>20131010 - v4.0.0 - SYGMA - reference to work package, reference to deliverable, dueDate changed to DueDateInMonth, added Description</xs:documentation>
+		<xs:documentation>v3.0.0 - IsAchieved is mandatory, add document reference. OK?: add DueInMonth (contractually based due date), add DueDate (calculated from DueInMonth and StartDate of project), add reportingPeriod??. and a link to the new ProjectMilestoneRef</xs:documentation>
+		<xs:documentation>This schema intends to hold a view on 'milestone' data defined for a project.</xs:documentation>
+	</xs:annotation>
+</xs:schema>

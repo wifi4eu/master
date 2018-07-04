@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/project-erc/V3" xmlns:LEref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:report="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" xmlns:ns1="http://ec.europa.eu/research/fp/model/project-erc/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:partner="http://ec.europa.eu/research/fp/model/project-partner/V3" xmlns:project="http://ec.europa.eu/research/fp/model/project/V3" xmlns:person="http://ec.europa.eu/research/fp/model/person/V2" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns="http://ec.europa.eu/research/fp/model/project-erc/V3" elementFormDefault="qualified" version="3.1.0">
+	<xs:annotation>
+		<xs:documentation>
+			This schema intends to capture all funding scheme specific project data; in this case for projects complying to ERC funding schemes
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V2" schemaLocation="../../person/V2/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project/V3" schemaLocation="../../project/V3/Project.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V3" schemaLocation="../../project-partner/V3/ProjectPartner.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" schemaLocation="../../project-reportingperiod/V3/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:element name="ERCProjectInfo" type="ERCProjectInfoType"/>
+	<xs:complexType name="ERCProjectInfoType">
+		<xs:annotation>
+			<xs:documentation>Project level data elements specific to ERC projects.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="project:FundingSchemeSpecificProjectInfoType">
+				<xs:sequence>
+					<xs:element name="PrincipalInvestigator" type="PrincipalInvestigatorType"/>
+					<xs:element name="ScientificReportingPeriods" type="report:ScientificReportingPeriodType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ERCPartnerInfoType">
+		<xs:annotation>
+			<xs:documentation>Partner level data elements specific to ERC projects.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="partner:FundingSchemeSpecificPartnerInfoType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PrincipalInvestigatorType">
+		<xs:complexContent>
+			<xs:extension base="person:PersonType">
+				<xs:sequence>
+					<xs:element name="CountryDuringProjectCode" type="coderef:CodeRefType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Country of residence during project</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OrderNumber" type="xs:positiveInteger" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Only for FP7-ERC-SyG: up to 4 P.I.s, each P.I. is allocated a unque number 1...4</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="HostedBy" type="LEref:LegalEntityIdType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Only for FP7-ERC-SyG: each P.I.s, is linked to a PIC</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="COPI" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Only for FP7-ERC-SyG: one of the P.I.s is the "lead"</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--v3.0.0 - 20110128 - Bump due to use of project v3, person v2 and project-partner v3-->
+	<!--v3.1.0 - 20130905 - Added OrderNumber, hostedBy, COPI to PrincipalInvestigatorType / added ScientificReportingPeriods to ERCProjectInfoType-->
+</xs:schema>

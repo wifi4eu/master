@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+							xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" 
+							targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" 
+							elementFormDefault="qualified" 
+							attributeFormDefault="unqualified">
+							
+	<xs:complexType name="AresReferenceDataType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Link to Ares for the documentation. The Ares reference should follow the Ares structure; Ares(2013) 121314 otherwise ABAC is not able to create a link,
+				JAgate won't validate the correct format.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DocumentEntry" type= "DocumentEntryType" minOccurs="1" maxOccurs="unbounded"  />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="DocumentEntryType">
+		<xs:annotation>
+			<xs:documentation>Data for an ABAC entry</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AresReference" type="xs:string" />
+			<xs:element name="Description" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>	
+</xs:schema>
+
+
+

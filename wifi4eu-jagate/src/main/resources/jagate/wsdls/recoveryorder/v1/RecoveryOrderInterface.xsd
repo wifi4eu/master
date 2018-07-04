@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		xmlns="http://ec.europa.eu/rdg/jagate/ws/recoveryorder/v1/interfaces" 
+		targetNamespace="http://ec.europa.eu/rdg/jagate/ws/recoveryorder/v1/interfaces"
+		elementFormDefault="qualified"
+		xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2"
+		xmlns:transaction="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1"
+		xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v3">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" schemaLocation="../../../domain/visa/v2/Visa.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1" schemaLocation="../../../domain/transaction/v1/Transaction.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v3" schemaLocation="../../../domain/project/v3/ProjectBasicData.xsd" />
+	
+	<xs:element name="CreateRecoveryOrderRequest" type="CreateRecoveryOrderRequestType" />
+	<xs:element name="CreateRecoveryOrderResponse" type="CreateRecoveryOrderResponseType" />
+	<xs:element name="RecoveryOrderException" type="jagate:JAgateException" />
+	
+	<xs:complexType name="CreateRecoveryOrderRequestType">
+		<xs:annotation>
+			<xs:documentation>Create recovery order</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataType"/>
+			<xs:element name="RecoveryOrderHeaderData" type="RecoveryOrderHeaderDataType" />
+			<xs:element name="RecoveryOrderDetailsData" type="RecoveryOrderDetailDataType" />
+			<xs:element name="ScannedDocument" type="jagate:ScannedDocument"/>
+			<xs:element name="VisaData" type="visa:SingleTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CreateRecoveryOrderResponseType">
+		<xs:sequence>
+			<xs:element name="Content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RecoveryOrderHeaderDataType">
+		<xs:sequence>
+			<xs:element name="CommitmentLocObjForeignId" type="xs:string" />
+			<xs:element name="Amount" type="xs:decimal" />
+			<xs:element name="LegalEntity" type="xs:string" minOccurs="0" />
+			<xs:element name="GuaranteeFundToCommissionRecovery" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Put this flag to true if the recovery order is created to recover money from the guarantee fund to the Commission. Otherwise false.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DebitNoteReason" type="xs:string" />
+			<xs:element name="ThirdPartyContact" type="xs:string" minOccurs="0" />
+			<xs:element name="PreliminaryInfo" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RecoveryOrderDetailDataType">
+		<xs:sequence>
+			<xs:element name="DetailAmount" type="xs:decimal" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+			
+</xs:schema>

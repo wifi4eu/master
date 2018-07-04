@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+	targetNamespace="http://ec.europa.eu/research/fp/model/bankaccount/V4"  
+	xmlns="http://ec.europa.eu/research/fp/model/bankaccount/V4" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" 
+	xmlns:address="http://ec.europa.eu/research/fp/model/address/V4" 
+	xmlns:person="http://ec.europa.eu/research/fp/model/person/V4"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" version="4.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V4" schemaLocation="../../person/V4/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V4" schemaLocation="../../address/V4/Address.xsd"/>
+	<xs:element name="BankAccountType" type="BankAccountType"/>
+	<xs:complexType name="BankAccountType">
+		<xs:sequence>
+			<xs:element name="AccountHolderName" type="xs:string"/>
+			<xs:element name="IBAN" type="xs:string" minOccurs="0"/>
+			<xs:element name="AccountNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="VATNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>VAT number: can be the same as the Legal Entity registration data or different for this specific project.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Remarks" type="xs:string" minOccurs="0"/>
+			<xs:element name="Nordbanken" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>code for Northern countries</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AccountHolderAddress" type="address:AddressType"/>
+			<xs:element name="Bank" type="BankType"/>
+			<xs:element name="AccountContact" type="person:PersonType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="BankType" type="BankType"/>
+	<xs:complexType name="BankType">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="BIC" type="xs:string" minOccurs="0"/>
+			<xs:element name="BranchAddress" type="address:AddressType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20131010 - v4.0.0 -  SYGMA -  Use person and address v4</xs:documentation>
+		<xs:documentation>20130212 - v3.0.1 -  Iban -> non-mandatory</xs:documentation>
+		<xs:documentation>20110128 - v2.0.0 -  Use person and address V2</xs:documentation>
+	</xs:annotation>	
+</xs:schema>

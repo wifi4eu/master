@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:document="http://ec.europa.eu/research/fp/model/document/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:deliverableref="http://ec.europa.eu/research/fp/model/project-deliverable-ref/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/project-deliverable/V1" targetNamespace="http://ec.europa.eu/research/fp/model/project-deliverable/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:annotation>
+		<xs:documentation>
+		This schema intends to capture the project deliverable data. (externalised from report.xsd)
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" schemaLocation="../../project-reportingperiod/V3/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable-ref/V1" schemaLocation="../../project-deliverable-ref/V1/ProjectDeliverableRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V3" schemaLocation="../../document/V3/Document.xsd"/>
+	<xs:complexType name="DeliverableType">
+		<xs:sequence>
+			<xs:element name="Number" type="deliverableref:DeliverableNumberType"/>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>name of deliverable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="Nature" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: predefined values, eg. report, prototype, demonstrator, other?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DisseminationLevel" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: predefined values eg. PU, PP, RE, CO?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EstimatedIndicativePersonMonths" type="base:CountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>estimated effort in person months</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LastStatusModificationDate" type="xs:date"/>
+			<xs:element name="WorkPackage" type="xs:positiveInteger" minOccurs="0"/>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0"/>
+			<xs:element name="LeadPartner" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>partner number in project who leads the deliverable. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DueInMonth" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Due In Month is the contractual month in project due for the deliverable to be submitted. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DueDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The due date is either put or calculated from DueInMonth and startDate of the project.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeliveryDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>actual date of submitting deliverable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Status of the deliverable. Possible values: Pending, Received, Accepted, Rejected </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+   		   xmlns:pay="http://ec.europa.eu/rdg/jagate/ws/domain/alpayment/v1"
+   		   xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" 
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/alpayment/v1/interfaces" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/alpayment/v1/interfaces"
+		   elementFormDefault="qualified">
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/alpayment/v1" schemaLocation="../../../domain/alpayment/v1/AlPayment.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" schemaLocation="../../../domain/visa/v2/Visa.xsd" />
+
+	<!-- Elements -->
+	<xs:element name="CreateAlPaymentRequest" type="CreateAlPaymentRequestType" />
+	<xs:element name="CreateAlPaymentResponse" type="CreateAlPaymentResponseType" />
+	
+	<xs:element name="CreateAlPaymentOrderRequest" type="CreateAlPaymentOrderRequestType" />
+	<xs:element name="CreateAlPaymentOrderResponse" type="CreateAlPaymentOrderResponseType" />
+
+	<xs:element name="AlPaymentException" type="jagate:JAgateException" />
+	
+	
+	<xs:complexType name="CreateAlPaymentOrderRequestType">
+		<xs:sequence>
+			<xs:element name="paymentOrder" type="pay:AlPaymentOrderType" />
+			<xs:element name="visa" type="visa:VisaSingleTransactionHeaderType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateAlPaymentOrderResponseType">
+		<xs:sequence>
+			<xs:element name="LocalObjectForeignId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateAlPaymentRequestType">
+		<xs:sequence>
+			<xs:element name="paymentRequest" type="pay:AlPaymentRequestType" />
+			<xs:element name="aresDocumentList" type="jagate:AresDocumentList"/>
+			<xs:element name="visa" type="visa:VisaSingleTransactionHeaderType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateAlPaymentResponseType">
+		<xs:sequence>
+			<xs:element name="LocalObjectForeignId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

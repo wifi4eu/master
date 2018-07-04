@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+					xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/commitment/v1"
+					xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" 
+					targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitment/v1"
+					xmlns:commitmentData="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentBasicData/v1"
+					xmlns:callback="http://ec.europa.eu/rdg/jagate/ws/domain/callback/v1"
+					xmlns:contractor="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v1"
+					xmlns:workflow="http://ec.europa.eu/rdg/jagate/ws/domain/workflow/v1"
+					xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v1"
+					xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" 
+					xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1"
+					elementFormDefault="qualified" 
+					attributeFormDefault="unqualified"
+					version="1.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentBasicData/v1" schemaLocation="./CommitmentBasicData.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/callback/v1" schemaLocation="../../callback/v1/Callback.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v1" schemaLocation="../../contractor/v1/Contractor.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/workflow/v1" schemaLocation="../../workflow/v1/Workflow.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v1" schemaLocation="../../project/v1/ProjectBasicData.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" schemaLocation="../../visa/v1/Visa.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" schemaLocation="../../documents/v1/AresReference.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd" />
+
+	<xs:element name="CreateCommitment" type="CreateCommitmentRequestType" />
+	<xs:element name="CreateCommitmentResponse" type="CreateCommitmentResponseType" />
+	<xs:element name="UpdateCommitment" type="UpdateCommitmentRequestType" />
+	<xs:element name="UpdateCommitmentResponse" type="UpdateCommitmentResponseType" />
+
+	<xs:complexType name="CreateCommitmentRequestType">
+		<xs:sequence>
+			<xs:element name="content" type="CreateCommitmentType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CreateCommitmentResponseType">
+		<xs:sequence>
+			<xs:element name="content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UpdateCommitmentRequestType">
+		<xs:sequence>
+			<xs:element name="content" type="UpdateCommitmentType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UpdateCommitmentResponseType">
+		<xs:sequence>
+			<xs:element name="content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>	
+
+	<xs:complexType name="CreateCommitmentType">
+		<xs:sequence>
+			<xs:element name="CallbackData" type="callback:CallbackType" />
+			<xs:element name="ProjectData" type="project:ProjectDataType" />
+			<xs:element name="WorkflowData" type="workflow:WorkFlowDataType" />
+			<xs:element name="CommitmentHeaderData" type="CommitmentHeaderType" />
+			<xs:element name="CommitmentPositionData" type="CommitmentPositionType" maxOccurs="unbounded" />
+			<xs:element name="ContractorsData" type="contractor:ContractorsDataType" />
+			<xs:element name="SupportingDocumentsData" type="documents:AresReferenceDataType" />
+			<xs:element name="VisaData" type="visa:VisaEmbeddedType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UpdateCommitmentType">
+		<xs:sequence>
+			<xs:element ref="jagate:LocObjForeignId"/>
+			<xs:element name="ContractSignDate" type="xs:date"/>
+			<xs:element name="CallbackData" type="callback:CallbackType"/>
+			<xs:element name="ProjectData" type="project:ProjectDataType"/>
+			<xs:element name="WorkflowData" type="workflow:WorkFlowDataType"/>
+			<xs:element name="CommitmentHeaderData" type="CommitmentHeaderType"/>
+			<xs:element name="CommitmentPositionData" type="CommitmentPositionType" maxOccurs="unbounded" />
+			<xs:element name="ContractorsData" type="contractor:ContractorsDataType" />
+			<xs:element name="SupportingDocumentsData" type="documents:AresReferenceDataType" />
+			<xs:element name="VisaData" type="visa:VisaEmbeddedType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Commitment types -->
+	<xs:complexType name="CommitmentHeaderType">
+		<xs:annotation>
+			<xs:documentation>Data related Commitment Header.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="commitmentData:CommitmentHeaderBookYearType"/>
+			<xs:element ref="commitmentData:CommitmentHeaderProposedFinalDateImplementationType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CommitmentPositionType">
+		<xs:annotation>
+			<xs:documentation>Data related Commitment Positions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="commitmentData:CommitmentPositionL1CommitmentType" />
+				<xs:element ref="commitmentData:CommitmentPositionBudgetLineType" />
+			</xs:choice>
+			<xs:element ref="commitmentData:CommitmentPositionAmountType"/>
+			<xs:element ref="commitmentData:CommitmentPositionDGCode"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

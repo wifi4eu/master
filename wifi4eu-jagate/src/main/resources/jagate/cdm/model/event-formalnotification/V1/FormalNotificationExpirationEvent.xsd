@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:fnotif="http://ec.europa.eu/research/fp/model/formalnotification/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://ec.europa.eu/rdg/efp/domain/event-formalnotification/V1" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event-formalnotification/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/formalnotification/V1" schemaLocation="../../formalnotification/V1/FormalNotification.xsd"/>
+	<xs:complexType name="FormalNotificationExpirationEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when a formal notification has reached its expiration date without having been signed by one or more recipient(s)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="FormalNotification" type="fnotif:FormalNotificationType" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

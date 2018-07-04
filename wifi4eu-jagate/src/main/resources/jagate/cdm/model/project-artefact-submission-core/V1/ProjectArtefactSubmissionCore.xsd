@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Cyril Brigant (European Commission) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/project-artefact-submission-core/V1" xmlns="http://ec.europa.eu/research/fp/model/project-artefact-submission-core/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:submissionRef="http://ec.europa.eu/research/fp/model/project-artefact-submission-ref/V2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture all data related to the project artefact submission core</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-artefact-submission-ref/V2" schemaLocation="../../project-artefact-submission-ref/V2/ProjectArtefactSubmissionRef.xsd"/>
+	<xs:element name="ProjectArtefactSubmissionCore" type="ProjectArtefactSubmissionCoreType"/>
+	<xs:complexType name="ProjectArtefactSubmissionCoreType">
+		<xs:complexContent>
+			<xs:extension base="submissionRef:ProjectArtefactSubmissionRefType">
+				<xs:sequence>
+					<xs:element name="SubmissionDate" type="xs:dateTime"/>
+					<xs:element name="RejectionDate" type="xs:dateTime" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>1.0.0 - creatation of the model - 06/03/2013</xs:documentation>
+	</xs:annotation>
+</xs:schema>

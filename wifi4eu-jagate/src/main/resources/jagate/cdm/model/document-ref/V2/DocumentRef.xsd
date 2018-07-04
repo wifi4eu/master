@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns="http://ec.europa.eu/research/fp/model/document-ref/V2" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://ec.europa.eu/research/fp/model/document-ref/V2" 
+	elementFormDefault="qualified" 
+	version="2.0.1">
+	
+	<xs:simpleType name="DocumentIdType">
+		<xs:annotation>
+			<xs:documentation>Document Id created and managed by online document repository system (can support distributed storage)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="DocumentRepositoryIdType">
+		<xs:annotation>
+			<xs:documentation>Unique repository Id indicating where document repository system actually stores the document</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="DocumentRegistrationIdType">
+		<xs:annotation>
+			<xs:documentation>Document Id created and managed by document registration system (Hermes/Ares)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:group name="DocumentRefGroup">
+		<xs:sequence>
+			<xs:element name="Id" type="DocumentIdType"/>
+			<xs:element name="RepositoryId" type="DocumentRepositoryIdType" minOccurs="0"/>
+			<xs:element name="RegistrationId" type="DocumentRegistrationIdType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="DocumentRef" type="DocumentRefType"/>
+	<xs:complexType name="DocumentRefType">
+		<xs:sequence>
+			<xs:group ref="DocumentRefGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

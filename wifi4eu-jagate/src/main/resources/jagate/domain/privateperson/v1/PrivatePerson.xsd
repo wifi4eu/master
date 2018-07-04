@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" 
+		   elementFormDefault="qualified" 
+		   version="1.0.0" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/PrivatePerson/v1"
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/PrivatePerson/v1" 
+		   xmlns:jagbase="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:annotation>
+		<xs:documentation>This first version models data that are to be sent in a Legal Entity Request [LER] to ABAC.</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd"/>
+	
+	<xs:element name="PrivatePerson" type="PrivatePerson"/>	
+
+	<xs:complexType name="PrivatePerson">
+		<xs:sequence>
+			<xs:group ref="NameGroup" />
+			<xs:group ref="PostalAddressGroup" />
+			<xs:element name="IdentificationNumber" type="jagbase:NonEmptyString" />
+			<xs:element minOccurs="0" name="CountryOfBirthCode" type="jagbase:CountryCodeType">
+				<xs:annotation>
+					<xs:documentation>code of type &quot;Country&quot;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="DateOfBirth" type="xs:date" />
+			<xs:element minOccurs="0" name="CountryOfBirth" type="jagbase:CountryCodeType" />
+			<xs:element minOccurs="0" name="CityOfBirth" type="xs:string" />
+			<xs:element minOccurs="0" name="Title" type="xs:string" />
+			<xs:element minOccurs="0" name="VAT" type="xs:string"  />
+			<xs:element name="LanguageCode" type="jagbase:NonEmptyString"  />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:group name="PostalAddressGroup">
+		<xs:sequence>
+			<xs:element name="Street" type="jagbase:NonEmptyString"/>
+			<xs:element name="PoBox" type="xs:string" minOccurs="0" />
+			<xs:element name="PostalCode" type="xs:string" minOccurs="0" />
+			<xs:element name="City" type="jagbase:NonEmptyString" />
+			<xs:element name="Region" type="xs:string" minOccurs="0" />
+			<xs:element name="Country" type="jagbase:CountryCodeType" />
+		</xs:sequence>
+	</xs:group>
+
+	<xs:group name="NameGroup">
+		<xs:sequence>
+			<xs:element name="FamilyName" type="jagbase:NonEmptyString" />
+			<xs:element name="FirstName" type="jagbase:NonEmptyString" />
+		    <xs:element name="OfficialName2" type="xs:string" minOccurs="0"/>
+            <xs:element name="OfficialName3" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+</xs:schema>

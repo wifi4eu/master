@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 (http://www.altova.com) by European Commision - DIGIT (European Commision - DIGIT) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ec.europa.eu/rdg/efp/domain/event/legalentity/v1" xmlns:ns1="http://ec.europa.eu/rdg/efp/domain/organisation/v1_00" xmlns:ns2="http://ec.europa.eu/rdg/efp/domain/event/v1_0" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/v1" elementFormDefault="qualified" version="1.0">
+	<xsd:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../eventbase/V0/EventBase.xsd"/>
+	<xsd:complexType name="LegalEntityStatusChangeEventType">
+		<xsd:annotation>
+			<xsd:documentation>This event describes the status change of a Legal Entity in the PDM registry. 
+		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="ns2:EventBodyType">
+				<xsd:sequence>
+					<xsd:element name="ChangeEffectiveDate" type="xsd:dateTime"/>
+					<xsd:element name="Pic" type="xsd:string"/>
+					<xsd:element name="PicStatus" type="xsd:string"/>
+					<xsd:choice>
+						<xsd:element name="ComplexChangeStatus" type="tns:ComplexChangeEventType" minOccurs="0"/>
+						<xsd:element name="SimpleChangeStatus" type="tns:SimpleChangeType" minOccurs="0"/>
+					</xsd:choice>
+					<xsd:element name="ReasonForChange" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="SimpleChangeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SUSPEND"/>
+			<xsd:enumeration value="ACTIVATE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ComplexChangeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="UTRO"/>
+			<xsd:enumeration value="DUPLICATE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ComplexChangeEventType">
+		<xsd:annotation>
+			<xsd:documentation>For DUPLICATE and UTRO Event</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="MasterPic" type="xsd:string"/>
+			<xsd:element name="MasterPicStatus" type="xsd:string"/>
+			<xsd:element name="ChangeType" type="tns:ComplexChangeType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>1.0.1: Use the branched LegalEntity type (and depart from the Common model one).
+										1.0.2: Simply adapted the import path to the Common data model
+										1.0.3: moved the file down to event/legalentity/v1 in order to match the namespace
+		</xsd:documentation>
+	</xsd:annotation>
+</xsd:schema>

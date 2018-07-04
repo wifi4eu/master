@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 		xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+						targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/legalCommitment/v1" 
+						xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/legalCommitment/v1"
+						xmlns:legalCommitmentData="http://ec.europa.eu/rdg/jagate/ws/domain/legalCommitmentBasicData/v1"
+						elementFormDefault="qualified" 
+						attributeFormDefault="unqualified" 
+						version="1.0.0">
+						  
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/legalCommitmentBasicData/v1" schemaLocation="./LegalCommitmentBasicData.xsd"/>
+						
+	<xs:complexType name="LegalCommitmentHeaderType">
+		<xs:annotation>
+			<xs:documentation>The Legal Commitment Header Basic Data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="legalCommitmentData:LegalCommitmentHeaderFirstPrefinFlag" minOccurs="1" maxOccurs="1"/>		
+		</xs:sequence>
+	</xs:complexType>						
+</xs:schema>

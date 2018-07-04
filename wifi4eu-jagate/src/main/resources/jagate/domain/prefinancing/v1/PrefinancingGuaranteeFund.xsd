@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 sp1 (x64) (http://www.altova.com) by European Commission - DG INFSO (European Commission - DG INFSO) -->
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+					xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancingJRCGF/v1" 
+					xmlns:payment="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v1" 
+					xmlns:callback="http://ec.europa.eu/rdg/jagate/ws/domain/callback/v1" 
+					xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v1" 
+					xmlns:workflow="http://ec.europa.eu/rdg/jagate/ws/domain/workflow/v1"
+					xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1"
+					targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancingJRCGF/v1"
+					elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v1" schemaLocation="../../payment/v1/Payment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/callback/v1" schemaLocation="../../callback/v1/Callback.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v1" schemaLocation="../../project/v1/ProjectBasicData.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/workflow/v1" schemaLocation="../../workflow/v1/Workflow.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" schemaLocation="../../visa/v1/Visa.xsd"/>
+	
+	<!-- Elements -->
+	<xs:element name="CreatePrefinancingGuaranteeFundJRCRequest" type="PrefinancingGuaranteeFundJRCRequestType" />
+	<xs:element name="CreatePrefinancingGuaranteeFundJRCResponse" type="PrefinancingGuaranteeFundJRCResponseType" />
+	
+	<xs:complexType name="PrefinancingGuaranteeFundJRCResponseType">
+		<xs:sequence>
+			<xs:element name="paymentLocObjForeignId" type="xs:string"/>
+			<xs:element name="paymentOrdObjForeignId" type="xs:string"/>
+			<xs:element name="paymentRequestId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CreatePrefinancingGuaranteeFundJRCType">
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataType"/>
+			<xs:element name="WorkflowData" type="PrefinGuaranteeFundWorkflowType"/>
+			<xs:element name="GuaranteeFundData" type="PrefinancingGuaranteeFundJRCDataType"/>
+			<xs:element name="VisaData" type="visa:VisaEmbeddedType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="PrefinancingGuaranteeFundJRCRequestType">
+		<xs:annotation>
+			<xs:documentation>Prefinancing Guarantee fund for JRC involved</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GuaranteeFund" type="CreatePrefinancingGuaranteeFundJRCType" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="PrefinancingGuaranteeFundJRCDataType">
+		<xs:annotation>
+			<xs:documentation>Prefinancing Guarantee Transaction Data for  JRC involved</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Payment" type="PrefinGuaranteeFundPaymentType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="PrefinGuaranteeFundWorkflowType">
+		<xs:sequence>
+			<xs:element name="WorkflowPaymentRequest" type="workflow:WorkFlowDataType" />
+			<xs:element name="WorkflowPaymentOrder" type="workflow:WorkFlowDataType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="PrefinGuaranteeFundPaymentType">
+		<xs:sequence>
+			<xs:element name="PaymentDetail" type="payment:PrefinPaymentDetailsType" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="PaymentNegativeDetail" type="payment:PrefinPaymentNegativeDetailsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema>

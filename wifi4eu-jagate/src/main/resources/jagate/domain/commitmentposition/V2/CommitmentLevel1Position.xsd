@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentLevel1position/v2" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentLevel1position/v2" 
+		   elementFormDefault="qualified" 
+		   attributeFormDefault="unqualified">
+
+	<xs:element name="Level1CommitmentPositionRequest" type="Level1CommitmentPositionRequestType"/>
+	<xs:element name="Level1CommitmentPositionResponse" type="Level1CommitmentPositionResponseType"/>
+	<xs:complexType name="Level1CommitmentPositionRequestType">
+		<xs:sequence>
+			<xs:element name="AgentId" type="xs:string"/>
+			<xs:element name="localObjectForeignId" type="xs:string" minOccurs="0"/>
+			<xs:element name="policyArea" type="xs:string" minOccurs="0"/>
+			<xs:element name="DG" type="xs:string" minOccurs="0"/>
+			<xs:element name="BookYear" type="xs:string" minOccurs="0"/>
+			<xs:element name="fundingSource" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Level1CommitmentPositionResponseType">
+		<xs:sequence>
+			<xs:element name="position" type="Level1CommitmentPositionResultsType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Level1CommitmentPositionResultsType">
+		<xs:sequence>
+			<xs:element name="localKey" type="xs:string"/>
+			<xs:element name="budgetLine" type="xs:string"/>			
+			<xs:element name="title" type="xs:string"/>
+			<xs:element name="AcceptedAmount" type="xs:decimal"/>
+			<xs:element name="ConsumedAmount" type="xs:decimal"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

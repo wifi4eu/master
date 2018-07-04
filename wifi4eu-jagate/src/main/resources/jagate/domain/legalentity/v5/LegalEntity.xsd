@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified"
+		   elementFormDefault="qualified"
+		   version="1.0.0"
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/legalentity/v5"
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/legalentity/v5"
+		   xmlns:jagbase="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		   xmlns:cdm="http://ec.europa.eu/research/fp/model/bankaccount/V2"
+		   xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V2" schemaLocation="../../../cdm/model/bankaccount/V2/BankAccount.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+
+	<xs:complexType name="AbstractNaturalBody">
+		<xs:sequence>
+			<xs:group ref="NaturalPersonNameGroup" />
+			<xs:element name="address" type="LegalEntityAddressType" />
+			<xs:element name="LanguageCode" type="coderef:CodeRefType"  />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="NaturalBodyMemberOfPersonnelExcluded">
+		<xs:complexContent>
+			<xs:extension base="AbstractNaturalBody">
+				<xs:sequence>
+					<xs:element name="CountryIdentificationNumber" type="CountryIdentificationNumberType" maxOccurs="4"/>
+					<xs:element name="VAT" type="xs:string"  minOccurs="0" />
+					<xs:element name="BirthData" type="NaturalPersonBirthDataType" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NaturalBodyExMemberOfPersonnel">
+		<xs:complexContent>
+			<xs:extension base="AbstractNaturalBody">
+				<xs:sequence>
+					<xs:element name="NupNumber" type="jagbase:NonEmptyString" />
+					<xs:element name="CountryIdentificationNumber" type="CountryIdentificationNumberType" maxOccurs="4"/>
+					<xs:element name="VAT" type="xs:string"  minOccurs="0" />
+					<xs:element name="BirthData" type="NaturalPersonBirthDataType" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="AbstractLawBody">
+		<xs:sequence>
+			<xs:element name="LanguageCode" type="coderef:CodeRefType"/>
+			<xs:element name="OfficialName" type="LENameString"/>
+			<xs:element name="Address" type="LegalEntityAddressType" />
+			<xs:element name="Acronym" type="xs:string" minOccurs="0"/>
+			<xs:element name="VAT" type="xs:string"  minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="LawBodyRegistration">
+		<xs:sequence>
+		    <xs:element name="RegistrationAuthority" type="xs:string"/>
+            <xs:element name="RegistrationDate" type="xs:date"/>
+            <xs:element name="RegistrationNumber" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>	
+
+	<xs:complexType name="PublicLawBody">
+        <xs:complexContent>
+	        <xs:extension base="AbstractLawBody">
+    	        <xs:sequence>
+    	        	<xs:element name="RegistrationInfo" type="LawBodyRegistration" minOccurs="0"/>
+        	        <xs:element name="AccountGroup" type="PublicBodyAccountGroupType" />
+            	    <xs:element name="AbacLegalForm" type="coderef:CodeRefType" minOccurs="0" />
+            	    <xs:element name="NonProfit" type="xs:boolean" minOccurs="0" />
+                </xs:sequence>
+        	</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+    <xs:complexType name="PrivateLawBody">
+ 		<xs:complexContent>
+        	<xs:extension base="AbstractLawBody">
+            	<xs:sequence>
+            		<xs:element name="RegistrationInfo" type="LawBodyRegistration"/>
+                	<xs:element name="AccountGroup" type="PrivateBodyAccountGroupType" />
+                    <xs:element name="AbacLegalForm" type="coderef:CodeRefType" />
+                    <xs:element name="NonProfit" type="xs:boolean" />
+                </xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="PublicBodyAccountGroupType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MEMBER_STATES" />
+			<xs:enumeration value="THIRD_STATES" />
+			<xs:enumeration value="OTHER_PUBLIC_BODIES" />
+			<xs:enumeration value="REGIONS_PROVINCES_THIRD_STATES" />
+			<xs:enumeration value="REGIONS_PROVINCES_MEMBER_STATES" />
+			<xs:enumeration value="INTRA_COMMISSION" />
+			<xs:enumeration value="MEMBER_STATES" />
+			<xs:enumeration value="INSTITS_WITH_CMPTS_DE_LIAISON__ABAC"/>
+			<xs:enumeration value="OTHER_EC-GLOBAL_CONS_WITH_CMPTS_DE_LIAISON"/>
+			<xs:enumeration value="OTHER_EC-GLOBAL_CONS_W/OUT_CMPTS_DE_LIAISON_ABAC"/>
+			<xs:enumeration value="OTHER_EC-PROPORTIONAL_CONSOLID"/>
+			<xs:enumeration value="OTHER_EC-EQUITY_METHOD"/>
+			<xs:enumeration value="NON_CONSOLIDATED_EC_ENTITIES"/>
+			<xs:enumeration value="EFTA"/>
+			<xs:enumeration value="INTERNATIONAL_ORGANISATIONS"/>
+			<xs:enumeration value="OTHER_EC-GLOBAL_CONS_W/OUT_CMPTS_DE_LIAISON_2"/>
+			<xs:enumeration value="INSTITS_WITH_CMPTS_DE_LIAISON"/>
+			<xs:enumeration value="OTHER_EC-EQUITY_METHOD_ABAC"/>
+			<xs:enumeration value="NON_CONSOLIDATED_EC_ENTITIES_2"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="PrivateBodyAccountGroupType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PRIVATE_COMPANIES" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="StreetType">
+		<xs:restriction base="xs:string">
+				<xs:minLength value="1" />
+				<xs:maxLength value="60" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="LegalEntityAddressType">
+		<xs:sequence>
+			<xs:element name="Street" type="StreetType"/>
+			<xs:element name="Street2" type="StreetType"  minOccurs="0"/>
+			<xs:element name="Street3" type="StreetType" minOccurs="0"/>
+			<xs:element name="PoBox" type="xs:string" minOccurs="0" />
+			<xs:element name="PostalCode" type="xs:string" minOccurs="0" />
+			<xs:element name="City" type="jagbase:NonEmptyString" />
+			<xs:element name="Region" type="xs:string" minOccurs="0" />
+			<xs:element name="Country" type="coderef:CodeRefType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="LENameString">
+	   <xs:restriction base="xs:string">
+		 <xs:minLength value="1" />
+	     <xs:maxLength value="140" />
+	   </xs:restriction>
+	</xs:simpleType>
+
+	<xs:group name="NaturalPersonNameGroup">
+		<xs:sequence>
+			<xs:element name="FamilyName" type="LEFamilyNameString" />
+			<xs:element name="FirstName"  type="LEFirstNameString"  />
+		</xs:sequence>
+	</xs:group>
+
+	<xs:simpleType name="LEFamilyNameString">
+	   <xs:restriction base="xs:string">
+		 <xs:minLength value="1" />
+	     <xs:maxLength value="105" />
+	   </xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="LEFirstNameString">
+	   <xs:restriction base="xs:string">
+		 <xs:minLength value="1" />
+	     <xs:maxLength value="35" />
+	   </xs:restriction>
+	</xs:simpleType>	
+
+	<xs:complexType name="LegalEntityEwsType">
+		<xs:sequence>
+			<xs:element name="identifier" type="jagbase:NonEmptyString" />
+			<xs:element name="legalEntityName" type="xs:string" minOccurs="0"/>
+			<xs:element name="earlyWarning" type="EarlyWarningType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EarlyWarningType">
+		<xs:sequence>
+			<xs:element name="code" type="EarlyWarningCodeType" />
+			<xs:element name="validFrom" type="xs:date" />
+			<xs:element name="validTo" type="xs:date" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EarlyWarningCodeType">
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" />
+			<xs:element name="description" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LegalEntityBankAccountType">
+		<xs:sequence>
+			<xs:element name="bankAccount" type="cdm:BankAccountType" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="identifier" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="FELStatusType">
+		<xs:sequence>
+			<xs:element name="Code" type="LegalEntityStatusCodeType"/>
+			<xs:element name="RejectionInfo" type="RejectedFelInfoType" minOccurs="0"/>
+			<xs:element name="BlockedInfo" type="BlockedFelInfoType" minOccurs="0"/>
+			<xs:element name="FollowUpInfo" type="FollowUpFelInfoType" minOccurs="0"/>
+			<xs:element name="EWS" type="EarlyWarningType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="Identifier" type="xs:string"/>
+	</xs:complexType>
+	<xs:simpleType name="LegalEntityStatusCodeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="VALID" />
+			<xs:enumeration value="INVALID" />
+			<xs:enumeration value="PENDING" />
+			<xs:enumeration value="BLOCKED" />
+			<xs:enumeration value="FOLLOW_UP" />
+			<xs:enumeration value="REJECTED" />
+			<xs:enumeration value="UNKNOWN" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CustomerOnlyFelInfoType">
+		<xs:sequence>
+			<xs:element name="Code" type="CustomerOnlyCodeType"/>
+			<xs:element name="FreeTextReason" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CustomerOnlyCodeType">
+		<xs:annotation>
+			<xs:documentation>The current possible values are: Y/N</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BlockedFelInfoType">
+		<xs:sequence>
+			<xs:element name="Code" type="BlockedReasonCodeType"/>
+			<xs:element name="FreeTextReason" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="BlockedReasonCodeType">
+		<xs:annotation>
+			<xs:documentation>The possible values are: ? </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="RejectedFelInfoType">
+		<xs:sequence>
+			<xs:element name="MasterIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="FreeTextReason" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FollowUpFelInfoType">
+		<xs:sequence>
+			<xs:element name="FreeTextReason" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="LegalEntityStatusType">
+		<xs:sequence>
+			<xs:element name="status" type="xs:string" />
+			<xs:element name="description" type="xs:string" />
+			<xs:element name="customerFlagonly" type="xs:boolean" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="identifier" type="xs:string" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="CountryIdentificationNumberType">
+		<xs:sequence>
+			<xs:element name="identificationNumber" type="jagbase:NonEmptyString" />
+			<xs:element name="identificationType" type="CountryIdentificationDocumentType" />
+			<xs:element name="country" type="coderef:CodeRefType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="CountryIdentificationDocumentType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NATIONAL_ID_NUMBER" />
+			<xs:enumeration value="PASSPORT_NUMBER" />
+			<xs:enumeration value="DRIVING_LICENSE_NUMBER" />
+			<xs:enumeration value="ID_CARD_NUMBER" />
+			<xs:enumeration value="OTHER_IDENTIFICATION_NUMBER" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="NaturalPersonBirthDataType">
+		<xs:sequence>
+			<xs:element name="CountryOfBirthCode" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>code of type &quot;Country&quot;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateOfBirth" type="xs:date"  />
+			<xs:element name="CityOfBirth" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="LEScannedDocumentList">
+		<xs:sequence>
+			<xs:element name="ScannedDocument" type="jagbase:ScannedDocument" maxOccurs="3"/>
+		</xs:sequence>
+    </xs:complexType>
+</xs:schema>

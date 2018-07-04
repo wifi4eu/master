@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/expert-scope/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:code="http://ec.europa.eu/research/fp/model/code/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:userref="http://ec.europa.eu/research/fp/model/user-ref/V1" targetNamespace="http://ec.europa.eu/research/fp/model/expert-scope/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:element name="ExpertScopeSummary" type="ExpertScopeSummaryType"/>
+	<xs:complexType name="ExpertScopeSummaryType">
+		<xs:sequence>
+			<xs:element name="UserID" type="userref:UserIdType"/>
+			<xs:element name="Type" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The type of the assignment. Currently it can be about EVALUATION or PROJECT_MONITORING. classID: ExpertScopeType (CDM)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The reference of the assignment as defined by its owner system.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NumberOfActiveTasks" type="xs:integer"/>
+			<xs:element name="ClosestDeadline" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The date of the closest deadline of any assignment belonging to the reference/user pair</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>2017-04-21 - 1.0.0 - This schema holds elements about Expert Scopes (A scope is i.a. scientifc assignments, project review, etc.) </xs:documentation>
+	</xs:annotation>
+</xs:schema>

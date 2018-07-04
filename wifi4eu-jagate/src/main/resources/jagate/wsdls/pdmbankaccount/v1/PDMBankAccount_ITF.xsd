@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns:ba="http://ec.europa.eu/research/fp/model/bankaccount/V5"
+    xmlns:health="http://ec.europa.eu/research/fp/model/service-health/V1"
+    xmlns="http://ec.europa.eu/rdg/jagate/ws/pdmbankaccount/interfaces/v1"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/pdmbankaccount/interfaces/v1"
+	elementFormDefault="qualified"
+	version="1.0">
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+    <xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V5" schemaLocation="../../../cdm/model/bankaccount/V5/BankAccount.xsd" />
+    <xs:import namespace="http://ec.europa.eu/research/fp/model/service-health/V1" schemaLocation="../../../cdm/model/service-health/V1/ServiceHealth.xsd"/>
+
+	<!-- Elements -->
+	<xs:element name="GetBankAccountByFelIdRequest" type="GetBankAccountByFelIdRequestType" />
+	<xs:element name="GetBankAccountByFelIdResponse" type="GetBankAccountByFelIdResponseType" />
+	<xs:element name="GetBankAccountByPicRequest" type="GetBankAccountByPicRequestType" />
+	<xs:element name="GetBankAccountByPicResponse" type="GetBankAccountByPicResponseType" />
+
+    <xs:element name="BankAccountException" type="jagate:JAgateException" />
+
+    <xs:element name="CheckServiceHealthRequest" type="CheckServiceHealthRequestType"/>
+    <xs:element name="CheckServiceHealthResponse" type="CheckServiceHealthResponseType"/>
+
+    <!--Requests-->
+	<xs:complexType name="GetBankAccountByFelIdRequestType">
+		<xs:sequence>
+			<xs:element name="felIdList" type="IdListType" />
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="GetBankAccountByPicRequestType">
+        <xs:sequence>
+            <xs:element name="picList" type="IdListType" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CheckServiceHealthRequestType">
+        <xs:sequence>
+            <xs:element name="checkServiceHealthIn" type="health:CheckServiceHealthInType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--Responses-->
+	<xs:complexType name="GetBankAccountByFelIdResponseType">
+		<xs:sequence>
+			<xs:element name="bankAccountByIdList" type="BankAccountByIdListType" />
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="GetBankAccountByPicResponseType">
+        <xs:sequence>
+            <xs:element name="bankAccountByIdList" type="BankAccountByIdListType" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CheckServiceHealthResponseType">
+        <xs:sequence>
+            <xs:element name="checkServiceHealthOut" type="health:CheckServiceHealthOutType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Common types -->
+    <xs:complexType name="BankAccountByIdListType">
+        <xs:sequence>
+            <xs:element name="bankAccountById" type="BankAccountByIdType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BankAccountByIdType">
+        <xs:sequence>
+            <xs:element name="bankAccountList" type="BankAccountListType" />
+        </xs:sequence>
+        <xs:attribute name="identifier" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:complexType name="BankAccountListType">
+        <xs:sequence>
+            <xs:element name="bankAccount" type="ba:BankAccountType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="IdListType">
+        <xs:sequence>
+            <xs:element name="id" type="jagate:NonEmptyString" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:annotation>
+        <xs:documentation>v1.0 - 20180111- Created this WS specifically for the PDM team to get bank accounts bij PIC's or FEL's</xs:documentation>
+    </xs:annotation>
+</xs:schema>

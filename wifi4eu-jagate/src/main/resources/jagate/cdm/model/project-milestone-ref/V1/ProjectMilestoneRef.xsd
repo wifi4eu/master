@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/project-milestone-ref/V1" xmlns="http://ec.europa.eu/research/fp/model/project-milestone-ref/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0.0">
+	<xs:annotation>
+		<xs:documentation>This schema intends to hold a view on 'milestone-ref' data defined for a periodic report.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="MilestoneNumberType">
+		<xs:restriction base="xs:positiveInteger"/>
+	</xs:simpleType>
+	<xs:complexType name="MilestoneRefType">
+		<xs:sequence>
+			<xs:element name="Number" type="MilestoneNumberType"/>
+			<xs:element name="IsAchieved" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>milestone has been achieved or not?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ForecastAchievementDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>expected date when milestone will be delivered/reached</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comments" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>internal sources of verification for milestone</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

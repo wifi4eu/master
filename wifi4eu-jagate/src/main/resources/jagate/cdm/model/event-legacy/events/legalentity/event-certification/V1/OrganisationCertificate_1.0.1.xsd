@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/legalentity/organisationcertificate-event/V1" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:ctx="http://ec.europa.eu/rdg/efp/services/resultcontext/v1_00" xmlns:doc="http://ec.europa.eu/rdg/efp/domain/document/v1_00" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/organisationcertificate-event/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V2" schemaLocation="../../../../../legalentity-ref/V2/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/services/resultcontext/v1_00" schemaLocation="ResultContext_1.00.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/document/v1_00" schemaLocation="Document_1.01.xsd"/>
+	<xs:element name="AddCertificationOnMethodologyRequest" type="AddCertificationOnMethodologyRequest"/>
+	<xs:complexType name="AddCertificationOnMethodologyRequest">
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="PIC" type="legalentityref:LegalEntityIdType">
+						<xs:annotation>
+							<xs:documentation>The unique participant identifier (from PDM/URF)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertifTypeCode" type="CertificationTypeCodeType">
+						<xs:annotation>
+							<xs:documentation>Certification type</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertifStartDate" type="xs:date">
+						<xs:annotation>
+							<xs:documentation>Certification date</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertifEndDate" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Certification end validity date</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Document" type="doc:ShortDocument" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A document supporting the certification</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AddCertificationOnMethodologyResponse" type="AddCertificationOnMethodologyResponse"/>
+	<xs:complexType name="AddCertificationOnMethodologyResponse">
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="resultContext" type="ctx:ResultContext">
+						<xs:annotation>
+							<xs:documentation>Description of the result, with one or more error status(es)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RevokeCertificationOnMethodologyRequest" type="RevokeCertificationOnMethodologyRequest"/>
+	<xs:complexType name="RevokeCertificationOnMethodologyRequest">
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="PIC" type="legalentityref:LegalEntityIdType">
+						<xs:annotation>
+							<xs:documentation>The unique participant identifier (from PDM/URF)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertifEndDate" type="xs:date">
+						<xs:annotation>
+							<xs:documentation>Certification end validity date</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Document" type="doc:ShortDocument" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A document supporting the certification</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RevokeCertificationOnMethodologyResponse" type="RevokeCertificationOnMethodologyResponse"/>
+	<xs:complexType name="RevokeCertificationOnMethodologyResponse">
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="resultContext" type="ctx:ResultContext">
+						<xs:annotation>
+							<xs:documentation>Description of the result, with one or more error status(es)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CertificationTypeCodeType" type="CertificationTypeCodeType"/>
+	<xs:simpleType name="CertificationTypeCodeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CMETH-APC"/>
+			<xs:enumeration value="CMETH-APCIC"/>
+			<xs:enumeration value="CMETH-RPCIC"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

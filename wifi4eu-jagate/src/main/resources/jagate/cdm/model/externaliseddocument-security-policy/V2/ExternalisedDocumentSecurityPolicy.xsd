@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/externalised-document-security-policy/V2" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:userRef="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:sec="http://ec.europa.eu/research/fp/model/security/V5" xmlns:docRef="http://ec.europa.eu/research/fp/model/document-ref/V3" xmlns:codeRef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fnotif="http://ec.europa.eu/research/fp/model/formalnotification/V2" targetNamespace="http://ec.europa.eu/research/fp/model/externalised-document-security-policy/V2" elementFormDefault="qualified" version="2.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/formalnotification/V2" schemaLocation="../../formalnotification/V2/FormalNotification.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="../../document-ref/V3/DocumentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/security/V5" schemaLocation="../../security/V5/Security.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:complexType name="DocumentSecurityPolicyType">
+		<xs:choice>
+			<xs:element name="WhiteListRule" type="WhiteListRuleType"/>
+			<xs:element name="FormalNotification" type="fnotif:FormalNotificationType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="WhiteListRuleParameterListType">
+		<xs:choice>
+			<xs:element name="Parameter" type="WhiteListRuleParameterType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="WhiteListRuleType">
+		<xs:sequence>
+			<xs:element name="Id" type="WhiteListRuleIdType"/>
+			<xs:element name="DocumentType" type="codeRef:CodeRefType" minOccurs="0"/>
+			<xs:element name="ParameterList" type="WhiteListRuleParameterListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+					ParameterList elements indicate which are the parameters of the white list rule and how they are mapped to document metadata.
+					Parameter name can be "ProjectNumber", "ProjectProgramme", "OrganisationPic" or "UserEcasId".
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Default" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>
+					The flag says if the white list rule is a default rule.
+					Default rule is used as document security policy when no specific white list rule is defined for the document type.
+					If this flag is set then the DocumentType element should be empty.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Personal" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>
+					The flag says if the document type is a personal document type.
+					The list of users having access to a document of this type is stored in the metadata of the document itself.
+					Access to document of this type is not restricted to users having specific role.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AuthorizedRole" type="WhiteListRuleRoleType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="WhiteListRuleIdType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="WhiteListRuleRoleType">
+		<xs:sequence>
+			<xs:element name="Role" type="codeRef:CodeRefType" minOccurs="0"/>
+			<xs:element name="ResourceType" type="coderef:CodeRefType"/>
+			<xs:element name="SubResourceType" type="coderef:CodeRefType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="OptionalSubResource" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>
+						If the flag is set, the white list rule parameter(s) corresponding to sub resource type(s) is (are) not mandatory.
+						For example, if role is PARTICIPANT_CONTACT, resource type is PROJECT, sub resource type is ORGANISATION and OptionalSubResource flag is set
+						then "OrganisationPic" parameter is optional.
+						If document contains no metadata mapped to "OrganisationPic" parameter then access rights are calculated based on "ProjectNumber" and "ProjectProgramme" parameters only.
+						If document contains a metadata mapped to "OrganisationPic" parameter then access rights are calculated based on "ProjectNumber", "ProjectProgramme" and "OrganisationPic" parameters.
+						Besides, if the OptionalSubResource is set to false, document must contain "OrganisationPic" metadata.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WhiteListRuleParameterType">
+		<xs:annotation>
+			<xs:documentation>
+			WhiteListRuleParameterType defines a mapping between a white list rule parameter and the corresponding metadata reference used in related documents.
+			If there is no mapping defined for a given parameter then following default mappings are used:
+			- "ProjectNumber" parameter is mapped to "ProjectNo" metadata refrence
+			- "ProjectProgramme" parameter is mapped to "Programme" metadata refrence
+			- "OrganisationPic" parameter is mapped to "PIC" metadata refrence
+			- "UserEcasId" parameter is mapped to "User" metadata refrence
+			The MultipleValueSeparator element indicates the character or string used to separate multiple parameter values in document metadata.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="MultipleValueSeparator" type="xs:string" minOccurs="0"/>
+			<xs:element name="MetaDataRef" type="codeRef:CodeRefType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WhiteListRulePermissionType">
+		<xs:sequence>
+			<xs:element name="Id" type="WhiteListRuleIdType"/>
+			<xs:element name="ResourceRoleRelation" type="sec:ResourceRoleRelationType" minOccurs="0"/>
+			<xs:element name="AccessRight" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

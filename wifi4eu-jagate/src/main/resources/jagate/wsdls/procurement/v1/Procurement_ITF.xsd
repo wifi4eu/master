@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+    xmlns:health="http://ec.europa.eu/research/fp/model/service-health/V1"
+    xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v4"
+    xmlns:postingCriteria="http://ec.europa.eu/rdg/jagate/ws/domain/postingcriteria/v2"
+    xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+    xmlns:basic="http://ec.europa.eu/research/fp/model/base/V1"
+    xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v4"
+    xmlns:contractor="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v4"
+    xmlns:header="http://ec.europa.eu/research/fp/model/header/V2"
+    xmlns="http://ec.europa.eu/rdg/jagate/ws/procurement/interfaces/v1"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/procurement/interfaces/v1"
+	elementFormDefault="qualified"
+	version="1.0.1">
+
+	<!-- Importing referenced schema -->
+	<xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+    <xsd:import namespace="http://ec.europa.eu/research/fp/model/service-health/V1" schemaLocation="../../../cdm/model/service-health/V1/ServiceHealth.xsd"/>
+    <xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v4" schemaLocation="../../../domain/project/v4/ProjectBasicData.xsd"/>
+    <xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/postingcriteria/v2" schemaLocation="../../../domain/postingcriteria/v2/PostingCriteria.xsd"/>
+    <xsd:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+    <xsd:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../../cdm/model/base/V1/Base.xsd" />
+    <xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v4" schemaLocation="../../../domain/visa/v4/Visa.xsd"/>
+    <xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v4" schemaLocation="../../../domain/contractor/v4/Contractor.xsd"/>
+    <xsd:import namespace="http://ec.europa.eu/research/fp/model/header/V2" schemaLocation="../../../cdm/model/header/V2/Header.xsd"/>
+
+	<!-- Elements -->
+	<xsd:element name="CreateProcurementCommitmentRequest" type="CreateProcurementCommitmentRequestType" />
+	<xsd:element name="CreateProcurementCommitmentResponse" type="CreateProcurementCommitmentResponseType" />
+
+    <xsd:element name="ProcurementException" type="jagate:JAgateException" />
+
+    <xsd:element name="CheckServiceHealthRequest" type="CheckServiceHealthRequestType"/>
+    <xsd:element name="CheckServiceHealthResponse" type="CheckServiceHealthResponseType"/>
+
+    <!--Requests-->
+	<xsd:complexType name="CreateProcurementCommitmentRequestType">
+        <xsd:sequence>
+            <xsd:element name="content" type="CreateProcurementCommitmentType" />
+        </xsd:sequence>
+	</xsd:complexType>
+
+    <xsd:complexType name="CheckServiceHealthRequestType">
+        <xsd:sequence>
+            <xsd:element name="checkServiceHealthIn" type="health:CheckServiceHealthInType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!--Responses-->
+	<xsd:complexType name="CreateProcurementCommitmentResponseType">
+        <xsd:sequence>
+            <xsd:element name="content" type="jagate:IdentifiedResponseMessageType" />
+        </xsd:sequence>
+	</xsd:complexType>
+    <xsd:complexType name="CheckServiceHealthResponseType">
+        <xsd:sequence>
+            <xsd:element name="checkServiceHealthOut" type="health:CheckServiceHealthOutType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Common types -->
+    <xsd:complexType name="CreateProcurementCommitmentType">
+        <xsd:sequence>
+            <xsd:element name="header" type="header:HeaderType" />
+            <xsd:element name="projectData" type="project:ProcurementProjectDataType" />
+            <xsd:element name="procurementCommitmentData" type="ProcurementCommitmentDataType" />
+            <xsd:element name="contractorsData" type="contractor:AbstractContractorsDataType" />
+            <xsd:element name="supportingDocumentsData" type="jagate:AresDocumentList"/>
+            <xsd:element name="visaData" type="visa:SingleTransactionVisaEmbeddedType" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProcurementCommitmentDataType">
+        <xsd:sequence>
+            <xsd:element name="procurementCommitmentHeaderData" type="ProcurementCommitmentHeaderDataType" />
+            <xsd:element name="procurementCommitmentPositionsData" type="ProcurementCommitmentPositionDataListType" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProcurementCommitmentHeaderDataType">
+        <xsd:sequence>
+            <xsd:element name="financialRegulation" type="coderef:CodeRefType">
+                <xsd:annotation>
+                    <xsd:documentation>Codes for the financial regulations (FR2012, FREDF11 ...), CCM2 Type name: FinancialRegulation, Context: GEN</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="budgetManagementType" type="coderef:CodeRefType">
+                <xsd:annotation>
+                    <xsd:documentation>Codes for the budget management types (DM, IM, SM), CCM2 Type name: BudgetManagement, Context: GEN</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="delegationInCharge" type="coderef:CodeRefType" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Codes for the delegations (DELEG AO, DELEG AR ...), CCM2 Type name: ECHierarchy, Context: GEN</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="exceptionToFDCILCRule" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="isExternalAction" type="xsd:boolean" minOccurs="0"/>
+            <xsd:element name="proposedFinalDateImplementation" type="xsd:date" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProcurementCommitmentPositionDataListType">
+        <xsd:sequence>
+            <xsd:element name="procurementCommitmentPositionData" type="ProcurementCommitmentPositionDataType" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ProcurementCommitmentPositionDataType">
+        <xsd:sequence>
+            <xsd:element name="commitmentBudgetarySource">
+                <xsd:complexType>
+                    <xsd:choice>
+                        <xsd:element name="commitmentPositionL1Commitment" type="xsd:string" minOccurs="0" />
+                        <xsd:element name="budgetLine" type="xsd:string" minOccurs="0"/>
+                    </xsd:choice>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="commitmentPositionAmount" type="basic:AmountType" />
+            <xsd:element name="commitmentPositionDG" type="coderef:CodeRefType">
+                <xsd:annotation>
+                    <xsd:documentation>Codes for the directorate generals (RTD, DEVCO ...), CCM2 Type name: ECHierarchy, Context: GEN</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="postingCriteriaList" type="postingCriteria:PostingCriteriaListType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:annotation>
+        <xsd:documentation>v1.0 - 20180205- This WS is created for creating procurements for DEVCO</xsd:documentation>
+        <xsd:documentation>v1.0.1 - 20180412- Use the simplified posting criteria type</xsd:documentation>
+    </xsd:annotation>
+</xsd:schema>

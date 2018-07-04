@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =====================================================================
+
+*   File Name       : ServiceHealth.xsd
+*
+*   Author          : Jacek MAZUR (RTD Architecture team)
+*   Creation date   : Mar 2016
+*   Description     : Schema of the ServiceHealth, used for service health check operation
+*   Status         	: Draft
+
+ ========================================================================= -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/service-health/V1" 
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns:header="http://ec.europa.eu/research/fp/model/header/V1" 
+		   xmlns:context="http://ec.europa.eu/research/fp/model/service-context/V2"
+		   targetNamespace="http://ec.europa.eu/research/fp/model/service-health/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/header/V1" schemaLocation="../../header/V1/Header.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/service-context/V2" schemaLocation="../../service-context/V2/ServiceContext.xsd"/>
+	
+	<xs:element name="CheckServiceHealthIn" type="CheckServiceHealthInType"/>
+	<xs:element name="CheckServiceHealthOut" type="CheckServiceHealthOutType"/>
+
+	<xs:complexType name="CheckServiceHealthInType">
+		<xs:sequence>
+			<xs:element name="Header" type="header:HeaderType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CheckServiceHealthOutType">
+		<xs:sequence>
+			<xs:element name="ResultContext" type="context:ResultContextType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:annotation>
+		<xs:documentation>20160308 - v1.0.0 - Creation</xs:documentation>
+	</xs:annotation>
+</xs:schema>

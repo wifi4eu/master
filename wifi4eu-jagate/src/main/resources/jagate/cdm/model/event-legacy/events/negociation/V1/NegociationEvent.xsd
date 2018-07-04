@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="http://ec.europa.eu/rdg/efp/domain/event/negociation/v1" xmlns:evt="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/negociation/v1" elementFormDefault="qualified" version="1.1.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../eventbase/V0/EventBase.xsd"/>
+	<xs:complexType name="NefBalanceSheetRequestHasBeenSentToLear">
+		<xs:complexContent>
+			<xs:extension base="evt:EventBodyType">
+				<xs:sequence>
+					<xs:element name="PIC" type="xs:string"/>
+					<xs:element name="proposalId" type="xs:string"/>
+					<xs:element name="ReasonAndRequirementsFreeText" type="xs:string" minOccurs="0"/>
+					<xs:element name="referrer" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>1.0.0: Creation</xs:documentation>
+		<xs:documentation>1.1.0: Added 1 optional field: referrer + moved the event down to the "negociation\v1" path location</xs:documentation>
+	</xs:annotation>
+</xs:schema>

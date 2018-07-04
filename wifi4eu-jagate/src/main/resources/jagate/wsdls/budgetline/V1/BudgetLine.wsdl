@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="BudgetLineWS" 
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/budgetline/v1" 
+	xmlns:jag="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/budgetline/v1">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/budgetline/v1" schemaLocation="../../../domain/budgetline/v1/BudgetLine.xsd" />
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+		</xs:schema>
+	</wsdl:types>	
+
+	<!-- Messages -->
+	<wsdl:message name="BudgetLineRequest">
+		<wsdl:part element="BudgetLineRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="BudgetLineResponseType">
+		<wsdl:part element="BudgetLineResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="BudgetLineException">
+		<wsdl:part element="jag:Exception" name="exception" />
+	</wsdl:message>	
+
+	<wsdl:portType name="BudgetLinePort">
+		<wsdl:documentation>Provides Bank Account related services.</wsdl:documentation>
+		<wsdl:operation name="getBudgetLine">
+			<wsdl:documentation>Gets the bank account holder for a given IBAN.</wsdl:documentation>
+			<wsdl:input message="BudgetLineRequest" />
+			<wsdl:output message="BudgetLineResponseType" />
+			<wsdl:fault name="BudgetLineException" message="BudgetLineException" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="BudgetLineBinding" type="BudgetLinePort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="getBudgetLine">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="BudgetLineException">
+				<soap:fault name="BudgetLineException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>	
+
+	<!-- Service definition -->
+	<wsdl:service name="BudgetLine">
+		<wsdl:port binding="BudgetLineBinding" name="BudgetLinePortBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/domain/budgetline/v1" />
+		</wsdl:port>
+	</wsdl:service>	
+
+</wsdl:definitions>

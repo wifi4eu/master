@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalcommitment/create/v1" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalcommitment/create/v1"
+		   xmlns:eventbase="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v1"
+		   xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1"
+		   elementFormDefault="qualified" 
+		   attributeFormDefault="unqualified">
+		   
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v1" schemaLocation="../../base/v1/JagateBaseEvent.xsd" />
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" schemaLocation="../../../visa/v1/Visa.xsd" />
+
+	<xs:complexType name="LegalCommitmentCreateEvent">		
+		<xs:complexContent>
+			<xs:extension base="eventbase:JagateEvent">
+				<xs:sequence>
+					<xs:element name="visaStatus" type="VisaStatus" minOccurs="0"/>
+					<xs:element name="errorMessage" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>
+							In case when Abac is refusing to create the transaction that Jagate is sending to it, 
+							this field will contains the error message from Abac
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="requestId" type="xs:string" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="VisaStatus">
+		<xs:sequence>
+			<xs:element name="visa" type="visa:AgentType"/>
+			<xs:element name="status" type="visa:VisaStatusType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+           xmlns:currency="http://ec.europa.eu/rdg/jagate/ws/domain/currency/v1"
+           xmlns="http://ec.europa.eu/rdg/jagate/ws/currency/v1/interfaces"
+           xmlns:jagref="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1"
+           targetNamespace="http://ec.europa.eu/rdg/jagate/ws/currency/v1/interfaces"
+           elementFormDefault="qualified">
+
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1"
+               schemaLocation="../../../domain/reference/v1/ReferenceData.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+               schemaLocation="../../../domain/base/v2/JAgateBase.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3"
+               schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd"/>
+
+
+    <!-- Elements -->
+    <xs:element name="GetCurrencyRateRequest" type="GetCurrencyRateRequestType"/>
+    <xs:element name="GetCurrencyRateResponse" type="GetCurrencyRateResponseType"/>
+
+    <xs:element name="CurrencyException" type="jagate:JAgateException"/>
+
+    <xs:complexType name="GetCurrencyRateRequestType">
+        <xs:sequence>
+            <xs:element name="currencyId" type="xs:string"/>
+            <xs:element name="date" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GetCurrencyRateResponseType">
+        <xs:sequence>
+            <xs:element name="rate" type="jagref:FractionDigits" minOccurs="0"/>
+            <xs:element name="currencyCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="validFrom" type="xs:date" minOccurs="0"/>
+            <xs:element name="validTo" type="xs:date" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

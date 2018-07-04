@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/header/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" targetNamespace="http://ec.europa.eu/research/fp/model/header/V1" elementFormDefault="qualified" version="1.1.0">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+
+	<xs:complexType name="HeaderType">
+		<xs:sequence>
+			<xs:element name="MessageContext" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Id" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>This element is a UUID provided by the external system to track the execution of the request.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Timestamp" type="xs:dateTime">
+							<xs:annotation>
+								<xs:documentation>The UTC time of the request.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SecurityContext" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="SystemId" type="base:SystemsType">
+							<xs:annotation>
+								<xs:documentation>This element represents a common name for the system that is consuming the service.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="EcasDomain" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>This element represent ECAS domain related to the ECAS user (external, Council of the European Union, European Commission, ...) following ECAS.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="EcasUserId" type="base:ECUserIdType" minOccurs="0"/>
+						<xs:element name="OnBehalfOfSystemId" type="base:SystemsType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>This element is used when the application consuming the service is not the one which has originally requested the operation. For example, when Participant Notification Service (PNS) asks the Identity and Access Management service (IAM) resolving a list of notification recipients, it acts on behalf of another application which has originally requested the notification.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ResultSetContext" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="StatelessPagination" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>If specified, "statelessPagination" determines which subset of the result should be returned (which page and what page size). If only "pageSize" is specified, this is equivalent to specifiy the maximum number of results. The pagination is considered "stateless" because the data set could change between two successive calls requesting two successive pages.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="PageSize" type="xs:integer"/>
+									<xs:element name="PageNumberStartingFromZero" type="xs:integer" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Locale" type="coderef:CodeRefType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Language in which the response is expected. CCM code of type Language.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.0.0 - 20120301 - Creation</xs:documentation>
+		<xs:documentation>v1.0.1 - 20120301 - Adaptation following comment from AO</xs:documentation>
+		<xs:documentation>v1.0.2 - 20160127 - Add optional element OnBehalfOfSystemId in SecurityContext element</xs:documentation>
+		<xs:documentation>v1.1.0 - 20170710 - Add optional element Locale in ResultSetContext element</xs:documentation>
+	</xs:annotation>
+</xs:schema>

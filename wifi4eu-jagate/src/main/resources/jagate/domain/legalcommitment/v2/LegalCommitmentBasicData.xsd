@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 		xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+						targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/legalCommitmentBasicData/v2" 
+						xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/legalCommitmentBasicData/v2"
+						xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+						elementFormDefault="qualified" 
+						attributeFormDefault="unqualified" 
+						version="2.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+
+	<xs:element name="LegalCommitmentHeaderFirstPrefinFlag">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This data is related with the Legal commitment which is created (and linked) by JAgate before the budgetary
+				commitment..
+			</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="Y|N" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:complexType name="LegalCommitmentDataType">
+		<xs:sequence>
+			<xs:element name="FinancialRegulation" type="coderef:CodeRefType" />
+			<xs:element name="LegalCommitmentType" type="coderef:CodeRefType" />
+			<xs:element name="OperatingGrant" type="xs:boolean" />
+			<xs:element name="LocalId" type="xs:string" minOccurs="0" />
+			<xs:element name="UserReference" type="xs:string" minOccurs="0" />
+			<xs:element name="ExternalReference" type="xs:string" minOccurs="0" />
+			<xs:element name="FTSRestrictionCode" type="xs:string" minOccurs="0" />
+			<xs:element name="FTSSubject" type="xs:string" minOccurs="0" />
+			<xs:element name="GeographicalZone" type="xs:string" minOccurs="0" />
+			<xs:element name="PrefinDueOnSignature" type="xs:boolean" minOccurs="0" />
+			<xs:element name="ResponsibleUsers" type="ResponsibleUsersType" />
+			<xs:element name="ResponsibleOrganisation" type="coderef:CodeRefType" />
+			<xs:element name="LegalCommitmentDate" type="xs:date" />
+			<xs:element name="InForceFrom" type="xs:date" />
+			<xs:element name="ReasonLCDateBeforeAOSVisa" type="coderef:CodeRefType" minOccurs="0" />
+			<xs:element name="ReasonLCDateInYearNPlus1" type="coderef:CodeRefType" minOccurs="0" />
+			<xs:element name="EUContribution" type="xs:decimal" />
+			<xs:element name="ProjectStartDate" type="xs:date" minOccurs="0" />
+			<xs:element name="ProjectEndDateOrDurationAndUnit" type="ProjectEndDateOrDurationAndUnitType" minOccurs="0" />
+			<xs:element name="LinkedFWC" type="xs:string" minOccurs="0" />
+			<xs:element name="SpecificGrant" type="xs:boolean" />
+			<xs:element name="LateInterestRule" type="coderef:CodeRefType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ProjectEndDateOrDurationAndUnitType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="DurationValueAndUnit" type="DurationValueAndUnitType" />
+				<xs:element name="ProjectEndDate" type="xs:date" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="DurationValueAndUnitType">
+		<xs:sequence>
+			<xs:element name="DurationValue" type="xs:integer" />
+			<xs:element name="DurationUnit" type="coderef:CodeRefType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PaymentTimeLimitsDataType">
+		<xs:sequence>
+			<xs:element name="PaymentTimeLimit" type="PaymentTimeLimitType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PaymentTimeLimitType">
+		<xs:sequence>
+			<xs:element name="PaymentType" type="coderef:CodeRefType" />
+			<xs:element name="ApplicableTimeLimit" type="coderef:CodeRefType" />
+			<xs:element name="SpecificTimeLimit" type="xs:integer" minOccurs="0" />
+			<xs:element name="ReasonNoTimeLimit" type="coderef:CodeRefType" minOccurs="0" />
+			<xs:element name="ReportApprovalFR2007" type="ReportApprovalFR2007Type" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ReportApprovalFR2007Type">
+		<xs:sequence>
+			<xs:element name="ReportTimeLimit" type="coderef:CodeRefType" />
+			<xs:element name="SpecificReportApproval" type="xs:int" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ResponsibleUsersType">
+		<xs:sequence>
+			<xs:element name="ResponsibleUser" type="xs:string" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="LinkedBudgetaryCommitmentsType">
+		<xs:sequence>
+			<xs:element name="CommitmentHeaderKey" type="CommitmentHeaderKeyType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CommitmentHeaderKeyType">
+		<xs:sequence>
+			<xs:element name="LocObjForeignId" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AmendLegalCommitmentDataType">
+		<xs:sequence>
+			<xs:element name="UserReference" type="xs:string" minOccurs="0" />
+			<xs:element name="FTSSubject" type="xs:string" minOccurs="0" />
+			<xs:element name="ResponsibleOrganisation" type="coderef:CodeRefType" />
+			<xs:element name="LegalCommitmentDate" type="xs:date" />
+			<xs:element name="InForceFrom" type="xs:date" />
+			<xs:element name="ProjectStartDate" type="xs:date" minOccurs="0" />
+			<xs:element name="ProjectEndDateOrDurationAndUnit" type="ProjectEndDateOrDurationAndUnitType" minOccurs="0" />
+			<xs:element name="LateInterestRule" type="coderef:CodeRefType" minOccurs="0" />
+			<xs:element name="ChangeRequestReason" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CorrectLegalCommitmentDataType">
+		<xs:sequence>
+			<xs:element name="ProjectStartDate" type="xs:date" minOccurs="0" />
+			<xs:element name="ProjectEndDateOrDurationAndUnit" type="ProjectEndDateOrDurationAndUnitType" minOccurs="0" />
+			<xs:element name="ChangeRequestReason" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

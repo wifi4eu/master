@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 (http://www.altova.com) by MAHIEU Bernard (European Commission - DIGIT) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ec.europa.eu/rdg/efp/domain/event/legalentity/v1" xmlns:ns2="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:ns3="http://ec.europa.eu/research/fp/model/legalentity/V1_0" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/v1" elementFormDefault="qualified" version="1.0">
+	<xsd:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../eventbase/V0/EventBase.xsd"/>
+	<xsd:complexType name="FinancialValidationStartedEventType">
+		<xsd:complexContent>
+			<xsd:extension base="ns2:EventBodyType">
+				<xsd:sequence>
+					<xsd:element name="PIC" type="xsd:string"/>
+					<xsd:element name="proposalId" type="xsd:string"/>
+					<xsd:element name="Date" type="xsd:dateTime"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>1.0.0: Creation.
+    										1.0.1: moved the file down to event/legalentity/v1 in order to match the namespace
+		</xsd:documentation>
+	</xsd:annotation>
+</xsd:schema>

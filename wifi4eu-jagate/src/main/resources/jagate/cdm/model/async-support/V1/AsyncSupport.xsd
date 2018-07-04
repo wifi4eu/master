@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/async-support/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1"
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" targetNamespace="http://ec.europa.eu/research/fp/model/async-support/V1"
+	elementFormDefault="qualified" version="1.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd" />
+	<xs:element name="CorrelationRef" type="CorrelationRefType" />
+
+	<xs:complexType name="CorrelationRefType">
+		<xs:annotation>
+			<xs:documentation>Unique identifier within the context of a particular application.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Owner" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Application name which creates unique identifier, CCM2 Type name: ITSystems, Context: CDM</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Id" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Technical identifier value used by owner to uniquely identify request, event, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:annotation>
+		<xs:documentation>v1.0.0 - 20170823 - Creation</xs:documentation>
+	</xs:annotation>
+</xs:schema>

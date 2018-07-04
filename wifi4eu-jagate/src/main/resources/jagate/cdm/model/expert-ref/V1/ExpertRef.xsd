@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/expert-ref/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/expert-ref/V1" elementFormDefault="qualified" version="1.0.1">
+	<xs:simpleType name="ExpertIdType">
+		<xs:annotation>
+			<xs:documentation>This is the expert candidature/reference number.All experts have this number.Given example:EX2006C999999</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+</xs:schema>

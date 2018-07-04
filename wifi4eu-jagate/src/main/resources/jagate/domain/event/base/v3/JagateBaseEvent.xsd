@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v3" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v3"
+		   xmlns:cdmeventbase="http://ec.europa.eu/research/fp/model/eventbase/V1"
+		   xmlns:transaction="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v3"
+		   elementFormDefault="qualified" 
+		   attributeFormDefault="unqualified"
+		   version="3.0">
+		   
+    <xs:import namespace="http://ec.europa.eu/research/fp/model/eventbase/V1" schemaLocation="../../../../cdm/model/eventbase/V1/EventBase.xsd" />
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v3" schemaLocation="../../../transaction/v3/Transaction.xsd"/>
+
+	<xs:complexType name="JagateAbstractEvent" abstract="true">		
+		<xs:complexContent>
+			<xs:extension base="cdmeventbase:EventBodyType">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="JagateEvent">		
+		<xs:complexContent>
+			<xs:extension base="JagateAbstractEvent">
+				<xs:sequence>
+                    <xs:element name="localObjectForeigId" type="xs:string"/>
+					<xs:element name="transactionType" type="transaction:TransactionSubtype"/>
+					<xs:element name="transactionProcessingStatus" type="TransactionProcessingStatus"/>
+					<xs:element name="errorMessage" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>
+							In case when Abac is refusing to create the transaction that Jagate is sending to it, 
+							this fild will contains the error message from Abac
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>		
+					<xs:element name="subActionType" type="SubActionType" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="JagateTransactionEvent">		
+		<xs:complexContent>
+			<xs:extension base="JagateAbstractEvent">
+				<xs:sequence>
+					<xs:element name="localObjectForeigId" type="xs:string"/>
+					<xs:element name="transactionType" type="transaction:TransactionSubtype"/>
+					<xs:element name="transactionProcessingStatus" type="TransactionProcessingStatus"/>
+					<xs:element name="errorMessage" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>
+							In case when Abac is refusing to create the transaction that Jagate is sending to it, 
+							this fild will contains the error message from Abac
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>		
+					<xs:element name="subActionType" type="SubActionType" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>	
+	
+	<xs:simpleType name="TransactionProcessingStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PENDING">
+				<xs:annotation>
+					<xs:documentation>The transaction is still in Abac workflow</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CREATED">
+				<xs:annotation>
+					<xs:documentation>The transaction has been created in Abac(the IA visa has been given)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>			
+			<xs:enumeration value="END">
+				<xs:annotation>
+					<xs:documentation>The transaction has been processed(exited from the Abac workflow)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ERROR">
+				<xs:annotation>
+					<xs:documentation>The transaction batch cannot be processed by Abac. This can happen only at creation time</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="REJECTED">
+				<xs:annotation>
+					<xs:documentation>The transaction has been rejected</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>				
+			<xs:enumeration value="PAID">
+				<xs:annotation>
+					<xs:documentation>The amount has reached the bank account of the client</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FOLLOW_UP">
+				<xs:annotation>
+					<xs:documentation>The transaction is in a follow up status. Other actions are needed to proceed the transaction</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType> 
+	
+	<xs:simpleType name="SubActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="REJECTION">
+				<xs:annotation>
+					<xs:documentation>The transaction is rejected</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:annotation>
+           <xs:documentation>v3.0 - 20171004 - Added FOLLOW_UP to TransactionProcessingStatus</xs:documentation>
+      </xs:annotation>
+</xs:schema>

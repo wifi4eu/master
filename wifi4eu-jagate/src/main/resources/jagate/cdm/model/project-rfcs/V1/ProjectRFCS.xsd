@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/project-rfcs/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:ns1="http://ec.europa.eu/research/fp/model/project-rfcs/V1" xmlns="http://ec.europa.eu/research/fp/model/project-rfcs/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:annotation>
+		<xs:documentation>
+			This schema intends to capture all funding scheme specific project data; in this case for projects complying to RFCS program
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:element name="RFCSProjectInfo" type="RFCSProjectInfoType"/>
+	<xs:complexType name="RFCSProjectInfoType">
+		<xs:annotation>
+			<xs:documentation>Project level data elements specific to RFCS projects.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TechnicalGroupCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>RFCS: This is the panel or technical group. Code of classId "RFCSPanel"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20151126 - v1.0.0 - RFCSProjectInfoType extending the projectType -> fundingSchemeSpecificInfo</xs:documentation>
+	</xs:annotation>
+</xs:schema>

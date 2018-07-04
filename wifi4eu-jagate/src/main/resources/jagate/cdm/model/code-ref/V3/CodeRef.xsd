@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 (http://www.altova.com) by European Commision - DIGIT (European Commision - DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/code-ref/V3" elementFormDefault="qualified" version="3.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:element name="CodeRef" type="CodeRefType"/>
+	<xs:simpleType name="CodeIdType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CodeRefType">
+		<xs:annotation>
+			<xs:documentation>Limited set of code elements. To be used for code identification and referencing.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="CodeIdType"/>
+			<xs:element name="Abbreviation" type="xs:string" minOccurs="0"/>
+			<xs:element name="ClassId" type="xs:string" minOccurs="0"/>
+			<xs:element name="Context" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Assume 'GEN' if not present.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Extensive human readable descriptive value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="CodeReferenceGroup">
+		<xs:sequence/>
+	</xs:group>
+	<xs:complexType name="CodeIdListType">
+		<xs:sequence>
+			<xs:element name="Id" type="CodeIdType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodeRefListType">
+		<xs:sequence>
+			<xs:element name="Code" type="CodeRefType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20100510 - v1.0.1</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Use bump base to 1.0.1
+</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Add the descripton element to the codereftype</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20110406: v3.0.0 - replaced "programm" by "context" in CodeRef, replaced codeType by ClassId,...</xs:documentation>
+	</xs:annotation>
+</xs:schema>

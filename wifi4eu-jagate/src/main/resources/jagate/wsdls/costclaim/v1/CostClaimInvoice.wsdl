@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="CostClaimInvoiceWSV3"  
+	xmlns:costclaim="http://ec.europa.eu/rdg/jagate/ws/costclaim/v1/interfaces"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/costclaim/v1"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/costclaim/v1">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/costclaim/v1/interfaces" schemaLocation="CostClaimInvoiceInterface.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+	<wsdl:message name="RegisterCostClaimInvoiceRequest">
+		<wsdl:part element="costclaim:RegisterCostClaimInvoiceRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="RegisterCostClaimInvoiceResponse">
+		<wsdl:part element="costclaim:RegisterCostClaimInvoiceResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="ReRegisterCostClaimInvoiceRequest">
+		<wsdl:part element="costclaim:ReRegisterCostClaimInvoiceRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="ReRegisterCostClaimInvoiceResponse">
+		<wsdl:part element="costclaim:ReRegisterCostClaimInvoiceResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="CostClaimInvoiceException">
+		<wsdl:part element="costclaim:CostClaimInvoiceException" name="exception" />
+	</wsdl:message>
+	
+	<wsdl:message name="UnRegisterCostClaimInvoiceRequest">
+		<wsdl:part element="costclaim:UnRegisterCostClaimInvoiceRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="UnRegisterCostClaimInvoiceResponse">
+		<wsdl:part element="costclaim:UnRegisterCostClaimInvoiceResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="CloseCostClaimInvoiceRequest">
+		<wsdl:part element="costclaim:CloseCostClaimInvoiceRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="CloseCostClaimInvoiceResponse">
+		<wsdl:part element="costclaim:CloseCostClaimInvoiceResponse" name="response" />
+	</wsdl:message>
+
+    <wsdl:message name="ReopenCostClaimInvoiceRequest">
+        <wsdl:part element="costclaim:ReopenCostClaimInvoiceRequest" name="request" />
+    </wsdl:message>
+
+    <wsdl:message name="ReopenCostClaimInvoiceResponse">
+        <wsdl:part element="costclaim:ReopenCostClaimInvoiceResponse" name="response" />
+    </wsdl:message>
+
+	<wsdl:portType name="ICostClaimInvoiceService">
+		<wsdl:documentation>Cost Claim Invoice operations.</wsdl:documentation>
+		<wsdl:operation name="RegisterCostClaimInvoice">
+			<wsdl:documentation>Register cost claim invoice</wsdl:documentation>
+			<wsdl:input message="RegisterCostClaimInvoiceRequest" />
+			<wsdl:output message="RegisterCostClaimInvoiceResponse" />
+			<wsdl:fault name="CostClaimInvoiceException" message="CostClaimInvoiceException"/>
+		</wsdl:operation>
+		<wsdl:operation name="UnRegisterCostClaimInvoice">
+			<wsdl:documentation>UnRegister cost claim invoice</wsdl:documentation>
+			<wsdl:input message="UnRegisterCostClaimInvoiceRequest" />
+			<wsdl:output message="UnRegisterCostClaimInvoiceResponse" />
+			<wsdl:fault name="CostClaimInvoiceException" message="CostClaimInvoiceException"/>
+		</wsdl:operation>
+		<wsdl:operation name="ReRegisterCostClaimInvoice">
+			<wsdl:documentation>UnRegister cost claim invoice</wsdl:documentation>
+			<wsdl:input message="ReRegisterCostClaimInvoiceRequest" />
+			<wsdl:output message="ReRegisterCostClaimInvoiceResponse" />
+			<wsdl:fault name="CostClaimInvoiceException" message="CostClaimInvoiceException"/>
+		</wsdl:operation>
+		<wsdl:operation name="CloseCostClaimInvoice">
+			<wsdl:documentation>Close cost claim invoice</wsdl:documentation>
+			<wsdl:input message="CloseCostClaimInvoiceRequest" />
+			<wsdl:output message="CloseCostClaimInvoiceResponse" />
+			<wsdl:fault name="CostClaimInvoiceException" message="CostClaimInvoiceException"/>
+		</wsdl:operation>
+        <wsdl:operation name="ReopenCostClaimInvoice">
+            <wsdl:documentation>Close cost claim invoice</wsdl:documentation>
+            <wsdl:input message="ReopenCostClaimInvoiceRequest" />
+            <wsdl:output message="ReopenCostClaimInvoiceResponse" />
+            <wsdl:fault name="CostClaimInvoiceException" message="CostClaimInvoiceException"/>
+        </wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="ICostClaimInvoiceServiceBinding" type="ICostClaimInvoiceService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="RegisterCostClaimInvoice">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CostClaimInvoiceException">
+				<soap:fault name="CostClaimInvoiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="UnRegisterCostClaimInvoice">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CostClaimInvoiceException">
+				<soap:fault name="CostClaimInvoiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="ReRegisterCostClaimInvoice">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CostClaimInvoiceException">
+				<soap:fault name="CostClaimInvoiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="CloseCostClaimInvoice">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CostClaimInvoiceException">
+				<soap:fault name="CostClaimInvoiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+        <wsdl:operation name="ReopenCostClaimInvoice">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="CostClaimInvoiceException">
+                <soap:fault name="CostClaimInvoiceException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="CostClaimInvoiceServiceV1">
+		<wsdl:port binding="ICostClaimInvoiceServiceBinding" name="CostClaimInvoiceServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/costclaim/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

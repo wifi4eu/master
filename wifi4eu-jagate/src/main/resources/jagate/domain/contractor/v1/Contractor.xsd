@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+							xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v1" 
+							targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v1"
+							xmlns:contractor="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v1" 
+							elementFormDefault="qualified" 
+							attributeFormDefault="unqualified">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v1" schemaLocation="../../contractor/v1/ContractorBasicData.xsd"/>
+	
+	<xs:complexType name="ContractorsDataType">
+		<xs:sequence>
+			<xs:element name="PrincipalContractor" type="PrincipalContractorType" minOccurs="1" maxOccurs="unbounded" />
+			<xs:element name="SecondaryContractor" type="SecondaryContractorType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PrincipalContractorType">
+		<xs:annotation>
+			<xs:documentation>The principal contractor set of data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="contractor:ContractorPic"/>
+			<xs:element ref="contractor:ContractorIban" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="SecondaryContractorType">
+		<xs:annotation>
+			<xs:documentation>The secondary contractor set of data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="contractor:ContractorPic"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

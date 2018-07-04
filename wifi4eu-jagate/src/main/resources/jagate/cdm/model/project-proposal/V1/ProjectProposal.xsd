@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/project-proposal/V1" xmlns:person="http://ec.europa.eu/research/fp/model/person/V2" xmlns:legalentity="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:document="http://ec.europa.eu/research/fp/model/document/V3" targetNamespace="http://ec.europa.eu/research/fp/model/project-proposal/V1" elementFormDefault="qualified" version="1.2.0">
+	<xs:annotation>
+		<xs:documentation>This schema intends to hold a view on 'proposal' data.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v1.1 - 20120731 - Added SubmissionStage element to ProposalGroup</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v1.2 - 20121106 - Added SubmittedProposalDocument element to ProposalGroup</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V2" schemaLocation="../../person/V2/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V3" schemaLocation="../../document/V3/Document.xsd"/>
+	<xs:group name="ProposalGroup">
+		<xs:sequence>
+			<!--			<xs:element name="DraftProposalID" type="xs:string" minOccurs="0"/> -->
+			<xs:element name="Referee" type="RefereeType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="SubmissionStage" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Either 1 or 2, depending on the submission stage reached by this instance of the proposal</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubmittedProposalDocument" type="document:DocumentType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<!--===================================================================================-->
+	<xs:complexType name="RefereeType">
+		<xs:complexContent>
+			<xs:extension base="person:PersonType">
+				<xs:sequence>
+					<xs:element name="PIC" type="legalentity:LegalEntityIdType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

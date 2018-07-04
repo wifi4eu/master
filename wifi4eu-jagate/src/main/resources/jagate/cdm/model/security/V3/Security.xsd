@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/security/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:leRef="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:projectRef="http://ec.europa.eu/research/fp/model/project-ref/V3" targetNamespace="http://ec.europa.eu/research/fp/model/security/V3" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:complexType name="ResourceIdType">
+		<xs:annotation>
+			<xs:documentation>
+				In the scope of IAM, a resource can currently be one of
+				the following kind: project, proposal, legal_entity.
+				Other kinds might be added later.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="ProjectRef" type="projectRef:ProjectRefType"/>
+			<xs:element name="ProposalRef" type="projectRef:ProjectIdType"/>
+			<xs:element name="LegalEntityRef" type="leRef:LegalEntityIdType"/>
+			<xs:element name="DefaultRef" type="ResourceDefaultRefType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ResourceDefaultRefType">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:string"/>
+			<xs:element name="ResourceType" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="RoleType">
+		<xs:annotation>
+			<xs:documentation>List of IAM roles</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="ResourceRoleRelationType">
+		<xs:annotation>
+			<xs:documentation>
+				Association between a resource and one or more role(s).
+				The operator between roles is always 'OR'
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Resource" type="ResourceIdType" nillable="false" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+                        This tag identifies the resource upon which the role list applies (project, legal entity, etc).
+                        If no resource is specified, it means that the role list apply to all existing resources.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubResource" type="ResourceIdType" nillable="false" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+                        This tag identifies the sub resource upon which the roles list applies.
+                        For example, if the resource is a project then the sub-resource can be a specific legal entity participating in the consortium.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Role" type="RoleType" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

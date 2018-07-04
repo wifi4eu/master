@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="AlPaymentV1" 
+	xmlns:pay="http://ec.europa.eu/rdg/jagate/ws/alpayment/v1/interfaces" 
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/alpayment/v1" 
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/alpayment/v1" >
+ 
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/alpayment/v1/interfaces" schemaLocation="AlPaymentInterface.xsd" />
+		</xs:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="CreatePaymentRequest">
+		<wsdl:part element="pay:CreateAlPaymentRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CreatePaymentResponse">
+		<wsdl:part element="pay:CreateAlPaymentResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="CreatePaymentOrderRequest">
+		<wsdl:part element="pay:CreateAlPaymentOrderRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CreatePaymentOrderResponse">
+		<wsdl:part element="pay:CreateAlPaymentOrderResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="AlPaymentException">
+		<wsdl:part element="pay:AlPaymentException" name="exception" />
+	</wsdl:message>
+
+	<wsdl:portType name="IAlPaymentService">
+		<wsdl:operation name="CreatePaymentRequest">
+			<wsdl:input message="CreatePaymentRequest" />
+			<wsdl:output message="CreatePaymentResponse" />
+			<wsdl:fault name="AlPaymentException" message="AlPaymentException" />
+		</wsdl:operation>
+		<wsdl:operation name="CreatePaymentOrder">
+			<wsdl:input message="CreatePaymentOrderRequest" />
+			<wsdl:output message="CreatePaymentOrderResponse" />
+			<wsdl:fault name="AlPaymentException" message="AlPaymentException" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="IAlPaymentServiceBinding" type="IAlPaymentService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		
+		<wsdl:operation name="CreatePaymentRequest">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="AlPaymentException">
+				<soap:fault name="AlPaymentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="CreatePaymentOrder">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="AlPaymentException">
+				<soap:fault name="AlPaymentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="AlPaymentServiceV1">
+		<wsdl:port binding="IAlPaymentServiceBinding" name="AlPaymentServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/alpayment/v1" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

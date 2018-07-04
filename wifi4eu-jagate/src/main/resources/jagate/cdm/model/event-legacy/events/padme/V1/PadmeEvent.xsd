@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="http://ec.europa.eu/rdg/efp/domain/event/padme/v1_0" xmlns:evt="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:padme="http://ec.europa.eu/rdg/efp/domain/padme/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/padme/v1_0" elementFormDefault="qualified" version="1.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/padme/V1" schemaLocation="../../../padme/V1/Padme_v1.0.0.xsd"/>
+	<xs:complexType name="PadmeEventType">
+		<xs:complexContent>
+			<xs:extension base="evt:EventBodyType">
+				<xs:sequence>
+					<xs:element name="PadmeAction" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="UserId" type="xs:string"/>
+								<xs:element name="DossierExternalReference" type="padme:ExternalReference"/>
+								<xs:element name="DocumentReference" type="xs:string" minOccurs="0"/>
+								<xs:element name="ActionName" type="padme:ActionName"/>
+								<xs:element name="Property" type="padme:Property" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

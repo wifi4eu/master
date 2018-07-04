@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/project-specialclause/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:docref="http://ec.europa.eu/research/fp/model/document-ref/V3" xmlns="http://ec.europa.eu/research/fp/model/project-specialclause/V3" elementFormDefault="qualified" version="3.1.2">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="../../document-ref/V3/DocumentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:element name="SpecialClause" type="SpecialClauseType"/>
+	<xs:complexType name="SpecialClauseType">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>the name of the special clause</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OrderNo" type="xs:int"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>the description of the special clause</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FromDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>date from when special clause enters into force</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ToDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>date until when special clause is applicable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GenerationTemplate" type="docref:DocumentRefType" minOccurs="0"/>
+			<xs:element name="FreeVariable" type="SpecialClauseFVType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>special clause free variables data</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SemanticRefID" type="xs:string" minOccurs="0"/>
+			<xs:element name="AppliedToPartners" type="AppliedToPartnerListType" minOccurs="0"/>
+			<xs:element name="NotExposed" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="Removed" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It designates if a special clause/amendment option (for H2020) is removed from the Grant Agreement.
+					 It is important because a removed special clause carries some information that is used by reporting (e.g., "end date")</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpecialClauseFVType">
+		<xs:sequence>
+			<xs:element name="ID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>the ID of the special clause free variable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>the name for the special clause free variable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Value" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>the value for the special clause free variable name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AppliedToPartnerListType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AppliedToPartner" type="AppliedToPartnerType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AppliedToPartnerType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PartnerPIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="PartnerParentPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20151218 - v3.1.2 - SYGMA -  added Removed in the SpecialClauseType</xs:documentation>
+		<xs:documentation>20140915 - v3.1.1 - SYGMA -  small correction for AppliedToPartners: it should be optional and one element
+		</xs:documentation>
+		<xs:documentation>20140731 - v3.1.0 - SYGMA -  added AppliedToPartners and NotExposed elements and related complex types</xs:documentation>
+		<xs:documentation>20131016 - v3.0.1 - SYGMA -  corrected path for import schema</xs:documentation>
+		<xs:documentation>20131010 - v3.0.0 - SYGMA -  Reshuffled* changed the project special clause - added GenerationTemplate, FreeVariable,  orderNo...	</xs:documentation>
+		<xs:documentation>This schema intends to hold a view on 'special clause' data that can be part of the project grant agreement.	</xs:documentation>
+	</xs:annotation>
+</xs:schema>

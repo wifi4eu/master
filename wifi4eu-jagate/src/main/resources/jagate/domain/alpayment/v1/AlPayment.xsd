@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/alpayment/v1"
+			xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/alpayment/v1"
+			xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+			elementFormDefault="qualified" 
+			attributeFormDefault="unqualified" 
+			version="1.0.0">
+			
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+	
+	
+	<xs:complexType name="AlPaymentOrderType">	
+		<xs:sequence>
+			<xs:element name="userReference" type="xs:string"/>
+			<xs:element name="responsibleUser" type="xs:string"/>
+			<xs:element name="responsibleOrganization" type="coderef:CodeRefType" minOccurs="0"/> 
+			<xs:element name="remarks" type="xs:string" minOccurs="0"/>			
+			<xs:element name="paymentRequest" type="xs:string" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AlPaymentRequestType">	
+		<xs:sequence>
+			<xs:element name="paymentRequestHeader" type="AlPaymentRequestHeaderType"/>
+			<xs:element name="paymentRequestDetail" type="AlPaymentRequestDetailType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AlPaymentRequestHeaderType">
+		<xs:sequence>
+			<xs:element name="userReference" type="xs:string"/>
+			<xs:element name="currency" type="coderef:CodeRefType"/>
+			<xs:element name="dateForExchangeRate" type="xs:date"/>
+			<xs:element name="netAmount" type="xs:decimal"/> 
+			
+			<xs:element name="ECReceptionDate" type="xs:date"/>
+			
+			<xs:element name="legalEntity" type="xs:string"/>
+		    <xs:element name="bankAccount" type="xs:string"/>
+		    <xs:element name="beneficiary" type="xs:string" minOccurs="0"/>
+		    
+		    <xs:element name="responsibleUser" type="xs:string"/>
+		    <xs:element name="responsibleOrganization" type="coderef:CodeRefType" minOccurs="0"/>
+		    <xs:element name="messageToBeneficiary1" type="xs:string"/>
+		    <xs:element name="messageToBeneficiary2" type="xs:string" minOccurs="0"/>
+			<xs:element name="messageToBeneficiary3" type="xs:string" minOccurs="0"/>
+			<xs:element name="messageToBeneficiary4" type="xs:string" minOccurs="0"/>
+		    <xs:element name="remarks" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AlPaymentRequestDetailType">
+		<xs:sequence>
+			<xs:element name="commitmentPosition" type="xs:string"/>
+			<xs:element name="paymentBudgetLine" type="xs:string"/>
+			<!-- <xs:element name="netAmountEntry" type="xs:decimal"/> -->
+			<xs:element name="DG" type="xs:string"/>
+			<xs:element name="postingCriteriaTypeCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="postingCriteriaCode" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>	
+</xs:schema>

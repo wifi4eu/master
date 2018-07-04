@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:certification-document="http://ec.europa.eu/rdg/efp/domain/document/v1_00"  xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/rdg/efp/domain/document/v1_00">
+	
+	<xsd:complexType name="ShortDocument">
+		<xsd:sequence>
+			<xsd:element name="Content" type="xsd:base64Binary">
+				<xsd:annotation>
+					<xsd:documentation>The binary content of the file</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The name of the file</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MimeType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The type of content (for example,
+                        pdf file, word document, etc)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Author" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The author of the document.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>A short text describing the content and the purpose of the attached file.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Document">
+		<xsd:annotation>
+			<xsd:documentation>The document is a class that contains  common attributes that can be considered as predefined metadata. A document is a generic concept that encapsulates a set of properties that can be used for searching, a set of metadata, and some classification criteria.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Attachments" type="certification-document:DocumentAttachment" nillable="true" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>A document could have one or more files attached to it. Depending on the technology used for the repository backend, the number of file could be limited to one per document. File is used to store structured as well as unstructured content (they are both onsidered as unstructured).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Author" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The author of the document.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Classifications" type="certification-document:DocumentClassification" nillable="true" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>A document can be classified in one or more classification or can be non-classified. For example, a document could be related to an organization (legal registration, VAT registration, etc…), or to a project (grant agreement, technical annexe, etc…). </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CreationDate" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The date the document was inserted in the document repository.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>A short text describing the abstract of the document and an overview of its content.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DocumentIdentifier" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>The document unique identifier in
+                        the document repository.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Metadata" type="certification-document:DocumentMetadata" nillable="true" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Along with a document, a set of metadata can be defined to enrich the document definition. Those metada are mainly informative and do not take part in the validity of a document nor in the search criteria used for retrieval.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The name of the document. The name should be clear enough for a user to understand and retrieve the purpose of the document.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Owner" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The owner of the document</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Source" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The system that has uploaded the document into the repository (generally on behalf of the user who could be the owner or the author of the document).</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="UpdateDate" type="xsd:dateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The date the document is updated. When a document is inserted for the first time in the repository, its creation date and its update date are identical. This field is present although the update functionality is not foreseen.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DocumentType" type="certification-document:DocumentType">
+				<xsd:annotation>
+					<xsd:documentation>The type of document that is stored. The list of document types is defined in the &quot;Document Typology&quot; document. For release 1, the typical document types will be the one related to the supporting document of URF and the technical annexes of NEF</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SourceReference" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>An internal reference the source system could use to internally identify the document.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DocumentAttachment">
+		<xsd:sequence>
+			<xsd:element name="Content" type="xsd:base64Binary" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>the binary content of the file. The content could be structured as well as unstructured, it will ba always considered as unstructured.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>A short text describing the content and the purpose of the attached file.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AttachmentIdentifier" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The unique Attachment object identifier</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MimeType" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The type of content (for example,
+                        pdf file, word document, etc…)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The name of the attached file. The name must be unique for each document. If a document contains only one file, the name of the file could be similar to the name of the document.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DocumentClassification" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="Id" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The classification unique identifier. This is used to optimize the update of the classifications.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OrganisationClassification">
+		<xsd:complexContent>
+			<xsd:extension base="certification-document:DocumentClassification">
+				<xsd:sequence>
+					<xsd:element name="Pic" type="xsd:string"/>
+					<xsd:element name="LocalReference" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ProjectClassification">
+		<xsd:complexContent>
+			<xsd:extension base="certification-document:DocumentClassification">
+				<xsd:sequence>
+					<xsd:element name="ProjectId" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="AccessibilityClassification">
+		<xsd:complexContent>
+			<xsd:extension base="certification-document:DocumentClassification">
+				<xsd:sequence>
+					<xsd:element name="Action" type="xsd:string"/>
+					<xsd:element name="Role" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="DocumentMetadata">
+		<xsd:sequence>
+			<xsd:element name="Id" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The metadata unique identifier. This is used to optimize the update of the metadata</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>the name of the property to be set as metadata. The name should be clear enough to understand its meaning.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Value" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>the value of the property. When a value is set, it must be compatible with the value type.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="DocumentType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="NEGOTIATION_TECHNICAL_ANNEX"/>
+			<xsd:enumeration value="ORGANIZATION_SUPPORTING_DOCUMENT"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

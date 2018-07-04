@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:code="http://ec.europa.eu/research/fp/model/code/V2" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:officer="http://ec.europa.eu/research/fp/model/officer/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns="http://ec.europa.eu/research/fp/model/call/V3" targetNamespace="http://ec.europa.eu/research/fp/model/call/V3" elementFormDefault="qualified" version="3.0.2">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture all data related to a 'Call for information' prepared and published by a research DG.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code/V2" schemaLocation="../../code/V2/Code.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer/V2" schemaLocation="../../officer/V2/Officer.xsd"/>
+	<xs:element name="Call" type="CallType"/>
+	<xs:complexType name="CallType">
+		<xs:complexContent>
+			<xs:extension base="code:CodeType">
+				<xs:sequence>
+					<xs:element name="PublicationDate" type="xs:date"/>
+					<xs:element name="OfficialJournalReference" type="xs:string" minOccurs="0"/>
+					<xs:element name="WorkProgramCOMDecision" type="xs:string" minOccurs="0"/>
+					<xs:element name="Coordinated" type="xs:boolean"/>
+					<xs:element name="CoordinationId" type="xs:string" minOccurs="0"/>
+					<xs:element name="CoordinationDescription" type="xs:string" minOccurs="0"/>
+					<xs:element name="Joint" type="xs:boolean"/>
+					<xs:element name="Technical" type="xs:boolean"/>
+					<xs:element name="MasterCallId" type="coderef:CodeIdType" minOccurs="0"/>
+					<xs:element name="SubmissionProcedure" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Allowed values: 
+								'OneStage'
+								'TwoStage'
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Type" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Allowed values:
+							 'Fixed call' (Call with fixed deadline)
+							 'Open call' (Open call with multiple deadline)
+							 'Fixed multiple' (Fixed deadline with multiple cut-off dates)
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AdonisReference" type="xs:string" minOccurs="0"/>
+					<xs:element name="CommissionURL" type="xs:string" minOccurs="0"/>
+					<xs:element name="CommissionEmail" type="xs:string"/>
+					<xs:element name="VersionDate" type="xs:date"/>
+					<xs:element name="CallThemes" type="CallThemeListType" minOccurs="0"/>
+					<xs:element name="SubFundingSchemes" type="SubFundingSchemeListType" minOccurs="0"/>
+					<xs:element name="DeadLines" type="DeadLineListType" minOccurs="0"/>
+					<xs:element name="Logistics" type="LogisticListType" minOccurs="0"/>
+					<xs:element name="AssignedTopics" type="TopicListType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>List of topics associated to the call</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CoordinatedCallIds" type="coderef:CodeIdListType" minOccurs="0"/>
+					<xs:element name="LinkedTechnicalCallIds" type="coderef:CodeIdListType" minOccurs="0"/>
+					<xs:element name="PublishedCordis" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Indicator whether call must be published on Cordis portal</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CallListType">
+		<xs:sequence>
+			<xs:element name="Call" type="CallType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CallThemeType">
+		<xs:sequence>
+			<xs:element name="Master" type="xs:boolean"/>
+			<xs:element name="LegalBasis" type="coderef:CodeRefType"/>
+			<xs:element name="SpecificProgram" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Depends on LegalBasis. FP7 example: EC treaty {Cooperation, Ideas, People, Capacities, Non-nuclear actions by JRC}</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ThemePart" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Depends on SpecificProgram. FP7 example: People {Marie Curie actions}</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResponsibleDG" type="xs:string"/>
+			<xs:element name="BudgetLine" type="xs:string"/>
+			<xs:element name="SubTotalBudget" type="base:AmountType"/>
+			<xs:element name="CallCoordinator" type="officer:OfficerCoreInfoType" minOccurs="0"/>
+			<xs:element name="PSEFCorrespondent" type="officer:OfficerCoreInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CallThemeListType">
+		<xs:sequence>
+			<xs:element name="TotalIndicativeBudget" type="base:AmountType"/>
+			<xs:element name="CallTheme" type="CallThemeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CopyType">
+		<xs:sequence>
+			<xs:element name="PrintedCopies" type="base:CountType"/>
+			<xs:element name="SortOrder" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CopiesType">
+		<xs:sequence>
+			<xs:element name="ECEligibilityCopies" type="CopyType"/>
+			<xs:element name="FirstStageProposalPrint" type="CopyType"/>
+			<xs:element name="SecondStageProposalPrint" type="CopyType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicType">
+		<xs:sequence>
+			<xs:element name="SubFundingScheme" type="code:SubFundingSchemeCodeType"/>
+			<xs:element name="AssignedTopic" type="code:ActivityCodeType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicListType">
+		<xs:sequence>
+			<xs:element name="Topic" type="TopicType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubFundingSchemeType">
+		<xs:complexContent>
+			<xs:extension base="code:SubFundingSchemeCodeType">
+				<xs:sequence>
+					<xs:element name="MSOrAC" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Min no of MS or AS partners</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ICPCCountry" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubFundingSchemeListType">
+		<xs:sequence>
+			<xs:element name="SubFundingScheme" type="SubFundingSchemeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DeadLineType">
+		<xs:sequence>
+			<xs:element name="Date" type="xs:dateTime"/>
+			<xs:element name="CallSubIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="Proposals" type="base:CountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Expected number of proposals</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DeadLineListType">
+		<xs:sequence>
+			<xs:element name="FixedDeadLine" type="xs:dateTime"/>
+			<xs:element name="DeadLine" type="DeadLineType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LogisticType">
+		<xs:sequence>
+			<xs:element name="SubFundingScheme" type="code:SubFundingSchemeCodeType"/>
+			<xs:element name="Copies" type="CopiesType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LogisticListType">
+		<xs:sequence>
+			<xs:element name="Logistic" type="LogisticType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SessionType">
+		<xs:sequence>
+			<xs:element name="SessionID" type="xs:integer"/>
+			<xs:element name="Type" type="SessionTypeType">
+				<xs:annotation>
+					<xs:documentation>SUBMISSION or EVALUATION or RANKING</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Deadline" type="SessionDeadlineType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SessionTypeType">
+		<xs:annotation>
+			<xs:documentation>SUBMISSION or EVALUATION or RANKING</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="SessionDeadlineType">
+		<xs:sequence>
+			<xs:element name="Date" type="xs:date"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v3.0.2 - Added SessionType and related subtype</xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by XMLSpy 2008 Enterprise Ed., Installed for 5 users (European Commission DG Regio) -->
+<xs:schema xmlns:tns="http://ec.europa.eu/research/fp/model/participantnotification/send-event/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:notificationRef="http://ec.europa.eu/research/fp/model/participantnotification/interfaces/V1" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:userref="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" targetNamespace="http://ec.europa.eu/research/fp/model/participantnotification/send-event/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/participantnotification/interfaces/V1" schemaLocation="../../participant-notification/V1/ParticipantNotification.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:complexType name="ParticipantNotificationSendEvent">
+		<xs:annotation>
+			<xs:documentation>Event emitted when a new notification is to be sent to and through the Participant Notification System</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="Notification" type="notificationRef:NotificationType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

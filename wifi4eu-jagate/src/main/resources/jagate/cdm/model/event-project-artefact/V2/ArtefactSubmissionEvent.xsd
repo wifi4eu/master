@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Cyril Brigant (European Commission) -->
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/projectartefact/submission-event/V2" xmlns="http://ec.europa.eu/rdg/efp/domain/event/projectartefact/submission-event/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:submission="http://ec.europa.eu/research/fp/model/project-artefact-submission/V2" xmlns:submissionRef="http://ec.europa.eu/research/fp/model/project-artefact-submission-ref/V2" xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:ns1="http://ec.europa.eu/research/fp/model/project-reportingperiod-submission/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" elementFormDefault="qualified" version="2.0.1">
+	<!-- =========================================
+		schemas imports	
+		=========================================== -->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-artefact-submission-ref/V2" schemaLocation="../../project-artefact-submission-ref/V2/ProjectArtefactSubmissionRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" schemaLocation="../../project-reportingperiod/V3/ProjectReportingPeriod.xsd"/>
+	<xs:complexType name="ProjectArtefactSubmissionEventType">
+		<xs:annotation>
+			<xs:documentation>Event triggered when a submssion of project artefacts happens.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="SubmissionRef" type="submissionRef:ProjectArtefactSubmissionRefType"/>
+					<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0"/>
+					<xs:element name="ProjectReportingSubmissionEvent">
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:enumeration value="SUBMITTED"/>
+								<xs:enumeration value="PAPER_DOC_RECEIVED"/>
+								<xs:enumeration value="PAID"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="EventDate" type="xs:dateTime" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>By default it is the current date</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation - 2012/08/06</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v 2.0.0: modifying the structure. Adding element ProjectArtefactSubmissionEvent</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v 2.0.1: modifying the structure.Remove element ProjectArtefactSubmissionEvent</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v 2.0.2: Add PAPER_DOC_RECEIVED to the enum /add optional EventDate 22/07/2013</xs:documentation>
+	</xs:annotation>
+</xs:schema>

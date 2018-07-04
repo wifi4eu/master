@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="PrefinancingWS"  
+	xmlns:prefin="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancing/v1"
+	xmlns:prefinGf="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancingJRCGF/v1"
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"    
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/prefinancing/v1"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/prefinancing/v1">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancing/v1" schemaLocation="../../../domain/prefinancing/v1/Prefinancing.xsd" />
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancingJRCGF/v1" schemaLocation="../../../domain/prefinancing/v1/PrefinancingGuaranteeFund.xsd" />
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+		
+			<!-- <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/prefinancing/v1/interfaces" schemaLocation="PrefinancingInterface.xsd" /> -->
+		</xs:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+	<wsdl:message name="CreatePrefinancingGuaranteeFundJRCRequest">
+		<wsdl:part element="prefinGf:CreatePrefinancingGuaranteeFundJRCRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CreatePrefinancingRequest">
+		<wsdl:part element="prefin:CreatePrefinancingRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CreatePrefinancingJRCRequest">
+		<wsdl:part element="prefin:CreatePrefinancingJRCRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CreatePrefinancingGuaranteeFundJRCResponse">
+		<wsdl:part element="prefinGf:CreatePrefinancingGuaranteeFundJRCResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="CreatePrefinancingResponse">
+		<wsdl:part element="prefin:CreatePrefinancingResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="CreatePrefinancingException">
+		<wsdl:part element="jagate:Exception" name="exception" />
+	</wsdl:message>	
+	
+	<wsdl:portType name="IPrefinancingService">
+		<wsdl:documentation>Creates the Prefinancing with the given parameters.</wsdl:documentation>
+		<wsdl:operation name="CreatePrefinancing">
+			<wsdl:documentation>For Coordinator prefin</wsdl:documentation>
+			<wsdl:input message="CreatePrefinancingRequest" />
+			<wsdl:output message="CreatePrefinancingResponse" />
+			<wsdl:fault name="CreatePrefinancingException" message="CreatePrefinancingException"/>
+		</wsdl:operation>
+		<wsdl:operation name="CreatePrefinancingJRC">
+			<wsdl:documentation>For JRC</wsdl:documentation>
+			<wsdl:input message="CreatePrefinancingJRCRequest" />
+			<wsdl:output message="CreatePrefinancingResponse" />
+			<wsdl:fault name="CreatePrefinancingException" message="CreatePrefinancingException"/>
+		</wsdl:operation>
+		<wsdl:operation name="CreatePrefinancingGuaranteeFundJRC">
+			<wsdl:documentation>GuaranteeFundFor JRC</wsdl:documentation>
+			<wsdl:input message="CreatePrefinancingGuaranteeFundJRCRequest" />
+			<wsdl:output message="CreatePrefinancingGuaranteeFundJRCResponse" />
+			<wsdl:fault name="CreatePrefinancingException" message="CreatePrefinancingException"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="IPrefinancingServiceBinding" type="IPrefinancingService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="CreatePrefinancing">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CreatePrefinancingException">
+				<soap:fault name="CreatePrefinancingException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="CreatePrefinancingJRC">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CreatePrefinancingException">
+				<soap:fault name="CreatePrefinancingException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="CreatePrefinancingGuaranteeFundJRC">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CreatePrefinancingException">
+				<soap:fault name="CreatePrefinancingException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="PrefinancingService">
+		<wsdl:port binding="IPrefinancingServiceBinding" name="PrefinancingServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/prefinancing/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

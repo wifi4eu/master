@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =====================================================================
+
+*   File Name       : ActivityCompleteEvent.xsd
+*
+*   Author          : Jacek MAZUR (RTD Architecture team)
+*   Creation date   : Mar 2016
+*   Description     : Schema of the event generated when launching activity has been completed by PPGMS.
+*   Status         	: Draft
+
+ ========================================================================= -->
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/activitycomplete-event/V1"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0"
+           xmlns:activity="http://ec.europa.eu/research/fp/model/activity/V1"
+           xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+           targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/activitycomplete-event/V1" elementFormDefault="qualified" version="1.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/activity/V1" schemaLocation="../../activity/V1/Activity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+
+	<xs:complexType name="ActivityCompleteEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when launching activity has been
+				completed by PPGMS.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="ProcessReferenceNumber" type="activity:ProcessReferenceNumberType"/>
+					<xs:element name="ProcessIssuer" type="activity:ProcessIssuerType"/>
+					<xs:element name="Activity" type="coderef:CodeRefType"/>
+					<xs:element name="ActivityParameters" type="activity:ActivityParametersType" minOccurs="0"/>
+					<xs:element name="Result" type="activity:ActivityResultType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20160308 - v1.0.0 - Creation</xs:documentation>
+	</xs:annotation>
+</xs:schema>

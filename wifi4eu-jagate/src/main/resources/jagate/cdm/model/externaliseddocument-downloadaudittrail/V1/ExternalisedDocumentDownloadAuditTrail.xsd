@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/externalised-document-download-audittrail/V1" xmlns:user="http://ec.europa.eu/research/fp/model/user/V1" xmlns:doc="http://ec.europa.eu/research/fp/model/document/V5" xmlns:docSec="http://ec.europa.eu/research/fp/model/externalised-document-security-policy/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/externalised-document-download-audittrail/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V5" schemaLocation="../../document/V5/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user/V1" schemaLocation="../../user/V1/User.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/externalised-document-security-policy/V1" schemaLocation="../../externaliseddocument-security-policy/V1/ExternalisedDocumentSecurityPolicy.xsd"/>
+	<xs:complexType name="DocumentAuditTrailType">
+		<xs:annotation>
+			<xs:documentation>It represents a download request for this document id
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Document" type="doc:DocumentType"/>
+			<xs:element name="User" type="user:UserType"/>
+			<xs:element name="DateTime" type="xs:dateTime"/>
+			<xs:element name="AccessRight" type="xs:boolean"/>
+			<xs:element name="Signature" type="xs:boolean"/>
+			<xs:element name="DocumentSecurityPolicy" type="docSec:DocumentSecurityPolicyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

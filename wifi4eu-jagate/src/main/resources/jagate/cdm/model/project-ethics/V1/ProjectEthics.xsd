@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/project-ethics/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/project-ethics/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:element name="EthicsRequirement" type="EthicsRequirementType">
+		<xs:annotation>
+			<xs:documentation>This is to define the ethics requirements</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="EthicsRequirementType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the project ethics requirements</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="EthicsIssueCategory" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>the code of the related ethics issue category. 
+Later on (pending business decision), this might be even an ethics issue subcategory</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EthicsRequirementRef" type="EthicsRequirementRefType">
+				<xs:annotation>
+					<xs:documentation>unique identifier of ethics requirement in the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RequirementDescription" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>description of the ethics requirement</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="EthicsRequirementRefType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation> 20140109 - v1.0.0 - SYGMA - creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

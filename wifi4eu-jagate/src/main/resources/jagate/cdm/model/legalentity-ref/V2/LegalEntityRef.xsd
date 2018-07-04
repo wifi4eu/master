@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/legalentity-ref/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" targetNamespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V2" elementFormDefault="qualified" version="2.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:simpleType name="LegalEntityIdType">
+		<xs:annotation>
+			<xs:documentation>Identity used by participant systems (PDM). TODO: add restriction pattern</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="LegalEntityFinancialIdType">
+		<xs:annotation>
+			<xs:documentation>Identity used by accounting systems (ABAC). TODO: add restriction pattern</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="DeprecatedPICType">
+		<xs:sequence>
+			<xs:element name="DeprecatedPIC" type="LegalEntityIdType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HierarchyDataType">
+		<xs:sequence>
+			<xs:element name="UTROPIC" type="LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the master UTRO PIC of the legal entity. The PIC in question will always be SUPENDED.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeprecatedPICList" type="DeprecatedPICType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This list contains ONLY the deprecated PICs that were mentioned in the request object.
+For having the complete list of deprecated PICs of a certain pic, use the LegalEntityHierarchy operation in the same service (LegalEntityDetails).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--xs:simpleType name="RequestDataQualityType">
+		<xs:annotation>
+			<xs:documentation>The possible values are: VALIDATED, MOST_RECENT
+- VALIDATED: The application returns the last validated version (regardless modification requests that are present)
+- MOST_RECENT: The application returns the last known version (validated or not)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="VALIDATED"/>
+			<xs:enumeration value="MOST_RECENT"/>
+		</xs:restriction>
+	</xs:simpleType-->
+	<xs:simpleType name="ResponseDataQualityType">
+		<xs:annotation>
+			<xs:documentation>The possible values are: NOT DECLARED, DECLARED, VALIDATED
+- NOT DECLARED The fact data is not existing (yet)
+- DECLARED The application returns the not validated version
+- VALIDATED: The application returns the last validated version (regardless modification requests that are present)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NOT_DECLARED"/>
+			<xs:enumeration value="DECLARED"/>
+			<xs:enumeration value="VALIDATED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WorkFlowStatusType">
+		<xs:annotation>
+			<xs:documentation>The possible values are: WAITING_FOR_VALIDATION, FLAGGED_FOR_VALIDATION, VALIDATION_ONGOING, VALIDATED, VALIDATED_WITH_PENDING_REQUESTS</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="WAITING_FOR_VALIDATION"/>
+			<xs:enumeration value="FLAGGED_FOR_VALIDATION"/>
+			<xs:enumeration value="VALIDATION_ONGOING"/>
+			<xs:enumeration value="VALIDATED"/>
+			<xs:enumeration value="VALIDATED_WITH_PENDING_REQUESTS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ValidityType">
+		<xs:annotation>
+			<xs:documentation>The possible values are: DECLARED, VALIDATED, SUSPENDED, SLEEPING</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DECLARED"/>
+			<xs:enumeration value="VALIDATED"/>
+			<xs:enumeration value="SUSPENDED"/>
+			<xs:enumeration value="SLEEPING"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FactType">
+		<xs:annotation>
+			<xs:documentation>Fact Types existing in PDM</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CORE"/>
+			<xs:enumeration value="REGISTRATION"/>
+			<xs:enumeration value="ADDRESS"/>
+			<xs:enumeration value="CONTACT"/>
+			<xs:enumeration value="BUSINESS_STATUS"/>
+			<xs:enumeration value="IBBA_EXEMPTION"/>
+			<xs:enumeration value="ICM"/>
+			<xs:enumeration value="INDIVIDUAL_DATA"/>
+			<xs:enumeration value="SME_DATA"/>
+			<xs:enumeration value="FP6_SMEVALIDATION"/>
+			<xs:enumeration value="FP7_SMEVALIDATION"/>
+			<xs:enumeration value="CERTIFICATION"/>
+			<xs:enumeration value="BALANCESHEET"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DocumentTypeType">
+		<xs:annotation>
+			<xs:documentation>The possible values are: TBD</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DOCTYPE1"/>
+			<xs:enumeration value="DOCTYPE2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--2.0.0 - 20120531 - Complete rewrite for PDM V5-->
+</xs:schema>

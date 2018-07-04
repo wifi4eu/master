@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns:tns="http://ec.europa.eu/rdg/efp/domain/event/call/v1_0" xmlns:evt="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:call="http://ec.europa.eu/rdg/efp/domain/call/v1_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/call/v1_0" elementFormDefault="qualified" version="1.2">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../eventbase/V0/EventBase.xsd"/>
+	<xs:complexType name="CallStatusUpdateEventType">
+		<xs:complexContent>
+			<xs:extension base="evt:EventBodyType">
+				<xs:sequence>
+					<xs:element name="CallUpdate" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="CallId" type="xs:string"/>
+								<xs:element name="OldStatus" type="xs:string"/>
+								<xs:element name="NewStatus" type="xs:string"/>
+								<xs:element name="StatusUpdateDate" type="xs:dateTime"/>
+								<xs:element name="SpecificProgramme" type="xs:string"/>
+								<xs:element name="CallThemes" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+								<xs:element name="CallDeepLink" type="xs:string" minOccurs="0"/>
+								<xs:element name="Category" type="xs:string" minOccurs="0"/>
+								<xs:element name="PublicationDate" type="xs:dateTime" minOccurs="0"/>
+								<xs:element name="DeadLine" type="xs:dateTime" minOccurs="0"/>
+								<xs:element name="BudgetInEuros" type="xs:decimal" minOccurs="0"/>
+								<xs:element name="SubjectArea" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+								<xs:element name="LatestInfo" type="xs:string" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.0 creation - NOTE: these events pertain to call diffusion, not the call themselves.</xs:documentation>
+		<xs:documentation>v1.1: 28 Apr 2011: added optional fields CallThemes,
+			CallDeepLink, CallType, PublicationDate, DeadLine, BudgetInEuros, SubjectArea for
+			email notification </xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v1.1 20110531 - Remove dependency to Call.xsd + rename file without the v number </xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v1.2 201210 - Add LatestInfo</xs:documentation>
+	</xs:annotation>
+</xs:schema>

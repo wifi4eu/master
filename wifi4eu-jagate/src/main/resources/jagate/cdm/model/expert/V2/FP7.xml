@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types>
+<EmployerOrganisationTypeTypes>
+	<EmployerOrganisationTypeType>BES</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>BCO</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>PUS</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>PNP</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>INO</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>HES</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>RPR</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>RPN</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>RPU</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>RIO</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>JRC</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>OTH</EmployerOrganisationTypeType>
+	<EmployerOrganisationTypeType>N/A</EmployerOrganisationTypeType>
+</EmployerOrganisationTypeTypes>
+<!--
+BES	Non-research Commercial sector including SMEs
+BCO	Consultancy firms
+PUS	Non-research Public Sector
+PNP	Non-research Private Non-profit
+INO	Non-research International Organisations
+HES	Higher Education Establishments
+RPR	Private / Commercial Research Centres
+RPN	Private Non-profit Research Centres
+RPU	Public Research Centres
+RIO	International Research Centres
+JRC	Joint Research Centre
+OTH	Others
+N/A	N/A
+ -->
+
+<CVType>
+	<PreviousActivitiesType>
+		<Activity>
+			<ActivityType>PE</ActivityType><!-- Proposal evaluator -->
+			<ActivityType>PRE</ActivityType><!-- Project review -->
+			<ActivityType>PCM</ActivityType><!-- Programme Committee member -->
+			<ActivityType>PCE</ActivityType><!-- Programme Committee expert -->
+			<ActivityType>KAE</ActivityType><!-- Key action advisory group expert -->
+			<ActivityType>CEM</ActivityType><!-- Membership ERAC, ERAB -->
+			<ActivityType>OFP</ActivityType><!-- Other activity / contract -->
+			<ActivityType>NCP</ActivityType><!-- National Contact Point -->
+			<ActivityType>HBR</ActivityType><!-- hasBeenReporter -->
+			<ActivityType>HBC</ActivityType><!-- hasBeenChairman -->
+			<ActivityType>HRE</ActivityType><!-- hasResearchExperience -->
+      		<ActivityType>HIO</ActivityType><!-- hasBeenIndependentObserver -->
+      		<ActivityType>HBER</ActivityType><!-- hasBeenEvaluatorReviewer -->
+		</Activity>
+	</PreviousActivitiesType>
+</CVType>
+</Types>

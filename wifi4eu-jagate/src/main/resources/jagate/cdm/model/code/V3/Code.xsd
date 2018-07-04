@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/code/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns="http://ec.europa.eu/research/fp/model/code/V3" elementFormDefault="qualified" version="3.2.1">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:element name="Code" type="CodeType"/>
+	<xs:complexType name="CodeType">
+		<xs:annotation>
+			<xs:documentation>Full set of code elements. To be used in code administration.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="coderef:CodeIdType">
+				<xs:annotation>
+					<xs:documentation>Unique universal identifier of the code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Abbreviation" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Short human readable descriptive value. Always in context of a particular code classification Type and Program.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Context" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Context of this reference code (e.g. Legal Framework Program, ...)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Synonyms" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Other possible identification of this reference data, possibly in external systems</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Synonym" type="SynonymType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ClassId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Code classification context, e.g. Country, Language, Currency, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Active" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Boolean determining of this code is active or not</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="InternationalDescriptionType">
+				<xs:annotation>
+					<xs:documentation>Short description of the code, in one or several languages</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DetailedDescription" type="InternationalDescriptionType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Complete description of this code, in one or several languages. 
+This field can contain a restricted set of HTML formatting code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SupplementaryProperties" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Any supplementary data concerning this code. The list of properties here MUST match the meta-model defined in the CodeClassDescriptionType corresponding to the ClassId of this code.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Property" type="SupplementaryPropertyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ValidityStartDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Validity Start Date of the code. Provided if request is for a specific validity date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValidityEndDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Validity End Date of the code. Provided if request is for a specific validity date. Is sysdate if code is latest version.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodeListType">
+		<xs:sequence>
+			<xs:element name="Code" type="CodeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaxonomyNodeType">
+		<xs:annotation>
+			<xs:documentation>One node of a taxomomy tree</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CodeRef" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>reference of the Code represented at this taxonomy  node</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Links" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Links pointing to children taxonomy nodes</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Link" type="TaxonomyLinkType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaxonomyLinkType">
+		<xs:annotation>
+			<xs:documentation>Link between one taxonomy node and another</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Rel" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Semantic of the link ("language of this country", "dialect of this language"...)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Child" type="TaxonomyNodeType">
+				<xs:annotation>
+					<xs:documentation>target child of the link</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodeClassSupplementaryPropertyDescriptionType">
+		<xs:sequence>
+			<xs:element name="PropertyName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Name of the property: Must match the PropertyName used in the code instances</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="InternationalDescriptionType">
+				<xs:annotation>
+					<xs:documentation>Short human description of this property, possibly in several languages</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Mandatory" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Boolean determining if this supplementary property is mandatory or not in all code instances having this class</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodeClassDescriptionType">
+		<xs:sequence>
+			<xs:element name="ClassId" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>name of this code type</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SupplementaryProperties">
+				<xs:annotation>
+					<xs:documentation>Supplementatry properties: most codes are sufficiently described with the meta-data specified in "code:CodeType", but some require richer description (e.g. "IsoCode3" for languages or "budget" for ActivityCode"...).
+When this is the case, </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Property" type="CodeClassSupplementaryPropertyDescriptionType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Contexts">
+				<xs:annotation>
+					<xs:documentation>Contexts possibly associated with this code type</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Context" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Description" type="InternationalDescriptionType">
+				<xs:annotation>
+					<xs:documentation>Short description of this code type, in one or several languages</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DetailedDescription" type="InternationalDescriptionType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Complete description of this code type, in one or several languages. 
+This field can contain a restricted set of HTML formatting code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContextDescriptionType">
+		<xs:sequence>
+			<xs:element name="Context" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>name of the context</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CodeClasses">
+				<xs:annotation>
+					<xs:documentation>Code types possibly associated with this context</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CodeClass" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>name of this code type</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Description" type="InternationalDescriptionType">
+				<xs:annotation>
+					<xs:documentation>Short description of the context, in one or several languages</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DetailedDescription" type="InternationalDescriptionType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Complete description of this context, in one or several languages. 
+This field can contain a restricted set of HTML formatting code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SupplementaryPropertyType">
+		<xs:sequence>
+			<xs:element name="PropertyName" type="xs:string"/>
+			<xs:element name="PropertyValue" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SynonymType">
+		<xs:sequence>
+			<xs:element name="SynonymName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Name of the synonym: IsoCode, ISBN, SocialSecurityId,...</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SynonymValue" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InternationalDescriptionType">
+		<xs:sequence>
+			<xs:element name="Text" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="languageCodeId"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v3.0.0: Updated CodeType(detailed description, synonyms, supplementary properties...), removed all specific codes: countryCodes, ECHierachies (they are still present in v2...), added TaxonomyNode, TaxonomyLink, CodeTypeDescription, replaced codeType by ClassId,...</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.1.0 (20120810) TaxonomyLinkType was mispelled TaxomomyLinkType</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.2.0 (20151013) add validity date to the CodeType (start and end)</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.2.1 (20160225) removing nillable=true which is causing jaxws problems</xs:documentation>
+	</xs:annotation>
+</xs:schema>

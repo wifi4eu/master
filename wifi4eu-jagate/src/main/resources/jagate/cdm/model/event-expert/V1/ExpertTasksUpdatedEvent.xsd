@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/expert/experttasksupdate-event/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:userref="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/expert/experttasksupdate-event/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	
+	<xs:complexType name="ExpertTasksUpdatedBaseEventType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Base event for all Expert Tasks changed events</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="Call" type="coderef:CodeRefType"/>
+					<xs:element name="EvaluationSession" type="xs:string"/>
+					<xs:element name="ProposalNumberList" type="ProposalNumberListType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="ExpertTasksScientificUpdatedEventType">
+		<xs:annotation>
+			<xs:documentation>End Of Scientific - sent when evaluation session has finished</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ExpertTasksUpdatedBaseEventType" />
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ExpertTasksEthicsUpdatedEventType">
+		<xs:annotation>
+			<xs:documentation>End Of Ethics - sent when all proposals marked for ethics have been evaluated and draft EC ranking has been submitted
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ExpertTasksUpdatedBaseEventType" />
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="ProposalNumberListType">
+		<xs:sequence>
+			<xs:element name="ProposalNumber" type="projectref:ProjectNumberType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20170331 - 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

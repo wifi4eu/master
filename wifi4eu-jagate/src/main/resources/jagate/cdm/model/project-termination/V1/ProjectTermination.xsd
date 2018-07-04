@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1"
+	xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3"
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+	xmlns:templateletter="http://ec.europa.eu/research/fp/model/template/V1"
+	xmlns:docref="http://ec.europa.eu/research/fp/model/document-ref/V3"
+	xmlns:specialclause="http://ec.europa.eu/research/fp/model/project-specialclause/V3"
+	xmlns="http://ec.europa.eu/research/fp/model/project-termination/V1"
+	targetNamespace="http://ec.europa.eu/research/fp/model/project-termination/V1"
+	elementFormDefault="qualified" version="1.0.1">
+
+	<xs:annotation>
+		<xs:documentation>This schema captures data related to project grant agreement amendments.
+			Note, all data elements in this schema are within the context of a particular project.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/template/V1" schemaLocation="../../template/V1/TemplateLetter.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="../../document-ref/V3/DocumentRef.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-specialclause/V3" schemaLocation="../../project-specialclause/V3/ProjectSpecialClause.xsd" />
+
+	<xs:element name="GrantTermination" type="GrantTerminationType" />
+
+	<xs:complexType name="GrantTerminationType">
+		<xs:annotation>
+			<xs:documentation>Termination of a signed grant agreement - detailed data.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Initiation" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Party initiated/requested the termination.
+						It takes values from ccm2 code type: 'GrantActionInitiation' and uses the following values: 
+						31077328: CI (Commission Initiated/Requested)
+						31077329: CR (Consortium Initiated/Requested)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProcessReference" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A process reference identified in the workflow</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationJustification" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is used on Consortium Initiated terminations and it is the reason of termination.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationDateOption" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The option for the effective date of GA termination.
+						It takes values from ccm2 code type: 'GrantDateOption' and uses the following values:
+						31069307 (FIXED_DATE),
+						31069313 (NOTIFICATION_DATE), i.e., one day after the termination is signed and the notification is sent to the other party.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GATReasons" type="GATReasonsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Grant Agreement Termination Reasons: structured reasons to terminate a GA; 
+						in H2020 is used only in Commission Initiated Termination
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GATLetters" type="GATLettersType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Data regarding header and footers for the letters used on GA termination.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ImproperlyTerminated" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is used on Consortium Initiated terminations
+						and it is true, if the officer considers the termination improper.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationReasonsAreGiven" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is used on Consortium Initiated termination as input to AoR letter and 
+						represent if the consortium provide or NOT reasons for termination.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminatedBeneficiariesInvolved" type="specialclause:AppliedToPartnerListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is used on Commission Initiated termination:
+						Terminated beneficiaries involved on the reason for termination.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NonAccededBeneficiariesInvolved" type="specialclause:AppliedToPartnerListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is used on Commission Initiated termination:
+						Non-acceded beneficiaries involved on the reason for termination.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AcceptedIssues" type="AcceptedIssuesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A list of issues for which the Service accepted
+						the explanation provided by the Consortium on a Commission Initiated termination.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FellowshipEndDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is used for MSCA fellowships and indicates the date the fellow/researcher stopped working. 
+						This date might be different that the GA termination date, because the termination date is communicated always in the future.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FellowshipEndDateOption" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The option for the Fellowship End Date.
+						It takes values from ccm2 code type: 'GrantDateOption' and uses the following values:
+						31069307 (FIXED_DATE),
+						31069313 (NOTIFICATION_DATE), i.e., one day after the termination is signed and the notification is sent to the other party.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GATReasonsType">
+		<xs:annotation>
+			<xs:documentation />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GATReason" type="specialclause:SpecialClauseType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GATLetterType">
+		<xs:sequence>
+			<xs:element name="LetterCategory" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>It represent the category of the letter used for GA termination.
+						It takes values from ccm2 code type: 'GrantGATLetterCategory'.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TemplateLetterData" type="templateletter:TemplateLetterDataType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GATLettersType">
+		<xs:sequence>
+			<xs:element name="GATLetter" type="GATLetterType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AcceptedIssueType">
+		<xs:sequence>
+			<xs:element name="Order" type="xs:int" minOccurs="0" />
+			<xs:element name="IssueTitle" type="xs:string" minOccurs="0" />
+			<xs:element name="IssueDescription" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AcceptedIssuesType">
+		<xs:sequence>
+			<xs:element name="AcceptedIssue" type="AcceptedIssueType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.0.1 - 20170224 Changes by Sygma: added FellowshipEndDateOption and FellowshipEndDate in the GrantTerminationType</xs:documentation>
+		<xs:documentation>v1.0.0 - 20160331 Changes by Sygma: File created.</xs:documentation>
+	</xs:annotation>
+</xs:schema>

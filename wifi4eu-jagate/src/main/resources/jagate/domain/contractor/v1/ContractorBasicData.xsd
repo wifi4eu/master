@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+							xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v1" 
+							targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v1" 
+							elementFormDefault="qualified" 
+							attributeFormDefault="unqualified">
+
+
+	<xs:element name="ContractorPic" type="xs:int">
+		<xs:annotation>
+			<xs:documentation>CDM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="ContractorIban" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>The Bank Account IBAN for the contractor.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+</xs:schema>

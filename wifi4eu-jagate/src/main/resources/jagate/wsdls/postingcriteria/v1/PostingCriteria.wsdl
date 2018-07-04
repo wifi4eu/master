@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        name="PostingCriteriaWSV1"
+        xmlns:postingcriteria="http://ec.europa.eu/rdg/jagate/ws/postingcriteria/v1/interfaces"
+        targetNamespace="http://ec.europa.eu/rdg/jagate/ws/postingcriteria/v1"
+        xmlns="http://ec.europa.eu/rdg/jagate/ws/postingcriteria/v1">
+
+    <!-- Types -->
+    <wsdl:types>
+        <xs:schema>
+            <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/postingcriteria/v1/interfaces" schemaLocation="PostingCriteria_ITF.xsd" />
+        </xs:schema>
+    </wsdl:types>
+
+    <!-- Messages -->
+    <wsdl:message name="GetPostingCriteriaByBudgetLineRequest">
+        <wsdl:part element="postingcriteria:GetPostingCriteriaByBudgetLineRequest" name="request" />
+    </wsdl:message>
+
+    <wsdl:message name="GetPostingCriteriaByBudgetLineResponse">
+        <wsdl:part element="postingcriteria:GetPostingCriteriaByBudgetLineResponse" name="response" />
+    </wsdl:message>
+    
+    <wsdl:message name="GetPostingCriteriaByCriteriaTypeCodeRequest">
+    	<wsdl:part element="postingcriteria:GetPostingCriteriaByCriteriaTypeCodeRequest" name="request" />
+    </wsdl:message>
+    
+    <wsdl:message name="GetPostingCriteriaByCriteriaTypeCodeResponse">
+    	<wsdl:part element="postingcriteria:GetPostingCriteriaByCriteriaTypeCodeResponse" name="response" />
+    </wsdl:message>
+    
+    <wsdl:message name="GetPostingCriteriaByCl2PositionRequest">
+    	<wsdl:part element="postingcriteria:GetPostingCriteriaByCl2PositionRequest" name="request" />
+    </wsdl:message>
+    
+    <wsdl:message name="GetPostingCriteriaByCl2PositionResponse">
+    	<wsdl:part element="postingcriteria:GetPostingCriteriaByCl2PositionResponse" name="response" />
+    </wsdl:message>
+
+    <wsdl:message name="PostingCriteriaException">
+        <wsdl:part element="postingcriteria:PostingCriteriaException" name="exception" />
+    </wsdl:message>
+
+    <wsdl:message name="checkServiceHealth">
+        <wsdl:part name="request" element="postingcriteria:checkServiceHealth" />
+    </wsdl:message>
+    <wsdl:message name="checkServiceHealthResponse">
+        <wsdl:part name="response" element="postingcriteria:checkServiceHealthResponse" />
+    </wsdl:message>
+
+    <wsdl:portType name="IPostingCriteriaService">
+        <wsdl:documentation>Provides services for reading Posting Criteria.</wsdl:documentation>
+        <wsdl:operation name="getPostingCriteriaByBudgetLine">
+            <wsdl:documentation>Gets the list of Posting Criteria for a given Budget Line</wsdl:documentation>
+            <wsdl:input message="GetPostingCriteriaByBudgetLineRequest" />
+            <wsdl:output message="GetPostingCriteriaByBudgetLineResponse" />
+            <wsdl:fault name="PostingCriteriaException" message="PostingCriteriaException"/>
+        </wsdl:operation>
+        <wsdl:operation name="getPostingCriteriaByCriteriaTypeCode">
+        	<wsdl:documentation>Gets the list of Posting Criteria for a given Posting Criteria type code</wsdl:documentation>
+        	<wsdl:input message="GetPostingCriteriaByCriteriaTypeCodeRequest" />
+        	<wsdl:output message="GetPostingCriteriaByCriteriaTypeCodeResponse" />
+        	<wsdl:fault name="PostingCriteriaException" message="PostingCriteriaException" />
+        </wsdl:operation>
+        <wsdl:operation name="getPostingCriteriaByCl2Position">
+        	<wsdl:documentation>Gets the list of Posting Criteria for a given CL2 Position</wsdl:documentation>
+        	<wsdl:input message="GetPostingCriteriaByCl2PositionRequest" />
+        	<wsdl:output message="GetPostingCriteriaByCl2PositionResponse" />
+        	<wsdl:fault name="PostingCriteriaException" message="PostingCriteriaException" />
+        </wsdl:operation>
+        <wsdl:operation name="checkServiceHealth">
+            <wsdl:input message="checkServiceHealth" />
+            <wsdl:output message="checkServiceHealthResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- Binding -->
+    <wsdl:binding name="IPostingCriteriaServiceBinding" type="IPostingCriteriaService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getPostingCriteriaByBudgetLine">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="PostingCriteriaException">
+                <soap:fault name="PostingCriteriaException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPostingCriteriaByCriteriaTypeCode">
+        	<wsdl:input>
+        		<soap:body use="literal" />
+        	</wsdl:input>
+        	<wsdl:output>
+        		<soap:body use="literal"/>
+        	</wsdl:output>
+        	<wsdl:fault name="PostingCriteriaException">
+        		<soap:fault name="PostingCriteriaException" use="literal" />
+        	</wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPostingCriteriaByCl2Position">
+        	<wsdl:input>
+        		<soap:body use="literal"/>
+        	</wsdl:input>
+        	<wsdl:output>
+        		<soap:body use="literal"/>
+        	</wsdl:output>
+        	<wsdl:fault name="PostingCriteriaException">
+        		<soap:fault name="PostingCriteriaException" use="literal" />
+        	</wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="checkServiceHealth">
+            <wsdl:documentation>Diagnostic operation to monitor service health</wsdl:documentation>
+            <soap:operation soapAction="" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <!-- Service definition -->
+    <wsdl:service name="PostingCriteriaServiceV1">
+        <wsdl:port binding="IPostingCriteriaServiceBinding" name="PostingCriteriaServiceBinding">
+            <soap:address location="http://ec.europa.eu/rdg/jagate/ws/postingcriteria/v1"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

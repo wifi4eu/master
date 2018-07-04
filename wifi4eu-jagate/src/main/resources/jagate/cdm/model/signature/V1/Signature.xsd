@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns="http://ec.europa.eu/research/fp/model/signature/V1" xmlns:user="http://ec.europa.eu/research/fp/model/user/V1" 
+xmlns:leref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" 
+targetNamespace="http://ec.europa.eu/research/fp/model/signature/V1" elementFormDefault="qualified" version="1.2.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user/V1" schemaLocation="../../user/V1/User.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:element name="Signature" type="SignatureType"/>
+	<xs:complexType name="SignatureType">
+		<xs:sequence>
+			<xs:element name="Signatory" type="SignatoryType">
+				<xs:annotation>
+					<xs:documentation>If Signatory is Partner, PIC is mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PlaceHolderPIC" type="leref:LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>PlaceHolderPIC is the original PIC that is used to put/construct the placeholdername</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PIC" type="leref:LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is the actual PIC that has electronically signed (it might be different from PlaceHolderPIC in case of UTRO)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TimeStamp" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>When it has been electronically signed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="User" type="user:UserType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The user that has electronically signed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SignatoryType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Service"/>
+			<xs:enumeration value="Partner"/>
+			<xs:enumeration value="Coordinator"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>v1.2.0 - SYGMA - added enumeration Coordinator in SignatoryType</xs:documentation>
+		<xs:documentation>v1.1.0 - SYGMA - added PlaceHolderPIC</xs:documentation>
+		<xs:documentation>v1.0.0 - SYGMA - new xsd added to support H2020 electronic signature</xs:documentation>
+	</xs:annotation>
+</xs:schema>

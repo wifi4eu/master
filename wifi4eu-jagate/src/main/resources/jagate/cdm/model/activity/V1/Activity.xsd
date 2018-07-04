@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =====================================================================
+
+*   File Name       : Activity.xsd
+*
+*   Author          : Jacek MAZUR (RTD Architecture team)
+*   Creation date   : Mar 2016
+*   Description     : Schema of the Activity data. Those types provide availability to interact with Grant Management Services processes for partners.
+            		  Each process (GAP, Amendments, Periodic Reports,…) is managed by activities. Each activity is responsible for 
+					  small part of the process business logic, for example one of them prepares task to sign Grant Agreement during GAP.
+*   Status         	: Draft
+
+ ========================================================================= -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/activity/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/activity/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	
+	<xs:element name="ActivityParameters" type="ActivityParametersType"/>
+	<xs:element name="ProcessReferenceNumber" type="ProcessReferenceNumberType"/>
+	<xs:element name="ProcessIssuer" type="ProcessIssuerType"/>
+	<xs:element name="ActivityResult" type="ActivityResultType"/>
+	
+	<xs:complexType name="ActivityParametersType">
+		<xs:sequence>
+			<xs:element name="DocumentID" type="xs:string" minOccurs="0"/>
+			<xs:element name="ExerciseID" type="xs:long" minOccurs="0"/>
+			<xs:element name="Partial" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProcessReferenceNumberType">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProcessIssuerType">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActivityResultType">
+		<xs:sequence>
+			<xs:element name="State" type="coderef:CodeRefType"/>
+			<xs:element name="Description" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20160308 - v1.0.0 - Creation</xs:documentation>
+	</xs:annotation>
+</xs:schema>

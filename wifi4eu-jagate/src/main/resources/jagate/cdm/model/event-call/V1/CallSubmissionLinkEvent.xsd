@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/call/callsubmissionlink-event/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:call="http://ec.europa.eu/research/fp/model/call/V3" xmlns:code="http://ec.europa.eu/research/fp/model/code-ref/V3" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/call/callsubmissionlink-event/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:complexType name="CallSubmissionLinkEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when one or more submission link(s) is (are) added/modified/deleted for a call</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="CallID" type="code:CodeRefType"/>
+					<xs:element name="System" type="base:SystemsType">
+						<xs:annotation>
+							<xs:documentation>Either 'SEP' or 'EPSS'</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SubmissionLink" maxOccurs="unbounded" type="SubmissionLinkType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubmissionLinkType">
+		<xs:annotation>
+			<xs:documentation>This describes a submission link</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Criterion" type="CriterionType"/>
+			<xs:element name="Stage" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Either 'TEST' or 'PROD', default = 'PROD'</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="URI" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Actual URL to the SEP/EPSS wizard, including step, call ID, criterion (e.g., FS), etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OpenDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Submission link open date/time</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CloseDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Submission link close date/time</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CriterionType">
+		<xs:annotation>
+			<xs:documentation>This describes a criterion for a submission link, like a sub-funding scheme, activity code, etc.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The type of criterion 'SubFundingScheme', 'ActivityTopicLevel1', 'ScientificArea', etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Code" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The code of the criterion 'CP', 'CP-FP', etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The description of the criterion '01_Collaborative project (generic)', '01_Small or medium-scale focused research project', etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

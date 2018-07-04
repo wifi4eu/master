@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by XMLSpy 2008 Enterprise Ed., Installed for 5 users (European Commission DG Regio) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by EC (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/call-topic/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:code="http://ec.europa.eu/research/fp/model/code/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/call-topic/V1" elementFormDefault="qualified" version="1.0.4">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture all data related to a 'Topic' prepared and published by a research DG.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code/V3" schemaLocation="../../code/V3/Code.xsd"/>
+	<xs:element name="Topic" type="TopicType"/>
+	<xs:complexType name="TopicType">
+		<xs:complexContent>
+			<xs:extension base="code:CodeType">
+				<xs:sequence>
+					<xs:element name="ResponsibleUnit" type="coderef:CodeRefType" minOccurs="0"/>
+					<xs:element name="Coordinator" type="xs:string" minOccurs="0"/>
+					<xs:element name="TopicProgramLinks" type="TopicProgramLinkListType" minOccurs="0"/>
+					<xs:element name="TopicAttributes" type="TopicAttributeListType" minOccurs="0"/>
+					<xs:element name="TopicTexts" type="TopicTextListType" minOccurs="0"/>
+					<xs:element name="TopicTags" type="TopicTagListType" minOccurs="0"/>
+					<xs:element name="TopicKeywords" type="TopicKeywordListType" minOccurs="0"/>
+					<xs:element name="WpPartYear" type="coderef:CodeRefType" minOccurs="0"/>
+					<xs:element name="AmendmentPublicationDate" type="xs:date" minOccurs="0"/>
+					<xs:element name="EligibleCountryExceptions" type="EligibleCountryExceptionListType" minOccurs="0"/>
+					<xs:element name="CoordinatorBackup" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EligibleCountryExceptionListType">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Add the possibility to add/remove a specific country from the standard eligible country list for a specific topic/ToA combination Set in CPS, used in SEP/SyGMA</xs:documentation>
+			</xs:annotation>
+			<xs:element name="EligibleCountryException" type="EligibleCountryExceptionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicListType">
+		<xs:sequence>
+			<xs:element name="Topic" type="TopicType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicAttributeType">
+		<xs:sequence>
+			<xs:element name="Code" type="xs:string"/>
+			<xs:element name="Value" type="xs:string"/>
+			<xs:element name="TopicAttributeToas" type="TopicAttributeToaListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicAttributeListType">
+		<xs:sequence>
+			<xs:element name="TopicAttribute" type="TopicAttributeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicAttributeToaListType">
+		<xs:sequence>
+			<xs:element name="TopicAttributeToa" type="TopicAttributeToaType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicAttributeToaType">
+		<xs:sequence>
+			<xs:element name="TypeOfAction" type="coderef:CodeRefType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicTextType">
+		<xs:sequence>
+			<xs:element name="Kind" type="xs:string"/>
+			<xs:element name="Text" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicTextListType">
+		<xs:sequence>
+			<xs:element name="TopicText" type="TopicTextType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicTagType">
+		<xs:sequence>
+			<xs:element name="Tag" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicTagListType">
+		<xs:sequence>
+			<xs:element name="TopicTag" type="TopicTagType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicKeywordType">
+		<xs:sequence>
+			<xs:element name="Keyword" type="coderef:CodeRefType"/>
+			<xs:element name="Path" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EligibleCountryExceptionType">
+		<xs:sequence>
+			<xs:element name="Country" type="coderef:CodeRefType"/>
+			<xs:element name="TypeOfAction" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:element name="Include" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicKeywordListType">
+		<xs:sequence>
+			<xs:element name="TopicKeyword" type="TopicKeywordType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicProgramLinkType">
+		<xs:sequence>
+			<xs:element name="ProgramLink" type="coderef:CodeRefType"/>
+			<xs:element name="Principal" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicProgramLinkListType">
+		<xs:sequence>
+			<xs:element name="TopicProgramLink" type="TopicProgramLinkType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.0.4 - 20161006 - add eligible country exception list and coordinator backup</xs:documentation>
+		<xs:documentation>v1.0.3 - 20160720 - add a flag to indicate whish SPLink is the main one</xs:documentation>
+		<xs:documentation>v1.0.2 - 20160325 - add publication amendment date</xs:documentation>
+		<xs:documentation>v1.0.1 - 20150925 - Added WpPartYear to TopicType</xs:documentation>
+		<xs:documentation>v1.0.0 - 20140808 - Initial version</xs:documentation>
+	</xs:annotation>
+</xs:schema>

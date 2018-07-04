@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		   xmlns:commitment="http://ec.europa.eu/rdg/jagate/ws/domain/commitment/v2"
+		   xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+		   xmlns:contractor="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v2"
+		   xmlns:invoice="http://ec.europa.eu/research/fp/model/invoice/V1"
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/invoicedetails/v1/interfaces"
+           xmlns:jagref="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1"
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/invoicedetails/v1/interfaces"
+		   elementFormDefault="qualified">
+		   
+		   <!-- xmlns:invoice="http://ec.europa.eu/rdg/jagate/ws/domain/invoiceBasicData/v1"-->
+		   
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1" schemaLocation="../../../domain/reference/v1/ReferenceData.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitment/v2" schemaLocation="../../../domain/commitment/v2/Commitment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/invoice/V1" schemaLocation="../../../cdm/model/invoice/V1/Invoice.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v2" schemaLocation="../../../domain/contractor/v2/ContractorBasicData.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/invoiceBasicData/v1" schemaLocation="../../../domain/invoice/v1/InvoiceBasicData.xsd"/>
+		   
+	<xs:element name="GetInvoiceDetailsRequest" type="GetInvoiceDetailsRequestType"/>
+	<xs:element name="GetInvoiceDetailsResponse" type="GetInvoiceDetailsResponseType"/>
+	
+	<xs:element name="InvoiceDetailsException" type="jagate:JAgateException"/>
+	
+	<xs:complexType name="GetInvoiceDetailsRequestType">
+		<xs:sequence>
+			<xs:element name="invoiceId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GetInvoiceDetailsResponseType">
+		<xs:sequence>
+			<xs:element name="invoice" type="invoice:InvoiceType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

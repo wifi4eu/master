@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+   		   xmlns:comm="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentlevel1/v1"
+   		   xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v1"
+   		   xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" 
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/commitmentlevel1/v1/interfaces" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/commitmentlevel1/v1/interfaces"
+		   elementFormDefault="qualified">
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v1" schemaLocation="../../../domain/project/v1/ProjectBasicData.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" schemaLocation="../../../domain/visa/v2/Visa.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentlevel1/v1" schemaLocation="../../../domain/commitmentlevel1/v1/CommitmentLevel1.xsd" />
+
+	<!-- Elements -->
+	<xs:element name="CreateCommitmentLevel1Request" type="CreateCommitmentLevel1RequestType" />
+	<xs:element name="CreateCommitmentLevel1Response" type="CreateCommitmentLevel1ResponseType" />
+	<xs:element name="UpdateCommitmentLevel1Request" type="UpdateCommitmentLevel1RequestType" />
+	<xs:element name="UpdateCommitmentLevel1Response" type="UpdateCommitmentLevel1ResponseType" />
+
+	<xs:complexType name="CreateCommitmentLevel1RequestType">
+		<xs:sequence>
+			<xs:element name="content" type="CreateCommitmentLevel1Type" />
+		</xs:sequence>		
+	</xs:complexType>
+	
+	<xs:complexType name="UpdateCommitmentLevel1RequestType">
+		<xs:sequence>
+			<xs:element name="content" type="UpdateCommitmentLevel1Type" />
+		</xs:sequence>		
+	</xs:complexType>
+	
+	<xs:complexType name="CreateCommitmentLevel1ResponseType">
+		<xs:sequence>
+			<xs:element name="content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UpdateCommitmentLevel1ResponseType">
+		<xs:sequence>
+			<xs:element name="content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CreateCommitmentLevel1Type">		
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataCL1Type" />
+			<xs:element name="CommitmentLevel1Request" type="comm:CommitmentLevel1RequestType"/>
+			<xs:element name="AresDocumentList" type="jagate:AresDocumentList"/>
+			<xs:element name="Visa" type="visa:SingleTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UpdateCommitmentLevel1Type">		
+		<xs:sequence>
+			<xs:element name="LocObjForeignId" type="xs:string" />
+			<xs:element name="ProjectData" type="project:ProjectDataCL1Type" />
+			<xs:element name="CommitmentLevel1Request" type="comm:CommitmentLevel1RequestType"/>
+			<xs:element name="Visa" type="visa:SingleTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

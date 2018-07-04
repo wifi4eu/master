@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:formmetadata="http://ec.europa.eu/research/fp/rtd/model/formmetadata/V1" xmlns:ns1="http://ec.europa.eu/rdg/efp/domain/event/project/form/formstatusupdate-event/V1" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/project/form/formstatusupdate-event/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/rtd/model/formmetadata/V1" schemaLocation="../../formmetadata/V1/FormMetadata.xsd"/>
+	<xs:complexType name="FormStatusUpdateEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when the status of a project form changes</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="Project" type="projectref:ProjectRefType"/>
+					<xs:element name="FormList">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="form" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="FormId" type="xs:string"/>
+											<xs:element name="FormType" type="formmetadata:FormTypeType"/>
+											<xs:element name="Status" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>Acceptable values: DRAFT, VALIDATED, SUBMITTED, ACCEPTED, REJECTED. NOT_INSTANTIATED cannot exist since FormId doesn't exist yet.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="StatusUpdateDate" type="xs:date">
+												<xs:annotation>
+													<xs:documentation>The date when the status was updated.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="eventOriginator" type="base:ECUserIdType" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>ECAS ID of the person that updated the status. TODO: remove?</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

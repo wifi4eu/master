@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns="http://ec.europa.eu/research/fp/model/certificate/V1" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" 
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" 
+	xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" 
+	xmlns:document="http://ec.europa.eu/research/fp/model/document/V2" 
+	targetNamespace="http://ec.europa.eu/research/fp/model/certificate/V1" 
+	elementFormDefault="qualified" 
+	version="1.0.1">
+	
+	<xs:annotation>
+		<xs:documentation>
+		This schema intends to capture all data related to certificates
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V2" schemaLocation="../../document/V2/Document.xsd"/>
+	
+	<xs:element name="Certificate" type="CertificateType"/>
+	<xs:complexType name="CertificateType">
+		<xs:sequence>
+			<xs:element name="AuditorName" type="xs:string"/>
+			<xs:element name="Cost" type="base:AmountType"/>
+			<xs:element name="Document" type="document:DocumentType"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID"/>
+	</xs:complexType>
+	<xs:element name="CertificateOnMethodology" type="CertificateOnMethodologyType"/>
+	<xs:complexType name="CertificateOnMethodologyType">
+		<xs:sequence>
+			<xs:element name="TypeCode" type="coderef:CodeRefType"/>
+			<xs:element name="StartDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="RequestDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="Cost" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="ChargedInProject" type="projectref:ProjectIdType" minOccurs="0"/>
+			<xs:element name="AuditorName" type="xs:string" minOccurs="0"/>
+			<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

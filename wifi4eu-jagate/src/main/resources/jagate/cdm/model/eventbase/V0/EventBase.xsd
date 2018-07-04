@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0"
+	xmlns:tns="http://ec.europa.eu/rdg/efp/domain/event/v1_0"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" version="1.0">
+	<xs:simpleType name="EventIdType">
+		<xs:restriction base="xs:string">
+			<!--  
+				<xs:pattern value="([a..zA..Z0..9])*"/>
+			-->
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="TopicExpressionType">
+		<xs:restriction base="xs:string">
+			<!--  
+				<xs:pattern value="([a..zA..Z0..9]*[.])*"/>
+			-->
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="AgentIdType">
+		<xs:restriction base="xs:string">
+			<!--  
+				<xs:pattern value="([a..zA..Z0..9])*"/>
+			-->
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="PriorityType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LOW" />
+			<xs:enumeration value="NORMAL" />
+			<xs:enumeration value="HIGH" />
+			<xs:enumeration value="URGENT" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="SeverityType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DEBUG" />
+			<xs:enumeration value="INFO" />
+			<xs:enumeration value="WARNING" />
+			<xs:enumeration value="ERROR" />
+		</xs:restriction>
+	</xs:simpleType>
+
+
+
+	<xs:complexType name="EventBodyType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>
+				Base and abstract type of all event bodies. Subtypes of
+				this defines the kind of event that is being submitted.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+
+
+	<xs:element name="Event" type="tns:EventType" />
+
+	<xs:complexType name="EventType">
+		<xs:annotation>
+			<xs:documentation>
+				Base and abstract type of all event types
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="tns:EventIdType">
+				<xs:annotation>
+					<xs:documentation>
+						Id is the identification of a particular event
+						instance emitted by an emitting agent: each time
+						an emitting agent sends an event, it must assign
+						an unique id to it. When this is respected, the
+						pair (Id, PublisherId) unambiguously identifies
+						an event instance.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PublisherId" type="tns:AgentIdType">
+				<xs:annotation>
+					<xs:documentation>
+						Identification of the agent who emitted the
+						event. The value used here is the agent id
+						assigned to the emitting agent during its
+						registration to the EDA.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PublishTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>
+						Date when this event was emitted by the emitting
+						agent.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Topic" type="tns:TopicExpressionType">
+				<xs:annotation>
+					<xs:documentation>
+						The topic describes the category of this event.
+						The value used here must be one of the official
+						EDA topics.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						A free human description of this event.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Priority" type="tns:PriorityType"
+				minOccurs="0" default="NORMAL">
+				<xs:annotation>
+					<xs:documentation>
+						Priority of the event.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Severity" type="tns:SeverityType"
+				minOccurs="0" default="INFO">
+				<xs:annotation>
+					<xs:documentation>
+						Severity of the event.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Probe" type="xs:boolean" minOccurs="0"
+				default="false">
+				<xs:annotation>
+					<xs:documentation>
+						This parameter is for operations only.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EventBody" type="tns:EventBodyType"
+				minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						The event body contains this actual business
+						content of the event.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

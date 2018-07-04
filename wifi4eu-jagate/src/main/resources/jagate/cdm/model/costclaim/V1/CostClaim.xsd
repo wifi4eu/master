@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/costclaim/V1" xmlns="http://ec.europa.eu/research/fp/model/costclaim/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:certificate="http://ec.europa.eu/research/fp/model/certificate/V1" xmlns:core="http://ec.europa.eu/research/fp/model/costclaim-core/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:partner="http://ec.europa.eu/research/fp/model/project-partner/V2" xmlns:costbreakdown="http://ec.europa.eu/research/fp/model/project-costbreakdown/V2" xmlns:document="http://ec.europa.eu/research/fp/model/document/V2" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" elementFormDefault="qualified" version="1.0.1">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture all data related to costclaim reporting.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim-core/V1" schemaLocation="../../costclaim-core/V1/CostClaimCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V2" schemaLocation="../../project-partner/V2/ProjectPartner.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V2" schemaLocation="../../project-costbreakdown/V2/ProjectCostBreakdown.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V2" schemaLocation="../../document/V2/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/certificate/V1" schemaLocation="../../certificate/V1/Certificate.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:element name="CostClaim" type="CostClaimType"/>
+	<xs:complexType name="CostClaimType">
+		<xs:sequence>
+			<xs:element name="ProjectId" type="projectref:ProjectIdType"/>
+			<xs:element name="PeriodNumber" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>it is the period number when formC is submitted</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Date of submission or receipt?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TimeToPayClock" type="base:ClockType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Clock keeping track of time spent on this claim.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PartnerCostClaim" type="PartnerCostClaimType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Documents" type="CostClaimDocumentsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PartnerCostClaimType">
+		<xs:sequence>
+			<xs:group ref="partner:PartnerCoreGroup" maxOccurs="unbounded"/>
+			<xs:element name="FormC" type="FormCType"/>
+			<xs:element name="AdjustmentFormC" type="FormCType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="FinancialStatementCertificate" type="certificate:CertificateType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CostClaimDocumentsType">
+		<xs:sequence>
+			<xs:element name="SelfDeclarationCoordinatorDocument" type="document:DocumentType"/>
+			<xs:element name="PublishableSummaryDocument" type="document:DocumentType"/>
+			<xs:element name="ProjectProgressDocument" type="document:DocumentType"/>
+			<xs:element name="ProjectResourcesDocument" type="document:DocumentType"/>
+			<xs:element name="OtherDocument" type="document:DocumentType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="FormC" type="FormCType"/>
+	<xs:complexType name="FormCType">
+		<xs:sequence>
+			<xs:element name="PeriodNumber" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>it is the period number for which the costs apply to. For an adjustmentFormC it is the adjusted period.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="core:StatusType"/>
+			<xs:element name="Interest" type="core:InterestType"/>
+			<xs:element name="TotalReceipts" type="core:ReceiptsType">
+				<xs:annotation>
+					<xs:documentation>This is FP7 only (was named receipts).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MethodologyCertificate" type="MethodologyCertificateType"/>
+			<xs:element name="Activities" type="costbreakdown:CostBreakDownType" minOccurs="0"/>
+			<xs:element name="RequestedECContribution" type="base:AmountType"/>
+			<xs:element name="FinancialStatementCertificate" type="certificate:CertificateType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Refers to FinancialStatementCertificate on level of PartnerCostClaim</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MethodologyCertificateType">
+		<xs:sequence>
+			<xs:element name="HasCertificateOnMethodology" type="xs:boolean"/>
+			<xs:element name="MethodologyCertificate" type="certificate:CertificateOnMethodologyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20100607 - v1.0.1</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+Move the namespace to project</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>+ Bump Base, Certificate, Project, CostClaimCore,LegalEntityRef</xs:documentation>
+	</xs:annotation>
+</xs:schema>

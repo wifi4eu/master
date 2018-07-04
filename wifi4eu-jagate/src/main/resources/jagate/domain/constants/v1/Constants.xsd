@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/constants/v1" targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/constants/v1"
+	version="1.0.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.1">
+
+	<xs:simpleType name="ERequestType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CREATE_AUDIT" />
+			<xs:enumeration value="UPDATE_AUDIT" />
+			<xs:enumeration value="DELETE_AUDIT" />
+			<xs:enumeration value="CREATE_CONTRACT" />
+			<xs:enumeration value="CREATE_PREFINANCING_DOC" />
+			<xs:enumeration value="CREATE_PAYMENT_REQUEST" />
+			<xs:enumeration value="CREATE_AL_PAYMENT_REQUEST" />
+			<xs:enumeration value="CREATE_LE" />
+			<xs:enumeration value="CREATE_BA" />
+			<xs:enumeration value="CREATE_LEBA_LINK" />
+			<xs:enumeration value="CREATE_RO" />
+			<xs:enumeration value="CREATE_VISA" />
+			<xs:enumeration value="CREATE_INVOICE_COST_CLAIM" />
+			<xs:enumeration value="CREATE_COMMITMENT" />
+			<xs:enumeration value="CREATE_COMMITMENT_LEVEL1" />
+			<xs:enumeration value="SYGMA_CONTRACT" />
+			<xs:enumeration value="CREATE_AMENDMENT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="JagateClient">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SYGMA" />
+			<xs:enumeration value="COMPASS" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ERequestClient">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PHOENIX" />
+			<xs:enumeration value="ARPS" />
+			<xs:enumeration value="IFLOW" />
+			<xs:enumeration value="FP7_PREFINANCEMENT_DOC" />
+			<xs:enumeration value="FP7_FIN_PAY_COMM" />
+			<xs:enumeration value="FP7_TERM_PAY_COORD" />
+			<xs:enumeration value="CIP_PREFINANCEMENT_DOC" />
+			<xs:enumeration value="FP7_PREFINANCEMENT_PAYMENT" />
+			<xs:enumeration value="CIP_PREFINANCEMENT_PAYMENT" />
+			<xs:enumeration value="CREATE_AL_PAYMENT_REQUEST" />
+			<xs:enumeration value="VISA" />
+			<xs:enumeration value="STATUS_CHECK" />
+			<xs:enumeration value="CREATE_LE_REQUEST" />
+			<xs:enumeration value="CREATE_BA_REQUEST" />
+			<xs:enumeration value="CREATE_LEBA_LINK_REQUEST" />
+			<xs:enumeration value="FP7_INVOICE_COST_CLAIM_REQUEST" />
+			<xs:enumeration value="IFLOW_CREATE_COMMITMENT" />
+			<xs:enumeration value="PHOENIX_CREATE_COMMITMENT" />
+			<xs:enumeration value="SYGMA_CREATE_COMMITMENT" />
+			<xs:enumeration value="SYGMA_UPDATE_COMMITMENT" />
+			<xs:enumeration value="SYGMA_CONTRACT" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EWorkflowStepName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="agate_ack" />
+			<xs:enumeration value="agate_invoice_ack" />
+			<xs:enumeration value="waiting_for_abac" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EWorkflowStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PEND3" />
+			<xs:enumeration value="PEND10" />
+			<xs:enumeration value="PEND30" />
+			<xs:enumeration value="FIN0" />
+			<xs:enumeration value="FIN2" />
+			<xs:enumeration value="CLO100" />
+			<xs:enumeration value="FIN100" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UpdateCommitmentType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="UPDATE_COMMITMENT" />
+			<xs:enumeration value="UPDATE_CONTRACTORS" />
+			<xs:enumeration value="UPDATE_COMMITMENT_AND_CONTRACTORS" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

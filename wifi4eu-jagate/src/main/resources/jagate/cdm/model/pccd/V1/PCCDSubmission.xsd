@@ -1,0 +1,84 @@
+<xs:schema	
+	targetNamespace="http://ec.europa.eu/research/fp/model/pccd/V1"
+	xmlns="http://ec.europa.eu/research/fp/model/pccd/V1" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" 
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" 
+	xmlns:project="http://ec.europa.eu/research/fp/model/project/V4"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified" version="1.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project/V4" schemaLocation="../../project/V4/Project.xsd"/>
+
+	<xs:element name="PCCDSubmission" type="PCCDSubmissionType"/>
+	
+	<xs:complexType name="PCCDSubmissionType">
+		<xs:sequence>
+			<xs:element name="BatchReference" type="xs:string"/>
+			<xs:element name="Call" type="coderef:CodeRefType"/>
+			<xs:element name="Program" type="coderef:CodeRefType"/>
+
+			<xs:element name="InitiatingService" type="coderef:CodeRefType"/>
+			<xs:element name="ResponsibleService" type="coderef:CodeRefType"/>
+			<xs:element name="ProgrammeCommittee" type="coderef:CodeRefType"/>
+			
+			<xs:element name="PCConsultationProcedureType" type="PCConsultationProcedureTypeType"/>
+			<xs:element name="PCConsultationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="PCConsultationDeadlineDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="PCSubmissionDate" type="xs:date" minOccurs="0"/>
+
+			<xs:element name="ECDecisionDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ECDecisionOfficialRef" type="xs:string" minOccurs="0"/>
+			<xs:element name="ECDecisionProcedureType" type="xs:string"/>
+			
+			<xs:element name="projects" type="PCCDSubmissionProjectListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PCCDSubmissionProjectType">
+		<xs:sequence>
+			<xs:element name="OrderNo" type="xs:int"/>
+			<xs:element name="Project" type="project:ProjectType"/>
+			<xs:element name="PCConsultationOutcome" type="PCConsultationOutcomeType" minOccurs="0"/>
+			<xs:element name="PCConsultationType" type="PCConsultationTypeType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PCCDSubmissionProjectListType">
+		<xs:sequence>
+			<xs:element name="project" type="PCCDSubmissionProjectType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="PCConsultationProcedureTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="WrittenConsultation"/>
+			<xs:enumeration value="CommitteeMeeting"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ECDecisionProcedureTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Written"/>
+			<xs:enumeration value="Delegation"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="PCConsultationTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="forOpinion"/>
+			<xs:enumeration value="forInformation"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PCConsultationOutcomeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Positive"/>
+			<xs:enumeration value="Negative"/>
+			<xs:enumeration value="NoOpinion"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:annotation>
+		<xs:documentation> 20131010 - v1.0.0 - SYGMA - creation </xs:documentation>
+	</xs:annotation>	
+	
+</xs:schema>

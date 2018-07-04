@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Cyril Brigant (European Commission) -->
+
+<xs:schema 
+	targetNamespace="http://ec.europa.eu/research/fp/model/costclaim/V4"
+	xmlns="http://ec.europa.eu/research/fp/model/costclaim/V4" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" 
+	xmlns:certificate="http://ec.europa.eu/research/fp/model/certificate/V2" 
+	xmlns:core="http://ec.europa.eu/research/fp/model/costclaim-core/V3" 
+	xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" 
+	xmlns:partner="http://ec.europa.eu/research/fp/model/project-partner/V4" 
+	xmlns:costbreakdown="http://ec.europa.eu/research/fp/model/project-costbreakdown/V3" 
+	xmlns:document="http://ec.europa.eu/research/fp/model/document/V3" 
+	xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" 
+	xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified" version="4.0.0">
+	
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture all data related to costclaim reporting.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim-core/V3" schemaLocation="../../costclaim-core/V3/CostClaimCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V4" schemaLocation="../../project-partner/V4/ProjectPartner.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V3" schemaLocation="../../project-costbreakdown/V3/ProjectCostBreakdown.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V3" schemaLocation="../../document/V3/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/certificate/V2" schemaLocation="../../certificate/V2/Certificate.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" schemaLocation="../../project-reportingperiod/V3/ProjectReportingPeriod.xsd"/>
+	<xs:element name="CostClaim" type="CostClaimType"/>
+	<xs:complexType name="CostClaimType">
+		<xs:sequence>
+			<xs:element name="ProjectId" type="projectref:ProjectIdType"/>
+			<xs:element name="PeriodNumber" type="reportingperiod:ReportingPeriodNumberType">
+				<xs:annotation>
+					<xs:documentation>it is the period number when formC is submitted</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Date of submission or receipt?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TimeToPayClock" type="base:ClockType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Clock keeping track of time spent on this claim.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PartnerCostClaim" type="PartnerCostClaimType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Documents" type="CostClaimDocumentsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	
+	<xs:complexType name="PartnerCostClaimType">
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="PartnerFinancialExecutionPerPeriod" type="PartnerFinancialExecutionPerPeriodType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RelatedPartnerCostClaims" type="RelatedPartnerCostClaimType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PartnerFinancialExecutionPerPeriodType">
+		<xs:sequence>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType"/>
+			<xs:element name="FormC" type="FormCType" minOccurs="0"/>
+			<xs:element name="AdjustmentFormCList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AdjustmentFormC" type="AdjustmentFormCType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelatedPartnerCostClaimType">
+		<xs:sequence>
+			<xs:element name="RelatedPartnerKind" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>UTRO, SubDepartment, ThirdParty</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RelatedPartnerCostClaim" type="PartnerCostClaimType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CostClaimDocumentsType">
+		<xs:sequence>
+			<xs:element name="SelfDeclarationCoordinatorDocument" type="document:DocumentType"/>
+			<xs:element name="PublishableSummaryDocument" type="document:DocumentType"/>
+			<xs:element name="ProjectProgressDocument" type="document:DocumentType"/>
+			<xs:element name="ProjectResourcesDocument" type="document:DocumentType"/>
+			<xs:element name="OtherDocument" type="document:DocumentType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="FormC" type="FormCType"/>
+	<xs:complexType name="FormCType">
+		<xs:sequence>
+			<xs:element name="Status" type="core:StatusType"/>
+			<xs:element name="Interest" type="core:InterestType"/>
+			<xs:element name="TotalReceipts" type="core:ReceiptsType">
+				<xs:annotation>
+					<xs:documentation>This is FP7 only (was named receipts).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MethodologyCertificate" type="MethodologyCertificateType"/>
+			<xs:element name="Activities" type="costbreakdown:CostBreakDownType" minOccurs="0"/>
+			<xs:element name="RequestedECContribution" type="base:AmountType"/>
+			<xs:element name="FinancialStatementCertificate" type="certificate:CertificateType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Refers to FinancialStatementCertificate on level of PartnerCostClaim</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0"/>
+			<xs:element name="FormCId" type="xs:long" minOccurs="0"/>
+			<xs:element name="Version" type="xs:integer" minOccurs="0"/>
+			<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+			<xs:element name="SubmissionId" type="xs:string" minOccurs="0"/>
+			<xs:element name="DateOfLastModification" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdjustmentFormCType">
+		<xs:sequence>
+			<xs:element name="AdjustmentPeriodNumber" type="reportingperiod:ReportingPeriodNumberType">
+				<xs:annotation>
+					<xs:documentation>it is the adjusted period.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="core:StatusType"/>
+			<xs:element name="Interest" type="core:InterestType"/>
+			<xs:element name="TotalReceipts" type="core:ReceiptsType">
+				<xs:annotation>
+					<xs:documentation>This is FP7 only (was named receipts).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MethodologyCertificate" type="MethodologyCertificateType"/>
+			<xs:element name="Activities" type="costbreakdown:CostBreakDownType" minOccurs="0"/>
+			<xs:element name="RequestedECContribution" type="base:AmountType"/>
+			<xs:element name="FinancialStatementCertificate" type="certificate:CertificateType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Refers to FinancialStatementCertificate on level of PartnerCostClaim</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdjustmentType" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>NORMAL, EXTERNAL_AUDIT, EXTRAPOLATION</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0"/>
+			<xs:element name="FormCId" type="xs:long" minOccurs="0"/>
+			<xs:element name="Version" type="xs:integer" minOccurs="0"/>
+			<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+			<xs:element name="SubmissionId" type="xs:string" minOccurs="0"/>
+			<xs:element name="DateOfLastModification" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MethodologyCertificateType">
+		<xs:sequence>
+			<xs:element name="HasCertificateOnMethodology" type="xs:boolean"/>
+			<xs:element name="MethodologyCertificate" type="certificate:CertificateOnMethodologyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:annotation>
+		<xs:documentation> 20131010 - v4.0.0 - SYGMA - Use costclaim-core v3, project-ref v3, project-costbreakdown v3, document v3, legalentity-ref v3, project-reportingperiod v3, certificate v2 </xs:documentation>
+		<xs:documentation>3.0.0 - new PartnerCostClaim type 2012/07/20</xs:documentation>
+		<xs:documentation>+ Added non mandatory element AdjustmentType to AdjustmentFormCType</xs:documentation>
+		<xs:documentation>+ Added the following non mandatory elements to FormCtype and AdjustmentFormCType: comment, FormCId, Version and Document</xs:documentation>
+		<xs:documentation>2012-07-17 - V2.1.0</xs:documentation>
+		<xs:documentation>2011-02-03 - V2.0.0</xs:documentation>
+		<xs:documentation>+ Dedicated AdjustmentFormCType so that the adjustment period can be differentiated from the period itself  + FormC made non mandatory in the Costclaimtype (RTC 12931)</xs:documentation>
+		<xs:documentation>+ Bump Base, Certificate, Project, CostClaimCore,LegalEntityRef</xs:documentation>
+		<xs:documentation>+Move the namespace to project</xs:documentation>
+		<xs:documentation>20100607 - v1.0.1</xs:documentation>
+	</xs:annotation>
+</xs:schema>

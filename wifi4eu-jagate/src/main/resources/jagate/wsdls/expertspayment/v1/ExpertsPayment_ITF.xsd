@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+			xmlns="http://ec.europa.eu/rdg/jagate/ws/expertspayment/interfaces/v1"
+			targetNamespace="http://ec.europa.eu/rdg/jagate/ws/expertspayment/interfaces/v1"
+			xmlns:expertsPaymentDataV1="http://ec.europa.eu/rdg/jagate/ws/domain/expertspaymentbasicdata/v1"
+			xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v3"
+			xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v4"
+			xmlns:jagateBase="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+			xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+			xmlns:health="http://ec.europa.eu/research/fp/model/service-health/V1"
+			elementFormDefault="qualified"
+			attributeFormDefault="unqualified"
+			version="1.0.2">
+			
+		<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+		<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/expertspaymentbasicdata/v1" schemaLocation="../../../domain/expertspayment/v1/ExpertsPaymentBasicData.xsd"/>
+		<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v4" schemaLocation="../../../domain/visa/v4/Visa.xsd"/>
+		<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+		<xs:import namespace="http://ec.europa.eu/research/fp/model/service-health/V1" schemaLocation="../../../cdm/model/service-health/V1/ServiceHealth.xsd"/>
+		
+		<xs:element name="CreateExpertsPaymentRequest" type="CreateExpertsPaymentRequestType" />
+		<xs:element name="CreateExpertsPaymentResponse" type="CreateExpertsPaymentResponseType" />
+		
+		<xs:element name="CheckServiceHealthRequest" type="CheckServiceHealthRequestType"/>
+		<xs:element name="CheckServiceHealthResponse" type="CheckServiceHealthResponseType"/>
+		
+		<xs:element name="GetAbacKeyRequest" type="GetAbacKeyRequestType" />
+		<xs:element name="GetAbacKeyResponse" type="GetAbacKeyResponseType" />
+
+		<xs:complexType name="CreateExpertsPaymentRequestType">
+			<xs:sequence>
+				<xs:element ref="jagate:SecurityContext" minOccurs="0" />
+				<xs:element name="PaymentRequestABACKey" type="jagate:NonEmptyString" minOccurs="0" />
+				<xs:element name="PaymentOrderABACKey" type="jagate:NonEmptyString" minOccurs="0" />
+				<xs:element name="PaymentRequest" type="PaymentRequestDataType" />
+			</xs:sequence>
+		</xs:complexType>
+		
+		<xs:complexType name="CreateExpertsPaymentResponseType">
+			<xs:sequence>
+				<xs:element name="PaymentRequestABACKey" type="jagate:NonEmptyString" />
+				<xs:element name="PaymentOrderABACKey" type="jagate:NonEmptyString" />
+	            <xs:element name="ReturnCode" type="xs:long"/>
+	            <xs:element name="Message" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+		<xs:complexType name="GetAbacKeyRequestType">
+			<xs:sequence>
+				<xs:element ref="jagate:SecurityContext" minOccurs="0" />
+				<xs:element name="DgOfResponsibleOrg" type="coderef:CodeRefType" minOccurs="0" />
+				<xs:element name="AbacCl2Key" type="xs:string" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+		
+		<xs:complexType name="GetAbacKeyResponseType">
+			<xs:sequence>
+				<xs:element name="System" type="xs:string" />
+				<xs:element name="DgOfResponsibleOrg" type="coderef:CodeRefType" />
+				<xs:element name="AbacKey" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+		
+		
+		<xs:complexType name="PaymentRequestDataType">
+			<xs:sequence>
+				<xs:element name="PaymentRequestHeader" type="expertsPaymentDataV1:PaymentRequestHeaderType" />
+				<xs:element name="PaymentRequestDetails" type="expertsPaymentDataV1:PaymentRequestDetailListType" />
+				<xs:element name="SupportingDocsList" type="expertsPaymentDataV1:SupportingDocsListType" />
+				<xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType" />
+			</xs:sequence>
+		</xs:complexType>
+		
+		
+		<xs:complexType name="CheckServiceHealthRequestType">
+			<xs:sequence>
+				<xs:element name="CheckServiceHealthIn" type="health:CheckServiceHealthInType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+		<xs:complexType name="CheckServiceHealthResponseType">
+			<xs:sequence>
+				<xs:element name="CheckServiceHealthOut" type="health:CheckServiceHealthOutType"/>
+			</xs:sequence>
+		</xs:complexType>
+	
+		<xs:annotation>
+	        <xs:documentation>v1.0.0 - 20171108 - Initial version</xs:documentation>
+	        <xs:documentation>v1.0.1 - 20171129 - Changing the visaData to use the new MultiTransactionVisaEmbeddedType replacing DGCode type from int to CodeRef</xs:documentation>
+	        <xs:documentation>v1.0.1 - 20180110 - Moving AresDocument and DocumentLocation inside SupportingDocuments</xs:documentation>
+	    </xs:annotation>
+
+
+</xs:schema>

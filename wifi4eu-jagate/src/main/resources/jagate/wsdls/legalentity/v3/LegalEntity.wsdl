@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="LegalEntityServiceV3" 
+	xmlns:le="http://ec.europa.eu/rdg/jagate/ws/legalentity/v3/interfaces" 
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/legalentity/v3" 
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/legalentity/v3" >
+ 
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/legalentity/v3/interfaces" schemaLocation="LegalEntityInterface.xsd" />
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="GetBankAccountByFelIdRequest">
+		<wsdl:part element="le:GetBankAccountByFelIdRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetBankAccountByFelIdResponse">
+		<wsdl:part element="le:GetBankAccountByFelIdResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="GetBankAccountByPicRequest">
+		<wsdl:part element="le:GetBankAccountByPicRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetBankAccountByPicResponse">
+		<wsdl:part element="le:GetBankAccountByPicResponse" name="response" />
+	</wsdl:message>
+	
+	
+	<wsdl:message name="GetStatusByFelIdRequest">
+		<wsdl:part element="le:GetStatusByFelIdRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetStatusByFelIdResponse">
+		<wsdl:part element="le:GetStatusByFelIdResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="GetStatusByPicRequest">
+		<wsdl:part element="le:GetStatusByPicRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetStatusByPicResponse">
+		<wsdl:part element="le:GetStatusByPicResponse" name="response" />
+	</wsdl:message>
+	
+	
+	<wsdl:message name="GetEwsByFelIdRequest">
+		<wsdl:part element="le:GetEwsByFelIdRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetEwsByFelIdResponse">
+		<wsdl:part element="le:GetEwsByFelIdResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="GetEwsByPicRequest">
+		<wsdl:part element="le:GetEwsByPicRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetEwsByPicResponse">
+		<wsdl:part element="le:GetEwsByPicResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="CreateLegalEntityRequest">
+		<wsdl:part element="le:CreateLegalEntity" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CreateLegalEntityResponse">
+		<wsdl:part element="le:CreateLegalEntityResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="LegalEntityException">
+		<wsdl:part element="le:LegalEntityException" name="exception" />
+	</wsdl:message>
+
+	<wsdl:portType name="ILegalEntityService">
+		<wsdl:documentation>Provides Legal Entity related services.</wsdl:documentation>
+		
+		<wsdl:operation name="GetEwsByFelId">
+			<wsdl:documentation>Gets the early warning on legal entities.</wsdl:documentation>
+			<wsdl:input message="GetEwsByFelIdRequest" />
+			<wsdl:output message="GetEwsByFelIdResponse" />
+			<wsdl:fault name="LegalEntityException" message="LegalEntityException" />
+		</wsdl:operation>
+		<wsdl:operation name="GetEwsByPic">
+			<wsdl:documentation>Gets the early warning on legal entities.</wsdl:documentation>
+			<wsdl:input message="GetEwsByPicRequest" />
+			<wsdl:output message="GetEwsByPicResponse" />
+			<wsdl:fault name="LegalEntityException" message="LegalEntityException" />
+		</wsdl:operation>
+		<wsdl:operation name="GetBankAccountByFelId">
+			<wsdl:documentation>Gets the early warning on legal entities.</wsdl:documentation>
+			<wsdl:input message="GetBankAccountByFelIdRequest" />
+			<wsdl:output message="GetBankAccountByFelIdResponse" />
+			<wsdl:fault name="LegalEntityException" message="LegalEntityException" />
+		</wsdl:operation>
+		<wsdl:operation name="GetBankAccountByPic">
+			<wsdl:documentation>Gets the early warning on legal entities.</wsdl:documentation>
+			<wsdl:input message="GetBankAccountByPicRequest" />
+			<wsdl:output message="GetBankAccountByPicResponse" />
+			<wsdl:fault name="LegalEntityException" message="LegalEntityException" />
+		</wsdl:operation>
+		<wsdl:operation name="GetStatusByFelId">
+			<wsdl:documentation>Gets the Legal Entity statuses.</wsdl:documentation>
+			<wsdl:input message="GetStatusByFelIdRequest" />
+			<wsdl:output message="GetStatusByFelIdResponse" />
+			<wsdl:fault name="LegalEntityException" message="LegalEntityException" />
+		</wsdl:operation>
+		<wsdl:operation name="GetStatusByPic">
+			<wsdl:documentation>Gets the Legal Entity statuses.</wsdl:documentation>
+			<wsdl:input message="GetStatusByPicRequest" />
+			<wsdl:output message="GetStatusByPicResponse" />
+			<wsdl:fault name="LegalEntityException" message="LegalEntityException" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="createLegalEntity">
+			<wsdl:documentation>Creates an expert in ABAC.</wsdl:documentation>
+			<wsdl:input message="CreateLegalEntityRequest" />
+			<wsdl:output message="CreateLegalEntityResponse" />
+			<wsdl:fault name="LegalEntityException" message="LegalEntityException" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="ILegalEntityServiceBinding" type="ILegalEntityService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="GetEwsByFelId">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="LegalEntityException">
+				<soap:fault name="LegalEntityException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="GetEwsByPic">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="LegalEntityException">
+				<soap:fault name="LegalEntityException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="GetBankAccountByFelId">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="LegalEntityException">
+				<soap:fault name="LegalEntityException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="GetBankAccountByPic">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="LegalEntityException">
+				<soap:fault name="LegalEntityException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="GetStatusByFelId">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="LegalEntityException">
+				<soap:fault name="LegalEntityException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="GetStatusByPic">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="LegalEntityException">
+				<soap:fault name="LegalEntityException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="createLegalEntity">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="LegalEntityException">
+				<soap:fault name="LegalEntityException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="LegalEntityServiceV3">
+		<wsdl:port binding="ILegalEntityServiceBinding" name="LegalEntityServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/legalentity/v3" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="CommitmentWSV4" 
+    xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"    
+    xmlns:commitment="http://ec.europa.eu/rdg/jagate/ws/domain/commitment/v4"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/commitment/v4"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/commitment/v4">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitment/v4" schemaLocation="../../../domain/commitment/v4/Commitment.xsd" />
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="CommitmentException">
+		<wsdl:part element="jagate:Exception" name="Exception" />
+	</wsdl:message>
+
+	<wsdl:message name="CreateCommitment">
+		<wsdl:part element="commitment:CreateCommitment" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="CreateCommitmentResponse">
+		<wsdl:part element="commitment:CreateCommitmentResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="CreateCommitmentException">
+		<wsdl:part element="jagate:Exception" name="exception" />
+	</wsdl:message>	
+		
+	<wsdl:message name="UpdateCommitment">
+		<wsdl:part element="commitment:UpdateCommitment" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="UpdateCommitmentResponse">
+		<wsdl:part element="commitment:UpdateCommitmentResponse" name="response" />
+	</wsdl:message>	
+
+	<wsdl:message name="UpdateCommitmentException">
+		<wsdl:part element="jagate:Exception" name="exception" />
+	</wsdl:message>	
+	
+	<wsdl:message name="DecommitCommitment">
+		<wsdl:part element="commitment:DecommitCommitment" name="request"></wsdl:part>
+	</wsdl:message>
+	
+	<wsdl:message name="DecommitCommitmentResponse">
+		<wsdl:part element="commitment:DecommitCommitmentResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="DecommitCommitmentException">
+		<wsdl:part element="jagate:Exception" name="exception" />
+	</wsdl:message>
+	
+	<wsdl:message name="UnCompleteCommitment">
+		<wsdl:part element="commitment:UnCompleteCommitment" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="UnCompleteCommitmentResponse">
+		<wsdl:part element="commitment:UnCompleteCommitmentResponse" name="response" />
+	</wsdl:message>	
+
+	<wsdl:message name="UnCompleteCommitmentException">
+		<wsdl:part element="jagate:Exception" name="exception" />
+	</wsdl:message>	
+
+	<wsdl:portType name="ICommitmentService">
+		<wsdl:documentation>Creates the Commitment with the given parameters.</wsdl:documentation>
+		<wsdl:operation name="Create">
+			<wsdl:input message="CreateCommitment" />
+			<wsdl:output message="CreateCommitmentResponse" />
+			<wsdl:fault name="CreateCommitmentException" message="CreateCommitmentException"/>
+		</wsdl:operation>		
+		<wsdl:operation name="Update">
+			<wsdl:input message="UpdateCommitment" />
+			<wsdl:output message="UpdateCommitmentResponse" />
+			<wsdl:fault name="UpdateCommitmentException" message="UpdateCommitmentException"/>
+		</wsdl:operation>
+		<wsdl:operation name="Decommit">
+			<wsdl:input message="DecommitCommitment" />
+			<wsdl:output message="DecommitCommitmentResponse" />
+			<wsdl:fault name="DecommitCommitmentException" message="DecommitCommitmentException"/>
+		</wsdl:operation>
+		<wsdl:operation name="UnComplete">
+			<wsdl:input message="UnCompleteCommitment" />
+			<wsdl:output message="UnCompleteCommitmentResponse" />
+			<wsdl:fault name="UnCompleteCommitmentException" message="UnCompleteCommitmentException"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="ICommitmentServiceBinding" type="ICommitmentService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="Create">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CreateCommitmentException">
+				<soap:fault name="CreateCommitmentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>		
+		<wsdl:operation name="Update">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="UpdateCommitmentException">
+				<soap:fault name="UpdateCommitmentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="Decommit">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="DecommitCommitmentException">
+				<soap:fault name="DecommitCommitmentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="UnComplete">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="UnCompleteCommitmentException">
+				<soap:fault name="UnCompleteCommitmentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="CommitmentServiceV4">
+		<wsdl:port binding="ICommitmentServiceBinding" name="CommitmentServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/commitment/v4"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

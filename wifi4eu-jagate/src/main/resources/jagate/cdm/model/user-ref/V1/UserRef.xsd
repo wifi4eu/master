@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/user-ref/V1" elementFormDefault="qualified" version="1.1.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:simpleType name="UserIdType">
+		<xs:restriction base="base:ECUserIdType"/>
+	</xs:simpleType>
+	<xs:simpleType name="UserEmailType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="UserRefType">
+		<xs:sequence>
+			<xs:element name="UserId" type="UserIdType" minOccurs="0"/>
+			<xs:element name="Email" type="UserEmailType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.0.0 - 20130707</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v1.1.0 - 20141107 - Added UserRefType than can contain either an email or a UserID</xs:documentation>
+	</xs:annotation>
+</xs:schema>

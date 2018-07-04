@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 (http://www.altova.com) by Mark Heeren (Xtra Mile) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/service-context/V1" targetNamespace="http://ec.europa.eu/research/fp/model/service-context/V1" elementFormDefault="qualified" version="1.2.2">
+	<xsd:element name="ResultContext" type="ResultContextType"/>
+	<xsd:complexType name="ResultContextType">
+		<xsd:annotation>
+			<xsd:documentation>This element contains the operation's execution result information. ResultContext typically describes a degradated response (e.g. deprecated operation, capped response, partial response due to missing dependencies).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="GlobalStatus" type="StatusType">
+				<xsd:annotation>
+					<xsd:documentation>ERROR should NEVER be used. USE SOAPFAULT to NOTIFY FATAL ERRORS. WARNINGS should also have at least one ServiceInformation element defined. ERROR will be removed from the enum list in the next major version of this file. If you use it it will be interpreted as a WARNING.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ResultNumber" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the operation returns results, this describes the number of items present in the response.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Complete" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the operation returns results, this indicator shows whether they were complete or incomplete.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ServiceVersion" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Fill this field with the version information of the web service. This field will become mandatory in the next major release of the model.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ServiceInformationList" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>List of more detailed warnngs per source system involved in the implementation.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ServiceInformation" type="ServiceInformationType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="StatusDetailType">
+		<xsd:sequence>
+			<xsd:element name="Code" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>This element contains the return code defined by the owner of this business service. Please consult the EFP7 Architecture Office Wiki page http://www.cc.cec/wikis/x/wwwuBg for a list of Error Codes.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Description" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>This element contains the description of the status. Free field to be provided by the owner of this business service.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DetailStatus" type="StatusType">
+				<xsd:annotation>
+					<xsd:documentation>Error should NEVER be used. It will be removed from the Enum. in the next major version of this file. If you use error, it will be interpreted as a warning.
+USE SOAPFAULT to NOTIFY FATAL ERROR</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ServiceInformationType">
+		<xsd:sequence>
+			<xsd:element name="DgName" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The name of the DG owner of this IT system. Eventually, this could be a CodeType.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ITSystemName" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The specific IT system name for the DG.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Complete" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the operation returns results, this indicator shows whether they were complete or incomplete.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="StatusDetailList">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="StatusDetail" type="StatusDetailType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="StatusType">
+		<xsd:annotation>
+			<xsd:documentation>TODO: Remove ERROR from the enum list.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="OK"/>
+			<xsd:enumeration value="WARNING"/>
+			<xsd:enumeration value="ERROR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:annotation>
+		<xsd:documentation>20100426 - v1.2.1 - renamed ITsystemName to ITSystemName (in order to be compliant with CamelCase conventions.</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>20100517 - v1.2.2 - Added "Complete" field to ResultContextType and ServiceInformationType</xsd:documentation>
+	</xsd:annotation>
+</xsd:schema>

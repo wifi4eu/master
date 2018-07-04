@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="InvoiceDetailsV1"
+	xmlns:invoicedetails="http://ec.europa.eu/rdg/jagate/ws/invoicedetails/v1/interfaces"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/invoicedetails/v1"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/invoicedetails/v1">
+	
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/invoicedetails/v1/interfaces" schemaLocation="InvoiceDetailsInterface.xsd" />
+		</xs:schema>
+	</wsdl:types>
+	
+	<!-- Messages -->
+	<wsdl:message name="GetInvoiceDetailsRequest">
+		<wsdl:part element="invoicedetails:GetInvoiceDetailsRequest" name="request"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GetInvoiceDetailsResponse">
+		<wsdl:part element="invoicedetails:GetInvoiceDetailsResponse" name="response"/>
+	</wsdl:message>
+	
+	<wsdl:message name="InvoiceDetailsException">
+		<wsdl:part element="invoicedetails:InvoiceDetailsException" name="exception"/>
+	</wsdl:message>
+	
+	<wsdl:portType name="IInvoiceDetailsService">
+		<wsdl:operation name="GetInvoiceDetails">
+			<wsdl:input message="GetInvoiceDetailsRequest"/>
+			<wsdl:output message="GetInvoiceDetailsResponse"/>
+			<wsdl:fault name="InvoiceDetailsException" message="InvoiceDetailsException"></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<!-- Binding -->
+	<wsdl:binding name="IInvoiceDetailsServiceBinding" type="IInvoiceDetailsService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="GetInvoiceDetails">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvoiceDetailsException">
+				<soap:fault name="InvoiceDetailsException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	
+	<!-- Service definition -->
+	<wsdl:service name="InvoiceDetailsServiceV1">
+		<wsdl:port name="InvoiceDetailsServiceBinding" binding="IInvoiceDetailsServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/invoicedetails/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+	
+</wsdl:definitions>

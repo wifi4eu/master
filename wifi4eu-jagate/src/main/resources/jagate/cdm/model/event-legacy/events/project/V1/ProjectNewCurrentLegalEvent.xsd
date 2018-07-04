@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns:tns="http://ec.europa.eu/rdg/efp/domain/event/project/V1" xmlns:evt="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:security="http://ec.europa.eu/rdg/efp/model/security/V2" xmlns:prjref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:amdt="http://ec.europa.eu/research/fp/model/project-amendment/V2" xmlns:ctx="http://ec.europa.eu/research/fp/model/service-context/V1" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/project/V1" elementFormDefault="qualified" version="1.1.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-amendment/V2" schemaLocation="../../../../project-amendment/V2/ProjectAmendment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:complexType name="ProjectNewCurrentLegalEventType">
+		<xs:annotation>
+			<xs:documentation>This event type informs that a new contract was signed (after negotiation or amendment)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="evt:EventBodyType">
+				<xs:sequence>
+					<xs:element name="origin" type="tns:ContractOrigin">
+						<xs:annotation>
+							<xs:documentation>Whether the contract originates from a Negotiation or an Amendment</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ProjectId" type="prjref:ProjectRefType">
+						<xs:annotation>
+							<xs:documentation>Identification of the Project</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AmendmentInfo" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Information about the amendment. Only filled the contract results from an amendment</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:group ref="amdt:AmendmentCoreGroup"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="ContractOrigin">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="NEGOTIATION"/>
+			<xs:enumeration value="AMENDMENT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: initial version </xs:documentation>
+		<xs:documentation>v 1.1.0: technical migration to cdm v3 (we still use v2 versions of ProjectAmendment and ProjectRef even though v3 now exist) </xs:documentation>
+	</xs:annotation>
+</xs:schema>

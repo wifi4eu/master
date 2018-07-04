@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="http://ec.europa.eu/rdg/efp/domain/event/call/v1_0" xmlns:evt="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:call="http://ec.europa.eu/rdg/efp/domain/call/v1_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/call/v1_0" elementFormDefault="qualified" version="1.1">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../eventbase/V0/EventBase.xsd"/>
+	<xs:complexType name="CallClosureApproachingEventType">
+		<xs:complexContent>
+			<xs:extension base="evt:EventBodyType">
+				<xs:sequence>
+					<xs:element name="CallClosureApproaching" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="CallId" type="xs:string"/>
+								<xs:element name="SpecificProgramme" type="xs:string"/>
+								<xs:element name="CallThemes" type="xs:string" maxOccurs="unbounded"/>
+								<xs:element name="CallDeepLink" type="xs:string"/>
+								<xs:element name="Category" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>Must be CALL_FOR_PROPOSAL" or "CALL_FOR_TENDER"</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="PublicationDate" type="xs:dateTime"/>
+								<xs:element name="DeadLine" type="xs:dateTime"/>
+								<xs:element name="BudgetInEuros" type="xs:decimal"/>
+								<xs:element name="SubjectArea" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.0 creation</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v1.1 2011-05-31 - Remove dependency to Call.xsd + rename file without the v number </xs:documentation>
+	</xs:annotation>
+</xs:schema>

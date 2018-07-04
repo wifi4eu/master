@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+   		   xmlns:le="http://ec.europa.eu/rdg/jagate/ws/domain/legalentity/v5"
+   		   xmlns:cdmle="http://ec.europa.eu/research/fp/model/legalentity/V6"
+   		   xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" 
+   		   xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/legalentity/v5/interfaces" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/legalentity/v5/interfaces"
+		   elementFormDefault="qualified">
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V2" schemaLocation="../../../cdm/model/bankaccount/V2/BankAccount.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V6" schemaLocation="../../../cdm/model/legalentity/V6/LegalEntity.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/legalentity/v5" schemaLocation="../../../domain/legalentity/v5/LegalEntity.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" schemaLocation="../../../domain/visa/v1/Visa.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+
+	<!-- Elements -->
+	<xs:element name="SearchLegalEntityRequest" type="SearchLegalEntityRequestType" />
+	<xs:element name="SearchLegalEntityResponse" type="SearchLegalEntityResponseType" />
+
+	<xs:element name="GetEwsByFelIdRequest" type="GetEwsByFelIdRequestType" />
+	<xs:element name="GetEwsByFelIdResponse" type="GetEwsByFelIdResponseType" />
+	<xs:element name="GetEwsByPicRequest" type="GetEwsByPicRequestType" />
+	<xs:element name="GetEwsByPicResponse" type="GetEwsByPicResponseType" />
+
+	<xs:element name="GetBankAccountByFelIdRequest" type="GetBankAccountByFelIdRequestType" />
+	<xs:element name="GetBankAccountByFelIdResponse" type="GetBankAccountByFelIdResponseType" />
+	<xs:element name="GetBankAccountByPicRequest" type="GetBankAccountByPicRequestType" />
+	<xs:element name="GetBankAccountByPicResponse" type="GetBankAccountByPicResponseType" />
+
+
+	<xs:element name="GetStatusByFelIdRequest" type="GetStatusByFelIdRequestType" />
+	<xs:element name="GetStatusByFelIdResponse" type="GetStatusByFelIdResponseType" />
+	<xs:element name="GetStatusByPicRequest" type="GetStatusByPicRequestType" />
+	<xs:element name="GetStatusByPicResponse" type="GetStatusByPicResponseType" />
+
+	<xs:element name="CreateLegalEntityRequest" type="CreateLegalEntityRequestType" />
+	<xs:element name="CreateLegalEntityResponse" type="CreateLegalEntityResponseType" />
+
+	<xs:element name="UpdateLegalEntityRequest" type="UpdateLegalEntityRequestType" />
+	<xs:element name="UpdateLegalEntityResponse" type="UpdateLegalEntityResponseType" />
+
+	<xs:element name="LegalEntityException" type="jagate:JAgateException" />
+
+	<xs:complexType name="SearchLegalEntityRequestType">
+		<xs:sequence>
+			<!-- Only for natural persons -->
+			<xs:element name="FirstName" type="xs:string" minOccurs="0"/>
+			<xs:element name="LastName" type="xs:string" minOccurs="0"/>
+			<xs:element name="IdentificationNumber" type="xs:string" minOccurs="0"/>
+			
+			<!-- Only for public/private bodies -->
+			<xs:element name="LegalName" type="xs:string" minOccurs="0"/>
+			<xs:element name="RegistrationNumber" type="xs:string" minOccurs="0"/>
+		
+			<xs:element name="VAT" type="xs:string" minOccurs="0"/>
+			<xs:element name="City" type="xs:string" minOccurs="0"/>
+			<xs:element name="Country" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:element name="FELId" type="xs:string" minOccurs="0"/>
+			
+			<!-- Apply the normalisation in the search -->
+			<xs:element name="normaliseSearch" type="xs:boolean" default="true" minOccurs="0" />
+			<xs:element name="resultsLimit" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SearchLegalEntityResponseType">
+		<xs:sequence>
+			<xs:element name="legalEntity" type="SearchLegalEntityResultType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SearchLegalEntityResultType">
+		<xs:sequence>
+			<xs:element name="LegalEntityCoreFact" type="cdmle:LegalEntityCoreFactType"/>
+			<xs:element name="FELStatus" type="le:FELStatusType"/>
+			<xs:element name="likenessPercentage" type="xs:int"/>
+		</xs:sequence>
+	</xs:complexType>	
+	
+	<xs:complexType name="GetBankAccountByPicRequestType">
+		<xs:sequence>
+			<xs:element name="pic" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountByPicResponseType">
+		<xs:sequence>
+			<xs:element name="bankAccount" type="le:LegalEntityBankAccountType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountByFelIdRequestType">
+		<xs:sequence>
+			<xs:element name="felId" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountByFelIdResponseType">
+		<xs:sequence>
+			<xs:element name="bankAccount" type="le:LegalEntityBankAccountType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GetStatusByPicRequestType">
+		<xs:sequence>
+			<xs:element name="pic" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetStatusByPicResponseType">
+		<xs:sequence>
+			<xs:element name="status" type="le:LegalEntityStatusType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetStatusByFelIdRequestType">
+		<xs:sequence>
+			<xs:element name="felId" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetStatusByFelIdResponseType">
+		<xs:sequence>
+			<xs:element name="status" type="le:LegalEntityStatusType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GetEwsByPicRequestType">
+		<xs:sequence>
+			<xs:element name="pic" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetEwsByPicResponseType">
+		<xs:sequence>
+			<xs:element name="legalEntity" type="le:LegalEntityEwsType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetEwsByFelIdRequestType">
+		<xs:sequence>
+			<xs:element name="felId" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetEwsByFelIdResponseType">
+		<xs:sequence>
+			<xs:element name="legalEntity" type="le:LegalEntityEwsType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="LegalEntityExceptionType">
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" />
+			<xs:element name="description" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CreateLegalEntityRequestType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="naturalBodyMemberOfPersonnelExcluded" type="le:NaturalBodyMemberOfPersonnelExcluded" />
+				<xs:element name="naturalBodyExMemberOfPersonnel" type="le:NaturalBodyExMemberOfPersonnel" />
+				<xs:element name="publicLawBody" type="le:PublicLawBody" />
+				<xs:element name="privateLawBody" type="le:PrivateLawBody" />
+			</xs:choice>
+			<xs:choice>
+				<xs:element name="aresDocumentList" type="jagate:AresDocumentList"/>
+				<xs:element name="scannedDocumentList" type="le:LEScannedDocumentList"/>
+			</xs:choice>		
+			<xs:element name="visa" type="visa:BasicVisa" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreateLegalEntityResponseType">
+		<xs:sequence>
+			<xs:element name="LocalObjectForeignId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UpdateLegalEntityRequestType">
+		<xs:sequence>
+			<xs:element name="LocalObjectForeignId" type="xs:string"/>
+			<xs:choice>
+				<xs:element name="naturalBodyMemberOfPersonnelExcluded" type="le:NaturalBodyMemberOfPersonnelExcluded" />
+				<xs:element name="naturalBodyExMemberOfPersonnel" type="le:NaturalBodyExMemberOfPersonnel" />
+				<xs:element name="publicLawBody" type="le:PublicLawBody" />
+				<xs:element name="privateLawBody" type="le:PrivateLawBody" />
+			</xs:choice>
+			<xs:choice>
+				<xs:element name="aresDocumentList" type="jagate:AresDocumentList"/>
+				<xs:element name="scannedDocumentList" type="le:LEScannedDocumentList"/>	
+			</xs:choice>
+			<xs:element name="visa" type="visa:BasicVisa" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UpdateLegalEntityResponseType">
+		<xs:sequence>
+			<xs:element name="LocalObjectForeignId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

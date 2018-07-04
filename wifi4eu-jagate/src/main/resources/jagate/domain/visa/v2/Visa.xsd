@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+
+	<xs:complexType name="VisaSingleTransactionHeaderType">
+		<xs:annotation>
+			<xs:documentation>Visa dataset for a message that generates 1 single transaction in ABAC (Commitment).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>ABAC workflow cost center. Depends on the transaction and on the organisation.</xs:documentation>
+			</xs:annotation>
+			<xs:element name="WorkflowCostCenterCode" type="xs:string" >
+			<xs:annotation>
+				<xs:documentation>Organisation should be a CCM2 code.</xs:documentation>
+			</xs:annotation>			
+			</xs:element>
+			<xs:element name="DGCode" type="xs:int" >
+			<xs:annotation>
+				<xs:documentation>Lists of Visas that should be given to a transaction.</xs:documentation>
+			</xs:annotation>
+			</xs:element>			
+			<xs:element name="Visa" type="VisaBodyEmbeddedType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VisaMultiTransactionHeaderType">
+		<xs:annotation>
+			<xs:documentation>
+				Visa dataset for a message that generates more than 1 transaction in ABAC (Prefinancing). For each transaction the visa 'header' 
+				(dgcode and workflow cost center) can be different. 
+			</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element name="WorkflowCostCenterCode" type="xs:string" />
+			<xs:element name="DGCode" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>Determines the order when there are more than one transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Order" type="xs:positiveInteger" />
+			<xs:element name="Visas" type ="VisaBodyEmbeddedType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="VisaBodyEmbeddedType">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Agent Id who is giving the VISA.</xs:documentation>
+			</xs:annotation>
+			<xs:element name="AgentId" type="xs:string" >
+				<xs:annotation>
+					<xs:documentation>Agent Type Financial or Operational.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AgentType" type="xs:string" >
+				<xs:annotation>
+					<xs:documentation>Second Visa Agent, 4 eyes principle.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SuppliedAgentName" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Visa action, normally should be AC (for acceptance).</xs:documentation>
+			</xs:annotation>
+			</xs:element>			
+			<xs:element name="ActionCd" type="xs:string" >
+			<xs:annotation>
+				<xs:documentation>Order of the visas in the Visa List not needed if there's only one.</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="Order" type="xs:positiveInteger" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- embedded VISA -->
+	<xs:complexType name="MultiTransactionVisaEmbeddedType">
+		<xs:sequence>
+			<xs:element name="ABACVisas" type="VisaMultiTransactionHeaderType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- visa action with the types -->
+	<xs:simpleType name="VisaActionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AC"/>
+			<xs:enumeration value="SC"/>
+			<xs:enumeration value="SP"/>
+			<xs:enumeration value="SR"/>
+			<xs:enumeration value="TR"/>
+			<xs:enumeration value="TA"/>
+			<xs:enumeration value="PP"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	
+	
+	<xs:complexType name="SingleTransactionVisaEmbeddedType">
+		<xs:sequence>
+			<xs:element name="ABACVisas" type="VisaSingleTransactionHeaderType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	
+</xs:schema>

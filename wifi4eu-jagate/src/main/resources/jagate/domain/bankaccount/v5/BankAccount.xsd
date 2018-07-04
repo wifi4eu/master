@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns:cdm="http://ec.europa.eu/research/fp/model/bankaccount/V2" 
+	xmlns:jagref="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1"
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+	xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v3"
+    xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v5"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v5"
+	elementFormDefault="qualified"
+	version="5.0">
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V2" schemaLocation="../../../cdm/model/bankaccount/V2/BankAccount.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1" schemaLocation="../../reference/v1/ReferenceData.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v3" schemaLocation="../../../domain/visa/v3/Visa.xsd"/>
+		
+	<xs:complexType name="JagateBankAccountType">
+		<xs:sequence>
+			<xs:element name="bankAccountFormat" type="BankAccountFormatType"/>
+            <xs:element name="bankName" type="jagate:NonEmptyString"/>
+			<xs:element name="legalEntityId" type="jagate:NonEmptyString"/>
+			<xs:element name="currency" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:element name="responsibleUser" type="xs:string" minOccurs="0"/>
+			<xs:element name="responsibleOrganization" type="coderef:CodeRefType"/>
+			<xs:element name="confidential" type="xs:boolean"/>
+			<xs:element name="remarks" type="xs:string" minOccurs="0"/>
+			<xs:element name="bankAddress" type="JagateBankAccountAddressType"/>
+			<xs:element name="bankAccountHolder" type="JagateBankAccountHolderType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BankAccountFormatType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="IBAN" type="jagate:NonEmptyStringMax60"/>
+				<xs:element name="BBAN"  type="BBANType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="BBANType">
+        <xs:sequence>
+            <xs:element name="bankAccountNumber" type="jagate:NonEmptyString"/>
+            <xs:element name="bicCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="BsbRoutingCode" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+	<xs:complexType name="JagateBankAccountAddressType">
+		<xs:sequence>
+			<xs:element name="street" type="jagate:NonEmptyString"/>
+			<xs:element name="poBox" type="xs:string" minOccurs="0" />
+			<xs:element name="postalCode" type="xs:string" minOccurs="0" />
+			<xs:element name="city" type="jagate:NonEmptyString" />
+			<xs:element name="country" type="coderef:CodeRefType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="JagateBankAccountHolderType">
+		<xs:sequence>
+			<xs:element name="name" type="jagate:NonEmptyString"/>
+			<xs:element name="languageCode" type="coderef:CodeRefType" />
+			<xs:element name="title" type="xs:string" minOccurs="0"/>
+			<xs:element name="address" type="JagateBankAccountHolderAddressType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="JagateBankAccountHolderAddressType">
+		<xs:sequence>
+			<xs:element name="street" type="jagate:NonEmptyString"/>
+			<xs:element name="poBox" type="xs:string" minOccurs="0" />
+			<xs:element name="postalCode" type="xs:string" minOccurs="0" />
+			<xs:element name="city" type="jagate:NonEmptyString" />
+			<xs:element name="region" type="xs:string" minOccurs="0" />
+			<xs:element name="country" type="coderef:CodeRefType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="BankAccountHolderType">
+		<xs:complexContent>
+			<xs:extension base="cdm:BankAccountType">
+				<xs:sequence>
+					<xs:element name="bankAccountStatus" type="jagref:EObjectStatusType" minOccurs="0"/>
+					<xs:element name="locObjForeignId" type="xs:string" minOccurs="0"/>
+					<xs:element name="confidentialFlag" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="legalEntityLink" type="BankAccountLegalEntityLink" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="refBankAccount" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BankAccountLegalEntityLink">
+		<xs:sequence>
+			<xs:element name="legalEntityId" type="xs:string"/>
+			<xs:element name="legalEntityLinkStatus" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="BlockedInfoType">
+		<xs:sequence>
+			<xs:element name="code" type="BlockedReasonCodeType"/>
+			<xs:element name="freeTextReason" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="BlockedReasonCodeType">
+		<xs:annotation>
+			<xs:documentation>The possible values are: ? </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="RejectedInfoType">
+		<xs:sequence>
+			<xs:element name="masterIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="freeTextReason" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FollowUpInfoType">
+		<xs:sequence>
+			<xs:element name="freeTextReason" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EarlyWarningType">
+		<xs:sequence>
+			<xs:element name="code" type="EarlyWarningCodeType" />
+			<xs:element name="validFrom" type="xs:date" />
+			<xs:element name="validTo" type="xs:date" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EarlyWarningCodeType">
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" />
+			<xs:element name="description" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="CreateLEBALinkType">
+        <xs:sequence>
+            <xs:element name="legalEntityId" type="jagate:NonEmptyString" />
+            <xs:element name="bankAccountId" type="jagate:NonEmptyString" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CreateBankAccountType">
+        <xs:sequence>
+            <xs:element name="bankAccount" type="JagateBankAccountType" />
+            <xs:choice>
+                <xs:element name="aresDocumentList" type="jagate:AresDocumentList"/>
+                <xs:element name="scannedDocumentList" type="jagate:ScannedDocumentList"/>
+            </xs:choice>
+            <xs:element name="visa" type="visa:SingleTransactionVisaEmbeddedType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ValidateBankAccountType">
+       <!-- TO BE FILLED IN -->
+    </xs:complexType>
+
+	<xs:complexType name="RejectedBankAccountInfoType">
+		<xs:sequence>
+			<xs:element name="freeTextReason" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FollowUpBankAccountInfoType">
+		<xs:sequence>
+			<xs:element name="freeTextReason" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+</xs:schema>

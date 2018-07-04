@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 (http://www.altova.com) by Th. A. (European Commission - DG INFSO) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+
+<xs:schema 
+	targetNamespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4"
+	xmlns="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified" version="4.1.1">
+
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:simpleType name="ReportingPeriodNumberType">
+		<xs:restriction base="xs:nonNegativeInteger"/>
+	</xs:simpleType>
+	<xs:element name="ReportingPeriod" type="ReportingPeriodType"/>
+	<xs:complexType name="ReportingPeriodType">
+		<xs:sequence>
+			<xs:element name="Number" type="ReportingPeriodNumberType"/>
+			<xs:element name="FromMonth" type="base:MonthNumberType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>reporting period starts from this month in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ToMonth" type="base:MonthNumberType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>reporting period ends until this month in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>calculated date when reporting period starts</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>calculated date when reporting period ends</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DurationDays" type="base:CountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>calculated duration of reporting period in days</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DurationMonths" type="base:CountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>calculated duration of reporting period in months</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinancialReportingPeriodType">
+		<xs:complexContent>
+			<xs:extension base="ReportingPeriodType">
+				<xs:sequence>
+					<xs:element name="EstimatedCost" type="base:AmountType" minOccurs="0"/>
+					<xs:element name="RequestedECContribution" type="base:AmountType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>FP7 related</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RequestedNationalContribution" type="xs:decimal" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>It is the total requested national contribution for a reporting period. This is a field in the ARTEMIS GPFs in page A5 and it is applicable to each reporting period. It is used ONLY on ARTEMIS projects and it is mandatory.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ScientificReportingPeriodType">
+		<xs:annotation>
+			<xs:documentation>Specific to ERC projects: 
+			Container for delivery of ScientificReports .
+			TODO: unclear what is value of having this in the model currently</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ReportingPeriodType">
+				<xs:sequence>
+					<xs:element name="ScRPid" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Business Identification of the scientific reporting period, can be 'A', 'B', 'C', 'D', ...</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AuditCertificatePeriodType">
+		<xs:annotation>
+			<xs:documentation>FP6 related, Audit certificate periods that can cover several financial periods</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Number" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>audit certificate period number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FromFinancialPeriod" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>audit certificate period starts to cover from this financial period</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ToFinancialPeriod" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>audit certificate period covers until this financial period</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:annotation>
+		<xs:documentation>20131016 - v4.1.1 - EACEA ToMonth and FromMonth become optionall</xs:documentation>
+		<xs:documentation>20131016 - v4.1.0 - SYGMA - Modified FinancialReportingPeriodType.EstimatedCost and RequestedECContribution to be optional</xs:documentation>
+		<xs:documentation>20131010 - v4.0.0 - SYGMA - Modified startDate, endDate, DurationDays, DurationMonths to be optional, FinancialReportingPeriodType.EstimatedCostFirstSixMonthsNe removed</xs:documentation>
+		<xs:documentation>v3.0.2- Added ScRPid</xs:documentation>
+		<xs:documentation>v3.0.1- Changed ReportingPeriodNumberType to a non negative integer</xs:documentation>
+		<xs:documentation>v3.0.0- new simple type ReportingPeriodNumberType to use in the model and update in this file</xs:documentation>
+		<xs:documentation>v2.0.1 - calculated fields in ReportingPeriodType become mandatory</xs:documentation>
+		<xs:documentation>This schema intends to hold a view on 'reporting periods' defined for a project.</xs:documentation>
+	</xs:annotation>
+	
+</xs:schema>

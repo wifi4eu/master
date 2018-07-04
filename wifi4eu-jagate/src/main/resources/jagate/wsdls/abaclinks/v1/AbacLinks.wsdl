@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="AbacLinksWS" 
+	xmlns:abaclink="http://ec.europa.eu/rdg/jagate/ws/domain/abaclinks/v1" 
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/abaclinks/v1"
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/abaclinks/v1">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/abaclinks/v1" schemaLocation="../../../domain/abaclinks/v1/AbacLinks.xsd" />
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="AbacLinkException">
+		<wsdl:part element="jagate:Exception" name="Exception" />
+	</wsdl:message>	
+
+	<wsdl:message name="GetDeepLinkRequest">
+		<wsdl:part element="abaclink:GetAbacLinkRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="GetDeepLinkResponse">
+		<wsdl:part element="abaclink:GetAbacLinkResponse" name="response" />
+	</wsdl:message>
+	
+	<wsdl:message name="GetPrintOutLinkRequest">
+		<wsdl:part element="abaclink:GetPrintOutLinkRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="GetPrintOutLinkResponse">
+		<wsdl:part element="abaclink:GetPrintOutLinkResponse" name="response" />
+	</wsdl:message>	
+		
+	
+	<wsdl:portType name="IAbacLinksService">
+		<wsdl:operation name="GetAbacDeepLink">
+			<wsdl:input message="GetDeepLinkRequest" />
+			<wsdl:output message="GetDeepLinkResponse" />
+			<wsdl:fault name="AbacLinkException" message="AbacLinkException"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetAbacPrintOutLink">
+			<wsdl:input message="GetPrintOutLinkRequest" />
+			<wsdl:output message="GetPrintOutLinkResponse" />
+			<wsdl:fault name="AbacLinkException" message="AbacLinkException"/>
+		</wsdl:operation>		
+	</wsdl:portType>
+	
+	<!-- Binding -->
+	<wsdl:binding name="IAbacLinksServiceBinding" type="IAbacLinksService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="GetAbacDeepLink">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="AbacLinkException">
+				<soap:fault name="AbacLinkException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="GetAbacPrintOutLink">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="AbacLinkException">
+				<soap:fault name="AbacLinkException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>		
+	</wsdl:binding>	
+
+	<wsdl:service name="AbacLinksService">
+		<wsdl:port binding="IAbacLinksServiceBinding" name="AbacLinksServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/abaclinks/v1"/>
+		</wsdl:port>
+	</wsdl:service>	
+</wsdl:definitions>

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by EC (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/call/V4" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:officer="http://ec.europa.eu/research/fp/model/officer/V2" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:code="http://ec.europa.eu/research/fp/model/code/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/call/V4" elementFormDefault="qualified" version="4.1.0">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture all data related to a 'Call for information' prepared and published by a research DG.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code/V3" schemaLocation="../../code/V3/Code.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer/V2" schemaLocation="../../officer/V2/Officer.xsd"/>
+	<xs:element name="Call" type="CallType"/>
+	<xs:complexType name="CallType">
+		<xs:complexContent>
+			<xs:extension base="code:CodeType">
+				<xs:sequence>
+					<xs:element name="PublicationDate" type="xs:date"/>
+					<xs:element name="OpeningDate" type="xs:date" minOccurs="0"/>
+					<xs:element name="OfficialJournalReference" type="xs:string" minOccurs="0"/>
+					<xs:element name="WorkProgramCOMDecision" type="xs:string" minOccurs="0"/>
+					<xs:element name="IsCoordinated" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Flag that indicates if the call is a coordonated one. If it is, CoordinationId links to the coordination element.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CoordinationId" type="xs:string" minOccurs="0"/>
+					<xs:element name="CoordinationDescription" type="xs:string" minOccurs="0"/>
+					<xs:element name="IsJoint" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Flag indicating if the call is a joint call or not. If it is, there will be at least two CallTheme elements. If not, there will be just one.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IsTechnical" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Flag indicating if the call is a technical one. A technical call is created to better manage large call with multiple closure dates. If it is, MasterCallId links to the single non technical call this one is a part of.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MasterCallId" type="coderef:CodeIdType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>see IsTechnical</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SubmissionProcedure" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Allowed values: 
+								'OneStage'
+								'TwoStage'
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Type" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>This information drives the way closure dates are set.
+							 'Fixed call' = a single deadline (or two if the call is a two stage one)
+							 'Open call' = multiple deadline
+							 'Fixed multiple' = multiple cut-off dates and a final deadline
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AdonisReference" type="xs:string" minOccurs="0"/>
+					<xs:element name="CommissionURL" type="xs:string" minOccurs="0"/>
+					<xs:element name="CommissionEmail" type="xs:string"/>
+					<xs:element name="TotalIndicativeBudget" type="base:AmountType"/>
+					<xs:element name="CallThemes" type="CallThemeListType" minOccurs="0"/>
+					<xs:element name="FundingSchemes" type="FundingSchemeListType" minOccurs="0"/>
+					<xs:element name="Deadlines" type="DeadLineListType" minOccurs="0"/>
+					<xs:element name="Logistics" type="LogisticListType" minOccurs="0"/>
+					<xs:element name="AssignedTopics" type="TopicListType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>List of topic associated to the call (fp6 and fp7 way to link topics to a call)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CoordinatedCallIds" type="coderef:CodeIdListType" minOccurs="0"/>
+					<xs:element name="LinkedTechnicalCallIds" type="coderef:CodeIdListType" minOccurs="0"/>
+					<xs:element name="IsPublishedOnPP" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Indicates if the call must be published on PP or not. (sometimes it is the technical call that are published instead of the related master one)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CallListType">
+		<xs:sequence>
+			<xs:element name="Call" type="CallType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CallThemeType">
+		<xs:sequence>
+			<xs:element name="IsMaster" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>One of the callTheme has the lead. It is indicated with the master flag.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LegalBasis" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>FPDivision code type. First level under the framework element in the FPDivision Taxonomy.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SpecificProgram" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>FPDivision code type. Second level under the framework element in the FPDivision Taxonomy.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ThemePart" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>FPDivision code type. Third level under the framework element in the FPDivision Taxonomy.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResponsibleDG" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>This links to a CCM2 code id of type "ECHierarchy" and "level" = 2 (for DG)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BudgetLine" type="xs:string"/>
+			<xs:element name="SubTotalBudget" type="base:AmountType"/>
+			<xs:element name="CallCoordinator" type="officer:OfficerCoreInfoType" minOccurs="0"/>
+			<xs:element name="FPSupportCorrespondent" type="officer:OfficerCoreInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CallThemeListType">
+		<xs:sequence>
+			<xs:element name="CallTheme" type="CallThemeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CopyType">
+		<xs:sequence>
+			<xs:element name="PrintedCopies" type="base:CountType"/>
+			<xs:element name="SortOrder" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CopiesType">
+		<xs:sequence>
+			<xs:element name="ECEligibilityCopies" type="CopyType"/>
+			<xs:element name="FirstStageProposalPrint" type="CopyType"/>
+			<xs:element name="SecondStageProposalPrint" type="CopyType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicGroupType">
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:complexType name="TopicGroupListType">
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:complexType name="TopicType">
+		<xs:sequence>
+			<xs:element name="AssignedTopic" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>For H2020, link to a CCM2 code of type "FPDivision and context "H2020" of level 10 (Topic) not included in the FPDIvision taxonomy and Not linked to any other call.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence>
+				<xs:element name="FundingSchemeElements" type="coderef:CodeRefType" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Single occurence for FP6/7 calls, might be multiple for H2020.This is a ProjectType code for FP6/7 and an Instrument code for H2020</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="SPElements" type="coderef:CodeRefType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Mandatory for H2020 calls. Must be null otherwise. Link to a CCM2 code of type "FPDivision and context "H2020" included in the FPDIvision taxonomy.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TopicListType">
+		<xs:sequence>
+			<xs:element name="Topic" type="TopicType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClosureDateType">
+		<xs:sequence>
+			<xs:element name="Closure" type="xs:date"/>
+			<xs:element name="Proposals" type="base:CountType"/>
+			<xs:element name="Closure2ndStage" type="xs:date" minOccurs="0"/>
+			<xs:element name="Proposals2ndStage" type="base:CountType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EstimatedBudgetListType">
+		<xs:sequence>
+			<xs:element name="EstimatedBudget" type="EstimatedBudgetType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EstimatedBudgetType">
+		<xs:sequence>
+			<xs:element name="Amount" type="base:AmountType"/>
+			<xs:element name="Year" type="base:CountType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClosureDateListType">
+		<xs:sequence>
+			<xs:element name="ClosureDate" type="ClosureDateType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FundingSchemeType">
+		<xs:annotation>
+			<xs:documentation>This is a ProjectType code for FP6/7 and an Instrument code for H2020</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="coderef:CodeRefType">
+				<xs:sequence>
+					<xs:element name="MSOrAC" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Min no of MS or AS partners</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ICPCCountry" type="xs:string"/>
+					<xs:element name="CallFCHJURate" type="CallFCHJURateType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FundingSchemeListType">
+		<xs:sequence>
+			<xs:element name="FundingScheme" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This is a ProjectType code for FP6/7 and an Instrument code for H2020</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="FundingSchemeType"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DeadLineType">
+		<xs:sequence>
+			<xs:element name="Date" type="xs:date"/>
+			<xs:element name="CallSubIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="Proposals" type="base:CountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Expected number of proposals</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DeadLineListType">
+		<xs:sequence>
+			<xs:element name="FixedDeadline" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Only used for "fixed multiple" calls, indicating the final closure date </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Deadline" type="DeadLineType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>For two stage calls, there are two dates. The last one is the second stage closure. Call closes at first stage in PP.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LogisticType">
+		<xs:sequence>
+			<xs:element name="FundingScheme" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>This is a ProjectType code for FP6/7 and an Instrument code for H2020</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Copies" type="CopiesType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LogisticListType">
+		<xs:sequence>
+			<xs:element name="Logistic" type="LogisticType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CallFCHJURateType">
+		<xs:sequence>
+			<xs:element name="CompanyType" type="CompanyTypeType"/>
+			<xs:element name="FCHType" type="xs:string"/>
+			<xs:element name="CoordinationSupportCost" type="xs:double" minOccurs="0"/>
+			<xs:element name="DemonstrationCost" type="xs:double" minOccurs="0"/>
+			<xs:element name="ManagementCost" type="xs:double" minOccurs="0"/>
+			<xs:element name="OtherCost" type="xs:double" minOccurs="0"/>
+			<xs:element name="RtdCost" type="xs:double" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CompanyTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Non-Profit"/>
+			<xs:enumeration value="SME"/>
+			<xs:enumeration value="Industry"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--20140630 - 4.1.0 - Add optional OpeningDate to Call tyoe-->
+</xs:schema>

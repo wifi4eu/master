@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by martibs (European Commission) -->
+<xsd:schema
+	targetNamespace="http://ec.europa.eu/rdg/efp/services/resultcontext/v1_00"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:eu.europa.ec.rdg.efp.services.resultcontext="http://ec.europa.eu/rdg/efp/services/resultcontext/v1_00">
+	<xsd:complexType name="ResultContext">
+		<xsd:annotation>
+			<xsd:documentation>
+				This element contain the execution context information
+				during the system performance (Error code,
+				type,description, success...)
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ResultStatus"
+				type="eu.europa.ec.rdg.efp.services.resultcontext:ListStatusType">
+				<xsd:annotation>
+					<xsd:documentation>
+						This element contains the status of the request
+						OK or NOK.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ResultNumber" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>
+						This element contains the number of element
+						found during the request. It could be null (i.e.
+						no element found).
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ServiceInformation">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="RdgOwnerName"
+							type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>
+									The RDG name owner of this current
+									service.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="ITsystemName"
+							type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>
+									The IT system name for a specific
+									RDG.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ErrorStatus" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ErrorType"
+							type="eu.europa.ec.rdg.efp.services.resultcontext:ListErrorType">
+							<xsd:annotation>
+								<xsd:documentation>
+									This element contains the type of
+									error (SYSTEM error, VALIDATION
+									error, OTHER error type...) .
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="ErrorCode"
+							type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>
+									This element contains the specific
+									error code defined by the owner of
+									this business service.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Description"
+							type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>
+									This element contains the
+									description of the error. Free field
+									to be provided by the owner of this
+									business service.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="ListErrorType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SYSTEM" />
+			<xsd:enumeration value="VALIDATION" />
+			<xsd:enumeration value="OTHER" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ListStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="OK" />
+			<xsd:enumeration value="NOK" />
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

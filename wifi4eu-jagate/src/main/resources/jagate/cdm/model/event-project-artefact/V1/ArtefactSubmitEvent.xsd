@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Cyril Brigant (European Commission) -->
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/projectartefact/submit-event/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:submissionRef="http://ec.europa.eu/research/fp/model/project-artefact-submission-ref/V1" xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/projectartefact/submit-event/V1" elementFormDefault="qualified" version="1.0.0">
+	<!-- =========================================
+		schemas imports	
+		=========================================== -->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-artefact-submission-ref/V1" schemaLocation="../../project-artefact-submission-ref/V1/ProjectArtefactSubmissionRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" schemaLocation="../../project-reportingperiod/V3/ProjectReportingPeriod.xsd"/>
+	<xs:complexType name="ProjectArtefactSubmitEvent">
+		<xs:annotation>
+			<xs:documentation>Event triggered when a submssion of project artefacts happens.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="SubmissionRef" type="submissionRef:ProjectArtefactSubmissionRefType"/>
+					<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation - 2012/08/06</xs:documentation>
+	</xs:annotation>
+</xs:schema>

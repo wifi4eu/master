@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns="http://ec.europa.eu/research/fp/model/code/V2" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" 
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://ec.europa.eu/research/fp/model/code/V2" 
+	elementFormDefault="qualified" 
+	version="2.0.1">
+	
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	
+	<xs:element name="Code" type="CodeType"/>
+	<xs:complexType name="CodeType">
+		<xs:annotation>
+			<xs:documentation>Full set of code elements. To be used in code administration.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="coderef:CodeIdType"/>
+			<xs:element name="Abbreviation" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Short human readable descriptive value. Always in context of a particular code classification Type and Program.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Code classification context, e.g. Country, Language, Currency, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Program" type="base:ProgramType">
+				<xs:annotation>
+					<xs:documentation>Legal Framework Program context.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Valid" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indicator flag whether the code is currently valid. May need to be extended with start/end dates.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Extensive human readable descriptive value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreationDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Code creation time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ModificationDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Last code modification time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodeListType">
+		<xs:sequence>
+			<xs:element name="Code" type="CodeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CountryCodeType">
+		<xs:complexContent>
+			<xs:extension base="CodeType">
+				<xs:sequence>
+					<xs:element name="Alias" type="xs:string" minOccurs="0"/>
+					<xs:element name="IsoCode3" type="xs:string" minOccurs="0"/>
+					<xs:element name="CountryGroups" type="CountryGroupCodeListType" minOccurs="0"/>
+					<xs:element name="Currencies" type="CodeListType" minOccurs="0"/>
+					<xs:element name="Languages" type="LanguageCodeListType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CountryCodeListType">
+		<xs:sequence>
+			<xs:element name="Country" type="CountryCodeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CountryGroupCodeType">
+		<xs:complexContent>
+			<xs:extension base="CodeType">
+				<xs:sequence>
+					<xs:element name="countries" type="coderef:CodeIdListType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CountryGroupCodeListType">
+		<xs:sequence>
+			<xs:element name="CountryGroup" type="CountryGroupCodeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LanguageCodeType">
+		<xs:complexContent>
+			<xs:extension base="CodeType">
+				<xs:sequence>
+					<xs:element name="IsoCode3" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="LanguageCodeListType">
+		<xs:sequence>
+			<xs:element name="Language" type="LanguageCodeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NutsRegionCodeType">
+		<xs:complexContent>
+			<xs:extension base="CodeType">
+				<xs:sequence>
+					<xs:element name="Level" type="xs:int"/>
+					<xs:element name="ParentId" type="coderef:CodeIdType"/>
+					<xs:element name="LessFavorite" type="xs:boolean"/>
+					<xs:element name="CountryId" type="coderef:CodeIdType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NutsRegionCodeListType">
+		<xs:sequence>
+			<xs:element name="NutsRegion" type="NutsRegionCodeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ECHierarchyCodeType">
+		<xs:complexContent>
+			<xs:extension base="CodeType">
+				<xs:sequence>
+					<xs:element name="HierarchyType" type="ECHierarchyClassType"/>
+					<xs:element name="Level" type="xs:int"/>
+					<xs:element name="ParentId" type="coderef:CodeIdType"/>
+					<xs:element name="ChildrenIds" type="coderef:CodeIdListType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ECHierarchyCodeListType">
+		<xs:sequence>
+			<xs:element name="ECHierarchy" type="ECHierarchyCodeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ECHierarchyClassType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DG"/>
+			<xs:enumeration value="DIR"/>
+			<xs:enumeration value="UNIT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ActivityCodeType">
+		<xs:complexContent>
+			<xs:extension base="CodeType">
+				<xs:sequence>
+					<xs:element name="Level" type="xs:int"/>
+					<xs:element name="DivisionName" type="xs:string"/>
+					<xs:element name="Budget" type="base:AmountType"/>
+					<xs:element name="Year" type="base:YearType"/>
+					<xs:element name="CrossCutting" type="xs:boolean"/>
+					<xs:element name="EpssFlag" type="xs:boolean"/>
+					<xs:element name="ParentId" type="coderef:CodeIdType"/>
+					<xs:element name="ChildrenIds" type="coderef:CodeIdListType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ActivityCodeListType">
+		<xs:sequence>
+			<xs:element name="Activity" type="ActivityCodeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FundingSchemeCodeType">
+		<xs:complexContent>
+			<xs:extension base="CodeType">
+				<xs:sequence>
+					<xs:element name="SubFundingSchemeIds" type="coderef:CodeIdListType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubFundingSchemeCodeType">
+		<xs:complexContent>
+			<xs:extension base="CodeType">
+				<xs:sequence>
+					<xs:element name="FundingSchemeId" type="coderef:CodeIdType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

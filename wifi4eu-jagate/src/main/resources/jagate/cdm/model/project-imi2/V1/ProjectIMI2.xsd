@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/project-imi2/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:partner="http://ec.europa.eu/research/fp/model/project-partner/V4" xmlns:ns1="http://ec.europa.eu/research/fp/model/project-imi2/V1" xmlns="http://ec.europa.eu/research/fp/model/project-imi2/V1"
+	elementFormDefault="qualified" version="1.0.0">
+
+	<xs:annotation>
+		<xs:documentation>
+			This schema intends to capture all funding scheme specific project data; in this case for projects complying to IMI2 program
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V4" schemaLocation="../../project-partner/V4/ProjectPartner.xsd" />
+
+	<xs:element name="IMI2ProjectInfo" type="IMI2ProjectInfoType" />
+
+	<xs:complexType name="IMI2ProjectInfoType">
+		<xs:sequence>
+			<xs:element name="AssociatedPartnerList" type="AssociatedPartnerListType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AssociatedPartnerListType">
+		<xs:annotation>
+			<xs:documentation>Project level data elements specific to IMI2 projects.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AssociatedPartner" type="partner:AssociatedPartnerType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20170131 - v1.0.0 - IMI2ProjectInfoType extending the projectType -> fundingSchemeSpecificInfo</xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns="http://ec.europa.eu/rdg/jagate/ws" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://ec.europa.eu/rdg/jagate/ws">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/contract/create/v1" schemaLocation="event/contract/v1/CreateContractEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalcommitment/update/v1" schemaLocation="event/legalcommitment/v1/LegalCommitmentUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalcommitment/create/v1" schemaLocation="event/legalcommitment/v1/LegalCommitmentCreateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalcommitment/create/v2" schemaLocation="event/legalcommitment/v2/GrantLegalCommitmentCreateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalcommitment/correct/v2" schemaLocation="event/legalcommitment/v2/GrantLegalCommitmentCorrectEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalcommitment/amend/v2" schemaLocation="event/legalcommitment/v2/GrantLegalCommitmentAmendEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/commitment/update/v1" schemaLocation="event/commitment/v1/CommitmentUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/commitment/update/v2" schemaLocation="event/commitment/v2/CommitmentUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/commitment/update/v3" schemaLocation="event/commitment/v3/CommitmentUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalentity/finish/v1" schemaLocation="event/legalentity/v1/FinishedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalentity/finish/v2" schemaLocation="event/legalentity/v2/FinishedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalentity/interrupted/v1" schemaLocation="event/legalentity/v1/InterruptedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancing/update/v1" schemaLocation="event/prefinancing/v1/PrefinPaymentOrderUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancing/update/v2" schemaLocation="event/prefinancing/v2/PrefinPaymentOrderUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancing/update/v2" schemaLocation="event/prefinancing/v2/PrefinPaymentOrderUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancinginvoice/update/v1" schemaLocation="event/prefinancinginvoice/v1/PrefinancingInvoiceUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancingpaymentrequest/update/v1" schemaLocation="event/prefinancingpaymentrequest/v1/PrefinancingPaymentRequestUpdateEvent.xsd"/> 
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/alpayment/paymentorder/v1" schemaLocation="event/alpayment/v1/AlPaymentOrderCreateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/alpayment/paymentrequest/v1" schemaLocation="event/alpayment/v1/AlPaymentRequestCreateEvent.xsd"/>
+	<!--  Cost Claim Invoices events -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/costclaim/register/v1" schemaLocation="event/costclaim/v1/RegisterCostClaimInvoiceEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/costclaim/reregister/v1" schemaLocation="event/costclaim/v1/ReRegisterCostClaimInvoiceEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/costclaim/unregister/v1" schemaLocation="event/costclaim/v1/UnRegisterCostClaimInvoiceEvent.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/costclaim/reopen/v1" schemaLocation="event/costclaim/v1/ReopenCostClaimInvoiceEvent.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/costclaim/close/v1" schemaLocation="event/costclaim/v1/CloseCostClaimInvoiceEvent.xsd"/>
+    <!--  Invoices events -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/invoice/register/v1" schemaLocation="event/invoice/v1/RegisterInvoiceEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/invoice/reregister/v1" schemaLocation="event/invoice/v1/ReRegisterInvoiceEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/invoice/unregister/v1" schemaLocation="event/invoice/v1/UnRegisterInvoiceEvent.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/invoice/reopen/v1" schemaLocation="event/invoice/v1/ReopenInvoiceEvent.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/invoice/close/v1" schemaLocation="event/invoice/v1/CloseInvoiceEvent.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/invoice/invalidate/v1" schemaLocation="event/invoice/v1/InvalidateInvoiceEvent.xsd"/>
+	<!--  Clock events -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/clock/createsuspension/v1" schemaLocation="event/clock/v1/CreateSuspensionEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/clock/cancelsuspension/v1" schemaLocation="event/clock/v1/CancelSuspensionEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/clock/stopsuspension/v1" schemaLocation="event/clock/v1/StopSuspensionEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/clock/updatesuspension/v1" schemaLocation="event/clock/v1/UpdateSuspensionEvent.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/clock/addsuspensions/v1" schemaLocation="event/clock/v1/AddSuspensionsEvent.xsd"/>
+
+	<!--  Payment request -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/paymentrequest/update/v1" schemaLocation="event/paymentrequest/v1/PaymentRequestUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/paymentrequest/update/v2" schemaLocation="event/paymentrequest/v2/PaymentRequestUpdateEvent.xsd"/>
+
+	<!--  Bank account request -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/bankaccount/finish/v1" schemaLocation="event/bankaccount/v1/BankAccountFinishedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/bankaccount/interrupted/v1" schemaLocation="event/bankaccount/v1/BankAccountInterruptedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/bankaccount/created/v5" schemaLocation="event/bankaccount/v5/BankAccountCreatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/bankaccount/link/v1" schemaLocation="event/bankaccount/v1/BankAccountCreateLEBALinkEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/bankaccount/followup/v1" schemaLocation="event/bankaccount/v1/FollowUpBankAccountEvent.xsd"/>
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancingjrc/update/v1" schemaLocation="event/prefinancingjrc/v1/PrefinancingJRCInvoiceUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancingjrc/update/v1" schemaLocation="event/prefinancingjrc/v1/PrefinancingJRCPaymentRequestUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancingjrc/update/v1" schemaLocation="event/prefinancingjrc/v1/PrefinancingJRCGFPaymentRequestUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancingjrc/update/v1" schemaLocation="event/prefinancingjrc/v1/PrefinancingJRCPaymentOrderUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancingjrc/update/v1" schemaLocation="event/prefinancingjrc/v1/PrefinancingJRCGFPaymentOrderUpdateEvent.xsd"/> 
+	
+	<!-- Recovery order events -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/recoveryorder/create/v1" schemaLocation="event/recoveryorder/v1/RecoveryOrderCreateEvent.xsd"/>
+	
+	<!-- Experts payment events -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/expertspayment/create/v1" schemaLocation="event/expertspayment/v1/ExpertsPaymentRequestCreateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/expertspaymentorder/create/v1" schemaLocation="event/expertspayment/v1/ExpertsPaymentOrderCreateEvent.xsd"/>
+
+	<!-- Procurement events -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/procurement/created/v1" schemaLocation="event/procurement/v1/ProcurementCreatedEvent.xsd"/>
+</xs:schema>

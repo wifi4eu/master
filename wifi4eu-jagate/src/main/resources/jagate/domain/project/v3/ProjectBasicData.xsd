@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+					xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" 
+							xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/project/v3" 
+							targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v3"						
+							elementFormDefault="qualified" 
+							attributeFormDefault="unqualified">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+								
+	<xs:complexType name="ProjectDataType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This data is related with the project and is used to determine the DG Client (business class) and to generate the user reference field.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Number" type="xs:string" />
+			<xs:element name="Acronym" type="xs:string" />
+			<xs:element name="FrameworkType" type="coderef:CodeRefType" />
+			<xs:element name="Officer" type="xs:string" />
+			<xs:element name="CallReference" type="coderef:CodeRefType" />
+			<xs:element name="ResponsibleOrganisation" type="coderef:CodeRefType" />
+			<xs:element name="Title" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ProjectDataTitleType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This data is related with the project and is used to determine the Responsible Organisation based on the field Project Officer.
+				The ABAC user reference field it also based on these values, for example:
+					* Budgetary Commitment (Level 2 Commitment): PROJECT_NUMBER + '-' + PROJECT_ACRONYM + '-' + CALL_REFERENCE 
+					* Legal Commitment: PROJECT_NUMBER + '-' + PROJECT_ACRONYM + '-' + CALL_REFERENCE + '-' + TITLE
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Number: The project number.
+				</xs:documentation>
+			</xs:annotation>
+			<xs:element name="Number" type="xs:string">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Acronym: The project Acronym.
+				</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="Acronym" type="xs:string">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					FrameworkType: The Framework program under which the project is linked. This value it's a CCM code.
+				</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="FrameworkType" type="coderef:CodeRefType">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Officer: This field is the Project Officer. From this field the ABAC responsible organisation is derived.
+				</xs:documentation>
+				
+			</xs:annotation>
+			</xs:element>				
+			<xs:element name="Officer" type="xs:string" >
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					CallReference: The call under which the project is linked. This value it's a CCM code. 
+				</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="CallReference" type="coderef:CodeRefType">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Title: The title for the project. Used for the user reference in the Legal Commitment. 
+				</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="Title" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ProjectDataPrefinType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This data is related with the project and is used to determine the Responsible Organisation based on the field Project Officer.
+				The ABAC user reference field it also based on these values, for example:
+					* Prefin invoice: 
+					* Prefin Payment Request: 
+					* Prefin Payment Order: 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Number: The project number.
+				</xs:documentation>
+			</xs:annotation>
+			<xs:element name="Number" type="xs:string" >
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Acronym: The project Acronym.
+				</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="Acronym" type="xs:string" >
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					FrameworkType: The Framework program under which the project is linked. This value it's a CCM code.
+				</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="FrameworkType" type="coderef:CodeRefType" >
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Officer: This field is the Project Officer. From this field the ABAC responsible organisation is derived.
+				</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="Officer" type="xs:string">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					CallReference: The call under which the project is linked. This value it's a CCM code. 
+				</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="CallReference" type="coderef:CodeRefType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ProjectDataCL1Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This data is related with the call and It's used to create the Commitment user reference.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					The Call related to this CL1. This value it's a CCM code.
+				</xs:documentation>
+			</xs:annotation>		
+			<xs:element name="Call" type="coderef:CodeRefType">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					The subCall related to this CL1. This value it's a CCM code.
+				</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="SubCall" type="coderef:CodeRefType">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					The call topic for this CL1.
+				</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element name="Topic" type="xs:string"  minOccurs="0" />			
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

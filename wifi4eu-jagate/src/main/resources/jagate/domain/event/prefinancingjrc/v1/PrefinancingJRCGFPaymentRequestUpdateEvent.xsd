@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancingjrc/update/v1" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/prefinancingjrc/update/v1"
+		   xmlns:eventbase="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v2"
+		   xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/visastatus/v2"
+		   elementFormDefault="qualified" 
+		   attributeFormDefault="unqualified">
+
+
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v2" schemaLocation="../../base/v2/JagateBaseEvent.xsd" />
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/visastatus/v2" schemaLocation="../../base/v2/VisaStatusEvent.xsd" />
+
+	<xs:complexType name="PrefinancingJRCGFPaymentRequestUpdateEvent">
+		<xs:complexContent>
+			<xs:extension base="eventbase:JagateTransactionEvent">
+				<xs:sequence>
+					<xs:element name="VisaStatus" type="visa:VisaStatus" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

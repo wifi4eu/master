@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		xmlns="http://ec.europa.eu/rdg/jagate/ws/costclaim/v1/interfaces" 
+		targetNamespace="http://ec.europa.eu/rdg/jagate/ws/costclaim/v1/interfaces"
+		elementFormDefault="qualified"
+		xmlns:invoice="http://ec.europa.eu/rdg/jagate/ws/domain/invoice/v1"
+		xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v2"
+		xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2"
+		xmlns:inv="http://ec.europa.eu/research/fp/model/invoice/V1"
+		xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/invoice/V1" schemaLocation="../../../cdm/model/invoice/V1/Invoice.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v2" schemaLocation="../../../domain/project/v2/ProjectBasicData.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" schemaLocation="../../../domain/visa/v2/Visa.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/invoice/v1" schemaLocation="../../../domain/invoice/v1/Invoice.xsd" />	
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" schemaLocation="../../../domain/documents/v1/AresReference.xsd" />
+						
+	<xs:element name="RegisterCostClaimInvoiceResponse" type="RegisterCostClaimInvoiceResponseType" />
+	<xs:element name="RegisterCostClaimInvoiceRequest" type="RegisterCostClaimInvoiceRequestType" />	
+	<xs:element name="UnRegisterCostClaimInvoiceRequest" type="UnRegisterCostClaimInvoiceRequestType" />
+	<xs:element name="UnRegisterCostClaimInvoiceResponse" type="UnRegisterCostClaimInvoiceResponseType" />
+	<xs:element name="ReRegisterCostClaimInvoiceResponse" type="ReRegisterCostClaimInvoiceResponseType" />
+	<xs:element name="ReRegisterCostClaimInvoiceRequest" type="ReRegisterCostClaimInvoiceRequestType" />
+	<xs:element name="CloseCostClaimInvoiceResponse" type="CloseCostClaimInvoiceResponseType" />
+	<xs:element name="CloseCostClaimInvoiceRequest" type="CloseCostClaimInvoiceRequestType" />
+    <xs:element name="ReopenCostClaimInvoiceResponse" type="ReopenCostClaimInvoiceResponseType" />
+    <xs:element name="ReopenCostClaimInvoiceRequest" type="ReopenCostClaimInvoiceRequestType" />
+	
+	<xs:element name="CostClaimInvoiceException" type="jagate:JAgateException" />
+	
+	<xs:complexType name="RegisterCostClaimInvoiceRequestType">
+		<xs:annotation>
+			<xs:documentation>Registering cost claim invoice in ABAC</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataPrefinType"/>
+			<xs:element name="LastPeriod" type="xs:boolean"/>
+			<xs:element name="ReportingPeriodNumber" type="xs:integer"/>
+			<xs:element name="ApplicableTimeLimit" type="xs:integer" minOccurs="0" maxOccurs="1"/>                 
+			<xs:element name="InvoiceHeader" type="invoice:InvoiceDetails"/>
+			<xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RegisterCostClaimInvoiceResponseType">
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UnRegisterCostClaimInvoiceRequestType">
+		<xs:annotation>
+			<xs:documentation>Registering cost claim invoice in ABAC</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UnRegisterCostClaimInvoiceResponseType">
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ReRegisterCostClaimInvoiceRequestType">
+		<xs:annotation>
+			<xs:documentation>Re Registering cost claim invoice in ABAC</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataPrefinType"/>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="ApplicableTimeLimit" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="InvoiceHeader" type="invoice:InvoiceDetails"/>
+			<xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ReRegisterCostClaimInvoiceResponseType">
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CloseCostClaimInvoiceRequestType">
+		<xs:annotation>
+			<xs:documentation>Closing cost claim invoice in ABAC</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataPrefinType"/>			
+			<xs:element name="InvoiceList" type="inv:InvoiceType" />
+			<xs:element name="AresReferenceData" type="documents:AresReferenceDataType"/>
+			<xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CloseCostClaimInvoiceResponseType">
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="ReopenCostClaimInvoiceRequestType">
+        <xs:annotation>
+            <xs:documentation>Closing cost claim invoice in ABAC</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+            <xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ReopenCostClaimInvoiceResponseType">
+        <xs:sequence>
+            <xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+            <xs:element name="returnCode" type="xs:long"/>
+            <xs:element name="message" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+			
+</xs:schema>

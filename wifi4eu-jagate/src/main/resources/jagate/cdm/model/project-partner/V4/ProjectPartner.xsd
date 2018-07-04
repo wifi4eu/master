@@ -1,0 +1,1378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by XMLSpy 2008 Enterprise Ed., Installed for 5 users (European Commission DG Regio) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou
+	(European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/project-partner/V4" xmlns:audit="http://ec.europa.eu/research/fp/model/audit/V2" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:representative="http://ec.europa.eu/research/fp/model/project-representative/V4" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:costbreakdown="http://ec.europa.eu/research/fp/model/project-costbreakdown/V3" xmlns:costclaim="http://ec.europa.eu/research/fp/model/costclaim/V5" xmlns:report="http://ec.europa.eu/research/fp/model/report/V3" xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" xmlns:lenofacts="http://ec.europa.eu/research/fp/model/legalentity-nofacts/V1" xmlns:bankaccount="http://ec.europa.eu/research/fp/model/bankaccount/V4" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:project="http://ec.europa.eu/research/fp/model/project/V4" xmlns:address="http://ec.europa.eu/research/fp/model/address/V4" xmlns:payment="http://ec.europa.eu/research/fp/model/payment/V1" xmlns:infrainstallation="http://ec.europa.eu/research/fp/model/project-partner-infrainstallation/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:MarieCurie="http://ec.europa.eu/research/fp/model/project-mariecurie/V5" targetNamespace="http://ec.europa.eu/research/fp/model/project-partner/V4" elementFormDefault="qualified" version="4.10">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V4" schemaLocation="../../bankaccount/V4/BankAccount.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim/V5" schemaLocation="../../costclaim/V5/CostClaim.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" schemaLocation="../../project-reportingperiod/V4/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-nofacts/V1" schemaLocation="../../legalentity-nofacts/V1/LegalEntityNoFacts.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V3" schemaLocation="../../project-costbreakdown/V3/ProjectCostBreakdown.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-representative/V4" schemaLocation="../../project-representative/V4/ProjectRepresentative.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V4" schemaLocation="../../address/V4/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/audit/V2" schemaLocation="../../audit/V2/Audit.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-mariecurie/V5" schemaLocation="../../project-mariecurie/V5/ProjectMarieCurie.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project/V4" schemaLocation="../../project/V4/Project.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/payment/V1" schemaLocation="../../payment/V1/Payment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner-infrainstallation/V1" schemaLocation="../../project-partner-infrainstallation/V1/ProjectPartnerInfrainstallation.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/report/V3" schemaLocation="../../report/V3/Report.xsd"/>
+	<xs:simpleType name="PartnerRoleType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Beneficiary"/>
+			<xs:enumeration value="Coordinator"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProjectStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ACTIVE"/>
+			<xs:enumeration value="TERMINATED"/>
+			<xs:enumeration value="NOT_ACCEDED"/>
+			<xs:enumeration value="TEMP_ACTIVE"/>
+			<xs:enumeration value="INACTIVE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EnterDateOptionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FIXED_DATE"/>
+			<xs:enumeration value="AMD_SIGNATURE_DATE"/>
+			<xs:enumeration value="BENEFICIARY_ACCESSION_DATE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:group name="PartnerCoreGroup">
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="ShortName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>partner short name used in project - unique in
+						this project only
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectEnterDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner enters the project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectExitDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner exits the project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectStatus" type="ProjectStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The status of the partner in the project
+				Values:
+				1. ACTIVE
+				2. TERMINATED
+				3. NOT_ACCEDED
+				4. TEMP_ACTIVE (specific to amendments)
+				5. INACTIVE (specific to SGA)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="LegalPartnerCore" type="LegalPartnerCoreType"/>
+	<xs:complexType name="LegalPartnerCoreType">
+		<xs:sequence>
+			<xs:element name="OrderNumber" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>partner number in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="PartnerCoreGroup"/>
+			<xs:element name="Role" type="PartnerRoleType">
+				<xs:annotation>
+					<xs:documentation>role of partner in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="PartnerFinancialCoreGroup"/>
+			<xs:element name="ThirdParty" type="ThirdPartyPartnerCoreType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>list of third parties linked to partner
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ParticipationID" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>PIC+shortname? The participationID is used to
+						differentiate multiple participation by the same LegalEntity.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsArtemisMS" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is a Boolean fields indicating that a
+						participant is an ARTEMIS Member State or not. List of values: *1*
+						(True);
+						*0* (False), or not present.
+						It is mandatory for ARTEMIS
+						participants (NEF should give input to that field). Moreover, the
+						field SHOULD NOT be modified on amendments
+						or ILs.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsAuthorisedToTransferContactDetails" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>In ARTEMIS GPF, this field is displayed as a
+						radio button: *I agree* and *I disagree* in page A2.2. in the
+						section
+						*AUTHORIZATION TO TRANSFER CONTACT DETAILS TO THE ARTEMISIA
+						ORGANIZATION*, with NEITHER button enabled as the default. List of
+						values:
+						*1* (True): if the radio button *I agree* is checked on
+						GPF;
+						*0* (False): if the radio button *I disagree* is checked on
+						GPF;
+						the tag is ommitted, it is not generated: if neither *I agree*
+						nor *I disagree* is selected.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ThirdPartyPartnerCore" type="ThirdPartyPartnerCoreType"/>
+	<xs:complexType name="ThirdPartyPartnerCoreType">
+		<xs:sequence>
+			<xs:element name="OrderNumber" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>third party number with respect to the beneficiary in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="PartnerCoreGroup"/>
+			<xs:group ref="PartnerFinancialCoreGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="LegalEntityGroup">
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="LegalEntityData" type="lenofacts:LegalEntityNoFactsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="PartnerGroup">
+		<xs:sequence>
+			<xs:element name="ShortName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Short name for partner - unique in project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectEnterDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner enters the project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectExitDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner exits the project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectStatus" type="ProjectStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The status of the partner in the project
+				Values:
+				1. ACTIVE
+				2. TERMINATED
+				3. NOT_ACCEDED
+				4. TEMP_ACTIVE (specific to amendments)
+				5. INACTIVE (specific to SGA)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="ParticipantTerminationGroup" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Fields related to Participant Termination</xs:documentation>
+				</xs:annotation>
+			</xs:group>
+			<xs:element name="BeneficiarySignature" type="BeneficiarySignatureType" minOccurs="0"/>
+			<xs:element name="BankAccount" type="bankaccount:BankAccountType" minOccurs="0"/>
+			<xs:element name="DepartmentsWithActualCosts" type="DepartmentsWithActualCostsType" minOccurs="0"/>
+			<xs:element name="DepartmentCarryingoutWork" type="DepartmentCarryingoutWorkType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>H2020: specify which department(s) is/are actually doing the work in the grant</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FundingSchemeSpecificInfo" type="FundingSchemeSpecificPartnerInfoType" minOccurs="0"/>
+			<xs:element name="InfrastructureInstallation" type="infrainstallation:InfrastructureInstallationType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>For H2020: for specific topics under Research Infrastructure part of H2020, each partner may be an access provider to research infrastructure(s) and needs to specifiy the access provisions for each installation of the infrastructure(s)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EnterDateOption" type="EnterDateOptionType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						The option chosen for the partner enter date in the project
+						Values:	FIXED_DATE, AMD_SIGNATURE_DATE, BENEFICIARY_ACCESSION_DATE
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EnterDateOptionCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The option chosen for the partner enter date in the project a CCM code of type GrantDateOption </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="DepartmentsWithActualCostsType">
+		<xs:sequence>
+			<xs:element name="DepartmentName" type="xs:string" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="ProjectRepresentativesGroup">
+		<xs:sequence>
+			<xs:choice>
+				<xs:annotation>
+					<xs:documentation>Each partner designates one or more individuals
+						that have particular defined roles within the consortium. The
+						basic
+						default role is the "Participant representative", i.e. the
+						person of contact for that particular participant in this
+						particular
+						project. (Reason for the choice: We have the choice of
+						carrying the whole Representative information or the minimum
+						information
+						currently needed by the portal).
+					</xs:documentation>
+				</xs:annotation>
+				<xs:element name="ProjectRepresentativeRefs" type="representative:ProjectRepresentativeCoreInfoType" maxOccurs="unbounded"/>
+				<xs:element name="ProjectRepresentatives" type="representative:ProjectRepresentativeType" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="FundingSchemeSpecificPartnerInfoType">
+		<xs:annotation>
+			<xs:documentation>Type containting all the possible partner specific info / funding scheme</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MarieCuriePartnerInfo" type="MarieCurie:MarieCuriePartnerInfoType" minOccurs="0"/>
+			<xs:element name="MarieCuriePartnerInfoH2020" type="MarieCurie:MarieCuriePartnerInfoH2020Type" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FundingSchemeSpecificPartnerOrgInfoType">
+		<xs:annotation>
+			<xs:documentation>Type containting all the possible partner organisation specific info / funding scheme</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MarieCuriePartnerOrgInfoH2020" type="MarieCurie:MarieCuriePartnerOrgInfoH2020Type" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="LegalPartner" type="LegalPartnerType"/>
+	<xs:complexType name="LegalPartnerType">
+		<xs:sequence>
+			<xs:group ref="LegalEntityGroup"/>
+			<xs:element name="OrderNumber" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Partner number in project, eg. 1, 2, etc
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Role" type="PartnerRoleType">
+				<xs:annotation>
+					<xs:documentation>Role of partner in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChangeCooSignRepresentative" type="legalentityref:LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>one of the beneficiariies assigned to represent the consortium for the change of coordinator on behalf of consortium (in case current Coordinator is bankrupt or does not agree)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChangeCooSignOption" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Only in the specific case of a change of coordinator, without its agreement, shall the
+						request be submitted by all beneficiaries or by one representing the others.
+						Values:
+						1.SIGNED_BY_ALL_BENEFICIARIES
+						2.SIGNED_BY_ONE_REPRESENTATIVE_BENEFICIARY
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CooEffectiveDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner became coordinator. The CooEffectiveDateOption must be a FIXED_DATE.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CooEffectiveEndDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner loses the role of Coordinator and becames a normal beneficiary. It is one day before the new Coordinator takes over.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="PartnerGroup"/>
+			<xs:group ref="ProjectRepresentativesGroup" minOccurs="0"/>
+			<xs:group ref="PartnerFinancialGroup" minOccurs="0"/>
+			<xs:element name="ThirdParty" type="ThirdPartyPartnerType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of third parties associated to the partner in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UTRO" type="UTROType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>LEs bought by this beneficiary</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PTROtoPartner" type="PTROtoType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>beneficiary partially transfers rights and obligation to another beneficiary</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ParticipationID" type="xs:string" minOccurs="0"/>
+			<xs:element name="IsArtemisMS" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is a Boolean fields indicating that a
+						participant is an ARTEMIS Member State or not. List of values: *1*
+						(True);
+						*0* (False), or not present.
+						It is mandatory for ARTEMIS
+						participants (NEF should give input to that field). Moreover, the
+						field SHOULD NOT be modified on amendments
+						or ILs.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsAuthorisedToTransferContactDetails" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>In ARTEMIS GPF, this field is displayed as a
+						radio button: *I agree* and *I disagree* in page A2.2. in the
+						section
+						*AUTHORIZATION TO TRANSFER CONTACT DETAILS TO THE ARTEMISIA
+						ORGANIZATION*, with NEITHER button enabled as the default. List of
+						values:
+						*1* (True): if the radio button *I agree* is checked on
+						GPF;
+						*0* (False): if the radio button *I disagree* is checked on
+						GPF;
+						the tag is ommitted, it is not generated: if neither *I agree*
+						nor *I disagree* is selected.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="INOLegalEntity" type="INOLegalEntityType" minOccurs="0"/>
+			<xs:element name="PartnerIndividualCommitement" type="PartnerIndividualCommitementType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Partner data related to Project Individual
+						Commitment
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PartnerShare" type="base:PercentageType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>it is the share percentage calculated as
+						Partner.RequestedECContribution/Project.RequestedECContribution
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinancialRatios" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="FinancialExposure" type="FinancialExposureType" minOccurs="0"/>
+						<xs:element name="CoFinancingCapacity" type="CoFinancingCapacityType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AuditList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Audit" type="audit:AuditInformationType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProjectParticipationsList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ProjectParticipation" type="project:ProjectType" maxOccurs="unbounded"/>
+						<xs:element name="ParticipationsRequestedECContribution" type="base:AmountType" minOccurs="0"/>
+						<xs:element name="ParticipationsTotalCost" type="base:AmountType" minOccurs="0"/>
+						<xs:element name="NumberOfParticipations" type="xs:integer" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Payments" type="payment:PaymentListType" minOccurs="0"/>
+			<xs:element name="SMEFlatRateOption" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This element is only for FP7.
+					SME owners or other natural persons who do not receive a salary
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ECJAllowed" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For H2020 - GA Art57.2 National Law allows jurisdiction of the European Court of Justice</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ArbitrationAllowed" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For H2020 - GA Art57.2 National Law allows jurisdiction of the Permanent Court of Arbitration</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StatisticalData" type="StatisticalDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For H2020 - data collected through reporting</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CooEffectiveDateOption" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The option for the effective date on change of Coordinator.
+										It takes values from ccm2 code type: 'GrantDateOption' and users the following values:
+											31069307 (FIXED_DATE ),
+											31069308 (ENTRY_INTO_FORCE_DATE), i.e., at amendment entry into force date
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SGAStatus" type="SGAStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						FPAs are defined with a list of beneficiaries and third parties with a start date and end date.
+						An SGA is always associated with an FPA and the list of beneficiaries and Third parties of the SGA is THE SAME as in the associated FPA;
+						However, in the SGA a beneficiary or third party could be INACTIVE or ACTIVE (this is the SGAstatus).
+						An amendment can be created to change the SGA status of a beneficiary from INACTIVE to ACTIVE and vs, and in the latest amendment templates revision J1 added an extra date for it, i.e., the date the status changes.
+						This change my happen more than one time; this date is different than the ProjectEnderDate (which is actually the project start date of the FPA or the date the beneficiary entered in the FPA);
+						SGAActiveStartDate: it is the date the beneficiary/third party participates as ACTIVE in the SGA; whereas
+						SGAActiveEndDate: it is the date the beneficiary/third party loses its active status and participate as INACTIVE
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NoContributionRequestStatus" type="NoContributionRequestStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						An amendment can be created to change the NoContributionRequested status from true to false and vs.
+						The change of the status used to apply for the whole projects life-cycle.
+						In the latest amendment templates revision J1 added an extra dates to record the date the partner changes the status.
+						This change my happen more than one time; this date is different than the ProjectEnderDate;
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InternationalPartnerList" type="InternationalPartnerListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>List of international partners associated to the legal partner in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InternationalPartnerListType">
+		<xs:annotation>
+			<xs:documentation>List of international partners associated to the legal partner in project.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="InternationalPartner" type="InternationalPartnerType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PTROtoType">
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="TransferDate" type="xs:date"/>
+			<xs:element name="TransferDateOption" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>During an amendment an option might be deleted with a removal date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ThirdPartyPartner" type="ThirdPartyPartnerType"/>
+	<xs:complexType name="ThirdPartyPartnerType">
+		<xs:sequence>
+			<xs:group ref="LegalEntityGroup"/>
+			<xs:element name="OrderNumber" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>third party number with respect to the beneficiary in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="PartnerGroup"/>
+			<xs:group ref="ProjectRepresentativesGroup" minOccurs="0"/>
+			<xs:group ref="PartnerFinancialGroup" minOccurs="0"/>
+			<xs:element name="JointSeveralLiability" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>H2020: flag to indicate if third party will have joint and several liability with beneficiary</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PartnerShare" type="base:PercentageType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>it is the share percentage calculated as
+						Partner.RequestedECContribution/Project.RequestedECContribution
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinancialRatios" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="FinancialExposure" type="FinancialExposureType" minOccurs="0"/>
+						<xs:element name="CoFinancingCapacity" type="CoFinancingCapacityType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AuditList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Audit" type="audit:AuditInformationType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ProjectParticipationsList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ProjectParticipation" type="project:ProjectType" maxOccurs="unbounded"/>
+						<xs:element name="ParticipationsRequestedECContribution" type="base:AmountType" minOccurs="0"/>
+						<xs:element name="ParticipationsTotalCost" type="base:AmountType" minOccurs="0"/>
+						<xs:element name="NumberOfParticipations" type="xs:integer" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="UTRO" type="UTROType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="INOLegalEntity" type="INOLegalEntityType" minOccurs="0"/>
+			<xs:element name="StatisticalData" type="StatisticalDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For H2020 - data collected through reporting</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SGAStatus" type="SGAStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						FPAs are defined with a list of beneficiaries and third parties with a start date and end date.
+						An SGA is always associated with an FPA and the list of beneficiaries and Third parties of the SGA is THE SAME as in the associated FPA;
+						However, in the SGA a beneficiary or third party could be INACTIVE or ACTIVE (this is the SGAstatus).
+						An amendment can be created to change the SGA status of a beneficiary from INACTIVE to ACTIVE and vs, and in the latest amendment templates revision J1 added an extra date for it, i.e., the date the status changes. This change my happen more than one time; this date is different than the ProjectEnderDate (which is actually the project start date of the FPA or the date the beneficiary entered in the FPA);
+						SGAActiveStartDate: it is the date the beneficiary/third party participates as ACTIVE in the SGA; whereas
+						SGAActiveEndDate: it is the date the beneficiary/third party loses its active status and participate as INACTIVE
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NoContributionRequestStatus" type="NoContributionRequestStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						An amendment can be created to change the NoContributionRequested status from true to false and vs.
+						The change of the status used to apply for the whole projects life-cycle.
+						In the latest amendment templates revision J1 added an extra dates to record the date the partner changes the status.
+						This change my happen more than one time; this date is different than the ProjectEnderDate; </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="InternationalPartner" type="InternationalPartnerType">
+		<xs:annotation>
+			<xs:documentation>new type of Partner (similar to third party)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="InternationalPartnerType">
+		<xs:sequence>
+			<xs:group ref="LegalEntityGroup"/>
+			<xs:element name="OrderNumber" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>international partner number with respect to the beneficiary in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="PartnerGroup"/>
+			<xs:group ref="ProjectRepresentativesGroup" minOccurs="0"/>
+			<xs:element name="PartnerProvisionalBudget" type="PartnerProvisionalBudgetType" minOccurs="0"/>
+			<xs:element name="PartnerShare" type="base:PercentageType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>it is the share percentage calculated as
+						Partner.RequestedECContribution/Project.RequestedECContribution
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinancialRatios" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="FinancialExposure" type="FinancialExposureType" minOccurs="0"/>
+						<xs:element name="CoFinancingCapacity" type="CoFinancingCapacityType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="AuditInformationList" type="AuditInformationListType" minOccurs="0"/>
+			
+			<xs:element name="ProjectParticipations" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ProjectParticipationList" type="ProjectParticipationListType" minOccurs="0"/>
+						<xs:element name="ParticipationsRequestedECContribution" type="base:AmountType" minOccurs="0"/>
+						<xs:element name="ParticipationsTotalCost" type="base:AmountType" minOccurs="0"/>
+						<xs:element name="NumberOfParticipations" type="xs:integer" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="UTROList" type="UTROListType" minOccurs="0"/>
+			<xs:element name="INOLegalEntity" type="INOLegalEntityType" minOccurs="0"/>
+			<xs:element name="StatisticalData" type="StatisticalDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For H2020 - data collected through reporting</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SGAStatus" type="SGAStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						FPAs are defined with a list of beneficiaries and third parties with a start date and end date.
+						An SGA is always associated with an FPA and the list of beneficiaries and Third parties of the SGA is THE SAME as in the associated FPA;
+						However, in the SGA a beneficiary or third party could be INACTIVE or ACTIVE (this is the SGAstatus).
+						An amendment can be created to change the SGA status of a beneficiary from INACTIVE to ACTIVE and vs, and in the latest amendment templates revision J1 added an extra date for it, i.e., the date the status changes. This change my happen more than one time; this date is different than the ProjectEnderDate (which is actually the project start date of the FPA or the date the beneficiary entered in the FPA);
+						SGAActiveStartDate: it is the date the beneficiary/third party participates as ACTIVE in the SGA; whereas
+						SGAActiveEndDate: it is the date the beneficiary/third party loses its active status and participate as INACTIVE
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UTROListType">
+		<xs:annotation>
+			<xs:documentation>List of Utros.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UTRO" type="UTROType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ProjectParticipationListType">
+		<xs:annotation>
+			<xs:documentation>List of project participations.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProjectParticipation" type="project:ProjectType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AuditInformationListType">
+		<xs:annotation>
+			<xs:documentation>List of international partners associated to the legal partner in project.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AuditInformationType" type="audit:AuditInformationType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="PartnerOrganisation" type="PartnerOrganisationType">
+		<xs:annotation>
+			<xs:documentation>added to support H2020</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="PartnerOrganisationType">
+		<xs:sequence>
+			<xs:group ref="LegalEntityGroup"/>
+			<xs:element name="OrderNumber" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Partner organisation number in project, eg. 1, 2, etc
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ShortName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Short name for partner organisation - unique in project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PartnerOrgRoleCode" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:group ref="ProjectRepresentativesGroup" minOccurs="0"/>
+			<xs:element name="FundingSchemeSpecificInfo" type="FundingSchemeSpecificPartnerOrgInfoType" minOccurs="0"/>
+			<xs:group ref="PartnerFinancialGroup" minOccurs="0"/>
+			<xs:element name="ExceptionalEUFunding" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Required For MSCA RISE, in case the legal address country is in OCEF/TBAC</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UTROType">
+		<xs:annotation>
+			<xs:documentation>added to support UTROs data in project</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="LegalEntityGroup"/>
+			<xs:group ref="PartnerGroup"/>
+			<xs:group ref="ProjectRepresentativesGroup" minOccurs="0"/>
+			<xs:group ref="PartnerFinancialGroup" minOccurs="0"/>
+			<xs:element name="INOLegalEntity" type="INOLegalEntityType" minOccurs="0"/>
+			<xs:element name="StatisticalData" type="StatisticalDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For H2020 - data collected through reporting</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="PartnerFinancialCoreGroup">
+		<xs:sequence>
+			<xs:element name="RequestedECContribution" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						This is the requested EC contribution for the partner including its departments and his third parties.
+						To support H2020 specific ToA where the budget is set for the project as lumpsum, this field must be optional as there is no budget information per partner.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalCosts" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						For some MarieCurie projects, there are no total costs. TODO: which subfunding schemes?
+						This is the total costs or the partner including its departments and his third parties
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IndividualRequestedECContribution" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the requested EC contribution for the partner including only its departments' contribution (i.e. excluding his third parties)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IndividualTotalCosts" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the total costs for the partner including only its departments' costs (i.e. excluding his third parties)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalCostsEligFunding" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>These are the total costs eligible for funding (H2020: the total overall costs excluding the total costs of those not receiving funding)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="PartnerCostBreakdown" type="PartnerCostBreakdownType"/>
+	<xs:complexType name="PartnerCostBreakdownType">
+		<xs:sequence>
+			<xs:element name="TotalCostBreakdown" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the total cost breakdown for a partner
+						(including partner specific, department specific, UTROs and all
+						thirdparties with all their details)
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ActivityCostBreakDown" type="costbreakdown:ActivityCostBreakDownType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CostBreakdownICMSpecific" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="costbreakdown:CostBreakDownType">
+							<xs:sequence>
+								<xs:element name="CostOwner" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>M: MAIN ENTITY, ie. this is either the
+											Partner or Thirdparty T: TRANSFERRED, ie. UTRO D: DEPARTMENT,
+											ie. (Sub)
+											Department
+										</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IndividualCostBreakdownPerPeriod" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+						This is the individual cost breakdown (including only its departments' costs and excluding any third parties' costs) for a period in the project.
+						H2020: used in ERC projects where costs are declared per financial reporting period</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ActivityCostBreakDown" type="costbreakdown:ActivityCostBreakDownType" maxOccurs="unbounded"/>
+						<xs:choice>
+							<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType"/>
+							<xs:element name="Period" type="base:ProjectPeriodType"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PartnerCostClaim" type="PartnerCostClaimType"/>
+	<xs:complexType name="PartnerCostClaimType">
+		<xs:sequence>
+			<xs:element name="CostOwner" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>M: MAIN ENTITY, ie. this is either the Partner or
+						Thirdparty D: DEPARTMENT, ie. (Sub) Department
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="FormC" type="costclaim:FormCType"/>
+				<xs:element name="AdjustmentFormC" type="costclaim:AdjustmentFormCType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="PartnerFinancialGroup">
+		<xs:sequence>
+			<xs:element name="PartnerProvisionalBudget" type="PartnerProvisionalBudgetType" minOccurs="0"/>
+			<xs:element name="PartnerFinancialExecution" type="PartnerFinancialExecutionType" minOccurs="0"/>
+			<xs:element name="FlatRateOverheadLimit" type="base:PercentageType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>FP7: regarding special clause 8</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NoContributionRequested" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>FP7: regarding special clause 9	H2020: regarding article 9 - not eligible to receive funding but exceptionally they may</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReimbursementRatesLimit" type="ActivityLimitRateType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>FP7: regarding special clause 7</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PreFinancingAmount" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>PF amount for that partner, including the GuaranteeFundAmount</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GuaranteeFundAmount" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>GF amount for that partner</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UseOfLRIcosts" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>H2020: whether the partner intends to use large research infrastructure costs in the grant</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinancialGuaranteeRequired" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="FinancialGuaranteeAmount" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Required for other programmes such as COSME, Health (3HP), Consumer (CP or CONS), RFCS. It may be requested to provide a financial guarantee from a bank or other third party. If FinancialGuaranteeRequired=true, then this amount must be > 0.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PartnerPrefinancing" type="PartnerPrefinancingType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+						Required for H2020: some type of actions (eg.CoFund) require to have multiple prefinancings. For Coordinator and for JRC we need to have the information for each of the prefinancing.
+						The elements PreFinancingAmount and GuaranteeFundAmount under PartnerFinancialGroup will hold the total of all prefinancings</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinancialGuarantee" type="PartnerFinancialGuaranteeType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Required for non H2020: some programs (eg.JUST) require to have multiple financial guarantees</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReceivedPaymentAtTermination" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						For the Terminated  partners a new  workflow for Reporting Period  will be created.
+						The Reporting Period for terminated partner will encode the last financial information for the partner and it will start after the end date of the  partner.
+						The Terminated Partner must also declare the received payments for the project during this termination report.
+						The MGA requires for terminated beneficiaries :
+						1) if termination takes effect during the period set out in Article 3, a termination report from the beneficiary concerned,
+							for the open reporting period until termination, containing an overview of the progress of the work, an overview of the use of resources,
+							the individual financial statement and, if applicable, the certificate on the financial statement (see Article 20).
+						2) for termination of the participation of one or more beneficiaries:
+						The coordinator must submit a report on the distribution of payments to the beneficiary concerned, within 60 days from when termination takes effect
+						This new field will encode the information related the declared amount of received funds for the project by the terminated partner.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZeroFunding" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>H2020: regarding article 9 - partners requesting zero funding although they are eligible to receive funding</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="PartnerFinancialExecutionType">
+		<xs:sequence>
+			<xs:element name="PartnerFinancialExecutionPerPeriod" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType"/>
+						<xs:element name="PartnerCostClaimList" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="PartnerCostClaim" type="PartnerCostClaimType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PartnerProvisionalBudgetType">
+		<xs:sequence>
+			<xs:group ref="PartnerFinancialCoreGroup"/>
+			<xs:element name="PartnerCostbreakdown" type="PartnerCostBreakdownType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActivityLimitRateType">
+		<xs:sequence>
+			<xs:element name="TypeOfActivityCode" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>1: RTD Activities
+						2: Demonstration Activities
+						3: Training Activities (for MC)
+						4: Management Activities (for MC this includes the CFS)
+						5: Coordination activities
+						6: Other Activities
+						7: Total of all the Activities
+						8: Specific Activities Transactional access (for Infrastructure TA)
+						9: Specific Activities Other (for Infrastructure TA)
+						10: Coordination/Networking (Other Specific Activities I3)
+						11: Transactional access (Other Specific Activities I3) 			12: Connectivity (Other Specific Activities I3)
+						12: Connectivity (Other Specific Activities I3
+						13: Other including Specific Service Activities for CND (Other Specific Activities I3)
+						14: Other Eligible Activities, specific conditions 	(for MC)
+						15: Support Activities
+						16: National contributions to the joint call (EranetPlus)
+						17: Innovation Activities (for MC, CIP-EIP-TN)
+						18: Coordination, Support Activities
+						19: Living, Mobility Allowance (for MC)
+						20: Travel Allowance (for MC)
+						21: Career exploratory Allowance (for MC)
+						22: Participation expenses of eligible researchers (for MC)
+						23: Research, training, transfer of knowledge expenses (for MC)
+						24: Conferences, workshops, events expenses (for MC)
+						25: Overheads (for MC)
+						26: Combined Management Overheads
+						27: Leaving
+						28: Household
+						29:Living, no mobility
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PercentageValue" type="base:PercentageType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BeneficiarySignatureType">
+		<xs:sequence>
+			<xs:element name="Date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Date when partner signs the grant agreement
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="INOLegalEntityType">
+		<xs:sequence>
+			<xs:element name="isFAFA" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>FP7 only, therefore it becomes optional</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ApplicableLaw" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>this is kept for backward compatibility - it should be removed in a later version and use instead ApplicableLawCode</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ApplicableLawCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>this is a code of classId Country</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FAFAAdheredDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="GoverningLaw" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						FP7: enumeration values: NOCHANGE, DIFFERENT H2020 enumeration values: NOCHANGE, DIFFERENT, NONE
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="useAdditionalInternationalLaw" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="AcceptEuLaw" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PartnerIndividualCommitementType">
+		<xs:sequence>
+			<xs:element name="ContractorType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>enumeration values: PRIMARY_CONTRACTOR,
+						SECONDARY_CONTRACTOR.
+						This is the type of partner in the project
+						individual commitment in ABAC;
+						PRIMARY_CONTRACTOR: Payments are
+						done directly to that partner; Usually, Coordinator and JRC are
+						set as primary contractors.
+						SECONDARY_CONTRACTOR: Payments are NOT
+						done directly to that partner; Usually, payment are done to
+						Coordinator instead and coordinator distribute the
+						funding to the
+						other partners defined as secontaty contractors.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinancialExposureType">
+		<xs:annotation>
+			<xs:documentation>financial exposure flag is calculated as the total
+				prefinancing amount of the project minus the JRC prefinancing,
+				divided by the Turnover (if turnover=0, OperationalIncome)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Value" type="xs:decimal"/>
+			<xs:element name="Qualification" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Positive or Negative</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CoFinancingCapacityType">
+		<xs:sequence>
+			<xs:element name="TotalCostAnnual" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>the sum of all the participations' annual Cost
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GrossProfit" type="xs:decimal"/>
+			<xs:element name="FinancialIncome" type="xs:decimal"/>
+			<xs:element name="InterestPaid" type="xs:decimal"/>
+			<xs:element name="SimilarCharges" type="xs:decimal"/>
+			<xs:element name="NetProfit" type="xs:decimal"/>
+			<xs:element name="CashFlowIndicator" type="base:CountType"/>
+			<xs:element name="NOPIndicator" type="base:CountType"/>
+			<xs:element name="Value" type="xs:decimal"/>
+			<xs:element name="Qualification" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Weak, Acceptable or Good</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DepartmentCarryingoutWorkType">
+		<xs:annotation>
+			<xs:documentation>added to support H2020</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DepartmentName" type="xs:string"/>
+			<xs:element name="DepartmentAddress" type="address:PostalAddressType" minOccurs="0"/>
+			<xs:element name="SameAsLegalAddress" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>the department's address is the one of the legal entity's legal address</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="ParticipantTerminationGroup">
+		<xs:sequence>
+			<xs:element name="AgreedOnTermination" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						It is a Boolean field indicating that the termination of a partner is with its agreement
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationDateOption" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Specifies when the partner will be terminated
+						Values:
+							1. FIXED_DATE
+							2. DATE_OF_EC_SIGNATURE
+							3. FORTY_FIVE_DAYS_FROM_REQUEST
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationJustification" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Reason why the participant is terminated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationOriginatedBy" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Which party the termination is originated by:
+							1. CONSORTIUM
+							2. COMMISSION
+							3. AUTOMATIC
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationAmendmentRef" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The amendment reference of the amendment the termination of the beneficiary is implemented. It is used in H2020, where the termination of a beneficiary is a notification, having as supporting doc the amendment where the termination is implemented.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminatedImproperly" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>H2020: The beneficiary is flaged as improperly terminated. This is the case where the notification for termination is sent, but the amendment implementing the termination is rejected.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminatedImproperlyJustification" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>H2020: The reason why a participant is improperly terminated.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="GenderCompositionType">
+		<xs:sequence>
+			<xs:element name="Females" type="xs:long"/>
+			<xs:element name="Males" type="xs:long"/>
+			<xs:element name="Total" type="xs:long"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StatisticalDataType">
+		<xs:sequence>
+			<xs:element name="SMEGrowth" type="report:SMESurveyListType" minOccurs="0"/>
+			<xs:element name="GenderComposition" type="GenderCompositionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PartnerPrefinancingType">
+		<xs:sequence>
+			<xs:element name="PreFinancingOrder" type="xs:int" minOccurs="0"/>
+			<xs:element name="PreFinancingAmount" type="base:AmountType"/>
+			<xs:element name="GuaranteeFundAmount" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="PreFinancingPercentage" type="base:PercentageType" minOccurs="0"/>
+			<xs:element name="GuaranteeFundPercentage" type="base:PercentageType" minOccurs="0"/>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" nillable="0" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PartnerFinancialGuaranteeType">
+		<xs:sequence>
+			<xs:element name="Order" type="xs:nonNegativeInteger"/>
+			<xs:element name="Amount" type="base:AmountType"/>
+			<xs:element name="Date" type="xs:date" minOccurs="0"/>
+			<xs:element name="Required" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="PreFinancingOrder" type="xs:nonNegativeInteger"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SGAStatusType">
+		<xs:sequence>
+			<xs:element name="SGAActiveStartDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner becomes active in the specific agreement, i.e., the date it participates as partner or third party
+						carrying out action tasks. It is the date the beneficiary/third party participates as ACTIVE in the SGA;
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SGAActiveStartDateOption" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The option chosen for the SGA partner, indicating when the partner will become active; Values: FIXED_DATE (31069307),
+						ENTRY_INTO_FORCE_DATE(31069308)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SGAActiveEndDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner becomes inactive in the specific agreement, i.e., the date it no longer participates as partner or third
+						party carrying out action tasks. It is the date the beneficiary/third party loses its active status and participate as INACTIVE
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SGAActiveEndDateOption" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The option chosen for the SGA partner, indicating when the partner will become inactive; Values: FIXED_DATE (31069307),
+						ENTRY_INTO_FORCE_DATE(31069308)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NoContributionRequestStatusType">
+		<xs:sequence>
+			<xs:element name="StartDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner participates as partner NOT receiving EU funding, it will be used by financial reporting
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDateOption" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						The option indicating when the pertner will participate as partner NOT receiving EU funding; Values: FIXED_DATE (31069307), ENTRY_INTO_FORCE_DATE(31069308)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner participates as partner receiving EU funding
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndDateOption" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						The option chosen indicating when the pertner will participate as partner receiving EU funding; Values: FIXED_DATE (31069307), ENTRY_INTO_FORCE_DATE(31069308)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AssociatedPartnerType">
+		<xs:sequence>
+			<xs:element name="ShortName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Short name for associated partner - unique in project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LegalName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Legal name for associated partner - unique in project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="OrderNumber" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Associated Partner number in project, eg. 1, 2, etc
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20170717 - v4.10 - SYGMA - added InternationalPartner element and type to support MGA v4.0 (similar to ThirdParty but can never receive funding), added a new flag ZeroFunding to distinguish the partner that is eligible for funding but doesn't request. Created lists InternationalPartnerListType,UTROListType,ProjectParticipationListType,AuditInformationListType
+        </xs:documentation>
+		<xs:documentation>20170131 - v4.9.17 - SYGMA - added AssociatedPartnerType to support IMI2 (Innovative Medicine Initiative)</xs:documentation>
+		<xs:documentation>20160927 - v4.9.16 - SYGMA - added ReceivedPaymentAtTermination in the PartnerFinancialGroup</xs:documentation>
+		<xs:documentation>20160921 - v4.9.15 - SYGMA - added new NoContributionRequestStatusType in the LegalPartnerType and in ThirdPartyPartnerType. Added comments for the SGAStatusType</xs:documentation>
+		<xs:documentation>20160714 - v4.9.14 - SYGMA - added new SGAStatusType in the LegalPartnerType and in ThirdPartyPartnerType</xs:documentation>
+		<xs:documentation>20160712 - v4.9.13 - SYGMA - added PartnerFinancialGuaranteeType in the  PartnerFinancialGroup</xs:documentation>
+		<xs:documentation>20160426 - v4.9.12 - SYGMA - added optional element AcceptEuLaw in INOLegalEntityType, added optional element EnterDateOptionCode to be used instead of EnterDateOption </xs:documentation>
+		<xs:documentation>20160111 - v4.9.11 - SYGMA - added optional element TransferDateOption in PTROtoType </xs:documentation>
+		<xs:documentation>20151209 - v4.9.10 - SYGMA - removed CBSummaryType </xs:documentation>
+		<xs:documentation>20151127 - v4.9.9 - SYGMA - added CBSummaryType codeRef to support the different summary cost breakdowns: the overall and the eligible for fundingm added optional TotalCostsEligFunding
+		</xs:documentation>
+		<xs:documentation>20150805 - v4.9.8 - SYGMA - added
+			CooEffectiveEndDate
+		</xs:documentation>
+		<xs:documentation>20150625 - v4.9.7 - added by SyGMa
+		new element CooEffectiveDateOption for effective date on the change of coordinator. To support H2020 amendments
+		</xs:documentation>
+		<xs:documentation>20150424 - v4.9.6 - added by SyGMa
+		new enumeration type PartnerPrefinancingType to hold multiple prefinancings per partner. It is specifically needed in the case JRC is a partner. Planning is to always use that element even for single prefinancings and keep the PreFinancingAmount and GuaranteeFundAmount under FinancialGroup for the total prefinancings.
+		</xs:documentation>
+		<xs:documentation>20150224 - v4.9.5 - added by SyGMa
+		new enumeration type EnterDateOptionType for the EnterDateOption field for the partner.
+		</xs:documentation>
+		<xs:documentation>20141127 - v4.9.4 - added by SyGMa
+		fix type of GenderCompositionType.females, GenderCompositionType.total
+		</xs:documentation>
+		<xs:documentation>20141103 - v4.9.3 - added by SyGMa
+		Updated Report namespace version; added StatisticalDataType to Legal Partner, Third Party and UTRO types to support partner-related information collected through Project Reporting. In this context, also GenderCompositionType (for the Gender Questionnaire) was added.
+		</xs:documentation>
+		<xs:documentation>v4.9.2 - added by SyGMa
+		Added FinancialGuaranteeAmount, FinancialGuaranteeRequired to support other programmes than H2020.
+		</xs:documentation>
+		<xs:documentation>20141001 - v4.9.1 - SyGMA - for H2020 MSCA RISE
+		Added ShortName, OrderNumber to the PartnerOrganisationType
+		</xs:documentation>
+		<xs:documentation>20140919 - v4.9.0 - SyGMA - for H2020
+		Added INOLegalEntity to ThirdPartyPartnerType and UTROType
+		</xs:documentation>
+		<xs:documentation>20140731 - v4.8.9 - SyGMA - for H2020 amendments
+		Added ArbitrationAllowed.
+		</xs:documentation>
+		<xs:documentation>20140731 - v4.8.8 - SyGMA - for H2020 amendments
+		Added ParticipantTerminationGroup and more elements in there. moved the 2 elements AgreedOnTermination and TerminationDateOption  inside the group.
+		</xs:documentation>
+		<xs:documentation>20140731 - v4.8.7 - SyGMA
+		Added more values to the Partner/ProjectStatus and added the ProjectStatus in the PartnerCoreGroup as well. Added optional the OrderNumber in the ThirdParty Types
+		</xs:documentation>
+		<xs:documentation>20140707 - v4.8.6 - SyGMA
+		Added optional Guarantee Fund amount for a partner as it is required for TGS for the Administrative Arrangement with JRC
+		</xs:documentation>
+		<xs:documentation>20140515 - v4.8.5 - SyGMA
+		Added optional FundingSchemeSpecificPartnerOrgInfoType to support H2020 MSCA-RISE
+		</xs:documentation>
+		<xs:documentation>20140515 - v4.8.4 - SyGMA
+		Added optional IndividualCostBreakdownPerPeriod in order to support ERC H2020 projects
+		</xs:documentation>
+		<xs:documentation>20140514 - v4.8.3 - SyGMA
+		Added optional fields IndividualRequestedECContribution, IndividualTotalCosts
+		</xs:documentation>
+		<xs:documentation>20140403 - v4.8.2 - SyGMA
+		Added an optional flag ExceptionalEUFunding in PartnerOrganisationType to support H2020 MSCA-RISE
+		Added MarieCuriePartnerInfoH2020 to support H2020 MSCA
+		</xs:documentation>
+		<xs:documentation>20140205 - v4.8.1 - SyGMA
+		Added an optional flag ECJAllowed in LegalPartner to support H2020 GA Art57.2
+		Added an optional field ApplicableLawCode to be a codeRefType - this should eventually replace ApplicableLaw
+		isFAFA flag becomes optional as it is only for FP7
+		</xs:documentation>
+		<xs:documentation>20140203 - v4.8.0 - SyGMA
+		RequestedECContribution, PartnerProvisionalBudget for partner becomes option to support H2020 specific ToA business
+		</xs:documentation>
+		<xs:documentation>20140109 - v4.7.0 - SyGMA
+		Added an optional element for multiple InfrastructureInstallation to support H2020 business
+		</xs:documentation>
+		<xs:documentation>20131119 - v4.6.0 - CDM
+			remove the abstraction of FundingSchemeSpecificPartnerInfoType.
+		</xs:documentation>
+		<xs:documentation>20131119 - v4.5.1 - SYGMA
+			Added PartnerOrgRoleCode under PartnerOrganisationType
+		</xs:documentation>
+		<xs:documentation>20131112 - v4.5.0 - SYGMA
+			Added: 	SMEFlatRateOption
+			created explicit type for elements with embedded complex type to avoid problems with jaxb and wsimport
+		</xs:documentation>
+		<xs:documentation>v4.4.0 - SYGMA
+			Added:
+			UTROType and UTRO in LegalPartnerType and ThirdPartyPartnerType
+			PTROto added in LegalPartnerType
+		</xs:documentation>
+		<xs:documentation>v4.3.0 - SYGMA
+			Added:
+			DepartmentCarryingoutWork,
+			reference to address xsd,
+			PartnerOrganisation and its type
+			Removed from here the Payment related type and put in a new XSD. added reference to it
+			ThirdPartyPartnerType: added	PartnerShare, FinancialRatios, AuditList,	ProjectParticipationsList, JointSeveralLiability
+		</xs:documentation>
+		<xs:documentation>v4.2.0 - SYGMA
+			Added (to support LFVs):
+			LegalPartnerType:
+			PartnerShare, FinancialRatios, AuditList,
+			ProjectParticipationsList
+			CostClaim v4, ReportingPeriod v4, ProjectRepresentative v4
+		</xs:documentation>
+		<xs:documentation>v4.1.0 - SYGMA
+			Modified: LegalPartnerType:
+			ProjectRepresentativesGroup, PartnerFinancialGroup became optional,
+			Added: LegalPartnerType:
+			PartnerIndividualCommitement,
+			PreFinancingAmount
+		</xs:documentation>
+		<xs:documentation>20130726 - v4.1.0 - SYGMA - added
+			CooEffectiveDate, ChangeCooSignOption, ChangeCooSignRepresentative,
+			ProjectStatus, AgreedOnTermination, TerminationDateOption
+		</xs:documentation>
+		<xs:documentation>4.0.1: useAdditionalInternationalLaw added in
+			INOLegalEntityType, JRCInstitutes removed.
+		</xs:documentation>
+		<xs:documentation>v4.0.0 changes by sygma - LegalEntityRefType doesn't
+			exist anymore...neither the Group... we use PIC as identifier and
+			LegalEntityNoFacts instead
+		</xs:documentation>
+		<xs:documentation>v3.2.0 added optional fields in
+			PartnerFinancialGroup, added optional fields in PartnerGroup, added
+			INOLegalEntity,
+			added JRCInstitues, added AuthorisedToAdminister in
+			ThirdPartyPartnerType
+		</xs:documentation>
+		<xs:documentation>v3.1.0 - Role is moved from PartnerCoreGroup since
+			it should apply only to LegalPartner and not ThirdParty and
+			thirdParty enumeration removed. PartnerPIC removed from
+			ThirdPartyPartnerCoreType and ValidationStatus is optional (probably
+			should be
+			removed!). Created LegalEntityGroup to always have at least
+			the LegalEntityRef. Beneficiary signature is optional (for the moment
+			is only
+			mandatory for COO). Created ProjectRepresentativesGroup which
+			is mandatory for Partner but optional for ThirdParty. TotalCosts
+			become
+			optional in PartnerFinancialCoreGroup. Created
+			PartnerFinancialGroup
+		</xs:documentation>
+		<xs:documentation>20110128 - v3.0.0 -  Use ProjectRepresentative v3,
+			Officer v2, legal entity v2
+		</xs:documentation>
+		<xs:documentation>20100902 - v2.0.2 -  Add ParticipationID to
+			LegalPartnerCore (RTC 5733)
+		</xs:documentation>
+		<xs:documentation>This schema intends to capture 'full' view on all
+			project partner related data.
+		</xs:documentation>
+	</xs:annotation>
+</xs:schema>

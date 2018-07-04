@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/event/invoice/reregister/v1" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/invoice/reregister/v1"
+		   xmlns:eventbase="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v1"
+		   xmlns:visaStatus="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/visastatus/v3"
+		   elementFormDefault="qualified" 
+		   attributeFormDefault="unqualified">
+		   
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v1" schemaLocation="../../base/v1/JagateBaseEvent.xsd" />
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/visastatus/v3" schemaLocation="../../base/v3/VisaStatusEvent.xsd" />
+
+	<xs:complexType name="ReRegisterInvoiceEvent">		
+		<xs:complexContent>
+			<xs:extension base="eventbase:JagateEvent">
+				<xs:sequence>
+					<xs:element name="visaStatus" type="visaStatus:VisaStatus" minOccurs="0"/>
+					<xs:element name="errorMessage" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>
+							Event related to the Invoice ReRegister operation
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+</xs:schema>

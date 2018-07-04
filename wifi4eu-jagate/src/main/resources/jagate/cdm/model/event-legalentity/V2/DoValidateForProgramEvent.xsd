@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/legalentity/dovalidateforprogram-event/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:code-ref="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:project-ref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:officer="http://ec.europa.eu/research/fp/model/officer/V2" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/dovalidateforprogram-event/V2" elementFormDefault="qualified" version="2.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer/V2" schemaLocation="../../officer/V2/Officer.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:complexType name="DoValidateForProgramEvent">
+		<xs:annotation>
+			<xs:documentation>Event Received when a remote system requests the facts associated to a Program to be validated. The Program is part of the ProjectId.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+					<xs:element name="CallId" type="code-ref:CodeRefType"/>
+					<xs:element name="ProjectId" type="project-ref:ProjectIdType">
+						<xs:annotation>
+							<xs:documentation>Represents either a proposal id or a project id (once a project comes to existence it has the same id as the associated proposal).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ProjectOfficer" type="officer:OfficerType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Required fields are: UserId, Email and DepartmentCode</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+		<xs:documentation>v 2.0.0 - 20130109 : Updated the imported version of legal-entity-ref.</xs:documentation>
+		<xs:documentation>v 2.0.0 - 20130115 : Added CallId, ProjectId and ProjectOfficer to the event structure. Replaced explicit Program field with the one inside ProjectId.</xs:documentation>
+	</xs:annotation>
+</xs:schema>

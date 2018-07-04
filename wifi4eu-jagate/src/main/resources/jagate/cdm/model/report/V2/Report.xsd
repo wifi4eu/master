@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:expertref="http://ec.europa.eu/research/fp/model/expert-ref/V1" xmlns:document="http://ec.europa.eu/research/fp/model/document/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:milestoneref="http://ec.europa.eu/research/fp/model/project-milestone-ref/V1" xmlns:deliverableref="http://ec.europa.eu/research/fp/model/project-deliverable-ref/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/report/V2" targetNamespace="http://ec.europa.eu/research/fp/model/report/V2" elementFormDefault="qualified" version="2.1.1">
+	<xs:annotation>
+		<xs:documentation>
+		This schema intends to capture all data related to project related reports.
+		TODO: 
+			include model elements provided by CORDA projects.
+		</xs:documentation>
+	</xs:annotation>
+	<!-- May want to split this in ProjectPlanning and ProjectDelivery schemas? -->
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V3" schemaLocation="../../document/V3/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert-ref/V1" schemaLocation="../../expert-ref/V1/ExpertRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-milestone-ref/V1" schemaLocation="../../project-milestone-ref/V1/ProjectMilestoneRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable-ref/V1" schemaLocation="../../project-deliverable-ref/V1/ProjectDeliverableRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" schemaLocation="../../project-reportingperiod/V3/ProjectReportingPeriod.xsd"/>
+	<!--<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim/V1" schemaLocation="../../costclaim/V1/CostClaim.xsd"/>-->
+	<xs:simpleType name="ReportIdType">
+		<xs:restriction base="xs:positiveInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="ReportStatusType">
+		<xs:annotation>
+			<xs:documentation>In SESAM there are slightly other statuses used: Uncompleted, Completed, (NEW to come for PICo: Validated (by system)), Submitted, Rejected.
+		</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Accepted"/>
+			<xs:enumeration value="Draft"/>
+			<xs:enumeration value="Rejected"/>
+			<xs:enumeration value="Submitted"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ReportType" type="ReportType">
+		<xs:annotation>
+			<xs:documentation> type to be used for the final distribution report</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ReportType">
+		<xs:sequence>
+			<xs:group ref="ReportGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="ReportGroup">
+		<xs:sequence>
+			<xs:element name="Created" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="CreatorUser" type="base:ECUserIdType" minOccurs="0"/>
+			<xs:element name="DueInMonth" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Due In Month is the contractual month in project due for the report to be submitted. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DueDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The due date is either put or calculated from DueInMonth and startDate of the project.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeliveryDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The delivery date is the date the report is delivered.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--		<xs:element name="CreatorPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="CreatedForPartner" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Need more strict Partner reference type (PIC)?</xs:documentation>
+				</xs:annotation>
+			</xs:element> -->
+			<!--		<xs:element name="BinaryContent" type="xs:base64Binary" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Printable report data (typically pdf).</xs:documentation>
+				</xs:annotation>
+			</xs:element>	-->
+		</xs:sequence>
+	</xs:group>
+	<!-- <xs:complexType name="PeriodicReportType">
+		<xs:sequence>
+			<xs:group ref="ReportGroup"/>
+			<xs:element name="ReportingPeriod" type="xs:positiveInteger"/>
+			<xs:element name="Deliverable" type="DeliverableType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>-->
+	<xs:complexType name="PeriodicReportType">
+		<xs:annotation>
+			<xs:documentation>type to be used for periodic report. TODO: what about mid-term report which is specific to MC ITN, IAPP???</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="ReportGroup"/>
+			<xs:element name="CreatorPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="CreatedForPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" nillable="0"/>
+			<xs:element name="Content">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PublishableSummary" type="PublishableSummaryType"/>
+						<xs:element name="CoreDocument" type="document:DocumentType"/>
+						<xs:element name="Deliverable" type="deliverableref:DeliverableRefType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="Milestone" type="milestoneref:MilestoneRefType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="FinancialSummaryDocument" type="document:DocumentCoreType"/>
+						<xs:element name="FinancialStatements" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+									<xs:element name="FormCDocument">
+										<xs:complexType>
+											<xs:complexContent>
+												<xs:extension base="document:DocumentCoreType"/>
+											</xs:complexContent>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="AdjustmentFormC" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="AdjustedReportingPeriod" type="reportingperiod:ReportingPeriodNumberType"/>
+												<xs:element name="Document" type="document:DocumentCoreType"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="FinancialStatementCertificate" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+									<xs:element name="Document" type="document:DocumentCoreType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Status" type="ReportStatusType" minOccurs="0"/>
+						<xs:element name="StatusUpdated" type="xs:dateTime" minOccurs="0"/>
+						<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--xs:complexType name="FinalReportType">
+		<xs:annotation>
+			<xs:documentation>TODO: no additional elements?</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ReportType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType-->
+	<xs:complexType name="FinalReportType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the final report.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="ReportGroup"/>
+			<xs:element name="CreatorPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="CreatedForPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="Content">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PublishableSummary" type="PublishableSummaryType"/>
+						<xs:element name="UseAndDissemination">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Document" type="document:DocumentCoreType" minOccurs="0"/>
+									<xs:element name="Publication" type="PublicationType" minOccurs="0" maxOccurs="unbounded"/>
+									<xs:element name="Patent" type="PatentType" minOccurs="0" maxOccurs="unbounded"/>
+									<xs:element name="ExploitableForeground" type="ExploitableForegroundType" minOccurs="0" maxOccurs="unbounded"/>
+									<xs:element name="DisseminationActivity" type="DisseminationActivityType" minOccurs="0" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="SocietalImplication" type="document:DocumentType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>these are the questionnaires</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Status" type="ReportStatusType" minOccurs="0"/>
+						<xs:element name="StatusUpdated" type="xs:dateTime" minOccurs="0"/>
+						<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinalDistributionReportType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the final funding distribution report.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="ReportGroup"/>
+			<xs:element name="CreatorPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="CreatedForPartner" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="Content">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Status" type="ReportStatusType" minOccurs="0"/>
+						<xs:element name="StatusUpdated" type="xs:dateTime" minOccurs="0"/>
+						<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="ScientificActivityGroup">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:positiveInteger"/>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: remove? information  doesn't exist</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Created" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: remove? information  doesn't exist</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreatorUser" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: remove? information  doesn't exist</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>PENDING, VALIDATED</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StatusUpdated" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: remove? information  doesn't exist</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Partner" type="legalentityref:LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>PIC</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Version" type="xs:positiveInteger"/>
+			<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="Patent" type="PatentType"/>
+	<xs:complexType name="PatentType">
+		<xs:sequence>
+			<xs:group ref="ScientificActivityGroup"/>
+			<xs:element name="Applicants" type="xs:string"/>
+			<xs:element name="Reference" type="xs:string"/>
+			<xs:element name="Subject" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Type of IP rights: Patents, Trademarks, Registered designs, Utility models, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Type of IP rights: Patents, Trademarks, Registered designs, Utility models, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ConfidentialFlag" type="xs:boolean"/>
+			<xs:element name="ForeseenEmbargoDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="URL" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--<xs:complexType name="ProjectReportHeaderType">
+		<xs:annotation>
+			<xs:documentation>
+			Aggregation of Project related data typically found in project report headers.
+			TODO: do we need this? Could maybe use project:ProjectCoreType ....
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>-->
+	<xs:element name="ExploitableForeground" type="ExploitableForegroundType"/>
+	<xs:complexType name="ExploitableForegroundType">
+		<xs:sequence>
+			<xs:group ref="ScientificActivityGroup"/>
+			<xs:element name="Type" type="xs:string"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="ConfidentialFlag" type="xs:boolean"/>
+			<xs:element name="Owner" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Owner and other beneficiaries involved</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ForeseenEmbargoDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="Patents" type="xs:string"/>
+			<xs:element name="Product" type="xs:string"/>
+			<xs:element name="Sector" type="xs:string"/>
+			<xs:element name="Timetable" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Publication" type="PublicationType"/>
+	<xs:complexType name="PublicationType">
+		<xs:sequence>
+			<xs:group ref="ScientificActivityGroup"/>
+			<xs:element name="Order" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Sequential numbering for display</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Author" type="xs:string"/>
+			<xs:element name="PeriodicNumber" type="xs:string"/>
+			<xs:element name="PeriodicTitle" type="xs:string"/>
+			<xs:element name="PermanentIds" type="xs:string" minOccurs="0"/>
+			<xs:element name="Place" type="xs:string" minOccurs="0"/>
+			<xs:element name="Publisher" type="xs:string" minOccurs="0"/>
+			<xs:element name="RelevantPages" type="xs:string"/>
+			<xs:element name="Title" type="xs:string"/>
+			<xs:element name="DateOfPublication" type="xs:date"/>
+			<xs:element name="AccessOpen" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indicates confidentiality, whether it needs authorization protection?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DOI" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Digital object identifier of the returned document</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DisseminationActivity" type="DisseminationActivityType"/>
+	<xs:complexType name="DisseminationActivityType">
+		<xs:annotation>
+			<xs:documentation>used in CP and BSG funding schemes</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="ScientificActivityGroup"/>
+			<xs:element name="Order" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Sequential numbering of the dissemination activity for display</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Title" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Title of the activity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Date of the activity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Place" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Place of the activity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActivityType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Type of activity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AudienceTypeList" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Type of audience</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AudienceType" type="AudienceType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AudienceSize" type="xs:nonNegativeInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Size of audience</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CountriesAddressed" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Countries addressed by the dissemination activity, TODO maybe later on: a list of country codes?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AudienceType">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Value" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PublishableSummaryType">
+		<xs:sequence>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="Document" type="document:DocumentCoreType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- externalized the deliverable to separate XSDs
+	<xs:complexType name="DeliverableRefType">
+		<xs:sequence>
+			<xs:element name="Number" type="xs:string"/>
+			<xs:element name="ForecastDeliveryDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>expected date of submitting deliverable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeliveryDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>actual date of submitting deliverable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+			<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DeliverableCoreType">
+		<xs:annotation>
+			<xs:documentation>  do we really need it?</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="DeliverableCoreGroup"/>
+			<xs:element name="Document" type="document:DocumentCoreType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DeliverableType">
+		<xs:sequence>
+			<xs:group ref="DeliverableCoreGroup"/>
+			<xs:element name="Document" type="document:DocumentCoreType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="DeliverableCoreGroup">
+		<xs:sequence>
+			<xs:element name="Number" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>number of deliverable, eg. D1.1</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>name of deliverable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="Nature" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: predefined values, eg. report, prototype, demonstrator, other?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+			<xs:element name="DeliveryDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>actual date of submitting deliverable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DisseminationLevel" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: predefined values eg. PU, PP, RE, CO?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EstimatedIndicativePersonMonths" type="base:CountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>estimated effort in person months</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ForecastDeliveryDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>expected date of submitting deliverable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LastStatusModificationDate" type="xs:date"/>
+			<xs:element name="WorkPackage" type="xs:positiveInteger" minOccurs="0"/>
+			<xs:element name="ReportingPeriod" type="xs:positiveInteger" minOccurs="0"/>
+			<xs:element name="LeadPartner" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>partner number in project who leads the deliverable. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DueInMonth" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Due In Month is the contractual month in project due for the deliverable to be submitted. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DueDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The due date is either put or calculated from DueInMonth and startDate of the project.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Status of the deliverable. Possible values: Pending, Received, Accepted, Rejected </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Version" type="xs:positiveInteger" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>-->
+	<xs:complexType name="ReviewType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the project review.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Number" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>This is the review session Id which exists only when the session is created</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SessionTitle"/>
+			<xs:element name="SessionStartDate" type="xs:date"/>
+			<xs:element name="SessionEndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="SessionPlanned" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A flag to indicate if the review session was planned or not</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SessionStatus" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>status can be OPEN, CLOSED, DELETED</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Report" type="ReviewReportType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: for the moment there is no link to reportingPeriod!!</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--			<xs:element name="Number" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>review number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comments" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>comments for review planned</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PlannedVenueOfReview" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>venue of review planned</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TentativeTiming" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>tentative timing for review planned after month X </xs:documentation>
+				</xs:annotation>
+			</xs:element>-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReviewReportType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the review report done by expert</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="ReportIdType"/>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Individual, Consolidated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Status" type="ReportStatusType" minOccurs="0"/>
+			<xs:element name="StatusUpdated" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+			<xs:element name="Expert" type="expertref:ExpertIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20100607 - v1.0.1</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>Bump LegalEntityRef, Document</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v2.0.0 - changed the type of Number to string, removed IsDelivered element and added Status, DueInMonth, DueDate, Version in DeliverableCoreType and DeliverableType. removed version from ReportType. New DeliverableRefType. New PublishableSummaryType. Changed the ReportType (added dueDate, dueInMonth, deliveryDate, document, removed binaryContent, partnerRelated changed to LegalEntityIdType ie use PIC). add also a choice between ReportingPeriod or a specific period start-end date. ReportType is a common type which is extended by PeriodicReportType and ReviewReportType. Changes in PeriodicReportType, added ReviewReportType</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v2.1.0 - DisseminationActivityType->AudienceSize is now minoccurs 0</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v2.1.1 - Added PublicationType->DOI - digital object identifier of the returned document</xs:documentation>
+	</xs:annotation>
+</xs:schema>

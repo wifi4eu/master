@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/expert/expertactivitiesupdate-event/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:userref="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:expertref="http://ec.europa.eu/research/fp/model/expert-ref/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/expert/expertactivitiesupdate-event/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert-ref/V1" schemaLocation="../../expert-ref/V1/ExpertRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:complexType name="ExpertActivitiesUpdatedEventType">
+		<xs:annotation>
+			<xs:documentation>This event is triggered whenever relevant expert activity list has been updated.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="Call" type="coderef:CodeRefType"/>
+					<xs:element name="EvaluationSession" type="xs:string"/>
+					<xs:element name="ProposalNumberList" type="ProposalNumberListType" minOccurs="0"/>
+					<xs:element name="ExpertReference" type="expertref:ExpertIdType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="ProposalNumberListType">
+		<xs:sequence>
+			<xs:element name="ProposalNumber" type="projectref:ProjectNumberType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:annotation>
+		<xs:documentation>20170331 - 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

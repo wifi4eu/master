@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		   xmlns:prefin="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancing/v1"
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/prefinancing/v1/interfaces" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/prefinancing/v1/interfaces"
+		   elementFormDefault="qualified">
+
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancing/v1" schemaLocation="../../../domain/prefinancing/v1/Prefinancing.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancingGF/v1" schemaLocation="../../../domain/prefinancing/v1/PrefinancingGuaranteeFund.xsd" />
+
+
+	<!-- Elements -->
+	<xs:element name="CreatePrefinancingRequest" type="CreatePrefinancingRequestType" />
+	<xs:element name="CreatePrefinancingJRCRequest" type="CreatePrefinancingJRCRequestType" />
+	<xs:element name="CreatePrefinancingGuaranteeFundJRCRequest" type="CreatePrefinancingGuaranteeFundJRCRequestType" />
+	<xs:element name="CreatePrefinancingResponse" type="CreatePrefinancingResponseType" />
+	<xs:element name="CreatePrefinancingGuaranteeFundJRCResponse" type="CreatePrefinancingGuaranteeFundJRCResponseType" />
+	<xs:element name="CreatePrefinancingException" type="jagate:JAgateException" />
+
+	<!-- types -->
+	<xs:complexType name="CreatePrefinancingRequestType">
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataPrefinType"/>
+			<xs:element name="WorkflowData" type="prefin:PrefinWorkflowType"/>
+			<xs:element name="PrefinancingData" type="prefin:PrefinancingDataType"/>
+			<xs:element name="AresReferenceData" type="documents:AresReferenceDataType"/>
+			<xs:element name="VisaData" type="visa:VisaEmbeddedType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="CreatePrefinancingJRCRequestType">
+		<xs:sequence>
+			
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreatePrefinancingGuaranteeFundJRCRequestType">
+		<xs:sequence>
+			
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreatePrefinancingResponseType">
+		<xs:sequence>
+			
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreatePrefinancingGuaranteeFundJRCResponseType">
+		<xs:sequence>
+			
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

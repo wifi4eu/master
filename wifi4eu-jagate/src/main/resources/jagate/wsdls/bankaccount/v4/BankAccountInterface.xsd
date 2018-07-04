@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns:ba="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v4"
+	xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/bankaccount/v4/interfaces" 
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/bankaccount/v4/interfaces"
+	elementFormDefault="qualified">
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V2" schemaLocation="../../../cdm/model/bankaccount/V2/BankAccount.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v4" schemaLocation="../../../domain/bankaccount/v4/BankAccount.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" schemaLocation="../../../domain/visa/v2/Visa.xsd" />
+
+	<!-- Elements -->
+	<xs:element name="GetBankAccountByNationalNumberRequest" type="GetBankAccountByNationalNumberRequestType" />
+	<xs:element name="GetAllBankAccountsByNationalNumberRequest" type="GetAllBankAccountsByNationalNumberRequestType" />
+	<xs:element name="GetBankAccountByIbanRequest" type="GetBankAccountByIbanRequestType" />
+	<xs:element name="GetAllBankAccountsByIbanRequest" type="GetAllBankAccountsByIbanRequestType" />
+	<xs:element name="GetBankAccountResponse" type="GetBankAccountResponseType" />
+	<xs:element name="CreateBankAccountRequest" type="CreateBankAccountRequestType" />
+	<xs:element name="CreateBankAccountResponse" type="CreateBankAccountResponseType" />
+	<xs:element name="CreateLEBALinkRequest" type="CreateLEBALinkRequestType" />
+	<xs:element name="CreateLEBALinkResponse" type="CreateLEBALinkResponseType" />
+	<xs:element name="GetAllBankAccountsByAbacIdRequest" type="GetAllBankAccountsByAbacIdRequestType"/>
+	<xs:element name="BankAccountException" type="jagate:JAgateException" />
+	
+	
+	<xs:complexType name="CreateLEBALinkRequestType">
+		<xs:sequence>
+			<xs:element name="content" type="CreateLEBALinkType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CreateLEBALinkType">
+		<xs:sequence>
+			<xs:element name="legalEntityId" type="jagate:NonEmptyString" />
+			<xs:element name="bankAccountId" type="jagate:NonEmptyString" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CreateLEBALinkResponseType">
+		<xs:sequence>
+			<xs:element name="content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Types -->
+	
+	<xs:complexType name="CreateBankAccountRequestType">
+		<xs:sequence>
+			<xs:element name="content" type="CreateBankAccountType" />
+		</xs:sequence>		
+	</xs:complexType>
+	
+	<xs:complexType name="CreateBankAccountType">
+		<xs:sequence>
+			<xs:element name="bankAccount" type="ba:JagateBankAccountType" />
+			<xs:choice>
+				<xs:element name="aresDocumentList" type="jagate:AresDocumentList"/>
+				<xs:element name="scannedDocumentList" type="jagate:ScannedDocumentList"/>	
+			</xs:choice>	
+			<xs:element name="Visa" type="visa:SingleTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CreateBankAccountResponseType">
+		<xs:sequence>
+			<xs:element name="content" type="jagate:IdentifiedResponseMessageType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GetBankAccountByNationalNumberRequestType">
+		<xs:sequence>
+			<xs:element name="nationalNumber" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountByIbanRequestType">
+		<xs:sequence>
+			<xs:element name="iban" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountResponseType">
+		<xs:sequence>
+			<xs:element name="bankAccountHolder" type="ba:BankAccountHolderType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetAllBankAccountsByIbanRequestType">
+		<xs:sequence>
+			<xs:element name="iban" type="jagate:NonEmptyString" />
+		</xs:sequence>
+	</xs:complexType>	
+	<xs:complexType name="GetAllBankAccountsByNationalNumberRequestType">
+		<xs:sequence>
+			<xs:element name="nationalNumber" type="jagate:NonEmptyString" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetAllBankAccountsByAbacIdRequestType">
+		<xs:sequence>
+			<xs:element name="abacId" type="jagate:NonEmptyString" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

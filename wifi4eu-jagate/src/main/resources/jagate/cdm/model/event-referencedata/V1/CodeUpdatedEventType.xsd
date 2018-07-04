@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns:eventbase="http://ec.europa.eu/research/fp/model/eventbase/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:code="http://ec.europa.eu/research/fp/model/code/V3" xmlns:ns1="http://ec.europa.eu/rdg/efp/domain/event/referencedata/codeupdated-event/V1" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/codeupdated-event/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:annotation>
+		<xs:documentation>PLEASE DO NOT USE THIS VERSION. LISTENERS SHOULD USE V0. V1 IS ONLY USED BY CCM2 BACKEND. THE EDA DOES NOT SUPPORT V1</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/eventbase/V1" schemaLocation="../../eventbase/V1/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code/V3" schemaLocation="../../code/V3/Code.xsd"/>
+	<xs:complexType name="CodeUpdatedEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when a code is updated</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="oldValue" type="code:CodeType">
+						<xs:annotation>
+							<xs:documentation>Complete description of the old version of the code (before the update)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="newValue" type="code:CodeType">
+						<xs:annotation>
+							<xs:documentation>Complete description of the new version of the code after the update)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="UpdateDate" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Moment of the official update: an updated code is considered valid from this official update date (this date should typically be  very close or identical to the event emission date)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Comments" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Optional text explaining the context or reason for the update of this code</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

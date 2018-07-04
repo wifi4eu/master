@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/project-erc/V4" xmlns:LEref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:report="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" xmlns:ns1="http://ec.europa.eu/research/fp/model/project-erc/V4" xmlns:partner="http://ec.europa.eu/research/fp/model/project-partner/V4" xmlns:person="http://ec.europa.eu/research/fp/model/person/V4" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:address="http://ec.europa.eu/research/fp/model/address/V4" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/project-erc/V4" elementFormDefault="qualified" version="4.4.0">
+	<xs:annotation>
+		<xs:documentation>
+			This schema intends to capture all funding scheme specific project data; in this case for projects complying to ERC funding schemes
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V4" schemaLocation="../../person/V4/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V4" schemaLocation="../../project-partner/V4/ProjectPartner.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" schemaLocation="../../project-reportingperiod/V4/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V4" schemaLocation="../../address/V4/Address.xsd"/>
+	<xs:element name="ERCProjectInfo" type="ERCProjectInfoType"/>
+	<xs:complexType name="ERCProjectInfoType">
+		<xs:annotation>
+			<xs:documentation>Project level data elements specific to ERC projects.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PrincipalInvestigator" type="PrincipalInvestigatorType" maxOccurs="unbounded"/>
+			<xs:element name="ScientificReportingPeriods" type="report:ScientificReportingPeriodType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ERCReviewPanelCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>H2020: This is the primary review panel used for some of the ERC type of actions. 
+Code of classId "ERCPanel"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ERCSecondaryReviewPanelCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>H2020: This is the secondary review panel used for some of the ERC type of actions. Code of classId "ERCPanel"</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--
+	<xs:complexType name="ERCPartnerInfoType">
+		<xs:annotation>
+			<xs:documentation>Partner level data elements specific to ERC projects.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="partner:FundingSchemeSpecificPartnerInfoType">
+				<xs:sequence/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+-->
+	<xs:complexType name="PrincipalInvestigatorType">
+		<xs:complexContent>
+			<xs:extension base="person:PersonType">
+				<xs:sequence>
+					<xs:element name="ResearcherID" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>this is a researcher ID for a central researcher database</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="HostedBy" type="LEref:LegalEntityIdType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Each P.I., is linked to a Partner PIC</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CountryDuringProjectCode" type="coderef:CodeRefType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Country of residence during project</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OrderNumber" type="xs:positiveInteger" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>For Synergy grant: up to 4 P.I.s, each P.I. is allocated a unque number 1...4</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="COPI" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>For Synergy grant: one of the P.I.s is the "lead"</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ContactAddressDuringProject" type="address:AddressType" minOccurs="0"/>
+					<xs:element name="DedicatedWorkTime" type="base:PercentageType" minOccurs="0"/>
+					<xs:element name="HostedByHistory" type="HistoryOfHostedByList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>the history of HostedBy element of the PI</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="HistoryOfHostedByList">
+		<xs:sequence>
+			<xs:element name="OldHostedBy" type="HistoryOfHostedByItemType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HistoryOfHostedByItemType">
+		<xs:sequence>
+			<xs:element name="OldHostedByPIC" type="LEref:LegalEntityIdType"/>
+			<xs:element name="DateOfLeaving" type="xs:date"/>
+			<xs:element name="DateOfLeavingOption" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>it is used for change of Host Institution on ERC projects.
+                                                It takes values from ccm2 code type: 'GrantDateOption' and users the following values:                                      
+                                                         31069307 (FIXED_DATE ), 
+                                                         31069308 (ENTRY_INTO_FORCE_DATE), i.e., at amendment entry into force date
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20150625 - v4.4.0 - SYGMA - added the optional element HostedByHistory and its relevant complex type to support H2020 ERC amendments</xs:documentation>		
+		<xs:documentation>20140515 - v4.3.1 - SYGMA - added the optional field DedicatedWorkTime
+		added ERCReviewPanelCode, ERCSecondaryReviewPanelCode</xs:documentation>
+		<xs:documentation>20140109 - v4.3.0 - SYGMA - the scientific reporting periods becomes unbounded element</xs:documentation>
+		<xs:documentation>20131121 - v4.2.0 - CDMWG - Remove the extension of FundingSchemeSpecificProjectInfoType. Now specific info will be an optional element in the project itself - Comment out ERCPartnerInfoType, it is an empty shell</xs:documentation>
+		<xs:documentation>20131030 - v4.1.0 - SYGMA - added ResearcherID, ContactAddressDuringProject and list of PrincipalInvestigator</xs:documentation>
+		<xs:documentation>20131010 - v4.0.0 - SYGMA - CodeRef v3, Person v4, Project v4, ProjectPartner v4, ProjectReportingPeriod v3, LegalEntityRef v3</xs:documentation>
+		<xs:documentation>20110128 - v3.0.0 - Bump due to use of project v3, person v2 and project-partner v3</xs:documentation>
+		<xs:documentation>20130905 - v3.1.0 -  Added OrderNumber, hostedBy, COPI to PrincipalInvestigatorType / added ScientificReportingPeriods to ERCProjectInfoType</xs:documentation>
+	</xs:annotation>
+</xs:schema>

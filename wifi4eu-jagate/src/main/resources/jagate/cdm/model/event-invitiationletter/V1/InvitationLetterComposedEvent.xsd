@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema	
+	targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/project/grant/invitationletter-event/V1"
+	xmlns="http://ec.europa.eu/rdg/efp/domain/event/project/grant/invitationletter-event/V1"
+    xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2"
+    xmlns:eventbase="http://ec.europa.eu/research/fp/model/eventbase/V1"
+   	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"	version="1.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/eventbase/V1" schemaLocation="../../eventbase/V1/EventBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd" />
+
+	<xs:complexType name="InvitationLetterComposedEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when an ONL batch is finished.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="Project" type="projectref:ProjectIdType" minOccurs="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation> 20131010 - v1.0.0 - SYGMA - creation </xs:documentation>
+	</xs:annotation>	
+
+</xs:schema>

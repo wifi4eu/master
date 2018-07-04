@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalentity/finish/v2"
+	xmlns:eventbase="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v2"
+	xmlns:le="http://ec.europa.eu/rdg/jagate/ws/domain/legalentity/v5"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalentity/finish/v2"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v2" schemaLocation="../../base/v2/JagateBaseEvent.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/legalentity/v5" schemaLocation="../../../legalentity/v5/LegalEntity.xsd" />
+	
+	<xs:complexType name="CreateOrUpdateFinishedEvent">
+		<xs:complexContent>
+			<xs:extension base="eventbase:JagateAbstractEvent">
+				<xs:sequence>
+					<xs:element name="requestId" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Temporary fel id, optional. Present if the
+								update came from a request initiated by a Jagate client (e.g.
+								PDM) only). Not present for an update event initiated elsewhere
+								(e.g. directly in the Abac application).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="felId" type="xs:string" />
+					<xs:element name="BlockedInfo" type="le:BlockedFelInfoType" minOccurs="0" />
+					<xs:element name="EWS" type="le:EarlyWarningType" minOccurs="0" maxOccurs="unbounded" />
+					<xs:element name="ChangedFields" type="ChangedFieldType" minOccurs="0" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ChangedFieldType">
+		<xs:annotation>
+			<xs:documentation>
+				Possible key - value pairs:
+					1. customerOnlyFlag - BooleanValue 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Key" type="xs:string" />
+			<xs:element name="Value" type="ValueType" />
+			<xs:element name="FreeTextReason" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ValueType">
+		<xs:choice>
+			<xs:element name="StringValue" type="xs:string" />
+			<xs:element name="BooleanValue" type="xs:boolean" />
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

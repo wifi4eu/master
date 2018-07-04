@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/legalentity-core/V1" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:proposal="http://ec.europa.eu/research/fp/model/project-proposal/V1"  targetNamespace="http://ec.europa.eu/research/fp/model/legalentity-core/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:annotation>
+		<xs:documentation>This schema intends to hold a view on all 'core' legal entity data, i.e. all data that will stay constant over FP versions.
+		It is a trimmed down version of the 'full' legal entity data view in LegalEntityType.
+		TODO: improve reuse of definitions; eliminate duplication
+		</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="LegalEntityCoreType">
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="UTROPIC" type="legalentityref:LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the master PIC of the legal entity, in case of PIC Status SUSPENDED_UTRO</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LegalName" type="xs:string"/>
+			<xs:element name="BusinessName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The full business name in the official language</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VAT" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The VAT (Value Added Tax) number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LegalAddress">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Street" type="xs:string" minOccurs="0"/>
+						<xs:element name="HouseNumber" type="xs:string" minOccurs="0"/>
+						<xs:element name="PoBox" type="xs:string" minOccurs="0"/>
+						<xs:element name="PostalCode" type="xs:string" minOccurs="0"/>
+						<xs:element name="Cedex" type="xs:string" minOccurs="0"/>
+						<xs:element name="City" type="xs:string"/>
+						<xs:element name="Region" type="xs:string" minOccurs="0"/>
+						<xs:element name="Country" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Will be removed in version 3 of the model. See CountryCode Below</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="CountryCode" type="coderef:CodeRefType">
+							<xs:annotation>
+								<xs:documentation>CountryCode will supercede Country in Version 3 of the model. Providers must fill this field starting 09/2010. It is kept as non mandatory for backward compatibility with consumers deployed before 09/2010</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

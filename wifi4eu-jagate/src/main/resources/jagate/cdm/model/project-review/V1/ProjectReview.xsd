@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+
+<xs:schema
+	targetNamespace="http://ec.europa.eu/research/fp/model/project-review/V1" 
+	xmlns="http://ec.europa.eu/research/fp/model/project-review/V1"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified" version="1.0.0">
+	
+	<xs:element name="Review" type="ReviewDefinitionType">
+		<xs:annotation>
+			<xs:documentation>called it ReviewItem in project since there was another Review used in the ReportingGroup </xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ReviewDefinitionType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the project review definition.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ReviewRef" type="ReviewRefType">
+				<xs:annotation>
+					<xs:documentation>unique identifier of review in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:positiveInteger"/>
+			<xs:element name="TentativeTiming" type="xs:int"/>
+			<xs:element name="Venue" type="xs:string"/>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ReviewRefType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+
+	<xs:annotation>
+		<xs:documentation> 20131010 - v1.0.0 - SYGMA - creation </xs:documentation>
+	</xs:annotation>	
+
+</xs:schema>

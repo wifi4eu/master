@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		xmlns="http://ec.europa.eu/rdg/jagate/ws/invoice/v1/interfaces" 
+		targetNamespace="http://ec.europa.eu/rdg/jagate/ws/invoice/v1/interfaces"
+		elementFormDefault="qualified"
+		xmlns:invoice="http://ec.europa.eu/rdg/jagate/ws/domain/invoice/v1"
+		xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		xmlns:project="http://ec.europa.eu/rdg/jagate/ws/domain/project/v2"
+		xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2"
+		xmlns:inv="http://ec.europa.eu/research/fp/model/invoice/V1"
+		xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/invoice/V1" schemaLocation="../../../cdm/model/invoice/V1/Invoice.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v2" schemaLocation="../../../domain/project/v2/ProjectBasicData.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" schemaLocation="../../../domain/visa/v2/Visa.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/invoice/v1" schemaLocation="../../../domain/invoice/v1/Invoice.xsd" />	
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" schemaLocation="../../../domain/documents/v1/AresReference.xsd" />
+	
+	<xs:element name="RegisterInvoiceResponse" type="RegisterInvoiceResponseType" />
+	<xs:element name="RegisterInvoiceRequest" type="RegisterInvoiceRequestType" />	
+	<xs:element name="UnRegisterInvoiceRequest" type="UnRegisterInvoiceRequestType" />
+	<xs:element name="UnRegisterInvoiceResponse" type="UnRegisterInvoiceResponseType" />
+	<xs:element name="ReRegisterInvoiceResponse" type="ReRegisterInvoiceResponseType" />
+	<xs:element name="ReRegisterInvoiceRequest" type="ReRegisterInvoiceRequestType" />
+	<xs:element name="CloseInvoiceResponse" type="CloseInvoiceResponseType" />
+	<xs:element name="CloseInvoiceRequest" type="CloseInvoiceRequestType" />
+    <xs:element name="ReopenInvoiceResponse" type="ReopenInvoiceResponseType" />
+    <xs:element name="ReopenInvoiceRequest" type="ReopenInvoiceRequestType" />
+    <xs:element name="InvalidateInvoiceRequest" type="InvalidateInvoiceRequestType" />
+    <xs:element name="InvalidateInvoiceResponse" type="InvalidateInvoiceResponseType" />    
+
+	<xs:element name="InvoiceException" type="jagate:JAgateException" />
+	
+	<xs:simpleType name="InvoiceTransactionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PF"/>
+            <xs:enumeration value="CC"/>            
+        </xs:restriction>
+    </xs:simpleType>
+	
+	<xs:complexType name="RegisterInvoiceRequestType">
+		<xs:annotation>
+			<xs:documentation>Registering invoice in ABAC</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataPrefinType"/>
+			<xs:element name="LastPeriod" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ReportingPeriodNumber" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="ApplicableTimeLimit" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Type" type="InvoiceTransactionType" minOccurs="1"/>
+			<xs:element name="InvoiceHeader" type="invoice:InvoiceDetails"/>
+			<xs:element name="AresReferenceData" type="documents:AresReferenceDataType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="RegisterInvoiceResponseType">
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UnRegisterInvoiceRequestType">
+		<xs:annotation>
+			<xs:documentation>Registering invoice in ABAC</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="Type" type="InvoiceTransactionType" minOccurs="1"/>
+			<xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UnRegisterInvoiceResponseType">
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ReRegisterInvoiceRequestType">
+		<xs:annotation>
+			<xs:documentation>Re Registering invoice in ABAC</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataPrefinType"/>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="ApplicableTimeLimit" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Type" type="InvoiceTransactionType" minOccurs="1"/>
+			<xs:element name="InvoiceHeader" type="invoice:InvoiceDetails"/>
+			<xs:element name="AresReferenceData" type="documents:AresReferenceDataType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ReRegisterInvoiceResponseType">
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CloseInvoiceRequestType">
+		<xs:annotation>
+			<xs:documentation>Closing invoice in ABAC</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProjectData" type="project:ProjectDataPrefinType"/>	
+			<xs:element name="Type" type="InvoiceTransactionType" minOccurs="1"/>		
+			<xs:element name="InvoiceList" type="inv:InvoiceType" />
+			<xs:element name="AresReferenceData" type="documents:AresReferenceDataType"/>
+			<xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CloseInvoiceResponseType">
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="ReopenInvoiceRequestType">
+        <xs:annotation>
+            <xs:documentation>Closing invoice in ABAC</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+            <xs:element name="Type" type="InvoiceTransactionType" minOccurs="1"/>
+            <xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ReopenInvoiceResponseType">
+        <xs:sequence>
+            <xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+            <xs:element name="returnCode" type="xs:long"/>
+            <xs:element name="message" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="InvalidateInvoiceRequestType">
+        <xs:sequence>
+            <xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+            <xs:element name="Type" type="InvoiceTransactionType"/>
+            <xs:element name="AresReferenceData" type="documents:AresReferenceDataType" minOccurs="0"/>
+            <xs:element name="VisaData" type="visa:MultiTransactionVisaEmbeddedType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="InvalidateInvoiceResponseType">
+        <xs:sequence>
+            <xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+            <xs:element name="requestId" type="xs:long"/>
+            <xs:element name="returnCode" type="xs:long"/>
+            <xs:element name="message" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

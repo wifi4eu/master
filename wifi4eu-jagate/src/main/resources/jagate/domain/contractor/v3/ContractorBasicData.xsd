@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+				xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+				  	   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v3" 
+			 targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v3" 
+		  elementFormDefault="qualified" 
+		attributeFormDefault="unqualified">
+
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd" />
+
+	<xs:element name="ContractorPic" type="xs:int">
+		<xs:annotation>
+			<xs:documentation>PDM Value to be transformed by JAGATE in ABAC values</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="ContractorJRC" type="xs:boolean">
+		<xs:annotation>
+			<xs:documentation>If the contractor is JRC.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="ContractorIban" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>The Bank Account IBAN for the contractor.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="ContractorBankAccount" type="xs:string">
+		<xs:annotation>
+			<xs:documentation>The Bank Account for the contractor.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:complexType name="PrincipalContractorBankAccountType">
+		<xs:annotation>
+			<xs:documentation>The principal contractor set of data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:annotation>
+					<xs:documentation>Either the iban or either the national bank account is mandatory.</xs:documentation>
+				</xs:annotation>
+				<xs:element name="ContractorIban" type="jagate:NonEmptyString"/>
+				<xs:element name="ContractorBankAccount" type="jagate:NonEmptyString"/>	
+			</xs:choice>			
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/clock/v1"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/clock/v1"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:documents="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1"
+	attributeFormDefault="unqualified">
+
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/documents/v1" schemaLocation="../../documents/v1/AresReference.xsd" />
+
+    <xs:complexType name="ClockEntry">
+        <xs:annotation>
+            <xs:documentation>Clock start/stop entry</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="startDate" type="xs:date"/>
+            <xs:element name="endDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="reasonCode" type="ClockActionReasonCode" minOccurs="0"/>
+            <xs:element name="reasonText" type="xs:string" minOccurs="0"/>
+            <xs:element name="aresReferenceData" type="documents:AresReferenceDataType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:simpleType name="ClockActionReasonCode">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="IRREG"/>
+			<xs:enumeration value="RETPERF"/>
+			<xs:enumeration value="PFIN"/>
+			<xs:enumeration value="PFVN"/>
+			<xs:enumeration value="PJP"/>
+			<xs:enumeration value="PRNYR"/>
+			<xs:enumeration value="LOC"/>
+			<xs:enumeration value="AWSI"/>
+			<xs:enumeration value="MJD"/>
+			<xs:enumeration value="ENCF"/>
+			<xs:enumeration value="ASI"/>
+			<xs:enumeration value="TANYG"/>
+			<xs:enumeration value="DNE"/>
+			<xs:enumeration value="INC"/>
+			<xs:enumeration value="MISC"/>
+			<xs:enumeration value="ACN"/>
+			<xs:enumeration value="CTDCP"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

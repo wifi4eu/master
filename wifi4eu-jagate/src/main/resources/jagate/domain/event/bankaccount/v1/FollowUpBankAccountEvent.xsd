@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/event/bankaccount/followup/v1"
+           targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/bankaccount/followup/v1"
+           xmlns:eventbase="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v4"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0">
+
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v4" schemaLocation="../../base/v4/JagateBaseEvent.xsd" />
+
+
+    <xs:complexType name="FollowUpBankAccountEvent">
+        <xs:complexContent>
+            <xs:extension base="eventbase:JagateEvent">
+                <xs:sequence>
+                    <xs:element name="requestId" type="xs:string" />
+                    <xs:element name="bankAccount" type="xs:string" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

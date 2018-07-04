@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2015 rel. 4 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns:userRef="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:security="http://ec.europa.eu/research/fp/model/security/V5" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://ec.europa.eu/rdg/efp/domain/event/security/roleprovisioning/V2" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/security/roleprovisioning/V2" elementFormDefault="qualified" version="2.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/security/V5" schemaLocation="../../security/V5/Security.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:complexType name="RoleProvisioningEventType">
+		<xs:annotation>
+			<xs:documentation>This event type informs that a role has been granted or revoked.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="GrantedRole" type="security:GrantedRoleType"/>
+					<xs:element name="ProvisioningUser" type="userRef:UserRefType" minOccurs="0"/>
+					<xs:element name="ProvisioningSystemId" type="base:SystemsType" minOccurs="0"/>
+					<xs:element name="ProvisioningAction" type="coderef:CodeRefType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>
+			Identity and Access Management event definition, used to notify that a role has been provisioned in IAM back-end
+		</xs:documentation>
+		<xs:documentation>1.0.0: initial version (event-legacy/security/roleprovisioning/V1/RoleProvisioningEvent.xsd)</xs:documentation>
+		<xs:documentation>2.0.0: updated version after IAM V5 refactoring</xs:documentation>
+	</xs:annotation>
+</xs:schema>

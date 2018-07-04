@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/invoice/V1" 
+	targetNamespace="http://ec.europa.eu/research/fp/model/invoice/V1" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1"
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+	xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified" version="1.3.0">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+
+	<xs:complexType name="InvoiceListType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Invoice" type="InvoiceType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvoiceType">
+		<xs:sequence>
+			<xs:element name="InvoiceId" type="xs:string"/>
+			<xs:element name="ABACKey" type="xs:string" minOccurs="0"/>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="ReportingPeriod" type="xs:int" minOccurs="0"/>
+			<xs:element name="LinkedToFinalPayment" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="AresRef" type="xs:string" minOccurs="0"/>
+			<xs:element name="Commitment" type="xs:string" minOccurs="0"/>
+			<xs:element name="InvoiceDate" type="xs:date"/>
+			<xs:element name="ECReceptionDate" type="xs:date"/>
+			<xs:element name="TotalAmount" type="base:AmountType"/>
+			<xs:element name="OpenAmount" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="InvoiceDetails" type="InvoiceDetailListType" minOccurs="0"/>
+			<xs:element name="InvoiceNegativeDetails" type="InvoiceNegativeDetailListType" minOccurs="0"/>
+			<xs:element name="Clearings" type="ClearingListType" minOccurs="0"/>
+			<xs:element name="RecoveryOrderKey" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvoiceDetailListType">
+		<xs:sequence>
+			<xs:element name="InvoiceDetail" type="InvoiceDetailType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvoiceNegativeDetailListType">
+		<xs:sequence>
+			<xs:element name="InvoiceDetail" type="InvoiceNegativeDetailType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecoveryContextType">
+		<xs:sequence>
+			<xs:element name="Qualification" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>CCM code with ClassId InvoiceRecoveryContextQualification</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="YearOfCommitting" type="base:YearType" minOccurs="0"/>
+			<xs:element name="YearOfDetection" type="base:YearType" minOccurs="0"/>
+			<xs:element name="DetectedBy" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>CCM code with ClassId InvoiceRecoveryContextDetectedBy</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DetectedByOther" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Should be filled only if DetectedBy is Other</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ErrorOrIrregularityType" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>CCM code with ClassId InvoiceRecoveryContextError</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NotEligibleAmountType">
+		<xs:sequence>
+			<xs:element name="Amount" type="base:AmountType"/>
+			<xs:element name="Reason" type="xs:string"/>
+			<xs:element name="RecoveryContext" type="RecoveryContextType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvoiceDetailType">
+		<xs:sequence>
+			<xs:element name="NetAmount" type="base:AmountType"/>
+			<xs:element name="Commitment" type="xs:string" minOccurs="0"/>
+			<xs:element name="DGCode" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:element name="NotEligibleAmount" type="NotEligibleAmountType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvoiceNegativeDetailType">
+		<xs:sequence>
+			<xs:element name="NetAmount" type="base:AmountType"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="Commitment" type="xs:string" minOccurs="0"/>
+			<xs:element name="DGCode" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:element name="RecoveryContext" type="RecoveryContextType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClearingListType">
+		<xs:sequence>
+			<xs:element name="Clearing" type="ClearingType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ClearingType">
+		<xs:sequence>
+			<xs:element name="Amount" type="base:AmountType"/>
+			<xs:element name="PrefinPaymentPositionKey" type="xs:string"/>
+			<xs:element name="EWSJustification" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.3.0 - 20/04/17 : added new type InvoiceNegativeDetailType, used in InvoiceNegativeDetails on the InvoiceType</xs:documentation>
+		<xs:documentation>v1.2.0 - 09/06/15 : added OpenAmount on the InvoiceType</xs:documentation>
+		<xs:documentation>v1.1.0 - 15/04/15 : added import of CodeRef namespace; added types NotEligibleAmountType and RecoveryContextType; updated InvoiceType: change of name AbacKey --> ABACKey, removed InvoiceType, FundingPhase, added LinkedToFinalPayment; updated InvoiceDetailType to take into account the complete definition of the NotEligibleAmount and RecoveryContext: change of name Amount --> NetAmount, removed PolicyAreaCode, added DGCode and NotEligibleAmount;</xs:documentation>
+	</xs:annotation>
+</xs:schema>

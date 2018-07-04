@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:tns="http://ec.europa.eu/research/fp/model/participantnotification/interfaces/V1" xmlns:userRef="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:projectRef="http://ec.europa.eu/research/fp/model/project-ref/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:securityRef="http://ec.europa.eu/research/fp/model/security/V4" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/participantnotification/interfaces/V1" elementFormDefault="qualified" version="1.1.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/security/V4" schemaLocation="../../security/V4/Security.xsd"/>
+	<xs:annotation>
+		<xs:documentation>This schema contains types used for describing PNS notification and PNS related artefacts such as recipients/participants, notification messages, channels, etc.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="NotificationType">
+		<xs:sequence>
+			<xs:element name="Publisher" type="tns:PublisherType"/>
+			<xs:element name="Subject" type="tns:SubjectType"/>
+			<xs:element name="Tags" type="tns:TagsType"/>
+			<xs:element name="Recipients" type="tns:RecipientsType"/>
+			<xs:element name="Validity" type="tns:ValidityType" minOccurs="0"/>
+			<xs:element name="MessageType" type="tns:MessageType"/>
+			<xs:element name="Importance" type="tns:ImportanceType"/>
+			<xs:element name="MessageBody" type="tns:MessageBodyType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PublisherType">
+		<xs:annotation>
+			<xs:documentation>Identifier of the publishing application. Only registered application are allow to send notification through this service. The userId is also required and used in non-production environments as the recipient of the notification</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ApplicationId" type="base:SystemsType"/>
+			<xs:element name="UserId" type="base:ECUserIdType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="MessageBodyType">
+		<xs:restriction base="xs:base64Binary">
+			<xs:minLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ValidityType">
+		<xs:annotation>
+			<xs:documentation>
+	This is the validity of the notification. The From is the date from which the notification becomes valid. If not set it means that the notification is valid directly after its emission time. The To is the date after the validation is no more valid. It is in other words an  expiration date (time). If this date is not set a default one will be taken into account per configuration (one month after the begining of validity for instance)
+	</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="From" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="To" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonType">
+		<xs:sequence>
+			<xs:element name="PersonRef" type="userRef:UserRefType"/>
+			<xs:element name="Addressing" type="tns:AddressingType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonsType">
+		<xs:sequence>
+			<xs:element name="Person" type="tns:PersonType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelationType">
+		<xs:annotation>
+			<xs:documentation>TO DO</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ResourceRoleRelationType" type="securityRef:ResourceRoleRelationType"/>
+			<xs:element name="Addressing" type="tns:AddressingType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelationsType">
+		<xs:annotation>
+			<xs:documentation>TO DO</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Relation" type="tns:RelationType" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecipientsType">
+		<xs:annotation>
+			<xs:documentation>TO DO</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RelationsList" type="tns:RelationsType" minOccurs="0"/>
+			<xs:element name="PersonsList" type="tns:PersonsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="MessageType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FOR_ACTION"/>
+			<xs:enumeration value="FOR_INFORMATION"/>
+			<xs:enumeration value="FOR_SUMMARY"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ImportanceType">
+		<xs:annotation>
+			<xs:documentation>The importance of the notification. HIGH notifications will be sent ASAP while NORMAL notifications will be sent as a digest email.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="HIGH"/>
+			<xs:enumeration value="NORMAL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AddressingType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TO"/>
+			<xs:enumeration value="CC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SubjectType">
+		<xs:annotation>
+			<xs:documentation>Subject of the notification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="5"/>
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="TagsType">
+		<xs:sequence>
+			<xs:element name="Tag" type="tns:TagType" nillable="false" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This a free text field allowing the classification of notification. The text does not contains any blank and follows the dot notation allowing the implicit hierarchy implementation. Here is an example of what may contain this tag: &quot;project.new&quot; or &quot;project.member.new&quot;
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>A tag that can be specified for a notification. 
+		A tag represents free text that can classify a notification</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="TagType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Notification types START -->
+	<xs:complexType name="NotificationsType">
+		<xs:annotation>
+			<xs:documentation>A list of notifications with a summary of the current state of each Notification.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Notification" type="tns:NotificationSummaryListType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NotificationSummaryListType">
+		<xs:annotation>
+			<xs:documentation>A list of notifications with a summary of the current state of each Notification.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NotificationSummary" type="tns:NotificationSummaryType" minOccurs="0"/>
+			<!--<xs:element name="RecipientsList" type="tns:RecipientsSummaryListType" minOccurs="0" maxOccurs="unbounded"/>-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NotificationSummaryType">
+		<xs:annotation>
+			<xs:documentation>A summary of the current state of the Notification</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ID" type="xs:string"/>
+			<xs:element name="Subject" type="xs:string"/>
+			<xs:element name="Importance" type="xs:string"/>
+			<xs:element name="Publisher" type="xs:string"/>
+			<xs:element name="Status" type="xs:string"/>
+			<xs:element name="Validity" type="tns:ValidityType"/>
+			<xs:element name="Recipients" type="xs:string"/>
+			<xs:element name="SubmitionTime" type="xs:dateTime"/>
+			<xs:element name="LastResolutionTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>The time when PNS last called IAM to resolve Relations of this notification</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProcessedCount" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The number of times that the Notification was processed by PNS</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Notification types END -->
+	<!-- Recipient Types START -->
+	<xs:complexType name="NotificationMessageRecipientsListType">
+		<xs:sequence>
+			<xs:element name="NotificationMessageRecipient" type="tns:NotificationMessageRecipientType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecipientsSummaryListType">
+		<xs:sequence>
+			<xs:element name="Recipient" type="tns:RecipientSummaryType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecipientsListFullType">
+		<xs:sequence>
+			<xs:element name="Recipient" type="tns:RecipientsFullType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecipientsFullType">
+		<xs:annotation>
+			<xs:documentation>A Recipient record with information about messages received by the recipients. Messages are generated by PNS when 
+			processing a Notification.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ParticipantId" type="xs:string"/>
+			<xs:element name="PIC" type="xs:string" minOccurs="0"/>
+			<xs:element name="Addressing" type="xs:string" minOccurs="0"/>
+			<xs:element name="Role" type="xs:string" minOccurs="0"/>
+			<xs:element name="Status" type="xs:string" minOccurs="0"/>
+			<xs:element name="Details" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreatedTime" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="LastUpdateTime" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="NotificationMessagesList" type="tns:NotificationMessagesSummaryListType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NotificationMessageRecipientType">
+		<xs:annotation>
+			<xs:documentation>A Recipient record with information about messages received by the recipients. Messages are generated by PNS when 
+			processing a Notification.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ParticipantId" type="xs:string"/>
+			<xs:element name="Email" type="xs:string" minOccurs="0"/>
+			<xs:element name="PIC" type="xs:string" minOccurs="0"/>
+			<xs:element name="Addressing" type="xs:string" minOccurs="0"/>
+			<xs:element name="DeviceId" type="xs:string" minOccurs="0"/>
+			<xs:element name="Status" type="xs:string" minOccurs="0"/>
+			<xs:element name="Details" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreatedTime" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="LastUpdateTime" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecipientSummaryType">
+		<xs:annotation>
+			<xs:documentation>A Recipient summary record with the recipient/participant Id.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ParticipantId" type="xs:string"/>
+			<xs:element name="Status" type="xs:string" minOccurs="0"/>
+			<xs:element name="Details" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Recipient Types END -->
+	<!-- Notification Messages Types START -->
+	<xs:complexType name="NotificationMessagesListType">
+		<xs:sequence>
+			<xs:element name="NotificationMessage" type="tns:NotificationMessageType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NotificationMessagesSummaryListType">
+		<xs:sequence>
+			<xs:element name="NotificationMessage" type="tns:NotificationMessageSummaryType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NotificationMessageType">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:string"/>
+			<xs:element name="Channel" type="xs:string"/>
+			<xs:element name="Type" type="tns:NotificationMsgType"/>
+			<xs:element name="Status" type="xs:string"/>
+			<xs:element name="Details" type="xs:string"/>
+			<xs:element name="RetriesLeft" type="xs:integer"/>
+			<xs:element name="CreatedTime" type="xs:dateTime"/>
+			<xs:element name="LastUpdateTime" type="xs:dateTime"/>
+			<xs:element name="NotificationMessageRecipientsList" type="tns:NotificationMessageRecipientsListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NotificationMessageSummaryType">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:string"/>
+			<xs:element name="Channel" type="xs:string"/>
+			<xs:element name="Type" type="tns:NotificationMsgType"/>
+			<xs:element name="Status" type="xs:string"/>
+			<xs:element name="Details" type="xs:string"/>
+			<xs:element name="RetriesLeft" type="xs:integer"/>
+			<xs:element name="CreatedTime" type="xs:dateTime"/>
+			<xs:element name="LastUpdateTime" type="xs:dateTime"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="NotificationMsgType">
+		<xs:annotation>
+			<xs:documentation>This lists the types that a notification message can have. 1. SINGLE - A single message destined for a single recipient (e.g. ASAP email or PPW inbox message). 2. DIGEST - One or more messages destined for a single recipient (e.g. DIGEST (DAILY, WEEKLY or MONTHLY) email messages). 3. GROUPED - One message destined for one or more recipients (e.g. email mesage with many recipients in TO and/or CC)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SINGLE"/>
+			<xs:enumeration value="DIGEST"/>
+			<xs:enumeration value="GROUPED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Notification Messages Types END -->
+	<xs:annotation>
+		<xs:documentation>v1.1.0 - 20160908 - Added types used for audit trail</xs:documentation>
+		<xs:documentation>v1.0.0 - 20151101 - XSD creation</xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/resource/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" targetNamespace="http://ec.europa.eu/research/fp/model/resource/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:complexType name="ResourceListType">
+		<xs:sequence>
+			<xs:element name="Resource" type="ResourceType" nillable="false" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResourceType">
+		<xs:annotation>
+			<xs:documentation>
+				In the scope of IAM, a resource is composed of a resource id and possibly a list of resource elements.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="ResourceIdType"/>
+			<xs:element name="ElementList" type="ResourceElementListType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResourceIdType">
+		<xs:annotation>
+			<xs:documentation>
+				A resource id is composed of a resource type and one or more resource id element(s)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Type" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The CCM2 code of the resource type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ElementList" type="ResourceElementListType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResourceElementType">
+		<xs:annotation>
+			<xs:documentation>
+				A resource element is composed of a CCM2 code and a ResourceElementValue.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Type" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The CCM2 code of the resource type element.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Value" type="ResourceElementValueType">
+				<xs:annotation>
+					<xs:documentation>The value of the resource element. It is either a CCM2 code or a primitive data type element.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResourceElementListType">
+		<xs:sequence>
+			<xs:element name="Element" type="ResourceElementType" nillable="false" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResourceElementValueType">
+		<xs:annotation>
+			<xs:documentation>The value of a resource element. It is either a CCM2 code or a primitive data type element.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="String" type="xs:string"/>
+			<xs:element name="Code" type="coderef:CodeRefType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.0.0 - creation (ResourceId type was previously defined in Security.xsd)</xs:documentation>
+		<xs:documentation>       - generic ResourceType and ResourceIdType</xs:documentation>
+		<xs:documentation>       - define RoleType and PermissionType types as extensions of CCM2 code type</xs:documentation>
+		<xs:documentation>       - define ActionType as extension of CCM2 code type</xs:documentation>
+	</xs:annotation>
+</xs:schema>

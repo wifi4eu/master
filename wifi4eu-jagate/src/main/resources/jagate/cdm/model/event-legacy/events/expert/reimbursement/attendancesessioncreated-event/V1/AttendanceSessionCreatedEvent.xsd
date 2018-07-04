@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 (http://www.altova.com) by Liviu (European Commission - DG INFSO) -->
+<xs:schema xmlns:evt="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:expertAppointment="http://ec.europa.eu/research/fp/model/expertappointment/V1" xmlns:ns2="http://ec.europa.eu/research/fp/model/base/V1" xmlns:ns1="http://ec.europa.eu/rdg/efp/domain/event/expert/reimbursement/attendancesessioncreated-event/V1" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/expert/reimbursement/attendancesessioncreated-event/V1" elementFormDefault="qualified" version="1.1.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expertappointment/V1" schemaLocation="../../../../../../expertappointment/V1/ExpertAppointment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../../../../../base/V1/Base.xsd"/>
+	<xs:complexType name="AttendanceSessionCreatedEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated to publish which experts participated to an attendance session.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="evt:EventBodyType">
+				<xs:sequence>
+					<xs:element name="attendanceSession" type="expertAppointment:AttendanceSessionType">
+						<xs:annotation>
+							<xs:documentation>Defines an attendance session.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="eventOriginator" type="ns2:ECUserIdType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>ECAS ID of the person who created/sent the attendance session. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="attendanceSessionCreationDate" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>The date when the attendance session was created.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+		<xs:documentation>v 1.0.1: Migrated dependency on CDM from CDM 2.2.0 to CDM 2.2.1</xs:documentation>
+		<xs:documentation>v 1.1.0: Migrated dependency on CDM from CDM 2.2.1 to CDM 3.0.0 (fully backward compatible)</xs:documentation>
+		<xs:documentation>v 1.2.0: Migrated dependency on CDM from CDM 3.0.0 to CDM 3.2.0 </xs:documentation>
+	</xs:annotation>
+</xs:schema>

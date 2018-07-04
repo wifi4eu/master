@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/legalentity-public/V1" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:address="http://ec.europa.eu/research/fp/model/address/V4" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/legalentity-public/V1" elementFormDefault="qualified" version="1.2.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V4" schemaLocation="../../address/V4/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:annotation>
+		<xs:documentation>This schema intends to hold a view on all 'public' legal entity data, i.e. all data that could be publicly revealed.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="LegalEntityPublicType">
+		<xs:sequence>
+			<xs:element name="Pic" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="UtroPic" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="LegalName" type="xs:string"/>
+			<xs:element name="BusinessName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The full business name in the official language</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Vat" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The VAT (Value Added Tax) number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegistrationNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Legal Registration Number of this Organisation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LegalStatus" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The status of a legal Entity. Possible values are: NATURAL_PERSON, LEGAL_PERSON</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValidityType" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>CCM2 ClassId : LEValidityType. The possible values are: DECLARED, VALIDATED, SUSPENDED, SLEEPING, DEPRECATED, BLOCKED</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LegalAddress" type="address:PostalAddressType">
+				<xs:annotation>
+					<xs:documentation>Postal Address of the Legal Entity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ErasmusInstitutionCode" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Erasmus Institution Code of the organisation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LegalEntityProfileDataType">
+		<xs:annotation>
+			<xs:documentation>The profile data of the Legal Entity. This will initially be used in the context of Partner Search on the Participant Portal</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>PIC is optional if an element defined by this type belongs to a structure where the PIC of the LE is already present. Otherwise it should be present.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TopicRefList">
+				<xs:annotation>
+					<xs:documentation>List of CCM codes of Topics relevant for the Legal Entity. The codetyoe is FPdivision.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TopicRef" type="coderef:CodeRefType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="KeywordList">
+				<xs:annotation>
+					<xs:documentation>Keywords freely defined by the Legal Entity representative/staff</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Keyword" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A general description of the Legal Entity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>V1.0.0 - 20160113 - Schema creation</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>V1.1.0 - 20160706 - Added non mandatory elements ErasmusInstitutionCode in response list entry</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>V1.2.0 - 20170119 - Added LegalEntityProfileDataType (initially used by PartnerSearch on PP)</xs:documentation>
+	</xs:annotation>
+</xs:schema>

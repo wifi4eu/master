@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:deliverable="http://ec.europa.eu/research/fp/model/project-deliverable/V2" xmlns:document="http://ec.europa.eu/research/fp/model/document/V5" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/project-deliverable-submission/V1" targetNamespace="http://ec.europa.eu/research/fp/model/project-deliverable-submission/V1" elementFormDefault="qualified" version="1.0.1">
+	<xs:annotation>
+		<xs:documentation>1.0.1 - 2014-07-18 document is optional (not available for 'pending' deliverable submissions)</xs:documentation>
+	</xs:annotation>	
+	<xs:annotation>
+		<xs:documentation>1.0.0 - sygma changes</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>
+		This schema intends to capture the deliverable submission data. (externalised from report.xsd)
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V5" schemaLocation="../../document/V5/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable/V2" schemaLocation="../../project-deliverable/V2/ProjectDeliverable.xsd"/>
+	<xs:complexType name="DeliverableSubmissionType">
+		<xs:sequence>
+			<xs:element name="DeliverableRef" type="deliverable:DeliverableRefType"/>
+			<xs:element name="ReceiptDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Deliverable attachment upload date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InternalComment" type="xs:string" minOccurs="0"/>
+			<xs:element name="ExternalComment" type="xs:string" minOccurs="0"/>
+			<xs:element name="InternalActionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>date when the deliverable submission has been accepted or rejected</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeliverableStatus" type="DeliverableStatusType">
+				<xs:annotation>
+					<xs:documentation>predefined values PENDING, UPLOADED, SUBMITTED, ACCEPTED, REJECTED</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="document" type="document:DocumentType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="DeliverableStatusType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" xmlns:officerref="http://ec.europa.eu/research/fp/model/officer-ref/V2" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" xmlns:milestone="http://ec.europa.eu/research/fp/model/project-milestone/V4" xmlns:deliverable="http://ec.europa.eu/research/fp/model/project-deliverable/V2" xmlns:review="http://ec.europa.eu/research/fp/model/project-review/V1" xmlns:riskmitigation="http://ec.europa.eu/research/fp/model/project-risk-mitigation/V1" xmlns:workpackage="http://ec.europa.eu/research/fp/model/project-workpackage/V3" xmlns:specialclause="http://ec.europa.eu/research/fp/model/project-specialclause/V3" xmlns:costbreakdown="http://ec.europa.eu/research/fp/model/project-costbreakdown/V3" xmlns:partner="http://ec.europa.eu/research/fp/model/project-partner/V4" xmlns:core="http://ec.europa.eu/research/fp/model/project-core/V4" xmlns:officer="http://ec.europa.eu/research/fp/model/officer/V3" xmlns:report="http://ec.europa.eu/research/fp/model/report/V3" xmlns:document="http://ec.europa.eu/research/fp/model/document/V5" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:person="http://ec.europa.eu/research/fp/model/person/V4" xmlns:proposal="http://ec.europa.eu/research/fp/model/project-proposal/V2" xmlns:address="http://ec.europa.eu/research/fp/model/address/V4" xmlns:projectRepr="http://ec.europa.eu/research/fp/model/project-representative/V4" xmlns:individualcommitment="http://ec.europa.eu/research/fp/model/individualcommitment/V1" xmlns:invitationletter="http://ec.europa.eu/research/fp/model/invitationletter/V2" xmlns:negoreport="http://ec.europa.eu/research/fp/model/negotiationreport/V1" xmlns:projectamendment="http://ec.europa.eu/research/fp/model/project-amendment/V4" xmlns="http://ec.europa.eu/research/fp/model/project/V4" xmlns:ERC="http://ec.europa.eu/research/fp/model/project-erc/V4" xmlns:MarieCurie="http://ec.europa.eu/research/fp/model/project-mariecurie/V5" xmlns:RFCS="http://ec.europa.eu/research/fp/model/project-rfcs/V1" xmlns:AGRIP="http://ec.europa.eu/research/fp/model/project-agrip/V1" xmlns:IMI2="http://ec.europa.eu/research/fp/model/project-imi2/V1" xmlns:delSubmission="http://ec.europa.eu/research/fp/model/project-deliverable-submission/V1" xmlns:project-ethics="http://ec.europa.eu/research/fp/model/project-ethics/V1" xmlns:invoice="http://ec.europa.eu/research/fp/model/invoice/V1" xmlns:reportassessment="http://ec.europa.eu/research/fp/model/report-assessment/V1" xmlns:projecttermination="http://ec.europa.eu/research/fp/model/project-termination/V1" targetNamespace="http://ec.europa.eu/research/fp/model/project/V4" elementFormDefault="qualified" version="4.9.20">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/report/V3" schemaLocation="../../report/V3/Report.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer/V3" schemaLocation="../../officer/V3/Officer.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer-ref/V2" schemaLocation="../../officer-ref/V2/OfficerRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V4" schemaLocation="../../person/V4/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V5" schemaLocation="../../document/V5/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-core/V4" schemaLocation="../../project-core/V4/ProjectCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V3" schemaLocation="../../project-costbreakdown/V3/ProjectCostBreakdown.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V4" schemaLocation="../../project-partner/V4/ProjectPartner.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-specialclause/V3" schemaLocation="../../project-specialclause/V3/ProjectSpecialClause.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-workpackage/V3" schemaLocation="../../project-workpackage/V3/ProjectWorkPackage.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-milestone/V4" schemaLocation="../../project-milestone/V4/ProjectMilestone.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable/V2" schemaLocation="../../project-deliverable/V2/ProjectDeliverable.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-review/V1" schemaLocation="../../project-review/V1/ProjectReview.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-risk-mitigation/V1" schemaLocation="../../project-risk-mitigation/V1/ProjectRiskMitigation.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" schemaLocation="../../project-reportingperiod/V4/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-proposal/V2" schemaLocation="../../project-proposal/V2/ProjectProposal.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V4" schemaLocation="../../address/V4/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-representative/V4" schemaLocation="../../project-representative/V4/ProjectRepresentative.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/invitationletter/V2" schemaLocation="../../invitationletter/V2/InvitationLetter.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/individualcommitment/V1" schemaLocation="../../individualcommitment/V1/IndividualCommitment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/negotiationreport/V1" schemaLocation="../../negotiationreport/V1/NegotiationReport.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-mariecurie/V5" schemaLocation="../../project-mariecurie/V5/ProjectMarieCurie.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-erc/V4" schemaLocation="../../project-erc/V4/ProjectERC.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-rfcs/V1" schemaLocation="../../project-rfcs/V1/ProjectRFCS.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-agrip/V1" schemaLocation="../../project-agrip/V1/ProjectAGRIP.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-amendment/V4" schemaLocation="../../project-amendment/V4/ProjectAmendment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ethics/V1" schemaLocation="../../project-ethics/V1/ProjectEthics.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable-submission/V1" schemaLocation="../../project-deliverable-submission/V1/DeliverableSubmissionType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/invoice/V1" schemaLocation="../../invoice/V1/Invoice.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/report-assessment/V1" schemaLocation="../../report-assessment/V1/ReportAssessment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-termination/V1" schemaLocation="../../project-termination/V1/ProjectTermination.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-imi2/V1" schemaLocation="../../project-imi2/V1/ProjectIMI2.xsd"/>
+	<xs:element name="Project" type="ProjectType"/>
+	<xs:complexType name="ProjectType">
+		<xs:sequence>
+			<xs:group ref="projectref:ProjectIdGroup"/>
+			<xs:group ref="GeneralGroup" minOccurs="0"/>
+			<xs:group ref="LifeCycleGroup" minOccurs="0"/>
+			<xs:group ref="GrantingResponsibilityGroup" minOccurs="0"/>
+			<xs:group ref="ConsortiumGroup" minOccurs="0"/>
+			<xs:group ref="SpecialClausesGroup" minOccurs="0"/>
+			<xs:group ref="FinancialGroup" minOccurs="0"/>
+			<xs:group ref="FundingSchemeGroup" minOccurs="0"/>
+			<xs:group ref="WorkPlanningGroup" minOccurs="0"/>
+			<xs:group ref="ReportingGroup" minOccurs="0"/>
+			<xs:group ref="proposal:ProposalGroup" minOccurs="0"/>
+			<xs:element name="Ethics" type="project-ethics:EthicsRequirementType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="InvitationLetter" type="invitationletter:InvitationLetterType" minOccurs="0"/>
+			<xs:element name="GrantAgreement" type="GrantAgreementType" minOccurs="0"/>
+			<xs:element name="AdministrativeArrangement" type="AdministrativeArrangementType" minOccurs="0"/>
+			<xs:element name="IndividualCommitments" type="IndividualCommitmentListType" minOccurs="0"/>
+			<xs:element name="NegotiationReport" type="negoreport:NegotiationReportType" minOccurs="0" maxOccurs="2"/>
+			<xs:element name="RankingInformation" type="RankingInformationType" minOccurs="0"/>
+			<xs:element name="CommissionDecision" type="CommissionDecisionType" minOccurs="0"/>
+			<xs:element name="Amendment" type="projectamendment:AmendmentType" minOccurs="0"/>
+			<xs:element name="GrantTermination" type="projecttermination:GrantTerminationType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="GeneralGroup">
+		<xs:sequence>
+			<xs:group ref="core:GeneralCoreGroup"/>
+			<xs:element name="SpecificProgramme" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Specific programme is the FPDivision code of level 3</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Theme" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Theme is the FPDivision code of level 4</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EthicsClearance" type="EthicsClearanceType" minOccurs="0"/>
+			<xs:element name="LinkedProject" type="LinkedProjectType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="TreatJrcAsNormalPartner" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>this flas is set to true for JU where JRC should be treated as a normal partner. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OpenAccessData" type="OpenAccessDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>open access data pilot information. 
+					STAY_IN means that the call/topic is IN the pilot and the project stays in.
+					OPT_OUT means that the call/topic is IN the pilot but the project opts out.
+					STAY_OUT means that the call/topic is OUT of the pilot and the project stays out.
+					OPT_IN means that the call/topic is OUT of the pilot but the project opts in.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CallKind" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>codes of CCM2 classId CallKindValues</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubProgramme" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Sub programme is the FPDivision code of level 2</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="LifeCycleGroup">
+		<xs:sequence>
+			<xs:group ref="core:LifeCycleCoreGroup"/>
+			<xs:element name="SubmissionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when the project proposal has been submitted.
+The individual last submission date of a given proposal. This shows when the proposal was actually submitted by the applicant. The fact that the proposal was submitted at that time, does not necessarily mean that it would legally be available to the EC at that time;
+NOTE THAT a SubmissionDateTime element is also present for systems needing a precise timestamp.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDateChoice" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>FP7/H2020 Choices for the start date of the project:	FIXED_DATE, FIRST_DAY_OF_MONTH_AFTER_SIGN_DATE, EFFECTIVE_START_TO_BE_NOTIFIED_BY_COORD_DATE, ENTRY_INTO_FORCE_DATE
+(FIXED_DATE is the project start on a specific date which is fixed from the beginning (before the signature), 		FIRST_DAY_OF_MONTH_AFTER_SIGN_DATE is the first day of the month after the entry into force of the grant agreement,
+EFFECTIVE_START_TO_BE_NOTIFIED_BY_COORD_DATE is the starting date will be notified by the coordinator/beneficiary within a specific number of months after the date the grant agreement enters into
+force  ENTRY_INTO_FORCE_DATE is the date of the latest signature between coordinator and service. This is for FPA type of actions</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDateJustification" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Justification for the fixed start date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NotificationForStartDateInMonths" type="xs:int" minOccurs="0"/>
+			<xs:element name="ProjectRejectionReason" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>use this instead of RejectionReason element</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RejectionReason" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>deprecated:The reason that the project is rejected</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DecisionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: Date when EC decision is taken to fund the
+						project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when project is terminated
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationJustification" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Justification of the termination
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NegotiationStartDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when negotiation of the project is started
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NegotiationCompletionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when negotiation of the project is completed
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CancellationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when project is cancelled</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ClosureDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when project is closed TODO: is it
+						considered closed by all RDG business when the final payment has
+						been done?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when project ends: derived from Start
+						Date+duration</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectSuspensions" type="ProjectSuspensionList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubmissionDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The individual last submission timestamp of a given proposal. This shows when the proposal was actually submitted by the applicant. The fact that the proposal was submitted at that time, does not necessarily mean that it would legally be available to the EC at that time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EffectiveClosureDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>the individual point in time after which a given proposal can be legally made available to the EC, i.e. after which the proposal is regarded as being "finally" submitted, the CallPhaseEvent (phase Submission) is emitted and the proposal can be harvested for evaluation.	 	
+It is defined as follows:
+o	Standard calls or 2 stages calls: call deadline;
+o	Calls with multiple cut-offs: cut-off date at which one the submitted proposal was harvested. For proposals still in draft at cut-off time, the closure date moves to the next cut-off;
+o	Continuous calls: submission date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeadlineDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>the common date for all proposals that belong in the same deadline "container" – usually to be ranked together after evaluation. This is the date typically used to identify this proposal "container" in reporting (CORDA) etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="GrantingResponsibilityGroup">
+		<xs:sequence>
+			<xs:element name="ResponsibleDGCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>code of type ECHierarchy (e.g. RTD, CNECT)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResponsibleDirectorateCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>code of type ECHierarchy (e.g. TREN/C)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResponsibleDepartmentCode" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>code of type ECHierarchy (e.g. TREN/C/02)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Officer" type="ProjectOfficerType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of officers associated to the project, eg.
+						Project Officer, Financial Officer, etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GrantingAuthority" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>code of type GrantingAuthority</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="ConsortiumGroup">
+		<xs:sequence>
+			<xs:element name="Partner" type="partner:LegalPartnerType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Partner data that is expected in the context
+						of a project related service is the one that is stored inside the
+						project backend, not the one that is stored in the PDM system.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ClusterPresent" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For H2020 CS2 JU, true if there's a cluster on a project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="FinancialGroup">
+		<xs:sequence>
+			<xs:group ref="core:FinancialCoreGroup"/>
+			<xs:element name="ProjectCostBreakdown" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ActivityCostBreakdown" type="costbreakdown:ActivityCostBreakDownType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PreFinancingAmount" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>FP7, H2020 single prefinancing amount</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GuaranteeFundAmount" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>FP7, H2020 GF in case of single prefinancing amount</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReimbursementRate" type="base:PercentageType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Required for H2020: This the reimbursement rate that is defined mainly by type of action or in some cases by topic</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Prefinancing" type="PrefinancingType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Required for H2020: some type of actions (eg.CoFund) require to have multiple prefinancings</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DetailedCostItemDefinition" type="costbreakdown:DetailedCostItemDefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="FinancialGuaranteeAmount" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Required for other programmes such as COSME, Health (3HP), Consumer (CP or CONS), RFCS. It may be requested to provide a financial guarantee from a bank or other third party. If there is an amount > 0, it means that financial guarantee has been requested for the grant.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinancialGuaranteeDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For projects having a FinancialGuaranteeAmount >0, this field holds the date when  the last required Financial Guarantee document was provided.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Invoices" type="invoice:InvoiceListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The list of invoices registered for a project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IndirectCostsRate" type="base:PercentageType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Required for DG JUST financial information</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinancialGuarantee" type="FinancialGuaranteeType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Required for non H2020: some programs (eg.JUST) require to have multiple financial guarantees</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="FundingSchemeGroup">
+		<xs:sequence>
+			<xs:group ref="core:FundingSchemeCoreGroup"/>
+			<xs:element name="FundingSchemeSpecificInfo" type="FundingSchemeSpecificProjectInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="WorkPlanningGroup">
+		<xs:sequence>
+			<xs:element name="DescriptionOfWork" type="document:DocumentCoreType" minOccurs="0"/>
+			<xs:element name="Deliverable" type="deliverable:DeliverableDefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Milestone" type="milestone:MilestoneDefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="WorkPackage" type="workpackage:WorkPlanItemType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ReviewItem" type="review:ReviewDefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RiskMitigation" type="riskmitigation:RiskMitigationDefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="SpecialClausesGroup">
+		<xs:sequence>
+			<xs:element name="SpecialClause" type="specialclause:SpecialClauseType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>FP7: List of special clauses in project
+H2020: List of GA options in project
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="ReportingGroup">
+		<xs:sequence>
+			<xs:element name="PeriodicReport" type="report:PeriodicReportType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>list of periodic reports, one per reporting
+						period</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FinalReport" type="report:FinalReportType" minOccurs="0"/>
+			<xs:element name="FinalFundingDistributionReport" type="report:FinalDistributionReportType" minOccurs="0"/>
+			<xs:element name="Review" type="report:ReviewType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of technical reviews and reports
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeliverableSubmissions" type="delSubmission:DeliverableSubmissionType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of deliverables submissions</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReportAssessment" type="reportassessment:ReportAssessmentType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of the report assessments, one per periodic report</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="ProjectOfficerType">
+		<xs:complexContent>
+			<xs:extension base="officer:OfficerType">
+				<xs:sequence>
+					<xs:element name="Role" type="officerref:OfficerRoleType">
+						<xs:annotation>
+							<xs:documentation>Role of officer in project</xs:documentation>
+							<xs:documentation>Deprecated, use the RoleCode instead, so far the following roles are not covered by this enumaration: Scientific Officer, Backup Scientific Officer, Ethics Officer, Backup Ethics Officer</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RoleCode" type="coderef:CodeRefType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Role of officer in project, ClassId is OfficerRoleType</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FundingSchemeSpecificProjectInfoType">
+		<xs:annotation>
+			<xs:documentation>This element should contain non-mandatory elements pertaining to each specific funding-scheme (i.e. ERC, MarieCurie, ...)			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ERCProjectInfo" type="ERC:ERCProjectInfoType" minOccurs="0"/>
+			<xs:element name="MarieCurieProjectInfo" type="MarieCurie:MarieCurieProjectInfoType" minOccurs="0"/>
+			<xs:element name="MarieCurieProjectInfoH2020" type="MarieCurie:MarieCurieProjectInfoH2020Type" minOccurs="0"/>
+			<xs:element name="RFCSProjectInfo" type="RFCS:RFCSProjectInfoType" minOccurs="0"/>
+			<xs:element name="AGRIPProjectInfo" type="AGRIP:AGRIPProjectInfoType" minOccurs="0"/>
+			<xs:element name="IMI2ProjectInfo" type="IMI2:IMI2ProjectInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GrantAgreementType">
+		<xs:sequence>
+			<xs:element name="ConsortiumAgreementRequired" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="ArtefactsLanguage" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ClassId is Language</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ApplicableLawCountry" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ClassId is Country</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CoreGALanguage" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ClassId is Language</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CorrespondanceGALanguage" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Language used for correspondance (EACEA)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GrantPartReimbursementasLumpsum" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="SignLocationCoo" type="xs:string" minOccurs="0"/>
+			<xs:element name="SignLocationService" type="xs:string" minOccurs="0"/>
+			<xs:element name="Annex" type="AnnexType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ProjectCommunicationConsortium" type="ProjectCommunicationConsortiumType" minOccurs="0"/>
+			<xs:element name="ProjectCommunicationEC" type="ProjectCommunicationECType" minOccurs="0"/>
+			<xs:element name="GrantRepresentativeUserId" type="person:PersonType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Representative of Service in the grant - for H2020</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="YearsToKeepRecords" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Number of years to keep  records - for H2020</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReimbursementRateOption" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Reimbursement Rate option - for H2020</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FormsOfCostsUsed" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>forms of costs actually used in the grant - for H2020
+						values: {actual costs, unit costs, flat-rate costs, lump sum costs}
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="YearsToEvaluateImpact" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Number of years to evaluate impact - for H2020</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="YearsToReview" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Number of years to do a review - for non H2020</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="YearsToAudit" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Number of years to do an audit - for non H2020</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="YearsForFindings" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Number of years for findings - for non H2020</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MonoMulti" type="MonoMultiType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>MONO: Mono-beneficiary grant agreement; MULTI: Multi-beneficiary grant agreement
+					; SEP does not know (or no need to know); Not all the proposals will sign a GA. It is actually important for the projects that will go on for signing a GA and on signature or after it we need to know what kind of agreement has been signed, since there are different templates (MGAs); 
+					Also, there are cases (e.g., ERC), where GAs starts as MONO and it might become MULTI (thgrough an AMD) and vs
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MGALegalInfo" type="base:TemplateLegalInfoType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Information about the Agreement's legal template and version.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CommissionDecisionType">
+		<xs:sequence>
+			<xs:element name="ComDecReference" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>the commission decision</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ComDecDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>the commission decision date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ComDecDocumentAresRef" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>the ARES registration reference</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DecisionMode" type="DecisionModeType">
+				<xs:annotation>
+					<xs:documentation>the decision mode for the grant: mode ordonnateur or mode decisionnel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AnnexType">
+		<xs:sequence>
+			<xs:element name="OrderNo" type="xs:int"/>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Description" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectCommunicationConsortiumType">
+		<xs:sequence>
+			<xs:element name="CommunicationEmail" type="address:AddressAdditionalContactType" minOccurs="0"/>
+			<xs:element name="CommunicationProjectRepresentative" type="projectRepr:ProjectRepresentativeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectCommunicationECType">
+		<xs:sequence>
+			<xs:element name="CommunicationEmail" type="address:AddressAdditionalContactType" minOccurs="0"/>
+			<xs:element name="CommunicationAddress" type="address:PostalAddressType" minOccurs="0"/>
+			<xs:element name="CommunicationEcOfficeDetails" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdministrativeArrangementType">
+		<xs:sequence>
+			<xs:element name="AALanguage" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>ClassId is Language</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AASignLocation" type="xs:string" minOccurs="0"/>
+			<xs:element name="ECAdminContactPerson" type="person:PersonType" minOccurs="0"/>
+			<xs:element name="ECTechnicalContactPerson" type="person:PersonType" minOccurs="0"/>
+			<xs:element name="AAStartDateChoice" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Choices for the start date of the project:
+						ENTRY_INTO_FORCE_OF_GRANT_AGREEMENT,
+						LAST_SIGNATURE_OF_ADMINISTRATIVE_ARRANGMENT, FIXED_DATE
+						ENTRY_INTO_FORCE_OF_GRANT_AGREEMENT: upon entry into force of the
+						FP7 Grant Agreement"; It is the same as grant agreement entry into
+						force date.
+						LAST_SIGNATURE_OF_ADMINISTRATIVE_ARRANGMENT: on the date of the last signature of this Administrative
+						Arrangement.
+						FIXED_DATE: a specific fixed date.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AAStartDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Administrative ArrangmentEffectiveStartDate
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IndividualCommitmentListType">
+		<xs:sequence>
+			<xs:element name="IndividualCommitment" type="individualcommitment:IndividualCommitmentType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RankingInformationType">
+		<xs:sequence>
+			<xs:element name="ECRank" type="base:CountType" minOccurs="0"/>
+			<xs:element name="ProposedContribution" type="base:AmountType"/>
+			<xs:element name="ProposedDuration" type="base:CountType" minOccurs="0"/>
+			<xs:element name="ProposedRate" type="base:PercentageType" minOccurs="0"/>
+			<xs:element name="RankingStep" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Values: VALIDATED: ranking lists approved by
+						director general and FINAL: final ranking after the Interservice
+						Consultation.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RankingGroup" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectSuspensionType">
+		<xs:sequence>
+			<xs:element name="StartDate" type="xs:date"/>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="Justification" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectSuspensionList">
+		<xs:sequence>
+			<xs:element name="ProjectSuspension" type="ProjectSuspensionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PrefinancingType">
+		<xs:sequence>
+			<xs:element name="PreFinancingOrder" type="xs:int" minOccurs="0"/>
+			<xs:element name="PreFinancingAmount" type="base:AmountType"/>
+			<xs:element name="GuaranteeFundAmount" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="PreFinancingPercentage" type="base:PercentageType" minOccurs="0"/>
+			<xs:element name="GuaranteeFundPercentage" type="base:PercentageType" minOccurs="0"/>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" nillable="0" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinancialGuaranteeType">
+		<xs:sequence>
+			<xs:element name="Order" type="xs:nonNegativeInteger"/>
+			<xs:element name="Amount" type="base:AmountType"/>
+			<xs:element name="Date" type="xs:date" minOccurs="0"/>
+			<xs:element name="PreFinancingOrder" type="xs:nonNegativeInteger"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LinkedProjectType">
+		<xs:sequence>
+			<xs:element name="LinkedProjectNo" type="projectref:ProjectNumberType"/>
+			<xs:element name="RelationshipToLinkedPrj" type="PrjRelationshipType">
+				<xs:annotation>
+					<xs:documentation>what is the relationship to the LinkedProjectNo
+eg. from an SGA grant we link to an FPA grant (RelationshipToLinkedPrj=FPA, LinkedProjectNo=projectNo of FPA)
+e.g. from an SME phase 2 we link to an SME phase 1 project (RelationshipToLinkedPrj=PHASE1)
+e.g. from an ERC-POC project we link to another ERC project (RelationshipToLinkedPrj=RELATED)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="EthicsClearanceType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NOT_APPLICABLE"/>
+			<xs:enumeration value="PENDING"/>
+			<xs:enumeration value="CLEARED"/>
+			<xs:enumeration value="CONDITIONALLY_CLEARED"/>
+			<xs:enumeration value="CLEARANCE_REJECTED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DecisionModeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MODE_ORDONNATEUR"/>
+			<xs:enumeration value="MODE_DECISIONNEL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PrjRelationshipType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FPA"/>
+			<xs:enumeration value="PHASE1"/>
+			<xs:enumeration value="RELATED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OpenAccessDataType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OPT_IN"/>
+			<xs:enumeration value="OPT_OUT"/>
+			<xs:enumeration value="STAY_IN"/>
+			<xs:enumeration value="STAY_OUT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MonoMultiType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MONO"/>
+			<xs:enumeration value="MULTI"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>v4.9.20 - 20170519 - changes by SYGMA:
+			added RoleCode in the ProjectOfficerType 
+		</xs:documentation>
+		<xs:documentation>v4.9.19 - 20170131 - changes by SYGMA:
+			Imported new ProjectIMI2.xsd, created namespace, added a new optional element IMI2ProjectInfo in the FundingSchemeSpecificProjectInfoType
+		</xs:documentation>
+	
+		<xs:documentation>v4.9.18 - 20160726 - changes by SYGMA:
+			Imported new ProjectAGRIP.xsd, created namespace, added a new optional element AGRIPProjectInfo in the FundingSchemeSpecificProjectInfoType
+		</xs:documentation>
+	    <xs:documentation>v4.9.17 - 20160712 - changes by SYGMA:
+			added FinancialGuaranteeType in the FinancialGroup 
+		</xs:documentation>
+	    <xs:documentation>v4.9.16 - 20160504 - changes by SYGMA:
+			added optional element MGALegalInfo in GrantAgreementType
+		</xs:documentation>
+		<xs:documentation>v4.9.15 - 20160331 - changes by SYGMA:
+			added GrantTermination in the Project
+		</xs:documentation>
+		<xs:documentation>v4.9.14 - 20150107 - changes by SYGMA:
+			added optional MonoMulti in the GrantAgreementType 
+		</xs:documentation>
+		<xs:documentation>v4.9.13 - 20151209 - changes by SYGMA:
+			removed CBSummaryType
+			added IndirectCostsRate in the FinancialGroup 
+		</xs:documentation>
+		<xs:documentation>v4.9.12 - 20151127 - changes by SYGMA:
+			added CBSummaryType codeRef to support the different summary cost breakdowns: the overall and the eligible for funding
+		</xs:documentation>
+		<xs:documentation>v4.9.11 - 20151126 - changes by SYGMA:
+			Imported new ProjectRFCS.xsd, created namespace , added a new optional element RFCSProjectInfo in the 
+		</xs:documentation>
+		<xs:documentation>v4.9.10 - 20150831 - changes by SEP/ODS:
+			Added optional SubmissionDateTime, EffectiveClosureDateTime and DeadlineDateTime in the lifecycle group. These 3 timestamp are used in the context of draft proposals inside ODS.
+		</xs:documentation>
+		<xs:documentation>v4.9.9 - 20150812 - changes by SyGMa:
+			Added ReportAssessment to ReportingGroup to support the information letters that will be sent after the assessment of a Periodic Report
+		</xs:documentation>
+		<xs:documentation>v4.9.8 - 20150528 - changes by SyGMa:
+			Changed CallKind to be a CodeRefType.
+			Changed RejectionReason to String (remove the enumeration it was bearing)
+			Removed RejectionReasonType from source
+		</xs:documentation>
+		<xs:documentation>v4.9.7 - 20150507 - changes by SyGMa:
+			Added ProjectRejectionReason to be a CodeRefType. There are more values supported. RejectionReason to be deprecated.
+			Added CallKind
+			Added SubProgramme to hold the level 2 of the FPDivision taxonomy
+		</xs:documentation>
+		<xs:documentation>v4.9.6 - 20150424 - changes by SyGMa:
+		Added optional IsClusterPresent in the ConsortiumGroup
+		</xs:documentation>
+		<xs:documentation>v4.9.5 - 20150223 - changes by SyGMa:
+			Added optional Invoices in the ProjectFinancialGroup
+		</xs:documentation>
+		<xs:documentation>v4.9.4 - 20141201 - changes by SyGMa:
+			Added FinancialGuaranteeDate to support the payment process for programmes other than H2020
+		</xs:documentation>
+		<xs:documentation>v4.9.3 - 20141015 - changes by SyGMa:
+			Added ProposedRate in RankingInformation, FinancialGuaranteeAmount, YearsToReview, YearsToAudit, YearsForFindings to support other programmes than H2020, added TreatJrcAsNormalPartner to support JU, added OpenAccessData to get it from  proposal submission
+		</xs:documentation>
+		<xs:documentation>v4.9.2 - 20140924 - Changes by SyGMA : 
+           Added ENTRY_INTO_FORCE_DATE as possible value for StartDateChoice
+        </xs:documentation>
+		<xs:documentation>v4.9.1 - 20140910 - Changes by EACEA : 
+           Added CorrespondanceGALanguage
+        </xs:documentation>
+		<xs:documentation>v4.9.0 - 20140512 - Changes by sygma to support H2020: 
+            LinkedProject becomes unbounded
+        </xs:documentation>
+		<xs:documentation>v4.8.0 - 20140429 - Changes by sygma to support H2020: 
+            added the DecisionMode in the CommissionDecision and the DecisionModeType enum and made all other fields optional, 
+            added the LinkedProject and its complex type LinkedProjectType
+        </xs:documentation>
+		<xs:documentation>v4.7.3 - 20140428 - Changes by sygma to support H2020: 
+            added the Rejection Reason EWS
+        </xs:documentation>
+		<xs:documentation>v4.7.2 - 20140328 - Changes by sygma to support H2020: 
+            added the optional ResponsibleDirectorateCode in the Project
+        </xs:documentation>
+		<xs:documentation>v4.7.1 - 20140328 - Changes by sygma to support rejection letter for both FP7 and H2020: 
+            added the optional RejectionReason in the Project and the RejectionReasonType enum
+        </xs:documentation>
+		<xs:documentation>v4.7.0 - 20140303 - Changes by sygma to support H2020: 
+            change the type of GrantRepresentativeUserId - wrongly put (impact only for TGS and checked) - use PersonType instead
+            added the EthicsClearance to the Project and the EthicsClearanceType enum
+        </xs:documentation>
+		<xs:documentation>v4.6.4 - 20140225 - Changes by sygma: 
+            added optional StartDateJustification
+        </xs:documentation>
+		<xs:documentation>v4.6.3 - 20140207 - Changes by sygma: 
+            ResponsibleDepartmentCode becomes optional since it cannot be set by SEP
+        </xs:documentation>
+		<xs:documentation>v4.6.2 - 20140124 - Changes by sygma: 
+            removed UseSpecialCostsInForm and created in costbreakdown a new type for the definition of detailed cost items
+        </xs:documentation>
+		<xs:documentation>v4.6.1 - 20140113 - Changes by sygma: 
+            added DeliverableSubmissionListType
+        </xs:documentation>
+		<xs:documentation>v4.6.0 - 20140109 - Changes by sygma: 
+			added for H2020 support the optional element RiskMitigation in WorkPlanningGroup
+		</xs:documentation>
+		<xs:documentation>v4.5.0 - 20131211 - Changes by sygma: 
+			added optional fields to support H2020 grant agreement generation: UseSpecialCostsInForm, YearsToEvaluateImpact
+		</xs:documentation>
+		<xs:documentation>v4.4.1 - Changes by sygma: 
+			added ReimbursementRate, Multiple PFs
+		</xs:documentation>
+		<xs:documentation>20131121 - v4.4.0 - Changes by CDM: 
+			remove the abstraction of FundingSchemeSpecificProjectInfoType. </xs:documentation>
+		<xs:documentation>v4.3.0 - Changes by sygma: 
+			added in GrantAgreementType: GrantRepresentativeUserId, YearsToKeepRecords, ReimbursementRateOption, FormsOfCostsUsed, removed DG from GrantingResponsibilityGroup
+		</xs:documentation>
+		<xs:documentation>v4.2.1 - 20130726 Changes by Sygma:
+			Added: TerminationJustification, ProjectSuspensionType, ProjectSuspensionList
+			use OfficerRef v2
+		</xs:documentation>
+		<xs:documentation>v4.2.0 Changes by Sygma:
+			Added
+			Project.InvitationLetter,
+			Project.IndividualCommitments,
+			IndividualCommitmentListType
+			GrantingResponsibilityGroup.ResponsibleDGCode
+			ProjectType/NegotiationReport
+			ProjectType/RankingInformation
+			upgrate to project-ref/V3s
+			TO BE REMOVED: GrantingResponsibilityGroup.DG
+		</xs:documentation>
+		<xs:documentation>v4.1.0 Changes by Sygma:
+			Added Project.AdministrativeArrangement,
+			Added AdministrativeArrangementType added
+		</xs:documentation>
+		<xs:documentation>v4.0.1 Changes by Sygma:
+			pointing to Address and Person V4s
+		</xs:documentation>
+		<xs:documentation>v4.0.1 Changes by Sygma:
+			Theme added
+		</xs:documentation>
+		<xs:documentation>v4.0.0 Changes by Sygma:
+			StartDateChoice - make it enum??
+			Added GrantAgreementType
+			Added AnnexType
+			Added ProjectCommunicationConsortiumType
+			Added ProjectCommunicationECType
+			Added prefinancingAmount, GuaranteeFundAmount
+			Added SpecificProgramme
+			DescriptionOfWork becomes optional
+			ConsortiumAgreementRequired
+		</xs:documentation>
+		<xs:documentation>v3.1.0 20110322 Add proposal related data
+			- removed from FinancialGroup all partner related info as they are now
+			moved under ConsortiumGroup
+		</xs:documentation>
+		<xs:documentation>v3.0.0 20110218 reworked the reportingGroup and
+			WorkPlanningGroup (deliverables moved under workplanning group, the
+			reportinggroup has all the elements that the project needs to report.
+			+ use bankaccount, person, officer and legalentity V2
+		</xs:documentation>
+		<xs:documentation>This schema intends to capture 'full' view on all
+			project related data.</xs:documentation>
+	</xs:annotation>
+</xs:schema>

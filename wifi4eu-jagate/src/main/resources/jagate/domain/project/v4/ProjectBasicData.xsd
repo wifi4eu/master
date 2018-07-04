@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+		xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/project/v4"
+		targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/project/v4"
+		elementFormDefault="qualified"
+		attributeFormDefault="unqualified"
+		version="4.0">
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+								
+	<xs:complexType name="AbstractProjectDataType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				This data is related with the project and is used to determine the DG Client (business class) and to generate the user reference field.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="number" type="jagate:NonEmptyString" />
+			<xs:element name="acronym" type="jagate:NonEmptyString"  minOccurs="0"/>
+			<xs:element name="frameworkType" type="coderef:CodeRefType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Codes for the projects frame work type (FP6, FP7 ...), CCM2 Type name: Framework, Context: GEN</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="officer" type="jagate:NonEmptyString"  minOccurs="0"/>
+                <xs:element name="responsibleOrganisation" type="coderef:CodeRefType">
+                <xs:annotation>
+                    <xs:documentation>Codes for the responsible organisations (RTD/J/04 ...), CCM2 Type name: ECHierarchy, Context: GEN</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="title" type="jagate:NonEmptyString" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="ProcurementProjectDataType">
+        <xs:complexContent>
+            <xs:extension base="AbstractProjectDataType">
+                <xs:sequence>
+                    <xs:element name="procedureReference" type="jagate:NonEmptyString" />
+                    <xs:element name="parentProcedureReference" type="jagate:NonEmptyString"  minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="AbstractGrantProjectDataType">
+        <xs:complexContent>
+            <xs:extension base="AbstractProjectDataType">
+                <xs:sequence>
+                    <xs:element name="callReference" type="coderef:CodeRefType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Codes for the reference call for grants (ERC-2017-PoC ...), CCM2 Type name: Call, Context: H2020</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!--Note:
+    We need to add call reference to the type and make acronym and frameworkType mandatory. If you want to restrict
+    a type (<xs:restriction>), the only fields that can appear are a sub set of the ones defined in the base type.
+    They must also be enclosed in the same compositor (in this case a sequence) and appear in the same order.
+    Therefore we create a AbstractGrantProjectDataType in which we add the call reference. In
+    the next step we restrict acronym and frameworkType to mandatory -->
+    <xs:complexType name="GrantProjectDataType">
+        <xs:complexContent>
+            <xs:restriction base="AbstractGrantProjectDataType">
+                <xs:sequence>
+                    <xs:element name="number" type="jagate:NonEmptyString" />
+                    <xs:element name="acronym" type="jagate:NonEmptyString" />
+                    <xs:element name="frameworkType" type="coderef:CodeRefType">
+                        <xs:annotation>
+                            <xs:documentation>Codes for the projects frame work type (FP6, FP7 ...), CCM2 Type name: Framework, Context: GEN</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="officer" type="jagate:NonEmptyString" />
+                    <xs:element name="responsibleOrganisation" type="coderef:CodeRefType">
+                        <xs:annotation>
+                            <xs:documentation>Codes for the responsible organisations (RTD/J/04 ...), CCM2 Type name: ECHierarchy, Context: GEN</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="title" type="jagate:NonEmptyString" minOccurs="0" />
+                    <xs:element name="callReference" type="coderef:CodeRefType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Codes for the reference call for grants (ERC-2014-STG, ERC-2017-PoC ...), CCM2 Type name: Call, Context: H2020</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:restriction>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:annotation>
+        <xs:documentation>v4.0 - 20180321 - Created new abstract project data, so it can be reused in the future</xs:documentation>
+    </xs:annotation>
+
+</xs:schema>

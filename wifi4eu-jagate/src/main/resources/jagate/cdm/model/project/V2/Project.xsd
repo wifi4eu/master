@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/project/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:report="http://ec.europa.eu/research/fp/model/report/V1" xmlns:call="http://ec.europa.eu/research/fp/model/call/V2" xmlns:officer="http://ec.europa.eu/research/fp/model/officer/V1" xmlns:core="http://ec.europa.eu/research/fp/model/project-core/V2" xmlns:partner="http://ec.europa.eu/research/fp/model/project-partner/V2" xmlns:costbreakdown="http://ec.europa.eu/research/fp/model/project-costbreakdown/V2" xmlns:specialclause="http://ec.europa.eu/research/fp/model/project-specialclause/V2" xmlns:workpackage="http://ec.europa.eu/research/fp/model/project-workpackage/V2" xmlns:milestone="http://ec.europa.eu/research/fp/model/project-milestone/V2" xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V2" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:officerref="http://ec.europa.eu/research/fp/model/officer-ref/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" targetNamespace="http://ec.europa.eu/research/fp/model/project/V2" elementFormDefault="qualified" version="2.0.1">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture 'full' view on all project related data.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/report/V1" schemaLocation="../../report/V1/Report.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V1" schemaLocation="../../legalentity/V1/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer/V1" schemaLocation="../../officer/V1/Officer.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer-ref/V1" schemaLocation="../../officer-ref/V1/OfficerRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-core/V2" schemaLocation="../../project-core/V2/ProjectCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V2" schemaLocation="../../project-costbreakdown/V2/ProjectCostBreakdown.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V2" schemaLocation="../../project-partner/V2/ProjectPartner.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-specialclause/V2" schemaLocation="../../project-specialclause/V2/ProjectSpecialClause.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-workpackage/V2" schemaLocation="../../project-workpackage/V2/ProjectWorkPackage.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-milestone/V2" schemaLocation="../../project-milestone/V2/ProjectMilestone.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V2" schemaLocation="../../project-reportingperiod/V2/ProjectReportingPeriod.xsd"/>
+	<xs:element name="Project" type="ProjectType"/>
+	<xs:complexType name="ProjectType">
+		<xs:sequence>
+			<xs:group ref="projectref:ProjectIdGroup"/>
+			<xs:group ref="GeneralGroup" minOccurs="0"/>
+			<xs:group ref="LifeCycleGroup" minOccurs="0"/>
+			<xs:group ref="CommissionResponsibilityGroup" minOccurs="0"/>
+			<xs:group ref="ConsortiumGroup" minOccurs="0"/>
+			<xs:group ref="SpecialClausesGroup" minOccurs="0"/>
+			<xs:group ref="FinancialGroup" minOccurs="0"/>
+			<xs:group ref="FundingSchemeGroup" minOccurs="0"/>
+			<xs:group ref="WorkPlanningGroup" minOccurs="0"/>
+			<xs:group ref="ReportingGroup" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="GeneralGroup">
+		<xs:sequence>
+			<xs:group ref="core:GeneralCoreGroup"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="LifeCycleGroup">
+		<xs:sequence>
+			<xs:group ref="core:LifeCycleCoreGroup"/>
+			<xs:element name="SubmissionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when the project proposal has been submitted</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartDateChoice" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Choices for the start date of the project: fixed date, first day of month after signature, effective startDate to be notified by Coordinator</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DecisionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: Date when EC decision is taken to fund the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TerminationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when project is terminated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NegotiationCompletionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when negotiation of the project is completed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CancellationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when project is cancelled</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ClosureDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when project is closed TODO: is it considered closed by all RDG business when the final payment has been done?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when project ends: derived from Start Date+duration</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="CommissionResponsibilityGroup">
+		<xs:sequence>
+			<xs:element name="DG" type="base:RDGType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Research Directorate General administrating the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResponsibleDepartmentCode" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>code of type unit (e.g. TREN/C/02)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Officer" type="ProjectOfficerType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of officers associated to the project, eg. Project Officer, Financial Officer, etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="ConsortiumGroup">
+		<xs:sequence>
+			<xs:element name="Partner" type="partner:LegalPartnerType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="FinancialGroup">
+		<xs:sequence>
+			<xs:group ref="core:FinancialCoreGroup"/>
+			<xs:element name="CostBreakdown" type="costbreakdown:CostBreakDownType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="FundingSchemeGroup">
+		<xs:sequence>
+			<xs:group ref="core:FundingSchemeCoreGroup"/>
+			<xs:element name="SubFundingScheme" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Code of type 'SubFundingScheme'?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FundingSchemeSpecificInfo" type="FundingSchemeSpecificProjectInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="WorkPlanningGroup">
+		<xs:sequence>
+			<xs:element name="DescriptionOfWork" type="xs:string"/>
+			<xs:element name="WorkPackage" type="workpackage:WorkPackageType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Milestone" type="milestone:MilestoneType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="SpecialClausesGroup">
+		<xs:sequence>
+			<xs:element name="SpecialClause" type="specialclause:SpecialClauseType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of special clauses in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="ReportingGroup">
+		<xs:sequence>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of reporting periods in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Report" type="report:ReportType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of reports in project execution</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Deliverable" type="report:DeliverableType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of deliverables that consortium partners need to  deliver or have been delivered</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Review" type="report:ReviewType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of technical reviews planned</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="ProjectOfficerType">
+		<xs:complexContent>
+			<xs:extension base="officer:OfficerType">
+				<xs:sequence>
+					<xs:element name="Role" type="officerref:OfficerRoleType">
+						<xs:annotation>
+							<xs:documentation>Role of officer in project</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FundingSchemeSpecificProjectInfoType">
+		<xs:annotation>
+			<xs:documentation>Abstract type to be extended by subtypes capturing info per funding scheme, e.g. MarieCurie</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+</xs:schema>

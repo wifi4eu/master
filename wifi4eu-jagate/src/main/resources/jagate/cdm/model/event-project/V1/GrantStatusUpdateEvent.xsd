@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/project/grant/grantstatusupdate-event/V1" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:amendment="http://ec.europa.eu/research/fp/model/project-amendment/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/project/grant/grantstatusupdate-event/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-amendment/V3" schemaLocation="../../project-amendment/V3/ProjectAmendment.xsd"/>
+	<xs:complexType name="GrantStatusUpdateEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when the status of the grant changes.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="Project" type="projectref:ProjectRefType"/>
+					<xs:element name="Status" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Acceptable values: SIGNED, AMENDMENT SIGNED, SUSPENDED, TERMINATED, CANCELLED</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="StatusUpdateDate" type="xs:date">
+						<xs:annotation>
+							<xs:documentation>The date when the status was updated.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="eventOriginator" type="base:ECUserIdType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>ECAS ID of the person that updated the status. TODO: remove?</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AmendmentInfo" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>In case of status AMENDMENT SIGNED, there are some extra data for amendment.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:group ref="amendment:AmendmentCoreGroup"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

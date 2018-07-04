@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+
+<xs:schema 
+	targetNamespace="http://ec.europa.eu/research/fp/model/document-ref/V3"
+	xmlns="http://ec.europa.eu/research/fp/model/document-ref/V3" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified" version="3.0.1">
+	
+	<xs:simpleType name="DocumentRepositoryIdType">
+		<xs:annotation>
+			<xs:documentation>Unique repository Id indicating where document repository system actually stores the document</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:group name="DocumentRefGroup">
+		<xs:sequence>
+			<xs:element name="Master" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The system that is the master of the document</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MasterID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The ID of the document within the master system</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tag" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="DocumentRef" type="DocumentRefType"/>
+	<xs:complexType name="DocumentRefType">
+		<xs:sequence>
+			<xs:group ref="DocumentRefGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20130704 - 3.0.1  -  Added Tag optional element</xs:documentation>
+	</xs:annotation>
+</xs:schema>

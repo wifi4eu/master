@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/proposal/proposal-status-changed-event/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V3" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:code="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/proposal/proposal-status-changed-event/V1" elementFormDefault="qualified" version="1.1.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="../../project-ref/V3/ProjectRef.xsd"/>
+	<xs:complexType name="ProposalStatusBaseEvent" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Base event for all Proposal Status changed events</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="Call" type="code:CodeRefType"/>
+					<xs:element name="Deadline" type="xs:date" minOccurs="0"/>
+					<xs:element name="SubmissionStage" type="xs:int" minOccurs="0"/>
+					<xs:element name="ProposalIDList" type="projectref:ProposalIDListType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProposalSubmittedEventType">
+		<xs:annotation>
+			<xs:documentation>Proposal is submitted</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ProposalStatusBaseEvent"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProposalFailedEventType">
+		<xs:annotation>
+			<xs:documentation>Proposal fails due to being ineligible, inadmissible, withdrawn or duplicated</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ProposalStatusBaseEvent"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProposalEvaluatedEventType">
+		<xs:annotation>
+			<xs:documentation>Proposal is evaluated</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ProposalStatusBaseEvent">
+				<xs:sequence>
+					<xs:element name="EvaluationStep" type="xs:int" minOccurs="0"/>
+					<xs:element name="Reevaluation" type="xs:boolean" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProposalRankedEventType">
+		<xs:annotation>
+			<xs:documentation>Proposal is ranked</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ProposalStatusBaseEvent">
+				<xs:sequence>
+					<xs:element name="EvaluationStep" type="xs:int" minOccurs="0"/>
+					<xs:element name="Reevaluation" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="FinalRanking" type="xs:boolean"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProposalsReadyForNextStepEventType">
+		<xs:annotation>
+			<xs:documentation>Proposal was successful in the current step and passed to the next step. Only to be sent in evaluations having steps.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ProposalStatusBaseEvent">
+				<xs:sequence>
+					<xs:element name="CurrentEvaluationStep" type="xs:int"/>
+					<xs:element name="NextEvaluationStep" type="xs:int"/>
+					<xs:element name="HasMeetingScheduleForNextStepInteview" type="xs:boolean"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EthicsEventType">
+		<xs:annotation>
+			<xs:documentation>Proposal ethics is finalised</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ProposalStatusBaseEvent"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20170301 - v1.0.0 - SYGMA - Reorganisation of SEP events</xs:documentation>
+		<xs:documentation>20170727 - v1.1.0 - Added ProposalsReadyForNextStepEventType</xs:documentation>
+	</xs:annotation>
+</xs:schema>

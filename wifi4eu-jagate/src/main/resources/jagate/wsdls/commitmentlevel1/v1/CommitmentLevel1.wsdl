@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+       xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+       xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       name="CommitmentLevel1V1"
+       xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+       xmlns:interface="http://ec.europa.eu/rdg/jagate/ws/commitmentlevel1/v1/interfaces" 
+       targetNamespace="http://ec.europa.eu/rdg/jagate/ws/commitmentlevel1/v1" 
+       xmlns="http://ec.europa.eu/rdg/jagate/ws/commitmentlevel1/v1">
+
+		<wsdl:types>
+        	<xs:schema>
+            	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/commitmentlevel1/v1/interfaces" schemaLocation="CommitmentLevel1Interface.xsd" />
+                <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+             </xs:schema>
+       	</wsdl:types>
+
+       	<wsdl:message name="CreateCommitmentLevel1Request">
+        	<wsdl:part element="interface:CreateCommitmentLevel1Request" name="request" />
+       	</wsdl:message>
+              
+       	<wsdl:message name="CreateCommitmentLevel1Response">
+			<wsdl:part element="interface:CreateCommitmentLevel1Response" name="response" />
+       	</wsdl:message>
+       
+       	<wsdl:message name="UpdateCommitmentLevel1Request">
+        	<wsdl:part element="interface:UpdateCommitmentLevel1Request" name="request" />
+       	</wsdl:message>
+
+		<wsdl:message name="CreateCommitmentLevel1Exception">
+			<wsdl:part element="jagate:Exception" name="exception" />
+       	</wsdl:message>
+       
+       	<wsdl:message name="UpdateCommitmentLevel1Response">
+ 			<wsdl:part element="interface:UpdateCommitmentLevel1Response" name="response" />
+       	</wsdl:message>
+       
+       	<wsdl:message name="UpdateCommitmentLevel1Exception">
+       		<wsdl:part element="jagate:Exception" name="exception" />
+       	</wsdl:message>
+       
+       	<wsdl:portType name="ICommitmentLevel1Service">
+        	<wsdl:operation name="CreateCommitmentLevel1">
+            	<wsdl:input message="CreateCommitmentLevel1Request" />
+                <wsdl:output message="CreateCommitmentLevel1Response" />
+                <wsdl:fault name="CreateCommitmentLevel1Exception" message="CreateCommitmentLevel1Exception" />
+			</wsdl:operation>
+            <wsdl:operation name="UpdateCommitmentLevel1">
+            	<wsdl:input message="UpdateCommitmentLevel1Request" />
+                <wsdl:output message="UpdateCommitmentLevel1Response" />
+                <wsdl:fault name="UpdateCommitmentLevel1Exception" message="UpdateCommitmentLevel1Exception" />
+			</wsdl:operation>
+		</wsdl:portType>
+       
+		<wsdl:binding name="ICommitmentLevel1ServiceBinding" type="ICommitmentLevel1Service">
+			<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+				<wsdl:operation name="CreateCommitmentLevel1">
+                	<wsdl:input>
+                    	<soap:body use="literal" />
+                    </wsdl:input>
+                    <wsdl:output>
+                    	<soap:body use="literal" />
+                    </wsdl:output>
+                    <wsdl:fault name="CreateCommitmentLevel1Exception">
+                    	<soap:fault name="CreateCommitmentLevel1Exception" use="literal" />
+                    </wsdl:fault>
+              	</wsdl:operation>
+              	<wsdl:operation name="UpdateCommitmentLevel1">
+					<wsdl:input>
+						<soap:body use="literal" />
+					</wsdl:input>
+					<wsdl:output>
+						<soap:body use="literal" />
+					</wsdl:output>
+					<wsdl:fault name="UpdateCommitmentLevel1Exception">
+						<soap:fault name="UpdateCommitmentLevel1Exception" use="literal" />
+					</wsdl:fault>
+			</wsdl:operation>
+       </wsdl:binding>
+       
+       <wsdl:service name="CommitmentLevel1ServiceV1">
+              <wsdl:port binding="ICommitmentLevel1ServiceBinding" name="CommitmentLevel1ServiceBinding">
+                     <soap:address location="http://ec.europa.eu/rdg/jagate/ws/commitmentlevel1/v1" />
+              </wsdl:port>
+       </wsdl:service>
+</wsdl:definitions>

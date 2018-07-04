@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/project-proposal/V2" xmlns:person="http://ec.europa.eu/research/fp/model/person/V4" xmlns:legalentity="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:document="http://ec.europa.eu/research/fp/model/document/V5" targetNamespace="http://ec.europa.eu/research/fp/model/project-proposal/V2" elementFormDefault="qualified" version="2.1.0">
+	<xs:annotation>
+		<xs:documentation>This schema intends to hold a view on 'proposal' data.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v1.1 - 20120731 - Added SubmissionStage element to ProposalGroup</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v1.2 - 20121106 - Added SubmittedProposalDocument element to ProposalGroup</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v2.0 - 20131212 - Updated to person V4, legalEntity ref V3 and document V5</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v2.1 - 20150526 - Added DraftProposalID (ODS - SEP integration)</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V4" schemaLocation="../../person/V4/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V5" schemaLocation="../../document/V5/Document.xsd"/>
+	<xs:group name="ProposalGroup">
+		<xs:sequence>
+			<xs:element name="Referee" type="RefereeType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="SubmissionStage" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Either 1 or 2, depending on the submission stage reached by this instance of the proposal</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubmittedProposalDocument" type="document:DocumentType" minOccurs="0"/>
+			<xs:element name="DraftProposalID" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The draft Id linked to the Proposal before a Project Number get's assigned</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<!--===================================================================================-->
+	<xs:complexType name="RefereeType">
+		<xs:complexContent>
+			<xs:extension base="person:PersonType">
+				<xs:sequence>
+					<xs:element name="PIC" type="legalentity:LegalEntityIdType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

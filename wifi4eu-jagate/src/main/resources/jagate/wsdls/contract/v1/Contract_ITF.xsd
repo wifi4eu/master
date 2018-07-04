@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 sp1 (x64) (http://www.altova.com) by Dev (European 
+	Commission DG INFSO (R3)) -->
+<xsd:schema xmlns="http://ec.europa.eu/rdg/jagate/ws/wsdls/contract-itf/v1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:context="http://ec.europa.eu/research/fp/model/service-context/V2"
+	xmlns:contract="http://ec.europa.eu/rdg/jagate/ws/domain/contract/v1"
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:hdr="http://ec.europa.eu/research/fp/model/header/V1"
+	xmlns:ping="http://ec.europa.eu/research/fp/model/service-ping/V1"
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2"
+	xmlns:baref="http://ec.europa.eu/research/fp/model/bankaccount/V2"
+	xmlns:leref="http://ec.europa.eu/research/fp/model/legalentity-ref/V2"
+	xmlns:projectpartner="http://ec.europa.eu/research/fp/model/project-partner/V3"
+	xmlns:jagref="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1"
+	xmlns:jag="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/wsdls/contract-itf/v1"
+	elementFormDefault="qualified" version="1.0.0">
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/service-context/V2"
+		schemaLocation="../../../cdm/model/service-context/V2/ServiceContext.xsd" />
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/base/V1"
+		schemaLocation="../../../cdm/model/base/V1/Base.xsd" />
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/header/V1"
+		schemaLocation="../../../cdm/model/header/V1/Header.xsd" />
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/service-ping/V1"
+		schemaLocation="../../../cdm/model/service-ping/V1/ServicePing.xsd" />
+	<xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/contract/v1"
+		schemaLocation="../../../domain/contract/v1/Contract.xsd" />
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2"
+		schemaLocation="../../../cdm/model/code-ref/V2/CodeRef.xsd" />
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V3"
+		schemaLocation="../../../cdm/model/project-partner/V3/ProjectPartner.xsd" />
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V2"
+		schemaLocation="../../../cdm/model/legalentity-ref/V2/LegalEntityRef.xsd" />
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V2"
+		schemaLocation="../../../cdm/model/bankaccount/V2/BankAccount.xsd" />
+	<xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1"
+		schemaLocation="../../../domain/reference/v1/ReferenceData.xsd" />
+	<xsd:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<!-- Elements representing operations and responses -->
+	<xsd:element name="PingRequest" type="ping:pingType" />
+	<xsd:element name="PingResponse" type="ping:pingResponseType" />
+	<xsd:element name="CreateContractRequest" type="CreateContractRequestType" />
+	<xsd:element name="CreateContractResponse" type="CreateContractResponseType" />
+	<xsd:element name="UpdateContractRequest" type="UpdateContractRequestType" />
+	<xsd:element name="UpdateContractResponse" type="UpdateContractResponseType" />
+	<xsd:element name="GetContractStatusRequest" type="GetContractStatusRequestType" />
+	<xsd:element name="GetContractStatusResponse" type="GetContractStatusResponseType" />
+	<xsd:element name="ContractException" type="jag:JAgateException" />
+
+	<xsd:complexType name="CreateContractRequestType">
+		<xsd:sequence>
+			<xsd:element name="Callback" type="jag:CallbackType" />
+			<xsd:element name="ProjectContract" type="ProjectContractType" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CreateContractResponseType">
+		<xsd:sequence>
+			<xsd:element ref="jag:LocObjForeignId" />
+			<xsd:element ref="jag:Message" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="UpdateContractRequestType">
+		<xsd:sequence>
+			<xsd:element name="Callback" type="jag:CallbackType" />
+			<xsd:element name="ProjectContract" type="ProjectContractType" />
+			<xsd:element name="LocObjForeignId" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="UpdateContractResponseType">
+		<xsd:sequence>
+			<xsd:element ref="jag:LocObjForeignId">
+				<xsd:annotation>
+					<xsd:documentation>This field represents the local object foreign
+						id of the updated Contract.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="jag:Message" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetContractStatusRequestType">
+		<xsd:sequence>
+			<xsd:element name="LocObjForeignId" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetContractStatusResponseType">
+		<xsd:sequence>
+			<xsd:element name="Status" type="xsd:string" />
+			<xsd:element name="TechnicalStatus" type="xsd:string" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ProjectContractType">
+		<xsd:sequence>
+			<xsd:element name="Acronym" type="xsd:string" />
+			<xsd:element name="ApplicableLawCountryCode" type="coderef:CodeRefType" />
+			<xsd:element name="Title" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Mandatory for creation.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TotalCosts" type="base:AmountType">
+				<xsd:annotation>
+					<xsd:documentation>Total cost of the action in euroMandatory for
+						grant agreements for action (e.g. CNT_CCA_CD ='D01')Only to be
+						specified for grant
+						agreements. >0 grant agreements for action
+						(e.g. CNT_CCA_CD ='D01'). If 0, we'll put the value of
+						MaxECContributionInEUR
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MaxECContributionInEUR" type="base:AmountType" />
+			<xsd:element name="AmendmentVersion" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>Mandatory, for a base contract you have to set
+						it to 0
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BaseContractKey" type="xsd:string"
+				minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ONLY FOR AMENDMENT and Mandatory in this case !
+						Please specify base Contract to which this amendment is
+						related.For example, an
+						amendment to a base
+						Contract JAG.C123 will
+						produce an amendment identified by JAG.C123.1 for a first
+						amendment, JAG.C123.2 for a second and so on..
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ProjectStartDate" type="xsd:date" />
+			<xsd:element name="ProjectEndDate" type="xsd:date" />
+			<xsd:element name="Duration" type="base:CountType" />
+			<xsd:element name="BeneficiaryFirstNotificationDate"
+				type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation>First notification. Mandatory when Contract
+						state = Sent to Contractors ('SNT')
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ECSignatureDate" type="xsd:date">
+				<xsd:annotation>
+					<xsd:documentation>EC signature date. Mandatory when Contract state
+						= In Force ('VIG')
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AffectedBudgetaryCommitment" type="AffectedBudgetaryCommitmentType"
+				maxOccurs="unbounded" />
+			<xsd:element name="Contractor" type="ContractorType"
+				maxOccurs="unbounded" />
+			<xsd:element name="BeneficiarySignature"
+				type="projectpartner:BeneficiarySignatureType">
+				<xsd:annotation>
+					<xsd:documentation>This represents the Coordinator signature.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ContractorType">
+		<xsd:sequence>
+			<xsd:element name="PIC" type="leref:LegalEntityIdType" />
+			<xsd:element name="Role" type="jagref:EContractorRole">
+				<xsd:annotation>
+					<xsd:documentation>This field is constrained by reference values
+						which are supposed to be provided by Ccm2.If the role is
+						Coordinator, then BankAccountRef
+						is mandatory.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RepartitionType" type="jagref:ERepartitionType"
+				minOccurs="0" />
+			<xsd:element name="RepartitionValue" type="xsd:double"
+				minOccurs="0" />
+			<xsd:element name="BankAccountRef" type="baref:BankAccountType"
+				minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The account holder name is optionnal in JAgate.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AffectedBudgetaryCommitmentType">
+		<xsd:sequence>
+			<xsd:element name="CommmitmentHeaderKey" type="base:LocalRefType">
+				<xsd:annotation>
+					<xsd:documentation>Accordingly to Manos (Sygma Analyst) and Joaquin (HOU CNECT.R.3) instructions, we
+						will take all positions from the header and set the affected amount
+						from the position available amount. But, it is expected to only
+						have One-to-One mapping between header and position. And the
+						amount should be the exact Contract amount.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="EAmendmentType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BAS" />
+			<xsd:enumeration value="AMD" />
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

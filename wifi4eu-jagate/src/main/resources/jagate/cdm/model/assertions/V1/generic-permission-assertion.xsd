@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 (http://www.altova.com) by European Commision - DIGIT (European Commision - DIGIT) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/services/userprofile/interfaces/genericpermissionassertion/V1" xmlns:assert="http://ec.europa.eu/research/fp/model/assertion/V1" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:docref="http://ec.europa.eu/research/fp/model/document-ref/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:tns="http://ec.europa.eu/research/fp/services/userprofile/interfaces/genericpermissionassertion/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/services/userprofile/interfaces/genericpermissionassertion/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="../../document-ref/V3/DocumentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/assertion/V1" schemaLocation="Assertion.xsd"/>
+	<xs:complexType name="ResourceIDType">
+		<xs:annotation>
+			<xs:documentation>Identification of a resource.
+The resource ID of a project is the only one that is made of a complex type. All other resources are using a simple string as ID. We must  choose between a "project ID" or a string (ID) and a resource type definition.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="ProjectRef" type="projectref:ProjectRefType"/>
+			<xs:element name="DocumentRef" type="docref:DocumentRefType"/>
+			<xs:element name="LegalEntityRef" type="legalentityref:LegalEntityRefType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:simpleType name="ResourceTypeType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:union memberTypes="xs:string">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="CALL"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:complexType name="RelationType">
+		<xs:annotation>
+			<xs:documentation>Association between a resource and a permission on that resource
+The resource ID of a project is the only one that is made of a complex type. All other resources are using a simple string as ID. We must  choose between a "project ID" or a string (ID) and a resource type definition.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Resource" type="tns:ResourceIDType" nillable="false">
+				<xs:annotation>
+					<xs:documentation>This tag identifies the resource upon which the permission applies.
+                    </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Permission" type="xs:string" nillable="false">
+				<xs:annotation>
+					<xs:documentation>List of allowed values: CREATE, READ, UPDATE, DELETE
+					For RTD, this list is mapped to the back office corresponding values
+					</xs:documentation>					
+				</xs:annotation>			
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GenericPermissionAssertionType">
+		<xs:annotation>
+			<xs:documentation>Assertion describing one generic permission of one user. a generic relationship between one resource and one permission (note that the WS request and response may contain several such assertions)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="assert:AssertionType">
+				<xs:sequence>
+					<xs:element name="UserId" type="base:ECUserIdType"/>
+					<xs:element name="ResourcePermissionAssociation" type="tns:RelationType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>1.0.0: definition of a generic permission assertion type based on enumaration of resource types and permission types. </xs:documentation>
+	</xs:annotation>
+</xs:schema>

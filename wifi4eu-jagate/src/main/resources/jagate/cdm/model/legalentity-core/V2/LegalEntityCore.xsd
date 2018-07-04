@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by XMLSpy 2008 Enterprise Ed., Installed for 5 users (European Commission DG Regio) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/legalentity-core/V2" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V2" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:proposal="http://ec.europa.eu/research/fp/model/project-proposal/V1" xmlns:address="http://ec.europa.eu/research/fp/model/address/V3" xmlns:person="http://ec.europa.eu/research/fp/model/person/V2" targetNamespace="http://ec.europa.eu/research/fp/model/legalentity-core/V2" elementFormDefault="qualified" version="2.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V2" schemaLocation="../../legalentity-ref/V2/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V2" schemaLocation="../../person/V2/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V3" schemaLocation="../../address/V3/Address.xsd"/>
+	<xs:annotation>
+		<xs:documentation>This schema intends to hold a view on all 'core' legal entity data, i.e. all data that will stay constant over different programs.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="LegalEntityCoreType">
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="LegalName" type="xs:string"/>
+			<xs:element name="BusinessName">
+				<xs:annotation>
+					<xs:documentation>The full business name in the official language</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="NotApplicable" default="false">
+								<xs:annotation>
+									<xs:documentation>the value might be empty when no VAT, but then the NotApplicable Attribute must be set to TRUE.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+							<xs:attribute name="NotAvailable" default="false">
+								<xs:annotation>
+									<xs:documentation>In case the data is not known yet.It needs to be replaced by N/A or real data to be able to get validated.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TranslatedName">
+				<xs:annotation>
+					<xs:documentation>The translated name (EN or FR) of the legal name</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="NotApplicable" default="false">
+								<xs:annotation>
+									<xs:documentation>the value might be empty when no VAT, but then the NotApplicable Attribute must be set to TRUE.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+							<xs:attribute name="NotAvailable" default="false">
+								<xs:annotation>
+									<xs:documentation>In case the data is not known yet.It needs to be replaced by N/A or real data to be able to get validated.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="VAT">
+				<xs:annotation>
+					<xs:documentation>The VAT (Value Added Tax) number</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="NotApplicable" default="false">
+								<xs:annotation>
+									<xs:documentation>the value might be empty when no VAT, but then the NotApplicable Attribute must be set to TRUE.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<!--xs:element name="LegalEntityType" type="LegalEntityTypeType">
+				<xs:annotation>
+					<xs:documentation>The type of a legal Entity. Possible values are: INDIVIDUAL, PUBLIC, PRIVATE</xs:documentation>
+				</xs:annotation>
+			</xs:element-->
+			<xs:element name="RegistrationData" type="LegalRegistrationType"/>
+			<!--xs:element name="RegistrationData">
+				<xs:annotation>
+					<xs:documentation>If LegalEntityType=INDIVIDUAL, use IndividualRegistrationType as registrationData
+If  LegalEntityType=PUBLIC or PRIVATE, use AuthorityRegistrationType as registrationData </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="LegalRegistration" type="LegalRegistrationType" minOccurs="0"/>
+						<xs:element name="IndividualRegistration" type="IndividualRegistrationType" minOccurs="0"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element-->
+			<!--xs:element name="LegalAddress" type="address:AddressType"/-->
+			<xs:element name="LegalAddress" type="address:PostalAddressType"/>
+			<xs:element name="ExternalReferenceList">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ExternalReference" type="base:LocalRefType" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LegalRegistrationType">
+		<xs:sequence>
+			<xs:element name="RegistrationNumber" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The national registration number of the organization</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegistrationCountryCode" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The CCM2 code of the country where the Legal Entity is registered</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegistrationAuthority" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The Authority where the Legal Entity is registered</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegistrationDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>The date when the Legal Entity was registered</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LegalFormCode" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>The legal form CCM2 code. The legal form depends on the type of entity and the country. It indicates whether the organisation is Ltd, PLC, SA, GmbH, ...</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LegalFormFreeText" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is filled in in case the type OTHER was choosen in LegalEntityCode</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--xs:element name="NGO" type="xs:boolean"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IndividualRegistrationType">
+		<xs:sequence>
+			<xs:element name="Identification" type="person:PersonIdentificationType"/>
+			<xs:element name="BirthDate" type="xs:date"/>
+			<xs:element name="BirthPlace" type="xs:string"/>
+			<xs:element name="BirthCountryCode" type="coderef:CodeRefType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="LegalEntityTypeType">
+		<xs:annotation>
+			<xs:documentation>The type of a legal Entity. Possible values are: INDIVIDUAL, PUBLIC, PRIVATE</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INDIVIDUAL"/>
+			<xs:enumeration value="PUBLIC"/>
+			<xs:enumeration value="PRIVATE"/>
+			<!-- highest level of trust -->
+			<!-- medium level of trust -->
+			<!-- lowest level of trust -->
+		</xs:restriction>
+	</xs:simpleType>
+	<!--2.0.0 - 20120531 - Complete rewrite for PDMV5-->
+</xs:schema>

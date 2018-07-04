@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns="http://ec.europa.eu/research/fp/model/project-specialclause/V2" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://ec.europa.eu/research/fp/model/project-specialclause/V2" 
+	elementFormDefault="qualified" 
+	version="2.0.0">
+	
+	<xs:annotation>
+		<xs:documentation>This schema intends to hold a view on 'special clause' data that can be part of the project grant agreement.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="SpecialClause" type="SpecialClauseType"/>
+	<xs:complexType name="SpecialClauseType">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:string"/>
+			<xs:element name="EffectiveDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>date when special clause enters into force</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Binding" type="SpecialClauseValueType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>clause data</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpecialClauseVariableType">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>name of special clause field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>description of special clause field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpecialClauseValueType">
+		<xs:sequence>
+			<xs:element name="Value" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>the value for the special clause field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Variable" type="SpecialClauseVariableType">
+				<xs:annotation>
+					<xs:documentation>a special clause field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpecialClauseTemplateType">
+		<xs:sequence>
+			<xs:element name="Version" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>version of special clause template</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Variable" type="SpecialClauseVariableType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>list of special clause fields</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		xmlns="http://ec.europa.eu/rdg/jagate/ws/prefinancing/v3/interfaces" 
+		targetNamespace="http://ec.europa.eu/rdg/jagate/ws/prefinancing/v3/interfaces"
+		elementFormDefault="qualified"
+		xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+		xmlns:prefin="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancing/v3"
+		xmlns:splitprefin="http://ec.europa.eu/rdg/jagate/ws/domain/splitprefinancing/v1"
+		>
+
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/prefinancing/v3" schemaLocation="../../../domain/prefinancing/v3/Prefinancing.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/splitprefinancing/v1" schemaLocation="../../../domain/splitprefinancing/v1/SplitPrefinancing.xsd" />
+					
+	<xs:element name="CreatePrefinancingRequest" type="PrefinancingRequestType" />
+	<xs:element name="CreatePrefinancingResponse" type="PrefinancingResponseType" />
+	
+	<xs:element name="PrefinException" type="jagate:JAgateException" />
+	
+	<xs:complexType name="PrefinancingRequestType">
+		<xs:annotation>
+			<xs:documentation>Prefinancing Transaction For the Coordinator no JRC involved</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Prefinancing" type="prefin:CreatePrefinancingType" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	
+
+	<xs:complexType name="PrefinancingResponseType">
+		<xs:sequence>
+			<xs:element name="invoiceLocObjForeignId" type="xs:string"/>
+			<xs:element name="paymentLocObjForeignId" type="xs:string"/>
+			<xs:element name="paymentOrdObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="CreateSplitPrefinancingRequest" type="SplitPrefinancingRequestType" />
+	<xs:element name="CreateSplitPrefinancingResponse" type="SplitPrefinancingResponseType" />
+
+	<xs:complexType name="SplitPrefinancingRequestType">
+		<xs:annotation>
+			<xs:documentation>Prefinancing Transaction For the Coordinator no JRC involved</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SplitPrefinancing" type="splitprefin:CreateSplitPrefinancingType" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	
+
+	<xs:complexType name="SplitPrefinancingResponseType">
+		<xs:sequence>
+			<xs:element name="paymentLocObjForeignId" type="xs:string"/>
+			<xs:element name="paymentOrdObjForeignId" type="xs:string"/>
+			<xs:element name="returnCode" type="xs:long"/>
+			<xs:element name="message" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+			
+</xs:schema>

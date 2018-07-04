@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 sp1 (http://www.altova.com) by - (European Commission DG INFSO (R3)) -->
+<xs:schema targetNamespace="http://ec.europa.eu/research/fp/model/report-assessment/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:costbreakdown="http://ec.europa.eu/research/fp/model/project-costbreakdown/V3" xmlns:report="http://ec.europa.eu/research/fp/model/report/V3" xmlns="http://ec.europa.eu/research/fp/model/report-assessment/V1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1.3">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" schemaLocation="../../project-reportingperiod/V4/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V3" schemaLocation="../../project-costbreakdown/V3/ProjectCostBreakdown.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/report/V3" schemaLocation="../../report/V3/Report.xsd"/>
+	<xs:element name="ReportAssessment" type="ReportAssessmentType"/>
+	<xs:complexType name="ReportItemAssessmentType">
+		<xs:sequence>
+			<xs:element name="ReportItemType" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>ClassId: GEN/ReportItemType  (TECHNICAL, FINANCIAL)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReportItemMark" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>Classid: GEN/ReportItemAssessment  (ACCEPTED, REJECTED, NONE )</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comments" type="xs:string" minOccurs="0"/>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="TPPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="UTROPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReportItemAssessmentListType">
+		<xs:sequence>
+			<xs:element name="ReportItemAssessment" type="ReportItemAssessmentType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentDeadlineSuspensionType">
+		<xs:sequence>
+			<xs:element name="DaysForReply" type="xs:int" minOccurs="0"/>
+			<xs:element name="ReportItemAssessmentList" type="ReportItemAssessmentListType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReportAssessmentType">
+		<xs:sequence>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType"/>
+			<xs:element name="ReportVersion" type="xs:int" minOccurs="0"/>
+			<xs:element name="PaymentDeadlineSuspension" type="PaymentDeadlineSuspensionType" minOccurs="0"/>
+			<xs:element name="AdditionalInformationRequest" type="AdditionalInformationRequestType" minOccurs="0"/>
+			<xs:element name="PaymentInformation" type="PaymentInformationType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReportAssessmentListType">
+		<xs:sequence>
+			<xs:element name="ReportAssessment" type="ReportAssessmentType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdditionalInformationRequestType">
+		<xs:sequence>
+			<xs:element name="DaysForReply" type="xs:int" minOccurs="0"/>
+			<xs:element name="RequestedInformation" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CalculationDataType">
+		<xs:sequence>
+			<xs:element name="AcceptedContribution" type="base:AmountType"/>
+			<xs:element name="MaximumGrantAmount" type="base:AmountType"/>
+			<xs:element name="NinetyPerCentLimit" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="DeductionAgainstLimit" type="base:AmountType"/>
+			<xs:element name="DeductionNoProfit" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="ReductionImproperImplementation" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="FinalGrantAmount" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="PreviouslyPaid" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="AmountToPay" type="base:AmountType"/>
+			<xs:element name="GFRelease" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="RestAfterGF" type="base:AmountType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentDataType">
+		<xs:sequence>
+			<xs:element name="FundingPhase" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>INITIAL_PREFINANCING, ADDITIONAL_PREFINANCING, 	INTERMEDIATE_PERIOD, FINAL_PERIOD</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentNumber" type="xs:short">
+				<xs:annotation>
+					<xs:documentation>Number of the payment (first PF = 1, etc.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType" minOccurs="0"/>
+			<xs:element name="Paid" type="base:AmountType"/>
+			<xs:element name="CumulativePaid" type="base:AmountType"/>
+			<xs:element name="GF" type="base:AmountType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentDataListType">
+		<xs:sequence>
+			<xs:element name="PaymentData" type="PaymentDataType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AmountPerPeriodType">
+		<xs:sequence>
+			<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType"/>
+			<xs:element name="Amount" type="base:AmountType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AmountPerPeriodListType">
+		<xs:sequence>
+			<xs:element name="AmountPerPeriod" type="AmountPerPeriodType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OverviewDataType">
+		<xs:sequence>
+			<xs:element name="BudgetedCosts" type="base:AmountType"/>
+			<xs:element name="BudgetedEUContribution" type="base:AmountType"/>
+			<xs:element name="CumulativeAcceptedCosts" type="base:AmountType"/>
+			<xs:element name="CumulativeRejectedFunding" type="base:AmountType"/>
+			<xs:element name="AcceptedAmountPerPeriodList" type="AmountPerPeriodListType"/>
+			<xs:element name="CumulativeMaxEUContribution" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="CumulativeRequestedEUContribution" type="base:AmountType"/>
+			<xs:element name="CumulativeAcceptedEUContribution" type="base:AmountType"/>
+			<xs:element name="BudgetPercentageAccepted" type="base:PercentageType"/>
+			<xs:element name="CumulativeEligibleForCFS" type="base:AmountType" minOccurs="0"/>
+			<xs:element name="ReimbursementRate" type="base:PercentageType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The ReimbursementRate for the legal entity in this project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CalculationDataBenType">
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="CalculationData" type="CalculationDataType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CalculationDataListType">
+		<xs:sequence>
+			<xs:element name="CalculationDataBen" type="CalculationDataBenType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentDataBenType">
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="PaymentDataList" type="PaymentDataListType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentDataBenListType">
+		<xs:sequence>
+			<xs:element name="PaymentDataBen" type="PaymentDataBenType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaymentInformationType">
+		<xs:sequence>
+			<xs:element name="FinancialAssessmentList" type="FinancialAssessmentListType"/>
+			<xs:element name="CalculationDataList" type="CalculationDataListType"/>
+			<xs:element name="PaymentDataBenList" type="PaymentDataBenListType"/>
+			<xs:element name="OverviewData" type="OverviewDataType"/>
+			<xs:element name="CumulativeEUContributionPerPeriodList" type="AmountPerPeriodListType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinancialAssessmentPerPartnerType">
+		<xs:sequence>
+			<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="UTROPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="TPPIC" type="legalentityref:LegalEntityIdType" minOccurs="0"/>
+			<xs:element name="RejectedCostsPerPartnerPeriod" type="report:FinancialSummaryPerPartnerFormCType" maxOccurs="unbounded"/>
+			<xs:element name="AcceptedCostsPerPartnerPeriod" type="report:FinancialSummaryPerPartnerFormCType" maxOccurs="unbounded"/>
+			<xs:element name="IsCFSApproved" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="OverviewDataPerPartner" type="OverviewDataType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinancialAssessmentListType">
+		<xs:sequence>
+			<xs:element name="FinancialAssessmentPerPartner" type="FinancialAssessmentPerPartnerType" maxOccurs="unbounded"/>
+			<xs:element name="RejectedCostsTotals" type="costbreakdown:ActivityCostBreakDownType"/>
+			<xs:element name="AcceptedCostsTotals" type="costbreakdown:ActivityCostBreakDownType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>20150817 - v1.0.0 - First version to support Payment Deadline Suspension letters</xs:documentation>
+		<xs:documentation>20150911 - v1.1.0 - added PaymentInformation element (and PaymentInformationType, plus all the nested elements and types)</xs:documentation>
+		<xs:documentation>20150911 - v1.1.1 - made elements inside CalculationDataListType and PaymentDataBenListType unbounded</xs:documentation>
+		<xs:documentation>20151012 - v1.1.2 - added OverviewDataPerPartner/RequestedEligibleForCFS (optional); OverviewDataPerPartner/CumulativeMaxEUContribution is made optional</xs:documentation>
+		<xs:documentation>20160302 - v1.1.3 - added OverviewData/ReimbursementRate (optional)</xs:documentation>
+	</xs:annotation>
+</xs:schema>

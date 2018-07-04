@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/project-ref/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/project-ref/V3" elementFormDefault="qualified" version="3.1.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:simpleType name="ProjectNumberType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ProjectId" type="ProjectIdType"/>
+	<xs:complexType name="ProjectIdType">
+		<xs:annotation>
+			<xs:documentation>Contains project key identifier data elements </xs:documentation>
+		</xs:annotation>
+		<xs:group ref="ProjectIdGroup"/>
+	</xs:complexType>
+	<xs:group name="ProjectIdGroup">
+		<xs:sequence>
+			<xs:element name="Program" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>ClassID FPDivision. Note that this ClassID spawns over multiple Domains. They can all be retrieved via the GMSFrameworkProgrammes taxonomy.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="ProjectNumberType">
+				<xs:annotation>
+					<xs:documentation>Project number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="ProjectRef" type="ProjectRefType"/>
+	<xs:complexType name="ProjectRefType">
+		<xs:annotation>
+			<xs:documentation>Contains project key id + responsible DG (for routing purpose)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="ProjectIdGroup"/>
+			<xs:element name="DG" type="base:RDGType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>In order to allow routing to DG systems the usage of this field is strongly recommended.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProposalIDListType">
+		<xs:sequence>
+			<xs:element name="ProposalID" type="ProjectIdType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProjectRefListType">
+		<xs:sequence>
+			<xs:element name="ResearchProjectRef" type="ProjectRefType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+    <!-- Added for Proposal Draft ID -->
+	<xs:group name="ProposalIdGroup">
+		<xs:sequence>
+			<xs:element name="Program" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>ClassID FPDivision. Note that this ClassID spawns over multiple Domains. They can all be retrieved via the GMSFrameworkProgrammes taxonomy.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="ProjectNumberType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Project number assigned the at the moment the Proposal is submitted the first time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DraftProposalID" type="xs:string" minOccurs="0" maxOccurs="1">
+			 <xs:annotation>
+			  <xs:documentation>Draft Id Assigned to the Project the first time is saved</xs:documentation>
+			 </xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+
+	<xs:element name="ProposalId" type="ProposalIdType"/>
+	<xs:complexType name="ProposalIdType">
+		<xs:annotation>
+			<xs:documentation>Contains project key identifier data elements </xs:documentation>
+		</xs:annotation>
+		<xs:group ref="ProposalIdGroup"/>
+	</xs:complexType>
+
+	<xs:complexType name="DraftProposalIDListType">
+		<xs:sequence>
+			<xs:element name="ProposalID" type="ProposalIdType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:annotation>
+	    <xs:documentation>20150416 - v3.1.0 -  Added Draft Proposal Id specification</xs:documentation>
+		<xs:documentation>20140411 - v3.0.1 -  Change the annotation for Programme, now it is FPDivision</xs:documentation>
+		<xs:documentation>20130419 - v3.0.0 -  SYGMA Upgrade to CodeRefType v3</xs:documentation>
+		<xs:documentation>20120908 - v2.0.3 -  Added ProjectRefListType</xs:documentation>
+		<xs:documentation>20120314 - v2.0.2 -  Added ProposalIDListType</xs:documentation>
+	</xs:annotation>
+</xs:schema>

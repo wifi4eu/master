@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="PaymentWSV2"  
+	xmlns:payment="http://ec.europa.eu/rdg/jagate/ws/payment/v2/interfaces"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/payment/v2"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/payment/v2">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/payment/v2/interfaces" schemaLocation="PaymentInterface.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+	<wsdl:message name="RegisterPaymentRequest">
+		<wsdl:part element="payment:RegisterPaymentRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="RegisterPaymentResponse">
+		<wsdl:part element="payment:RegisterPaymentResponse" name="response" />
+	</wsdl:message>
+
+    <wsdl:message name="PaymentRequestDetailsRequest">
+        <wsdl:part element="payment:PaymentRequestDetailsRequest" name="request" />
+    </wsdl:message>
+
+    <wsdl:message name="PaymentRequestDetailsResponse">
+        <wsdl:part element="payment:PaymentRequestDetailsResponse" name="response" />
+    </wsdl:message>
+    
+    <wsdl:message name="CheckPaymentCreditAvailabilityRequest">
+        <wsdl:part element="payment:CheckPaymentCreditAvailabilityRequest" name="request" />
+    </wsdl:message>
+
+    <wsdl:message name="CheckPaymentCreditAvailabilityResponse">
+        <wsdl:part element="payment:CheckPaymentCreditAvailabilityResponse" name="response" />
+    </wsdl:message>
+
+	<wsdl:message name="PaymentException">
+		<wsdl:part element="payment:PaymentException" name="exception" />
+	</wsdl:message>
+	
+	<wsdl:portType name="IPaymentService">
+		<wsdl:documentation>Payment operations.</wsdl:documentation>
+		<wsdl:operation name="RegisterPayment">
+			<wsdl:documentation>Register payment</wsdl:documentation>
+			<wsdl:input message="RegisterPaymentRequest" />
+			<wsdl:output message="RegisterPaymentResponse" />
+			<wsdl:fault name="PaymentException" message="PaymentException"/>
+		</wsdl:operation>
+        <wsdl:operation name="PaymentRequestDetails">
+            <wsdl:documentation>Register payment</wsdl:documentation>
+            <wsdl:input message="PaymentRequestDetailsRequest" />
+            <wsdl:output message="PaymentRequestDetailsResponse" />
+            <wsdl:fault name="PaymentException" message="PaymentException"/>
+        </wsdl:operation>
+        <wsdl:operation name="CheckPaymentCreditAvailability">
+            <wsdl:documentation>Check in ABAC if there is enough commitment and payment credit to ventilate the payment.</wsdl:documentation>
+            <wsdl:input message="CheckPaymentCreditAvailabilityRequest" />
+            <wsdl:output message="CheckPaymentCreditAvailabilityResponse" />
+            <wsdl:fault name="PaymentException" message="PaymentException"/>
+        </wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="IPaymentServiceBinding" type="IPaymentService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="RegisterPayment">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="PaymentException">
+				<soap:fault name="PaymentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+        <wsdl:operation name="PaymentRequestDetails">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="PaymentException">
+                <soap:fault name="PaymentException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="CheckPaymentCreditAvailability">
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="PaymentException">
+                <soap:fault name="PaymentException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="PaymentServiceV2">
+		<wsdl:port binding="IPaymentServiceBinding" name="PaymentServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/payment/v2"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

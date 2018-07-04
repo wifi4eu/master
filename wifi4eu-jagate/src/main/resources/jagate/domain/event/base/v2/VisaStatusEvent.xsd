@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/visastatus/v2" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/visastatus/v2"
+		   xmlns:visa="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1"
+		   elementFormDefault="qualified" 
+		   attributeFormDefault="unqualified">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v1" schemaLocation="../../../visa/v1/Visa.xsd" />
+
+	<xs:complexType name="VisaStatus">
+		<xs:sequence>
+			<xs:element name="visa" type="visa:AgentType"/>
+			<xs:element name="status" type="visa:VisaStatusType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

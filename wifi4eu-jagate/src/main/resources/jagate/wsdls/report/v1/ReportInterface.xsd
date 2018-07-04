@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		xmlns="http://ec.europa.eu/rdg/jagate/ws/report/v1/interfaces"
+		targetNamespace="http://ec.europa.eu/rdg/jagate/ws/report/v1/interfaces"
+		elementFormDefault="qualified"
+		xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+        xmlns:report="http://ec.europa.eu/rdg/jagate/ws/domain/report/v1">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/visa/v2" schemaLocation="../../../domain/visa/v2/Visa.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/transaction/v1" schemaLocation="../../../domain/transaction/v1/Transaction.xsd" />
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/report/v1" schemaLocation="../../../domain/report/v1/ReportBase.xsd" />
+	
+	<xs:element name="PrefinancingsPaymentRequestsRequest" type="ReportRequestType" />
+    <xs:element name="PrefinancingsPaymentRequestsResponse" type="PrefinancingsPaymentRequestsResponseType" />
+
+    <xs:element name="CoordinatorsRequest" type="ReportRequestType" />
+    <xs:element name="CoordinatorsResponse" type="CoordinatorsResponseType" />
+
+    <xs:element name="RecoveryOrderForecastRevenuesRequest" type="ReportRequestType" />
+    <xs:element name="RecoveryOrderForecastRevenuesResponse" type="RecoveryOrderForecastRevenuesResponseType" />
+
+    <xs:element name="GuaranteesRequest" type="ReportRequestType" />
+    <xs:element name="GuaranteesResponse" type="GuaranteesResponseType" />
+
+    <xs:element name="BudgetaryCommitmentsRequest" type="ReportRequestType" />
+    <xs:element name="BudgetaryCommitmentsResponse" type="BudgetaryCommitmentsResponseType" />
+
+    <xs:element name="InvoicesRequest" type="ReportRequestType" />
+    <xs:element name="InvoicesResponse" type="InvoicesResponseType" />
+
+    <xs:element name="PaymentRequestsRequest" type="ReportRequestType" />
+    <xs:element name="PaymentRequestsResponse" type="PaymentRequestsResponseType" />
+
+    <xs:element name="PrefinGuaranteeFundsRequest" type="ReportRequestType" />
+    <xs:element name="PrefinGuaranteeFundsResponse" type="PrefinGuaranteeFundsResponseType" />
+    
+    <xs:element name="LegalEntityGuaranteesRequest" type="ReportRequestType" />
+    <xs:element name="LegalEntityGuaranteesResponse" type="LegalEntityGuaranteesResponseType"/>
+
+    <xs:element name="ReportException" type="jagate:JAgateException" />
+	
+	<xs:complexType name="ReportRequestType">
+		<xs:annotation>
+			<xs:documentation>Prefinancings PaymentRequests</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+            <xs:element name="LegalCommitment" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PrefinancingsPaymentRequestsResponseType">
+		<xs:sequence>
+            <xs:element name="PrefinancingPaymentRequests" type="report:PrefinancingPaymentRequest" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="PaymentRequestsResponseType">
+        <xs:sequence>
+            <xs:element name="PaymentRequests" type="report:PaymentRequest" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PrefinGuaranteeFundsResponseType">
+        <xs:sequence>
+            <xs:element name="PrefinGuaranteeFunds" type="report:PrefinGuaranteeFund" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="LegalEntityGuaranteesResponseType">
+    	<xs:sequence>
+    		<xs:element name="LegalEntityGuarantees" type="report:LegalEntityGuarantee" minOccurs="0" maxOccurs="unbounded" />
+    	</xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="InvoicesResponseType">
+        <xs:sequence>
+            <xs:element name="Invoices" type="report:Invoice" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="BudgetaryCommitmentsResponseType">
+        <xs:sequence>
+            <xs:element name="BudgetaryCommitments" type="report:BudgetaryCommitment" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GuaranteesResponseType">
+        <xs:sequence>
+            <xs:element name="Guarantees" type="report:Guarantee" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CoordinatorsResponseType">
+        <xs:sequence>
+            <xs:element name="Coordinators" type="report:Coordinator" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RecoveryOrderForecastRevenuesResponseType">
+        <xs:sequence>
+            <xs:element name="RecoveryOrderForecastRevenues" type="report:RecoveryOrderForecastRevenue" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

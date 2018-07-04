@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/download-ref/V1"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:user="http://ec.europa.eu/research/fp/model/user/V1"
+           xmlns:userRef="http://ec.europa.eu/research/fp/model/user-ref/V1"
+           xmlns:codeRef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+           xmlns:doc="http://ec.europa.eu/research/fp/model/document/V5"
+           targetNamespace="http://ec.europa.eu/research/fp/model/download-ref/V1" elementFormDefault="qualified" version="2.0.1">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user/V1" schemaLocation="../../user/V1/User.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V5" schemaLocation="../../document/V5/Document.xsd"/>
+
+	<xs:complexType name="DownloadRequestIdType">
+	    <xs:annotation>
+	     <xs:documentation>Identifier of a Document Download Request.</xs:documentation>
+	    </xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="xs:integer"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Requested Document Type -->
+	<xs:complexType name="RequestedDocumentType">
+	  <xs:annotation>
+	   <xs:documentation>Represented a downloaded document</xs:documentation>
+	  </xs:annotation>
+	  <xs:sequence>
+	    <xs:element name="Document" type="doc:DocumentType"/>
+	    <xs:element name="DocumentTitle" type="xs:string">
+	       <xs:annotation>
+	         <xs:documentation>The document title</xs:documentation>
+	       </xs:annotation>
+	    </xs:element>
+		<xs:element name="DocumentAccessRight" type="xs:boolean" minOccurs="0" maxOccurs="1">
+			<xs:annotation>
+				<xs:documentation>Boolean flag to indicate that the requesting User has the right to download the requested document</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+		<xs:element name="SignatureRequired" type="xs:boolean" minOccurs="0" maxOccurs="1">
+			<xs:annotation>
+				<xs:documentation>Boolean flag to indicate that the requesting User needs to sign in ECAS due to the existence of a Formal Notification requiring acknowledge</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+		<xs:element name="Signed" type="xs:boolean" minOccurs="0" maxOccurs="1">
+			<xs:annotation>
+				<xs:documentation>Boolean flag to indicate that the requesting User signed in ECAS the Formal Notification and the signature has been registered in IAM</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+		<xs:element name="SignatureDateTime" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+			<xs:annotation>
+				<xs:documentation>Signature date time as registered by Download Server in IAM</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+	    <xs:element name="AccessType" type="xs:string" minOccurs="0" maxOccurs="1">
+	       <xs:annotation>
+	         <xs:documentation>Tells if the request has been submitted via token authorisation or with a direct access to HDS with IAM based security check.</xs:documentation>
+	       </xs:annotation>
+	    </xs:element>
+	    <xs:element name="RequestingApplicationId" type="xs:string" minOccurs="0" maxOccurs="1">
+	       <xs:annotation>
+	         <xs:documentation>Identifiers of the application exposing the link used to submit the download request.</xs:documentation>
+	       </xs:annotation>
+	    </xs:element>
+	    <xs:element name="DocumentAttachmentDownloadList">
+	        <xs:complexType>
+	          <xs:sequence>
+	             <xs:element name="DocumentAttachmentDownload" type="doc:DocumentAttachmentRefType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Indicates which document attachment(s) has (have) been downloaded.</xs:documentation>
+					</xs:annotation>
+	             </xs:element>
+	          </xs:sequence>
+	        </xs:complexType>
+		</xs:element>
+	  </xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="DownloadRequestType">
+	  <xs:annotation>
+	   <xs:documentation>Represents a Download Request</xs:documentation>
+	  </xs:annotation>
+	  <xs:sequence>
+	    <xs:element name="DownloadRequestId" type="DownloadRequestIdType"/>
+	    <xs:element name="RequestingUser" type="user:UserType"/>
+        <xs:element name="DownloadRequestDateTime" type="xs:dateTime"/>
+        <xs:element name="RequestedDocumentList">
+           <xs:complexType>
+             <xs:sequence>
+                <xs:element name="RequestedDocument" type="RequestedDocumentType" minOccurs="0" maxOccurs="unbounded">
+                           <xs:annotation>
+                               <xs:documentation>The list of Requested Documents, if any</xs:documentation>
+                             </xs:annotation>
+                </xs:element>
+             </xs:sequence>
+           </xs:complexType>
+
+        </xs:element>
+        <xs:element name="ErrorCode" type="codeRef:CodeRefType">
+			<xs:annotation>
+				<xs:documentation>CCM2 code reporting any possible errors including a successfull download request.</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+	  </xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

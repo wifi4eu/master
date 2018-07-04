@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/project-amendment/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:address="http://ec.europa.eu/research/fp/model/address/V1" xmlns:bankaccount="http://ec.europa.eu/research/fp/model/bankaccount/V1" xmlns:document="http://ec.europa.eu/research/fp/model/document/V3" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" targetNamespace="http://ec.europa.eu/research/fp/model/project-amendment/V3" elementFormDefault="qualified" version="3.0.2">
+	<xs:annotation>
+		<xs:documentation>This schema captures data related to project grant agreement amendments. Note, all data elements in this schema are within the context of a particular project.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V3" schemaLocation="../../document/V3/Document.xsd"/>
+	<xs:element name="AmendmentCore" type="AmendmentCoreType"/>
+	<xs:complexType name="AmendmentCoreType">
+		<xs:annotation>
+			<xs:documentation>Amendment to an existing grant agreement - core data.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="AmendmentCoreGroup"/>
+			<xs:group ref="AmendmentLifeCycleGroup"/>
+			<xs:element name="Modifications" type="AmendmentModificationCoreListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>List of requested modifications to the grant agreement. The list will only contain </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Amendment" type="AmendmentType"/>
+	<xs:complexType name="AmendmentType">
+		<xs:annotation>
+			<xs:documentation>Amendment to an existing grant agreement - detailed data.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="AmendmentCoreGroup"/>
+			<xs:group ref="AmendmentLifeCycleGroup"/>
+			<xs:element name="Modifications" type="AmendmentModificationListType">
+				<xs:annotation>
+					<xs:documentation>List of requested modifications to the grant agreement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="AmendmentCoreGroup">
+		<xs:sequence>
+			<xs:element name="Number" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Amendment number on the grant agreement. Numbering is sequential per amendment type. I.e. Rejected amendments 'loose' their number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ContractVersion" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>It is the associated version of the contract.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>A = Amendment, I = Information Letter</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Initiation" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>CI = Commission Initiated, CR = Consortium Request, AI= Automatically Initiated (in case of Information Letter)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="AmendmentLifeCycleGroup">
+		<xs:annotation>
+			<xs:documentation>Group of elements capturing the amendment request lifecycle (status, audit trail).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Status" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Draft or Approved or Rejected or Signed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateRequested" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when amendment was originally requested by consortium coordinator. Not applicable for amendment type I (Information Letter).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateReceived" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when amendment was received by commission. Not applicable for amendment type I (Information Letter).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateLetterSent" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when approval letter was sent by commission.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateLetterReceived" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when approval letter was received by consortium coordinator.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateSignedByCommission" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when amendment was signed by commission.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateSignedByCoordinator" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date when amendment was signed by consortium coordinator.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValidRequestDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>the date when all the documentation/info needed to process the amendment is actually available at the Commission.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="AmendmentModificationCoreListType">
+		<xs:annotation>
+			<xs:documentation>List of requested modifications included in the amendment request.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Modification" type="xs:string" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Textual description of the requested modification.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AmendmentModificationListType">
+		<xs:annotation>
+			<xs:documentation>List of requested modifications included in the amendment request.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Modification" type="AmendmentModificationType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AmendmentModificationType">
+		<xs:annotation>
+			<xs:documentation>Named type of modification. A separate subtype is defined for each modification type, defining the specific modification parameters for that type.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Textual description of the requested modification.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AmendmentEffectiveDateType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FixedDate"/>
+			<xs:enumeration value="AmendmentSignatureDate"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>v3.0.2 - added ValidRequestDate to AmendmentLifeCycleGroup</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.0.1 - added an extra value for AmendmentCoreGroup/Initiation (Automatically Initiated) in the case of Information Letter</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.0.0 - added ContractVersion, Modifications is optional + document v3</xs:documentation>
+	</xs:annotation>
+	<!--**** THE TYPES BELOW HAVE NOT BEEN APPROVED YET *****-->
+	<!--
+	<xs:complexType name="ChangeOfTitleType">
+		<xs:annotation>
+			<xs:documentation>Change of project title and/or acronym. Note, at least one of these should be mandatory.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="NewTitle" type="xs:string" minOccurs="0"/>
+								<xs:element name="NewAcronym" type="xs:string" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ChangeOfECContributionType">
+		<xs:annotation>
+			<xs:documentation>Change of community contribution.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="NewECContribution" type="base:AmountType"/>
+								<xs:element name="Effective" type="AmendmentEffectiveDateType"/>
+								<xs:element name="EffectiveDate" type="xs:date" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ModificationOfPreFinancingOrGuaranteeFundType">
+		<xs:annotation>
+			<xs:documentation>Modification of pre-financing amount and/or contribution to the guarantee fund.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="NewPreFinancingAmount" type="base:AmountType" minOccurs="0"/>
+								<xs:element name="NewGuaranteeFundContribution" type="base:AmountType" minOccurs="0"/>
+								<xs:element name="Effective" type="AmendmentEffectiveDateType"/>
+								<xs:element name="EffectiveDate" type="xs:date" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ModificationOfCoordinatorDetailsType">
+		<xs:annotation>
+			<xs:documentation>Changes of coordinator name and addresses.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="PartnerDetails" type="LegalPartnerType"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ChangeOfBankAccountDetailsType">
+		<xs:annotation>
+			<xs:documentation>Change of coordinator bankaccount details.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="NewBankAccount" type="bankaccount:BankAccountType">
+									<xs:annotation>
+										<xs:documentation>Maybe be more specific about partner, or is this always bankaccount of consortium coordinator?</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AdditionOfPartnersType">
+		<xs:annotation>
+			<xs:documentation>Addition of new partners.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="AddPartner" type="LegalPartnerType" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RemovalOfPartnersType">
+		<xs:annotation>
+			<xs:documentation>Remove existing partners due to non accession.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:choice>
+									<xs:element name="RemovePartnerNumber" type="xs:positiveInteger" maxOccurs="unbounded"/>
+								</xs:choice>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SwitchOfCoordinatorType">
+		<xs:annotation>
+			<xs:documentation>Switch to another lead/coordinator partner; either a new or existing partner.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:choice>
+									<xs:element name="NewCoordinator" type="LegalPartnerType"/>
+									<xs:element name="NewCoordinatorNumber" type="xs:positiveInteger"/>
+								</xs:choice>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ModificationOfSpecialClausesType">
+		<xs:annotation>
+			<xs:documentation>Additions, modifications or removals of special clauses.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="AddSpecialClause" type="SpecialClauseType" minOccurs="0" maxOccurs="unbounded"/>
+								<xs:element name="ModifySpecialClause" type="SpecialClauseType" minOccurs="0" maxOccurs="unbounded"/>
+								<xs:element name="RemoveSpecialClause" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>List of clause Ids.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ModificationOfReportingPeriodsType">
+		<xs:annotation>
+			<xs:documentation>Modification of reporting periods.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ReportingPeriod" type="ReportingPeriodType" minOccurs="0" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>New list of reporting periods.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ModificationOfDurationType">
+		<xs:annotation>
+			<xs:documentation>Modification of duration.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="NewDuration" type="base:CountType">
+									<xs:annotation>
+										<xs:documentation>New duration in months.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ModificationOfStartDateType">
+		<xs:annotation>
+			<xs:documentation>Modification of start date.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="NewStartDate" type="xs:date"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ModificationOfLumpsumReimbursementType">
+		<xs:annotation>
+			<xs:documentation>Addition or removal of reimbursement as a lump-sum to ICPC participants.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Type" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>Addition or Removal.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="PartnerNumber" type="xs:positiveInteger" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TerminationOfPartnersType">
+		<xs:annotation>
+			<xs:documentation>Termination of participation of existing partners.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="PartnerNumber" type="xs:positiveInteger" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>List of terminated partners.</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="TerminationDate" type="xs:dateTime"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TerminationOfGrantAgreementType">
+		<xs:annotation>
+			<xs:documentation>Termination of overall grant agreement.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="TerminationDate" type="xs:dateTime"/>
+								<xs:element name="Reason" type="xs:string"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TransferOfRightsAndObligationsType">
+		<xs:annotation>
+			<xs:documentation>Transfer of rights and obligations among partners on the agreement.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="PIC" type="legalentity:LegalEntityIdType"/>
+								<xs:element name="UTROPIC" type="legalentity:LegalEntityIdType"/>
+								<xs:element name="Effective" type="AmendmentEffectiveDateType"/>
+								<xs:element name="EffectiveDate" type="xs:date" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ModificationOfAnnexType">
+		<xs:annotation>
+			<xs:documentation>Modification of annex documentation.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="AmendmentModificationType">
+				<xs:sequence>
+					<xs:element name="Parameters">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="DescriptionOfWork" type="xs:string" minOccurs="0"/>
+								<xs:element name="Pages" type="xs:string" minOccurs="0"/>
+								<xs:element name="Addendum" type="xs:string" minOccurs="0"/>
+								<xs:element name="Document" type="document:DocumentType" minOccurs="0"/>
+								<xs:element name="EffectiveDate" type="xs:date"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+-->
+</xs:schema>

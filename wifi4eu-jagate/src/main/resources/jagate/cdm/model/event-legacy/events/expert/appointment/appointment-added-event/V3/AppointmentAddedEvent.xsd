@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:ns1="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/appointment-added-event/V3" xmlns:ns2="http://ec.europa.eu/research/fp/model/base/V1" xmlns:expertAppointmentRef="http://ec.europa.eu/research/fp/model/expertappointment-ref/V1" xmlns:expertAppointment="http://ec.europa.eu/research/fp/model/expertappointment/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:evt="http://ec.europa.eu/rdg/efp/domain/event/v1_0" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/appointment-added-event/V3" elementFormDefault="qualified" version="3.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expertappointment/V3" schemaLocation="../../../../../../expertappointment/V3/ExpertAppointment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expertappointment-ref/V1" schemaLocation="../../../../../../expertappointment-ref/V1/ExpertAppointmentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../../../../../base/V1/Base.xsd"/>
+	<xs:complexType name="AppointmentAddedEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when a new appointment letter is generated.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="evt:EventBodyType">
+				<xs:sequence>
+					<xs:element name="expertAppointment" type="expertAppointment:ExpertAppointmentType">
+						<xs:annotation>
+							<xs:documentation>Defines an appointment entity.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="mainAppointmentReference" type="expertAppointmentRef:GlobalIDType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>For amendments, ID of the main/original appointment.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="appointmentSequenceNumber" type="xs:positiveInteger" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>For amendments, mentions the sequence number (is the first, the second. the third ...amendment for this AL)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="eventOriginator" type="ns2:ECUserIdType">
+						<xs:annotation>
+							<xs:documentation>ECAS ID of the person who  created the appointment.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="appointmentAddedDate" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>The date when the appointment was created.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="officialCommunication" type="xs:base64Binary" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>This is the text that will go into the notification that will be sent to the expert once he receives this Appointment Letter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+		<xs:documentation>v 1.0.1: Migrated dependency on CDM from CDM 2.2.0 to CDM 2.2.1</xs:documentation>
+		<xs:documentation>v 1.2.0: Migrated dependency on CDM from CDM 2.2.1 to CDM 3.0.0 (should be 1.2.0, but this event has never been used)</xs:documentation>
+		<xs:documentation>v 1.3.0: Migrated dependency on CDM from CDM 3.0.0 to CDM 3.2.0 </xs:documentation>
+		<xs:documentation>v 1.4.0: Added fficialCommunication element</xs:documentation>
+		<xs:documentation>??????? v 2.0.0: Creation </xs:documentation>
+		<xs:documentation>20151118 - V3: Use ExpertAppointment V3</xs:documentation>
+	</xs:annotation>
+</xs:schema>

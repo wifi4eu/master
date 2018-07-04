@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/document/sealsignature-event/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:context="http://ec.europa.eu/research/fp/model/service-context/V2" xmlns="http://ec.europa.eu/rdg/efp/domain/event/document/sealsignature-event/V2" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" elementFormDefault="qualified" version="2.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/service-context/V2" schemaLocation="../../service-context/V2/ServiceContext.xsd"/>
+	<xs:complexType name="SealSignatureEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when sealing with signature</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="CorrelationId" type="xs:string"/>
+					<xs:element name="Status" type="context:StatusType"/>
+					<xs:element name="Message" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 2.0.0: Refactor to include more clear information </xs:documentation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+	xmlns:mdl="http://ec.europa.eu/research/fp/model/bankaccount/V2" 
+	xmlns:jagref="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v2" 
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/bankaccount/v2"
+	elementFormDefault="qualified">
+
+	<!-- Importing referenced schema -->
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V2" schemaLocation="../../../cdm/model/bankaccount/V2/BankAccount.xsd" />
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/reference/v1" schemaLocation="../../reference/v1/ReferenceData.xsd" />
+
+	<!-- Elements -->
+	<xs:element name="GetBankAccountByNationalNumberRequest" type="GetBankAccountByNationalNumberRequestType" />
+	<xs:element name="GetBankAccountByIbanRequest" type="GetBankAccountByIbanRequestType" />
+	<xs:element name="GetBankAccountResponse" type="GetBankAccountResponseType" />
+	
+	<xs:complexType name="GetBankAccountByNationalNumberRequestType">
+		<xs:sequence>
+			<xs:element name="nationalNumber" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountByIbanRequestType">
+		<xs:sequence>
+			<xs:element name="iban" type="jagate:NonEmptyString" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GetBankAccountResponseType">
+		<xs:sequence>
+			<xs:element name="bankAccountHolder" type="BankAccountHolderType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>	
+	<xs:complexType name="BankAccountHolderType">
+		<xs:complexContent>
+			<xs:extension base="mdl:BankAccountType">
+				<xs:sequence>
+					<xs:element name="BankAccountStatus" type="jagref:EObjectStatusType" minOccurs="0"/>
+					<xs:element name="LegalEntityLinkStatus" type="xs:string" minOccurs="0"/>
+					<xs:element name="LocObjForeignId" type="xs:string" minOccurs="0"/>
+					<xs:element name="ConfidentialFlag" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="AccountHolderId" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+</xs:schema>

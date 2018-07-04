@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:officerref="http://ec.europa.eu/research/fp/model/officer-ref/V1" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:representative="http://ec.europa.eu/research/fp/model/project-representative/V3" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:costbreakdown="http://ec.europa.eu/research/fp/model/project-costbreakdown/V2" xmlns:costclaim="http://ec.europa.eu/research/fp/model/costclaim/V2" xmlns:core="http://ec.europa.eu/research/fp/model/project-core/V2" xmlns:officer="http://ec.europa.eu/research/fp/model/officer/V2" xmlns:report="http://ec.europa.eu/research/fp/model/report/V1" xmlns:reportingperiod="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" xmlns:legalentity="http://ec.europa.eu/research/fp/model/legalentity/V2" xmlns:bankaccount="http://ec.europa.eu/research/fp/model/bankaccount/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ec.europa.eu/research/fp/model/project-partner/V3" targetNamespace="http://ec.europa.eu/research/fp/model/project-partner/V3" elementFormDefault="qualified" version="3.1.0">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture 'full' view on all project partner related data.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V2" schemaLocation="../../bankaccount/V2/BankAccount.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim/V2" schemaLocation="../../costclaim/V2/CostClaim.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" schemaLocation="../../project-reportingperiod/V3/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V2" schemaLocation="../../legalentity/V2/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V2" schemaLocation="../../project-costbreakdown/V2/ProjectCostBreakdown.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-representative/V3" schemaLocation="../../project-representative/V3/ProjectRepresentative.xsd"/>
+	<xs:simpleType name="PartnerRoleType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Beneficiary"/>
+			<xs:enumeration value="Coordinator"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:group name="PartnerCoreGroup">
+		<xs:sequence>
+			<xs:group ref="legalentityref:LegalEntityRefGroup"/>
+			<xs:element name="ShortName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>partner short name used in project - unique in this project only</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectEnterDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner enters the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectExitDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner exits the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="LegalPartnerCore" type="LegalPartnerCoreType"/>
+	<xs:complexType name="LegalPartnerCoreType">
+		<xs:sequence>
+			<xs:element name="OrderNumber" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>partner number in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="PartnerCoreGroup"/>
+			<xs:element name="Role" type="PartnerRoleType">
+				<xs:annotation>
+					<xs:documentation>role of partner in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="PartnerFinancialCoreGroup"/>
+			<xs:element name="ThirdParty" type="ThirdPartyPartnerCoreType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>list of third parties linked to partner</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ParticipationID" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>PIC+shortname? The participationID is used to differentiate multiple participation by the same LegalEntity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsArtemisMS" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is a Boolean fields indicating that a participant is an ARTEMIS Member State or not. List of values: *1* (True);  *0* (False), or not present.
+				It is mandatory for ARTEMIS participants (NEF should give input to that field). Moreover, the field SHOULD NOT be modified on amendments or ILs.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsAuthorisedToTransferContactDetails" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>In ARTEMIS GPF, this field is displayed as a radio button: *I agree* and *I disagree* in page A2.2. in the section *AUTHORIZATION TO TRANSFER CONTACT DETAILS TO THE ARTEMISIA ORGANIZATION*, with NEITHER button enabled as the default.  List of values: 
+				*1* (True): if the radio button *I agree* is checked on GPF;  
+				*0* (False): if the radio button *I disagree* is checked on GPF; 
+				the tag is ommitted, it is not generated: if neither *I agree* nor *I disagree* is selected.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ThirdPartyPartnerCore" type="ThirdPartyPartnerCoreType"/>
+	<xs:complexType name="ThirdPartyPartnerCoreType">
+		<xs:sequence>
+			<xs:group ref="PartnerCoreGroup"/>
+			<xs:group ref="PartnerFinancialCoreGroup"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="LegalEntityGroup">
+		<xs:sequence>
+			<xs:choice>
+				<xs:annotation>
+					<xs:documentation>partner LE PICs should be unique per project</xs:documentation>
+					<xs:documentation>partner LE data can be transfered either by value or by reference</xs:documentation>
+				</xs:annotation>
+				<xs:element name="LegalEntityRef" type="legalentityref:LegalEntityRefType"/>
+				<xs:element name="LegalEntity" type="legalentity:LegalEntityType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="PartnerGroup">
+		<xs:sequence>
+			<xs:element name="ShortName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Short name for partner - unique in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectEnterDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner enters the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectExitDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner exits the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BeneficiarySignature" type="BeneficiarySignatureType" minOccurs="0"/>
+			<xs:element name="BankAccount" type="bankaccount:BankAccountType" minOccurs="0"/>
+			<xs:element name="FundingSchemeSpecificInfo" type="FundingSchemeSpecificPartnerInfoType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="ProjectRepresentativesGroup">
+		<xs:sequence>
+			<xs:choice>
+				<xs:annotation>
+					<xs:documentation>Each partner designates one or more individuals that have particular defined roles within the consortium. The basic default role is the "Participant representative", i.e. the person of contact for that particular participant in this particular project. (Reason for the choice: We have the choice of carrying the whole Representative information or the minimum information currently needed by the portal).</xs:documentation>
+				</xs:annotation>
+				<xs:element name="ProjectRepresentativeRefs" type="representative:ProjectRepresentativeCoreInfoType" maxOccurs="unbounded"/>
+				<xs:element name="ProjectRepresentatives" type="representative:ProjectRepresentativeType" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="FundingSchemeSpecificPartnerInfoType">
+		<xs:annotation>
+			<xs:documentation>Abstract type to be extended by subtypes capturing info per funding scheme, eg. for MarieCurie</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="LegalPartner" type="LegalPartnerType"/>
+	<xs:complexType name="LegalPartnerType">
+		<xs:sequence>
+			<xs:group ref="LegalEntityGroup"/>
+			<xs:element name="OrderNumber" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Partner number in project, eg. 1, 2, etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Role" type="PartnerRoleType">
+				<xs:annotation>
+					<xs:documentation>Role of partner in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="PartnerGroup"/>
+			<xs:group ref="ProjectRepresentativesGroup"/>
+			<xs:group ref="PartnerFinancialGroup"/>
+			<xs:element name="ThirdParty" type="ThirdPartyPartnerType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of third parties associated to the partner in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ParticipationID" type="xs:string" minOccurs="0"/>
+			<xs:element name="IsArtemisMS" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>It is a Boolean fields indicating that a participant is an ARTEMIS Member State or not. List of values: *1* (True);  *0* (False), or not present.
+				It is mandatory for ARTEMIS participants (NEF should give input to that field). Moreover, the field SHOULD NOT be modified on amendments or ILs.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsAuthorisedToTransferContactDetails" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>In ARTEMIS GPF, this field is displayed as a radio button: *I agree* and *I disagree* in page A2.2. in the section *AUTHORIZATION TO TRANSFER CONTACT DETAILS TO THE ARTEMISIA ORGANIZATION*, with NEITHER button enabled as the default.  List of values: 
+				*1* (True): if the radio button *I agree* is checked on GPF;  
+				*0* (False): if the radio button *I disagree* is checked on GPF; 
+				the tag is ommitted, it is not generated: if neither *I agree* nor *I disagree* is selected.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ThirdPartyPartner" type="ThirdPartyPartnerType"/>
+	<xs:complexType name="ThirdPartyPartnerType">
+		<xs:sequence>
+			<xs:group ref="LegalEntityGroup"/>
+			<xs:group ref="PartnerGroup"/>
+			<xs:group ref="ProjectRepresentativesGroup" minOccurs="0"/>
+			<xs:group ref="PartnerFinancialGroup" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="PartnerFinancialCoreGroup">
+		<xs:sequence>
+			<xs:element name="RequestedECContribution" type="base:AmountType"/>
+			<xs:element name="TotalCosts" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For some MarieCurie projects, there are no total costs. TODO: which subfunding schemes?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="PartnerCostBreakdown" type="PartnerCostBreakdownType"/>
+	<xs:complexType name="PartnerCostBreakdownType">
+		<xs:sequence>
+			<xs:element name="TotalCostBreakdown" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is the total cost breakdown for a partner (including partner specific, department specific, UTROs and all thirdparties with all their details)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ActivityCostBreakDown" type="costbreakdown:ActivityCostBreakDownType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CostBreakdownICMSpecific" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="costbreakdown:CostBreakDownType">
+							<xs:sequence>
+								<xs:element name="CostOwner" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>M: MAIN ENTITY, ie. this is either the Partner or Thirdparty                        T: TRANSFERRED, ie. UTRO  D: DEPARTMENT, ie. (Sub) Department</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PartnerCostClaim" type="PartnerCostClaimType"/>
+	<xs:complexType name="PartnerCostClaimType">
+		<xs:sequence>
+			<xs:element name="CostOwner" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>M: MAIN ENTITY, ie. this is either the Partner or Thirdparty                         D: DEPARTMENT, ie. (Sub) Department</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="FormC" type="costclaim:FormCType"/>
+				<xs:element name="AdjustmentFormC" type="costclaim:AdjustmentFormCType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="PartnerFinancialGroup">
+		<xs:sequence>
+			<xs:element name="PartnerProvisionalBudget">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="PartnerFinancialCoreGroup"/>
+						<xs:element name="PartnerCostbreakdown" type="PartnerCostBreakdownType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PartnerFinancialExecution" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PartnerFinancialExecutionPerPeriod" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="ReportingPeriod" type="reportingperiod:ReportingPeriodNumberType"/>
+									<xs:element name="PartnerCostClaimList" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="PartnerCostClaim" type="PartnerCostClaimType"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="BeneficiarySignatureType">
+		<xs:sequence>
+			<xs:element name="Date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Date when partner signs the grant agreement</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v2.0.2 - 20100902 - Add ParticipationID to  LegalPartnerCore (RTC 5733)</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.0.0 - 20110128 - Use ProjectRepresentative v3, Officer v2, legal entity v2</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>v3.1.0 - Role is moved from PartnerCoreGroup since it should apply only to LegalPartner and not ThirdParty and thirdParty enumeration removed. PartnerPIC removed from ThirdPartyPartnerCoreType and ValidationStatus is optional (probably should be removed!). Created LegalEntityGroup to always have at least the LegalEntityRef. Beneficiary signature is optional (for the moment is only mandatory for COO). Created ProjectRepresentativesGroup which is mandatory for Partner but optional for ThirdParty. TotalCosts become optional in PartnerFinancialCoreGroup. Created PartnerFinancialGroup</xs:documentation>
+	</xs:annotation>
+</xs:schema>

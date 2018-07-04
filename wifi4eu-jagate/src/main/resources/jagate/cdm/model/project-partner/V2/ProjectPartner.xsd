@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/project-partner/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:bankaccount="http://ec.europa.eu/research/fp/model/bankaccount/V1" xmlns:legalentity="http://ec.europa.eu/research/fp/model/legalentity/V1" xmlns:report="http://ec.europa.eu/research/fp/model/report/V1" xmlns:officer="http://ec.europa.eu/research/fp/model/officer/V1" xmlns:core="http://ec.europa.eu/research/fp/model/project-core/V2" xmlns:costbreakdown="http://ec.europa.eu/research/fp/model/project-costbreakdown/V2" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:representative="http://ec.europa.eu/research/fp/model/project-representative/V2" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:officerref="http://ec.europa.eu/research/fp/model/officer-ref/V1" xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" targetNamespace="http://ec.europa.eu/research/fp/model/project-partner/V2" elementFormDefault="qualified" version="2.0.2">
+	<xs:annotation>
+		<xs:documentation>This schema intends to capture 'full' view on all project partner related data.</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V1" schemaLocation="../../bankaccount/V1/BankAccount.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V1" schemaLocation="../../legalentity/V1/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V2" schemaLocation="../../project-costbreakdown/V2/ProjectCostBreakdown.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-representative/V2" schemaLocation="../../project-representative/V2/ProjectRepresentative.xsd"/>
+	<xs:simpleType name="PartnerRoleType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Beneficiary"/>
+			<xs:enumeration value="Coordinator"/>
+			<xs:enumeration value="ThirdParty"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:group name="PartnerCoreGroup">
+		<xs:sequence>
+			<xs:group ref="legalentityref:LegalEntityRefGroup"/>
+			<xs:element name="ShortName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>partner short name used in project - unique in this project only</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Role" type="PartnerRoleType">
+				<xs:annotation>
+					<xs:documentation>role of partner in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="PartnerFinancialCoreGroup"/>
+			<xs:element name="ProjectEnterDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner enters the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectExitDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner exits the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="PartnerFinancialCoreGroup">
+		<xs:sequence>
+			<xs:element name="RequestedECContribution" type="base:AmountType"/>
+			<xs:element name="TotalCosts" type="base:AmountType"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="LegalPartnerCore" type="LegalPartnerCoreType"/>
+	<xs:complexType name="LegalPartnerCoreType">
+		<xs:sequence>
+			<xs:element name="OrderNumber" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>partner number in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="PartnerCoreGroup"/>
+			<xs:element name="ThirdParty" type="ThirdPartyPartnerCoreType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>list of third parties linked to partner</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ParticipationID" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>PIC+shortname? The participationID is used to differentiate multiple participation by the same LegalEntity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ThirdPartyPartnerCore" type="ThirdPartyPartnerCoreType"/>
+	<xs:complexType name="ThirdPartyPartnerCoreType">
+		<xs:sequence>
+			<xs:group ref="PartnerCoreGroup"/>
+			<xs:element name="ParentPIC" type="legalentityref:LegalEntityIdType"/>
+			<xs:element name="ValidationStatus" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>TODO: is this the status as in PDM/URF?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="PartnerGroup">
+		<xs:sequence>
+			<xs:element name="ShortName" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Short name for partner - unique in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:annotation>
+					<xs:documentation>partner LE PICs should be unique per project</xs:documentation>
+					<xs:documentation>partner LE data can be transfered either by value or by reference</xs:documentation>
+				</xs:annotation>
+				<xs:element name="LegalEntityRef" type="legalentityref:LegalEntityRefType"/>
+				<xs:element name="LegalEntity" type="legalentity:LegalEntityType"/>
+			</xs:choice>
+			<xs:element name="ProjectEnterDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner enters the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProjectExitDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date on which partner exits the project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DepartmentNameReal" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Department names in real cost breakdown</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CostBreakdown" type="costbreakdown:CostBreakDownType" minOccurs="0"/>
+			<xs:element name="CostBreakdownReal" type="costbreakdown:CostBreakDownType" minOccurs="0"/>
+			<xs:element name="CostBreakdownICMSpecific" type="costbreakdown:CostBreakDownType" minOccurs="0"/>
+			<xs:element name="BeneficiarySignature" type="BeneficiarySignatureType"/>
+			<xs:element name="BankAccount" type="bankaccount:BankAccountType" minOccurs="0"/>
+			<xs:element name="FundingSchemeSpecificInfo" type="FundingSchemeSpecificPartnerInfoType" minOccurs="0"/>
+			<xs:choice>
+				<xs:annotation>
+					<xs:documentation>Each partner designates one or more individuals that have particular defined roles within the consortium. The basic default role is the "Participant representative", i.e. the person of contact for that particular participant in this particular project. (Reason for the choice: We have the choice of carrying the whole Representative information or the minimum information currently needed by the portal).</xs:documentation>
+				</xs:annotation>
+				<xs:element name="ProjectRepresentativeRefs" type="representative:ProjectRepresentativeCoreInfoType" maxOccurs="unbounded"/>
+				<xs:element name="ProjectRepresentatives" type="representative:ProjectRepresentativeType" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="FundingSchemeSpecificPartnerInfoType">
+		<xs:annotation>
+			<xs:documentation>Abstract type to be extended by subtypes capturing info per funding scheme, eg. for MarieCurie</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+	</xs:complexType>
+	<xs:element name="LegalPartner" type="LegalPartnerType"/>
+	<xs:complexType name="LegalPartnerType">
+		<xs:sequence>
+			<xs:group ref="PartnerGroup"/>
+			<xs:element name="OrderNumber" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Partner number in project, eg. 1, 2, etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Role" type="PartnerRoleType">
+				<xs:annotation>
+					<xs:documentation>Role of partner in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ThirdParty" type="ThirdPartyPartnerType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of third parties associated to the partner in project</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ParticipationID" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ThirdPartyPartner" type="ThirdPartyPartnerType"/>
+	<xs:complexType name="ThirdPartyPartnerType">
+		<xs:sequence>
+			<xs:group ref="PartnerGroup"/>
+			<xs:element name="ValidationStatus" type="coderef:CodeRefType">
+				<xs:annotation>
+					<xs:documentation>code of type XX?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BeneficiarySignatureType">
+		<xs:sequence>
+			<xs:element name="Date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Date when partner signs the grant agreement</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v2.0.2 - 20100902 - Add ParticipationID to  LegalPartnerCore (RTC 5733)</xs:documentation>
+	</xs:annotation>
+</xs:schema>

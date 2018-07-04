@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+						xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3"
+						xmlns:paymentData="http://ec.europa.eu/rdg/jagate/ws/domain/paymentBasicData/v1"
+						targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v3"
+						xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v3"
+                        xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2"
+						elementFormDefault="qualified"
+						attributeFormDefault="unqualified"
+                        version="1.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/paymentBasicData/v1" schemaLocation="../v1/PaymentBasicData.xsd"/>
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../base/v2/JAgateBase.xsd" />
+    <xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+
+    <xs:simpleType name="PaymentRequestType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PN"/>
+            <xs:enumeration value="PF"/>
+            <xs:enumeration value="PC"/>
+            <xs:enumeration value="PA"/>
+            <xs:enumeration value="PX"/>
+            <xs:enumeration value="PZ"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="PaymentTimeLimit">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="30"/>
+            <xs:enumeration value="60"/>
+            <xs:enumeration value="90"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="PaymentToGuaranteeFundType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="EC"/>
+            <xs:enumeration value="Coordinator"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="PaymentDataType">
+        <xs:annotation>
+            <xs:documentation>Payment Transaction Data for the Coordinator</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="LegalEntity" type="xs:integer" minOccurs="0" />
+            <xs:element name="Invoice" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PaymentToGuaranteeFund" type="PaymentToGuaranteeFundType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="ProjectOfficer" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Payment" type="PaymentType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PaymentDetailsType">
+        <xs:sequence>
+            <xs:element ref="paymentData:PaymentRequestDetailAmount"/>
+            <xs:element ref="paymentData:PaymentRequestDetailCommitmentPosition" minOccurs="0" maxOccurs="1"/>
+            <xs:element ref="paymentData:PaymentRequestDetailBudgetLine" minOccurs="0" maxOccurs="1"/>
+            <xs:element ref="paymentData:PaymentRequestDetailDGCode" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="PaymentDetailsForCreditCheckListType">   
+	    <xs:sequence>   
+	        <xs:element name="PaymentDetailsForCreditCheck" type="PaymentDetailsForCreditCheckType" minOccurs="0" maxOccurs="unbounded"/> 
+	    </xs:sequence> 
+	</xs:complexType>
+		
+    <xs:complexType name="PaymentDetailsForCreditCheckType">
+        <xs:sequence>
+            <xs:element ref="paymentData:PaymentRequestDetailAmount" />
+            <xs:element ref="paymentData:PaymentRequestDetailCommitmentPosition" />
+            <xs:element ref="paymentData:PaymentRequestDetailBudgetLine" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="PaymentResponseMessageType">
+		<xs:complexContent>
+			<xs:extension base="jagate:AbstractResponseMessageType"></xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+    <xs:complexType name="PaymentNegativeDetailsType">
+        <xs:sequence>
+            <xs:element ref="paymentData:PaymentRequestDetailNegativeAmount"  />
+            <xs:element ref="paymentData:PaymentRequestDetailDGCode" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PaymentType">
+        <xs:sequence>
+            <xs:element name="PaymentHeader" type="PaymentHeaderType" />
+            <xs:element name="PaymentDetail" type="PaymentDetailsType"
+                        minOccurs="1" maxOccurs="unbounded" />
+            <xs:element name="PaymentNegativeDetail"
+                        type="PaymentNegativeDetailsType"
+                        minOccurs="0"
+                        maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="PaymentHeaderType">
+		<xs:annotation>
+			<xs:documentation>The payment header set of data, allows either the IBAN either the Bank Account</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+            <xs:element name="PaymentRequestType" type="PaymentRequestType" />
+            <xs:element name="PaymentTimeLimit" type="PaymentTimeLimit" minOccurs="0"/>
+			<xs:element ref="paymentData:PaymentRequestHeaderGrossAmount" />
+			<xs:element ref="paymentData:PaymentRequestHeaderNetAmount" />
+			<xs:element ref="paymentData:PaymentRequestHeaderECReceptionDate" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element ref="paymentData:PaymentRequestHeaderBankAccount" />
+				<xs:element ref="paymentData:PaymentRequestHeaderBankAccountNationalNumber" />
+			</xs:choice>
+			<xs:element ref="paymentData:PaymentRequestHeaderEWSJustification" minOccurs="0"/>
+            <xs:element name="PaymentRequestHeaderRecoveryOrder" type="xs:string" minOccurs="0" />
+			<!-- Need to create a new version and add this field in the project Data set -->
+			<xs:element name="ResponsibleOrganisation" type="coderef:CodeRefType" minOccurs="0" />            
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="PaymentRequestDetailsType">
+        <xs:annotation>
+            <xs:documentation>Payment Request Details</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element ref="jagate:LocObjForeignId" />
+            <xs:element name="AcctRef" type="xs:string" />
+            <xs:element name="CreatedDate" type="xs:date" />
+            <xs:element name="ModifiedDate" type="xs:date" />
+            <xs:element name="CommitPosLocObjForeignId" type="xs:string" minOccurs="0"/>
+            <xs:element name="ReservPosLocObjForeignId" type="xs:string" minOccurs="0"/>
+            <xs:element name="PayReqHedLocObjForeignId" type="xs:string" minOccurs="0"/>
+            <xs:element name="PayReqDetLineNo" type="xs:int" />
+            <xs:element name="AcceptedAmount" type="xs:decimal" />
+            <xs:element name="WorkflowAmount" type="xs:decimal" />
+            <xs:element name="LocBlockReason" type="xs:string" minOccurs="0"/>
+            <xs:element name="TreeCd" type="xs:string" />
+            <xs:element name="PolicyAreaCd" type="xs:string"/>
+            <xs:element name="DgCd" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

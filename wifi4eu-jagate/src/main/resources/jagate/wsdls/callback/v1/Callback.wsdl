@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	name="CallbackWS"
+	xmlns:callback="http://ec.europa.eu/rdg/jagate/ws/domain/callback/v1"
+	targetNamespace="http://ec.europa.eu/rdg/jagate/ws/callback/v1"
+	xmlns="http://ec.europa.eu/rdg/jagate/ws/callback/v1">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/callback/v1" schemaLocation="../../../domain/callback/v1/Callback.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+	<wsdl:message name="CallbackRequest">
+		<wsdl:part element="callback:CallbackRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="CallbackResponse">
+		<wsdl:part element="callback:CallbackResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="CallbackException">
+		<wsdl:part element="callback:CallbackException" name="exception" />
+	</wsdl:message>
+	
+
+	<wsdl:portType name="ICallbackService">
+		<wsdl:operation name="Call">
+			<wsdl:input message="CallbackRequest" />
+			<wsdl:output message="CallbackResponse" />
+			<wsdl:fault name="CallbackException" message="CallbackException"/>
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="ICallbackServiceBinding" type="ICallbackService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="Call">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CallbackException">
+				<soap:fault name="CallbackException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="CallbackService">
+		<wsdl:port binding="ICallbackServiceBinding" name="CallbackServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/callback/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

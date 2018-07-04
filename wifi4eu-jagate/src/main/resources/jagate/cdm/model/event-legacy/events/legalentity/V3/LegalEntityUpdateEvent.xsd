@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ec.europa.eu/rdg/efp/domain/event/legalentity/v3" xmlns:ns2="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:ns3="http://ec.europa.eu/research/fp/model/legalentity/V2" xmlns:ns4="http://ec.europa.eu/research/fp/model/address/V2" xmlns:ns5="http://ec.europa.eu/research/fp/model/certificate/V2" xmlns:ns6="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" xmlns:code="http://ec.europa.eu/research/fp/model/code/V2" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:codeRef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:person="http://ec.europa.eu/research/fp/model/person/V2" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/v3" elementFormDefault="qualified" version="3.0.1">
+	<xsd:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../eventbase/V0/EventBase.xsd"/>
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../../../base/V1/Base.xsd"/>
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/address/V2" schemaLocation="../../../../address/V2/Address.xsd"/>
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../../../code-ref/V2/CodeRef.xsd"/>
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/certificate/V2" schemaLocation="../../../../certificate/V2/Certificate.xsd"/>
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/person/V2" schemaLocation="../../../../person/V2/Person.xsd"/>
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V2" schemaLocation="../../../../legalentity/V2/LegalEntity.xsd"/>
+	<xsd:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="../../../../legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xsd:element name="eventExample" type="tns:LegalEntityUpdateEventType"/>
+	<xsd:complexType name="LegalEntityUpdateEventType">
+		<xsd:complexContent>
+			<xsd:extension base="ns2:EventBodyType">
+				<xsd:sequence>
+					<xsd:element name="UpdateDescription" type="tns:LegalEntityUpdateDescriptionType">
+						<xsd:annotation>
+							<xsd:documentation>Description of the modification</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="NewLegalEntityData" type="ns3:LegalEntityType">
+						<xsd:annotation>
+							<xsd:documentation>Complete description of the updated legal entity, as is after this update</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="EffectiveDates" type="ns3:EffectiveDatesType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="LegalEntityUpdateDescriptionType">
+		<xsd:sequence>
+			<xsd:element name="Date" type="xsd:dateTime">
+				<xsd:annotation>
+					<xsd:documentation>Date of the Legal Entity Update</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ImportanceLevel" type="tns:UpdateImportanceLevelType">
+				<xsd:annotation>
+					<xsd:documentation>Importance level: from a business point of view, is this update considered as a major one or a minor one (e.g. phone number update)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="EffectiveDatesOldValues" type="ns3:EffectiveDatesType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Previous values of the effective dates</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Diff" type="tns:LegalEntityDiffType"/>
+			<xsd:element name="ReasonForChange" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="UpdateImportanceLevelType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="MINOR"/>
+			<xsd:enumeration value="MAJOR"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ListUpdateTypeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="INSERTIONS"/>
+			<xsd:enumeration value="REMOVALS"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SingleElementUpdateTypeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="UPDATE"/>
+			<xsd:enumeration value="DELETE"/>
+			<xsd:enumeration value="CREATE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="PersonUpdateType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Description of the modification of personnal data for a
+				physical person
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="FamilyNameOldValue" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the FamilyName has been updated, this fieldcontains the old value. Otherwise, it is not present</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FirstNameOldValue" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation> If the FirstName has been updated, this field contains the old value. Otherwise, it is not present</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="GenderOldValue" type="base:GenderType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the Gender has been updated, this field contains the old value. Otherwise, it is not present</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TitleOldValue" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+If the Title has been updated, this field contains the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PersonIdentificationListUpdate" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If one or more elements in the PersonIdentificationlist has changed (insertions, removals,...), this element describes the modification. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="UpdateTypes">
+							<xsd:annotation>
+								<xsd:documentation>Description of the type of list update: is there at least one removal? Is there at least one insertion?</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="UpdateType" type="tns:ListUpdateTypeType" maxOccurs="unbounded"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="OldList">
+							<xsd:annotation>
+								<xsd:documentation>Complete list of all old PersonIdentification values</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="PersonIdentification" type="person:PersonIdentificationType" minOccurs="0" maxOccurs="unbounded"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="PositionOldValue" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the Position has been updated, this field contains the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DepartmentOldValue" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the Department has been updated, this field the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AddressOldValue" type="ns4:AddressType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If one or more fields have changed in the Address, this contains the complete previous address. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NationalityCodeListUpdate" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If one or more elements in the Nationality has changed (insertions, removals,...), this element describes the modification. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="UpdateTypes">
+							<xsd:annotation>
+								<xsd:documentation>Description of the type of list update: is there at least one removal? Is there at least one insertion?</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="UpdateType" type="tns:ListUpdateTypeType" maxOccurs="unbounded"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="OldList">
+							<xsd:annotation>
+								<xsd:documentation>Complete list of all old Nationality values</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="NationalityCode" type="codeRef:CodeRefType" minOccurs="0" maxOccurs="unbounded"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CountryOfResidenceCodeOldValue" type="codeRef:CodeRefType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the Country of Residence has been updated, this field the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CountryOfBirthCode" type="codeRef:CodeRefType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the Country of birth has been updated, this field the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DateOfBirthOldValue" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the Date of Birth has been updated, this field the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PlaceOfBirthOldValue" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the Place of Birtht has been updated, this field the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BirthFamilyNameOldValue" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the Birth Family name has been updated, this field the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CountryOfOrigin" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the Country of Origin has been updated, this field the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TownOfOrigin" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the Town of origint has been updated, this field the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Fp7LegalStatusUpdateType">
+		<xsd:sequence>
+			<xsd:element name="LegalPersonOldValue" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the LegalPerson flag has been updated, this field contains the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PublicBodyOldValue" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the PublicBody flag has been updated, this field contains the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NonProfitOldValue" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the NonProfit flag has been updated, this field contains the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ResearchOrganisationOldValue" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the ResearchOrganisation flag has been updated, this field contains the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="HigherOrSecondaryEducationEstablishmentOldValue" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the HigherOrSecondaryEducationEstablishment flag has been updated, this field contains the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="InternationalOrganisationOldValue" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the InternationalOrganisation flag has been updated, this field contains the old value. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="InternationalOrganisationOfEuropeanInterestOldValue" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the InternationalOrganisationOfEuropeanInterest flag has been updated, this field contains the old value.  Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="EnterpriseOldValue" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the Enterprise flag has been updated, this field contains the old value.  Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IndirectCostMethodOldValue" type="codeRef:CodeRefType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the IndirectCostMethod flag has been updated, this field contains the old value.  Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SmeSelfDeclaredOldValue" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the SmeSelfDeclared flag has been updated, this field contains the old value.  Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SmeValidatedOldValue" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the SmeValidated flag has been updated, this field contains the old value.  Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Fp7SmeStatusUpdate" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If one or more Fp7SmeStatusdata have been created, removed or updated, this element described the modification.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="OneFp7SmeStatusdataUpdate" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>This element either describes an Fp7SmeStatusdata creation or the update (or removal) of an Fp7SmeStatusdata			</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:choice>
+									<xsd:element name="StatusdataCreation">
+										<xsd:annotation>
+											<xsd:documentation>This element describes the creation (addition) of an Fp7SmeStatusdata in the List. Only the year is specified here, the complete set of values should be in the new Organisation data.</xsd:documentation>
+										</xsd:annotation>
+										<xsd:complexType>
+											<xsd:sequence>
+												<xsd:element name="year" type="xsd:int"/>
+											</xsd:sequence>
+										</xsd:complexType>
+									</xsd:element>
+									<xsd:element name="StatusdataUpdate">
+										<xsd:annotation>
+											<xsd:documentation>This element describes the update or removal of an SmeStatus data in the list		</xsd:documentation>
+										</xsd:annotation>
+										<xsd:complexType>
+											<xsd:sequence>
+												<xsd:element name="UpdateType" type="tns:SingleElementUpdateTypeType"/>
+												<xsd:element name="SmeStatusDataOldValue" type="ns3:FP7SmeStatusType"/>
+											</xsd:sequence>
+										</xsd:complexType>
+									</xsd:element>
+								</xsd:choice>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Fp7CertificationdataOldValue" type="ns5:CertificateOnMethodologyType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						If some Fp7Certificationdata has been updated,
+						this element contains the complete previous
+						Fp7Certificationdata Otherwise it is null.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="BalanceSheetsUpdateType">
+		<xsd:sequence>
+			<xsd:annotation>
+				<xsd:documentation>
+If one or more BalanceSheets have been created,removed or updated, this element described the modification.				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:element name="OneBalanceSheetUpdate" type="ns3:BalanceSheetType" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>This element either describes a BalanceSheet creation or the update (or removal) of a BalanceSheet					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Action" type="tns:SingleElementUpdateTypeType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LegalEntityDiffType">
+		<xsd:sequence>
+			<xsd:element name="LegalEntityRefGroupOldValue" type="ns6:LegalEntityRefType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the LegalEntityRef of this legal entity was updated, this contains the new values</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OfficialLangageCodeOldValue" type="codeRef:CodeRefType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+If the OfficialLangageCode has been updated, this field contains the old value. Otherwise, it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BusinessNameOldValue" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+If the BusinessName has been updated, this field contains the old value. Otherwise, it is not present.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LegalFormCodeOldValue" type="codeRef:CodeRefType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+If the LegalForm has been updated, this field contains the old value. Otherwise, it is not present.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TranslatedNameOldValue" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the TranslatedName has been updated, this field contains the old value. Otherwise, it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TranslationLangageCodeOldValue" type="codeRef:CodeRefType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the ranslationLangageCode has been updated, this field contains the old value. Otherwise, it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NaceCodeOldValue" type="codeRef:CodeRefType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the NaceCode has been updated, this field contains the old value. Otherwise, it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="VatListUpdate" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+If one or more elements in the VAT list has changed (insertions, removals,...), this element describes the modification. Otherwise it is not present.					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="UpdateTypes">
+							<xsd:annotation>
+								<xsd:documentation>Description of the type of list update: is there at least one removal? Is there at least one insertion?</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="UpdateType" type="tns:ListUpdateTypeType" maxOccurs="unbounded"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="OldList">
+							<xsd:annotation>
+								<xsd:documentation>Complete list of all old VAT values</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="Vat" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="LearUpdate" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+If some data concerning the Lear has changed (name, address, activity date...), this element describes the modification. Otherwise, it is not present.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="PersonUpdate" type="tns:PersonUpdateType" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>If some personal Lear data has changed (name, address,...), this element describes the modification. Otherwise it is not present.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="ActiveFromOldValue" type="xsd:date" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>If the ActiveFrom field has been updated, this field contains the old	value. Otherwise, it is not present.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="ActiveToOldValue" type="xsd:date" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>If the ActiveTo field has been updated, this field contains the old value.  Otherwise,  it is not present.
+								</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="CertificationOnMethodologyUpdate" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If one or more elements in the CertificationOfMethodology list has changed (insertions, removals,...), this element describes the modification. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="UpdateTypes">
+							<xsd:annotation>
+								<xsd:documentation>Description of the type of list update: is there at least one removal? Is there at least one insertion?</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="UpdateType" type="tns:ListUpdateTypeType" maxOccurs="unbounded"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="OldList">
+							<xsd:annotation>
+								<xsd:documentation>Complete list of all old Certification Of Methodology values</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="CertificateOnMethodology" type="ns5:CertificateOnMethodologyType" minOccurs="0" maxOccurs="unbounded"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="RegistrationDataOldValue" type="ns3:RegistrationDataType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+If some RegistrationData has been updated, this element contains the complete previous RegistrationData. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="EWSListUpdate" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If one or more elements in the EWS list has changed (insertions, removals,...), this element describes the modification. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="UpdateTypes">
+							<xsd:annotation>
+								<xsd:documentation>Description of the type of list update: is there at least one removal? Is there at least one insertion?</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="UpdateType" type="tns:ListUpdateTypeType" maxOccurs="unbounded"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="OldList">
+							<xsd:annotation>
+								<xsd:documentation>Complete list of all old Certification Of Methodology values</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="EWS" type="ns3:EarlyWarningSystemType" minOccurs="0" maxOccurs="unbounded"/>
+								</xsd:sequence>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="LegalAddressOldValue" type="ns4:AddressType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If one or more fields have changed in the LegalAddress, this contains the complete previous address. Otherwise it is not present</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BalanceSheetsUpdateUpdate" type="tns:BalanceSheetsUpdateType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+If some data of the balance sheets has changed or were added, this ement describes the modification. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="stateWarrantyOldValue" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the StateWarranty has been updated, this field contains the old value. Otherwise, it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FP7ValidationStatusOldValue" type="ns3:FP7ValidationStatusType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the FP7 validation status has been updated, this field contains the old value. Otherwise, it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Fp7LegalStatusUpdate" type="tns:Fp7LegalStatusUpdateType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If some data of the Fp7Account have changed or were added, this element describes the modification. Otherwise it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FP6ValidationStatusOldValue" type="ns3:FP6StatusType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the FP6 validation status has been updated, this field contains the old value. Otherwise, it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FP6LegalStatusOldValue" type="codeRef:CodeRefType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the FP6 legal status has been updated, this field contains the old value. Otherwise, it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FP6CostModelOldValue" type="codeRef:CodeRefType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>If the FP6 cost model has been updated, this field contains the old value. Otherwise, it is not present.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:annotation>
+		<xsd:documentation>1.0.1: Use the branched LegalEntity type (and depart from the Common model one)</xsd:documentation>
+		<xsd:documentation>1.0.2: Simply adapted the import path to the Common data model</xsd:documentation>
+		<xsd:documentation>1.0.3: moved the file down to event/legalentity/v1 in order to match the namespace</xsd:documentation>
+		<xsd:documentation>2.0.0: Use of Common Business Model 2.2.0</xsd:documentation>
+		<xsd:documentation>2.0.1: Migrated dependency on CDM from CDM 2.2.0 to CDM 2.2.1 (fully backward compatible: no legal entity related changes between those versions)</xsd:documentation>
+		<xsd:documentation>3.0.0: Migrated dependency on CDM from CDM 2.2.1 to CDM 3.0.0</xsd:documentation>
+		<xsd:documentation>3.0.1: Bugfix: indirectCostMethodOldValue is now a CodeRef (was incorrectly a boolean)</xsd:documentation>
+	</xsd:annotation>
+</xsd:schema>

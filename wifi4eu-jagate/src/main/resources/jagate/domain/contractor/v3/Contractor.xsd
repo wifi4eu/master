@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+							xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v3" 
+							targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractor/v3"
+							xmlns:contractor="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v3"
+							xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" 
+							elementFormDefault="qualified" 
+							attributeFormDefault="unqualified">
+
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/contractorBasicData/v3" schemaLocation="../../contractor/v3/ContractorBasicData.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../../cdm/model/code-ref/V3/CodeRef.xsd" />
+
+	<xs:complexType name="ContractorsDataType">
+		<xs:annotation>
+			<xs:documentation>Data related Commitment Contractors.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Primary Contractor: 1 It's mandatory.</xs:documentation>
+			</xs:annotation>
+			<xs:element name="PrincipalContractors" type="PrincipalContractorListType" />
+			<xs:element name="SecondaryContractors" type="SecondaryContractorListType" />
+			<xs:element name="DistributionType" type="coderef:CodeRefType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ContractorsDataBasicType">
+		<xs:annotation>
+			<xs:documentation>Data related Commitment Contractors.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Primary Contractor: 1 It's mandatory.</xs:documentation>
+			</xs:annotation>
+			<xs:element name="PrincipalContractors" type="PrincipalContractorBasicListType" />
+			<xs:element name="SecondaryContractors" type="SecondaryContractorBasicListType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="LcContractorsDataType">
+		<xs:sequence>
+			<xs:element name="DistributionType" type="coderef:CodeRefType" />
+			<xs:element name="Contractors" type="LcContractorListType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="LcContractorListType">
+		<xs:sequence>
+			<xs:element name="Contractor" type="LcContractorType" minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="LcContractorType">
+		<xs:sequence>
+			<xs:element ref="contractor:ContractorPic" />
+			<xs:element name="ContractorAccount" type="contractor:PrincipalContractorBankAccountType" minOccurs="0" />
+			<xs:element name="Role" type="xs:string" />
+			<xs:element name="DistributionValue" type="xs:decimal" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrincipalContractorListType">
+		<xs:sequence>
+			<xs:element name="PrincipalContractor" type="PrincipalContractorType" minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrincipalContractorBasicListType">
+		<xs:sequence>
+			<xs:element name="PrincipalContractor" type="PrincipalContractorBasicType" minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrincipalContractorType">
+		<xs:annotation>
+			<xs:documentation>A Primary Contractor.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>The primary Contractor PIC (PDM Code), from this value gets the FelId.</xs:documentation>
+			</xs:annotation>		
+			<xs:element ref="contractor:ContractorPic" minOccurs="0">
+			<xs:annotation>
+				<xs:documentation>If there's no Contractor PIC means that the partner is JRC and the flag<field>ContractorJRC</field> is mandatory.</xs:documentation>
+				<xs:documentation>jAgate will add the default JRC bank account..</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element ref="contractor:ContractorJRC"/>
+			<xs:element name="BankAccount" type="contractor:PrincipalContractorBankAccountType" minOccurs="0" />
+			<xs:element name="Role" type="xs:string" />
+			<xs:element name="DistributionValue" type="xs:decimal" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PrincipalContractorBasicType">
+		<xs:annotation>
+			<xs:documentation>A Primary Contractor.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>The primary Contractor PIC (PDM Code), from this value gets the FelId.</xs:documentation>
+			</xs:annotation>		
+			<xs:element ref="contractor:ContractorPic" minOccurs="0">
+			<xs:annotation>
+				<xs:documentation>If there's no Contractor PIC means that the partner is JRC and the flag<field>ContractorJRC</field> is mandatory.</xs:documentation>
+				<xs:documentation>jAgate will add the default JRC bank account..</xs:documentation>
+			</xs:annotation>
+			</xs:element>
+			<xs:element ref="contractor:ContractorJRC"/>
+			<xs:element name="BankAccount" type="contractor:PrincipalContractorBankAccountType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="SecondaryContractorListType">
+		<xs:sequence>
+			<xs:element name="SecondaryContractor" type="SecondaryContractorType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="SecondaryContractorBasicListType">
+		<xs:sequence>
+			<xs:element name="SecondaryContractor" type="SecondaryContractorBasicType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="SecondaryContractorType">
+		<xs:annotation>
+			<xs:documentation>The secondary contractor set of data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>For secondary contractors only the PIC is needed.</xs:documentation>
+			</xs:annotation>		
+			<xs:element ref="contractor:ContractorPic"/>
+			<xs:element name="Role" type="xs:string" />
+			<xs:element name="DistributionValue" type="xs:decimal" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="SecondaryContractorBasicType">
+		<xs:annotation>
+			<xs:documentation>The secondary contractor set of data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>For secondary contractors only the PIC is needed.</xs:documentation>
+			</xs:annotation>		
+			<xs:element ref="contractor:ContractorPic"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AmendLcContractorsDataType">
+		<xs:sequence>
+			<xs:element name="DistributionType" type="coderef:CodeRefType" minOccurs="0"/>
+			<xs:element name="Contractors" type="LcContractorListType" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

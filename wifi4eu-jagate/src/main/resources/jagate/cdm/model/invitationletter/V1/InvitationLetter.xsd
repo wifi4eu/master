@@ -1,0 +1,80 @@
+<xs:schema	
+	targetNamespace="http://ec.europa.eu/research/fp/model/invitationletter/V1" 
+	xmlns="http://ec.europa.eu/research/fp/model/invitationletter/V1" 
+	xmlns:projectref="http://ec.europa.eu/research/fp/model/project-ref/V2" 
+	xmlns:address="http://ec.europa.eu/research/fp/model/address/V4"
+	xmlns:documentref="http://ec.europa.eu/research/fp/model/document-ref/V3" 
+	xmlns:templateletter="http://ec.europa.eu/research/fp/model/template/V1" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" version="1.0.0">
+
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../project-ref/V2/ProjectRef.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="../../document-ref/V3/DocumentRef.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V4" schemaLocation="../../address/V4/Address.xsd" />
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/template/V1" schemaLocation="../../template/V1/TemplateLetter.xsd" />
+
+	<xs:element name="InvitationLetter" type="InvitationLetterType" />
+
+	<xs:complexType name="InvitationLetterType">
+		<xs:sequence>
+			<xs:element name="EarlyNegotiation" type="xs:boolean" minOccurs="0" />
+			<xs:element name="EthicsReportsAvailability" type="EthicsReportsOptionsType" minOccurs="0" />
+			<xs:element name="FirstMeetingAgenda" type="xs:string" minOccurs="0" />
+			<xs:element name="FirstMeetingDuration" type="xs:integer" minOccurs="0" />
+			<xs:element name="FirstMeetingLocation" type="address:AddressType" minOccurs="0" />
+			<xs:element name="InvitationLetter" type="documentref:DocumentRefType" minOccurs="0" />
+			<xs:element name="EndOfNegotiations" type="GeneralDateType" minOccurs="0" />
+			<xs:element name="FirstVersionGpf" type="GeneralDateType" minOccurs="0" />
+			<xs:element name="FirstMeeting" type="GeneralDateType" minOccurs="0" />
+			<xs:element name="FirstMeetingTime" type="xs:dateTime" minOccurs="0" />
+			<xs:element name="LEValidation" type="GeneralDateType" minOccurs="0" />
+			<xs:element name="SignedVersionGpfDow" type="GeneralDateType" minOccurs="0" />
+			<xs:element name="TechnicalContentComments" type="xs:string" minOccurs="0" />
+			<xs:element name="InvitationLetterStatus" type="LockStatusType" minOccurs="0" />
+			<xs:element name="TemplateLetterData" type="templateletter:TemplateLetterDataType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GeneralDateType">
+		<xs:sequence>
+			<xs:element name="StartRelativeOption" type="StartRelativeOptionType" />
+			<xs:element name="RelativeNumber" type="xs:integer" minOccurs="0" />
+			<xs:element name="UnitForRelativeDate" type="UnitForRelativeDateType" minOccurs="0" />
+			<xs:element name="DateRelativeTo" type="xs:date" minOccurs="0" />
+			<xs:element name="AbsoluteDate" type="xs:date" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="StartRelativeOptionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="RELATIVE" />
+			<xs:enumeration value="ABSOLUTE" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UnitForRelativeDateType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DAY" />
+			<xs:enumeration value="WEEK" />
+			<xs:enumeration value="MONTH" />
+			<xs:enumeration value="YEAR" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LockStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DRAFT" />
+			<xs:enumeration value="COMPLETED" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EthicsReportsOptionsType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ESCR_TO_BE_SENT" />
+			<xs:enumeration value="ESCR_ENCLOSED" />
+			<xs:enumeration value="ERR_TO_BE_SENT" />
+			<xs:enumeration value="ERR_ENCLOSED" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:annotation>
+		<xs:documentation> 20131010 - v1.0.0 - SYGMA - creation </xs:documentation>
+	</xs:annotation>	
+
+</xs:schema>

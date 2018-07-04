@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission - DIGIT) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/eventbase/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/eventbase/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:annotation>
+		<xs:documentation>DO NOT USE THIS VERSION - IT IS NOT IMPLEMENTED</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="EventIdType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="TopicExpressionType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="AgentIdType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="PriorityType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LOW"/>
+			<xs:enumeration value="NORMAL"/>
+			<xs:enumeration value="HIGH"/>
+			<xs:enumeration value="URGENT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SeverityType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DEBUG"/>
+			<xs:enumeration value="INFO"/>
+			<xs:enumeration value="WARNING"/>
+			<xs:enumeration value="ERROR"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="EventBodyType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>
+				Base and abstract type of all event bodies. Subtypes of
+				this defines the kind of event that is being submitted.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:element name="Event" type="EventType"/>
+	<xs:complexType name="EventType">
+		<xs:annotation>
+			<xs:documentation>
+				Base and abstract type of all event types
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="EventIdType">
+				<xs:annotation>
+					<xs:documentation>
+						Id is the identification of a particular event
+						instance emitted by an emitting agent: each time
+						an emitting agent sends an event, it must assign
+						an unique id to it. When this is respected, the
+						pair (Id, PublisherId) unambiguously identifies
+						an event instance.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PublisherId" type="AgentIdType">
+				<xs:annotation>
+					<xs:documentation>
+						Identification of the agent who emitted the
+						event. The value used here is the agent id
+						assigned to the emitting agent during its
+						registration to the EDA.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PublishTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>
+						Date when this event was emitted by the emitting
+						agent.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Topic" type="TopicExpressionType">
+				<xs:annotation>
+					<xs:documentation>
+						The topic describes the category of this event.
+						The value used here must be one of the official
+						EDA topics.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						A free human description of this event.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Priority" type="PriorityType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Priority of the event. - default is NORMAL
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Severity" type="SeverityType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Severity of the event. - default is INFO
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Probe" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						This parameter is for operations only. - default is false
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EventBody" type="EventBodyType">
+				<xs:annotation>
+					<xs:documentation>
+						The event body contains this actual business
+						content of the event.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v1.0.0 add eventBase in the CDM same as the event type of EDA WSDL 1.7.2</xs:documentation>
+	</xs:annotation>
+</xs:schema>

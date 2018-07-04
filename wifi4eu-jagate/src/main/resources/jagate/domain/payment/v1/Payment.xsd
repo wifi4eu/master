@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 		xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+						xmlns:paymentData="http://ec.europa.eu/rdg/jagate/ws/domain/paymentBasicData/v1" 
+						targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v1"
+						xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/payment/v1"
+						elementFormDefault="qualified" 
+						attributeFormDefault="unqualified" 
+						version="1.0.0">
+						
+	<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/paymentBasicData/v1" schemaLocation="./PaymentBasicData.xsd"/>
+
+	<xs:complexType name="PrefinPaymentHeaderTypeV2">
+		<xs:annotation>
+			<xs:documentation>The prefin payment header set of data, allows either the IBAN either the Bank Account</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="paymentData:PaymentRequestHeaderGrossAmount" />
+			<xs:element ref="paymentData:PaymentRequestHeaderNetAmount" />
+			<xs:choice>
+				<xs:element ref="paymentData:PaymentRequestHeaderBankAccount" />
+				<xs:element ref="paymentData:PaymentRequestHeaderBankAccountNationalNumber" />
+			</xs:choice>
+			<xs:element ref="paymentData:PaymentRequestHeaderEWSJustification" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PrefinPaymentHeaderType">
+		<xs:annotation>
+			<xs:documentation>The prefin payment header set of data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="paymentData:PaymentRequestHeaderGrossAmount" />
+			<xs:element ref="paymentData:PaymentRequestHeaderNetAmount" />
+			<xs:element ref="paymentData:PaymentRequestHeaderBankAccount" />
+			<xs:element ref="paymentData:PaymentRequestHeaderEWSJustification" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PrefinPaymentJRCHeaderType">
+		<xs:annotation>
+			<xs:documentation>The prefin payment header set of data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="paymentData:PaymentRequestHeaderGrossAmount" />
+			<xs:element ref="paymentData:PaymentRequestHeaderNetAmount" />
+			<xs:element ref="paymentData:PaymentRequestHeaderEWSJustification" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PrefinPaymentDetailsType">
+		<xs:sequence>
+			<xs:element ref="paymentData:PaymentRequestDetailAmount"/>
+			<xs:element ref="paymentData:PaymentRequestDetailCommitmentPosition"/>
+			<xs:element ref="paymentData:PaymentRequestDetailBudgetLine"/>
+			<xs:element ref="paymentData:PaymentRequestDetailDGCode" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PrefinPaymentNegativeDetailsType">
+		<xs:sequence>
+			<xs:element ref="paymentData:PaymentRequestDetailNegativeAmount"  />
+			<xs:element ref="paymentData:PaymentRequestDetailDGCode" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (x64) (http://www.altova.com) by European Commission DG CONNECT R3 (European Commission DG CONNECT R3) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/project-partner-infrainstallation/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" targetNamespace="http://ec.europa.eu/research/fp/model/project-partner-infrainstallation/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="../../code-ref/V3/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:element name="InfrastructureInstallation" type="InfrastructureInstallationType">
+		<xs:annotation>
+			<xs:documentation>This is to define the infrastructure installation</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="InfrastructureInstallationType">
+		<xs:annotation>
+			<xs:documentation>type to be used for the infrastructure installation and access provisions</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="InfrainstallationRef" type="InfrainstallationRefType">
+				<xs:annotation>
+					<xs:documentation>unique identifier of infrastructure installation (eg.InfrastructureName.Number)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:positiveInteger"/>
+			<xs:element name="InfrastructureName" type="xs:string"/>
+			<xs:element name="ShortName" type="xs:string"/>
+			<xs:element name="TypeOfAccess" type="InstallationAccessType">
+				<xs:annotation>
+					<xs:documentation>type of access to the installation (TA or VA)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InstallationPlace">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="CountryCode" type="coderef:CodeRefType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>the country of the installation</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="IOPlace" type="xs:string" default="IO" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Only for International Organisations, ERIC, or similar (??), it is set to "IO"</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EstimatedProjectNb" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TA only: an estimated number of projects for the access to the installation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EstimatedUserNb" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TA only: an estimated number of users  for the access to the installation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AccessProvisionCosts" type="AccessProvisionCostsType">
+				<xs:annotation>
+					<xs:documentation>This defines the Cost Calculation method and details for the Infrastructure Access.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccessProvisionCostsType">
+		<xs:sequence>
+			<xs:element name="AccessCostsMethod" type="AccessCostsMethodType">
+				<xs:annotation>
+					<xs:documentation>This is used for TA where all 3 possibilities exist: Actual Costs (AC), Unit Costs (UC), Combined Costs (CB). For the VA it will be set automatically to UC.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalActualCosts" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The total access cost in the AC or CB AccessCostsMethod</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TotalUnitCosts" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The total Access costs in the UC or CB AccessCostsMethod.
+It is calculated as the multiplication of the Unit Cost by the MinQuantityOfAccess</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MinQuantityOfAccess" type="xs:double" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The minimum quantity of Access foreseen to grant to the Installation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UnitCost" type="base:AmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Cost per Unit.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UnitOfAccess" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Days, Hours, etc</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="InfrainstallationRefType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="InstallationAccessType">
+		<xs:annotation>
+			<xs:documentation>TA: Trans-national Access, VA: Virtual Access</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TA"/>
+			<xs:enumeration value="VA"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccessCostsMethodType">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AC"/>
+			<xs:enumeration value="UC"/>
+			<xs:enumeration value="CB"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation> 20140109 - v1.0.0 - SYGMA - creation to support specific part of H2020 "Research Infrastructure"</xs:documentation>
+	</xs:annotation>
+</xs:schema>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 2 (http://www.altova.com) by Giorgio Zanetti (EACEA) -->
+<xs:schema xmlns="http://ec.europa.eu/eacea/model/assessment-core/V1" xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" xmlns:expert="http://ec.europa.eu/research/fp/model/expert/V2" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/eacea/model/assessment-core/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert/V2" schemaLocation="../../expert/V2/Expert.xsd"/>
+	<xs:complexType name="ExpertCoreType">
+		<xs:sequence>
+			<xs:element name="Type" type="coderef:CodeRefType"/>
+			<xs:element name="ExpertDetail" type="expert:ExpertPersonType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElementCoreType">
+		<xs:sequence>
+			<xs:element name="OrderId" type="coderef:CodeIdType"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="Score" type="xs:float"/>
+			<xs:element name="Range" type="xs:float"/>
+			<xs:element name="Weight" type="xs:float"/>
+			<xs:element name="Comment" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ParagraphCoreType">
+		<xs:sequence>
+			<xs:element name="OrderId" type="coderef:CodeIdType"/>
+			<xs:element name="Total" type="xs:float"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="Comment" type="xs:string" minOccurs="0"/>
+			<xs:element name="Element" type="ElementCoreType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TypoElementCoreType">
+		<xs:sequence>
+			<xs:element name="OrderId" type="coderef:CodeIdType"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="Comment" type="xs:string" minOccurs="0"/>
+			<xs:element name="Choice" type="xs:string"/>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TypoParagraphCoreType">
+		<xs:sequence>
+			<xs:element name="OrderId" type="coderef:CodeIdType"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="Comment" type="xs:string" minOccurs="0"/>
+			<xs:element name="Element" type="TypoElementCoreType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ScoringCoreType">
+		<xs:sequence>
+			<xs:element name="Paragraph" type="ParagraphCoreType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TypologyCoreType">
+		<xs:sequence>
+			<xs:element name="Paragraph" type="TypoParagraphCoreType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TypeValueCoreType">
+		<xs:sequence>
+			<xs:element name="Type" type="xs:string"/>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DecisionCoreType">
+		<xs:sequence>
+			<xs:element name="Result" type="TypeValueCoreType"/>
+			<xs:element name="Comment" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AssessmentDatesType">
+		<xs:sequence>
+			<xs:element name="Start" type="xs:dateTime"/>
+			<xs:element name="Submission" type="xs:dateTime"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EvaluationCoreType">
+		<xs:sequence>
+			<xs:element name="EvaluationId" type="coderef:CodeIdType">
+				<xs:annotation>
+					<xs:documentation>Assessment internal key</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Expert" type="ExpertCoreType"/>
+			<xs:element name="Dates" type="AssessmentDatesType"/>
+			<xs:element name="Comment" type="TypeValueCoreType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Decision" type="DecisionCoreType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Scoring" type="ScoringCoreType" minOccurs="0"/>
+			<xs:element name="Typology" type="TypologyCoreType" minOccurs="0"/>
+			<xs:element name="Score" type="xs:float" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Assessment score</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--xs:complexType name="AssessmentCoreType"-->
+	<!--xs:element name="AssesmentGroup" type="AssessmentCoreType"/-->
+	<xs:group name="AssesmentGroup">
+		<xs:annotation>
+			<xs:documentation>Limited set of code elements. To be used for code identification and referencing.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FileType" type="xs:string">
+				<!--Can be: Application=APPL-EVAL, 
+Interim rep. 1=INRE-RI1-EVAL
+Interim rep. 2=INRE-RI2-EVAL
+Interim rep. 3=INRE-RI3-EVAL
+Interim rep. 4=INRE-RI4-EVAL
+Interim rep. 5=INRE-RI5-EVAL
+Technical rep. 1=TERE-RT1-EVAL
+Technical rep. 2=TERE-RT2-EVAL
+Technical rep. 3=TERE-RT3-EVAL
+Technical rep. 4=TERE-RT4-EVAL
+Technical rep. 5=TERE-RT5-EVAL		
+Audit rep. 1=AURE-RA1-EVAL
+Audit rep. 2=AURE-RA2-EVAL
+Audit rep. 3=AURE-RA3-EVAL
+Audit rep. 4=AURE-RA4-EVAL
+Audit rep. 5=AURE-RA5-EVAL	
+Final rep. 1=FIRE-RF1-EVAL
+Final report 2 (Audit)=AURE-RF2A-EVAL
+Final report 2 (Appeal)=APPE-RF2-EVAL-->
+			</xs:element>
+			<xs:element name="AgencyId" type="coderef:CodeRefType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>National Agency id</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Experts" type="ExpertCoreType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of experts</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Evaluations" type="EvaluationCoreType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>List of experts</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:annotation>
+		<xs:documentation>20140910 - v1.0.0</xs:documentation>
+	</xs:annotation>
+</xs:schema>

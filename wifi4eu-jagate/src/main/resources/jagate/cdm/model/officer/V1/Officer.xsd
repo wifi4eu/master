@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns="http://ec.europa.eu/research/fp/model/officer/V1" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" 
+	xmlns:coderef="http://ec.europa.eu/research/fp/model/code-ref/V2" 
+	xmlns:officerref="http://ec.europa.eu/research/fp/model/officer-ref/V1" 
+	xmlns:address="http://ec.europa.eu/research/fp/model/address/V1" 
+	xmlns:person="http://ec.europa.eu/research/fp/model/person/V1" 
+	targetNamespace="http://ec.europa.eu/research/fp/model/officer/V1" 
+	elementFormDefault="qualified" 
+	version="1.0.1">
+	
+	<xs:annotation>
+		<xs:documentation>
+		This schema intends to capture all EC officer related data.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="../../code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V1" schemaLocation="../../address/V1/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer-ref/V1" schemaLocation="../../officer-ref/V1/OfficerRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V1" schemaLocation="../../person/V1/Person.xsd"/>
+
+	<xs:element name="Officer" type="OfficerType"/>
+	<xs:complexType name="OfficerType">
+		<xs:complexContent>
+			<xs:extension base="person:PersonType">
+				<xs:sequence>
+					<xs:element name="UserId" type="officerref:OfficerIdType"/>
+					<xs:element name="DepartmentCode" type="coderef:CodeRefType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="OfficerCoreInfoType">
+		<xs:sequence>
+			<xs:element name="UserId" type="officerref:OfficerIdType"/>
+			<xs:group ref="person:NameGroup"/>
+			<xs:group ref="address:ContactGroup"/>
+			<xs:element name="Unit" type="xs:string"/>
+			<!-- is this the same as DepartmentCode? -->
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OfficerListType">
+		<xs:sequence>
+			<xs:element name="Officer" type="OfficerType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

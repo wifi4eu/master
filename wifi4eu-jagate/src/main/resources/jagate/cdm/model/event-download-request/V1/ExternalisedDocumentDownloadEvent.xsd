@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:docaudit="http://ec.europa.eu/research/fp/model/externalised-document-download-audittrail/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://ec.europa.eu/rdg/efp/domain/event-download-request/V1" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event-download-request/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/externalised-document-download-audittrail/V1" schemaLocation="../../externaliseddocument-downloadaudittrail/V1/ExternalisedDocumentDownloadAuditTrail.xsd"/>
+	<xs:complexType name="ExternalisedDocumentDownloadRequestEventType">
+		<xs:annotation>
+			<xs:documentation>Event generated when a request for document download has been successfully succeeded</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="DocumentAuditTrail" type="docaudit:DocumentAuditTrailType" minOccurs="1" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+	</xs:annotation>
+</xs:schema>

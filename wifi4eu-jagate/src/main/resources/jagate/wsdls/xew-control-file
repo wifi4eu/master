@@ -1,0 +1,21 @@
+#exclude all
+/.*/=exclude
+
+#include only newly used types
+/.*\.v3\.PrincipalContractorListType/=include
+/.*\.v3\.SecondaryContractorListType/=include
+/.*\.v3\.PrincipalContractorBasicListType/=include
+/.*\.v3\.SecondaryContractorBasicListType/=include
+/.*\.v4\.AbstractPrincipalContractorListType/=include
+/.*\.v4\.AbstractSecondaryContractorListType/=include
+/.*\.v3\.LcContractorListType/=include
+/.*\.v3\.PaymentDetailsForCreditCheckListType/=include
+/.*\.v1\.BankAccountByIdListType/=include
+/.*\.v1\.BankAccountListType/=include
+/.*\.v1\.BankAccountListType/=include
+/.*\.v1\.IdListType/=include
+/.*\.v1\.interfaces\.LegalCommitmentListType/=include
+/.*\.v1\.interfaces\.BeneficiaryListType/=include
+/.*\.v1\.ProcurementCommitmentPositionDataListType/=include
+
+# exclude all types defined directly in the service interfaces, or used directly as parameters for service calls

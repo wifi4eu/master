@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by XMLSpy 2008 Enterprise Ed., Installed for 5 users (European Commission DG Regio) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Meropi Traianidou (European Commission) -->
+<xs:schema xmlns="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V3" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" xmlns:legalentity="http://ec.europa.eu/research/fp/model/legalentity/V5" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eventbase="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:legalentityref="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V3" elementFormDefault="qualified" version="3.0.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V5" schemaLocation="../../legalentity/V5/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="../../legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:complexType name="LegalEntityToBeCreatedOrUpdatedEvent">
+		<xs:annotation>
+			<xs:documentation>Event Received when a remote system requests to add or update a LegalEntity in the system.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eventbase:EventBodyType">
+				<xs:sequence>
+					<xs:element name="FactList" type="legalentity:CreateUpdateFactListType"/>
+					<xs:element name="PIC" type="legalentityref:LegalEntityIdType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>v 1.0.0: Creation </xs:documentation>
+		<xs:documentation>v 3.0.0: Updated the imported version of legal-entity and legal-entity-ref. Added the PIC of the Legal entity to the event.</xs:documentation>
+	</xs:annotation>
+</xs:schema>

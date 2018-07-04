@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 (http://www.altova.com) by M. T. (European Commission - DG INFSO) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/bankaccount-ref/V1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:base="http://ec.europa.eu/research/fp/model/base/V1" targetNamespace="http://ec.europa.eu/research/fp/model/bankaccount-ref/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="../../base/V1/Base.xsd"/>
+	<xs:element name="BankAccountRef" type="BankAccountRefType"/>
+	<xs:complexType name="BankAccountRefType">
+		<xs:sequence>
+			<xs:element name="IBAN" type="xs:string" minOccurs="0"/>
+			<xs:element name="AccountNumber" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

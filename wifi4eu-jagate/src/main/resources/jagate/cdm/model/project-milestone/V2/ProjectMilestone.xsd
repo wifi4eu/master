@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns="http://ec.europa.eu/research/fp/model/project-milestone/V2" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://ec.europa.eu/research/fp/model/project-milestone/V2" 
+	elementFormDefault="qualified" 
+	version="2.0.0">
+	
+	<xs:annotation>
+		<xs:documentation>This schema intends to hold a view on 'milestone' data defined for a project.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="Milestone" type="MilestoneType"/>
+	<xs:complexType name="MilestoneType">
+		<xs:sequence>
+			<xs:element name="Number" type="xs:positiveInteger"/>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>name of milestone agreed within consortium</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Comments" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>internal sources of verification for milestone</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeliveryDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>actual date when milestone is delivered/reached</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ForecastDeliveryDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>expected date when milestone will be delivered/reached</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsAchieved" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>milestone has been achieved or not?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WorkPackage" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>reference to the work package number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReportingPeriod" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>TODO: reference to reporting period?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LeadPartner" type="xs:positiveInteger" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>partner who leads this milestone</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 (http://www.altova.com) by European Commision - DIGIT (European Commision - DIGIT) -->
+<xs:schema xmlns:tns="http://ec.europa.eu/rdg/efp/domain/event/project/officer/v1" xmlns:evt="http://ec.europa.eu/rdg/efp/domain/event/v1_0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:security="http://ec.europa.eu/rdg/efp/model/security/V2" xmlns:prjref="http://ec.europa.eu/research/fp/model/project-ref/V2" xmlns:ctx="http://ec.europa.eu/research/fp/model/service-context/V1" targetNamespace="http://ec.europa.eu/rdg/efp/domain/event/project/officer/v1" elementFormDefault="qualified" version="1.2.0">
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="../../../../../eventbase/V0/EventBase.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/model/security/V2" schemaLocation="../../../../security/V2/security.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/service-context/V1" schemaLocation="../../../../../service-context/V1/ServiceContext.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="../../../../../project-ref/V2/ProjectRef.xsd"/>
+	<xs:complexType name="ProjectOfficerNominatedEventType">
+		<xs:annotation>
+			<xs:documentation>This event type informs that a person has been nominated as project officer for a given project within a given legal entity</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="evt:EventBodyType">
+				<xs:sequence>
+					<xs:element name="ProjectOfficerID">
+						<xs:annotation>
+							<xs:documentation>Identification of the nominated Project Officer. The actorIdType should either be EMAIL or ECAS ID (never SYSTEM).
+							In case the identity vehiculated here is not the one of the Project Officer himself but somebody he delagated some rights to, the "delegated" flag is set to true.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="security:ActorIDType">
+									<xs:attribute name="delegated" type="xs:boolean" use="optional" default="false"/>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ProjectId" type="prjref:ProjectRefType">
+						<xs:annotation>
+							<xs:documentation>Identification of the Project</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProjectOfficerNominatationRefusedEventType">
+		<xs:annotation>
+			<xs:documentation>This events indicates that a system refuses, du to technical or business reason, the nomination of a Project Officer for a given project</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="evt:EventBodyType">
+				<xs:sequence>
+					<xs:element name="RefusalCorrelationId" type="tns:CorrelationIdType">
+						<xs:annotation>
+							<xs:documentation>The refusal correlation ID links this event with the Project Officer nomination "trigger" that is hereby refused. For example, if the trigger of nomination is an event, this element then contains the event id of that "trigger" event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ProjectOfficerID">
+						<xs:annotation>
+							<xs:documentation>Identification of the nominated Project Officer. The actorIdType should either be EMAIL or ECAS ID (never SYSTEM).
+							In case the identity vehiculated here is not the one of the Project Officer himself but somebody he delagated some rights to, the "delegated" flag is set to true.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="security:ActorIDType"/>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ProjectId" type="prjref:ProjectRefType">
+						<xs:annotation>
+							<xs:documentation>Identification of the Project</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ResultContext" type="ctx:ResultContextType">
+						<xs:annotation>
+							<xs:documentation>The result context actually justifies the refusal for project officer nomination. 
+							ResultNumber is optional and should be blank.
+							In case several IT systems were involved in the decision to refuse, detailed refusal justification could be expressed for each of them, in a separate ServiceInformation element. At the very least, one ServiceInformation element must be present, containing the refusal justification from the point of view of the emitter of this event.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProjectOfficerRevokedEventType">
+		<xs:annotation>
+			<xs:documentation>This event type informs that a project officer has been revoked for a given project</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="evt:EventBodyType">
+				<xs:sequence>
+					<xs:element name="ProjectOfficerID" type="security:ActorIDType">
+						<xs:annotation>
+							<xs:documentation>Identification of the revoked Project Officer. The actorIdType should either be EMAIL or ECAS ID (never SYSTEM).
+							In case the identity vehiculated here is not the one of the Project Officer himself but somebody he delagated some rights to, the "delegated" flag is set to true.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ProjectId" type="prjref:ProjectRefType">
+						<xs:annotation>
+							<xs:documentation>Identification of the Project</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProjectOfficerRevocationRefusedEventType">
+		<xs:annotation>
+			<xs:documentation>This events indicates that a system refuses, du to technical or business reason, the recocation of a Project Officer for a given project</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="evt:EventBodyType">
+				<xs:sequence>
+					<xs:element name="RefusalCorrelationId" type="tns:CorrelationIdType">
+						<xs:annotation>
+							<xs:documentation>The refusal correlation ID links this event with the Project Officer revocation "trigger" that is hereby refused. For example, if the trigger of revocation is an event, this element then contains the event id of that "trigger" event.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ProjectOfficerID">
+						<xs:annotation>
+							<xs:documentation>Identification of the nominated Project Officer. The actorIdType should either be EMAIL or ECAS ID (never SYSTEM).
+							In case the identity vehiculated here is not the one of the Project Officer himself but somebody he delagated some rights to, the "delegated" flag is set to true.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="security:ActorIDType"/>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ProjectId" type="prjref:ProjectRefType">
+						<xs:annotation>
+							<xs:documentation>Identification of the Project</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ResultContext" type="ctx:ResultContextType">
+						<xs:annotation>
+							<xs:documentation>The result context actually justifies the refusal for project officer nomination. 
+							ResultNumber is optional and should be blank.
+							In case several IT systems were involved in the decision to refused, detailed refusal justification could be expressed for each of them, in a separate ServiceInformation element. At the very least, one ServiceInformation element must be present, containing the refusal justification from the point of view of the emitter of this event.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CorrelationIdType">
+		<xs:annotation>
+			<xs:documentation>Describes a correlation with a past trigger (event, WS request, DB manual update,...)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CorrelationType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Type of correlation. Only one value is currently valid: EventId</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CorrelationID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Correlation ID value. In case the CorrelationType is "EventId", this is the value of the event id of the event correlated to this message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>1.0.0: initial version </xs:documentation>
+		<xs:documentation>1.1.0: now depends on CDM 2.2.0 (fully backward compatible change)</xs:documentation>
+		<xs:documentation>1.1.1: now depends on CDM 2.2.1 (fully backward compatible change)</xs:documentation>
+		<xs:documentation>1.2.0: now depends on CDM 3.0.0 (fully backward compatible, however service context should be updgrated to v2 in a later version)</xs:documentation>
+	</xs:annotation>
+</xs:schema>

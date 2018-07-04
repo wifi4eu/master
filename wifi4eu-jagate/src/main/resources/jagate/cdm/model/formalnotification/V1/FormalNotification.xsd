@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 rel. 2 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model/formalnotification/V1" xmlns:userRef="http://ec.europa.eu/research/fp/model/user-ref/V1" xmlns:sec="http://ec.europa.eu/research/fp/model/security/V3" xmlns:docRef="http://ec.europa.eu/research/fp/model/document-ref/V3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model/formalnotification/V1" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="../../document-ref/V3/DocumentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/security/V3" schemaLocation="../../security/V3/Security.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="../../user-ref/V1/UserRef.xsd"/>
+	<xs:complexType name="FormalNotificationType">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:string" minOccurs="0"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Description of the formal notification for recipients (appears when formal notification has been acknowledged)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocumentRegistrationNumber" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>HERMES registration number of the document (to include in DocumentRef?)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocumentRef" type="docRef:DocumentRefType"/>
+			<xs:element name="Expiration" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The expiration represents the number of days until the expiration of the notification. If it is not set, the default value is 15. If it is set to 0, then there is no expiration time period.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreationDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The creation date of the formal notification.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AccessRightSuspensionPolicy" type="AccessRightSuspensionPolicyType"/>
+			<xs:element name="SignatureSuspensionPolicy" type="SignatureSuspensionPolicyType"/>
+			<xs:element name="Status" type="StatusType" minOccurs="0"/>
+			<xs:element name="Recipient" type="RecipientType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ResourceRoleRelation" type="sec:ResourceRoleRelationType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="StatusType">
+		<xs:annotation>
+			<xs:documentation>Values allowed for suggestion<br/>
+				<ul>
+					<li>ACTIVE: the formal notification is active - the access rights to the document are suspended</li>
+					<li>ACKNOWLEDGED: the condition(s) to lift the suspension has (have) been met according to the access right suspension policy</li>
+					<li>EXPIRED: the formal notification has reached the expiration date - the suspension of access rights has been lifted</li>
+					<li>CANCELLED: the formal notification has been cancelled</li>
+				</ul>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ACTIVE"/>
+			<xs:enumeration value="ACKNOWLEDGED"/>
+			<xs:enumeration value="EXPIRED"/>
+			<xs:enumeration value="CANCELLED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccessRightSuspensionPolicyType">
+		<xs:annotation>
+			<xs:documentation>Values allowed for suggestion<br/>
+				<ul>
+					<li>NONE: no suspension of document access rights</li>
+					<li>AT_LEAST_ONE: the suspension of document access rights is active until at least one notification recipient accesses/signs the document</li>
+					<li>ALL: the suspension of access rights is active until all notification recipients access/sign the document</li>
+					<li>PER_PARTICIPANT: the suspension of access rights for a participant is active until at least one notification recipient of that participant accesses/signs the document</li>
+				</ul>
+				An effective suspension policy (i.e. different from NONE) should always be specified. The NONE value should only be used exceptionally and after explicit validation by the business
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NONE"/>
+			<xs:enumeration value="AT_LEAST_ONE"/>
+			<xs:enumeration value="ALL"/>
+			<xs:enumeration value="PER_PARTICIPANT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SignatureSuspensionPolicyType">
+		<xs:annotation>
+			<xs:documentation>Values allowed for suggestion<br/>
+				<ul>
+					<li>NONE: no recipient signature is required</li>
+					<li>AT_LEAST_ONE: recipient signature is required until at least one notification recipient signs the document</li>
+					<li>ALL: recipient signature is required until all notification recipients sign the document</li>
+					<li>PER_PARTICIPANT: recipient signature for a participant is required until at least one notification recipient of that participant signs the document</li>
+				</ul>
+				An effective suspension policy (i.e. different from NONE) should always be specified. The NONE value should only be used exceptionally and after explicit validation by the business
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NONE"/>
+			<xs:enumeration value="AT_LEAST_ONE"/>
+			<xs:enumeration value="ALL"/>
+			<xs:enumeration value="PER_PARTICIPANT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="RecipientType">
+		<xs:sequence>
+			<xs:element name="UserRef" type="userRef:UserRefType"/>
+			<xs:element name="ResourceRoleRelation" type="sec:ResourceRoleRelationType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RecipientStatus" type="RecipientStatusType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecipientStatusType">
+		<xs:sequence>
+			<xs:element name="UserRevoked" type="xs:boolean"/>
+			<xs:element name="SignatureRequired" type="xs:boolean"/>
+			<xs:element name="DocumentAccessDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date the document is first accessed by the user, with or without signature. The effective date of launching the download of an attachment of that document is recorded in the DocumentAuditTrailType.DateTime element</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DocumentSignatureDate" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 2 (http://www.altova.com) by Chiovari Cristian Sergiu (European Commission - DIGIT) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:padme="http://ec.europa.eu/rdg/efp/domain/padme/V1" targetNamespace="http://ec.europa.eu/rdg/efp/domain/padme/V1" elementFormDefault="qualified">
+	<xsd:complexType name="Dossier">
+		<xsd:annotation>
+			<xsd:documentation>A dossier represents a set of documents that have to be filled and submitted. Generally, a dossier has to be submitted as a whole. In the context of project, this is generally the coordinator that submits the dossier. The rules to know if a dossier can be submitted are known by the back-office systems. PADME does not manage the logic to enable or not the submission of the dossier: this is fully under control of the back office, as well as the detailed aspect of the orchestration of the dialog. The back-office systems will thus have means to modify the status of the dossier.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ExternalReference" type="padme:ExternalReference">
+				<xsd:annotation>
+					<xsd:documentation>The unique identifier of the dossier.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The name of the dossier as it will displayed to the users. The name is not an information provided by the back-office when creating a dossier. The name will be computed when a dossier will be retrieved, based on the configuration known by PADME. Each type of dossier defines its way of creating the name based on a template. The template is a string that can be a mix of static strings concatenated with values extracted from the dossier configuration using an expression language.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>A description of the dossier explaining in details the purpose of the dossier and any other information that would be usefull for the user. The description should be able to support rich formatting.		</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Type" type="padme:DossierType">
+				<xsd:annotation>
+					<xsd:documentation>The type of the dossier as commonly defined in the dossier type enumeration.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="StartDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The date the dossier is planned to be open.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="EndDate" type="xsd:date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The date the dossier will be closed.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Status" type="padme:DossierStatus">
+				<xsd:annotation>
+					<xsd:documentation>The status of the dossier, as described in the dossier status enumeration. 
+PADME ensures that the values matchs one of the predefined values, but PADME will not validate the status based on state machine or the dossier structure.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Context" type="padme:Context">
+				<xsd:annotation>
+					<xsd:documentation>The context of the dossier, i.e. to which resource (project, organisation, individual) the dossier refers to.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Property" type="padme:Property" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The list of properties defined for this dossier.
+The list of available properties for a document is part of the PADME reference data and each dossier type defines its own set of properties. The back-office provides only the  value of a given property (identified by its name) during the dossier creation. The properties defined for the dossier will be applicable for all the documents of the dossier.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CustomProperty" type="padme:Property" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The list of free-formed properties that can associated with this dossier. No check or validation is done, it is up to the dossier owner to manage these properties.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Document" type="padme:Document" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>A dossier can have documents.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Group" type="padme:Group" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>A dossier can have groups, thus allowing a certain hierarchy when displaying or manipulating the dossier.	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Action" type="padme:Action" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The list of actions available for the dossier.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Group">
+		<xsd:annotation>
+			<xsd:documentation>A group is a way to organise in folders the documents of a dossier. This a representation matter, so no actions or
+				securty aspects apply to a group.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Reference" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The unique identifier of the group within its dossier.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						The name of the group as it will be displayed to the users. The name of the group is a string that can be
+						a mix of static strings concatenated with values extracted from the dossier configuration using an
+						expression language.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						A description of the group explaining in details the purpose of the group and any other information that
+						would be useful for the user. The description should be able to support rich formatting.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Type" type="padme:DossierType">
+				<xsd:annotation>
+					<xsd:documentation>The type of the group as commonly defined in the dossier type enumeration.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Visibility" type="padme:SecurityScope" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Defines to whom this group should be made visible. 
+A user will see a group if the visibility allow it, even if all the documents of this group are not visible for this user.
+If a user is not allowed to see a group, he will not see it even if some documents are visible for this user. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Document" type="padme:Document" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The documents contained in the group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Group" type="padme:Group" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Sub-groups of the group.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Index" type="xsd:integer" maxOccurs="1" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ExternalReference">
+		<xsd:annotation>
+			<xsd:documentation>The unique identifier of a dossier.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="source" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>The name of the 'source' own the reference. This could be typically the name of a back-office. This source ensures that there will be no conflicts of references.	</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="reference" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>The unique identifier of the dossier within the 'source'.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="Context">
+		<xsd:annotation>
+			<xsd:documentation>The context of a dossier.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="ProjectContext" type="padme:ProjectContext"/>
+			<xsd:element name="OrganisationContext" type="padme:OrganisationContext"/>
+			<xsd:element name="IndividualContext" type="padme:IndividualContext"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="IndividualContext">
+		<xsd:annotation>
+			<xsd:documentation>Represents a user to whom the dossier refers to.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="UserId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The ecas identifier (moniker) of the user.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OrganisationContext">
+		<xsd:annotation>
+			<xsd:documentation>Represents the organisation to which the dossier refers to.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Pic" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The pic of the organisation.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ProjectContext">
+		<xsd:annotation>
+			<xsd:documentation>Represents the project to which the dossier refers to.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ProjectId" type="xsd:string"/>
+			<xsd:element name="Programme" type="xsd:string"/>
+			<xsd:element name="RDG" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Document">
+		<xsd:annotation>
+			<xsd:documentation>
+				A document is an element of a dossier that has to be fulfilled (if necessary) or have a certain level of quality
+				before the whole dossier can be submitted. A document can define some actions that can be performed on that
+				document. What is happening within the Document Manager is not visible to the portal. Practically, Document
+				Managers can be: - Systems managing a set of Forms (like NEF, FORCE or SESAM) that are external to the Portal. - A
+				document(s) upload facility, operating with the eFP7 Document Repository, which is seamlessly integrated with the
+				Portal interface.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Reference" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The unique identifier of the document. The scope of the uniqueness is its dossier.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						The name of the document as it will be displayed to the users. The name of the document is not provided by
+						the back-office during its creation, but is computed when the document is retrieved. Each type of document
+						defines its way of creating the name based on a template. The template is a string that can be a mix of
+						static strings concatenated with values extracted from the dossier or document configuration using an
+						expression language.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						A description of the document explaining in details the purpose of the document and any other information
+						that would be useful for the user. The description should be able to support rich formatting.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Type" type="padme:DocumentType">
+				<xsd:annotation>
+					<xsd:documentation>The type of the document as commonly defined in the document type enumeration.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Status" type="padme:DocumentStatus">
+				<xsd:annotation>
+					<xsd:documentation>
+						The status of the document, as described in the document status enumeration. PADME ensures that the values
+						match one of the predefined values, but PADME will not validate the status based on state machine or the
+						document preperties or actions.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Property" type="padme:Property" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The list of properties defined for this document.
+The list of available properties for a document is part of the PADME reference data and each document type defines its own set of properties. The back-office provides only the  value of a given property (identified by its name) during the document creation. The properties defined for the document extend or overwrite the dossier properties.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CustomProperty" type="padme:Property" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The list of free-formed properties that can associated with this document. No check or validation is done, it is up to the dossier owner to manage these properties.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Action" type="padme:Action" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The list of actions available for the document.
+The actions are defined by the back-office systems and PADME will not check the validity of an action based on the document status.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Visibility" type="padme:SecurityScope" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Defines to whom this document should be made visible.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Index" type="xsd:integer" maxOccurs="1" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Action">
+		<xsd:annotation>
+			<xsd:documentation>An action is a piece of work the external user is meant to execute on a document or a dossier. In order to bring
+				flexibility for the integration of the different applications, the action could be of different types.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Name" type="padme:ActionName">
+				<xsd:annotation>
+					<xsd:documentation>
+						The name of the action as it will be displayed
+						to the user and as defined in the action name
+						enumeration.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						A description of the action explaining in
+						details the purpose of the action and any other
+						information that would be usefull for the user.
+						The description should be able to support rich
+						formatting.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Security" type="padme:Security" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						Defines the security level for the execution of
+						the action.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Type" type="padme:ActionType">
+				<xsd:annotation>
+					<xsd:documentation>
+						The type of the action.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DisableAllActions" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						If set to true, the execution of this action
+						will disable all the actions of the dossier and
+						all its documents (recursively). This element is
+						interpreted only for actions at dossier level.
+						Actions at document level will not delete
+						actions (whatever the value of this element).
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Disabled" type="xsd:boolean" default="false" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						If set to true, the action is displayed but is not executable.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Security">
+		<xsd:sequence>
+			<xsd:element name="Permission" type="padme:PermissionName" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The list of permissions that allow the execution of an action.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Scope" type="padme:SecurityScope">
+				<xsd:annotation>
+					<xsd:documentation>The security scope to which the permission should apply.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SecurityScope">
+		<xsd:annotation>
+			<xsd:documentation>The level of security to consider.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="ConsortiumSecurityScope" type="padme:ConsortiumSecurityScope"/>
+			<xsd:element name="ParticipantInProjectSecurityScope" type="padme:ParticipantInProjectSecurityScope"/>
+			<xsd:element name="OrganisationSecurityScope" type="padme:OrganisationSecurityScope"/>
+			<xsd:element name="IndividualSecurityScope" type="padme:IndividualSecurityScope"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="ConsortiumSecurityScope">
+		<xsd:annotation>
+			<xsd:documentation>The security level applying to a consortium, i.e. anyone participating in a research project.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ProjectId" type="xsd:string"/>
+			<xsd:element name="Programme" type="xsd:string"/>
+			<xsd:element name="RDG" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ParticipantInProjectSecurityScope">
+		<xsd:annotation>
+			<xsd:documentation>The security level applying to a participant in a project, i.e. anyone participating in a research project and
+				representing a given organisation.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ProjectId" type="xsd:string"/>
+			<xsd:element name="Programme" type="xsd:string"/>
+			<xsd:element name="RDG" type="xsd:string"/>
+			<xsd:element name="Pic" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The organisation identifier.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OrganisationSecurityScope">
+		<xsd:annotation>
+			<xsd:documentation>The security level applying to an organisation.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Pic" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="IndividualSecurityScope">
+		<xsd:annotation>
+			<xsd:documentation>The security level applying to an individual.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="UserId" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The ecas idntifier of the individual.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ActionType">
+		<xsd:annotation>
+			<xsd:documentation>The type of action.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="AttachmentUpload" type="padme:AttachmentUpload">
+				<xsd:annotation>
+					<xsd:documentation>Applies when the action corresponds to the upload of an attachment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AttachmentDownload" type="padme:AttachmentDownload">
+				<xsd:annotation>
+					<xsd:documentation>Applies when the action corresponds to the download of an attachment</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="EventTrigger" type="padme:EventTrigger">
+				<xsd:annotation>
+					<xsd:documentation>Applies when the action corresponds to raise an event.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FormAccess" type="padme:FormAccess">
+				<xsd:annotation>
+					<xsd:documentation>
+						Applies when the action corresponds to redirection to a form (managed by a form manager)
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="AttachmentUpload">
+		<xsd:annotation>
+			<xsd:documentation>Action type consisting in uploading an attachment related to a document.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="DocumentType" type="padme:AttachmentDocumentType">
+				<xsd:annotation>
+					<xsd:documentation>Document type as known in the document repository.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MultipleFiles" type="xsd:boolean" default="true">
+				<xsd:annotation>
+					<xsd:documentation>Specify if the document to be uploaded could be composed of several files.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AttachmentProperty" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Properties that have to be passed along with the attachment and that will be stored in the document repository as metadata of the uploaded attachment.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="PropertyPath" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>The path of the property to be retrieved, by using an expression language.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Editable" type="xsd:boolean" default="false">
+							<xsd:annotation>
+								<xsd:documentation>If the property is editable, the user has the possibility to set (or to overwrite) the value of the property (if needed).</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Mandatory" type="xsd:boolean" default="false">
+							<xsd:annotation>
+								<xsd:documentation>If the property is mandatory, the value of the property must be set.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Property">
+		<xsd:annotation>
+			<xsd:documentation>
+				Property represented by a name/value pair that applies to a document or a dossier.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="NumberOfValue" type="xsd:int" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The allowed number of values for the property.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AcceptedValue" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The list of accepted values for the property. If not defined, the value is free form.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Name" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The name of the property.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Value" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The value(s) of the property. There could be multiple values. The value can be free form or must be part of a list of accepted values.
+The value could also be expressed with an expression language string that will extract the value of a given dossier/document property.	</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AttachmentDownload">
+		<xsd:annotation>
+			<xsd:documentation>Action type consisting in downloading an attachment related to a document.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="DocumentIdentifier" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>The unique identifier of the document in the DocumentRepository (as returned during its creation)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AttachmentDelete">
+		<xsd:annotation>
+			<xsd:documentation>Action type consisting in deleting an attachment related to a document.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="DocumentIdentifier" type="xsd:int">
+				<xsd:annotation>
+					<xsd:documentation>The unique identifier of the document in the DocumentRepository (as returned during its creation)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EventTrigger">
+		<xsd:annotation>
+			<xsd:documentation>Action type consisting at sending an event when the user has executed such an action on the participant portal.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="EventBody" type="padme:EventBody">
+				<xsd:annotation>
+					<xsd:documentation>The payload of the event to be raised.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ConfirmationText" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Text that will be displayed to the user asking him to confirm the execution of the action that will trigger the event.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="InformationText" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Text that will be displayed to the user explaining what the action is doing.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="EventBody">
+		<xsd:annotation>
+			<xsd:documentation>The payload of the event to be sent.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Property" type="padme:Property" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The list of  porperties to be inserted in the event payload. Only the name and  value should be provided.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FormAccess">
+		<xsd:annotation>
+			<xsd:documentation>Action type consisting at redirecting the user a form to accomplish the action.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Url" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>The url of the form. This should a direct access to the right section of the form. If parameters are defined, there will be added as request parameters.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Parameters" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The list of parameters to be appnded to the url.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Name" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>The name of the request parameter.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="Value" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>The value of the parameter.
+The value could statically defined or can also be expressed with an expression language string that will extract the value of a given dossier/document property.	</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ProcessHistory">
+		<xsd:sequence>
+			<xsd:element name="User" type="xsd:string"/>
+			<xsd:element name="Date" type="xsd:dateTime"/>
+			<xsd:element name="Action" type="xsd:string"/>
+			<xsd:element name="Dossier" type="padme:Dossier" minOccurs="0"/>
+			<xsd:element name="Document" type="padme:Document" minOccurs="0"/>
+			<xsd:element name="FreeText" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- Enumerations -->
+	<xsd:simpleType name="DossierType">
+		<xsd:annotation>
+			<xsd:documentation>The list of supported types of dossier.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Negotiation"/>
+			<xsd:enumeration value="Periodic Reporting"/>
+			<xsd:enumeration value="Final Report"/>
+			<xsd:enumeration value="Project Post-Closure"/>
+			<xsd:enumeration value="Review"/>
+			<xsd:enumeration value="Work Package"/>
+			<xsd:enumeration value="Use and Dissemination of Foreground"/>
+			<xsd:enumeration value="Scientific Delivery"/>
+			<xsd:enumeration value="Financial Part"/>
+			<xsd:enumeration value="Non-Financial Part"/>
+			<xsd:enumeration value="Narrative Parts and Annexes"/>
+			<xsd:enumeration value="Project Initiation"/>
+			<xsd:enumeration value="Mid term report"/>
+			<xsd:enumeration value="Expert Appointment"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="DossierStatus">
+		<xsd:annotation>
+			<xsd:documentation>The list of supported dossier status. The state machine describing the following status does not resides in PADME,
+				but in the back-office in charge of the dossier.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Closed"/>
+			<xsd:enumeration value="Open"/>
+			<xsd:enumeration value="Planned"/>
+			<xsd:enumeration value="Generated"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="DocumentType">
+		<xsd:annotation>
+			<xsd:documentation>The list of supported document types.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Financial Form"/>
+			<xsd:enumeration value="CFS"/>
+			<xsd:enumeration value="Scientific Report"/>
+			<xsd:enumeration value="Publishable Summary"/>
+			<xsd:enumeration value="Project Objectives"/>
+			<xsd:enumeration value="Work Progress and Achievements"/>
+			<xsd:enumeration value="Project Management"/>
+			<xsd:enumeration value="Other Annexes"/>
+			<xsd:enumeration value="Appointment Letter"/>
+			<xsd:enumeration value="Derogation for Change of Point of Origin"/>
+			<xsd:enumeration value="Reimbursement Request"/>
+			<xsd:enumeration value="Cost Statement"/>
+			<xsd:enumeration value="Deliverable"/>
+			<xsd:enumeration value="Dissemination Activities"/>
+			<xsd:enumeration value="Application of Intellectual Property"/>
+			<xsd:enumeration value="Exploitable Foreground"/>
+			<xsd:enumeration value="Social Implications"/>
+			<xsd:enumeration value="EU Funding Distribution Report"/>
+			<xsd:enumeration value="Individual Review Report"/>
+			<xsd:enumeration value="Consolidated Review Report"/>
+			<xsd:enumeration value="Change Notification"/>
+			<xsd:enumeration value="Amendment Request"/>
+			<xsd:enumeration value="Declaration of Conformity"/>
+			<xsd:enumeration value="Use of Resources"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="DocumentStatus">
+		<xsd:annotation>
+			<xsd:documentation>The list of supported document status. The state machine describing the following status does not resides in
+				PADME, but in the back-office in charge of the document.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Saved"/>
+			<xsd:enumeration value="Sent to Coordinator"/>
+			<xsd:enumeration value="Validated and Sent to Coordinator"/>
+			<xsd:enumeration value="Not Necessary"/>
+			<xsd:enumeration value="Uploaded"/>
+			<xsd:enumeration value="Not Uploaded"/>
+			<xsd:enumeration value="Draft"/>
+			<xsd:enumeration value="Rejected"/>
+			<xsd:enumeration value="Prepared"/>
+			<xsd:enumeration value="Partially Signed"/>
+			<xsd:enumeration value="Fully Signed"/>
+			<xsd:enumeration value="Submitted to EC"/>
+			<xsd:enumeration value="Missing or Inaccurate Information"/>
+			<xsd:enumeration value="ReSubmitted"/>
+			<xsd:enumeration value="Approved"/>
+			<xsd:enumeration value="Paid"/>
+			<xsd:enumeration value="Optional"/>
+			<xsd:enumeration value="Empty"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ActionName">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Submit"/>
+			<xsd:enumeration value="Edit"/>
+			<xsd:enumeration value="Create"/>
+			<xsd:enumeration value="Download"/>
+			<xsd:enumeration value="Upload"/>
+			<xsd:enumeration value="Upload New Version"/>
+			<xsd:enumeration value="View"/>
+			<xsd:enumeration value="Validate"/>
+			<xsd:enumeration value="Submit to Coordinator"/>
+			<xsd:enumeration value="Reject To Partner"/>
+			<xsd:enumeration value="Change"/>
+			<xsd:enumeration value="Create Reimbursement Request"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--
+	<xsd:simpleType name="PadmeMethodName">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Add Record In Process History"/>
+			<xsd:enumeration value="Add Document To Dossier"/>
+			<xsd:enumeration value="Create Dossier"/>
+			<xsd:enumeration value="Delete Document"/>
+			<xsd:enumeration value="Delete Dossier"/>
+			<xsd:enumeration value="Get Dossier By  Reference"/>
+			<xsd:enumeration value="Get Dossier List For Individual"/>
+			<xsd:enumeration value="Get Dossier List For Organisation"/>
+			<xsd:enumeration value="Get Dossier List For Project"/>
+			<xsd:enumeration value="Get Process History For Dossier"/>
+			<xsd:enumeration value="Get Process History For Individual"/>
+			<xsd:enumeration value="Get Process History For Organisation"/>
+			<xsd:enumeration value="Get Process History For Project"/>
+			<xsd:enumeration value="Get Process History For User"/>			
+			<xsd:enumeration value="Update Document"/>
+			<xsd:enumeration value="Update Dossier"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+    -->
+	<!--
+	<xsd:simpleType name="PadmeActionName">
+		<xsd:union memberTypes="padme:ActionName padme:PadmeMethodName"/>
+	</xsd:simpleType>
+   -->
+	<xsd:simpleType name="AttachmentDocumentType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="NEGOTIATION_TECHNICAL_ANNEX"/>
+			<xsd:enumeration value="ORGANIZATION_SUPPORTING_DOCUMENT"/>
+			<xsd:enumeration value="FINANCIAL_REPORT_SUMMARY"/>
+			<xsd:enumeration value="OTHER"/>
+			<xsd:enumeration value="PUBLISHABLE_SUMMARY"/>
+			<xsd:enumeration value="PROJECT_OBJECTIVES"/>
+			<xsd:enumeration value="WORK_PROGRESS"/>
+			<xsd:enumeration value="OVERALL_ASSESSMENT"/>
+			<xsd:enumeration value="PROJECT_MANAGEMENT"/>
+			<xsd:enumeration value="DISSEMINATION_ACTIVITIES"/>
+			<xsd:enumeration value="PROJECT_SUMMARY"/>
+			<xsd:enumeration value="PROJECT_ACHIEVEMENTS"/>
+			<xsd:enumeration value="TRANSNATIONAL_ACCESS"/>
+			<xsd:enumeration value="ADDITIONAL_INFORMATION"/>
+			<xsd:enumeration value="ETHICAL_ISSUES"/>
+			<xsd:enumeration value="GENDER_ASPECTS"/>
+			<xsd:enumeration value="SCIENTIFIC_DISCIPLINES"/>
+			<xsd:enumeration value="EXPERT_APPOINTMENT_LETTER"/>
+			<xsd:enumeration value="EXPERT_REIMBURSMENT_SUPPORTING_DOCUMENT"/>
+			<xsd:enumeration value="EXPERT_CV"/>
+		</xsd:restriction>
+		<!-- Updated from version 1.00 => add more document types, namespace remains unchanged as it is backward compatible -->
+	</xsd:simpleType>
+	<xsd:simpleType name="PermissionName">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AMEND_ALL_VIEW"/>
+			<xsd:enumeration value="AMEND_COMMONS_UPDATE"/>
+			<xsd:enumeration value="AMEND_MYDATA_UPDATE"/>
+			<xsd:enumeration value="AMEND_SUBMIT"/>
+			<xsd:enumeration value="CAN_DELETE_DOCUMENT_REPOSITORY_DOCUMENT"/>
+			<xsd:enumeration value="CAN_DOWNLOAD_DOCUMENT_REPOSITORY_DOCUMENT"/>
+			<xsd:enumeration value="CAN_UPDATE_DOCUMENT_REPOSITORY_DOCUMENT"/>
+			<xsd:enumeration value="CAN_UPLOAD_DOCUMENT_REPOSITORY_DOCUMENT"/>
+			<xsd:enumeration value="DELIVERABLES_ALL_UPDATE"/>
+			<xsd:enumeration value="DELIVERABLES_ALL_VIEW"/>
+			<xsd:enumeration value="DELIVERABLES_SUBMIT"/>
+			<xsd:enumeration value="HAS_NEGOCIATION_SUBMIT_AUTHORISATION"/>
+			<xsd:enumeration value="HAS_NEGOCIATION_UPDATE_AUTHORISATION"/>
+			<xsd:enumeration value="HAS_NEGOCIATION_VIEW_AUTHORISATION"/>
+			<xsd:enumeration value="HAS_REPORTING_AUTHORISATION"/>
+			<xsd:enumeration value="HAS_UNIQUE_REGISTRATION_FACILITY_UPDATE_AUTHORISATION"/>
+			<xsd:enumeration value="HAS_UNIQUE_REGISTRATION_FACILITY_VIEW_AUTHORISATION"/>
+			<xsd:enumeration value="NEGO_ALL_VIEW"/>
+			<xsd:enumeration value="NEGO_COMMONS_UPDATE"/>
+			<xsd:enumeration value="NEGO_MYDATA_UPDATE"/>
+			<xsd:enumeration value="NEGO_SUBMIT"/>
+			<xsd:enumeration value="REPORTING_FIN_ALL_VIEW"/>
+			<xsd:enumeration value="REPORTING_FIN_MYDATA_COMMIT"/>
+			<xsd:enumeration value="REPORTING_FIN_MYDATA_SUBMIT"/>
+			<xsd:enumeration value="REPORTING_FIN_MYDATA_UPDATE"/>
+			<xsd:enumeration value="REPORTING_FIN_MYDATA_VIEW"/>
+			<xsd:enumeration value="REPORTING_FIN_SUBMIT"/>
+			<xsd:enumeration value="REPORTING_FIN_SUMMARY_VIEW"/>
+			<xsd:enumeration value="REPORTING_SCI_ALL_VIEW"/>
+			<xsd:enumeration value="REPORTING_SCI_COMMONS_UPDATE"/>
+			<xsd:enumeration value="REPORTING_SCI_COMMONS_VIEW"/>
+			<xsd:enumeration value="REPORTING_SCI_MYDATA_SUBMIT"/>
+			<xsd:enumeration value="REPORTING_SCI_MYDATA_UPDATE"/>
+			<xsd:enumeration value="REPORTING_SCI_MYDATA_VIEW"/>
+			<xsd:enumeration value="REPORTING_SCI_SUBMIT"/>
+			<xsd:enumeration value="REPORTING_SUBMIT"/>
+			<xsd:enumeration value="REVIEWS_SUBMIT"/>
+			<xsd:enumeration value="REVIEWS_UPDATE"/>
+			<xsd:enumeration value="REVIEWS_VIEW"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

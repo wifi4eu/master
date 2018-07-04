@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Christian Huwaert (European Commission DIGIT) -->
+<xs:schema xmlns="http://ec.europa.eu/research/fp/model" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ec.europa.eu/research/fp/model" elementFormDefault="qualified" version="15.5.0">
+	<xs:annotation>
+		<xs:documentation>
+			<h2>Introduction</h2>
+			This index schema acts as a container for all schemas related to the <b>European Commission Research Framework Program</b> canonical data model. 
+			The schema does not define any types of its own. Instead, it's main purpose is for joint versioning and documentation of the set of contained schemas.
+			<p>The schemas in this canonical data model lay the foundation for any services developed within the context of the research framework program domain.</p>
+			<h2>Release Notes</h2>
+			This is the latest major release of a canonical data model for services in the research framework program domain. This new version <b>15.5.0</b> deprecates all prior service data models. Existing services are expected to migrate to this model version as soon as possible. New versions of this model are planned to be released on a monthly basis.
+			
+			<h2>Contact</h2>
+			For more information, reporting problems, or sending change requests, please contact the eFP7 Architecture Office governing the model: <a href="mailto:adps_00108117@ec.europa.eu">DIGIT EFP7 ARCHITECTURE OFFICE</a>
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/activity/V1" schemaLocation="activity/V1/Activity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V1" schemaLocation="address/V1/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V2" schemaLocation="address/V2/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V3" schemaLocation="address/V3/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/address/V4" schemaLocation="address/V4/Address.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/audit/V1" schemaLocation="audit/V1/Audit.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/assertion/V1" schemaLocation="assertions/V1/Assertion.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/async-support/V1" schemaLocation="async-support/V1/AsyncSupport.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/services/userprofile/interfaces/genericpermissionassertion/V1" schemaLocation="assertions/V1/generic-permission-assertion.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V1" schemaLocation="bankaccount/V1/BankAccount.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V2" schemaLocation="bankaccount/V2/BankAccount.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V3" schemaLocation="bankaccount/V3/BankAccount.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V4" schemaLocation="bankaccount/V4/BankAccount.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount/V5" schemaLocation="bankaccount/V5/BankAccount.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/bankaccount-ref/V1" schemaLocation="bankaccount-ref/V1/BankAccountRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/base/V1" schemaLocation="base/V1/Base.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/call/V2" schemaLocation="call/V2/Call.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/call/V3" schemaLocation="call/V3/Call.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/call/V4" schemaLocation="call/V4/Call.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/call/V5" schemaLocation="call/V5/Call.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/call-action/V1" schemaLocation="call-action/V1/Action.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/call-topic/V1" schemaLocation="call-topic/V1/Topic.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/call-wppart/V1" schemaLocation="call-wppart/V1/WpPart.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/certificate/V2" schemaLocation="certificate/V2/Certificate.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/certificate/V3" schemaLocation="certificate/V3/Certificate.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/certificate/V4" schemaLocation="certificate/V4/Certificate.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code/V2" schemaLocation="code/V2/Code.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V2" schemaLocation="code-ref/V2/CodeRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code/V3" schemaLocation="code/V3/Code.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/code-ref/V3" schemaLocation="code-ref/V3/CodeRef.xsd"/>
+	<!--========================================-->
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costanalysis/V1" schemaLocation="costanalysis/V1/CostAnalysis.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim/V1" schemaLocation="costclaim/V1/CostClaim.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim/V2" schemaLocation="costclaim/V2/CostClaim.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim/V3" schemaLocation="costclaim/V3/CostClaim.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim/V4" schemaLocation="costclaim/V4/CostClaim.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim/V5" schemaLocation="costclaim/V5/CostClaim.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim-core/V1" schemaLocation="costclaim-core/V1/CostClaimCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim-core/V2" schemaLocation="costclaim-core/V2/CostClaimCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/costclaim-core/V3" schemaLocation="costclaim-core/V3/CostClaimCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V2" schemaLocation="document/V2/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V3" schemaLocation="document/V3/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V4" schemaLocation="document/V4/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document/V5" schemaLocation="document/V5/Document.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V2" schemaLocation="document-ref/V2/DocumentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/document-ref/V3" schemaLocation="document-ref/V3/DocumentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/download-ref/V1" schemaLocation="download-ref/V1/DownloadRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/activitycomplete-event/V1" schemaLocation="event-activity/V1/ActivityCompleteEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/activitycomplete-event/V1" schemaLocation="event-activity/V1/ActivityPendingEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/activitycomplete-event/V1" schemaLocation="event-activity/V1/ActivityWithdrawCompleteEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/v1_0" schemaLocation="eventbase/V0/EventBase.xsd"/>
+	<!--<xs:import namespace="http://ec.europa.eu/research/fp/model/eventbase/V1" schemaLocation="eventbase/V1/EventBase.xsd"/>-->
+	<!--Call-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/call/callphase-event/V1" schemaLocation="event-call/V1/CallPhaseEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/call/callphase-event/V2" schemaLocation="event-call/V2/CallPhaseEvent.xsd"/>
+	<!--Call diffusion related events-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/call/callsubmissionlink-event/V1" schemaLocation="event-call/V1/CallSubmissionLinkEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/call/callsubmissionlink-event/V2" schemaLocation="event-call/V2/CallSubmissionLinkEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/call/v1_0" schemaLocation="event-legacy/events/call_diffusion/V1/CallClosureApproachingEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/call/v1_0" schemaLocation="event-legacy/events/call_diffusion/V1/CallStatusUpdateEvent.xsd"/>
+	<!--Commission decision related events-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/grant/commissiondecision-event/V1" schemaLocation="event-commissiondecision/V1/CommissionDecisionReachedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/grant/commissiondecision-event/V2" schemaLocation="event-commissiondecision/V2/CommissionDecisionReachedEvent.xsd"/>
+	<!--Conflict of Interest related events-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/conflictofinterest/event-conflictofinterestreport/V1" schemaLocation="event-conflictofinterestreport/V1/ConflictOfInterestReportEvent.xsd"/>
+	<!--Document related event-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event-download-request/V1" schemaLocation="event-download-request/V1/ExternalisedDocumentDownloadEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/document/attachmentupdate-event/V1" schemaLocation="event-document/V1/AttachmentUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/document/notarize-event/V1" schemaLocation="event-document/V1/NotarizeEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/document/sealattachment-event/V1" schemaLocation="event-document/V1/SealAttachmentEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/document/sealsignature-event/V1" schemaLocation="event-document/V1/SealSignatureEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/document/sealsignature-event/V2" schemaLocation="event-document/V2/SealSignatureEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event-externaliseddocsignature-download/V1" schemaLocation="event-externaliseddocsignature-download/V1/ExternalisedDocumentSignatureDownloadEvent.xsd"/>
+	<!--Formal Notifications and notifications-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event-formalnotification/V1" schemaLocation="event-formalnotification/V1/FormalNotificationExpirationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event-formalnotification/V2" schemaLocation="event-formalnotification/V2/FormalNotificationExpirationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/participantnotification/send-event/V1" schemaLocation="event-participant-notification/V1/ParticipantNotificationSendEvent.xsd"/>
+	<!--Invitation letter related events-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/grant/invitationletter-event/V1" schemaLocation="event-invitiationletter/V1/InvitationLetterComposedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/grant/invitationletter-event/V2" schemaLocation="event-invitiationletter/V2/InvitationLetterComposedEvent.xsd"/>
+	<!--Expert related events-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/expertactivitiesupdate-event/V1" schemaLocation="event-expert/V1/ExpertActivitiesUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/expertscopeupdated-event/V1" schemaLocation="event-expert/V1/ExpertScopeUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/experttasksupdate-event/V1" schemaLocation="event-expert/V1/ExpertTasksUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/amendment-added-event/V1" schemaLocation="event-legacy/events/expert/appointment/amendment-added-event/V1/AmendmentAddedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/amendment-closed-event/V1" schemaLocation="event-legacy/events/expert/appointment/amendment-closed-event/V1/AmendmentClosedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/amendment-documentread-event/V1" schemaLocation="event-legacy/events/expert/appointment/amendment-documentread-event/V1/AmendmentDocumentReadEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/amendment-documentupdated-event/V1" schemaLocation="event-legacy/events/expert/appointment/amendment-documentupdated-event/V1/AmendmentDocumentUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/amendment-terminated-event/V1" schemaLocation="event-legacy/events/expert/appointment/amendment-terminated-event/V1/AmendmentTerminatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/appointment-added-event/V1" schemaLocation="event-legacy/events/expert/appointment/appointment-added-event/V1/AppointmentAddedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/appointment-added-event/V2" schemaLocation="event-legacy/events/expert/appointment/appointment-added-event/V2/AppointmentAddedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/appointment-added-event/V3" schemaLocation="event-legacy/events/expert/appointment/appointment-added-event/V3/AppointmentAddedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/appointment-closed-event/V1" schemaLocation="event-legacy/events/expert/appointment/appointment-closed-event/V1/AppointmentClosedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/appointment-documentread-event/V1" schemaLocation="event-legacy/events/expert/appointment/appointment-documentread-event/V1/AppointmentDocumentReadEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/appointment-documentupdated-event/V1" schemaLocation="event-legacy/events/expert/appointment/appointment-documentupdated-event/V1/AppointmentDocumentUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/appointment-documentupdated-event/V2" schemaLocation="event-legacy/events/expert/appointment/appointment-documentupdated-event/V2/AppointmentDocumentUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/appointment/appointment-terminated-event/V1" schemaLocation="event-legacy/events/expert/appointment/appointment-terminated-event/V1/AppointmentTerminatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/profile/bastatusupdate-event/V1" schemaLocation="event-legacy/events/expert/profile/bastatusupdate-event/V1/BAStatusUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/profile/bastatusupdate-event/V2" schemaLocation="event-legacy/events/expert/profile/bastatusupdate-event/V2/BAStatusUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/profile/lestatusupdate-event/V1" schemaLocation="event-legacy/events/expert/profile/lestatusupdate-event/V1/LEStatusUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/profile/lestatusupdate-event/V2" schemaLocation="event-legacy/events/expert/profile/lestatusupdate-event/V2/LEStatusUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/profile/levalidationrequest-event/V1" schemaLocation="event-legacy/events/expert/profile/levalidationrequest-event/V1/LEValidationRequestEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/profile/profiledeleted-event/V1" schemaLocation="event-legacy/events/expert/profile/profiledeleted-event/V1/ProfileDeletedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/profile/profilestatusupdate-event/V1" schemaLocation="event-legacy/events/expert/profile/profilestatusupdate-event/V1/ProfileStatusUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/profile/profilevalidated-event/V1" schemaLocation="event-legacy/events/expert/profile/profilevalidated-event/V1/ProfileValidatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/profile/profilevalidated-event/V2" schemaLocation="event-legacy/events/expert/profile/profilevalidated-event/V2/ProfileValidatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/reimbursement/attendancesessioncreated-event/V1" schemaLocation="event-legacy/events/expert/reimbursement/attendancesessioncreated-event/V1/AttendanceSessionCreatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/reimbursement/reimbursementrequest-statusupdate-event/V1" schemaLocation="event-legacy/events/expert/reimbursement/reimbursementrequest-statusupdate-event/V1/ReimbursementRequestStatusUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/reimbursement/reimbursementrequest-submittedbyexpert-event/V1" schemaLocation="event-legacy/events/expert/reimbursement/reimbursementrequest-submittedbyexpert-event/V1/ReimbursementRequestSubmittedByExpertEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/expert/reimbursement/reimbursementrequest-submittedbyexpert-event/V2" schemaLocation="event-legacy/events/expert/reimbursement/reimbursementrequest-submittedbyexpert-event/V2/ReimbursementRequestSubmittedByExpertEvent.xsd"/>
+	<!--Legacy Legal Entity Related Events-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/organisationcertificate-event/V1" schemaLocation="event-legacy/events/legalentity/event-certification/V1/OrganisationCertificate_1.0.1.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/financial/v1" schemaLocation="event-legacy/events/legalentity/financial/V1/FinancialInfoNoLongerRequired_1.0.0.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/financial/v2" schemaLocation="event-legacy/events/legalentity/financial/V2/FinancialInfoNoLongerRequired.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/v1" schemaLocation="event-legacy/events/legalentity/V1/FinancialValidationStartedEvent_1.0.1.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/v1" schemaLocation="event-legacy/events/legalentity/V1/LegalEntityStatusChangeEvent_1.0.2.xsd"/>
+	<!--V2 of the 2 following events cannot be imported because they redeclare code.xsd from a different path (i.e., they import the CDM 2.x).-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/v3" schemaLocation="event-legacy/events/legalentity/V3/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/v3" schemaLocation="event-legacy/events/legalentity/V3/LegalEntityUpdateEvent.xsd"/>
+	<!--Negotiation Related Event-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/negociation/v1" schemaLocation="event-legacy/events/negociation/V1/NegociationEvent.xsd"/>
+	<!--Padme Related Events</xs:documentation-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/padme/v1_0" schemaLocation="event-legacy/events/padme/V1/PadmeEvent.xsd"/>
+	<!--PNS - Notification Related Events-->
+	<!--*** Due to the way the legacy notification events import security files that define different objects with the same name but in the same namespace, we cannot import them here ***-->
+	<!--Project Related Event</xs:documentation-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/V1" schemaLocation="event-legacy/events/project/V1/ProjectNewCurrentLegalEvent.xsd"/>
+	<!-- New legal entity events -->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/cancelvalidationallfacts-event/V1" schemaLocation="event-legalentity/V1/CancelValidationAllFactsEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/cancelvalidationallfacts-event/V2" schemaLocation="event-legalentity/V2/CancelValidationAllFactsEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/cancelvalidationforfacts-event/V1" schemaLocation="event-legalentity/V1/CancelValidationForFactsEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/cancelvalidationforfacts-event/V2" schemaLocation="event-legalentity/V2/CancelValidationForFactsEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/cancelvalidationforprogram-event/V1" schemaLocation="event-legalentity/V1/CancelValidationForProgramEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/cancelvalidationforprogram-event/V2" schemaLocation="event-legalentity/V2/CancelValidationForProgramEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/documenttobeadded-event/V1" schemaLocation="event-legalentity/V1/DocumentToBeAddedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/documenttobeadded-event/V2" schemaLocation="event-legalentity/V2/DocumentToBeAddedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/dovalidatefacts-event/V1" schemaLocation="event-legalentity/V1/DoValidateFactsEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/dovalidatefacts-event/V2" schemaLocation="event-legalentity/V2/DoValidateFactsEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/dovalidateforprogram-event/V1" schemaLocation="event-legalentity/V1/DoValidateForProgramEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/dovalidateforprogram-event/V2" schemaLocation="event-legalentity/V2/DoValidateForProgramEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/erasmus-ECHE-accreditation/V1" schemaLocation="event-legalentity/V1/ErasmusECHEAccreditationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creationerror-event/V1" schemaLocation="event-legalentity/V1/LegalEntityCreationErrorEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creationerror-event/V2" schemaLocation="event-legalentity/V2/LegalEntityCreationErrorEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V1" schemaLocation="event-legalentity/V1/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V2" schemaLocation="event-legalentity/V2/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V3" schemaLocation="event-legalentity/V3/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V4" schemaLocation="event-legalentity/V4/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V5" schemaLocation="event-legalentity/V5/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V6" schemaLocation="event-legalentity/V6/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V7" schemaLocation="event-legalentity/V7/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V8" schemaLocation="event-legalentity/V8/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V9" schemaLocation="event-legalentity/V9/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V10" schemaLocation="event-legalentity/V10/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/creation-event/V11" schemaLocation="event-legalentity/V11/LegalEntityCreationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V1" schemaLocation="event-legalentity/V1/LegalEntityFactUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V2" schemaLocation="event-legalentity/V2/LegalEntityFactUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V3" schemaLocation="event-legalentity/V3/LegalEntityFactUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V4" schemaLocation="event-legalentity/V4/LegalEntityFactUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V5" schemaLocation="event-legalentity/V5/LegalEntityFactUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V6" schemaLocation="event-legalentity/V6/LegalEntityFactUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V7" schemaLocation="event-legalentity/V7/LegalEntityFactUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V8" schemaLocation="event-legalentity/V8/LegalEntityFactUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V9" schemaLocation="event-legalentity/V9/LegalEntityFactUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V10" schemaLocation="event-legalentity/V10/LegalEntityFactUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/factupdate-event/V11" schemaLocation="event-legalentity/V11/LegalEntityFactUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/fact-update-request-event/V1" schemaLocation="event-legalentity/V1/LegalEntityFactUpdateRequestEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/fact-update-request-event/V2" schemaLocation="event-legalentity/V2/LegalEntityFactUpdateRequestEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/fact-update-request-event/V3" schemaLocation="event-legalentity/V3/LegalEntityFactUpdateRequestEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/fact-update-request-event/V4" schemaLocation="event-legalentity/V4/LegalEntityFactUpdateRequestEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/fact-update-request-event/V5" schemaLocation="event-legalentity/V5/LegalEntityFactUpdateRequestEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/fact-update-request-event/V6" schemaLocation="event-legalentity/V6/LegalEntityFactUpdateRequestEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/update-event/V1" schemaLocation="event-legalentity/V1/LegalEntityProfileDataUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V1" schemaLocation="event-legalentity/V1/LegalEntityToBeCreatedOrUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V2" schemaLocation="event-legalentity/V2/LegalEntityToBeCreatedOrUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V3" schemaLocation="event-legalentity/V3/LegalEntityToBeCreatedOrUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V4" schemaLocation="event-legalentity/V4/LegalEntityToBeCreatedOrUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V5" schemaLocation="event-legalentity/V5/LegalEntityToBeCreatedOrUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V6" schemaLocation="event-legalentity/V6/LegalEntityToBeCreatedOrUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V7" schemaLocation="event-legalentity/V7/LegalEntityToBeCreatedOrUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V8" schemaLocation="event-legalentity/V8/LegalEntityToBeCreatedOrUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V9" schemaLocation="event-legalentity/V9/LegalEntityToBeCreatedOrUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V10" schemaLocation="event-legalentity/V10/LegalEntityToBeCreatedOrUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/tobecreatedorupdated-event/V11" schemaLocation="event-legalentity/V11/LegalEntityToBeCreatedOrUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/validation/process/created-event/V1" schemaLocation="event-legalentity-validation/V1/ValidationProcessCreatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/validation/process/finished-event/V1" schemaLocation="event-legalentity-validation/V1/ValidationProcessFinishedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/validation/process/interrupted-event/V1" schemaLocation="event-legalentity-validation/V1/ValidationProcessInterruptedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/validation/process/updated-event/V1" schemaLocation="event-legalentity-validation/V1/ValidationProcessFinishedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/validation/task/assignment-event/V1" schemaLocation="event-legalentity-validation/V1/TaskAssignmentEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/update-event/V1" schemaLocation="event-legalentity/V1/LegalEntityUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/update-event/V2" schemaLocation="event-legalentity/V2/LegalEntityUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/update-event/V3" schemaLocation="event-legalentity/V3/LegalEntityUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/legalentity/national-agencies-certification/V1" schemaLocation="event-legalentity/V1/NACertificationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/participantnotification/send-event/V1" schemaLocation="event-participant-notification/V1/ParticipantNotificationSendEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/grant/grantstatusupdate-event/V1" schemaLocation="event-project/V1/GrantStatusUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/projectminidashboardmessageupdate-event/V1" schemaLocation="event-project/V1/ProjectMiniDashboardMessagesUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/grant/grantstatusupdate-event/V1" schemaLocation="event-project/V1/ProjectUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/reviewsessionstatusupdate-event/V1" schemaLocation="event-project/V1/ReviewSessionStatusUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/projectartefact/submit-event/V1" schemaLocation="event-project-artefact/V1/ArtefactSubmitEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/projectartefact/submission-event/V2" schemaLocation="event-project-artefact/V2/ArtefactSubmissionEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/deliverable/deliverablestatusupdate-event/V1" schemaLocation="event-projectdeliverable/V1/DeliverableStatusUpdateEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/form/formstatusupdate-event/V1" schemaLocation="event-projectform/V1/FormStatusUpdateEvent.xsd"/>
+	<!--Project Officer Related Event-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/project/officer/v1" schemaLocation="event-legacy/events/project/officer/V1/ProjectOfficerEvent.xsd"/>
+	<!--Reference Data Related Event-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/codeclasscreated-event/V0" schemaLocation="event-referencedata/V0/CodeClassCreatedEventType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/codeclassupdated-event/V0" schemaLocation="event-referencedata/V0/CodeClassUpdatedEventType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/codecreated-event/V0" schemaLocation="event-referencedata/V0/CodeCreatedEventType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/codeupdated-event/V0" schemaLocation="event-referencedata/V0/CodeUpdatedEventType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/contextcreated-event/V0" schemaLocation="event-referencedata/V0/ContextCreatedEventType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/contextupdated-event/V0" schemaLocation="event-referencedata/V0/ContextUpdatedEventType.xsd"/>
+	<!--ATTENTION: the 6 events below ARE NOT BE USED IF YOU WANT TO LISTEN TO REFERENCE DATA RELATED EVENTS. YOU SHOULD USE V0 ABOVE, V1 WAS NEVER IMPLEMENTED ON THE RECEIVING SIDE-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/codeclasscreated-event/V1" schemaLocation="event-referencedata/V1/CodeClassCreatedEventType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/codeclassupdated-event/V1" schemaLocation="event-referencedata/V1/CodeClassUpdatedEventType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/codecreated-event/V1" schemaLocation="event-referencedata/V1/CodeCreatedEventType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/codeupdated-event/V1" schemaLocation="event-referencedata/V1/CodeUpdatedEventType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/contextcreated-event/V1" schemaLocation="event-referencedata/V1/ContextCreatedEventType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/referencedata/contextupdated-event/V1" schemaLocation="event-referencedata/V1/ContextUpdatedEventType.xsd"/>
+	<!--Document related events-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/document/attachmentupdate-event/V1" schemaLocation="event-document/V1/AttachmentUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/externalised-document-download-audittrail/V1" schemaLocation="externaliseddocument-downloadaudittrail/V1/ExternalisedDocumentDownloadAuditTrail.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/externalised-document-security-policy/V1" schemaLocation="externaliseddocument-security-policy/V1/ExternalisedDocumentSecurityPolicy.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/externalised-document-security-policy/V2" schemaLocation="externaliseddocument-security-policy/V2/ExternalisedDocumentSecurityPolicy.xsd"/>
+	<!--Proposal related events-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/proposal/draft-proposal-details-updated-event/V1" schemaLocation="event-proposal/V1/DraftProposalDetailsUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/proposal/proposal-details-updated-event/V1" schemaLocation="event-proposal/V1/ProposalDetailsUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/proposal/proposal-details-updated-event/V2" schemaLocation="event-proposal/V2/ProposalDetailsUpdatedEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/proposal/proposal-status-changed-event/V1" schemaLocation="event-proposal/V1/ProposalStatusChangedEvent.xsd"/>
+	<!--Security Role Provisioning</xs:documentation>-->
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/security/roleprovisioning/v1" schemaLocation="event-legacy/events/security/roleprovisioning/V1/RoleProvisioningEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/security/roleauthorisation/V2" schemaLocation="event-security/V2/RoleAuthorisationEvent.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/rdg/efp/domain/event/security/roleprovisioning/V2" schemaLocation="event-security/V2/RoleProvisioningEvent.xsd"/>
+	<!--==================== Events which were cleaned out (because no trace was found of their actual usage) during the CDM import are listed  below-->
+	<!--* DocumentRepositoryEvent_1.00.xsd (which was importing Document_1.00.xsd, which was importing ProjectIdentified_1.00.xsd) -> No usage trail was found.-->
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expertappointment-ref/V1" schemaLocation="expertappointment-ref/V1/ExpertAppointmentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert/V1" schemaLocation="expert/V1/Expert.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert/V2" schemaLocation="expert/V2/Expert.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert/V3" schemaLocation="expert/V3/Expert.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert-activity/V1" schemaLocation="expert-activity/V1/ExpertActivity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert-ref/V1" schemaLocation="expert-ref/V1/ExpertRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expertappointment/V1" schemaLocation="expertappointment/V1/ExpertAppointment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expertappointment/V2" schemaLocation="expertappointment/V2/ExpertAppointment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expertappointment-ref/V1" schemaLocation="expertappointment-ref/V1/ExpertAppointmentRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert-scope/V1" schemaLocation="expert-scope/V1/ExpertScope.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/expert-task/V1" schemaLocation="expert-task/V1/ExpertTask.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/formalnotification/V1" schemaLocation="formalnotification/V1/FormalNotification.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/formalnotification/V2" schemaLocation="formalnotification/V2/FormalNotification.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/rtd/model/formmetadata/V1" schemaLocation="formmetadata/V1/FormMetadata.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/header/V1" schemaLocation="header/V1/Header.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/individualcommitment/V1" schemaLocation="individualcommitment/V1/IndividualCommitment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/invitationletter/V1" schemaLocation="invitationletter/V1/InvitationLetter.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/invitationletter/V2" schemaLocation="invitationletter/V2/InvitationLetter.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/invoice/V1" schemaLocation="invoice/V1/Invoice.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V1" schemaLocation="legalentity/V1/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V2" schemaLocation="legalentity/V2/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V3" schemaLocation="legalentity/V3/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V4" schemaLocation="legalentity/V4/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V5" schemaLocation="legalentity/V5/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V6" schemaLocation="legalentity/V6/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V7" schemaLocation="legalentity/V7/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V8" schemaLocation="legalentity/V8/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V9" schemaLocation="legalentity/V9/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V10" schemaLocation="legalentity/V10/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V11" schemaLocation="legalentity/V11/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V12" schemaLocation="legalentity/V12/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity/V13" schemaLocation="legalentity/V13/LegalEntity.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-core/V1" schemaLocation="legalentity-core/V1/LegalEntityCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-core/V2" schemaLocation="legalentity-core/V2/LegalEntityCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-nofacts/V1" schemaLocation="legalentity-nofacts/V1/LegalEntityNoFacts.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-nofacts/V1" schemaLocation="legalentity-nofacts/V1/LegalEntityNoFacts.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-public/V1" schemaLocation="legalentity-public/V1/LegalEntityPublic.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V1" schemaLocation="legalentity-ref/V1/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V2" schemaLocation="legalentity-ref/V2/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" schemaLocation="legalentity-ref/V3/LegalEntityRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/minidashboardmessage/V1" schemaLocation="minidashboardmessage/V1/MiniDashboardMessage.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/minidashboardmessage/V2" schemaLocation="minidashboardmessage/V2/MiniDashboardMessage.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/negotiationreport/V1" schemaLocation="negotiationreport/V1/NegotiationReport.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer/V1" schemaLocation="officer/V1/Officer.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer/V2" schemaLocation="officer/V2/Officer.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer/V3" schemaLocation="officer/V3/Officer.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer-ref/V1" schemaLocation="officer-ref/V1/OfficerRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/officer-ref/V2" schemaLocation="officer-ref/V2/OfficerRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/participantnotification/interfaces/V1" schemaLocation="participant-notification/V1/ParticipantNotification.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/participantnotificationaudit/interfaces/V1" schemaLocation="participant-notification-audit/V1/ParticipantNotificationAudit.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/payment/V1" schemaLocation="payment/V1/Payment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/pccd/V1" schemaLocation="pccd/V1/PCCDSubmission.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/pccd/V1" schemaLocation="pccd/V1/Decision.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V1" schemaLocation="person/V1/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V2" schemaLocation="person/V2/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V3" schemaLocation="person/V3/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/person/V4" schemaLocation="person/V4/Person.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project/V2" schemaLocation="project/V2/Project.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project/V3" schemaLocation="project/V3/Project.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project/V4" schemaLocation="project/V4/Project.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-agrip/V1" schemaLocation="project-agrip/V1/ProjectAGRIP.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-amendment/V2" schemaLocation="project-amendment/V2/ProjectAmendment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-amendment/V3" schemaLocation="project-amendment/V3/ProjectAmendment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-amendment/V4" schemaLocation="project-amendment/V4/ProjectAmendment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-amendmentclause/V1" schemaLocation="project-amendmentclause/V1/ProjectAmendmentClause.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-artefact-submission/V1" schemaLocation="project-artefact-submission/V1/ProjectArtefactSubmission.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-artefact-submission-ref/V1" schemaLocation="project-artefact-submission-ref/V1/ProjectArtefactSubmissionRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-artefact-submission-ref/V2" schemaLocation="project-artefact-submission-ref/V2/ProjectArtefactSubmissionRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-artefact-submission-core/V1" schemaLocation="project-artefact-submission-core/V1/ProjectArtefactSubmissionCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/eacea/model/assessment-core/V1" schemaLocation="project-assessment-core/V1/AssessmentCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-core/V2" schemaLocation="project-core/V2/ProjectCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-core/V3" schemaLocation="project-core/V3/ProjectCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-core/V4" schemaLocation="project-core/V4/ProjectCore.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V2" schemaLocation="project-costbreakdown/V2/ProjectCostBreakdown.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-costbreakdown/V3" schemaLocation="project-costbreakdown/V3/ProjectCostBreakdown.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable/V1" schemaLocation="project-deliverable/V1/ProjectDeliverable.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable/V2" schemaLocation="project-deliverable/V2/ProjectDeliverable.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable-ref/V1" schemaLocation="project-deliverable-ref/V1/ProjectDeliverableRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable-submission/V1" schemaLocation="project-deliverable-submission/V1/DeliverableSubmissionType.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/eacea/model/projectDescription/V1" schemaLocation="project-description/V1/ProjectDescription.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-erc/V2" schemaLocation="project-erc/V2/ProjectERC.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-erc/V3" schemaLocation="project-erc/V3/ProjectERC.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-erc/V4" schemaLocation="project-erc/V4/ProjectERC.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-imi2/V1" schemaLocation="project-imi2/V1/ProjectIMI2.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ethics/V1" schemaLocation="project-ethics/V1/ProjectEthics.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-mariecurie/V2" schemaLocation="project-mariecurie/V2/ProjectMarieCurie.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-mariecurie/V3" schemaLocation="project-mariecurie/V3/ProjectMarieCurie.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-mariecurie/V4" schemaLocation="project-mariecurie/V4/ProjectMarieCurie.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-mariecurie/V5" schemaLocation="project-mariecurie/V5/ProjectMarieCurie.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-milestone/V2" schemaLocation="project-milestone/V2/ProjectMilestone.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-milestone/V3" schemaLocation="project-milestone/V3/ProjectMilestone.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-milestone/V4" schemaLocation="project-milestone/V4/ProjectMilestone.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-milestone-ref/V1" schemaLocation="project-milestone-ref/V1/ProjectMilestoneRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V2" schemaLocation="project-partner/V2/ProjectPartner.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V3" schemaLocation="project-partner/V3/ProjectPartner.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner/V4" schemaLocation="project-partner/V4/ProjectPartner.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner-infrainstallation/V1" schemaLocation="project-partner-infrainstallation/V1/ProjectPartnerInfrainstallation.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-proposal/V1" schemaLocation="project-proposal/V1/ProjectProposal.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-proposal/V2" schemaLocation="project-proposal/V2/ProjectProposal.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V2" schemaLocation="project-ref/V2/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ref/V3" schemaLocation="project-ref/V3/ProjectRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V2" schemaLocation="project-reportingperiod/V2/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V3" schemaLocation="project-reportingperiod/V3/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod/V4" schemaLocation="project-reportingperiod/V4/ProjectReportingPeriod.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod-submission/V1" schemaLocation="project-reportingperiod-submission/V1/ProjectReportingPeriodSubmission.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-reportingperiod-submission/V2" schemaLocation="project-reportingperiod-submission/V2/ProjectReportingPeriodSubmission.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-representative/V2" schemaLocation="project-representative/V2/ProjectRepresentative.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-representative/V3" schemaLocation="project-representative/V3/ProjectRepresentative.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-representative/V4" schemaLocation="project-representative/V4/ProjectRepresentative.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-review/V1" schemaLocation="project-review/V1/ProjectReview.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-rfcs/V1" schemaLocation="project-rfcs/V1/ProjectRFCS.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-risk-mitigation/V1" schemaLocation="project-risk-mitigation/V1/ProjectRiskMitigation.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-termination/V1" schemaLocation="project-termination/V1/ProjectTermination.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-specialclause/V2" schemaLocation="project-specialclause/V2/ProjectSpecialClause.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-specialclause/V3" schemaLocation="project-specialclause/V3/ProjectSpecialClause.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-termination/V1" schemaLocation="project-termination/V1/ProjectTermination.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-workpackage/V2" schemaLocation="project-workpackage/V2/ProjectWorkPackage.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-workpackage/V3" schemaLocation="project-workpackage/V3/ProjectWorkPackage.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/signature/V1" schemaLocation="signature/V1/Signature.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/report/V1" schemaLocation="report/V1/Report.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/report/V2" schemaLocation="report/V2/Report.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/report/V3" schemaLocation="report/V3/Report.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/report-assessment/V1" schemaLocation="report-assessment/V1/ReportAssessment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/resource/V1" schemaLocation="resource/V1/Resource.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/security/V3" schemaLocation="security/V3/Security.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/security/V4" schemaLocation="security/V4/Security.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/security/V5" schemaLocation="security/V5/Security.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/service-context/V1" schemaLocation="service-context/V1/ServiceContext.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/service-context/V2" schemaLocation="service-context/V2/ServiceContext.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/service-fault/V1" schemaLocation="service-fault/V1/ServiceFault.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/service-health/V1" schemaLocation="service-health/V1/ServiceHealth.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/service-ping/V1" schemaLocation="service-ping/V1/ServicePing.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/template/V1" schemaLocation="template/V1/TemplateLetter.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user/V1" schemaLocation="user/V1/User.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user/V2" schemaLocation="user/V2/User.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user/V3" schemaLocation="user/V3/User.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/user-ref/V1" schemaLocation="user-ref/V1/UserRef.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/payment/V1" schemaLocation="payment/V1/Payment.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-risk-mitigation/V1" schemaLocation="project-risk-mitigation/V1/ProjectRiskMitigation.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-partner-infrainstallation/V1" schemaLocation="project-partner-infrainstallation/V1/ProjectPartnerInfrainstallation.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-ethics/V1" schemaLocation="project-ethics/V1/ProjectEthics.xsd"/>
+	<xs:import namespace="http://ec.europa.eu/research/fp/model/project-deliverable-submission/V1" schemaLocation="project-deliverable-submission/V1/DeliverableSubmissionType.xsd"/>
+	<!--
+	<xs:annotation>
+		<xs:documentation>20110819 - V3.2.1 - From now on, changes will be documented in the file readme.txt in the root directory of the CDM distribution.</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20110715 - V3.2.0 - Inclusion of events, Inclusion of new reference data services and model. (Note that there is a code/V3 that is not used throughout the rest of the model right now (i.e. all the elements are still referencing code V2 until the new reference data service are avalable)  </xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>201104 - V3.1.1 - small bug fixes from RTD </xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20110401 - V3.1.0 - Inclusion of Proposal submission + refactoring of financial related data </xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20110105 - V3.0.0 - Inclusion of Sesam and RTD BPM needs</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20101221 - V2.3.0 - Inclusion of Audits, small changes in Expert related files</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20101012 - V2.2.1 - Changes in ExpertAppointment.xsd.</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20100909 - V2.2.0 - Inclusion of Expert and expert related entities.</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20100709 - V2.1.3 - Version 2.1.3 does not contain expert related entities. They will be added afterwards.</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20100701 - V2.1.3 - reorganised namespaces; separate namespace per schema file. Version numbers in schema file names removed (left only in schema version attribute).</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20100601 - V2.1.3Beta - Bumped LegalEntity to 1.1.0</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20100517 - V2.1.3Beta - Bumped resultcontext to 1.2.2</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20100510 - V2.1.3Beta - Beta version including experts and expertappointment (including reimbursement requests)</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20100429 - V2.1.2 - The containing directory has been renamed "model". This is to make sure that services will now refer to model instead of datamodel as the dir holding the xsds.</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>20100426 - V2.1.1 - removed the reference to resultcontext_v2.00 which was wrong as it should be resultcontext_v1.2</xs:documentation>
+	</xs:annotation>
+-->
+</xs:schema>

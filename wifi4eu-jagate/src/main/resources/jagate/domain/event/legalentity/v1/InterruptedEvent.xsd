@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalentity/interrupted/v1" 
+		   targetNamespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/legalentity/interrupted/v1"
+		   xmlns:eventbase="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v2"
+		   xmlns:le="http://ec.europa.eu/rdg/jagate/ws/domain/legalentity/v4"
+		   elementFormDefault="qualified" 
+		   attributeFormDefault="unqualified">
+		   
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/event/base/v2" schemaLocation="../../base/v2/JagateBaseEvent.xsd" />
+    <xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/legalentity/v4" schemaLocation="../../../legalentity/v4/LegalEntity.xsd" />
+
+	<xs:complexType name="CreateOrUpdateInterruptedEvent">		
+		<xs:complexContent>			
+			<xs:extension base="eventbase:JagateAbstractEvent">
+				<xs:sequence>
+					<xs:element name="requestId" type="xs:string"/>						
+					<xs:element name="felId" type="xs:string" minOccurs="0"/>
+					<xs:element name="errorMessage" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>
+							In case when Abac is refusing to create the transaction that Jagate is sending to it, 
+							this field will contains the error message from Abac
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RejectionInfo" type="le:RejectedFelInfoType" minOccurs="0"/>
+					<xs:element name="FollowUpInfo" type="le:FollowUpFelInfoType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

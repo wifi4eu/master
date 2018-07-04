@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+				  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+				  name="CommitmentQueriesWSV2" 
+				  xmlns:jagate="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" 
+				  xmlns:commitmentQueries="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentqueries/v2"
+				  targetNamespace="http://ec.europa.eu/rdg/jagate/ws/commitmentqueries/v2" 
+				  xmlns="http://ec.europa.eu/rdg/jagate/ws/commitmentqueries/v2">
+
+	<!-- Types -->
+	<wsdl:types>
+		<xs:schema>
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/commitmentqueries/v2" schemaLocation="../../../domain/commitmentqueries/v2/CommitmentQueries.xsd" />
+			<xs:import namespace="http://ec.europa.eu/rdg/jagate/ws/domain/base/v2" schemaLocation="../../../domain/base/v2/JAgateBase.xsd" />
+		</xs:schema>
+	</wsdl:types>
+
+	<!-- Messages -->
+	<wsdl:message name="GetL1ByLocObjForeignIdRequest">
+		<wsdl:part element="commitmentQueries:GetL1ByLocObjForeignIdRequest" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="GetL1ByLocObjForeignIdResponse">
+		<wsdl:part element="commitmentQueries:GetL1ByLocObjForeignIdResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="CommitmentException">
+		<wsdl:part element="jagate:Exception" name="Exception" />
+	</wsdl:message>
+
+	<wsdl:message name="GetCommitmentLevel2Request">
+		<wsdl:part element="commitmentQueries:GetCommitmentLevel2Request" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetCommitmentLevel2Response">
+		<wsdl:part element="commitmentQueries:GetCommitmentLevel2Response" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="GetOpenCommitmentByIban">
+		<wsdl:part element="commitmentQueries:GetOpenCommitmentByIban" name="request" />
+	</wsdl:message>
+
+	<wsdl:message name="GetOpenCommitmentByIbanResponse">
+		<wsdl:part element="commitmentQueries:GetOpenCommitmentByIbanResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="Level1CommitmentPositionRequest">
+		<wsdl:part element="commitmentQueries:Level1CommitmentPositionRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="Level1CommitmentPositionResponseType">
+		<wsdl:part element="commitmentQueries:Level1CommitmentPositionResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="Level1CommitmentPositionException">
+		<wsdl:part element="jagate:Exception" name="exception" />
+	</wsdl:message>
+
+	<wsdl:message name="BudgetLineRequest">
+		<wsdl:part element="commitmentQueries:BudgetLineRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="BudgetLineResponseType">
+		<wsdl:part element="commitmentQueries:BudgetLineResponse" name="response" />
+	</wsdl:message>
+	<wsdl:message name="BudgetLineException">
+		<wsdl:part element="jagate:Exception" name="exception" />
+	</wsdl:message>
+
+	<wsdl:message name="SearchCommitmentLevel2HeaderRequest">
+		<wsdl:part element="commitmentQueries:SearchCommitmentLevel2HeaderRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="SearchCommitmentLevel2HeaderResponse">
+		<wsdl:part element="commitmentQueries:SearchCommitmentLevel2HeaderResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="GetCL2LegalEntityBankAccountLinkRequest">
+		<wsdl:part element="commitmentQueries:GetCL2LegalEntityBankAccountLinkRequest" name="request" />
+	</wsdl:message>
+	<wsdl:message name="GetCL2LegalEntityBankAccountLinkResponse">
+		<wsdl:part element="commitmentQueries:GetCL2LegalEntityBankAccountLinkResponse" name="response" />
+	</wsdl:message>
+
+	<wsdl:message name="checkServiceHealth">
+		<wsdl:part name="request" element="commitmentQueries:checkServiceHealth" />
+	</wsdl:message>
+	<wsdl:message name="checkServiceHealthResponse">
+		<wsdl:part name="response" element="commitmentQueries:checkServiceHealthResponse" />
+	</wsdl:message>
+
+	<wsdl:portType name="ICommitmentQueriesService">
+		<wsdl:documentation>Commitment Queries.</wsdl:documentation>
+		<wsdl:operation name="GetL1ByLocObjForeignId">
+			<wsdl:input message="GetL1ByLocObjForeignIdRequest" />
+			<wsdl:output message="GetL1ByLocObjForeignIdResponse" />
+			<wsdl:fault name="CommitmentException" message="CommitmentException" />
+		</wsdl:operation>
+		<wsdl:operation name="GetCommitmentLevel2">
+			<wsdl:documentation>Gets the header and positions for the given CL2.</wsdl:documentation>
+			<wsdl:input message="GetCommitmentLevel2Request" />
+			<wsdl:output message="GetCommitmentLevel2Response" />
+			<wsdl:fault name="CommitmentException" message="CommitmentException" />
+		</wsdl:operation>
+		<wsdl:operation name="GetOpenCommitmentByIban">
+			<wsdl:input message="GetOpenCommitmentByIban" />
+			<wsdl:output message="GetOpenCommitmentByIbanResponse" />
+			<wsdl:fault name="CommitmentException" message="CommitmentException" />
+		</wsdl:operation>
+		<wsdl:operation name="getLevel1CommitmentPosition">
+			<wsdl:documentation>Gets the level 1 Commitment Positions for a given IA Agent.</wsdl:documentation>
+			<wsdl:input message="Level1CommitmentPositionRequest" />
+			<wsdl:output message="Level1CommitmentPositionResponseType" />
+			<wsdl:fault name="Level1CommitmentPositionException" message="Level1CommitmentPositionException" />
+		</wsdl:operation>
+		<wsdl:operation name="getBudgetLine">
+			<wsdl:documentation>Retrieves Budgetary Lines of consumption type 'Commitment' accordingly to the given criteria. WARNING : this query might take up to 2
+				minutes depending on the input criteria, therefore please configure accordingly the timeout delay.</wsdl:documentation>
+			<wsdl:input message="BudgetLineRequest" />
+			<wsdl:output message="BudgetLineResponseType" />
+			<wsdl:fault name="BudgetLineException" message="BudgetLineException" />
+		</wsdl:operation>
+		<wsdl:operation name="SearchCommitmentLevel2Header">
+			<wsdl:documentation>Search Commitment Level 2 by the given criteria. The results will be returned in descending order based on the creation date. The service
+				supports pagination.</wsdl:documentation>
+			<wsdl:input message="SearchCommitmentLevel2HeaderRequest" />
+			<wsdl:output message="SearchCommitmentLevel2HeaderResponse" />
+			<wsdl:fault name="CommitmentException" message="CommitmentException" />
+		</wsdl:operation>
+		<wsdl:operation name="GetCL2LegalEntityBankAccountLink">
+			<wsdl:documentation>Retrieves the link and its status between the CL2 and the link between the Legal Entity and the Bank Account</wsdl:documentation>
+			<wsdl:input message="GetCL2LegalEntityBankAccountLinkRequest" />
+			<wsdl:output message="GetCL2LegalEntityBankAccountLinkResponse" />
+			<wsdl:fault name="CommitmentException" message="CommitmentException" />
+		</wsdl:operation>
+		<wsdl:operation name="checkServiceHealth">
+			<wsdl:input message="checkServiceHealth" />
+			<wsdl:output message="checkServiceHealthResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding -->
+	<wsdl:binding name="ICommitmentQueriesServiceBinding" type="ICommitmentQueriesService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="GetL1ByLocObjForeignId">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CommitmentException">
+				<soap:fault name="CommitmentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="GetCommitmentLevel2">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CommitmentException">
+				<soap:fault name="CommitmentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="GetOpenCommitmentByIban">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CommitmentException">
+				<soap:fault name="CommitmentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getLevel1CommitmentPosition">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="Level1CommitmentPositionException">
+				<soap:fault name="Level1CommitmentPositionException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getBudgetLine">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="BudgetLineException">
+				<soap:fault name="BudgetLineException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="SearchCommitmentLevel2Header">
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CommitmentException">
+				<soap:fault name="CommitmentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="GetCL2LegalEntityBankAccountLink">
+			<wsdl:documentation>Retrieves the link and its status between the CL2 and the link between the Legal Entity and the Bank Account</wsdl:documentation>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="CommitmentException">
+				<soap:fault name="CommitmentException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="checkServiceHealth">
+			<wsdl:documentation>Diagnostic operation to monitor service health</wsdl:documentation>
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<!-- Service definition -->
+	<wsdl:service name="CommitmentQueriesServiceV2">
+		<wsdl:port binding="ICommitmentQueriesServiceBinding" name="CommitmentQueriesServiceBinding">
+			<soap:address location="http://ec.europa.eu/rdg/jagate/ws/commitmentqueries/v2" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>
