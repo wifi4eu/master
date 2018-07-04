@@ -16,7 +16,7 @@ public class MunicipalitiesController {
 	@Autowired MunicipalityService municipalityService;
 	
     @RequestMapping(value="", method=RequestMethod.GET)
-    public List<Municipality> municipalities() {
+    public List<Municipality> listMunicipalities() {
     	List<Municipality> municipalities = municipalityService.listAllMunicipalities();
     	return municipalities;
     }
