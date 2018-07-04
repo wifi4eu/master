@@ -4,8 +4,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.supplier.SupplierNotificationEmail;
 
-// import java.util.List;
-
 public interface SupplierNotificationEmailRepository extends CrudRepository<SupplierNotificationEmail, Integer> {
     @Query(value = "SELECT r.id AS registrationId, s.contact_email AS supplierEmail, m.id AS municipalityId, m.name AS municipalityName, m.country AS municipalityCountry, u.lang AS userLang " +
     "FROM registrations r \n" +
