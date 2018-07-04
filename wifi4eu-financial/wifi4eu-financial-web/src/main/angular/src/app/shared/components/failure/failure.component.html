@@ -1,15 +1,12 @@
 <div class="ui-g">
-    <div class="ui-g-12 center">
-        <i class="fa fa-times-circle success-failure-icon" aria-hidden="true"></i><br>
-        <h2>{{ titleKey | translate }}</h2>
+    <div class="ui-g-12 center" style="text-align: center !important">
+        <i class="zmdi zmdi-close-circle fa-3x"></i><br>
+        <h2>{{ 'shared.submitregistration.failure.title' | translate }}</h2>
         <br>
-        <p *ngFor="let textKey of textKeys">
-            {{ textKey | translate }}
-            <br>
-        </p>
+        <p>{{ 'shared.submitregistration.failure.text.part1' | translate }}</p>
         <br>
-        <button class="btn btn-primary" routerLink="/home" routerLinkActive="active">
-            {{ 'shared.backtohome.button' | translate }}
+        <button class="btn btn-primary" routerLink="/home" routerLinkActive="active">{{ 'shared.backtohome.button' |
+            translate}}
         </button>
     </div>
 </div>
