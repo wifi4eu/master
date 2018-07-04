@@ -125,11 +125,17 @@ public class SupplierService {
     }
 
     @Transactional
-    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String logo) throws Exception {
+    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String accountNumber, String website, String logo) throws Exception {
         supplierDTO.setName(name);
         supplierDTO.setAddress(address);
         supplierDTO.setVat(vat);
         supplierDTO.setBic(bic);
+        supplierDTO.setAccountNumber(accountNumber);
+        if (website != null) {
+            supplierDTO.setWebsite(website);
+        } else {
+            supplierDTO.setWebsite(null);
+        }
         if (logo != null) {
             byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(logo));
             String logoMimeType = LegalFilesService.getMimeType(logo);
@@ -270,21 +276,21 @@ public class SupplierService {
             direction = Direction.ASC;
         }
 
-        if(name == null || name.trim().isEmpty()){
+        if (name == null || name.trim().isEmpty()) {
             name = "";
         }
         List<SupplierListItemDTO> suppliers;
 
-        switch(orderField){
+        switch (orderField) {
             case "website":
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteDesc(name, page * count, count));
                 }
                 break;
             case "vat":
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatDesc(name, page * count, count));
@@ -292,7 +298,7 @@ public class SupplierService {
 
                 break;
             case "status":
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusDesc(name, page * count, count));
@@ -301,7 +307,7 @@ public class SupplierService {
                 break;
             case "name":
             default:
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameDesc(name, page * count, count));

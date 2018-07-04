@@ -36,8 +36,7 @@ export class BeneficiaryRegistrationStep4Component {
     }
 
     submit() {
-        this.check(this.legalChecks);
-        if (this.allChecked) {
+        if (this.check(this.legalChecks)) {
             this.displayConfirmingData = true;
             this.onNext.emit();
         }else{
@@ -60,9 +59,9 @@ export class BeneficiaryRegistrationStep4Component {
         if(!legalChecks[1] || !legalChecks[2] || !legalChecks[3]
             || !legalChecks[4] || !legalChecks[5] || !legalChecks[6] || !legalChecks[7]
             || !legalChecks[8]){
-            this.allChecked = false;
+            return false;
         }else{
-            this.allChecked = true;
+            return true;
         }
     }
 }

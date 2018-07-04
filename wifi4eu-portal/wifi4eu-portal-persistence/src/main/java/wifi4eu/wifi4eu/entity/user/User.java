@@ -217,4 +217,5 @@ public class User {
     public void setCsrfToken(String csrfToken) {
         this.csrfToken = csrfToken;
     }
+
 }

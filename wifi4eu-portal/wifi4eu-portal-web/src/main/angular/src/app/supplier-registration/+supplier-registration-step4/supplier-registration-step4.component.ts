@@ -19,7 +19,6 @@ export class SupplierRegistrationStep4Component {
     private successCaptcha: boolean = true;
     private displayModal: boolean = false;
     private displayConfirmingData: boolean = false;
-    private allChecked: boolean = false;
 
     constructor(private sharedService: SharedService) {
         this.onNext = new EventEmitter<any>();
@@ -36,8 +35,7 @@ export class SupplierRegistrationStep4Component {
     }
 
     submit() {
-        this.check(this.legalChecks);
-        if (this.allChecked && this.successCaptcha) {
+        if (this.check(this.legalChecks) && this.successCaptcha) {
             this.displayConfirmingData = true;
             this.onNext.emit();
         } else{
@@ -47,9 +45,9 @@ export class SupplierRegistrationStep4Component {
 
     check(legalChecks: boolean[]){
         if(!legalChecks[1]|| !legalChecks[2] || !legalChecks[3] || !legalChecks[4]){
-            this.allChecked = false;
+            return false;
         }else{
-            this.allChecked = true;
+            return true;
         }
     }
 
