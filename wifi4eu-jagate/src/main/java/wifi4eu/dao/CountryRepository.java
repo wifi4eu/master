@@ -7,5 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import wifi4eu.model.Country;
 
 public interface CountryRepository extends CrudRepository<Country, Long> {
-	public List<Country> findAllByOrderByName();
+	public List<Country> findByOrderByName();
+	public Country findByCodeIgnoreCase(String code);
 }

@@ -38,8 +38,9 @@ npm-debug.log
 .vagrant/
 *.box
 cleanEnv.sh
-.settings/*
+.settings/**
 .project
 bin
 /.settings
+.settings
 .classpath

@@ -2,6 +2,8 @@ package wifi4eu.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,7 +12,9 @@ import javax.persistence.Table;
 public class Country {
 
 	@Id
-	private String cd;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="CD")
+	private String code;
 	
 	@Column(name="NAME")
 	private String name;
@@ -27,12 +31,12 @@ public class Country {
 	@Column(name="NATIVE_DESCRIPTIONS")
 	private String nativeDescriptions;
 
-	public String getCd() {
-		return cd;
+	public String getCode() {
+		return code;
 	}
 
-	public void setCd(String cd) {
-		this.cd = cd;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getName() {
@@ -74,7 +78,5 @@ public class Country {
 	public void setNativeDescriptions(String nativeDescriptions) {
 		this.nativeDescriptions = nativeDescriptions;
 	}
-	
-	
 
 }

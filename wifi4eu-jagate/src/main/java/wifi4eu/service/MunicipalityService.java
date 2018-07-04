@@ -2,6 +2,8 @@ package wifi4eu.service;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +16,14 @@ public class MunicipalityService {
 	@Autowired
 	private MunicipalityRepository municipalityRepository;
 	
+	@Autowired EntityManager entityManager;
+	
 	public List<Municipality> listMunicipalitiesWithoutJagateKey() {
-		return municipalityRepository.findByJagateKeyIsNull();
+		return municipalityRepository.findByJagateKeyIsNullOrderByName();
 	}
+	
+	public List<Municipality> listAllMunicipalities() {		
+		return municipalityRepository.findByOrderByName();
+	}	
 
 }

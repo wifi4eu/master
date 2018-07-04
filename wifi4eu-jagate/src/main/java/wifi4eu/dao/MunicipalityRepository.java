@@ -8,5 +8,6 @@ import wifi4eu.model.Municipality;
 
 public interface MunicipalityRepository extends CrudRepository<Municipality, Long> {
 	
-	public List<Municipality> findByJagateKeyIsNull();
+	public List<Municipality> findByJagateKeyIsNullOrderByName();
+	public List<Municipality> findByOrderByName();
 }

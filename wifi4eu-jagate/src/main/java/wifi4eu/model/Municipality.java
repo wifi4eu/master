@@ -39,6 +39,10 @@ public class Municipality {
 	@Column(name="COUNTRY_CODE")
 	private String countryCode;
 
+	public Municipality() {
+		super();
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -110,5 +114,7 @@ public class Municipality {
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
 	}
+	
+	
 
 }
