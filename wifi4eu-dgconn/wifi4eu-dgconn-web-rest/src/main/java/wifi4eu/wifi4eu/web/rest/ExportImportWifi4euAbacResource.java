@@ -77,7 +77,7 @@ public class ExportImportWifi4euAbacResource {
 //    }
 
     @ApiOperation(value = "Export Beneficiary Information")
-    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "application/JSON")
+    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "text/csv")
     @ResponseBody
     public ResponseDTO exportBeneficiaryInformation(final HttpServletResponse response) throws Exception {
         _log.info("exportBeneficiaryInformation");
@@ -127,7 +127,7 @@ public class ExportImportWifi4euAbacResource {
 
 
     @ApiOperation(value = "Export Budgetary Commitment")
-    @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET, produces = "application/JSON")
+    @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET, produces = "text/csv")
     @ResponseBody
     public ResponseDTO exportBudgetaryCommitment(final HttpServletResponse response) throws Exception {
         _log.info("exportBudgetaryCommitment");
