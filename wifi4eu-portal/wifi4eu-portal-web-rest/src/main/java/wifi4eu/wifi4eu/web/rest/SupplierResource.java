@@ -526,27 +526,27 @@ public class SupplierResource {
     // Get validated suppliers that supply a specific region
     // WARNING: only will be able to access municipalities with an awarded voucher
     @ApiOperation(value = "Get validated suppliers by regionID")
-    @RequestMapping(value = "/region/{regionId}/validated", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/region/{municipalityId}/validated", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<SupplierDTO> getValidatedSuppliersListByRegionId(@PathVariable("regionId") final Integer regionId, @RequestParam("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
+    public List<SupplierDTO> getValidatedSuppliersListByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
         List<SupplierDTO> suppliersList = new ArrayList<>();
         try {
-            _log.info("getValidatedSuppliersListByRegionId " + regionId);
+            _log.info("getValidatedSuppliersListByMunicipalityId " + municipalityId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if(!permissionChecker.checkIfVoucherAwarded(userDTO, municipalityId)) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            suppliersList = supplierService.getValidatedSuppliersListByRegionId(regionId);
+            suppliersList = supplierService.getValidatedSuppliersListByMunicipalityId(municipalityId);
             return suppliersList;
         } 
         catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'getValidatedSuppliersListByRegionId' operation.", ade);
+                _log.error("AccessDenied on 'getValidatedSuppliersListByMunicipalityId' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getValidatedSuppliersListByRegionId' operation.", e);
+                _log.error("Error on 'getValidatedSuppliersListByMunicipalityId' operation.", e);
             }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }

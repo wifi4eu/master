@@ -108,51 +108,38 @@ export class SelectSupplierComponent {
                         this.hasSupplierAssigned = false;
                       }
 
-                      /* Get regionId of the municipality */
+                      /* Get validated suppliers given a municipalityId */
                       this.municipalityApi.getMunicipalityById(this.registration.municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
-                          this.municipalities.push(municipality);
-                          this.municipality = municipality;
-                          this.lauApi.getLauById(municipality.lauId).subscribe(
-                            (laus: LauDTOBase) => {
-                              this.nutsApi.getNutsByCode(laus.nuts3).subscribe(
-                                (nuts: NutsDTOBase) => {
-                                  this.region.id = nuts.id;
-                                  
-                                  /* Get all suppliers that supply the beneficiary region */
-                                  if(this.region.id != 0){
-                                    this.supplierApi.getValidatedSuppliersListByRegionId(this.region.id, this.registration.municipalityId).subscribe(
-                                      (suppliers: SupplierDTOBase[]) => {
-                                        console.log(suppliers);
-                                        this.suppliers = suppliers;
-                                        this.suppliersCopy = this.suppliers;
-                              
-                                        /* Get previously selected supplier (if it exists) */
-                                        if(this.hasSupplierAssigned) {
-                                          this.supplierApi.getSupplierDetailsById(this.application.supplierId, this.municipalityId).subscribe(
-                                            (supplier: SupplierDTOBase) => {
-                                              for(var i = 0; i < this.suppliers.length; i++) {
-                                                if(this.suppliers[i].id == supplier.id) {
-                                                  this.selectedSupplier = this.suppliers[i];
-                                                  this.oldSupplier = this.suppliers[i];
-                                                  break;
-                                                } 
-                                              }
-                                            }
-                                          );
-                                          /* Get the date when supplier was selected */
-                                          this.getStringDate(this.application.date);
-                                        }
-                                        
-                                      }
-                                    );
+
+                          if(municipality != null) {
+                            this.supplierApi.getValidatedSuppliersListByMunicipalityId(this.registration.municipalityId).subscribe(
+                            (suppliers: SupplierDTOBase[]) => {
+                              console.log(suppliers);
+                              this.suppliers = suppliers;
+                              this.suppliersCopy = this.suppliers;
+                    
+                              /* Get previously selected supplier (if it exists) */
+                              if(this.hasSupplierAssigned) {
+                                this.supplierApi.getSupplierDetailsById(this.application.supplierId, this.municipalityId).subscribe(
+                                  (supplier: SupplierDTOBase) => {
+                                    for(var i = 0; i < this.suppliers.length; i++) {
+                                      if(this.suppliers[i].id == supplier.id) {
+                                        this.selectedSupplier = this.suppliers[i];
+                                        this.oldSupplier = this.suppliers[i];
+                                        break;
+                                      } 
+                                    }
                                   }
-                                  
-                                }
-                              );    
+                                );
+                                /* Get the date when supplier was selected */
+                                this.getStringDate(this.application.date);
+                              }
+
                             }
                           );
                         }
+                      }
                   );  
                     
                 }

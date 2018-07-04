@@ -374,8 +374,8 @@ public class SupplierService {
     }
 
     // Get all validated suppliers that supply a specific region
-    public List<SupplierDTO> getValidatedSuppliersListByRegionId(int regionId) {
-        List<SupplierDTO> suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.getValidatedSuppliersListByRegionId(regionId)));
+    public List<SupplierDTO> getValidatedSuppliersListByMunicipalityId(int municipalityId) {
+        List<SupplierDTO> suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.getValidatedSuppliersListByMunicipalityId(municipalityId)));
         return suppliers;
     }
 
