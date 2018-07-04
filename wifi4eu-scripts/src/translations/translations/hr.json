@@ -354,7 +354,7 @@
   "benefPortal.voucher.call.label1": "Možete podnijeti zahtjev za kupone jer je poziv otvoren",
   "benefPortal.voucher.call.label2": "Prijavu ćete moći podnijeti kada se otvori poziv.",
   "benefPortal.voucher.competition.timeleft.title": "Poziv na podnošenje prijava otvorit će se za",
-  "benefPortal.voucher.counterSubtitle": "Pozivi na podnošenje prijava otvoren je {{datum}} u {{sati}} (srednjoeuropsko ljetno vrijeme).",
+  "benefPortal.voucher.counterSubtitle": "Pozivi na podnošenje prijava otvoren je {{date}} u {{hour}} (srednjoeuropsko ljetno vrijeme).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Uspješno ste podnijeli prijavu za kupon.",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Pratite najnovije vijesti. WiFi4EU će obavijestiti o tome koji su podnositelji prijave dobili kupon.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Imajte na umu da se odabir provodi prema redoslijedu podnošenja prijava (u obzir se uzima datum i sat podnošenja) i na temelju kriterija kojima se osigurava zemljopisna ravnoteža, kako je opisano u radnom programu CEF-a.",
