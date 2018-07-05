@@ -1,0 +1,86 @@
+<div class="container">
+    <div class="ui-g-12" style="margin-top: 1em;">
+        <p class="beneficiaryTitle">My registration (Editing mode)</p>
+        <p>Edit your company information here.</p>
+    </div>
+    <div *ngIf="supplier">
+        <div class="ui-g-12">
+            <hr class="genericHr" />
+            <p class="beneficiaryTitle" style="font-size: 18px;">Company information</p>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="name">{{ 'suppRegistration.company.name' | translate }}</label><br>
+                <input id="name" type="text" name="name" class="form-control"
+                       [(ngModel)]="supplier.name" required>
+            </div>
+            <br>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="address">{{ 'suppRegistration.legal.address' | translate }}</label><br>
+                <input id="address" type="text" name="address" class="form-control"
+                       [(ngModel)]="supplier.address" required>
+            </div>
+            <br>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="vat">{{ 'suppRegistration.vat.label' | translate }}</label><br>
+                <input id="vat" type="text" name="vat" class="form-control"
+                       [(ngModel)]="supplier.vat" required>
+            </div>
+            <br>
+            <div *ngIf="supplier.website" class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="website">{{ 'suppRegistration.company.web' | translate }}</label><br>
+                <input id="website" type="text" name="website" class="form-control"
+                       [(ngModel)]="supplier.website" [pattern]="websitePattern" required>
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <hr class="genericHr" />
+            <p class="beneficiaryTitle" style="font-size: 18px;">Contact details</p>
+            <div class="form-group ui-g-3 ui-lg-3 ui-md-8 ui-sm-12">
+                <label for="contactName">{{ 'shared.name.label' | translate }}</label><br>
+                <input id="contactName" type="text" name="contactName" class="form-control"
+                       [(ngModel)]="supplier.contactName" required>
+            </div>
+            <br>
+            <div class="form-group ui-g-3 ui-lg-3 ui-md-8 ui-sm-12">
+                <label for="contactSurname">{{ 'shared.surname.label' | translate }}</label><br>
+                <input id="contactSurname" type="text" name="contactSurname" class="form-control"
+                       [(ngModel)]="supplier.contactSurname" required>
+            </div>
+            <br>
+            <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
+                <label for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate }}</label><br>
+                <input id="contactPhonePrefix" type="text" name="contactPhonePrefix" class="form-control ui-g-2 ui-sm-4"
+                       style="margin-right: 1em;" [(ngModel)]="supplier.contactPhonePrefix" required>
+                <input id="contactPhoneNumber" type="text" name="contactPhoneNumber" class="form-control ui-g-3 ui-sm-7"
+                       [(ngModel)]="supplier.contactPhoneNumber" required>
+                <br>
+                <label for="contactPhonePrefix" class="ui-g-2 ui-sm-4" style="font-size: 70%;color: #8f8f8f;">
+                    {{ 'suppRegistration.prefix.number' | translate }}
+                </label>
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <hr class="genericHr" />
+            <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'suppRegistration.entity.support' | translate }}</p>
+            <div class="form-group ui-g-12">
+                <div>
+                    <label for="contactPhoneNumber" class="ui-g-4 ui-lg-4 ui-sm-12">
+                        Select the country(ies) where you operate
+                    </label>
+                    <label for="contactPhoneNumber" class="ui-g-8 ui-lg-8 ui-sm-12">
+                        Choose one or more areas in this country
+                    </label>
+                </div>
+                <div>
+                    <p-multiSelect id="selectRegion" #selectRegion
+                                   defaultLabel="{{ 'shared.choose.label' | translate }}"
+                                   class="ui-g-4 ui-lg-4 ui-sm-12">
+                    </p-multiSelect>
+                    <p-multiSelect id="selectCountry" #selectCountry
+                                   defaultLabel="{{ 'shared.choose.label' | translate }}"
+                                   class="ui-g-8 ui-lg-8 ui-sm-12">
+                    </p-multiSelect>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
