@@ -34,6 +34,12 @@ public class Municipality {
 	@Column(name="POSTAL_CODE")
 	private String postalCode;
 	
+	@Column(name="PO_BOX")
+	private String poBox;
+	
+	@Column(name="CITY")
+	private String postalCity;
+	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="COUNTRY_CODE")
 	private Country country;
@@ -47,6 +53,10 @@ public class Municipality {
 	@Column(name="JAGATE_CREATION_REQUEST_DATE")
 	@Temporal(TemporalType.DATE)
 	private Date jagateCreationRequestDate;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="LANGUAGE_CODE")
+	private Language language;
 	
 	public Municipality() {
 		super();
@@ -122,6 +132,30 @@ public class Municipality {
 
 	public void setJagateCreationRequestDate(Date jagateCreationRequestDate) {
 		this.jagateCreationRequestDate = jagateCreationRequestDate;
+	}
+
+	public String getPoBox() {
+		return poBox;
+	}
+
+	public void setPoBox(String poBox) {
+		this.poBox = poBox;
+	}
+
+	public String getPostalCity() {
+		return postalCity;
+	}
+
+	public void setPostalCity(String postalCity) {
+		this.postalCity = postalCity;
+	}
+
+	public Language getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(Language language) {
+		this.language = language;
 	}
 	
 }

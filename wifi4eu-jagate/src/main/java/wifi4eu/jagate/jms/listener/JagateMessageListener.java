@@ -14,7 +14,8 @@ public class JagateMessageListener {
 
 	private static final Logger logger = LoggerFactory.getLogger(JagateMessageListener.class);
 
-	@JmsListener(containerFactory = "esContainerFactory", destination = "jagate/jms/topic")
+	//@JmsListener(containerFactory = "esContainerFactory", destination = "jagate/jms/topic")
+	@JmsListener(containerFactory = "esContainerFactory", destination = "pdmv5/ES/ReceptionQueue")
 	public void onMessage(final Message<String> message) throws JMSException {
 		logger.info("PDM JMS message received!");
 
