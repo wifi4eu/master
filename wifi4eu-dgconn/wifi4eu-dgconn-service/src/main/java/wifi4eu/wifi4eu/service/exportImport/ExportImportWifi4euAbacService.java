@@ -101,7 +101,7 @@ public class ExportImportWifi4euAbacService {
 			String jsonStringFile = ParserCSV2JSON.parseCSV2JSON(content, "validatedLEF");
 
 			JsonParser parser = new JsonParser();
-			JsonObject resultJson = parser.parse(content).getAsJsonObject();
+			JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonObject();
 			JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
 			for (int i = 0; i < callsJsonArrayLef.size(); i++) {
 				JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
