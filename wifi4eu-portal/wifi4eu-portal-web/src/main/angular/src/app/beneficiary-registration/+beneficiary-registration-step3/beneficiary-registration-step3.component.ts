@@ -19,8 +19,13 @@ export class BeneficiaryRegistrationStep3Component {
     @Input('associationName') private associationName: string;
 
     private imMayor: boolean;
-    private repeatEmail: string;
-    private userEmailMatches: boolean;
+    private repeatEmail: string = '';
+    private userEmailMatches: boolean = false;
+    private hasEcasEmail: boolean = false;
+    private storedUser;
+    private userEcas;
+    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
+    
 
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
@@ -28,16 +33,23 @@ export class BeneficiaryRegistrationStep3Component {
 
     private css_class_email: string = '';
     /* private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$'; */
-    private emailPattern = new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\.)+[a-z0-9]{2,6}?$/i);
+    /* private emailPattern = new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\.)+[a-z0-9]{2,6}?$/i); */
 
     constructor(private sharedService: SharedService, private localStorage: LocalStorageService) {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
         this.associationNameChange = new EventEmitter<string>();
         this.imMayor = false;
-        this.userEmailMatches = true;
         this.sameDetails = false;
         this.sharedService.cleanEmitter.subscribe(() => { this.reset(); });
+        this.storedUser = this.localStorage.get('user');
+        this.userEcas = this.storedUser ? JSON.parse(this.storedUser.toString()) : null;
+        console.log(this.userEcas);
+        console.log(this.userEcas.ecasEmail);
+        if (this.userEcas.ecasEmail){
+            this.hasEcasEmail = true;
+            this.userEmailMatches = true;
+        }
     }
 
     private fillMayorData() {
@@ -48,6 +60,8 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.address = this.municipalities[0].address;
             this.initialUser.addressNum = this.municipalities[0].addressNum;
             this.initialUser.postalCode = this.municipalities[0].postalCode;
+            this.initialUser.ecasEmail = this.mayors[0].email;
+            this.repeatEmail = this.mayors[0].email;
             this.userEmailMatches = true;
             this.css_class_email = '';
         } else {
@@ -58,19 +72,25 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.addressNum = '';
             this.userEmailMatches = true;
             this.initialUser.postalCode = '';
+            this.initialUser.ecasEmail = '';
+            this.repeatEmail = '';
             /* this.checkEmailsMatch(); */
         }
     }
 
     private checkEmailsMatch() {
-        this.userEmailMatches = false;
-        if (this.initialUser.email === this.repeatEmail && this.repeatEmail.length > 0) {
+        // this.hasEcasEmail = false;
+        if (this.initialUser.ecasEmail === this.repeatEmail && this.repeatEmail.length > 0) {
+            console.log("valid!");
             this.userEmailMatches = true;
             this.css_class_email = 'isValid';
         } else {
+            console.log("not valid!");
+            this.userEmailMatches = false;
             this.css_class_email = 'notValid';
         }
     }
+    
 
     private back() {
         this.onBack.emit();
@@ -94,10 +114,10 @@ export class BeneficiaryRegistrationStep3Component {
     }
 
     private submit() {
-        const storedUser = this.localStorage.get('user');
-        const userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
-        this.initialUser.email = userEcas.ecasEmail;
-        this.initialUser.ecasEmail = userEcas.ecasEmail;
+        alert("hasEcasEmail : "+this.hasEcasEmail);
+        alert("userEmailMatches : "+this.userEmailMatches);
+        this.initialUser.email = this.userEcas.ecasEmail;
+        this.initialUser.ecasEmail = this.userEcas.ecasEmail;
         this.onNext.emit();
         this.associationNameChange.emit(this.associationName);
     }
