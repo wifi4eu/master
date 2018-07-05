@@ -9,7 +9,7 @@
   "home.part1.date": "President of the European Commission",
   "home.watch.video": "Watch video",
   "home.part2.title": "Who can apply?",
-  "home.part2.text1": "The next call for projects will be launched on {{date}} at {{hour}} (Central European Time).",
+  "home.part2.text1": "The next call for projects will be launched on {{date}} at {{hour}} (Central European Summer Time).",
   "home.part2.subtitle4": "It is open to:",
   "home.part2.list1": "- Municipalities",
   "home.part2.subtitle5": "See the list of eligible entities in your country",
@@ -667,7 +667,7 @@
   "dgConn.voucherAssignment.growl.error": "An error ocurred while trying to update the application",
   "dgConn.voucherAssignment.preList.date": "Saved on {{date}} at {{hour}}",
   "dgConn.voucherAssignment.freezeList.date": "Frozen on {{date}} at {{hour}}. Read only.",
-  "dgConn.voucherAssignment.invalidateReason": "Invalidate Reason",
+  "dgConn.voucherAssignment.invalidateReason": "Invalidate reason(s)",
   "dgconn.voucherAssignment.runningSimulation.confirm": "Confirm",
   "dgconn.sendRequestCorrectionEmails": "Send request for correction e-mails",
   "dgconn.sendRequestCorrectionEmails.desc": "This button will send an e-mail to all applicants for which correction of supporting documents is requested.",
@@ -801,5 +801,14 @@
   "shared.close": "Cancel",
   "benefPortal.myVoucher.datatable.signGrantAgreement": "Sign grant agreement",
   "itemMenu.myVoucher": "My voucher",
-  "shared.all": "All"
+  "shared.all": "All",
+  "dgConn.applicantDetails.invalidate.reason1": "1. After the follow-up request, the application provided a document which was corrupt/impossible to open in the format supplied.",
+  "dgConn.applicantDetails.invalidate.reason2": "2. After the follow-up request, the applicant provided the same document(s) as originally supplied with the application.",
+  "dgConn.applicantDetails.invalidate.reason3": "3. After the follow-up request, the applicant provided a document which was unreadable.",
+  "dgConn.applicantDetails.invalidate.reason4": "4. After the follow-up request, the applicant provided a document which was incomplete.",
+  "dgConn.applicantDetails.invalidate.reason5": "5. After the follow-up request, the applicant provided a document which was incorrect/did not correspond to the required document (or still contained incorrect information).",
+  "dgConn.applicantDetails.invalidate.reason6": "6. After the follow-up request, the applicant provided a document which was missing a signature.",
+  "dgConn.applicantDetails.invalidate.reason7": "7. The deadline for the request of correction of the required supporting documents passed without compliance by the applicant.",
+  "dgConn.applicantDetails.invalidate.reason8": "8. The application included a merged municipality.",
+  "dgConn.applicantDetails.invalidate.reason9": "9. Due to irregularities found in the application, it was invalidated."
 }
