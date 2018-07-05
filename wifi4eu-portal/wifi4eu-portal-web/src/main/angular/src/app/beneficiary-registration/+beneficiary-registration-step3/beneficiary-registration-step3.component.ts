@@ -60,6 +60,7 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.address = this.municipalities[0].address;
             this.initialUser.addressNum = this.municipalities[0].addressNum;
             this.initialUser.postalCode = this.municipalities[0].postalCode;
+            this.initialUser.email = this.mayors[0].email;
             this.initialUser.ecasEmail = this.mayors[0].email;
             this.repeatEmail = this.mayors[0].email;
             this.userEmailMatches = true;
@@ -108,16 +109,21 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.address = '';
             this.initialUser.addressNum = '';
             this.initialUser.postalCode = '';
+            this.initialUser.email = '';
+            this.initialUser.ecasUsername = '';
+            this.repeatEmail = '';
             this.userEmailMatches = true;
             this.associationName = '';
         }
     }
 
     private submit() {
-        alert("hasEcasEmail : "+this.hasEcasEmail);
-        alert("userEmailMatches : "+this.userEmailMatches);
-        this.initialUser.email = this.userEcas.ecasEmail;
-        this.initialUser.ecasEmail = this.userEcas.ecasEmail;
+        if (this.userEcas.ecasEmail){
+            this.initialUser.ecasEmail = this.userEcas.ecasEmail;
+            this.initialUser.email = this.userEcas.ecasEmail;
+        } else {
+            this.initialUser.email = this.initialUser.ecasEmail;
+        }
         this.onNext.emit();
         this.associationNameChange.emit(this.associationName);
     }
