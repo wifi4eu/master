@@ -46,12 +46,12 @@
     "ng2-charts": "^1.5.0",
     "ng2-google-recaptcha": "^1.2.0",
     "ng2-translate": "^4.0.1",
+    "ngx-cookie-service": "^1.0.10",
     "primeng": "^1.1.1",
     "rxjs": "5.0.1",
     "ts-helpers": "^1.1.1",
     "typings": "^2.1.1",
-    "zone.js": "^0.8.4",
-    "@eui/deps-base": "2.4.7"
+    "zone.js": "^0.8.4"
   },
   "devDependencies": {
     "@angular/cli": "^1.2.0",

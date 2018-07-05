@@ -11,6 +11,10 @@ import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
 import {environment} from '../environments/environment';
 import {Subject} from "rxjs/Subject";
+import {WebsockApi} from "./shared/swagger";
+import {Observable} from "rxjs/Observable";
+import {CookieService} from 'ngx-cookie-service';
+
 
 enableProdMode();
 
@@ -18,7 +22,7 @@ enableProdMode();
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    providers: [UserApi, RegistrationApi]
+    providers: [UserApi, RegistrationApi, WebsockApi]
 })
 
 export class AppComponent {
@@ -31,9 +35,21 @@ export class AppComponent {
     private menuTranslations: Map<String, String>;
     private stringsTranslated = new Subject<any>();
     private childrenInitialized = new Subject<any>();
+
+    sessionExpired: Boolean = false;
+
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
 
-    constructor(private translate: TranslateService, private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
+    constructor(private translate: TranslateService,
+                private router: Router,
+                private translateService: TranslateService,
+                private localStorageService: LocalStorageService,
+                private uxService: UxService,
+                private sharedService: SharedService,
+                private userApi: UserApi,
+                private registrationApi: RegistrationApi,
+                private websockApi: WebsockApi,
+                private cookieService: CookieService) {
         translateService.setDefaultLang('en');
         let language = this.localStorageService.get('lang');
         if (language) {
@@ -62,7 +78,16 @@ export class AppComponent {
         this.sharedService.logoutEmitter.subscribe(() => this.logout());
 
         this.updateFooterDate();
+
+        const sessionPolling = 61500;
+        Observable.interval(sessionPolling)
+            .takeWhile(() => !this.sessionExpired)
+            .subscribe(execution => {
+                // This will be called every 10 seconds until `stopCondition` flag is set to true
+                this.isSessionExpired();
+            })
     }
+
 
     private updateMenuTranslations() {
         let translatedItems = 0;
@@ -219,6 +244,21 @@ export class AppComponent {
         );
     }
 
+    private reload() {
+        this.removeDataSession()
+        window.location.reload();
+    }
+
+    private removeDataSession() {
+        this.user = null;
+        this.localStorageService.remove('user');
+        this.localStorageService.remove('public-redirection');
+        this.cookieService.deleteAll();
+
+        this.menuLinks = this.children[0];
+        this.profileUrl = null;
+    }
+
     private goToTop() {
         window.scrollTo(0, 0);
     }
@@ -228,4 +268,14 @@ export class AppComponent {
         if (!lang) lang = 'en';
         this.actualDate = new Date(Date.now()).toLocaleDateString(lang.toString());
     }
+
+
+    isSessionExpired() {
+        this.websockApi.isInvalidatedSession().subscribe(
+            (sessionStatus: Boolean) => {
+                this.sessionExpired = (sessionStatus == null) || sessionStatus;
+            }
+        );
+    }
+
 }

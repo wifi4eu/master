@@ -354,7 +354,7 @@
   "benefPortal.voucher.call.label1": "Indkaldelsen er åben, og du kan nu ansøge om en kupon",
   "benefPortal.voucher.call.label2": "Du kan ansøge, så snart indkaldelsen af ansøgninger er åben.",
   "benefPortal.voucher.competition.timeleft.title": "Indkaldelsen af ansøgninger åbner om",
-  "benefPortal.voucher.counterSubtitle": "Indkaldelsen af ansøgninger åbnede den {{days}} dage og {{hours}} (Centraleuropæisk sommertid).",
+  "benefPortal.voucher.counterSubtitle": "Indkaldelsen af ansøgninger åbnede den {{date}} dage og {{hour}} (Centraleuropæisk sommertid).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Din ansøgning om en kupon er gennemført!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Du får snart besked! WiFi4EU vil meddele, hvilke ansøgere der er blevet udvalgt til at få en kupon.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Bemærk, at udvælgelsen foretages efter først til mølle-princippet (dato og tid for ansøgningen) og efter kriterier, der sikrer en geografisk balance, som beskrevet i CEF-arbejdsprogrammet.",
