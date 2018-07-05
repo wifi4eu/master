@@ -609,24 +609,26 @@ public class ApplicationService {
                 String[] documentTypes = {"", "", "", ""};
                 List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
                 for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
-                    String emailString = "";
-                    switch (legalFileCorrectionReason.getType()) {
-                        case 1:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type1");
-                            documentTypes[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
-                        case 2:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type3");
-                            documentTypes[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
-                        case 3:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type2");
-                            documentTypes[2] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
-                        case 4:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type4");
-                            documentTypes[3] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
+                    if(legalFileCorrectionReason.getRequestCorrection()) {
+                        String emailString = "";
+                        switch (legalFileCorrectionReason.getType()) {
+                            case 1:
+                                emailString = bundle.getString("mail.correctionRequestEmail.type1");
+                                documentTypes[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                            case 2:
+                                emailString = bundle.getString("mail.correctionRequestEmail.type3");
+                                documentTypes[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                            case 3:
+                                emailString = bundle.getString("mail.correctionRequestEmail.type2");
+                                documentTypes[2] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                            case 4:
+                                emailString = bundle.getString("mail.correctionRequestEmail.type4");
+                                documentTypes[3] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                        }
                     }
                 }
                 msgBody = MessageFormat.format(msgBody, documentTypes);
@@ -651,7 +653,7 @@ public class ApplicationService {
         CallDTO call = callService.getCallById(callId);
         if (call != null) {
             long currentTime = new Date().getTime();
-            if (call.getStartDate() < currentTime && call.getEndDate() > currentTime) {
+            if (call.getStartDate() < currentTime && call.getEndDate() < currentTime) {
                 List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(call.getId(), ApplicationStatus.PENDING_FOLLOWUP.getValue()));
                 if (!pendingFollowupApps.isEmpty()) {
                     return true;

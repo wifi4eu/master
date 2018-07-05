@@ -329,7 +329,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     }
 
     private requestLegalFilesCorrection() {
-        if (!this.processingRequest) {
+        if (!this.processingRequest && this.correctRequestLegalFilesModal) {
             if (this.selectedIndex != null) {
                 this.processingRequest = true;
                 let savedFilesCount = 0;

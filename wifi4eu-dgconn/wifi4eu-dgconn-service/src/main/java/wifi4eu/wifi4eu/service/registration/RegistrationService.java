@@ -533,6 +533,9 @@ public class RegistrationService {
 
     @Transactional
     public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) {
+        if(legalFileDTO.getCorrectionReason() == null){
+            legalFileDTO.setRequestCorrection(false);
+        }
         return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
     }
 
