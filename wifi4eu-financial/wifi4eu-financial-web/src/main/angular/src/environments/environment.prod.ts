@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  logoutUrl: "https://ecas.ec.europa.eu/cas/logout"
 };

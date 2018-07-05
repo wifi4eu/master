@@ -2,12 +2,12 @@ import {Component} from "@angular/core";
 import {LegalEntityDTO} from "../../../shared/swagger/model/LegalEntityDTO";
 import {BeneficiaryApi} from "../../../shared/swagger/api/BeneficiaryApi";
 import {HelpdeskApi} from "../../../shared/swagger/api/HelpdeskApi";
-import {HelpdeskDTO} from "../../../shared/swagger/model/HelpdeskDTO";
+import {HelpdeskIssueDTO} from "../../../shared/swagger/model/HelpdeskIssueDTO";
 import {setFlagsFromString} from "v8";
 
 @Component({templateUrl: 'second-report.component.html', providers: [HelpdeskApi]})
 export class DgConnSecondReportComponent {
-    private helpdeskIssues: HelpdeskDTO[];
+    private helpdeskIssues: HelpdeskIssueDTO[];
     private dataReady: boolean = false;
     private totalIssues: Array<any> = [];
     private pendingIssueArray: Array<any> = [];
@@ -43,19 +43,19 @@ export class DgConnSecondReportComponent {
                 this.helpdeskIssues = data;
                 let countriesCountArray = [];
                 let pendingCountArray = [];
-                this.helpdeskIssues.forEach((helpdesk: HelpdeskDTO) => {
+                this.helpdeskIssues.forEach((helpdesk: HelpdeskIssueDTO) => {
                     if (countriesCountArray[helpdesk.memberState]) {
                         countriesCountArray[helpdesk.memberState] += 1;
-                        if (helpdesk.status == "Pending") {
-                            pendingCountArray[helpdesk.memberState] += 1;
-                        }
+                        //if (helpdesk.status == "Pending") {
+                            //pendingCountArray[helpdesk.memberState] += 1;
+                        //}
                     }
                     else {
                         countriesCountArray[helpdesk.memberState] = 1
                         pendingCountArray[helpdesk.memberState] = 0;
-                        if (helpdesk.status == "Pending") {
-                            pendingCountArray[helpdesk.memberState] = 1;
-                        }
+                        //if (helpdesk.status == "Pending") {
+                            //pendingCountArray[helpdesk.memberState] = 1;
+                        //}
                     }
                 });
 

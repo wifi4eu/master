@@ -59,7 +59,7 @@ export class DgConnPublicationComponent {
     }
 
     deleteElement(rowData: number) {
-        this.callApi.deleteCall(this.calls[rowData].callId).subscribe(
+        this.callApi.deleteCall(this.calls[rowData].id).subscribe(
             data => {
                 this.callApi.allCalls().subscribe(
                     calls => this.calls = calls,

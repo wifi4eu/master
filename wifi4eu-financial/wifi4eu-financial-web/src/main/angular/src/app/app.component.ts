@@ -38,11 +38,12 @@ export class AppComponent {
         this.profileUrl = "";
 
         this.menuLinks = [new UxLayoutLink({
-            label: 'Wifi4EU',
+            label: 'Wifi4EU-Financial',
             children: [
-                new UxLayoutLink({label: 'Free Wi-Fi for Europeans', url: 'home'}),
-                new UxLayoutLink({label: 'Registration', url: 'registration'}),
-                new UxLayoutLink({label: 'Beneficiary Portal', url: 'beneficiary-portal'}),
+                //new UxLayoutLink({label: 'Free Wi-Fi for Europeans', url: 'home'}),
+                //new UxLayoutLink({label: 'Registration', url: 'registration'}),
+                //new UxLayoutLink({label: 'Beneficiary Portal', url: 'beneficiary-portal'}),
+                new UxLayoutLink({label: 'Abac Portal', url: 'abac'}),
                 new UxLayoutLink({label: 'DGConnect Portal', url: 'dgconn-portal'})
             ]
         })];
@@ -59,7 +60,7 @@ export class AppComponent {
         this.user = u ? JSON.parse(u.toString()) : null;
 
         if (this.user != null) {
-            switch (this.user.userType) {
+            switch (this.user.type) {
                 case 1:
                     this.profileUrl = "/supplier-portal/profile";
                     break;
@@ -76,12 +77,12 @@ export class AppComponent {
 
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
-        let i = (this.user) ? this.user.userType : 0;
+        let i = (this.user) ? this.user.type : 0;
 
-        this.menuLinks = [new UxLayoutLink({
-            label: 'Wifi4EU',
-            children: this.children[i]
-        })];
+        //this.menuLinks = [new UxLayoutLink({
+            //label: 'Wifi4EU',
+            //children: this.children[i]
+        //})];
     }
 
     onLanguageChanged(language: UxLanguage) {

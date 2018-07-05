@@ -43,7 +43,8 @@ public class SingleSignoutController implements ServletContextAware {
 
         // 1. retrieve the client configuration and the validation configuration
         logger.debug("1. retrieve the client configuration and the validation configuration");
-        EcasConfigurationIntf ecasClientConfig = Client.getConfigFromContext(servletContext);
+//        EcasConfigurationIntf ecasClientConfig = Client.getConfigFromContext(servletContext);
+        EcasConfigurationIntf ecasClientConfig = null;
 
         if (ecasClientConfig == null) {
             logger.info("ecasClientConfig is null. Redirecting to homePage");
@@ -55,7 +56,8 @@ public class SingleSignoutController implements ServletContextAware {
 
         // 2. Find the service:
         logger.debug("2. Find the service:");
-        String service = serviceResolver.getService(request);
+        //String service = serviceResolver.getService(request);
+        String service = null;
         if (logger.isInfoEnabled()) {
             logger.info("serviceResolver.getService(request)={" + service + "}");
         }

@@ -39,7 +39,7 @@ export class LoginComponent {
                         detail: 'Login success'
                     });
                     this.sharedService.emitChange();
-                    switch (user.userType) {
+                    switch (user.type) {
                         case 1:
                             this.router.navigateByUrl("supplier-portal");
                             break;

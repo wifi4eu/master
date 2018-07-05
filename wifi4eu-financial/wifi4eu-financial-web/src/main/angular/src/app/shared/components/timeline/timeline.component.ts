@@ -65,7 +65,7 @@ export class TimelineComponent {
 
     public timelineDTOToTimelineItem(dto: TimelineDTOBase) {
         let item = new TimelineItem();
-        item.setLabel(dto.event);
+        //item.setLabel(dto.event);
         let timelineDate = new Date(dto.startDate);
         item.setDate(timelineDate.getDate() + "/" + (timelineDate.getMonth() + 1) + "/" + timelineDate.getFullYear());
         let currentDate = new Date();

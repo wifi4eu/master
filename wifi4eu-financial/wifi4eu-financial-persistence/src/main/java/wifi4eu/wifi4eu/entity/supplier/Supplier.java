@@ -51,6 +51,7 @@ public class Supplier {
     @Column(name = "LEGAL_CHECK2")
     private boolean legalCheck2;
 
+    @Temporal( TemporalType.DATE )
     @Column(name = "CREATE_DATE")
     private Date createDate;
 

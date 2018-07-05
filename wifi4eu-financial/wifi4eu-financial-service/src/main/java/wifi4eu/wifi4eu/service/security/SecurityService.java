@@ -182,12 +182,13 @@ public class SecurityService {
             for (Right r : rights) {
                 rightDTO = rightMapper.toDTO(r);
                 if (isLoadRoles) {
-                    roles = securityRoleRepository.findByRights_rightId(rightDTO.getRightId());
+                    Integer value=rightDTO.getId();
+                    roles = securityRoleRepository.findByRights_rightId(value.longValue());
                     roleDTOs = new ArrayList<>();
                     for (Role role : roles) {
                         roleDTOs.add(new RoleDTO(role.getName()));
                     }
-                    rightDTO.setRoles(roleDTOs);
+                    //rightDTO.setRoles(roleDTOs);
                     rightDTOs.add(rightDTO);
                 } else {
                     rightDTOs.add(rightDTO);

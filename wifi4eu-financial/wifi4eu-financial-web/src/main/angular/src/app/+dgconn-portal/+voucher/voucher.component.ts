@@ -110,13 +110,13 @@ export class DgConnVoucherComponent {
         // Check if key pressed is a ascii printable letter
         if (event.keyCode > 64 && event.keyCode < 91) {
             if (typeof this.nutsDTO === "string") {
-                let name: string = this.nutsDTO;
+                //let name: string = this.nutsDTO;
                 let nuts = this.nutsSuggestions;
                 for (let i = 0; i < nuts.length; i++) {
                     let nut = nuts[i];
-                    if (nut.name.toLowerCase().indexOf(name.toLowerCase()) == 0) {
-                        this.nutsDTO = nut;
-                    }
+                    //if (nut.name.toLowerCase().indexOf(name.toLowerCase()) == 0) {
+                        //this.nutsDTO = nut;
+                    //}
                 }
             }
         }
@@ -142,11 +142,11 @@ export class DgConnVoucherComponent {
         let filteredNuts: NutsDTOBase[] = [];
         for (let i = 0; i < nuts.length; i++) {
             let nut = nuts[i];
-            nut.name = nut.name.toLowerCase();
-            if (nut.name.indexOf(query.toLowerCase()) == 0) {
-                nut.name = nut.name.charAt(0).toUpperCase() + nut.name.slice(1);
+            //nut.name = nut.name.toLowerCase();
+            //if (nut.name.indexOf(query.toLowerCase()) == 0) {
+                //nut.name = nut.name.charAt(0).toUpperCase() + nut.name.slice(1);
                 filteredNuts.push(nut);
-            }
+            //}
         }
         return filteredNuts;
     }

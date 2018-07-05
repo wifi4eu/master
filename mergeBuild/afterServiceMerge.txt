@@ -1,0 +1,340 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] wifi4eu                                                            [pom]
+[INFO] wifi4eu common module                                              [jar]
+[INFO] wifi4eu-financial                                                  [pom]
+[INFO] WiFi4EU Financial Persistence module                               [jar]
+[INFO] WiFi4EU Financial Service module                                   [jar]
+[INFO] WiFi4EU Financial web REST swagger generator module                [jar]
+[INFO] WiFi4EU Financial REST module                                      [jar]
+[INFO] WiFi4EU Financial web module                                       [war]
+[INFO] wifi4eu Financial EAR module                                       [ear]
+[INFO] 
+[INFO] ----------------------< wifi4eu.wifi4eu:wifi4eu >-----------------------
+[INFO] Building wifi4eu 0.0.1-SNAPSHOT                                    [1/9]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ wifi4eu ---
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ wifi4eu ---
+[INFO] Installing C:\Projects\app\pom.xml to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu\0.0.1-SNAPSHOT\wifi4eu-0.0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] -------------------< wifi4eu.wifi4eu:wifi4eu-common >-------------------
+[INFO] Building wifi4eu common module 0.0.1-SNAPSHOT                      [2/9]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ wifi4eu-common ---
+[INFO] Deleting C:\Projects\app\wifi4eu-common\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ wifi4eu-common ---
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ wifi4eu-common ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] Compiling 73 source files to C:\Projects\app\wifi4eu-common\target\classes
+[WARNING] /C:/Projects/app/wifi4eu-common/src/main/java/wifi4eu/wifi4eu/common/security/UserContext.java: C:\Projects\app\wifi4eu-common\src\main\java\wifi4eu\wifi4eu\common\security\UserContext.java uses or overrides a deprecated API.
+[WARNING] /C:/Projects/app/wifi4eu-common/src/main/java/wifi4eu/wifi4eu/common/security/UserContext.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ wifi4eu-common ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory C:\Projects\app\wifi4eu-common\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ wifi4eu-common ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ wifi4eu-common ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ wifi4eu-common ---
+[INFO] Building jar: C:\Projects\app\wifi4eu-common\target\wifi4eu-common-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ wifi4eu-common ---
+[INFO] Installing C:\Projects\app\wifi4eu-common\target\wifi4eu-common-0.0.1-SNAPSHOT.jar to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu-common\0.0.1-SNAPSHOT\wifi4eu-common-0.0.1-SNAPSHOT.jar
+[INFO] Installing C:\Projects\app\wifi4eu-common\pom.xml to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu-common\0.0.1-SNAPSHOT\wifi4eu-common-0.0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] -----------------< wifi4eu.wifi4eu:wifi4eu-financial >------------------
+[INFO] Building wifi4eu-financial 0.0.1-SNAPSHOT                          [3/9]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ wifi4eu-financial ---
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ wifi4eu-financial ---
+[INFO] Installing C:\Projects\app\wifi4eu-financial\pom.xml to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu-financial\0.0.1-SNAPSHOT\wifi4eu-financial-0.0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] -----------< wifi4eu.wifi4eu:wifi4eu-financial-persistence >------------
+[INFO] Building WiFi4EU Financial Persistence module 0.0.1-SNAPSHOT       [4/9]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ wifi4eu-financial-persistence ---
+[INFO] Deleting C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\target
+[INFO] 
+[INFO] --- maven-processor-plugin:2.2.4:process (querydslmetamodel) @ wifi4eu-financial-persistence ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ wifi4eu-financial-persistence ---
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ wifi4eu-financial-persistence ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] Compiling 66 source files to C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ wifi4eu-financial-persistence ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] skip non existing resourceDirectory C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ wifi4eu-financial-persistence ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ wifi4eu-financial-persistence ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ wifi4eu-financial-persistence ---
+[INFO] Building jar: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\target\wifi4eu-financial-persistence-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ wifi4eu-financial-persistence ---
+[INFO] Installing C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\target\wifi4eu-financial-persistence-0.0.1-SNAPSHOT.jar to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu-financial-persistence\0.0.1-SNAPSHOT\wifi4eu-financial-persistence-0.0.1-SNAPSHOT.jar
+[INFO] Installing C:\Projects\app\wifi4eu-financial\wifi4eu-financial-persistence\pom.xml to c:\project\.m2\wifi4eu\wifi4eu\wifi4eu-financial-persistence\0.0.1-SNAPSHOT\wifi4eu-financial-persistence-0.0.1-SNAPSHOT.pom
+[INFO] 
+[INFO] -------------< wifi4eu.wifi4eu:wifi4eu-financial-service >--------------
+[INFO] Building WiFi4EU Financial Service module 0.0.1-SNAPSHOT           [5/9]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ wifi4eu-financial-service ---
+[INFO] Deleting C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\target
+[INFO] 
+[INFO] --- maven-processor-plugin:2.2.4:process (process) @ wifi4eu-financial-service ---
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\exportImport\ValidatedBCMapper.java:4: error: cannot find symbol
+import wifi4eu.wifi4eu.common.dto.model.ValidatedBCDTO;
+                                       ^
+  symbol:   class ValidatedBCDTO
+  location: package wifi4eu.wifi4eu.common.dto.model
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\exportImport\ValidatedBCMapper.java:13: error: cannot find symbol
+      ValidatedBCDTO toDTO(ValidatedBC entity);
+      ^
+  symbol:   class ValidatedBCDTO
+  location: interface wifi4eu.wifi4eu.mapper.exportImport.ValidatedBCMapper
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\exportImport\ValidatedBCMapper.java:14: error: cannot find symbol
+      ValidatedBC toEntity(ValidatedBCDTO vo);
+                           ^
+  symbol:   class ValidatedBCDTO
+  location: interface wifi4eu.wifi4eu.mapper.exportImport.ValidatedBCMapper
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\exportImport\ValidatedBCMapper.java:15: error: cannot find symbol
+      List<ValidatedBCDTO> toDTOList(List<ValidatedBC> list);
+           ^
+  symbol:   class ValidatedBCDTO
+  location: interface wifi4eu.wifi4eu.mapper.exportImport.ValidatedBCMapper
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\exportImport\ValidatedBCMapper.java:16: error: cannot find symbol
+      List<ValidatedBC> toEntityList(List<ValidatedBCDTO> list);
+                                          ^
+  symbol:   class ValidatedBCDTO
+  location: interface wifi4eu.wifi4eu.mapper.exportImport.ValidatedBCMapper
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\exportImport\ValidatedLEFMapper.java:4: error: cannot find symbol
+import wifi4eu.wifi4eu.common.dto.model.ValidatedLEFDTO;
+                                       ^
+  symbol:   class ValidatedLEFDTO
+  location: package wifi4eu.wifi4eu.common.dto.model
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\exportImport\ValidatedLEFMapper.java:12: error: cannot find symbol
+      ValidatedLEFDTO toDTO(ValidatedLEF entity);
+      ^
+  symbol:   class ValidatedLEFDTO
+  location: interface wifi4eu.wifi4eu.mapper.exportImport.ValidatedLEFMapper
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\exportImport\ValidatedLEFMapper.java:13: error: cannot find symbol
+      ValidatedLEF toEntity(ValidatedLEFDTO vo);
+                            ^
+  symbol:   class ValidatedLEFDTO
+  location: interface wifi4eu.wifi4eu.mapper.exportImport.ValidatedLEFMapper
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\exportImport\ValidatedLEFMapper.java:14: error: cannot find symbol
+      List<ValidatedLEFDTO> toDTOList(List<ValidatedLEF> list);
+           ^
+  symbol:   class ValidatedLEFDTO
+  location: interface wifi4eu.wifi4eu.mapper.exportImport.ValidatedLEFMapper
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\exportImport\ValidatedLEFMapper.java:15: error: cannot find symbol
+      List<ValidatedLEF> toEntityList(List<ValidatedLEFDTO> list);
+                                           ^
+  symbol:   class ValidatedLEFDTO
+  location: interface wifi4eu.wifi4eu.mapper.exportImport.ValidatedLEFMapper
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:5: error: package com.vaadin.data.fieldgroup does not exist
+import com.vaadin.data.fieldgroup.FieldGroup;
+                                 ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:6: error: package com.vaadin.data.util does not exist
+import com.vaadin.data.util.BeanItemContainer;
+                           ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:11: error: package com.vaadin.ui does not exist
+import com.vaadin.ui.Table;
+                    ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:12: error: package com.vaadin.server does not exist
+import com.vaadin.server.Page;
+                        ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:13: error: package com.vaadin.data.fieldgroup does not exist
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
+                                 ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:14: error: package com.vaadin.ui does not exist
+import com.vaadin.ui.Notification;
+                    ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:15: error: package com.vaadin.data does not exist
+import com.vaadin.data.Item;
+                      ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:16: error: package com.vaadin.data does not exist
+import com.vaadin.data.Property;
+                      ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:37: error: cannot find symbol
+    private BeanFieldGroup<SoaMessageCall> fieldGroup;
+            ^
+  symbol:   class BeanFieldGroup
+  location: class wifi4eu.wifi4eu.service.exportImport.callAbac.CallAbac
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:38: error: cannot find symbol
+    private BeanItemContainer<SoaMessageCall> messageContainer;
+            ^
+  symbol:   class BeanItemContainer
+  location: class wifi4eu.wifi4eu.service.exportImport.callAbac.CallAbac
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:56: error: package FieldGroup does not exist
+    public void readImportFileLEF(JmsProducerLocal jmsProducer, String xml) throws NamingException, BudgSOAException, FieldGroup.CommitException {
+                                                                                                                                ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:180: error: package FieldGroup does not exist
+    public void readImportFileBC(JmsProducerLocal jmsProducer, String xml) throws NamingException, BudgSOAException, FieldGroup.CommitException {
+                                                                                                                               ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\callAbac\CallAbac.java:314: error: cannot find symbol
+    private Table buildMessageInfoTable() {
+            ^
+  symbol:   class Table
+  location: class wifi4eu.wifi4eu.service.exportImport.callAbac.CallAbac
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\ExportImportFinancialAbacService.java:17: error: cannot find symbol
+import wifi4eu.wifi4eu.common.dto.model.ValidatedLEFDTO;
+                                       ^
+  symbol:   class ValidatedLEFDTO
+  location: package wifi4eu.wifi4eu.common.dto.model
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\exportImport\ExportImportFinancialAbacService.java:18: error: cannot find symbol
+import wifi4eu.wifi4eu.common.dto.model.ValidatedBCDTO;
+                                       ^
+  symbol:   class ValidatedBCDTO
+  location: package wifi4eu.wifi4eu.common.dto.model
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\location\MunicipalityService.java:16: error: package eu.europa.ec.jagate.financiallegalentity does not exist
+import eu.europa.ec.jagate.financiallegalentity.JaGateServiceBean;
+                                               ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\location\MunicipalityService.java:17: error: package eu.europa.ec.jagate.financiallegalentity.model does not exist
+import eu.europa.ec.jagate.financiallegalentity.model.LegalEntityJagate;
+                                                     ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\location\MunicipalityService.java:18: error: package eu.europa.ec.rdg.jagate.ws.domain.legalentity.v6 does not exist
+import eu.europa.ec.rdg.jagate.ws.domain.legalentity.v6.PublicBodyAccountGroupType;
+                                                       ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\location\MunicipalityService.java:19: error: package eu.europa.ec.research.fp.model.code_ref.v3 does not exist
+import eu.europa.ec.research.fp.model.code_ref.v3.CodeRefType;
+                                                 ^
+[ERROR] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\service\location\MunicipalityService.java:35: error: cannot find symbol
+    JaGateServiceBean jaGateService;
+    ^
+  symbol:   class JaGateServiceBean
+  location: class wifi4eu.wifi4eu.service.location.MunicipalityService
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\beneficiary\RepresentativeMapper.java:16: warning: Unmapped target properties: "mayorRepeatEmail, status".
+    RepresentativeDTO toDTO(Representative entity);
+                      ^
+[ERROR] diagnostic: error: Encountered erroneous type ValidatedBCDTO
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\helpdesk\HelpdeskCommentMapper.java:12: warning: Unmapped target properties: "id, fromEmail, createDate".
+    HelpdeskCommentDTO toDTO(HelpdeskComment entity);
+                       ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\helpdesk\HelpdeskCommentMapper.java:14: warning: Unmapped target properties: "commentId, type, commentDate".
+    HelpdeskComment toEntity(HelpdeskCommentDTO vo);
+                    ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\supplier\InstallationMapper.java:11: warning: Unmapped target property: "accessPoints".
+    InstallationDTO toDTO(Installation entity);
+                    ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\supplier\SupplierMapper.java:10: warning: Unmapped target properties: "id, userId, suppliedRegions, legalFile1, legalFile2, status, lang".
+    SupplierDTO toDTO(Supplier entity);
+                ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\supplier\SupplierMapper.java:12: warning: Unmapped target properties: "supplierId, createDate, nutsIds, abacStatus".
+    Supplier toEntity(SupplierDTO vo);
+             ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\location\LauMapper.java:15: warning: Unmapped target properties: "id, physicalAddress".
+    LauDTO toDTO(Lau entity);
+           ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\location\LauMapper.java:17: warning: Unmapped target property: "lauId".
+    Lau toEntity(LauDTO vo);
+        ^
+[ERROR] diagnostic: error: Encountered erroneous type ValidatedLEFDTO
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\location\NutsMapper.java:22: warning: Unmapped target properties: "id, label".
+    NutsDTO toDTO(Nuts entity);
+            ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\location\NutsMapper.java:24: warning: Unmapped target properties: "nutsId, name, suppliers".
+    Nuts toEntity(NutsDTO vo);
+         ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\security\RightMapper.java:16: warning: Unmapped target properties: "id, userId, rightdesc, type".
+    RightDTO toDTO(Right entity);
+             ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\security\RightMapper.java:18: warning: Unmapped target properties: "rightId, name, roles".
+    Right toEntity(RightDTO vo);
+          ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\audit\AuditMapper.java:15: warning: Unmapped target property: "auditDataId".
+    AuditData toEntity(AuditDataDTO vo);
+              ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\beneficiary\MayorMapper.java:15: warning: Unmapped target properties: "id, municipalityId".
+    MayorDTO toDTO(Mayor entity);
+             ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\beneficiary\MayorMapper.java:17: warning: Unmapped target properties: "mayorId, treatment, legalEntityId".
+    Mayor toEntity(MayorDTO vo);
+          ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\security\RoleMapper.java:14: warning: Unmapped target property: "users".
+    Role toEntity(RoleDTO vo);
+         ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\voucher\VoucherMapper.java:17: warning: Unmapped target property: "callId".
+    Voucher toEntity(VoucherDTO vo);
+            ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\location\MunicipalityMapper.java:17: warning: Unmapped target properties: "lauId, registrations".
+    MunicipalityDTO toDTO(Municipality entity);
+                    ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\location\MunicipalityMapper.java:19: warning: Unmapped target properties: "jagateKey, felId".
+    Municipality toEntity(MunicipalityDTO dto);
+                 ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\call\CallMapper.java:12: warning: Unmapped target properties: "id, timelines, voucherManagements, voucherValue, numberVouchers, maxPercentCountry, reserve".
+    CallDTO toDTO(Call entity);
+            ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\call\CallMapper.java:14: warning: Unmapped target property: "callId".
+    Call toEntity(CallDTO vo);
+         ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\timeline\TimelineMapper.java:15: warning: Unmapped target properties: "id, callId, description".
+    TimelineDTO toDTO(Timeline entity);
+                ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\timeline\TimelineMapper.java:17: warning: Unmapped target properties: "timelineId, event".
+    Timeline toEntity(TimelineDTO vo);
+             ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\helpdesk\HelpdeskMapper.java:12: warning: Unmapped target properties: "id, fromEmail, summary, createDate, comments, ticket, lang".
+    HelpdeskIssueDTO toDTO(Helpdesk entity);
+                     ^
+[WARNING] diagnostic: C:\Projects\app\wifi4eu-financial\wifi4eu-financial-service\src\main\java\wifi4eu\wifi4eu\mapper\helpdesk\HelpdeskMapper.java:14: warning: Unmapped target properties: "issueId, date, from, issueSummary".
+    Helpdesk toEntity(HelpdeskIssueDTO vo);
+             ^
+[ERROR] error on execute: error during compilation
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] wifi4eu 0.0.1-SNAPSHOT ............................. SUCCESS [  0.319 s]
+[INFO] wifi4eu common module .............................. SUCCESS [  2.749 s]
+[INFO] wifi4eu-financial .................................. SUCCESS [  0.017 s]
+[INFO] WiFi4EU Financial Persistence module ............... SUCCESS [  1.874 s]
+[INFO] WiFi4EU Financial Service module ................... FAILURE [  2.809 s]
+[INFO] WiFi4EU Financial web REST swagger generator module  SKIPPED
+[INFO] WiFi4EU Financial REST module ...................... SKIPPED
+[INFO] WiFi4EU Financial web module ....................... SKIPPED
+[INFO] wifi4eu Financial EAR module 0.0.1-SNAPSHOT ........ SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 8.000 s
+[INFO] Finished at: 2018-07-03T16:34:12+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.bsc.maven:maven-processor-plugin:2.2.4:process (process) on project wifi4eu-financial-service: Error executing: error during compilation -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <goals> -rf :wifi4eu-financial-service

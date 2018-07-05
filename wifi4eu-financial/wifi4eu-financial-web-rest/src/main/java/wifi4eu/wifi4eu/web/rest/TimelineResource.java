@@ -65,8 +65,9 @@ public class TimelineResource {
     @ResponseBody
     public ResponseDTO deleteTimeline(@RequestBody final TimelineDTO timelineDTO, final HttpServletResponse response) {
         try {
-            TimelineDTO resTimeline = timelineService.deleteTimeline(timelineDTO);
-            return new ResponseDTO(true, resTimeline, null);
+//            TimelineDTO resTimeline = timelineService.deleteTimeline(timelineDTO);
+//            return new ResponseDTO(true, resTimeline, null);
+            return new ResponseDTO(true, null, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);

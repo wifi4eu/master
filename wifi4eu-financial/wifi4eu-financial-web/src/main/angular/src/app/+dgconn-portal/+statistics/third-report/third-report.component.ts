@@ -39,19 +39,19 @@ export class DgConnThirdReportComponent {
 
                 this.suppliers.forEach((supplier: SupplierDTO) => {
 
-                    let nutsIds = supplier.nutsIds;
-                    if (nutsIds && nutsIds.length > 0 && nutsIds.includes(";")) {
-                        let r = nutsIds.split(';');
-                        let labels = r[0].split(',');
-                        for (let i = 0; i < labels.length; i++) {
+                    //let nutsIds = supplier.nutsIds;
+                    //if (nutsIds && nutsIds.length > 0 && nutsIds.includes(";")) {
+                        //let r = nutsIds.split(';');
+                        //let labels = r[0].split(',');
+                        //for (let i = 0; i < labels.length; i++) {
 
-                            if (countriesCountArray[labels[i]]) {
-                                countriesCountArray[labels[i]] += 1;
-                            } else {
-                                countriesCountArray[labels[i]] = 1;
-                            }
-                        }
-                    }
+                            //if (countriesCountArray[labels[i]]) {
+                              //  countriesCountArray[labels[i]] += 1;
+                            //} else {
+                                //countriesCountArray[labels[i]] = 1;
+                            //}
+                        //}
+                    //}
                 });
 
                 for (let countryInfo in countriesCountArray) {
