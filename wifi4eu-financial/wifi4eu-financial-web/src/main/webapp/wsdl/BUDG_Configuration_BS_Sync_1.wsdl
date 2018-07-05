@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- edited with XMLSpy v2011 rel. 2 sp1 (http://www.altova.com) by - - (European Commission DG BUDGET) -->
+<!-- BUDG version 0.07 -->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:get="http://www.ec.europa.eu/budg/abac/configuration/v1" xmlns:tns="http://www.ec.europa.eu/budg/abac/configuration/service/bs/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Configuration" targetNamespace="http://www.ec.europa.eu/budg/abac/configuration/service/bs/sync/v1">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.ec.europa.eu/budg/abac/configuration/v1">
+			<xsd:include schemaLocation="xsd/configuration/BUDG_Configuration_Get_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="ConfigurationGetRequest">
+		<wsdl:part name="request" element="get:ConfigurationGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ConfigurationGetResponse">
+		<wsdl:part name="response" element="get:ConfigurationGetResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="ConfigurationPort">
+		<wsdl:operation name="Get">
+			<wsdl:input message="tns:ConfigurationGetRequest"/>
+			<wsdl:output message="tns:ConfigurationGetResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="Configuration_SOAP" type="tns:ConfigurationPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="Get">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/bs/sync/get/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="Configuration">
+		<wsdl:port name="Configuration_SOAP" binding="tns:Configuration_SOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/xxx/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/xxx/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

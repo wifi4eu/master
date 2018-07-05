@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/external_criteria_type/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:get="http://www.ec.europa.eu/budg/abac/external_criteria_type/v1" xmlns:src="http://www.ec.europa.eu/budg/abac/external_criteria_type/v1" xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" name="ExternalCriteriaType" targetNamespace="http://www.ec.europa.eu/budg/abac/external_criteria_type/service/es/sync/v1">
+	<wsdl:import location="FaultMessage.wsdl" namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/external_criteria_type/v1" schemaLocation="xsd/externalcriteria/BUDG_ExternalCriteriaType_Search_1.xsd">
+    	</xsd:import>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/external_criteria_type/v1" schemaLocation="xsd/externalcriteria/BUDG_ExternalCriteriaType_Get_1.xsd">
+		</xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="ExternalCriteriaTypeSearchRequest">
+		<wsdl:part name="parameters" element="src:ExternalCriteriaTypeSearchRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ExternalCriteriaTypeSearchResponse">
+		<wsdl:part name="parameters" element="src:ExternalCriteriaTypeSearchResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ExternalCriteriaTypeGetRequest">
+		<wsdl:part name="parameters" element="get:ExternalCriteriaTypeGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ExternalCriteriaTypeGetResponse">
+		<wsdl:part name="parameters" element="get:ExternalCriteriaTypeGetResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="ExternalCriteriaTypePort">
+		<wsdl:operation name="search">
+			<wsdl:input message="tns:ExternalCriteriaTypeSearchRequest"/>
+			<wsdl:output message="tns:ExternalCriteriaTypeSearchResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="get">
+			<wsdl:input message="tns:ExternalCriteriaTypeGetRequest"/>
+			<wsdl:output message="tns:ExternalCriteriaTypeGetResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ExternalCriteriaTypeSOAP" type="tns:ExternalCriteriaTypePort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="search">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/external_criteria_type/service/es/sync/search/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="get">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/external_criteria_type/service/es/sync/get/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ExternalCriteriaType">
+		<wsdl:port name="ExternalCriteriaTypeSOAP" binding="tns:ExternalCriteriaTypeSOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/ExternalCriteriaType/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/ExternalCriteriaType/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://www.ec.europa.eu/budg/abac/bank_account/service/es/sync/v1" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:get="http://www.ec.europa.eu/budg/abac/bank_account/v1" 
+xmlns:get_scanned_document="http://www.ec.europa.eu/budg/abac/bank_account/v1"
+ xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1"  
+ xmlns:search="http://www.ec.europa.eu/budg/abac/bank_account/v1" 
+ xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" 
+ xmlns:cre="http://www.ec.europa.eu/budg/abac/bank_account/v1" 
+ xmlns:mod="http://www.ec.europa.eu/budg/abac/bank_account/v1" 
+ name="BankAccount" targetNamespace="http://www.ec.europa.eu/budg/abac/bank_account/service/es/sync/v1">
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/bank_account/v1" schemaLocation="xsd/bankaccount/BUDG_BankAccount_Get_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/bank_account/v1" schemaLocation="xsd/bankaccount/BUDG_BankAccount_GetScannedDocument_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/bank_account/v1" schemaLocation="xsd/bankaccount/BUDG_BankAccount_Search_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/bank_account/v1" schemaLocation="xsd/bankaccount/BUDG_BankAccount_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/bank_account/v1" schemaLocation="xsd/bankaccount/BUDG_BankAccount_Modify_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="BankAccountGetRequest">
+		<wsdl:part name="parameters" element="get:BankAccountGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountGetResponse">
+		<wsdl:part name="parameters" element="get:BankAccountGetResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountSearchRequest">
+		<wsdl:part name="parameters" element="search:BankAccountSearchRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountSearchResponse">
+		<wsdl:part name="parameters" element="search:BankAccountSearchResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountCheckCreateRequest">
+		<wsdl:part name="parameters" element="cre:BankAccountCheckCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountCheckCreateResponse">
+		<wsdl:part name="parameters" element="cre:BankAccountCheckCreateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountCheckModifyRequest">
+		<wsdl:part name="parameters" element="mod:BankAccountCheckModifyRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountCheckModifyResponse">
+		<wsdl:part name="parameters" element="mod:BankAccountCheckModifyResponse"/>
+	</wsdl:message>
+	<wsdl:message name="FaultMessage">
+		<wsdl:part name="parameters" element="msg:MessageFault"/>
+	</wsdl:message>
+	<wsdl:portType name="BankAccountPort">
+		<wsdl:operation name="get">
+			<wsdl:input message="tns:BankAccountGetRequest"/>
+			<wsdl:output message="tns:BankAccountGetResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="search">
+			<wsdl:input message="tns:BankAccountSearchRequest"/>
+			<wsdl:output message="tns:BankAccountSearchResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="checkcreate">
+			<wsdl:input message="tns:BankAccountCheckCreateRequest"/>
+			<wsdl:output message="tns:BankAccountCheckCreateResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="checkmodify">
+			<wsdl:input message="tns:BankAccountCheckModifyRequest"/>
+			<wsdl:output message="tns:BankAccountCheckModifyResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="BankAccountSOAP" type="tns:BankAccountPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="get">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/bank_account/service/es/sync/get/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="search">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/bank_account/service/es/sync/search/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="checkcreate">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/bank_account/service/es/sync/checkcreate/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="checkmodify">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/bank_account/service/es/sync/checkcreate/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="BankAccount">
+		<wsdl:port name="BankAccountSOAP" binding="tns:BankAccountSOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/BankAccount/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/BankAccount/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- edited with XMLSpy v2013 rel. 2 sp2 (x64) (http://www.altova.com) by - (European Commission DG BUDGET) -->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://www.ec.europa.eu/budg/abac/functional_location/service/es/async/v1" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:create="http://www.ec.europa.eu/budg/abac/functional_location/v1" 
+xmlns:modify="http://www.ec.europa.eu/budg/abac/functional_location/v1" 
+xmlns:deactivate="http://www.ec.europa.eu/budg/abac/functional_location/v1" 
+xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" name="FunctionalLocation" targetNamespace="http://www.ec.europa.eu/budg/abac/functional_location/service/es/async/v1">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.ec.europa.eu/budg/abac/functional_location/service/es/async/v1">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/functional_location/v1" schemaLocation="xsd/functionallocation/BUDG_FunctionalLocation_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/functional_location/v1" schemaLocation="xsd/functionallocation/BUDG_FunctionalLocation_Modify_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/functional_location/v1" schemaLocation="xsd/functionallocation/BUDG_FunctionalLocation_Deactivate_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="FunctionalLocationCreateRequest">
+		<wsdl:part name="request" element="create:FunctionalLocationCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="FunctionalLocationCreateResponse">
+		<wsdl:part name="response" element="create:FunctionalLocationCreateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="FunctionalLocationModifyRequest">
+		<wsdl:part name="request" element="modify:FunctionalLocationModifyRequest"/>
+	</wsdl:message>
+	<wsdl:message name="FunctionalLocationModifyResponse">
+		<wsdl:part name="response" element="modify:FunctionalLocationModifyResponse"/>
+	</wsdl:message>
+	<wsdl:message name="FunctionalLocationDeactivateRequest">
+		<wsdl:part name="request" element="deactivate:FunctionalLocationDeactivateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="FunctionalLocationDeactivateResponse">
+		<wsdl:part name="response" element="deactivate:FunctionalLocationDeactivateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="FaultMessage">
+		<wsdl:part name="parameters" element="msg:MessageFault"/>
+	</wsdl:message>
+	<wsdl:portType name="FunctionalLocation">
+		<wsdl:operation name="Create">
+			<wsdl:input message="tns:FunctionalLocationCreateRequest"/>
+			<wsdl:output message="tns:FunctionalLocationCreateResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="Modify">
+			<wsdl:input message="tns:FunctionalLocationModifyRequest"/>
+			<wsdl:output message="tns:FunctionalLocationModifyResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="Deactivate">
+			<wsdl:input message="tns:FunctionalLocationDeactivateRequest"/>
+			<wsdl:output message="tns:FunctionalLocationDeactivateResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="FunctionalLocationBinding" type="tns:FunctionalLocation">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="Create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/functional_location/service/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="Modify">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/functional_location/service/async/modify/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="Deactivate">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/functional_location/service/async/deactivate/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

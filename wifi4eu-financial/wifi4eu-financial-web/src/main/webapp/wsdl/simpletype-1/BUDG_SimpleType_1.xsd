@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 sp1 (http://www.altova.com) by - - (European Commission DG BUDGET) -->
+<!-- 
+=================================================================================================
+Repository path:	$HeadURL: https://webgate.ec.europa.eu/CITnet/svn/budg-abac-dev/trunk/OSB/ANA_RESOURCES/xsd/simpletype/BUDG_SimpleType_1.xsd $
+Last committed:		$Revision: 29242 $
+Last changed by:	$Author: delhama $
+Last changed date:	$Date: 2015-02-20 15:18:48 +0100 (Fri, 20 Feb 2015) $
+ID:					$Id: BUDG_SimpleType_1.xsd 29242 2015-02-20 14:18:48Z delhama $
+=================================================================================================
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.ec.europa.eu/budg/abac/simple_type/v1" 
+xmlns:altova="http://www.altova.com/xml-schema-extensions" 
+targetNamespace="http://www.ec.europa.eu/budg/abac/simple_type/v1" 
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+	<xs:simpleType name="AmountType">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="15"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BookYearType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4"/>
+			<xs:pattern value="\d{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BusinessStatusType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="X"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="CreationDateType">
+		<xs:restriction base="DateTimeType"/>
+	</xs:simpleType>
+	<xs:simpleType name="CreationUserType">
+		<xs:restriction base="UserIdType"/>
+	</xs:simpleType>
+	<xs:simpleType name="DateTimeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="2012-01-01T00:00:00"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+			<xs:documentation>tst</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime">
+			<xs:minInclusive value="1950-01-01T00:00:00.000+00:00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DateType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="2012-01-01"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+			<xs:documentation>tst</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:date">
+			<xs:minInclusive value="1950-01-01"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DescriptionType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EndDateType">
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="IndicatorType">
+		<xs:restriction base="xs:boolean"/>
+	</xs:simpleType>
+	<xs:simpleType name="InterestRateType">
+		<xs:restriction base="RateType"/>
+	</xs:simpleType>
+	<xs:simpleType name="Iso2CodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="XX"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="2"/>
+			<xs:minLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Iso3CodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="XXX"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="3"/>
+			<xs:minLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LocalKeyType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="SI2.123"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LocalSystemCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="SI2"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="3"/>
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ModificationDateType">
+		<xs:restriction base="DateTimeType"/>
+	</xs:simpleType>
+	<xs:simpleType name="ModificationUserType">
+		<xs:restriction base="UserIdType"/>
+	</xs:simpleType>
+	<xs:simpleType name="OnlineFlagType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="true"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="IndicatorType"/>
+	</xs:simpleType>
+	<xs:simpleType name="PercentageType">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="5"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PersonIdType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="SCHUMRO"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RateType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="1.0000000"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="15"/>
+			<xs:fractionDigits value="7"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StartDateType">
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="TransactionAreaCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="COM"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransactionTypeCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="COM"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TreeCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="B2000"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="5"/>
+			<xs:maxLength value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserIdType">
+		<xs:restriction base="PersonIdType"/>
+	</xs:simpleType>
+	<xs:simpleType name="UUIDType">
+		<xs:restriction base="xs:ID">
+			<xs:pattern value="[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ValidFlagType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="true"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="IndicatorType"/>
+	</xs:simpleType>
+	<xs:simpleType name="YearType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="2012"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FileReferenceType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProjectType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RemarksType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="512"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UserReferenceType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BudgetCompanyCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="BG32"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+		<xs:simpleType name="PaymentExecutionMethodCodeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PaymentMethodCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="VIR"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PolicyAreaCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="DG BUDG"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DocumentDetailNumberType">
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DgNameType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="BUDG"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DgDescriptionType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="240"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BudgetManagementTypeCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="CD"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExpenditureCategoryCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="ADM"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialRegulationGroupCodeType">
+		<xs:annotation>
+			<xs:documentation>Ex : FR2007, FR2012, FRMIX-2007-2012</xs:documentation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="FR2012"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GuaranteeNatureCodeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GuaranteeNatureDescriptionType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GuaranteeOriginCodeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GuaranteeOriginDescriptionType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GuaranteeStateCodeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GuaranteeStateDescriptionType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ImplementedByCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="CD"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PerformanceGuaranteeIndicatorCodeType">
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FinancialRegulationCodeType">
+		<xs:annotation>
+			<xs:documentation>Ex : FR2007, FR2012, FRFEDF ..</xs:documentation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="FR2012"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BusinessAreaCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="F10"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProfitCenterCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="DG BUDG"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InternalOrderCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="000001000000"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WbsCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="M7601020302 SA MAIN3"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="24"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PaymentDeductionModeCodeType">
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LEBALinkStatusCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="VALID"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="35"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegalFormCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="SA/NV"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="35"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WorkflowCenterCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="BUDGETARY"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WorkflowOrganisationNameType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="BUDG"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="60"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ThpBlockingCodeType">
+		<xs:restriction base="CodeType">
+			<xs:maxLength value="240"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WorkflowLevelType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="0"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WorkflowStatusType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="INIT"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SuspensionReasonCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="INC"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="CodeType">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PrefiClearingJustificationCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<altova:exampleValues>
+					<altova:example value="EP"/>
+				</altova:exampleValues>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LegalEntityNameType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

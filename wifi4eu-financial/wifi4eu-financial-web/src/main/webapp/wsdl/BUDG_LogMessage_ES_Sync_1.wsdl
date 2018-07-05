@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- edited with XMLSpy v2013 rel. 2 sp2 (x64) (http://www.altova.com) by - (European Commission DG BUDGET) -->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/logmessage/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:src="http://www.ec.europa.eu/budg/abac/message/v1" xmlns:get="http://www.ec.europa.eu/budg/abac/message/v1" xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" name="LogMessage" targetNamespace="http://www.ec.europa.eu/budg/abac/logmessage/service/es/sync/v1">
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1" schemaLocation="xsd/message/BUDG_Message_Search_1.xsd">
+    	</xsd:import>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1" schemaLocation="xsd/message/BUDG_Message_Get_1.xsd">
+    	</xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="LogMessageSearchRequest">
+		<wsdl:part name="parameters" element="src:MessageSearchRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LogMessageSearchResponse">
+		<wsdl:part name="parameters" element="src:MessageSearchResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LogMessageGetRequest">
+		<wsdl:part name="parameters" element="get:MessageGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LogMessageGetResponse">
+		<wsdl:part name="parameters" element="get:MessageGetResponse"/>
+	</wsdl:message>
+	<wsdl:message name="FaultMessage">
+		<wsdl:part name="parameters" element="msg:MessageFault"/>
+	</wsdl:message>
+	<wsdl:portType name="LogMessage">
+		<wsdl:operation name="search">
+			<wsdl:input message="tns:LogMessageSearchRequest"/>
+			<wsdl:output message="tns:LogMessageSearchResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="get">
+			<wsdl:input message="tns:LogMessageGetRequest"/>
+			<wsdl:output message="tns:LogMessageGetResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="LogMessageSOAP" type="tns:LogMessage">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="search">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/logmessage/service/es/sync/search/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="get">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/logmessage/service/es/sync/get/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="LogMessage">
+		<wsdl:port name="LogMessageSOAP" binding="tns:LogMessageSOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/LogMessage/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/LogMessage/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://www.ec.europa.eu/budg/abac/envelope/service/es/async/v1" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:create="http://www.ec.europa.eu/budg/abac/envelope/v1" 
+xmlns:delete="http://www.ec.europa.eu/budg/abac/envelope/v1" 
+xmlns:modify="http://www.ec.europa.eu/budg/abac/envelope/v1" 
+xmlns:give_visa="http://www.ec.europa.eu/budg/abac/envelope/v1" 
+xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" 
+targetNamespace="http://www.ec.europa.eu/budg/abac/envelope/service/es/async/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/envelope/v1" schemaLocation="xsd/envelope/BUDG_Envelope_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/envelope/v1" schemaLocation="xsd/envelope/BUDG_Envelope_GiveVisa_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="EnvelopeCreateRequest">
+		<wsdl:part name="parameters" element="create:EnvelopeCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="EnvelopeCreateResponse">
+		<wsdl:part name="parameters" element="create:EnvelopeCreateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="EnvelopeCreateDetailRequest">
+		<wsdl:part name="parameters" element="create:EnvelopeCreateDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="EnvelopeCreateDetailResponse">
+		<wsdl:part name="parameters" element="create:EnvelopeCreateDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="EnvelopeCreatePostingCriteriaLinkRequest">
+		<wsdl:part name="parameters" element="create:EnvelopeCreatePostingCriteriaLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="EnvelopeCreatePostingCriteriaLinkResponse">
+		<wsdl:part name="parameters" element="create:EnvelopeCreatePostingCriteriaLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="EnvelopeCreateResponsibleUserRequest">
+		<wsdl:part name="parameters" element="create:EnvelopeCreateResponsibleUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="EnvelopeCreateResponsibleUserResponse">
+		<wsdl:part name="parameters" element="create:EnvelopeCreateResponsibleUserResponse"/>
+	</wsdl:message>
+	<wsdl:message name="EnvelopeGiveVisaRequest">
+		<wsdl:part name="parameters" element="give_visa:EnvelopeGiveVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="EnvelopeGiveVisaResponse">
+		<wsdl:part name="parameters" element="give_visa:EnvelopeGiveVisaResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="EnvelopePort">
+		<wsdl:operation name="create">
+			<wsdl:input message="tns:EnvelopeCreateRequest"/>
+			<wsdl:output message="tns:EnvelopeCreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<wsdl:input message="tns:EnvelopeCreateDetailRequest"/>
+			<wsdl:output message="tns:EnvelopeCreateDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<wsdl:input message="tns:EnvelopeCreateResponsibleUserRequest"/>
+			<wsdl:output message="tns:EnvelopeCreateResponsibleUserResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_posting_criteria_link">
+			<wsdl:input message="tns:EnvelopeCreatePostingCriteriaLinkRequest"/>
+			<wsdl:output message="tns:EnvelopeCreatePostingCriteriaLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<wsdl:input message="tns:EnvelopeGiveVisaRequest"/>
+			<wsdl:output message="tns:EnvelopeGiveVisaResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="EnvelopeSOAP" type="tns:EnvelopePort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/envelope/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/envelope/service/es/async/create_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/envelope/service/es/async/create_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_posting_criteria_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/envelope/service/es/async/posting_criteria_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/envelope/service/es/async/give_visa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

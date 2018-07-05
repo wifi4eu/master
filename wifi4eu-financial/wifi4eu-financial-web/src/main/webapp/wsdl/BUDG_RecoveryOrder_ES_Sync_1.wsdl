@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:src="http://www.ec.europa.eu/budg/abac/recovery_order/v1" xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" name="RecoveryOrder" targetNamespace="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/sync/v1">
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/recovery_order/v1" schemaLocation="xsd/recoveryorder/BUDG_RecoveryOrder_Search_1.xsd">
+    	</xsd:import>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/recovery_order/v1" schemaLocation="xsd/recoveryorder/BUDG_RecoveryOrder_Get_1.xsd">
+		</xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="RecoveryOrderSearchRequest">
+		<wsdl:part name="parameters" element="src:RecoveryOrderSearchRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderSearchResponse">
+		<wsdl:part name="parameters" element="src:RecoveryOrderSearchResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderGetRequest">
+		<wsdl:part name="parameters" element="src:RecoveryOrderGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderGetResponse">
+		<wsdl:part name="parameters" element="src:RecoveryOrderGetResponse"/>
+	</wsdl:message>
+	<wsdl:message name="FaultMessage">
+		<wsdl:part name="parameters" element="msg:MessageFault"/>
+	</wsdl:message>
+	<wsdl:portType name="RecoveryOrderPort">
+		<wsdl:operation name="get">
+			<wsdl:input message="tns:RecoveryOrderGetRequest"/>
+			<wsdl:output message="tns:RecoveryOrderGetResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="search">
+			<wsdl:input message="tns:RecoveryOrderSearchRequest"/>
+			<wsdl:output message="tns:RecoveryOrderSearchResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="RecoveryOrderSOAP" type="tns:RecoveryOrderPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="search">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/sync/search/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="get">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/sync/get/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="RecoveryOrder">
+		<wsdl:port name="RecoveryOrderSOAP" binding="tns:RecoveryOrderSOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/RecoveryOrder/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/RecoveryOrder/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

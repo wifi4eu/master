@@ -151,8 +151,9 @@
 
     <build>
         <finalName>wifi4eu-financial</finalName>
+        
         <plugins>
-            <plugin>
+        <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>

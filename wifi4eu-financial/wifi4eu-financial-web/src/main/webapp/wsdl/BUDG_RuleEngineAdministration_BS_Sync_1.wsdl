@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.ec.europa.eu/budg/abac/br/sync/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://www.ec.europa.eu/budg/abac/br/sync/v1"
+	name="RuleEngineAdministrationService">
+	<types>
+		<xsd:schema targetNamespace="http://www.ec.europa.eu/budg/abac/br/sync/v1">
+		 	<xs:element name="LoadRulesResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="status" minOccurs="1">
+							<xsd:simpleType>
+								<xsd:restriction base="xsd:string">
+									<xsd:enumeration value="VALID"/>
+									<xsd:enumeration value="WARNING"/>
+									<xsd:enumeration value="INVALID"/>								
+								</xsd:restriction>
+							</xsd:simpleType>
+						</xsd:element>
+						<xsd:element name="error" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+		 	</xs:element>
+		</xsd:schema>
+	</types>
+	<message name="LoadRulesRequest" />
+	<message name="LoadRulesResponse">
+		<part name="LoadRulesResponse" element="tns:LoadRulesResponse" />
+	</message>
+	<portType name="RuleEngineAdministrationPortType">
+		<operation name="LoadRules">
+			<input message="tns:LoadRulesRequest" />
+			<output message="tns:LoadRulesResponse" />
+		</operation>
+	</portType>
+	<binding name="RuleEngineAdministration_SOAPBinding" type="tns:RuleEngineAdministrationPortType">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"
+			style="document" />
+		<operation name="LoadRules">
+			<soap:operation
+				soapAction="http://www.ec.europa.eu/budg/abac/br/sync/internal/v1/LoadRules" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+		</operation>
+	</binding>
+	<service name="RuleEngineAdministrationService">
+		<port name="RuleEngineAdministration_SOAP" binding="tns:RuleEngineAdministration_SOAPBinding">
+			<!--<soap:address location="http://127.0.0.1:17002/brvs/service/RuleEngineAdministration" />-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/brvs/service/RuleEngineAdministration" />
+		</port>
+	</service>
+</definitions>

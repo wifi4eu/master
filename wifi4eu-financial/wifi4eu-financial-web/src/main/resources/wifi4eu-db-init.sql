@@ -18,6 +18,15 @@ DROP TABLE IF EXISTS HEL_HELPDESK_T;
 DROP TABLE IF EXISTS CALL_T;
 DROP TABLE IF EXISTS SEQUENCE;
 
+CREATE TABLE `audit_data_t` (
+  `audit_data_id` int(11) DEFAULT NULL,
+  `request_body` varchar(255) NOT NULL,
+  `request_endpoint` varchar(255) NOT NULL,
+  `request_method` varchar(255) NOT NULL,
+  `response_body` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE LOC_NUTS_T (
   NUTS_ID      INTEGER      NOT NULL AUTO_INCREMENT,
   NUTS_CODE    VARCHAR(255) NOT NULL,

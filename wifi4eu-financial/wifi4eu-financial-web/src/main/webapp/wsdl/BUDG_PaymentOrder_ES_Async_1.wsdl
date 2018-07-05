@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns="http://www.ec.europa.eu/budg/abac/payment_order/service/es/async/v1" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:le="http://www.ec.europa.eu/budg/abac/payment_order/v1" 
+xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" 
+xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" 
+name="PaymentOrder" 
+targetNamespace="http://www.ec.europa.eu/budg/abac/payment_order/service/es/async/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/payment_order/v1" schemaLocation="xsd/paymentorder/BUDG_PaymentOrder_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/payment_order/v1" schemaLocation="xsd/paymentorder/BUDG_PaymentOrder_Modify_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/payment_order/v1" schemaLocation="xsd/paymentorder/BUDG_PaymentOrder_GiveVisa_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1" schemaLocation="xsd/message/BUDG_Message_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="PaymentOrderCreateRequest">
+		<wsdl:part name="parameters" element="le:PaymentOrderCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentOrderCreateResponse">
+		<wsdl:part name="parameters" element="le:PaymentOrderCreateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentOrderCreatePaymentRequestLinkRequest">
+		<wsdl:part name="parameters" element="le:PaymentOrderCreatePaymentRequestLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentOrderCreatePaymentRequestLinkResponse">
+		<wsdl:part name="parameters" element="le:PaymentOrderCreatePaymentRequestLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentOrderModifyPaymentRequestLinkRequest">
+		<wsdl:part name="parameters" element="le:PaymentOrderModifyPaymentRequestLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentOrderModifyPaymentRequestLinkResponse">
+		<wsdl:part name="parameters" element="le:PaymentOrderModifyPaymentRequestLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentOrderCreateResponsibleUserRequest">
+		<wsdl:part name="parameters" element="le:PaymentOrderCreateResponsibleUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentOrderCreateResponsibleUserResponse">
+		<wsdl:part name="parameters" element="le:PaymentOrderCreateResponsibleUserResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentOrderGiveVisaRequest">
+		<wsdl:part name="parameters" element="le:PaymentOrderGiveVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentOrderGiveVisaResponse">
+		<wsdl:part name="parameters" element="le:PaymentOrderGiveVisaResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="PaymentOrderPort">
+		<wsdl:operation name="create">
+			<wsdl:input message="PaymentOrderCreateRequest"/>
+			<wsdl:output message="PaymentOrderCreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_payment_request_link">
+			<wsdl:input message="PaymentOrderCreatePaymentRequestLinkRequest"/>
+			<wsdl:output message="PaymentOrderCreatePaymentRequestLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_payment_request_link">
+			<wsdl:input message="PaymentOrderModifyPaymentRequestLinkRequest"/>
+			<wsdl:output message="PaymentOrderModifyPaymentRequestLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<wsdl:input message="PaymentOrderCreateResponsibleUserRequest"/>
+			<wsdl:output message="PaymentOrderCreateResponsibleUserResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<wsdl:input message="PaymentOrderGiveVisaRequest"/>
+			<wsdl:output message="PaymentOrderGiveVisaResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="PaymentOrderSOAP" type="PaymentOrderPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_order/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_payment_request_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_order/service/es/async/create_payment_request_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_payment_request_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_order/service/es/async/modify_payment_request_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_order/service/es/async/create_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_order/service/es/async/give_visa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

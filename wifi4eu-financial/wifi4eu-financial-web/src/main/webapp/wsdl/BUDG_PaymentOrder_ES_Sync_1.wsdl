@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/payment_order/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:src="http://www.ec.europa.eu/budg/abac/payment_order/v1" xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" name="PaymentOrder" targetNamespace="http://www.ec.europa.eu/budg/abac/payment_order/service/es/sync/v1">
+	<wsdl:import location="FaultMessage.wsdl" namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/payment_order/v1" schemaLocation="xsd/paymentorder/BUDG_PaymentOrder_Get_1.xsd">
+			</xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="PaymentOrderGetRequest">
+		<wsdl:part name="parameters" element="src:PaymentOrderGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentOrderGetResponse">
+		<wsdl:part name="parameters" element="src:PaymentOrderGetResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="PaymentOrderPort">
+		<wsdl:operation name="get">
+			<wsdl:input message="tns:PaymentOrderGetRequest"/>
+			<wsdl:output message="tns:PaymentOrderGetResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="PaymentOrderSOAP" type="tns:PaymentOrderPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		
+		<wsdl:operation name="get">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_order/service/es/sync/get/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="PaymentOrder">
+		<wsdl:port name="PaymentOrderSOAP" binding="tns:PaymentOrderSOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/PaymentOrder/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/PaymentOrder/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

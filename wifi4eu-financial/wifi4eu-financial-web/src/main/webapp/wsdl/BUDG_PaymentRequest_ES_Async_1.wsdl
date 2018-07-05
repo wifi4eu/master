@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/v1" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:create="http://www.ec.europa.eu/budg/abac/payment_request/v1" xmlns:modify="http://www.ec.europa.eu/budg/abac/payment_request/v1" xmlns:delete="http://www.ec.europa.eu/budg/abac/payment_request/v1" xmlns:give_visa="http://www.ec.europa.eu/budg/abac/payment_request/v1" xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" name="PaymentRequest" targetNamespace="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/payment_request/v1" schemaLocation="xsd/paymentrequest/BUDG_PaymentRequest_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/payment_request/v1" schemaLocation="xsd/paymentrequest/BUDG_PaymentRequest_Modify_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/payment_request/v1" schemaLocation="xsd/paymentrequest/BUDG_PaymentRequest_Delete_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/payment_request/v1" schemaLocation="xsd/paymentrequest/BUDG_PaymentRequest_GiveVisa_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1" schemaLocation="xsd/message/BUDG_Message_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="PaymentRequestCreateRequest">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateResponse">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateAssociatedCountryRequest">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateAssociatedCountryRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateAssociatedCountryResponse">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateAssociatedCountryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateDetailRequest">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateDetailResponse">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreatePaymentSuspensionPeriodRequest">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreatePaymentSuspensionPeriodRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreatePaymentSuspensionPeriodResponse">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreatePaymentSuspensionPeriodResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreatePostingCriteriaLinkRequest">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreatePostingCriteriaLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreatePostingCriteriaLinkResponse">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreatePostingCriteriaLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreatePrefinancingClearingRequest">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreatePrefinancingClearingRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreatePrefinancingClearingResponse">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreatePrefinancingClearingResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateReportSuspensionPeriodRequest">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreatePaymentSuspensionPeriodRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateReportSuspensionPeriodResponse">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreatePaymentSuspensionPeriodResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateResponsibleUserRequest">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateResponsibleUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateResponsibleUserResponse">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateResponsibleUserResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateSupportingDocumentFolderRequest">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateSupportingDocumentFolderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateSupportingDocumentFolderResponse">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateSupportingDocumentFolderResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateSupportingDocumentRequest">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateSupportingDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateSupportingDocumentResponse">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateSupportingDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateWbsRequest">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateWbsRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestCreateWbsResponse">
+		<wsdl:part name="parameters" element="create:PaymentRequestCreateWbsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestModifyRequest">
+		<wsdl:part name="parameters" element="modify:PaymentRequestModifyRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestModifyResponse">
+		<wsdl:part name="parameters" element="modify:PaymentRequestModifyResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestModifyAssociatedCountryRequest">
+		<wsdl:part name="parameters" element="modify:PaymentRequestModifyAssociatedCountryRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestModifyAssociatedCountryResponse">
+		<wsdl:part name="parameters" element="modify:PaymentRequestModifyAssociatedCountryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestModifyDetailRequest">
+		<wsdl:part name="parameters" element="modify:PaymentRequestModifyDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestModifyDetailResponse">
+		<wsdl:part name="parameters" element="modify:PaymentRequestModifyDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestModifySupportingDocumentFolderRequest">
+		<wsdl:part name="parameters" element="modify:PaymentRequestModifySupportingDocumentFolderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestModifySupportingDocumentFolderResponse">
+		<wsdl:part name="parameters" element="modify:PaymentRequestModifySupportingDocumentFolderResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestModifySupportingDocumentRequest">
+		<wsdl:part name="parameters" element="modify:PaymentRequestModifySupportingDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestModifySupportingDocumentResponse">
+		<wsdl:part name="parameters" element="modify:PaymentRequestModifySupportingDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestDeleteRequest">
+		<wsdl:part name="parameters" element="delete:PaymentRequestDeleteRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestDeleteResponse">
+		<wsdl:part name="parameters" element="delete:PaymentRequestDeleteResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestDeleteDetailRequest">
+		<wsdl:part name="parameters" element="delete:PaymentRequestDeleteDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestDeleteDetailResponse">
+		<wsdl:part name="parameters" element="delete:PaymentRequestDeleteDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestGiveVisaRequest">
+		<wsdl:part name="parameters" element="give_visa:PaymentRequestGiveVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="PaymentRequestGiveVisaResponse">
+		<wsdl:part name="parameters" element="give_visa:PaymentRequestGiveVisaResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="PaymentRequestPort">
+		<wsdl:operation name="create">
+			<wsdl:input message="tns:PaymentRequestCreateRequest"/>
+			<wsdl:output message="tns:PaymentRequestCreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_associated_country">
+			<wsdl:input message="tns:PaymentRequestCreateAssociatedCountryRequest"/>
+			<wsdl:output message="tns:PaymentRequestCreateAssociatedCountryResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<wsdl:input message="tns:PaymentRequestCreateDetailRequest"/>
+			<wsdl:output message="tns:PaymentRequestCreateDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_payment_suspension_period">
+			<wsdl:input message="tns:PaymentRequestCreatePaymentSuspensionPeriodRequest"/>
+			<wsdl:output message="tns:PaymentRequestCreatePaymentSuspensionPeriodResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_posting_criteria_link">
+			<wsdl:input message="tns:PaymentRequestCreatePostingCriteriaLinkRequest"/>
+			<wsdl:output message="tns:PaymentRequestCreatePostingCriteriaLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_prefinancing_clearing">
+			<wsdl:input message="tns:PaymentRequestCreatePrefinancingClearingRequest"/>
+			<wsdl:output message="tns:PaymentRequestCreatePrefinancingClearingResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_report_suspension_period">
+			<wsdl:input message="tns:PaymentRequestCreatePaymentSuspensionPeriodRequest"/>
+			<wsdl:output message="tns:PaymentRequestCreatePaymentSuspensionPeriodResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<wsdl:input message="tns:PaymentRequestCreateResponsibleUserRequest"/>
+			<wsdl:output message="tns:PaymentRequestCreateResponsibleUserResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document_folder">
+			<wsdl:input message="tns:PaymentRequestCreateSupportingDocumentFolderRequest"/>
+			<wsdl:output message="tns:PaymentRequestCreateSupportingDocumentFolderResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<wsdl:input message="tns:PaymentRequestCreateSupportingDocumentRequest"/>
+			<wsdl:output message="tns:PaymentRequestCreateSupportingDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_wbs">
+			<wsdl:input message="tns:PaymentRequestCreateWbsRequest"/>
+			<wsdl:output message="tns:PaymentRequestCreateWbsRequest"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify">
+			<wsdl:input message="tns:PaymentRequestModifyRequest"/>
+			<wsdl:output message="tns:PaymentRequestModifyResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_associated_country">
+			<wsdl:input message="tns:PaymentRequestModifyAssociatedCountryRequest"/>
+			<wsdl:output message="tns:PaymentRequestModifyAssociatedCountryResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_detail">
+			<wsdl:input message="tns:PaymentRequestModifyDetailRequest"/>
+			<wsdl:output message="tns:PaymentRequestModifyDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document_folder">
+			<wsdl:input message="tns:PaymentRequestModifySupportingDocumentFolderRequest"/>
+			<wsdl:output message="tns:PaymentRequestModifySupportingDocumentFolderResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document">
+			<wsdl:input message="tns:PaymentRequestModifySupportingDocumentRequest"/>
+			<wsdl:output message="tns:PaymentRequestModifySupportingDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<wsdl:input message="tns:PaymentRequestDeleteRequest"/>
+			<wsdl:output message="tns:PaymentRequestDeleteResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete_detail">
+			<wsdl:input message="tns:PaymentRequestDeleteDetailRequest"/>
+			<wsdl:output message="tns:PaymentRequestDeleteDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<wsdl:input message="tns:PaymentRequestGiveVisaRequest"/>
+			<wsdl:output message="tns:PaymentRequestGiveVisaResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="PaymentRequestSOAP" type="tns:PaymentRequestPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_associated_country">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/create_associated_country/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/create_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_payment_suspension_period">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/create_payment_suspension_period/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_posting_criteria_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/create_posting_criteria_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_prefinancing_clearing">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/create_prefinancing_clearing/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_report_suspension_period">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/create_report_suspension_period/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/create_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+				<wsdl:operation name="create_supporting_document_folder">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/create_supporting_document_folder/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/create_supporting_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_wbs">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/create_wbs/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/modify/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_associated_country">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/modify_associated_country/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/modify_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document_folder">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/modify_supporting_document_folder/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/modify_supporting_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/delete/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/delete_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/payment_request/service/es/async/give_visa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

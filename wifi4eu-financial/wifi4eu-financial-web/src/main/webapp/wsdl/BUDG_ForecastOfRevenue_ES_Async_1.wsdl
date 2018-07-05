@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/v1"
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:create="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/v1" 
+xmlns:modify="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/v1" 
+xmlns:give_visa="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/v1" 
+xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" 
+xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" 
+name="ForecastOfRevenue" 
+targetNamespace="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/v1" schemaLocation="xsd/forecastofrevenue/BUDG_ForecastOfRevenue_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/v1" schemaLocation="xsd/forecastofrevenue/BUDG_ForecastOfRevenue_Modify_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/v1" schemaLocation="xsd/forecastofrevenue/BUDG_ForecastOfRevenue_GiveVisa_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1" schemaLocation="xsd/message/BUDG_Message_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="ForecastOfRevenueCreateRequest">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateResponse">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateDetailRequest">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateDetailResponse">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateResponsibleUserRequest">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateResponsibleUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateResponsibleUserResponse">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateResponsibleUserResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateSupportingDocumentFolderRequest">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateSupportingDocumentFolderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateSupportingDocumentFolderResponse">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateSupportingDocumentFolderResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateSupportingDocumentRequest">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateSupportingDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateSupportingDocumentResponse">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateSupportingDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateRecoveryContextRequest">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateRecoveryContextRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateRecoveryContextResponse">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateRecoveryContextResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateRecoveryContextErrorRequest">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateRecoveryContextErrorRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateRecoveryContextErrorResponse">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateRecoveryContextErrorResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateAresDocumentRequest">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateAresDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueCreateAresDocumentResponse">
+		<wsdl:part name="parameters" element="create:ForecastOfRevenueCreateAresDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueModifyRequest">
+		<wsdl:part name="parameters" element="modify:ForecastOfRevenueModifyRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueModifyResponse">
+		<wsdl:part name="parameters" element="modify:ForecastOfRevenueModifyResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueModifyDetailRequest">
+		<wsdl:part name="parameters" element="modify:ForecastOfRevenueModifyDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueModifyDetailResponse">
+		<wsdl:part name="parameters" element="modify:ForecastOfRevenueModifyDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueModifySupportingDocumentFolderRequest">
+		<wsdl:part name="parameters" element="modify:ForecastOfRevenueModifySupportingDocumentFolderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueModifySupportingDocumentFolderResponse">
+		<wsdl:part name="parameters" element="modify:ForecastOfRevenueModifySupportingDocumentFolderResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueModifySupportingDocumentRequest">
+		<wsdl:part name="parameters" element="modify:ForecastOfRevenueModifySupportingDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueModifySupportingDocumentResponse">
+		<wsdl:part name="parameters" element="modify:ForecastOfRevenueModifySupportingDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueGiveVisaRequest">
+		<wsdl:part name="parameters" element="give_visa:ForecastOfRevenueGiveVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ForecastOfRevenueGiveVisaResponse">
+		<wsdl:part name="parameters" element="give_visa:ForecastOfRevenueGiveVisaResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="ForecastOfRevenuePort">
+		<wsdl:operation name="create">
+			<wsdl:input message="tns:ForecastOfRevenueCreateRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueCreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<wsdl:input message="tns:ForecastOfRevenueCreateDetailRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueCreateDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<wsdl:input message="tns:ForecastOfRevenueCreateResponsibleUserRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueCreateResponsibleUserResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document_folder">
+			<wsdl:input message="tns:ForecastOfRevenueCreateSupportingDocumentFolderRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueCreateSupportingDocumentFolderResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<wsdl:input message="tns:ForecastOfRevenueCreateSupportingDocumentRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueCreateSupportingDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context">
+			<wsdl:input message="tns:ForecastOfRevenueCreateRecoveryContextRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueCreateRecoveryContextResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context_error">
+			<wsdl:input message="tns:ForecastOfRevenueCreateRecoveryContextErrorRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueCreateRecoveryContextErrorResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_ares_document">
+			<wsdl:input message="tns:ForecastOfRevenueCreateAresDocumentRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueCreateAresDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify">
+			<wsdl:input message="tns:ForecastOfRevenueModifyRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueModifyResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_detail">
+			<wsdl:input message="tns:ForecastOfRevenueModifyDetailRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueModifyDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document_folder">
+			<wsdl:input message="tns:ForecastOfRevenueModifySupportingDocumentFolderRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueModifySupportingDocumentFolderResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document">
+			<wsdl:input message="tns:ForecastOfRevenueModifySupportingDocumentRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueModifySupportingDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<wsdl:input message="tns:ForecastOfRevenueGiveVisaRequest"/>
+			<wsdl:output message="tns:ForecastOfRevenueGiveVisaResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ForecastOfRevenueSOAP" type="tns:ForecastOfRevenuePort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/create_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/create_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document_folder">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/create_supporting_document_folder/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/create_supporting_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/create_recovery_context/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context_error">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/create_recovery_context_error/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_ares_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/create_ares_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/modify/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/modify_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document_folder">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/modify_supporting_document_folder/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/modify_supporting_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/forecast_of_revenue/service/es/async/give_visa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.ec.europa.eu/budg/abac/geographical_zone/service/es/async/v1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:create="http://www.ec.europa.eu/budg/abac/geographical_zone/v1"
+	xmlns:modify="http://www.ec.europa.eu/budg/abac/geographical_zone/v1"
+	xmlns:delete="http://www.ec.europa.eu/budg/abac/geographical_zone/v1"
+	xmlns:give_visa="http://www.ec.europa.eu/budg/abac/geographical_zone/v1"
+	xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1"
+	xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" name="GeographicalZone"
+	targetNamespace="http://www.ec.europa.eu/budg/abac/geographical_zone/service/es/async/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1"
+		location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/geographical_zone/v1"
+				schemaLocation="xsd/geozone/BUDG_GeographicalZone_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/geographical_zone/v1"
+				schemaLocation="xsd/geozone/BUDG_GeographicalZone_Modify_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1"
+				schemaLocation="xsd/message/BUDG_Message_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="GeographicalZoneCreateRequest">
+		<wsdl:part name="parameters" element="create:GeographicalZoneCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="GeographicalZoneCreateResponse">
+		<wsdl:part name="parameters" element="create:GeographicalZoneCreateResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="GeographicalZoneDescriptionCreateRequest">
+		<wsdl:part name="parameters" element="create:GeographicalZoneDescriptionCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="GeographicalZoneDescriptionCreateResponse">
+		<wsdl:part name="parameters" element="create:GeographicalZoneDescriptionCreateResponse"/>
+	</wsdl:message>
+
+	<wsdl:message name="GeographicalZoneDescriptionModifyRequest">
+		<wsdl:part name="parameters" element="modify:GeographicalZoneDescriptionModifyRequest"/>
+	</wsdl:message>
+	<wsdl:message name="GeographicalZoneDescriptionModifyResponse">
+		<wsdl:part name="parameters" element="modify:GeographicalZoneDescriptionModifyResponse"/>
+	</wsdl:message>
+
+	<wsdl:portType name="GeographicalZonePort">
+		<wsdl:operation name="create">
+			<wsdl:input message="tns:GeographicalZoneCreateRequest"/>
+			<wsdl:output message="tns:GeographicalZoneCreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_description">
+			<wsdl:input message="tns:GeographicalZoneDescriptionCreateRequest"/>
+			<wsdl:output message="tns:GeographicalZoneDescriptionCreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_description">
+			<wsdl:input message="tns:GeographicalZoneDescriptionModifyRequest"/>
+			<wsdl:output message="tns:GeographicalZoneDescriptionModifyResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="GeographicalZoneSOAP" type="tns:GeographicalZonePort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create">
+			<soap:operation
+				soapAction="http://www.ec.europa.eu/budg/abac/geographical_zone/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_description">
+			<soap:operation
+				soapAction="http://www.ec.europa.eu/budg/abac/geographical_zone/service/es/async/create_description/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="modify_description">
+			<soap:operation
+				soapAction="http://www.ec.europa.eu/budg/abac/geographical_zone/service/es/async/modify_description/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+	</wsdl:binding>
+</wsdl:definitions>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions 
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/v1" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:batch="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/v1" 
+xmlns:create="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/v1" 
+xmlns:delete="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/v1" 
+xmlns:modify="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/v1" 
+xmlns:give_visa="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/v1" 
+xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" 
+targetNamespace="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/v1" schemaLocation="xsd/budgetarycommitmentlevel1/BUDG_BudgetaryCommitmentLevel1_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/v1" schemaLocation="xsd/budgetarycommitmentlevel1/BUDG_BudgetaryCommitmentLevel1_Modify_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/v1" schemaLocation="xsd/budgetarycommitmentlevel1/BUDG_BudgetaryCommitmentLevel1_Delete_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/v1" schemaLocation="xsd/budgetarycommitmentlevel1/BUDG_BudgetaryCommitmentLevel1_GiveVisa_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateRequest">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateResponse">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreatePositionRequest">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreatePositionRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreatePositionResponse">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreatePositionResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateResponsibleUserRequest">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateResponsibleUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateResponsibleUserResponse">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateResponsibleUserResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateSupportingDocumentFolderRequest">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateSupportingDocumentFolderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateSupportingDocumentFolderResponse">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateSupportingDocumentFolderResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateSupportingDocumentRequest">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateSupportingDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateSupportingDocumentResponse">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateSupportingDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreatePostingCriteriaLinkRequest">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreatePostingCriteriaLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreatePostingCriteriaLinkResponse">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreatePostingCriteriaLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateAssociatedCountryRequest">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateAssociatedCountryRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateAssociatedCountryResponse">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateAssociatedCountryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateScannedDocumentRequest">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateScannedDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1CreateScannedDocumentResponse">
+		<wsdl:part name="parameters" element="create:BudgetaryCommitmentLevel1CreateScannedDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1DeleteRequest">
+		<wsdl:part name="parameters" element="delete:BudgetaryCommitmentLevel1DeleteRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1DeleteResponse">
+		<wsdl:part name="parameters" element="delete:BudgetaryCommitmentLevel1DeleteResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1DeletePositionRequest">
+		<wsdl:part name="parameters" element="delete:BudgetaryCommitmentLevel1DeletePositionRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1DeletePositionResponse">
+		<wsdl:part name="parameters" element="delete:BudgetaryCommitmentLevel1DeletePositionResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1GiveVisaRequest">
+		<wsdl:part name="parameters" element="give_visa:BudgetaryCommitmentLevel1GiveVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1GiveVisaResponse">
+		<wsdl:part name="parameters" element="give_visa:BudgetaryCommitmentLevel1GiveVisaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1ModifyRequest">
+		<wsdl:part name="parameters" element="modify:BudgetaryCommitmentLevel1ModifyRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1ModifyResponse">
+		<wsdl:part name="parameters" element="modify:BudgetaryCommitmentLevel1ModifyResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1ModifyPositionRequest">
+		<wsdl:part name="parameters" element="modify:BudgetaryCommitmentLevel1ModifyPositionRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BudgetaryCommitmentLevel1ModifyPositionResponse">
+		<wsdl:part name="parameters" element="modify:BudgetaryCommitmentLevel1ModifyPositionResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="BudgetaryCommitmentLevel1Port">
+		<wsdl:operation name="create">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1CreateRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1CreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_position">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1CreatePositionRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1CreatePositionResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1CreateResponsibleUserRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1CreateResponsibleUserResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document_folder">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1CreateSupportingDocumentFolderRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1CreateSupportingDocumentFolderResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1CreateSupportingDocumentRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1CreateSupportingDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_posting_criteria_link">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1CreatePostingCriteriaLinkRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1CreatePostingCriteriaLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_associated_country">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1CreateAssociatedCountryRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1CreateAssociatedCountryResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_scanned_document">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1CreateScannedDocumentRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1CreateScannedDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1DeleteRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1DeleteResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete_position">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1DeletePositionRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1DeletePositionResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1GiveVisaRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1GiveVisaResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1ModifyRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1ModifyResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_position">
+			<wsdl:input message="tns:BudgetaryCommitmentLevel1ModifyPositionRequest"/>
+			<wsdl:output message="tns:BudgetaryCommitmentLevel1ModifyPositionResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="BudgetaryCommitmentLevel1SOAP" type="tns:BudgetaryCommitmentLevel1Port">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_position">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/create_position/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/create_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document_folder">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/create_supporting_document_folder/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/create_supporting_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_posting_criteria_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/create_posting_criteria_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_associated_country">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/create_associated_country/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_scanned_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/create_scanned_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/delete/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete_position">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/delete_position/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/give_visa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/modify/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_position">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/budgetary_commitment_level1/service/es/async/modify_position/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

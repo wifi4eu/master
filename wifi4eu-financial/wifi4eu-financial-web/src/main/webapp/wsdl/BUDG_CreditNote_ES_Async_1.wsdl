@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://www.ec.europa.eu/budg/abac/credit_note/service/es/async/v1" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:create="http://www.ec.europa.eu/budg/abac/credit_note/v1" 
+xmlns:delete="http://www.ec.europa.eu/budg/abac/credit_note/v1" 
+xmlns:give_visa="http://www.ec.europa.eu/budg/abac/credit_note/v1" 
+xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" 
+xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" 
+name="CreditNote" 
+targetNamespace="http://www.ec.europa.eu/budg/abac/credit_note/service/es/async/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/credit_note/v1" schemaLocation="xsd/creditnote/BUDG_CreditNote_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/credit_note/v1" schemaLocation="xsd/creditnote/BUDG_CreditNote_Delete_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/credit_note/v1" schemaLocation="xsd/creditnote/BUDG_CreditNote_GiveVisa_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1" schemaLocation="xsd/message/BUDG_Message_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="CreditNoteCreateRequest">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateResponse">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateDetailRequest">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateDetailResponse">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateResponsibleUserRequest">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateResponsibleUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateResponsibleUserResponse">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateResponsibleUserResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateSupportingDocumentFolderRequest">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateSupportingDocumentFolderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateSupportingDocumentFolderResponse">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateSupportingDocumentFolderResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateSupportingDocumentRequest">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateSupportingDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateSupportingDocumentResponse">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateSupportingDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateRecoveryContextRequest">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateRecoveryContextRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateRecoveryContextResponse">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateRecoveryContextResponse"/>
+	</wsdl:message>
+		<wsdl:message name="CreditNoteCreateRecoveryContextErrorRequest">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateRecoveryContextErrorRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteCreateRecoveryContextErrorResponse">
+		<wsdl:part name="parameters" element="create:CreditNoteCreateRecoveryContextErrorResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteDeleteRequest">
+		<wsdl:part name="parameters" element="delete:CreditNoteDeleteRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteDeleteResponse">
+		<wsdl:part name="parameters" element="delete:CreditNoteDeleteResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteGiveVisaRequest">
+		<wsdl:part name="parameters" element="give_visa:CreditNoteGiveVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreditNoteGiveVisaResponse">
+		<wsdl:part name="parameters" element="give_visa:CreditNoteGiveVisaResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="CreditNotePort">
+		<wsdl:operation name="create">
+			<wsdl:input message="tns:CreditNoteCreateRequest"/>
+			<wsdl:output message="tns:CreditNoteCreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<wsdl:input message="tns:CreditNoteCreateDetailRequest"/>
+			<wsdl:output message="tns:CreditNoteCreateDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<wsdl:input message="tns:CreditNoteCreateResponsibleUserRequest"/>
+			<wsdl:output message="tns:CreditNoteCreateResponsibleUserResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document_folder">
+			<wsdl:input message="tns:CreditNoteCreateSupportingDocumentFolderRequest"/>
+			<wsdl:output message="tns:CreditNoteCreateSupportingDocumentFolderResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<wsdl:input message="tns:CreditNoteCreateSupportingDocumentRequest"/>
+			<wsdl:output message="tns:CreditNoteCreateSupportingDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context">
+			<wsdl:input message="tns:CreditNoteCreateRecoveryContextRequest"/>
+			<wsdl:output message="tns:CreditNoteCreateRecoveryContextResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+				<wsdl:operation name="create_recovery_context_error">
+			<wsdl:input message="tns:CreditNoteCreateRecoveryContextErrorRequest"/>
+			<wsdl:output message="tns:CreditNoteCreateRecoveryContextErrorResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<wsdl:input message="tns:CreditNoteDeleteRequest"/>
+			<wsdl:output message="tns:CreditNoteDeleteResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<wsdl:input message="tns:CreditNoteGiveVisaRequest"/>
+			<wsdl:output message="tns:CreditNoteGiveVisaResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CreditNoteSOAP" type="tns:CreditNotePort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/credit_note/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/credit_note/service/es/async/create_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/credit_note/service/es/async/create_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document_folder">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/credit_note/service/es/async/create_supporting_document_folder/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/credit_note/service/es/async/create_supporting_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/credit_note/service/es/async/create_recovery_context/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context_error">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/credit_note/service/es/async/create_recovery_context_error/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/credit_note/service/es/async/delete/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/credit_note/service/es/async/give_visa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

@@ -1,0 +1,453 @@
+<wsdl:definitions name="LegalCommitment" targetNamespace="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:create="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" xmlns:modify="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" xmlns:delete="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" xmlns:give_visa="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_AddAresDocument_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_AddScannedDocument_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_AddSupportingDocumentFolder_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_AddSupportingDocument_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_Amend_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_CancelCurrentAmendment_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_ModifyResponsibleOrganisation_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_ModifyResponsibleUsers_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_Correct_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_CreateBase_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_CreateCommitmentLink_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_CreateContractReference_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_CreatePaymentTimeLimit_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_CreateResponsibleUser_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_Delete_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_DeleteCommitmentLink_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_GiveVisa_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_ModifyBase_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_commitment/v1" schemaLocation="xsd/legalcommitment/BUDG_LegalCommitment_PriceIndexation_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1" schemaLocation="xsd/message/BUDG_Message_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="LegalCommitmentCreateBaseRequest">
+		<wsdl:part name="parameters" element="create:LegalCommitmentCreateBaseRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCreateBaseResponse">
+		<wsdl:part name="parameters" element="create:LegalCommitmentCreateBaseResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCreateCommitmentLinkRequest">
+		<wsdl:part name="parameters" element="create:LegalCommitmentCreateCommitmentLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCreateCommitmentLinkResponse">
+		<wsdl:part name="parameters" element="create:LegalCommitmentCreateCommitmentLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCreateContractReferenceRequest">
+		<wsdl:part name="parameters" element="create:LegalCommitmentCreateContractReferenceRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCreateContractReferenceResponse">
+		<wsdl:part name="parameters" element="create:LegalCommitmentCreateContractReferenceResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCreatePaymentTimeLimitRequest">
+		<wsdl:part name="parameters" element="create:LegalCommitmentCreatePaymentTimeLimitRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCreatePaymentTimeLimitResponse">
+		<wsdl:part name="parameters" element="create:LegalCommitmentCreatePaymentTimeLimitResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCreateResponsibleUserRequest">
+		<wsdl:part name="parameters" element="create:LegalCommitmentCreateResponsibleUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCreateResponsibleUserResponse">
+		<wsdl:part name="parameters" element="create:LegalCommitmentCreateResponsibleUserResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCorrectRequest">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentCorrectRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCorrectResponse">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentCorrectResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentAmendRequest">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentAmendRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentAmendResponse">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentAmendResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCancelCurrentAmendmentRequest">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentCancelCurrentAmendmentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentCancelCurrentAmendmentResponse">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentCancelCurrentAmendmentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentModifyBaseRequest">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentModifyBaseRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentModifyBaseResponse">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentModifyBaseResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentModifyResponsibleOrganisationRequest">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentModifyResponsibleOrganisationRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentModifyResponsibleOrganisationResponse">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentModifyResponsibleOrganisationResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentModifyResponsibleUsersRequest">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentModifyResponsibleUsersRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentModifyResponsibleUsersResponse">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentModifyResponsibleUsersResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentAddAresDocumentRequest">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentAddAresDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentAddAresDocumentResponse">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentAddAresDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentAddScannedDocumentRequest">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentAddScannedDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentAddScannedDocumentResponse">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentAddScannedDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentAddSupportingDocumentFolderRequest">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentAddSupportingDocumentFolderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentAddSupportingDocumentFolderResponse">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentAddSupportingDocumentFolderResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentAddSupportingDocumentRequest">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentAddSupportingDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentAddSupportingDocumentResponse">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentAddSupportingDocumentResponse"/>
+	</wsdl:message>
+	<!--
+	<wsdl:message name="LegalCommitmentPriceIndexationRequest">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentPriceIndexationRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentPriceIndexationResponse">
+		<wsdl:part name="parameters" element="modify:LegalCommitmentPriceIndexationResponse"/>
+	</wsdl:message>
+	-->
+	<wsdl:message name="LegalCommitmentDeleteCommitmentLinkRequest">
+		<wsdl:part name="parameters" element="delete:LegalCommitmentDeleteCommitmentLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentDeleteCommitmentLinkResponse">
+		<wsdl:part name="parameters" element="delete:LegalCommitmentDeleteCommitmentLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentGiveVisaRequest">
+		<wsdl:part name="parameters" element="give_visa:LegalCommitmentGiveVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalCommitmentGiveVisaResponse">
+		<wsdl:part name="parameters" element="give_visa:LegalCommitmentGiveVisaResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="LegalCommitmentPort">
+		<wsdl:operation name="create_base">
+			<wsdl:input message="tns:LegalCommitmentCreateBaseRequest"/>
+			<wsdl:output message="tns:LegalCommitmentCreateBaseResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_commitment_link">
+			<wsdl:input message="tns:LegalCommitmentCreateCommitmentLinkRequest"/>
+			<wsdl:output message="tns:LegalCommitmentCreateCommitmentLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_contract_reference">
+			<wsdl:input message="tns:LegalCommitmentCreateContractReferenceRequest"/>
+			<wsdl:output message="tns:LegalCommitmentCreateContractReferenceResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_payment_time_limit">
+			<wsdl:input message="tns:LegalCommitmentCreatePaymentTimeLimitRequest"/>
+			<wsdl:output message="tns:LegalCommitmentCreatePaymentTimeLimitResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<wsdl:input message="tns:LegalCommitmentCreateResponsibleUserRequest"/>
+			<wsdl:output message="tns:LegalCommitmentCreateResponsibleUserResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete_commitment_link">
+			<wsdl:input message="tns:LegalCommitmentDeleteCommitmentLinkRequest"/>
+			<wsdl:output message="tns:LegalCommitmentDeleteCommitmentLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="correct">
+			<wsdl:input message="tns:LegalCommitmentCorrectRequest"/>
+			<wsdl:output message="tns:LegalCommitmentCorrectResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="amend">
+			<wsdl:input message="tns:LegalCommitmentAmendRequest"/>
+			<wsdl:output message="tns:LegalCommitmentAmendResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="cancel_current_amendment">
+			<wsdl:input message="tns:LegalCommitmentCancelCurrentAmendmentRequest"/>
+			<wsdl:output message="tns:LegalCommitmentCancelCurrentAmendmentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_base">
+			<wsdl:input message="tns:LegalCommitmentModifyBaseRequest"/>
+			<wsdl:output message="tns:LegalCommitmentModifyBaseResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_responsible_organisation">
+			<wsdl:input message="tns:LegalCommitmentModifyResponsibleOrganisationRequest"/>
+			<wsdl:output message="tns:LegalCommitmentModifyResponsibleOrganisationResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_responsible_users">
+			<wsdl:input message="tns:LegalCommitmentModifyResponsibleUsersRequest"/>
+			<wsdl:output message="tns:LegalCommitmentModifyResponsibleUsersResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="add_ares_document">
+			<wsdl:input message="tns:LegalCommitmentAddAresDocumentRequest"/>
+			<wsdl:output message="tns:LegalCommitmentAddAresDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="add_scanned_document">
+			<wsdl:input message="tns:LegalCommitmentAddScannedDocumentRequest"/>
+			<wsdl:output message="tns:LegalCommitmentAddScannedDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="add_supporting_document_folder">
+			<wsdl:input message="tns:LegalCommitmentAddSupportingDocumentFolderRequest"/>
+			<wsdl:output message="tns:LegalCommitmentAddSupportingDocumentFolderResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="add_supporting_document">
+			<wsdl:input message="tns:LegalCommitmentAddSupportingDocumentRequest"/>
+			<wsdl:output message="tns:LegalCommitmentAddSupportingDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<!--
+		<wsdl:operation name="price_indexation">
+			<wsdl:input message="tns:LegalCommitmentPriceIndexationRequest"/>
+			<wsdl:output message="tns:LegalCommitmentPriceIndexationResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		-->
+		<wsdl:operation name="give_visa">
+			<wsdl:input message="tns:LegalCommitmentGiveVisaRequest"/>
+			<wsdl:output message="tns:LegalCommitmentGiveVisaResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="LegalCommitmentSOAP" type="tns:LegalCommitmentPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create_base">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/create_base/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_commitment_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/create_commitment_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_contract_reference">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/create_contract_reference/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_payment_time_limit">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/create_payment_time_limit/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/create_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="correct">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/correct/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="amend">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/amend/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="cancel_current_amendment">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/cancel_current_amendment/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_base">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/cancel_current_amendment/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_responsible_organisation">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/modify_responsible_organisation/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_responsible_users">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/modify_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="add_ares_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/add_ares_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="add_scanned_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/add_scanned_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="add_supporting_document_folder">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/add_supporting_document_folder/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="add_supporting_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/add_supporting_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<!--
+		<wsdl:operation name="price_indexation">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/price_indexation/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		-->
+		<wsdl:operation name="give_visa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/give_visa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete_commitment_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/delete_commitment_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

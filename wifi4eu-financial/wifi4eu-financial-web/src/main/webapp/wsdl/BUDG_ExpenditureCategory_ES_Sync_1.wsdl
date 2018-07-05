@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/expenditure_category/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:fnd="http://www.ec.europa.eu/budg/abac/expenditure_category/v1" xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" xmlns:ns="http://www.ec.europa.eu/budg/abac/br/v1" xmlns:ns1="http://www.ec.europa.eu/budg/abac/message/v1" xmlns:ns2="http://www.ec.europa.eu/budg/abac/simple_type/v1" name="ExpenditureCategory" targetNamespace="http://www.ec.europa.eu/budg/abac/expenditure_category/service/es/sync/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/expenditure_category/v1" schemaLocation="xsd/budgetmgt/BUDG_ExpenditureCategory_Find_1.xsd">
+    	</xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="ExpenditureCategoryFindRequest">
+		<wsdl:part name="parameters" element="fnd:ExpenditureCategoryFindRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ExpenditureCategoryFindResponse">
+		<wsdl:part name="parameters" element="fnd:ExpenditureCategoryFindResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="ExpenditureCategoryPort">
+		<wsdl:operation name="find">
+			<wsdl:input message="tns:ExpenditureCategoryFindRequest"/>
+			<wsdl:output message="tns:ExpenditureCategoryFindResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ExpenditureCategorySOAP" type="tns:ExpenditureCategoryPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="find">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/expenditure_category/service/es/sync/find/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ExpenditureCategory">
+		<wsdl:port name="ExpenditureCategorySOAP" binding="tns:ExpenditureCategorySOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/ExpenditureCategory/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/ExpenditureCategory/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

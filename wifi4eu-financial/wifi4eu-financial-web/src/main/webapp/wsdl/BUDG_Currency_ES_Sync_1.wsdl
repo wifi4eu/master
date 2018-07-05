@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- 
+=================================================================================================
+Repository path:		$HeadURL: https://webgate.ec.europa.eu/CITnet/svn/budg-abac-dev/trunk/OSB/ANA_RESOURCES/BUDG_Currency_ES_Sync_0.wsdl $
+Last committed:		$Revision: 21757 $
+Last changed by:		$Author: delhama $
+Last changed date:	$Date: 2013-10-03 11:28:59 +0200 (Thu, 03 Oct 2013) $
+ID:							$Id: BUDG_Currency_ES_Sync_0.wsdl 21757 2013-10-03 09:28:59Z delhama $
+=================================================================================================
+-->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/currency/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:src="http://www.ec.europa.eu/budg/abac/currency/v1" xmlns:cur="http://www.ec.europa.eu/budg/abac/currency/v1" xmlns:ger="http://www.ec.europa.eu/budg/abac/currency/get_exchange_rate/v1" xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" name="Currency" targetNamespace="http://www.ec.europa.eu/budg/abac/currency/service/es/sync/v1">
+	<wsdl:import location="FaultMessage.wsdl" namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/currency/v1" schemaLocation="xsd/currency/BUDG_Currency_Search_1.xsd">
+    	</xsd:import>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/currency/v1" schemaLocation="xsd/currency/BUDG_Currency_Get_1.xsd">
+    	</xsd:import>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/currency/v1" schemaLocation="xsd/currency/BUDG_Currency_GetExchangeRate_1.xsd">
+    	</xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="CurrencySearchRequest">
+		<wsdl:part name="parameters" element="src:CurrencySearchRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CurrencySearchResponse">
+		<wsdl:part name="parameters" element="src:CurrencySearchResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CurrencyGetRequest">
+		<wsdl:part name="parameters" element="cur:CurrencyGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CurrencyGetResponse">
+		<wsdl:part name="parameters" element="cur:CurrencyGetResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CurrencyGetExchangeRateRequest">
+		<wsdl:part name="parameters" element="cur:CurrencyGetExchangeRateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CurrencyGetExchangeRateResponse">
+		<wsdl:part name="parameters" element="cur:CurrencyGetExchangeRateResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="CurrencyPort">
+		<wsdl:operation name="search">
+			<wsdl:input message="tns:CurrencySearchRequest"/>
+			<wsdl:output message="tns:CurrencySearchResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="get">
+			<wsdl:input message="tns:CurrencyGetRequest"/>
+			<wsdl:output message="tns:CurrencyGetResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="getExchangeRate">
+			<wsdl:input message="tns:CurrencyGetExchangeRateRequest"/>
+			<wsdl:output message="tns:CurrencyGetExchangeRateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CurrencySOAP" type="tns:CurrencyPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="search">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/currency/service/es/sync/search/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="get">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/currency/service/es/sync/get/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getExchangeRate">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/currency/service/es/sync/get_exchange_rate/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="Currency">
+		<wsdl:port name="CurrencySOAP" binding="tns:CurrencySOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/Currency/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/Currency/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
