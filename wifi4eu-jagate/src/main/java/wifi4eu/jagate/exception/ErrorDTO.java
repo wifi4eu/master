@@ -1,4 +1,4 @@
-package eu.europa.ec.jagate.financiallegalentity.exception;
+package wifi4eu.jagate.exception;
 
 /**
  * Contains error data (messages, timestamp) to be attached to a thrown PDM (business) exception.

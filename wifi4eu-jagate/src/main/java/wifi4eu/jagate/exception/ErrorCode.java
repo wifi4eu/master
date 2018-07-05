@@ -1,4 +1,4 @@
-package eu.europa.ec.jagate.financiallegalentity.exception;
+package wifi4eu.jagate.exception;
 
 /**
  * Index of all (business) errors codes in PDM.

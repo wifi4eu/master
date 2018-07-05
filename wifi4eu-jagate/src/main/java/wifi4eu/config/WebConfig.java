@@ -1,11 +1,9 @@
 package wifi4eu.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.env.Environment;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -22,9 +20,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @EnableWebMvc
 @ComponentScan(basePackages = { "wifi4eu" })
 public class WebConfig extends WebMvcConfigurerAdapter {
-
-    @Autowired
-    private Environment env;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

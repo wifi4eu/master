@@ -1,4 +1,4 @@
-package eu.europa.ec.jagate.financiallegalentity.exception;
+package wifi4eu.jagate.exception;
 
 
 public abstract class BaseException extends RuntimeException {

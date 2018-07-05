@@ -1,4 +1,4 @@
-package eu.europa.ec.jagate.financiallegalentity.exception;
+package wifi4eu.jagate.exception;
 
 
 public class BusinessException extends BaseException {

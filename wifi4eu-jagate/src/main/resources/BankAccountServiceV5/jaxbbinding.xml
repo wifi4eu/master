@@ -89,11 +89,7 @@
         </jxb:schemaBindings>
     </jxb:bindings>
     
-    <jxb:bindings schemaLocation="../jagate/cdm/model/code-ref/V2/CodeRef.xsd" node="/xsd:schema">
-        <jxb:schemaBindings>
-            <jxb:package name="generated.jagate.model.coderef.V2" />
-        </jxb:schemaBindings>
-    </jxb:bindings>
+
     
    
 

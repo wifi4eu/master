@@ -1,4 +1,4 @@
-package eu.europa.ec.jagate.financiallegalentity.util;
+package wifi4eu.jagate.util;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

@@ -22,7 +22,8 @@ public class JagateService {
     	for (Municipality municipality : municipalities) {
     		
     		//Request creation of legal entity
-    		jagateAdapter.createLegalEntity(municipality);
+    		String jagKey = jagateAdapter.createLegalEntity(municipality);
+			municipality.setJagateKey(jagKey);
 			
 			//Save the time when the request to jagate was made
     		municipality.setJagateCreationRequestDate(Calendar.getInstance().getTime());

@@ -85,7 +85,6 @@ public class PersistenceJPAConfig implements TransactionManagementConfigurer {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    @Override
     public PlatformTransactionManager annotationDrivenTransactionManager() {
         return transactionManager();
     }
