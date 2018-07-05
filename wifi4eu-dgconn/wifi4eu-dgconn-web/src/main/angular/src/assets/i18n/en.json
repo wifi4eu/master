@@ -801,5 +801,6 @@
   "shared.close": "Cancel",
   "benefPortal.myVoucher.datatable.signGrantAgreement": "Sign grant agreement",
   "itemMenu.myVoucher": "My voucher",
-  "shared.all": "All"
+  "shared.all": "All",
+  "dgConn.applicationDetails.contact.auth": "Would you like to authorize {{name}} {{surname}} to sign grant agreement?"
 }
