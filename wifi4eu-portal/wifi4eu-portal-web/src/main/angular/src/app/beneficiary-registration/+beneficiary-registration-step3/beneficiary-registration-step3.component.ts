@@ -41,11 +41,12 @@ export class BeneficiaryRegistrationStep3Component {
         this.associationNameChange = new EventEmitter<string>();
         this.imMayor = false;
         this.sameDetails = false;
-        this.sharedService.cleanEmitter.subscribe(() => { this.reset(); });
+        this.sharedService.cleanEmitter.subscribe(() => {         
+            this.repeatEmail = '';
+            this.reset(); 
+        });
         this.storedUser = this.localStorage.get('user');
         this.userEcas = this.storedUser ? JSON.parse(this.storedUser.toString()) : null;
-        console.log(this.userEcas);
-        console.log(this.userEcas.ecasEmail);
         if (this.userEcas.ecasEmail){
             this.hasEcasEmail = true;
             this.userEmailMatches = true;
@@ -82,11 +83,9 @@ export class BeneficiaryRegistrationStep3Component {
     private checkEmailsMatch() {
         // this.hasEcasEmail = false;
         if (this.initialUser.ecasEmail === this.repeatEmail && this.repeatEmail.length > 0) {
-            console.log("valid!");
             this.userEmailMatches = true;
             this.css_class_email = 'isValid';
         } else {
-            console.log("not valid!");
             this.userEmailMatches = false;
             this.css_class_email = 'notValid';
         }
@@ -110,8 +109,8 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.addressNum = '';
             this.initialUser.postalCode = '';
             this.initialUser.email = '';
-            this.initialUser.ecasUsername = '';
             this.repeatEmail = '';
+            this.initialUser.ecasUsername = '';
             this.userEmailMatches = true;
             this.associationName = '';
         }
