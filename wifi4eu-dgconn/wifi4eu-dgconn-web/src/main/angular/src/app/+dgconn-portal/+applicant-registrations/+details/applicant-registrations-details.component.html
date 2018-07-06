@@ -269,7 +269,7 @@
             </div>
         </form>
     </p-dialog>
-    <p-dialog [(visible)]="displayInvalidate" [modal]="true" [responsive]="true" [resizable]="false"
+    <p-dialog [(visible)]="displayInvalidate" class="hello" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <form (ngSubmit)="invalidateApplication()" #invalidateConfirmationForm="ngForm">
             <div class="form-group">
@@ -422,16 +422,3 @@
         </form>
     </p-dialog>
 </div>
-
-
-<style>
-.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow{
-  display: block;
-  left: 484.5px;
-  top: 50%!important;
-  z-index: 1002;
-  opacity: 1;
-  transform: translateY(-50%);
-  max-height: 100vh;
-}
-</style>

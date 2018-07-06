@@ -27,6 +27,7 @@ import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReaso
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
     providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi, InvalidateReasonApi],
+    styleUrls: ['./applicant-registrations-details.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
         trigger(
