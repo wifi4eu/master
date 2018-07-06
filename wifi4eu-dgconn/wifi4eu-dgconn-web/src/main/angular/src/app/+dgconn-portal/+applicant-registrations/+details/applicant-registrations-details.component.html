@@ -129,13 +129,16 @@
                             <i class="fa fa-exclamation-circle alertIconDisplay"></i>
                             <div class="innerContent">
                                 <span>{{'dgConn.applicationDetails.contact.auth' | translate:{name:users[i].name,surname:users[i].surname}
-                                    }}</span>
+                                    }}
+                                </span>
                                 <div class="innerOptions">
                                     <div>
-                                        <p-radioButton name="authoption" value="true" label="Yes" [(ngModel)]="authFlag" inputId="preopt1"></p-radioButton>
+                                        <p-radioButton name="{{applications[i].id}}" value="{{users[i].id}}" label="Yes" [(ngModel)]="applications[i].authorizedPerson"
+                                            inputId="preopt1" pTooltip="{{'dgConn.applicationDetails.auth.tooltip' | translate:{name:users[i].name,surname:users[i].surname}
+                                        }}" tooltipPosition="bottom"></p-radioButton>
                                     </div>
                                     <div>
-                                        <p-radioButton name="authoption" value="false" label="No" [(ngModel)]="authFlag" inputId="preopt2"></p-radioButton>
+                                        <p-radioButton name="{{applications[i].id}}" value="-1" label="No" [(ngModel)]="applications[i].authorizedPerson" inputId="preopt2"></p-radioButton>
                                     </div>
                                 </div>
                             </div>

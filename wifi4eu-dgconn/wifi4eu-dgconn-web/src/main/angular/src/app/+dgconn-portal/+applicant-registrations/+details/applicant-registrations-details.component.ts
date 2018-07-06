@@ -69,7 +69,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private displayRequestCorrection = false;
     private loadingData = false;
     private processingRequest = false;
-    private authFlag: string = 'false';
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
@@ -126,14 +125,12 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                             this.registrations[i] = registration;
                                                                             this.users[i] = user;
                                                                             this.municipalities[i] = municipality;
+                                                                            if (!this.applications[i].authorizedPerson) {
+                                                                                this.applications[i].authorizedPerson = -1;
+                                                                            }
                                                                             if (this.registrations.length == this.municipalities.length) {
                                                                                 this.registrationIssues[i] = 0;
                                                                                 //   this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
-                                                                            }
-                                                                            if(this.applications[i].authorizedPerson){
-                                                                                this.authFlag = 'true';
-                                                                            } else {
-                                                                                this.authFlag = 'false';
                                                                             }
                                                                             correctCount++;
                                                                             if (correctCount == (applications.length - failCount)) {
@@ -282,17 +279,12 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             if (this.selectedIndex != null) {
                 if (this.registrations[this.selectedIndex].allFilesFlag == 1) {
                     this.processingRequest = true;
-                    if(this.authFlag == 'true'){
-                        this.applications[this.selectedIndex].authorizedPerson = this.users[this.selectedIndex].id;
-                    } else {
-                        this.applications[this.selectedIndex].authorizedPerson = null;
-                    }
                     this.applicationApi.validateApplication(this.applications[this.selectedIndex]).subscribe(
                         (response: ResponseDTOBase) => {
                             if (response.success) {
                                 if (response.data != null) {
                                     this.applications[this.selectedIndex].status = 2;
-                                    
+
                                     this.getApplicationDetailsInfo();
                                     this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
                                 } else {
