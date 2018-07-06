@@ -343,11 +343,11 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     for (let legalFile of this.legalFiles[this.selectedIndex]) {
                             if (legalFile.type == fileType) {
                                 
-                                if(legalFile.requestCorrection){
+                                 if(legalFile.requestCorrection){
                                     this.sharedService.growlTranslation('This file has already requested for correction.', 'dgConn.file.alreadyRequested', 'warn');
                                     this.closeModal();
                                     return;
-                                }
+                                } 
                                 updatedLegalFile = legalFile;
                                 updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
                                 if (updatedLegalFile.correctionReason != -1){
