@@ -17,16 +17,17 @@ import { MunicipalityDTOBase } from "../../../shared/swagger/model/MunicipalityD
 import { RegistrationDTOBase } from "../../../shared/swagger/model/RegistrationDTO";
 import { ThreadDTOBase } from "../../../shared/swagger/model/ThreadDTO";
 import { ThreadMessageDTOBase } from "../../../shared/swagger/model/ThreadMessageDTO";
-import { ResponseDTOBase } from "../../../shared/swagger/model/ResponseDTO";
+import { ResponseDTOBase, ResponseDTO } from "../../../shared/swagger/model/ResponseDTO";
 import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { LegalFileCorrectionReasonDTOBase } from "../../../shared/swagger/model/LegalFileCorrectionReasonDTO";
 import { TranslateService } from "ng2-translate";
 import * as FileSaver from "file-saver";
-import { RegistrationWarningApi } from "../../../shared/swagger";
+import { RegistrationWarningApi, ApplicationcommentApi, ApplicationCommentDTO } from "../../../shared/swagger";
+import { NgForm, NgModel } from "@angular/forms";
 
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
-    providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi],
+    providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi, ApplicationcommentApi],
     animations: [
         trigger(
             'enterSpinner', [
@@ -69,10 +70,20 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private displayRequestCorrection = false;
     private loadingData = false;
     private processingRequest = false;
+    private displayCommentModal = false;
+
+    private applicationComments: ApplicationCommentDTO[][] = [];
+    private page: number[] = [];
+    private sizePage: number[] = [];
+    private sortField: string[] = [];
+    private sortDirection: number[] = [];
+    private totalRecords: number[] = [];
+    private defaultSize = 5;
+    private applicationComment:string = '';
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
-    constructor( private registrationWarningApi: RegistrationWarningApi, private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
+    constructor(private applicationCommentApi: ApplicationcommentApi, private registrationWarningApi: RegistrationWarningApi, private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
@@ -160,6 +171,15 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                 this.loadingData = false;
                             }
                         );
+                        this.sortField[i] = "datePosted";
+                        this.sortDirection[i] = -1;
+                        this.page[i] = 0;
+                        this.sizePage[i] = this.defaultSize;
+                        this.applicationCommentApi.getApplicationCommentsByApplication(application.id, this.page[i], this.sizePage[i], this.sortField[i], this.sortDirection[i] === 1 ? 'ASC' : 'DESC').subscribe((response: ResponseDTO) => {
+                          console.log(response);
+                          this.totalRecords[i] = response.xtotalCount;
+                          this.applicationComments[i] = response.data.comments;
+                        })
                     }
                 }, (error) => {
                     this.loadingData = false;
@@ -203,6 +223,47 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 this.displayInvalidate = true;
             }
         }
+    }
+
+    private sortTable(event, index){
+        this.sortField[index] = event.field;
+        this.sortDirection[index] = event.order;
+        this.filterTable(index);
+    }
+
+    private filterTable(index){
+        this.applicationCommentApi.getApplicationCommentsByApplication(this.applications[index].id, this.page[index], this.sizePage[index], this.sortField[index], this.sortDirection[index] === 1 ? 'ASC' : 'DESC').subscribe((response: ResponseDTO) => {
+          console.log(response);          
+          this.totalRecords[index] = response.xtotalCount;
+          this.applicationComments[index] = response.data.comments;
+        })
+    }
+
+    private openCommentModal(index: number){
+      if (index != null) {
+        this.selectedIndex = index;
+        this.displayCommentModal = true;
+      }
+    }
+
+    private paginate(event, index){
+      this.page[index] = event.page;
+      this.filterTable(index);
+    }
+
+    private submitApplicationComment(form: NgForm){
+      if(form.valid){
+        if(!this.processingRequest){
+          if(this.applicationComment != null || this.applicationComment.trim() != ""){
+            this.processingRequest = true;
+            this.applicationCommentApi.createApplicationComment({applicationId: this.applications[this.selectedIndex].id, comment: this.applicationComment}).subscribe((response) => {
+              console.log(response);
+              this.processingRequest = false;
+              this.closeModal();
+            })
+          }
+        }
+      }
     }
 
     private displayRequestCorrectionModal(index: number) {
@@ -255,6 +316,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.displayInvalidate = false;
         this.displayRequestCorrection = false;
         this.processingRequest = false;
+        this.displayCommentModal = false;
     }
 
     private selectCorrectionReason() {

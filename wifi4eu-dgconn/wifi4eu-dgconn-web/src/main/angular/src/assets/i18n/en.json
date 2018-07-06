@@ -801,5 +801,6 @@
   "shared.close": "Cancel",
   "benefPortal.myVoucher.datatable.signGrantAgreement": "Sign grant agreement",
   "itemMenu.myVoucher": "My voucher",
-  "shared.all": "All"
+  "shared.all": "All",
+  "dgConn.applicantDetails.newComment.title": "Add a new comment"
 }

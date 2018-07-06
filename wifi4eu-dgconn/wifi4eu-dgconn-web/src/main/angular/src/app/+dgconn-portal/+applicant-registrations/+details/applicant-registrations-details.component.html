@@ -197,6 +197,34 @@
                             </div>
                         </div>
                     </div>
+                    {{applicationComments[i]}}
+                    <div class="ui-g-12">
+                      <ux-accordion-boxes>
+                        <custom-accordion-box [isExpanded]="true" [rightSide]="true">
+                          <a (click)="openCommentModal(i)">New comment</a>
+                            <p-dataTable #tableComments [value]="applicationComments[i]">
+                              <p-column field="username" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
+                                
+                              </p-column>
+                              <p-column field="datePosted" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
+                                <ng-template let-row="rowData" pTemplate="body">
+                                    <span *ngIf="row.datePosted">{{ row.datePosted | date:'dd/MM/yyyy' }}</span>
+                                </ng-template>
+                              </p-column>
+                              <p-column field="comment" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="text-center"></p-column>
+                            </p-dataTable>
+                            <footer>
+                              <div style="text-align: left;">
+                                <p-paginator class="paginator-panel" [first]="page[i] * sizePage" [rows]="sizePage" totalRecords="{{totalRecords[i]}}" #paginator
+                                    (onPageChange)="paginate($event, i)" [rowsPerPageOptions]="[20,30]"></p-paginator>
+                                <div class="totalRecords">
+                                  <span style="color: #929292;">{{ 'dgConn.totalRecords' | translate }}: {{totalRecords[i]}} </span>
+                                </div>
+                              </div>
+                          </footer>
+                        </custom-accordion-box>
+                      </ux-accordion-boxes>
+                    </div>
                 </div>
                 <br>
             </div>
@@ -292,6 +320,37 @@
                         <div class="col-sm-6">
                             <button type="submit" class="btn btn-primary publish-button"
                                     [disabled]="processingRequest || invalidateReason.trim().length < 1">
+                                {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+    <!-- COMMENT MODAL -->
+    <p-dialog [(visible)]="displayCommentModal" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+        <form (ngSubmit)="submitApplicationComment(commentConfirmationForm)" #commentConfirmationForm="ngForm">
+            <div class="form-group">
+                <div style="padding: 2em; padding-top: 0em;" class="center">
+                    <h2 class="beneficiaryMayor">{{ 'dgConn.applicantDetails.newComment.title' | translate }}</h2>
+                </div>
+                <div style="padding: 2em; padding-top: 0em;">
+                    <p>{{ 'dgConn.comment.mandatory' | translate }}</p>
+                    <textarea rows="5" class="form-control widthMax"
+                              name="newComment" [(ngModel)]="applicationComment"
+                              [disabled]="processingRequest" required></textarea>
+                </div>
+                <div style="padding: 2em; padding-top: 0em;">
+                    <div class="row center">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                                {{ 'shared.cancel.button' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-primary publish-button">
                                 {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
