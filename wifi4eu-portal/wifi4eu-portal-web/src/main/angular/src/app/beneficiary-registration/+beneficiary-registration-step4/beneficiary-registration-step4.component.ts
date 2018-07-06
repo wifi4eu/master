@@ -28,11 +28,13 @@ export class BeneficiaryRegistrationStep4Component {
     private displayConfirmingData: boolean = false;
     private legalChecks: boolean[] = [true, false, false, false, false, false, false, false, false, false];
     private allChecked: boolean = false;
+    private repeatEmail: string = '';
 
     constructor(private sharedService: SharedService, private localStorage: LocalStorageService, private userApi: UserApi) {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
         this.onEdit = new EventEmitter<any>();
+        this.sharedService.cleanEmitter.subscribe(() => { this.reset(); });
     }
 
     submit() {
@@ -44,8 +46,13 @@ export class BeneficiaryRegistrationStep4Component {
         }
     }
 
+    reset(){
+        this.repeatEmail = '';
+    }
+
     private back() {
         this.onBack.emit();
+        this.sharedService.clean();
         this.legalChecks = [true, false, false, false, false, false, false, false, false];
     }
 
