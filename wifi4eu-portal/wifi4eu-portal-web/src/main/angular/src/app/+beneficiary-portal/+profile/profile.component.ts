@@ -245,4 +245,8 @@ export class BeneficiaryProfileComponent {
         this.router.navigateByUrl('/beneficiary-portal/voucher');
     }
 
+    private changeLanguage() {
+        console.log("CHange language works");
+    }
+
 }
