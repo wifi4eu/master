@@ -248,6 +248,32 @@ public class SupplierService {
     }
 
     @Transactional
+    public List<SuppliedRegionDTO> updateSuppliedRegions(SupplierDTO supplierDTO) {
+        List<SuppliedRegionDTO> newRegions = supplierDTO.getSuppliedRegions();
+        SupplierDTO supplierDBO = getSupplierById(supplierDTO.getId());
+        if (supplierDBO != null) {
+            return updateSuppliedRegions(supplierDBO.getSuppliedRegions(), newRegions);
+        } else {
+            return null;
+        }
+    }
+
+    @Transactional
+    public List<SuppliedRegionDTO> updateSuppliedRegions(List<SuppliedRegionDTO> originalRegions, List<SuppliedRegionDTO> newRegions) {
+        for (SuppliedRegionDTO newRegion : newRegions) {
+            if (!originalRegions.contains(newRegion)) {
+                suppliedRegionRepository.save(suppliedRegionMapper.toEntity(newRegion));
+            }
+        }
+        for (SuppliedRegionDTO originalRegion : originalRegions) {
+            if (!newRegions.contains(originalRegion)) {
+                suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(originalRegion));
+            }
+        }
+        return newRegions;
+    }
+
+    @Transactional
     public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) {
         supplierDTO.setStatus(1);
         supplierDTO = updateSupplier(supplierDTO);

@@ -146,10 +146,22 @@ public class SupplierResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier");
         try {
-            UserDTO userDTO = userConnected;
-            if (supplierDTO.getUserId() != userDTO.getId()) {
+            SupplierDTO connectedSupplier = supplierService.getSupplierByUserId(userConnected.getId());
+            if (supplierDTO.getId() != connectedSupplier.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            supplierDTO.setId(connectedSupplier.getId());
+            supplierDTO.setBic(connectedSupplier.getBic());
+            supplierDTO.setAccountNumber(connectedSupplier.getAccountNumber());
+            supplierDTO.setContactEmail(connectedSupplier.getContactEmail());
+            supplierDTO.setUserId(connectedSupplier.getUserId());
+            //supplierDTO.setSuppliedRegions(supplierService.updateSuppliedRegions(connectedSupplier.getSuppliedRegions(), supplierDTO.getSuppliedRegions()));
+            supplierDTO.setLegalCheck1(connectedSupplier.isLegalCheck1());
+            supplierDTO.setLegalCheck2(connectedSupplier.isLegalCheck2());
+            supplierDTO.setLegalFile1(connectedSupplier.getLegalFile1());
+            supplierDTO.setLegalFile2(connectedSupplier.getLegalFile2());
+            supplierDTO.setStatus(connectedSupplier.getStatus());
+            supplierDTO.setLang(connectedSupplier.getLang());
             SupplierDTO resSupplier = supplierService.updateSupplier(supplierDTO);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier updated successfully");
             return new ResponseDTO(true, resSupplier, null);
