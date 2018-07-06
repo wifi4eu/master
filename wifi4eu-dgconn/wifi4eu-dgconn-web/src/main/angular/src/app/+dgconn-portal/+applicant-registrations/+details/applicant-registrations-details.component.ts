@@ -118,8 +118,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                 (mayor: MayorDTOBase) => {
                                                                     this.registrationApi.getLegalFilesByRegistrationId(registration.id, new Date().getTime()).subscribe(
                                                                         (legalFiles: LegalFileCorrectionReasonDTOBase[]) => {
-                                                                            console.log(legalFiles);
-                                                                            
                                                                         if (mayor) {
                                                                                 this.mayors[i] = mayor;
                                                                             } else {
