@@ -101,6 +101,32 @@
                 </div>
                 <div class="ui-g-2"></div>
             </div>
+            <div class="ui-g-12" *ngIf="!hasEcasEmail">
+                <div id="contact-email" class="form-group ui-g">
+                    <div class="ui-g-2"></div>
+                    <div class="ui-g-8">
+                        <label class="label floatLeft">{{ 'shared.email.label' | translate }}</label>
+                        <input class="form-control paddingInput" type="email" [pattern]="emailPattern" [disabled]="imMayor" [(ngModel)]="initialUser.ecasEmail"
+                             id="emailStep2" name="email"
+                               (input)="checkEmailsMatch()" maxlength="254" required>
+                        <label class="field-desc" style="margin-top: 10px;color: gray;">
+                            {{ 'benefRegistration.email.fielddesc' | translate }}
+                        </label>
+                    </div>
+                    <div class="ui-g-2"></div>
+                </div>
+                <div id="contact-confirm-email" class="form-group ui-g">
+                    <div class="ui-g-2"></div>
+                    <div class="ui-g-8">
+                        <label class="label floatLeft">{{ 'shared.confirmemail.label' | translate }}</label>
+                        <input class="form-control paddingInput {{css_class_email}}" [pattern]="emailPattern" [disabled]="imMayor" [(ngModel)]="repeatEmail"
+                               name="confirm-email" id="confirm-emailStep2" type="email"
+                               (input)="checkEmailsMatch()" (paste)="preventPaste()"
+                               maxlength="254" required>
+                    </div>
+                    <div class="ui-g-2"></div>
+                </div>
+            </div>
         </div>
 
         <div id="navigation-buttons" class="form-group ui-g center">
@@ -111,7 +137,7 @@
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button type="submit" id="navigate-step4" class="btn btn-primary publish-button" [disabled]="!imMayor && (!entityForm.valid || !userEmailMatches)">
+                <button type="submit" id="navigate-step4" class="btn btn-primary publish-button" [disabled]="!imMayor && (!entityForm.valid || !userEmailMatches) && !hasEcasEmail">
                     {{ 'shared.next.button' | translate }}
                 </button>
             </div>

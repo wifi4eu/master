@@ -69,10 +69,14 @@ public class Application {
     @Column(name = "rejected")
     private Boolean rejected;
 
+    @Column(name = "authorized_person")
+    private Integer authorizedPerson;
+
+
     public Application() {
     }
 
-    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, Boolean preSelectedFlag, Boolean rejected) {
+    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -92,6 +96,7 @@ public class Application {
         this.invalidateReason = invalidateReason;
         this.preSelectedFlag = preSelectedFlag;
         this.rejected = rejected;
+        this.authorizedPerson = authorizedPerson;
     }
 
     public Integer getId() {
@@ -245,4 +250,8 @@ public class Application {
     public void setRejected(Boolean rejected) {
         this.rejected = rejected;
     }
+
+    public Integer getAuthorizedPerson(){ return authorizedPerson; }
+
+    public void setAuthorizedPerson(Integer authorizedPerson) { this.authorizedPerson = authorizedPerson; }
 }

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewEncapsulation } from "@angular/core";
 import { Location } from "@angular/common";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -22,21 +22,23 @@ import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { LegalFileCorrectionReasonDTOBase } from "../../../shared/swagger/model/LegalFileCorrectionReasonDTO";
 import { TranslateService } from "ng2-translate";
 import * as FileSaver from "file-saver";
-import { RegistrationWarningApi } from "../../../shared/swagger";
+import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO } from "../../../shared/swagger";
 
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
-    providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi],
+    providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi, InvalidateReasonApi],
+    styleUrls: ['./applicant-registrations-details.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     animations: [
         trigger(
             'enterSpinner', [
                 transition(':enter', [
-                    style({opacity: 0}),
-                    animate('200ms', style({opacity: 1}))
+                    style({ opacity: 0 }),
+                    animate('200ms', style({ opacity: 1 }))
                 ]),
                 transition(':leave', [
-                    style({opacity: 1}),
-                    animate('200ms', style({opacity: 0}))
+                    style({ opacity: 1 }),
+                    animate('200ms', style({ opacity: 0 }))
                 ])
             ]
         )
@@ -70,10 +72,12 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private loadingData = false;
     private processingRequest = false;
     private correctionRequested: LegalFileCorrectionReasonDTOBase[] = [];
+    private invalidateChecks = [false, false, false, false, false, false, false, false, false];
+    private applicationInvalidateReason: ApplicationInvalidateReasonDTO[][] = [];
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
-    constructor( private registrationWarningApi: RegistrationWarningApi, private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
+    constructor(private applicationInvalidateReasonApi: InvalidateReasonApi,  private registrationWarningApi: RegistrationWarningApi, private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
@@ -94,6 +98,11 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     let failCount = 0;
                     let correctCount = 0;
                     for (let i = 0; i < applications.length; i++) {
+                        if(applications[i].status === 1){
+                          this.applicationInvalidateReasonApi.getInvalidateReasonsByApplication(applications[i].id).subscribe((res: ApplicationInvalidateReasonDTO[]) => {
+                            this.applicationInvalidateReason[i] = res;
+                          })
+                        }
                         let application = applications[i];
                         this.registrationApi.getRegistrationById(application.registrationId).subscribe(
                             (registration: RegistrationDTOBase) => {
@@ -129,7 +138,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                             this.municipalities[i] = municipality;
                                                                             if (this.registrations.length == this.municipalities.length) {
                                                                                 this.registrationIssues[i] = 0;
-                                                                             //   this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
                                                                             }
                                                                             correctCount++;
                                                                             if (correctCount == (applications.length - failCount)) {
@@ -180,15 +188,15 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         }
     }
 
-    private displayRegistrationByAuthor(authorId){
-      var registration = this.registrations.find(x => x.userId == authorId); 
-      return registration.id;
+    private displayRegistrationByAuthor(authorId) {
+        var registration = this.registrations.find(x => x.userId == authorId);
+        return registration.id;
     }
 
     private getLegalFileUrl(index: number, fileNumber: number) {
         return this.registrationApi.getLegalFilesByFileType(this.registrations[index].id, fileNumber);
     }
- 
+
     private displayValidateModal(index: number) {
         if (index != null) {
             if (this.applications[index].status != 2) {
@@ -207,18 +215,22 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         }
     }
 
+    private checkReasonSelected(){
+      return this.invalidateChecks.some(reason => reason === true);
+    }
+
     private displayRequestCorrectionModal(index: number) {
         if (index != null) {
             if (this.selectedFilesTypes[index].length > 0) {
                 for (let i = 0; i < this.selectedFilesTypes[index].length; i++) {
                     switch (this.selectedFilesTypes[index][i]) {
-                       case 1:
+                        case 1:
                             for (let lf of this.legalFiles[index]) {
                                 if (lf.type == 1) {
                                     this.selectedReasonTypes[index][i] = lf.correctionReason;
                                 }
                             }
-                            break; 
+                            break;
                         case 2:
                             for (let lf of this.legalFiles[index]) {
                                 if (lf.type == 2) {
@@ -278,12 +290,14 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             if (this.selectedIndex != null) {
                 if (this.registrations[this.selectedIndex].allFilesFlag == 1) {
                     this.processingRequest = true;
-                    this.applicationApi.validateApplication(this.applications[this.selectedIndex]).subscribe(
+                    this.applicationInvalidateReasonApi.validateApplication(this.applications[this.selectedIndex]).subscribe(
                         (response: ResponseDTOBase) => {
                             if (response.success) {
                                 if (response.data != null) {
                                     this.applications[this.selectedIndex].status = 2;
+
                                     this.getApplicationDetailsInfo();
+                                    this.applicationInvalidateReason[this.selectedIndex] = null;
                                     this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
                                 } else {
                                     this.sharedService.growlTranslation('An error occurred while trying to validate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error', 'error');
@@ -304,28 +318,25 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private invalidateApplication() {
         if (!this.processingRequest) {
-            if (this.selectedIndex != null && this.invalidateReason.trim().length > 0) {
+            if (this.selectedIndex != null && this.checkReasonSelected()) {
                 this.processingRequest = true;
-                this.applications[this.selectedIndex].invalidateReason = this.invalidateReason;
-                this.applicationApi.invalidateApplication(this.applications[this.selectedIndex]).subscribe(
-                    (response: ResponseDTOBase) => {
-                        if (response.success) {
-                            if (response.data != null) {
-                                this.applications[this.selectedIndex].status = 1;
-                                this.getApplicationDetailsInfo();
-                                this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
-                            } else {
-                                this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
-                            }
-                        } else {
-                            this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
-                        }
-                        this.closeModal();
-                    }, error => {
-                        this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
-                        this.closeModal();
-                    }
-                );
+                var reasonsNumber: number[] = [];
+                this.invalidateChecks.forEach((invalidateCheck, index) => {
+                  if(invalidateCheck === true){
+                    reasonsNumber.push(index+1);
+                  }
+                });
+                this.applicationInvalidateReasonApi.invalidateApplicationWithReason({ applicationId: this.applications[this.selectedIndex].id, reasons: reasonsNumber}).subscribe((response) => {
+                  this.applicationInvalidateReason[this.selectedIndex] = response;
+                  this.applications[this.selectedIndex].status = 1;
+                  this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
+                  this.closeModal();
+                  this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
+                }, error => {
+                  this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
+                  this.closeModal();
+                  this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
+                })
             }
         }
     }
@@ -342,7 +353,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     let fileType = this.selectedFilesTypes[this.selectedIndex][i];
                     for (let legalFile of this.legalFiles[this.selectedIndex]) {
                             if (legalFile.type == fileType) {
-                                
                                  if(legalFile.requestCorrection){
                                     this.sharedService.growlTranslation('This file has already requested for correction.', 'dgConn.file.alreadyRequested', 'warn');
                                     this.closeModal();
@@ -364,7 +374,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                             if (resLegalFile) {
                                 if (savedFilesCount == savedFilesLimit) {
                                     this.applicationApi.sendLegalDocumentsCorrection(this.applications[this.selectedIndex]).subscribe(
-                                        (response : ResponseDTOBase) => {
+                                        (response: ResponseDTOBase) => {
                                             this.selectedFilesTypes[this.selectedIndex] = [];
                                             this.getApplicationDetailsInfo();
                                             this.closeModal();
@@ -380,7 +390,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                             savedFilesCount++;
                             if (savedFilesCount == savedFilesLimit) {
                                 this.applicationApi.sendLegalDocumentsCorrection(this.applications[this.selectedIndex]).subscribe(
-                                    (response : ResponseDTOBase) => {
+                                    (response: ResponseDTOBase) => {
                                         this.selectedFilesTypes[this.selectedIndex] = [];
                                         this.getApplicationDetailsInfo();
                                         this.closeModal();
@@ -505,7 +515,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 }
             }
         }
-        if (registration.legalFile1Mime != null && registration.legalFile1Size > 0 ) {
+        if (registration.legalFile1Mime != null && registration.legalFile1Size > 0) {
             if (!lf1AlreadyExists) {
                 lf1.registrationId = registration.id;
                 lf1.type = 1;
@@ -513,7 +523,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             lf1.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf1);
         }
-        if (registration.legalFile2Mime != null && registration.legalFile2Size > 0 ) {
+        if (registration.legalFile2Mime != null && registration.legalFile2Size > 0) {
             if (!lf2AlreadyExists) {
                 lf2.registrationId = registration.id;
                 lf2.type = 2;
@@ -521,7 +531,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             lf2.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf2);
         }
-        if (registration.legalFile3Mime != null && registration.legalFile3Size > 0 ) {
+        if (registration.legalFile3Mime != null && registration.legalFile3Size > 0) {
             if (!lf3AlreadyExists) {
                 lf3.registrationId = registration.id;
                 lf3.type = 3;
@@ -529,7 +539,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             lf3.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf3);
         }
-        if (registration.legalFile4Mime != null && registration.legalFile4Size > 0 ) {
+        if (registration.legalFile4Mime != null && registration.legalFile4Size > 0) {
             if (!lf4AlreadyExists) {
                 lf4.registrationId = registration.id;
                 lf4.type = 4;
@@ -544,15 +554,15 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.location.back();
     }
 
-    private orderList(event, i){
-        this.selectedFilesTypes[i] = this.selectedFilesTypes[i].sort((a,b)=>{
+    private orderList(event, i) {
+        this.selectedFilesTypes[i] = this.selectedFilesTypes[i].sort((a, b) => {
             if (a < b) {
-            return -1;
-          } else if (a > b) {
-            return 1;
-          } else {
-            return 0;
-          }
+                return -1;
+            } else if (a > b) {
+                return 1;
+            } else {
+                return 0;
+            }
         });
     }
 }
