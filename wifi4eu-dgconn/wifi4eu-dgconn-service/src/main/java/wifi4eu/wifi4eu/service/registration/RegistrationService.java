@@ -536,12 +536,11 @@ public class RegistrationService {
     }
 
     @Transactional
-    public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) {
-        // LegalFileCorrectionReasonDTO oldLegalFile = legalFilesService.getLegalFileByRegistrationIdFileType(legalFileDTO.getRegistrationId(), legalFileDTO.getType());
+    public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) throws Exception {
         List<LegalFileCorrectionReasonDTO> oldLegalFile = getLegalFilesByRegistrationId(legalFileDTO.getRegistrationId());
         for (LegalFileCorrectionReasonDTO legalFileCorrectionReasonDTO : oldLegalFile) {
             if (legalFileCorrectionReasonDTO.getRequestCorrection()) {
-                return null;
+                throw new Exception("Duplicated correction reason for this file.");
             }
         }
         return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
