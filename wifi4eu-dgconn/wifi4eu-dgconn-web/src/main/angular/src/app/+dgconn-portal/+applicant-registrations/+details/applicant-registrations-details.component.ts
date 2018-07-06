@@ -74,6 +74,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private correctionRequested: LegalFileCorrectionReasonDTOBase[] = [];
     private invalidateChecks = [false, false, false, false, false, false, false, false, false];
     private applicationInvalidateReason: ApplicationInvalidateReasonDTO[][] = [];
+    private legalFilesCorrection: LegalFileCorrectionReasonDTOBase[][] = [];
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
@@ -117,7 +118,9 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                 (mayor: MayorDTOBase) => {
                                                                     this.registrationApi.getLegalFilesByRegistrationId(registration.id, new Date().getTime()).subscribe(
                                                                         (legalFiles: LegalFileCorrectionReasonDTOBase[]) => {
-                                                                            if (mayor) {
+                                                                            console.log(legalFiles);
+                                                                            
+                                                                        if (mayor) {
                                                                                 this.mayors[i] = mayor;
                                                                             } else {
                                                                                 let mayor = new MayorDTOBase();
@@ -357,7 +360,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                     this.sharedService.growlTranslation('This file has already requested for correction.', 'dgConn.file.alreadyRequested', 'warn');
                                     this.closeModal();
                                     return;
-                                } 
+                            }
                                 updatedLegalFile = legalFile;
                                 updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
                                 if (updatedLegalFile.correctionReason != -1){

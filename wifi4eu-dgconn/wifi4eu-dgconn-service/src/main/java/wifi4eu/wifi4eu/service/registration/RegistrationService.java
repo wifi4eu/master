@@ -124,8 +124,6 @@ public class RegistrationService {
     @Autowired
     SupplierMapper supplierMapper;
 
-    @Autowired
-    LegalFilesService legalFilesService;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -539,7 +537,7 @@ public class RegistrationService {
     public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) throws Exception {
         List<LegalFileCorrectionReasonDTO> oldLegalFile = getLegalFilesByRegistrationId(legalFileDTO.getRegistrationId());
         for (LegalFileCorrectionReasonDTO legalFileCorrectionReasonDTO : oldLegalFile) {
-            if (legalFileCorrectionReasonDTO.getRequestCorrection()) {
+            if (legalFileDTO.getType() == legalFileCorrectionReasonDTO.getType() && legalFileCorrectionReasonDTO.getRequestCorrection()) {
                 throw new Exception("Duplicated correction reason for this file.");
             }
         }
