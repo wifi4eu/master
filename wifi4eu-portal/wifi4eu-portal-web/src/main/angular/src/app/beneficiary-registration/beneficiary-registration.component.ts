@@ -119,8 +119,6 @@ export class BeneficiaryRegistrationComponent {
             this.finalBeneficiary.mayors.push(mayor);
         }
         this.initialUser.type = 3;
-        alert(this.initialUser);
-        console.log(this.initialUser);
         this.finalBeneficiary.user = this.initialUser;
         this.alreadyRegistered = true;
         this.beneficiaryApi.submitBeneficiaryRegistration(this.finalBeneficiary).subscribe(

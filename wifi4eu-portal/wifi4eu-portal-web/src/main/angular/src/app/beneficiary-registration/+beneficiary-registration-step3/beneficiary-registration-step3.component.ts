@@ -42,9 +42,9 @@ export class BeneficiaryRegistrationStep3Component {
         this.imMayor = false;
         this.sameDetails = false;
         this.sharedService.cleanEmitter.subscribe(() => {     
-                if (!this.imMayor){
-                    this.repeatEmail = '';
-                }    
+            if (!this.imMayor){
+                this.repeatEmail = '';
+            }    
             // this.repeatEmail = '';
             // this.reset(); 
         });
