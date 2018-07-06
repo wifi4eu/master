@@ -176,9 +176,9 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                         this.page[i] = 0;
                         this.sizePage[i] = this.defaultSize;
                         this.applicationCommentApi.getApplicationCommentsByApplication(application.id, this.page[i], this.sizePage[i], this.sortField[i], this.sortDirection[i] === 1 ? 'ASC' : 'DESC').subscribe((response: ResponseDTO) => {
-                          console.log(response);
+                          var data = response.data;
                           this.totalRecords[i] = response.xtotalCount;
-                          this.applicationComments[i] = response.data.comments;
+                          this.applicationComments[i] = response.data;
                         })
                     }
                 }, (error) => {
@@ -224,7 +224,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             }
         }
     }
-
+    
     private sortTable(event, index){
         this.sortField[index] = event.field;
         this.sortDirection[index] = event.order;
@@ -233,9 +233,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private filterTable(index){
         this.applicationCommentApi.getApplicationCommentsByApplication(this.applications[index].id, this.page[index], this.sizePage[index], this.sortField[index], this.sortDirection[index] === 1 ? 'ASC' : 'DESC').subscribe((response: ResponseDTO) => {
-          console.log(response);          
           this.totalRecords[index] = response.xtotalCount;
-          this.applicationComments[index] = response.data.comments;
+          this.applicationComments[index] = response.data;
         })
     }
 
@@ -247,6 +246,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     }
 
     private paginate(event, index){
+      this.sizePage[index] = event.rows;
       this.page[index] = event.page;
       this.filterTable(index);
     }
@@ -257,8 +257,14 @@ export class DgConnApplicantRegistrationsDetailsComponent {
           if(this.applicationComment != null || this.applicationComment.trim() != ""){
             this.processingRequest = true;
             this.applicationCommentApi.createApplicationComment({applicationId: this.applications[this.selectedIndex].id, comment: this.applicationComment}).subscribe((response) => {
-              console.log(response);
               this.processingRequest = false;
+              this.filterTable(this.selectedIndex);
+              // TODO: show success growl
+              //this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
+              this.closeModal();
+            }, error => {
+              // TODO: show error growl
+              //this.sharedService.growlTranslation('An error occurred while trying to validate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error', 'error');
               this.closeModal();
             })
           }

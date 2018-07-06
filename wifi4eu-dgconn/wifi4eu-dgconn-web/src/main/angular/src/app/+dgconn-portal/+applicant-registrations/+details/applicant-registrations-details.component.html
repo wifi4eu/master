@@ -197,34 +197,46 @@
                             </div>
                         </div>
                     </div>
-                    {{applicationComments[i]}}
                     <div class="ui-g-12">
-                      <ux-accordion-boxes>
-                        <custom-accordion-box [isExpanded]="true" [rightSide]="true">
-                          <a (click)="openCommentModal(i)">New comment</a>
-                            <p-dataTable #tableComments [value]="applicationComments[i]">
-                              <p-column field="username" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
-                                
-                              </p-column>
-                              <p-column field="datePosted" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
-                                <ng-template let-row="rowData" pTemplate="body">
-                                    <span *ngIf="row.datePosted">{{ row.datePosted | date:'dd/MM/yyyy' }}</span>
-                                </ng-template>
-                              </p-column>
-                              <p-column field="comment" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="text-center"></p-column>
-                            </p-dataTable>
-                            <footer>
-                              <div style="text-align: left;">
-                                <p-paginator class="paginator-panel" [first]="page[i] * sizePage" [rows]="sizePage" totalRecords="{{totalRecords[i]}}" #paginator
-                                    (onPageChange)="paginate($event, i)" [rowsPerPageOptions]="[20,30]"></p-paginator>
-                                <div class="totalRecords">
-                                  <span style="color: #929292;">{{ 'dgConn.totalRecords' | translate }}: {{totalRecords[i]}} </span>
-                                </div>
+                      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+                        <p class="applicantDetailsNoMargin municipality-name profileData">
+                            <span class="ui-g-8">{{ 'dgConn.applicantDetails.comments.header' | translate }}</span>
+                        </p>
+                        <div class="applicantDetailsNoMargin">
+                          <ux-accordion-boxes>
+                            <custom-accordion-box [isExpanded]="true" [rightSide]="true">
+                              <div class="ui-g-12 right">
+                                  <a (click)="openCommentModal(i)">
+                                    <i class="fa fa-pencil"></i>
+                                    <span>{{ 'dgConn.applicantDetails.newComment.button' | translate }}</span>
+                                  </a>
                               </div>
-                          </footer>
-                        </custom-accordion-box>
-                      </ux-accordion-boxes>
-                    </div>
+                              <div class="clearfix"></div>
+                              <div class="panel-dg panel-dg-voucher panel-dg-plain">
+                                <p-dataTable #tableComments [value]="applicationComments[i]">
+                                  <p-column [style]="{'width':'27%'}" field="username" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="padding-cell"></p-column>
+                                  <p-column [style]="{'width':'20%'}" field="datePosted" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="padding-cell">
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                      <span *ngIf="row.datePosted">{{ row.datePosted | date: 'dd/MM/yyyy' }}</span>
+                                    </ng-template>
+                                  </p-column>
+                                  <p-column [style]="{'width':'53%'}" field="comment" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="padding-cell"></p-column>
+                                </p-dataTable>
+                                <footer *ngIf="totalRecords[i] > 0">
+                                  <div style="text-align: left; position: relative;">
+                                    <p-paginator class="paginator-panel" [first]="page[i] * sizePage[i]" [rows]="sizePage[i]" totalRecords="{{totalRecords[i]}}" #paginator
+                                        (onPageChange)="paginate($event, i)" [rowsPerPageOptions]="[5,10]"></p-paginator>
+                                    <div class="totalRecords" style="position: absolute;top: 0px;transform: translateY(50%);">
+                                      <span style="color: #929292;">{{ 'dgConn.totalRecords' | translate }}: {{totalRecords[i]}} </span>
+                                    </div>
+                                  </div>
+                              </footer>
+                            </div>
+                            </custom-accordion-box>
+                          </ux-accordion-boxes>
+                        </div>
+                      </div>
+                  </div>
                 </div>
                 <br>
             </div>

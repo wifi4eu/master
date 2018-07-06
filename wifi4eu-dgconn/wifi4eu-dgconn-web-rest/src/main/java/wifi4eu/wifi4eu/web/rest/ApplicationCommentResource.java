@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,13 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationComment;
 import wifi4eu.wifi4eu.service.application.ApplicationCommentService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
@@ -47,21 +50,27 @@ public class ApplicationCommentResource {
     @ApiOperation(value = "Create application comment")
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ApplicationCommentDTO createApplicationComment(@RequestBody ApplicationCommentDTO applicationCommentDTO, HttpServletResponse response) throws IOException {
+    public ApplicationCommentDTO createApplicationComment(@RequestBody ApplicationCommentDTO applicationCommentDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating comment for application");
         try {
             if(!permissionChecker.checkIfDashboardUser()){
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException("Access denied on createApplicationComment");
             }
+            ApplicationCommentDTO responseApp = applicationCommentService.createApplicationComment(applicationCommentDTO);
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Success on creating a comment for application: " + applicationCommentDTO.getApplicationId());
+            return responseApp;
         } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to create a commentary for a application" , ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         }
-        catch (Exception ex){
+        catch (Exception e){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Application comments cannot be retrieved", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
         }
-        ApplicationCommentDTO responseApp = applicationCommentService.createApplicationComment(applicationCommentDTO);
-        return responseApp;
     }
 
     @ApiOperation(value = "Get all comments for application")
@@ -72,10 +81,12 @@ public class ApplicationCommentResource {
                                                            @RequestParam("size") Integer size,
                                                            @RequestParam("field") String field,
                                                            @RequestParam("direction") String direction, HttpServletResponse response) throws IOException {
-
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving Commission/INEA application comments");
         try{
             if(!permissionChecker.checkIfDashboardUser()){
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException("Access denied: getApplicationCommentsByApplication");
             }
             if(field.equalsIgnoreCase("username")){
                 field = "user.ecasUsername";
@@ -86,11 +97,15 @@ public class ApplicationCommentResource {
             } else {
                 pageable = new PageRequest(page, size, Sort.Direction.DESC, field);
             }
-            return applicationCommentService.getApplicationCommentsByApplicationIdPaginated(applicationId, pageable);
-        }catch (AccessDeniedException adex){
+            ResponseDTO responseDTO = applicationCommentService.getApplicationCommentsByApplicationIdPaginated(applicationId, pageable);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Success on retrieving Commission/INEA comments for application " + applicationId);
+            return responseDTO;
+        }catch (AccessDeniedException ade){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to retrieve application comments" , ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
-        }catch (Exception ex){
+        }catch (Exception e){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Application comments cannot be retrieved", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return null;
         }

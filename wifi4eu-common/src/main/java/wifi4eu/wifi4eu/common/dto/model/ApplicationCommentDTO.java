@@ -6,7 +6,7 @@ public class ApplicationCommentDTO {
     private int applicationId;
     private int userId;
     private String username;
-    private int datePosted;
+    private long datePosted;
     private String comment;
 
     public ApplicationCommentDTO() {
@@ -36,11 +36,11 @@ public class ApplicationCommentDTO {
         this.userId = userId;
     }
 
-    public int getDatePosted() {
+    public long getDatePosted() {
         return datePosted;
     }
 
-    public void setDatePosted(int datePosted) {
+    public void setDatePosted(long datePosted) {
         this.datePosted = datePosted;
     }
 

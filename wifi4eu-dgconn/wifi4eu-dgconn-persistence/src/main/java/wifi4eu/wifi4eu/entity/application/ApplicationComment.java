@@ -22,14 +22,14 @@ public class ApplicationComment {
     private User user;
 
     @Column(name = "date_posted")
-    private Integer datePosted;
+    private Long datePosted;
 
     private String comment;
 
     public ApplicationComment() {
     }
 
-    public ApplicationComment(Application application, User user, Integer datePosted, String comment) {
+    public ApplicationComment(Application application, User user, Long datePosted, String comment) {
         this.application = application;
         this.user = user;
         this.datePosted = datePosted;
@@ -60,11 +60,11 @@ public class ApplicationComment {
         this.user = user;
     }
 
-    public Integer getDatePosted() {
+    public Long getDatePosted() {
         return datePosted;
     }
 
-    public void setDatePosted(Integer datePosted) {
+    public void setDatePosted(Long datePosted) {
         this.datePosted = datePosted;
     }
 

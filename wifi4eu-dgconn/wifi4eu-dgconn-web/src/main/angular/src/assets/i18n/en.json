@@ -802,5 +802,7 @@
   "benefPortal.myVoucher.datatable.signGrantAgreement": "Sign grant agreement",
   "itemMenu.myVoucher": "My voucher",
   "shared.all": "All",
-  "dgConn.applicantDetails.newComment.title": "Add a new comment"
+  "dgConn.applicantDetails.newComment.button": "New comment",
+  "dgConn.applicantDetails.newComment.title": "Add a new comment",
+  "dgConn.applicantDetails.comments.header": "Comments"
 }

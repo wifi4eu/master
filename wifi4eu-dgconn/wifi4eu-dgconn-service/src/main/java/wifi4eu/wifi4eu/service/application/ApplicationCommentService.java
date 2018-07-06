@@ -38,21 +38,21 @@ public class ApplicationCommentService {
     }
 
     public ResponseDTO getApplicationCommentsByApplicationIdPaginated(Integer applicationId, Pageable pageable){
-
         Page<ApplicationComment> page = applicationCommentRepository.findAllByApplicationId(applicationId, pageable);
-        return new ResponseDTO(true, page.getContent(), page.getTotalElements(), null);
+        List<ApplicationCommentDTO> applicationCommentDTOS = applicationCommentMapper.toDTOList(page.getContent());
+        return new ResponseDTO(true, applicationCommentDTOS, page.getTotalElements(), null);
     }
 
     public ApplicationCommentDTO createApplicationComment(ApplicationCommentDTO applicationCommentDTO){
         ApplicationDTO applicationDBO = applicationService.getApplicationById(applicationCommentDTO.getApplicationId());
         if(applicationDBO == null){
-            throw new AppException("");
+            throw new AppException("Application with ID:  " + applicationCommentDTO.getApplicationId() + " not found");
         }
 
         if(applicationCommentDTO.getComment().trim().equals("") || applicationCommentDTO.getComment().isEmpty() || applicationCommentDTO.getComment() == null){
-            throw new AppException("");
+            throw new AppException("Comment is empty");
         }
-        applicationCommentDTO.setDatePosted((int) new Date().getTime());
+        applicationCommentDTO.setDatePosted(new Date().getTime());
         applicationCommentDTO.setUserId(userService.getUserByUserContext(UserHolder.getUser()).getId());
         ApplicationComment result = applicationCommentRepository.save(applicationCommentMapper.toEntity(applicationCommentDTO));
         return applicationCommentMapper.toDTO(result);
