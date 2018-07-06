@@ -31,12 +31,12 @@ import { RegistrationWarningApi } from "../../../shared/swagger";
         trigger(
             'enterSpinner', [
                 transition(':enter', [
-                    style({opacity: 0}),
-                    animate('200ms', style({opacity: 1}))
+                    style({ opacity: 0 }),
+                    animate('200ms', style({ opacity: 1 }))
                 ]),
                 transition(':leave', [
-                    style({opacity: 1}),
-                    animate('200ms', style({opacity: 0}))
+                    style({ opacity: 1 }),
+                    animate('200ms', style({ opacity: 0 }))
                 ])
             ]
         )
@@ -72,7 +72,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
-    constructor( private registrationWarningApi: RegistrationWarningApi, private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
+    constructor(private registrationWarningApi: RegistrationWarningApi, private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
@@ -127,7 +127,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                             this.municipalities[i] = municipality;
                                                                             if (this.registrations.length == this.municipalities.length) {
                                                                                 this.registrationIssues[i] = 0;
-                                                                             //   this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
                                                                             }
                                                                             correctCount++;
                                                                             if (correctCount == (applications.length - failCount)) {
@@ -178,15 +177,15 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         }
     }
 
-    private displayRegistrationByAuthor(authorId){
-      var registration = this.registrations.find(x => x.userId == authorId); 
-      return registration.id;
+    private displayRegistrationByAuthor(authorId) {
+        var registration = this.registrations.find(x => x.userId == authorId);
+        return registration.id;
     }
 
     private getLegalFileUrl(index: number, fileNumber: number) {
         return this.registrationApi.getLegalFilesByFileType(this.registrations[index].id, fileNumber);
     }
- 
+
     private displayValidateModal(index: number) {
         if (index != null) {
             if (this.applications[index].status != 2) {
@@ -210,13 +209,13 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             if (this.selectedFilesTypes[index].length > 0) {
                 for (let i = 0; i < this.selectedFilesTypes[index].length; i++) {
                     switch (this.selectedFilesTypes[index][i]) {
-                       case 1:
+                        case 1:
                             for (let lf of this.legalFiles[index]) {
                                 if (lf.type == 1) {
                                     this.selectedReasonTypes[index][i] = lf.correctionReason;
                                 }
                             }
-                            break; 
+                            break;
                         case 2:
                             for (let lf of this.legalFiles[index]) {
                                 if (lf.type == 2) {
@@ -281,6 +280,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                             if (response.success) {
                                 if (response.data != null) {
                                     this.applications[this.selectedIndex].status = 2;
+
                                     this.getApplicationDetailsInfo();
                                     this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
                                 } else {
@@ -341,7 +341,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                         if (legalFile.type == fileType) {
                             updatedLegalFile = legalFile;
                             updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
-                            if (updatedLegalFile.correctionReason != -1){
+                            if (updatedLegalFile.correctionReason != -1) {
                                 updatedLegalFile.requestCorrection = true;
                             } else {
                                 updatedLegalFile.correctionReason = null;
@@ -355,7 +355,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                             if (resLegalFile) {
                                 if (savedFilesCount == savedFilesLimit) {
                                     this.applicationApi.sendLegalDocumentsCorrection(this.applications[this.selectedIndex]).subscribe(
-                                        (response : ResponseDTOBase) => {
+                                        (response: ResponseDTOBase) => {
                                             this.selectedFilesTypes[this.selectedIndex] = [];
                                             this.getApplicationDetailsInfo();
                                             this.closeModal();
@@ -371,7 +371,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                             savedFilesCount++;
                             if (savedFilesCount == savedFilesLimit) {
                                 this.applicationApi.sendLegalDocumentsCorrection(this.applications[this.selectedIndex]).subscribe(
-                                    (response : ResponseDTOBase) => {
+                                    (response: ResponseDTOBase) => {
                                         this.selectedFilesTypes[this.selectedIndex] = [];
                                         this.getApplicationDetailsInfo();
                                         this.closeModal();
@@ -496,7 +496,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 }
             }
         }
-        if (registration.legalFile1Mime != null && registration.legalFile1Size > 0 ) {
+        if (registration.legalFile1Mime != null && registration.legalFile1Size > 0) {
             if (!lf1AlreadyExists) {
                 lf1.registrationId = registration.id;
                 lf1.type = 1;
@@ -504,7 +504,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             lf1.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf1);
         }
-        if (registration.legalFile2Mime != null && registration.legalFile2Size > 0 ) {
+        if (registration.legalFile2Mime != null && registration.legalFile2Size > 0) {
             if (!lf2AlreadyExists) {
                 lf2.registrationId = registration.id;
                 lf2.type = 2;
@@ -512,7 +512,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             lf2.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf2);
         }
-        if (registration.legalFile3Mime != null && registration.legalFile3Size > 0 ) {
+        if (registration.legalFile3Mime != null && registration.legalFile3Size > 0) {
             if (!lf3AlreadyExists) {
                 lf3.registrationId = registration.id;
                 lf3.type = 3;
@@ -520,7 +520,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             lf3.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf3);
         }
-        if (registration.legalFile4Mime != null && registration.legalFile4Size > 0 ) {
+        if (registration.legalFile4Mime != null && registration.legalFile4Size > 0) {
             if (!lf4AlreadyExists) {
                 lf4.registrationId = registration.id;
                 lf4.type = 4;
@@ -535,15 +535,15 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.location.back();
     }
 
-    private orderList(event, i){
-        this.selectedFilesTypes[i] = this.selectedFilesTypes[i].sort((a,b)=>{
+    private orderList(event, i) {
+        this.selectedFilesTypes[i] = this.selectedFilesTypes[i].sort((a, b) => {
             if (a < b) {
-            return -1;
-          } else if (a > b) {
-            return 1;
-          } else {
-            return 0;
-          }
+                return -1;
+            } else if (a > b) {
+                return 1;
+            } else {
+                return 0;
+            }
         });
     }
 }

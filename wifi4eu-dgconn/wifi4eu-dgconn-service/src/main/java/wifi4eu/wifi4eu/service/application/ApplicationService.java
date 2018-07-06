@@ -439,6 +439,7 @@ public class ApplicationService {
 
         applicationDBO.setStatus(ApplicationStatus.OK.getValue());
         applicationDBO.setInvalidateReason(null);
+        applicationDBO.setAuthorizedPerson(applicationDTO.getAuthorizedPerson());
         ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
