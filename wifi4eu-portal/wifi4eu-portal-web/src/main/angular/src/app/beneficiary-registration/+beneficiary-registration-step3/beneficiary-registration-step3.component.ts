@@ -32,8 +32,6 @@ export class BeneficiaryRegistrationStep3Component {
     @Output() private associationNameChange: EventEmitter<string>;
 
     private css_class_email: string = '';
-    /* private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$'; */
-    /* private emailPattern = new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\.)+[a-z0-9]{2,6}?$/i); */
 
     constructor(private sharedService: SharedService, private localStorage: LocalStorageService) {
         this.onNext = new EventEmitter<any>();
@@ -45,8 +43,6 @@ export class BeneficiaryRegistrationStep3Component {
             if (!this.imMayor){
                 this.repeatEmail = '';
             }    
-            // this.repeatEmail = '';
-            // this.reset(); 
         });
         this.storedUser = this.localStorage.get('user');
         this.userEcas = this.storedUser ? JSON.parse(this.storedUser.toString()) : null;
@@ -84,7 +80,6 @@ export class BeneficiaryRegistrationStep3Component {
     }
 
     private checkEmailsMatch() {
-        // this.hasEcasEmail = false;
         if (this.initialUser.ecasEmail === this.repeatEmail && this.repeatEmail.length > 0) {
             this.userEmailMatches = true;
             this.css_class_email = 'isValid';
