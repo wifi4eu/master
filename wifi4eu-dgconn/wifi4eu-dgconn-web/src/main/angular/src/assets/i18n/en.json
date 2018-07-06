@@ -810,5 +810,7 @@
   "dgConn.applicantDetails.invalidate.reason6": "6. After the follow-up request, the applicant provided a document which was missing a signature.",
   "dgConn.applicantDetails.invalidate.reason7": "7. The deadline for the request of correction of the required supporting documents passed without compliance by the applicant.",
   "dgConn.applicantDetails.invalidate.reason8": "8. The application included a merged municipality.",
-  "dgConn.applicantDetails.invalidate.reason9": "9. Due to irregularities found in the application, it was invalidated."
+  "dgConn.applicantDetails.invalidate.reason9": "9. Due to irregularities found in the application, it was invalidated.",
+  "dgConn.applicationDetails.contact.auth": "Would you like to authorize {{name}} {{surname}} to sign grant agreement?",
+  "dgConn.applicationDetails.auth.tooltip": "By validating this application, {{name}} {{surname}} will be authorized."
 }

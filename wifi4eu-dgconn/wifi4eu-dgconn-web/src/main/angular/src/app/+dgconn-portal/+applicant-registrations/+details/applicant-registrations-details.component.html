@@ -7,7 +7,8 @@
     <div class="ui-g-12">
         <p>
             <span class="beneficiaryTitle">
-                {{ 'shared.municipalityDetails.title' | translate }}<span *ngIf="municipalities[0]"> - {{municipalities[0].name}}</span>
+                {{ 'shared.municipalityDetails.title' | translate }}
+                <span *ngIf="municipalities[0]"> - {{municipalities[0].name}}</span>
             </span>
         </p>
         <i *ngIf="loadingData" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
@@ -31,28 +32,34 @@
                 <div class="row applicantDetailsPanel">
                     <span class="left">
                         <span class="entity-title">
-                            {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
-                            ({{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{registrations[i].id}})
+                            {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}} ({{ 'discussionForum.beneficiary.registrationNumber'
+                            | translate }} {{registrations[i].id}})
                         </span>
                         <span *ngIf="applications[i].status == 1" class="entity-subtitle" style="margin-left: 0.5em;">
-                            <i class="fa fa-times" style="color: red;"></i> <i>{{ 'dgConn.status.invalid' | translate }}</i>
+                            <i class="fa fa-times" style="color: red;"></i>
+                            <i>{{ 'dgConn.status.invalid' | translate }}</i>
                         </span>
                         <span *ngIf="applications[i].status == 2" class="entity-subtitle" style="margin-left: 0.5em;">
-                            <i class="fa fa-check" style="color: green;"></i> <i>{{ 'dgConn.status.valid' | translate }}</i>
+                            <i class="fa fa-check" style="color: green;"></i>
+                            <i>{{ 'dgConn.status.valid' | translate }}</i>
                         </span>
                         <span *ngIf="applications[i].status == 3" class="entity-subtitle" style="margin-left: 0.5em;">
-                            <i class="fa fa-info"></i> <i>{{ 'dgConn.status.pendingFollowup' | translate }}</i>
+                            <i class="fa fa-info"></i>
+                            <i>{{ 'dgConn.status.pendingFollowup' | translate }}</i>
                         </span>
                         <div *ngIf="registrations[i].registrationWarningDTOList != null" class="mt-1">
-                            <span *ngFor="let warningObj of registrations[i].registrationWarningDTOList" [class.badge-warning]="warningObj.warning == 1 || warningObj.warning == 2"  [class.badge-warning-yellow]="warningObj.warning == 3" class="badge">
+                            <span *ngFor="let warningObj of registrations[i].registrationWarningDTOList" [class.badge-warning]="warningObj.warning == 1 || warningObj.warning == 2"
+                                [class.badge-warning-yellow]="warningObj.warning == 3" class="badge">
                                 {{ 'dgConn.badge.warning' | translate }} {{warningObj.warning}}
                             </span>
-        
+
                         </div>
-                       
-                        <br><br>
+
+                        <br>
+                        <br>
                         <span class="entity-subtitle">
-                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date/1000000 | date:'yyyy-MM-dd'}} {{ applications[i].date/1000000 | date:'shortTime'}}
+                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date/1000000 | date:'yyyy-MM-dd'}} {{ applications[i].date/1000000
+                            | date:'shortTime'}}
                         </span>
                     </span>
                     <span class="right">
@@ -82,7 +89,6 @@
                             <p class="applicantDetailsNoMargin municipality-name profileData">
                                 <span class="ui-g-12">{{ 'suppRegistration.legalentity.label' | translate }}</span>
                             </p>
-                         
                             <p class="applicantDetailsNoMargin">
                                 <span class="ui-g-3 ui-sm-6">{{ 'shared.country.label' | translate }}</span>
                                 <span class="ui-g-9 ui-sm-6 profileData">{{ municipality.country }}</span>
@@ -121,7 +127,26 @@
                                 <span class="ui-g-9 ui-sm-6 profileData">{{ users[i].ecasEmail }}</span>
                             </p>
                         </div>
+                        <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12 authorizationBox">
+                            <i class="fa fa-exclamation-circle alertIconDisplay"></i>
+                            <div class="innerContent">
+                                <span>{{'dgConn.applicationDetails.contact.auth' | translate:{name:users[i].name,surname:users[i].surname}
+                                    }}
+                                </span>
+                                <div class="innerOptions">
+                                    <div>
+                                        <p-radioButton name="{{applications[i].id}}" value="{{users[i].id}}" label="Yes" [(ngModel)]="applications[i].authorizedPerson"
+                                            inputId="preopt1" pTooltip="{{'dgConn.applicationDetails.auth.tooltip' | translate:{name:users[i].name,surname:users[i].surname}
+                                        }}" tooltipPosition="bottom"></p-radioButton>
+                                    </div>
+                                    <div>
+                                        <p-radioButton name="{{applications[i].id}}" value="-1" label="No" [(ngModel)]="applications[i].authorizedPerson" inputId="preopt2"></p-radioButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="ui-g-12">
                         <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
                             <p class="applicantDetailsNoMargin municipality-name profileData">
@@ -192,8 +217,7 @@
                                 </ux-accordion-boxes>
                             </p>
                             <div class="ui-g-12 right">
-                                <button type="button" class="btn btn-primary" (click)="displayRequestCorrectionModal(i)"
-                                        *ngIf="selectedFilesTypes[i]" [disabled]="selectedFilesTypes[i].length < 1">
+                                <button type="button" class="btn btn-primary" (click)="displayRequestCorrectionModal(i)" *ngIf="selectedFilesTypes[i]" [disabled]="selectedFilesTypes[i].length < 1">
                                     {{ 'dgConn.requestCorrection' | translate }}
                                 </button>
                             </div>
@@ -212,8 +236,7 @@
                 <p>
                     {{ 'dgConn.duplicatedBeneficiaryDetails.searchMessages.Desc' | translate }}
                 </p>
-                <form #searchMessagesForm="ngForm" (submit)="searchMessages()"
-                      class="ux-search-input-container searchInputBlock">
+                <form #searchMessagesForm="ngForm" (submit)="searchMessages()" class="ux-search-input-container searchInputBlock">
                     <input type="search" name="searchInput" class="searchInput" [(ngModel)]="searchMessagesQuery">
                     <button type="submit" class="btn btn-primary">
                         <b>{{ 'shared.search.button' | translate }}</b>
@@ -224,8 +247,7 @@
                         <div class="ui-g-12">
                             <div class="ui-g-3 backgroundMessage">
                                 <p class="authorMessage">
-                                    {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
-                                    {{displayRegistrationByAuthor(currentMessage.authorId)}}
+                                    {{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{displayRegistrationByAuthor(currentMessage.authorId)}}
                                 </p>
                                 <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
                                 <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
@@ -239,11 +261,12 @@
             </div>
         </div>
     </div>
-    <br><br>
+    <br>
+    <br>
 </div>
 <div class="container font">
-    <p-dialog [(visible)]="displayValidate" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+    <p-dialog [(visible)]="displayValidate" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="!processingRequest"
+        [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <form (ngSubmit)="validateApplication()" #validateConfirmationForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
@@ -253,15 +276,14 @@
                 <div style="padding: 2em; padding-top: 0em;">
                     <div class="row center">
                         <div class="col-sm-6">
-                            <button type="button" class="btn btn-primary cancel-button"
-                                    [disabled]="processingRequest" (click)="closeModal()">
+                            <button type="button" class="btn btn-primary cancel-button" [disabled]="processingRequest" (click)="closeModal()">
                                 {{ 'shared.cancel.button' | translate }}
                             </button>
                         </div>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary publish-button"
-                                    [disabled]="processingRequest">
-                                {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                            <button type="submit" class="btn btn-primary publish-button" [disabled]="processingRequest">
+                                {{ 'shared.confirm.button' | translate }}
+                                <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
                     </div>
@@ -269,7 +291,7 @@
             </div>
         </form>
     </p-dialog>
-    <p-dialog [(visible)]="displayInvalidate" class="hello" [modal]="true" [responsive]="true" [resizable]="false"
+    <p-dialog [(visible)]="displayInvalidate" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <form (ngSubmit)="invalidateApplication()" #invalidateConfirmationForm="ngForm">
             <div class="form-group">
@@ -355,8 +377,7 @@
                 <div style="padding: 2em; padding-top: 0em;">
                     <div class="row center">
                         <div class="col-sm-6">
-                            <button type="button" class="btn btn-primary cancel-button"
-                                    [disabled]="processingRequest" (click)="closeModal()">
+                            <button type="button" class="btn btn-primary cancel-button" [disabled]="processingRequest" (click)="closeModal()">
                                 {{ 'shared.cancel.button' | translate }}
                             </button>
                         </div>
@@ -371,8 +392,8 @@
             </div>
         </form>
     </p-dialog>
-    <p-dialog [(visible)]="displayRequestCorrection" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+    <p-dialog [(visible)]="displayRequestCorrection" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+        [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <form (ngSubmit)="requestLegalFilesCorrection()" #requestLegalFilesCorrectionForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
@@ -384,18 +405,19 @@
                     <p class="applicantDetailsNoMargin ui-g-12">
                         <span class="profileData">{{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} {{typeIndex+1}}</span>
                         <br>
-                        <span>- <span>{{typeFilesList[typeNumber - 1]}}</span></span>
+                        <span>-
+                            <span>{{typeFilesList[typeNumber - 1]}}</span>
+                        </span>
                     </p>
                     <p class="applicantDetailsNoMargin">
                         <span class="ui-g-12">{{ 'dgConn.correctionReason' | translate }}:</span>
                         <span class="ui-g-12" style="margin-bottom: 1em;">
-                            <select [(ngModel)]="selectedReasonTypes[selectedIndex][typeIndex]" (ngModelChange)="selectCorrectionReason($event)"
-                                    [id]="'invalidateReason'+typeIndex" [name]="'invalidateReason'+typeIndex" class="form-control">
+                            <select [(ngModel)]="selectedReasonTypes[selectedIndex][typeIndex]" (ngModelChange)="selectCorrectionReason($event)" [id]="'invalidateReason'+typeIndex"
+                                [name]="'invalidateReason'+typeIndex" class="form-control">
                                 <option *ngIf="selectedReasonTypes[selectedIndex][typeIndex]  != null" [ngValue]="-1">
                                     -
                                 </option>
-                                <option *ngFor="let invalidateReason of invalidateReasonsList; let reasonIndex = index"
-                                        [ngValue]="reasonIndex">
+                                <option *ngFor="let invalidateReason of invalidateReasonsList; let reasonIndex = index" [ngValue]="reasonIndex">
                                     {{ invalidateReason }}
                                 </option>
                             </select>
@@ -405,15 +427,14 @@
                 <div>
                     <div class="row center">
                         <div class="col-sm-6">
-                            <button type="button" class="btn btn-primary cancel-button"
-                                    [disabled]="processingRequest" (click)="closeModal()">
+                            <button type="button" class="btn btn-primary cancel-button" [disabled]="processingRequest" (click)="closeModal()">
                                 {{ 'shared.cancel.button' | translate }}
                             </button>
                         </div>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary publish-button"
-                                    [disabled]="processingRequest || !correctRequestLegalFilesModal">
-                                {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                            <button type="submit" class="btn btn-primary publish-button" [disabled]="processingRequest || !correctRequestLegalFilesModal">
+                                {{ 'shared.confirm.button' | translate }}
+                                <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
                     </div>
