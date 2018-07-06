@@ -125,12 +125,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                             this.registrations[i] = registration;
                                                                             this.users[i] = user;
                                                                             this.municipalities[i] = municipality;
-                                                                            if (!this.applications[i].authorizedPerson) {
-                                                                                this.applications[i].authorizedPerson = -1;
-                                                                            }
                                                                             if (this.registrations.length == this.municipalities.length) {
                                                                                 this.registrationIssues[i] = 0;
-                                                                                //   this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
                                                                             }
                                                                             correctCount++;
                                                                             if (correctCount == (applications.length - failCount)) {
