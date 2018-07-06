@@ -72,13 +72,15 @@
                     </span>
                 </div>
                 <div class="row applicantDetailsPanel">
-                    <div class="ui-g-12" *ngIf="applications[i].invalidateReason">
-                        <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
+                    <div class="ui-g-12" *ngIf="applicationInvalidateReason[i] != null">
+                        <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
                             <p class="applicantDetailsNoMargin municipality-name profileData">
                                 <span class="ui-g-12">{{ 'dgConn.voucherAssignment.invalidateReason' | translate }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin">
-                                <span class="ui-g-12">{{applications[i].invalidateReason}}</span>
+                              <span class="ui-g-12" *ngFor="let invalidateReason of applicationInvalidateReason[i]">
+                                {{ 'dgConn.applicantDetails.invalidate.reason'+invalidateReason.reason | translate }}
+                              </span>
                             </p>
                         </div>
                     </div>
@@ -289,17 +291,88 @@
             </div>
         </form>
     </p-dialog>
-    <p-dialog [(visible)]="displayInvalidate" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="!processingRequest"
-        [closeOnEscape]="false" (onAfterHide)="closeModal()">
+    <p-dialog [(visible)]="displayInvalidate" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <form (ngSubmit)="invalidateApplication()" #invalidateConfirmationForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
                     <h2 class="beneficiaryMayor">{{ 'dgConn.applicantDetails.invalidateApplication.title' | translate }}</h2>
                     <p [innerHTML]="'dgConn.applicantDetails.invalidateApplication.desc' | translate"></p>
+                    <p>Please select a reason:</p>
                 </div>
                 <div style="padding: 2em; padding-top: 0em;">
-                    <p>{{ 'dgConn.comment.mandatory' | translate }}</p>
-                    <textarea rows="5" class="form-control widthMax" name="newMessage" [(ngModel)]="invalidateReason" [disabled]="processingRequest"></textarea>
+                  <div class="row" style="margin-bottom: 1.2em;">
+                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                        <p-checkbox name="reason_1" binary="true"  [(ngModel)]="invalidateChecks[0]"></p-checkbox>
+                    </div>
+                    <div class="col-xs-11">
+                        <span style="cursor: pointer;" (click)="invalidateChecks[0] = !invalidateChecks[0]">{{ 'dgConn.applicantDetails.invalidate.reason1' | translate }}</span>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 1.2em;">
+                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                        <p-checkbox name="reason_2" binary="true"  [(ngModel)]="invalidateChecks[1]"></p-checkbox>
+                    </div>
+                    <div class="col-xs-11">
+                        <span style="cursor: pointer;" (click)="invalidateChecks[1] = !invalidateChecks[1]">{{ 'dgConn.applicantDetails.invalidate.reason2' | translate }}</span>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 1.2em;">
+                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                        <p-checkbox name="reason_3" binary="true"  [(ngModel)]="invalidateChecks[2]"></p-checkbox>
+                    </div>
+                    <div class="col-xs-11">
+                        <span style="cursor: pointer;" (click)="invalidateChecks[2] = !invalidateChecks[2]">{{ 'dgConn.applicantDetails.invalidate.reason3' | translate }}</span>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 1.2em;">
+                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                        <p-checkbox name="reason_4" binary="true"  [(ngModel)]="invalidateChecks[3]"></p-checkbox>
+                    </div>
+                    <div class="col-xs-11">
+                        <span style="cursor: pointer;" (click)="invalidateChecks[3] = !invalidateChecks[3]">{{ 'dgConn.applicantDetails.invalidate.reason4' | translate }}</span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1.2em;">
+                      <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                        <p-checkbox name="reason_5" binary="true"  [(ngModel)]="invalidateChecks[4]"></p-checkbox>
+                      </div>
+                      <div class="col-xs-11">
+                        <span style="cursor: pointer;" (click)="invalidateChecks[4] = !invalidateChecks[4]">{{ 'dgConn.applicantDetails.invalidate.reason5' | translate }}</span>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 1.2em;">
+                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                        <p-checkbox name="reason_6" binary="true"  [(ngModel)]="invalidateChecks[5]"></p-checkbox>
+                    </div>
+                    <div class="col-xs-11">
+                        <span style="cursor: pointer;" (click)="invalidateChecks[5] = !invalidateChecks[5]">{{ 'dgConn.applicantDetails.invalidate.reason6' | translate }}</span>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 1.2em;">
+                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                        <p-checkbox name="reason_7" binary="true"  [(ngModel)]="invalidateChecks[6]"></p-checkbox>
+                    </div>
+                    <div class="col-xs-11">
+                        <span style="cursor: pointer;" (click)="invalidateChecks[6] = !invalidateChecks[6]">{{ 'dgConn.applicantDetails.invalidate.reason7' | translate }}</span>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 1.2em;">
+                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                        <p-checkbox name="reason_8" binary="true"  [(ngModel)]="invalidateChecks[7]"></p-checkbox>
+                    </div>
+                    <div class="col-xs-11">
+                        <span style="cursor: pointer;" (click)="invalidateChecks[7] = !invalidateChecks[7]">{{ 'dgConn.applicantDetails.invalidate.reason8' | translate }}</span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1.2em;">
+                      <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                        <p-checkbox name="reason_9" binary="true"  [(ngModel)]="invalidateChecks[8]"></p-checkbox>
+                      </div>
+                      <div class="col-xs-11">
+                        <span style="cursor: pointer;" (click)="invalidateChecks[8] = !invalidateChecks[8]">{{ 'dgConn.applicantDetails.invalidate.reason9' | translate }}</span>
+                      </div>
+                    </div>
                 </div>
                 <div style="padding: 2em; padding-top: 0em;">
                     <div class="row center">
@@ -309,9 +382,9 @@
                             </button>
                         </div>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary publish-button" [disabled]="processingRequest || invalidateReason.trim().length < 1">
-                                {{ 'shared.confirm.button' | translate }}
-                                <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                            <button type="submit" class="btn btn-primary publish-button"
+                                    [disabled]="processingRequest || !checkReasonSelected()"> <!-- || invalidateReason.trim().length < 1 -->
+                                {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
                     </div>

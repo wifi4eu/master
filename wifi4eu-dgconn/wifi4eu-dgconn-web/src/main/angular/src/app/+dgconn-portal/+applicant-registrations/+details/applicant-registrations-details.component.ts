@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewEncapsulation } from "@angular/core";
 import { Location } from "@angular/common";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -22,11 +22,13 @@ import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { LegalFileCorrectionReasonDTOBase } from "../../../shared/swagger/model/LegalFileCorrectionReasonDTO";
 import { TranslateService } from "ng2-translate";
 import * as FileSaver from "file-saver";
-import { RegistrationWarningApi } from "../../../shared/swagger";
+import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO } from "../../../shared/swagger";
 
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
-    providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi],
+    providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi, InvalidateReasonApi],
+    styleUrls: ['./applicant-registrations-details.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     animations: [
         trigger(
             'enterSpinner', [
@@ -69,10 +71,12 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private displayRequestCorrection = false;
     private loadingData = false;
     private processingRequest = false;
+    private invalidateChecks = [false, false, false, false, false, false, false, false, false];
+    private applicationInvalidateReason: ApplicationInvalidateReasonDTO[][] = [];
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
-    constructor(private registrationWarningApi: RegistrationWarningApi, private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
+    constructor(private applicationInvalidateReasonApi: InvalidateReasonApi,  private registrationWarningApi: RegistrationWarningApi, private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
@@ -93,6 +97,11 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     let failCount = 0;
                     let correctCount = 0;
                     for (let i = 0; i < applications.length; i++) {
+                        if(applications[i].status === 1){
+                          this.applicationInvalidateReasonApi.getInvalidateReasonsByApplication(applications[i].id).subscribe((res: ApplicationInvalidateReasonDTO[]) => {
+                            this.applicationInvalidateReason[i] = res;
+                          })
+                        }
                         let application = applications[i];
                         this.registrationApi.getRegistrationById(application.registrationId).subscribe(
                             (registration: RegistrationDTOBase) => {
@@ -204,6 +213,10 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         }
     }
 
+    private checkReasonSelected(){
+      return this.invalidateChecks.some(reason => reason === true);
+    }
+
     private displayRequestCorrectionModal(index: number) {
         if (index != null) {
             if (this.selectedFilesTypes[index].length > 0) {
@@ -275,13 +288,14 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             if (this.selectedIndex != null) {
                 if (this.registrations[this.selectedIndex].allFilesFlag == 1) {
                     this.processingRequest = true;
-                    this.applicationApi.validateApplication(this.applications[this.selectedIndex]).subscribe(
+                    this.applicationInvalidateReasonApi.validateApplication(this.applications[this.selectedIndex]).subscribe(
                         (response: ResponseDTOBase) => {
                             if (response.success) {
                                 if (response.data != null) {
                                     this.applications[this.selectedIndex].status = 2;
 
                                     this.getApplicationDetailsInfo();
+                                    this.applicationInvalidateReason[this.selectedIndex] = null;
                                     this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
                                 } else {
                                     this.sharedService.growlTranslation('An error occurred while trying to validate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error', 'error');
@@ -302,28 +316,25 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private invalidateApplication() {
         if (!this.processingRequest) {
-            if (this.selectedIndex != null && this.invalidateReason.trim().length > 0) {
+            if (this.selectedIndex != null && this.checkReasonSelected()) {
                 this.processingRequest = true;
-                this.applications[this.selectedIndex].invalidateReason = this.invalidateReason;
-                this.applicationApi.invalidateApplication(this.applications[this.selectedIndex]).subscribe(
-                    (response: ResponseDTOBase) => {
-                        if (response.success) {
-                            if (response.data != null) {
-                                this.applications[this.selectedIndex].status = 1;
-                                this.getApplicationDetailsInfo();
-                                this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
-                            } else {
-                                this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
-                            }
-                        } else {
-                            this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
-                        }
-                        this.closeModal();
-                    }, error => {
-                        this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
-                        this.closeModal();
-                    }
-                );
+                var reasonsNumber: number[] = [];
+                this.invalidateChecks.forEach((invalidateCheck, index) => {
+                  if(invalidateCheck === true){
+                    reasonsNumber.push(index+1);
+                  }
+                });
+                this.applicationInvalidateReasonApi.invalidateApplicationWithReason({ applicationId: this.applications[this.selectedIndex].id, reasons: reasonsNumber}).subscribe((response) => {
+                  this.applicationInvalidateReason[this.selectedIndex] = response;
+                  this.applications[this.selectedIndex].status = 1;
+                  this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
+                  this.closeModal();
+                  this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
+                }, error => {
+                  this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
+                  this.closeModal();
+                  this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
+                })
             }
         }
     }
