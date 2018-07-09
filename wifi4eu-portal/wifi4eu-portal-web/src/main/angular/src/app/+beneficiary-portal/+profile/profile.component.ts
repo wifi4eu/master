@@ -158,58 +158,6 @@ export class BeneficiaryProfileComponent {
                 break;
         }
     }
-
-    private saveUserChanges() {
-        if (this.editedUser.email != this.user.email) {
-            this.editedUser.email = this.user.email;
-        }
-        this.submittingData = true;
-        this.userApi.updateUserDetails(this.editedUser).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.user = response.data;
-                    this.closeModal();
-                    this.submittingData = false;
-                }
-            }
-        );
-    }
-
-    private saveMunicipalityChanges() {
-        if (this.editedMunicipality.country != this.municipalities[this.currentEditIndex].country) {
-            this.editedMunicipality.country = this.municipalities[this.currentEditIndex].country;
-        }
-        if (this.editedMunicipality.name != this.municipalities[this.currentEditIndex].name) {
-            this.editedMunicipality.name = this.municipalities[this.currentEditIndex].name;
-        }
-        this.submittingData = true;
-        this.municipalityApi.updateMunicipalityDetails(this.editedMunicipality).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.municipalities[this.currentEditIndex] = response.data;
-                    this.closeModal();
-                    this.submittingData = false;
-                }
-            }
-        );
-    }
-
-    private saveMayorChanges() {
-        if (this.editedMayor.email != this.mayors[this.currentEditIndex].email) {
-            this.editedMayor.email = this.mayors[this.currentEditIndex].email;
-        }
-        this.submittingData = true;
-        this.mayorApi.updateMayorDetails(this.editedMayor).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.mayors[this.currentEditIndex] = response.data;
-                    this.closeModal();
-                    this.submittingData = false;
-                }
-            }
-        );
-    }
-
     private closeModal() {
         this.currentEditIndex = 0;
         this.displayUser = false;
@@ -235,6 +183,10 @@ export class BeneficiaryProfileComponent {
                 }
             );
         }
+    }
+
+    private goToEditProfile(){
+        this.router.navigate(['../profile/edit-profile'], {relativeTo: this.route});
     }
 
     private goToDiscussion(index) {
