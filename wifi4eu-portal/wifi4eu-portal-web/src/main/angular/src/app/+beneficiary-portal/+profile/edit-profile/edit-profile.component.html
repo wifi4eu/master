@@ -1,0 +1,235 @@
+<div class="clearfix"></div>
+<div class="container font">
+    <div class="clearfix"></div>
+    <br>
+    <div class="row">
+        <br>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+            <span class="beneficiaryMayor">{{ 'benefPortal.editProfile.title' | translate }}</span>
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+            <span class="edit">{{ 'shared.municipalityDetails.title' | translate}}</span>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <form (ngSubmit)="saveProfileChanges()" #profileEditForm="ngForm"></form>
+    <div class="row" *ngIf="municipalities.length > 0 && municipalities.length == mayors.length">
+        <div class="col-sm-12" *ngFor="let municipality of municipalities; let i = index">
+            <br>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                    <span class="profileData">{{ 'shared.municipality.label' | translate}} {{i+1}}</span>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                    <hr class="beneficiaryHr">
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <p>{{ 'benefRegistration.address.label' | translate }}</p>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <input id="address_municipality" type="text" [(ngModel)]="municipality.address" class="form-control" name="address_municipality"
+                        ngcontrol="address_municipality" #address_municipality="ngModel" required>
+                    <div [hidden]="address_municipality.valid || address_municipality.pristine" class="alert alert-danger">
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <p>{{ 'shared.number.label' | translate }}</p>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <input id="number_municipality" type="text" [(ngModel)]="municipality.addressNum" class="form-control" name="number_municipality"
+                        ngcontrol="number_municipality" #number_municipality="ngModel" required>
+                    <div [hidden]="number_municipality.valid || number_municipality.pristine" class="alert alert-danger">
+                        {{ 'suppRegistration.address.required' | translate }}
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <p>{{ 'shared.postal-code.label' | translate }}</p>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <input id="postalCode_municipality" type="text" [(ngModel)]="municipality.postalCode" class="form-control" name="postalCode_municipality"
+                        ngcontrol="postalCode_municipality" #postalCode_municipality="ngModel" required>
+                    <div [hidden]="postalCode_municipality.valid || postalCode_municipality.pristine" class="alert alert-danger">
+                        {{ 'suppRegistration.address.required' | translate }}
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <p>{{ 'shared.name.label' | translate }}</p>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <input id="name_mayor" type="text" [(ngModel)]="mayors[i].name" class="form-control" name="name_mayor" ngcontrol="name_mayor"
+                        #name_mayor="ngModel" required>
+                    <div [hidden]="name_mayor.valid || name_mayor.pristine" class="alert alert-danger">
+                        {{ 'shared.name.required' | translate }}
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <p>{{ 'shared.surname.label' | translate }}</p>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <input id="surname_mayor" type="text" [(ngModel)]="mayors[i].surname" class="form-control" name="surname_mayor" ngcontrol="surname_mayor"
+                        #surname_mayor="ngModel" required>
+                    <div [hidden]="surname_mayor.valid || surname_mayor.pristine" class="alert alert-danger">
+                        {{ 'shared.surname.required' | translate }}
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <p>{{ 'shared.email.label' | translate }}</p>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <input id="email_mayor" type="text" [(ngModel)]="mayors[i].email" class="form-control" name="email_mayor" ngcontrol="email_mayor"
+                        #email_mayor="ngModel" required>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- ADD MUNCIPALITY -->
+    <br>
+    <div class="row">
+        <br>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <span class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <hr class="beneficiaryHr">
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <p>{{ 'shared.name.label' | translate }}</p>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <input id="name_user" type="text" [(ngModel)]="user.name" class="form-control" name="name_user" ngcontrol="name_user" #name_user="ngModel"
+                required>
+            <div [hidden]="name_user.valid || name_user.pristine" class="alert alert-danger">
+                {{ 'shared.name.required' | translate }}
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <p>{{ 'shared.surname.label' | translate }}</p>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <input id="surname_user" type="text" [(ngModel)]="user.surname" class="form-control" name="surname_user" ngcontrol="surname_user"
+                #surname_user="ngModel" required>
+            <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
+                {{ 'shared.surname.required' | translate }}
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <p>{{ 'shared.email.label' | translate }}</p>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <input id="email_user" type="text" [(ngModel)]="user.email" class="form-control" name="email_user" ngcontrol="email_user"
+                #email_user="ngModel" required>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                {{ 'shared.cancel.button' | translate }}
+            </button>
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button (click)="editProfile()" class="btn btn-primary publish-button" [disabled]="!profileEditForm.form.valid">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>

@@ -118,7 +118,7 @@ public class UserResource {
             if (userDTO.getId() != userConnected.getId()) {
                 throw new AccessDeniedException("");
             }
-            return new ResponseDTO(true, userService.updateUserDetails(userConnected, userDTO.getName(), userDTO.getSurname()), null);
+            return new ResponseDTO(true, userService.updateUserDetails(userConnected, userDTO.getName(), userDTO.getSurname(), userDTO.getEmail()), null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to update user details", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());

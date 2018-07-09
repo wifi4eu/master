@@ -8,6 +8,7 @@ import {ManageInstallationComponent} from "./manage-installation/manage-installa
 import {InstallationDetailsComponent} from "./details-installation/installation-details.component";
 import {AccessPointListComponent} from "./access-point-list/access-point-list.component";
 import {AccessPointDetailsComponent} from "./access-point-details/access-point-details.component";
+import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-profile.component";
 
 
 @NgModule({
@@ -39,7 +40,12 @@ import {AccessPointDetailsComponent} from "./access-point-details/access-point-d
         }, {
             path: 'access-point/details/:id',
             component: AccessPointDetailsComponent
+        }, {
+            path: 'profile/edit-profile',
+            component: BeneficiaryEditProfileComponent
         }
+        
+        
     ])],
     exports: [RouterModule]
 })
