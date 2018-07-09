@@ -1,28 +1,28 @@
 import {Component} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {UserApi} from "../../shared/swagger/api/UserApi";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
+import {UserApi} from "../../../shared/swagger/api/UserApi";
+import {UserDTOBase} from "../../../shared/swagger/model/UserDTO";
+import {MunicipalityDTOBase} from "../../../shared/swagger/model/MunicipalityDTO";
+import {RegistrationDTOBase} from "../../../shared/swagger/model/RegistrationDTO";
+import {RegistrationApi} from "../../../shared/swagger/api/RegistrationApi";
+import {MunicipalityApi} from "../../../shared/swagger/api/MunicipalityApi";
+import {ResponseDTOBase} from "../../../shared/swagger/model/ResponseDTO";
 import {LocalStorageService} from "angular-2-local-storage";
-import {SharedService} from "../../shared/shared.service";
-import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
-import {UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
-import {MayorApi} from "../../shared/swagger/api/MayorApi";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
-import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
-import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
+import {SharedService} from "../../../shared/shared.service";
+import {UserThreadsApi} from "../../../shared/swagger/api/UserThreadsApi";
+import {UserThreadsDTOBase} from "../../../shared/swagger/model/UserThreadsDTO";
+import {MayorApi} from "../../../shared/swagger/api/MayorApi";
+import {MayorDTOBase} from "../../../shared/swagger/model/MayorDTO";
+import {ThreadApi} from "../../../shared/swagger/api/ThreadApi";
+import {ThreadDTOBase} from "../../../shared/swagger/model/ThreadDTO";
 
 @Component({
-    selector: 'beneficiary-profile',
-    templateUrl: 'profile.component.html',
+    selector: 'edit-beneficiary-profile',
+    templateUrl: 'edit-profile.component.html',
     providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi]
 })
 
-export class BeneficiaryProfileComponent {
+export class BeneficiaryEditProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
@@ -129,131 +129,32 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-    private displayModal(name: string, index?: number) {
-        switch (name) {
-            case 'user':
-                Object.assign(this.editedUser, this.user);
-                this.displayUser = true;
-                break;
-            case 'municipality':
-                this.currentEditIndex = index;
-                Object.assign(this.editedMunicipality, this.municipalities[index]);
-                this.displayMunicipality = true;
-                break;
-            case 'mayor':
-                this.currentEditIndex = index;
-                Object.assign(this.editedMayor, this.mayors[index]);
-                this.displayMayor = true;
-                break;
-            case 'password':
-                this.userApi.ecasChangePassword().subscribe(
-                    (response: ResponseDTOBase) => {
-                        if (response.success) {
-                            window.location.href = response.data;
-                        }
-                    }, error => {
-                        console.log(error);
+    private editProfile() {
+        this.submittingData = true;
+        for(let i = 0; i < this.municipalities.length; i++){
+            this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        this.municipalities[this.currentEditIndex] = response.data;
                     }
-                );
-                break;
-        }
-    }
-
-    private saveUserChanges() {
-        if (this.editedUser.email != this.user.email) {
-            this.editedUser.email = this.user.email;
-        }
-        this.submittingData = true;
-        this.userApi.updateUserDetails(this.editedUser).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.user = response.data;
-                    this.closeModal();
-                    this.submittingData = false;
                 }
-            }
-        );
-    }
-
-    private saveMunicipalityChanges() {
-        if (this.editedMunicipality.country != this.municipalities[this.currentEditIndex].country) {
-            this.editedMunicipality.country = this.municipalities[this.currentEditIndex].country;
-        }
-        if (this.editedMunicipality.name != this.municipalities[this.currentEditIndex].name) {
-            this.editedMunicipality.name = this.municipalities[this.currentEditIndex].name;
-        }
-        this.submittingData = true;
-        this.municipalityApi.updateMunicipalityDetails(this.editedMunicipality).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.municipalities[this.currentEditIndex] = response.data;
-                    this.closeModal();
-                    this.submittingData = false;
-                }
-            }
-        );
-    }
-
-    private saveMayorChanges() {
-        if (this.editedMayor.email != this.mayors[this.currentEditIndex].email) {
-            this.editedMayor.email = this.mayors[this.currentEditIndex].email;
-        }
-        this.submittingData = true;
-        this.mayorApi.updateMayorDetails(this.editedMayor).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.mayors[this.currentEditIndex] = response.data;
-                    this.closeModal();
-                    this.submittingData = false;
-                }
-            }
-        );
-    }
-
-    private closeModal() {
-        this.currentEditIndex = 0;
-        this.displayUser = false;
-        this.displayMunicipality = false;
-        this.displayMayor = false;
-    }
-
-    private deleteRegistration() {
-        if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
-            this.withdrawingRegistration = true;
-            this.userApi.deleteUser(this.user.id).subscribe(
-                (data: ResponseDTOBase) => {
-                    if (data.success) {
-                        this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
-                        this.sharedService.logout();
-                        this.withdrawingRegistration = false;
-                        this.withdrawnSuccess = true;
+            );
+            this.mayorApi.updateMayorDetails(this.mayors[i]).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        this.mayors[this.currentEditIndex] = response.data;
                     }
-                }, error => {
-                    this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
-                    this.withdrawingRegistration = false;
-                    this.withdrawnSuccess = true;
                 }
             );
         }
-    }
-
-    private goToDiscussion(index) {
-
-        for(let i = 0; i < this.userThreads.length; i++){
-            if(this.userThreads[i].title == this.municipalities[index].name){
-                this.threadId = this.discussionThreads[i].id;
-                this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
-           }
-        }
-    }
-
-
-    private goToUploadDocuments() {
-        this.router.navigate(['../additional-info/', this.oneRegistrationNumber], {relativeTo: this.route});
-    }
-
-    private goToapplyForVOucher() {
-        this.router.navigateByUrl('/beneficiary-portal/voucher');
+        this.userApi.updateUserDetails(this.user).subscribe(
+            (response: ResponseDTOBase) => {
+                if (response.success) {
+                    this.user = response.data;
+                    this.submittingData = false;
+                }
+            }
+        );
     }
 
 }
