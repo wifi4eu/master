@@ -30,6 +30,7 @@ export class BeneficiaryProfileComponent {
     private editedMunicipality: MunicipalityDTOBase = new MunicipalityDTOBase();
     private editedMayor: MayorDTOBase = new MayorDTOBase();
     private currentEditIndex: number = 0;
+    private displayDeleteMunicipality: boolean = false;
     private displayUser: boolean = false;
     private displayMunicipality: boolean = false;
     private displayMayor: boolean = false;
@@ -44,8 +45,19 @@ export class BeneficiaryProfileComponent {
     private documentUploaded: boolean = false;
     private oneRegsitration: boolean = false;
     private oneRegistrationNumber: number = 0;
+    private deleteMunicipalityId: number = 0;
 
     constructor(private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+        this.loadDataProfile();
+    }
+
+    private loadDataProfile(){
+        this.user = new UserDTOBase;
+        this.municipalities = [];
+        this.mayors = [];
+        this.editedUser = new UserDTOBase();
+        this.editedMunicipality = new MunicipalityDTOBase();
+        this.editedMayor = new MayorDTOBase();
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -152,6 +164,29 @@ export class BeneficiaryProfileComponent {
                     }
                 );
                 break;
+            case 'delete':
+            this.deleteMunicipalityId = this.municipalities[index].id;
+            this.displayDeleteMunicipality = true;
+            break;
+        }
+    }
+
+    private deleteMunicipality(){
+        if (this.deleteMunicipalityId != 0){
+            this.municipalityApi.deleteMunicipalityFromId(this.deleteMunicipalityId).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        this.sharedService.growlTranslation('Your municipality were succesfully deleted.', 'benefPortal.beneficiary.deleteMunicipality.Success', 'success');
+                        this.loadDataProfile();
+                    } else {
+                        this.sharedService.growlTranslation('Error. You can\'t delete this municipality. At least one municipality should remain in the registration', 'benefPortal.beneficiary.deleteMunicipality.Error', 'warn');
+                    }
+                    this.closeModal();
+                }
+            );
+        } else {
+            this.sharedService.growlTranslation('Error, you can\'t delete this municipality', 'benefPortal.beneficiary.deleteMunicipality.ErrorMunicipality', 'warn');
+            this.closeModal();
         }
     }
 
@@ -208,7 +243,9 @@ export class BeneficiaryProfileComponent {
 
     private closeModal() {
         this.currentEditIndex = 0;
+        this.deleteMunicipalityId = 0;
         this.displayUser = false;
+        this.displayDeleteMunicipality = false;
         this.displayMunicipality = false;
         this.displayMayor = false;
     }
