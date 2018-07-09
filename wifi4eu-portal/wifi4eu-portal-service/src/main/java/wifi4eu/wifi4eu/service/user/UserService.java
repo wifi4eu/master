@@ -191,11 +191,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO updateUserDetails(UserDTO userDTO, String name, String surname, String email) {
+    public UserDTO updateUserDetails(UserDTO userDTO, String name, String surname) {
 
         userDTO.setName(name);
         userDTO.setSurname(surname);
-        userDTO.setEmail(email);
 
         return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
     }
