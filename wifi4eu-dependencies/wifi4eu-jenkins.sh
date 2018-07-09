@@ -21,4 +21,4 @@ mvn install:install-file -Dfile=wifi4eu-dependencies/ecas-tomcat-8.0-4.22.0.jar 
 echo "Compile project"
 echo "Environment: $1"
 echo "Modules: $2"
-mvn clean install -U -Png-build-jenkins,$1,$2
+mvn clean install -U -Png-build-jenkins,!full-build,$1,$2
