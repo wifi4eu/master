@@ -598,7 +598,10 @@ public class ApplicationService {
                 }
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.correctionRequestEmail.subject");
-                String msgBody = bundle.getString("mail.correctionRequestEmail.body");
+                String header = bundle.getString("mail.correctionRequestEmail.header");
+                String msgBody = bundle.getString("mail.correctionRequestEmail.body1");
+                String msgBody2 = bundle.getString("mail.correctionRequestEmail.body2");
+                String signOff = bundle.getString("mail.correctionRequestEmail.signOff");
                 String[] correctionReasons = new String[6];
                 correctionReasons[0] = bundle.getString("mail.correctionRequestEmail.reason1");
                 correctionReasons[1] = bundle.getString("mail.correctionRequestEmail.reason2");
@@ -606,7 +609,8 @@ public class ApplicationService {
                 correctionReasons[3] = bundle.getString("mail.correctionRequestEmail.reason4");
                 correctionReasons[4] = bundle.getString("mail.correctionRequestEmail.reason5");
                 correctionReasons[5] = bundle.getString("mail.correctionRequestEmail.reason6");
-                String[] documentTypes = {"", "", "", ""};
+                String[] documentTypesBody1 = {"", ""};
+                String[] documentTypesBody2 = {"", ""};
                 List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
                 for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
                     if(legalFileCorrectionReason.getRequestCorrection()) {
@@ -614,25 +618,39 @@ public class ApplicationService {
                         switch (legalFileCorrectionReason.getType()) {
                             case 1:
                                 emailString = bundle.getString("mail.correctionRequestEmail.type1");
-                                documentTypes[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                documentTypesBody1[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
                                 break;
                             case 2:
                                 emailString = bundle.getString("mail.correctionRequestEmail.type3");
-                                documentTypes[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                documentTypesBody2[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
                                 break;
                             case 3:
                                 emailString = bundle.getString("mail.correctionRequestEmail.type2");
-                                documentTypes[2] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                documentTypesBody1[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
                                 break;
                             case 4:
                                 emailString = bundle.getString("mail.correctionRequestEmail.type4");
-                                documentTypes[3] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                documentTypesBody2[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
                                 break;
                         }
                     }
                 }
-                msgBody = MessageFormat.format(msgBody, documentTypes);
-                mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                //if document is type 1 or 3 then we need to show body 1
+                boolean isBody1= !documentTypesBody1[0].isEmpty() || !documentTypesBody1[1].isEmpty();
+                //if document is type 2 or 4 then we need to show body 2
+                boolean isBody2= !documentTypesBody2[0].isEmpty() || !documentTypesBody2[1].isEmpty();
+                String emailBody = "";
+                msgBody = MessageFormat.format(msgBody, documentTypesBody1);
+                msgBody2 = MessageFormat.format(msgBody2, documentTypesBody2);
+                if(isBody1 && isBody2){
+                    emailBody = header +  msgBody + msgBody2 + signOff;
+                }else if(isBody1){
+                    emailBody = header +  msgBody + signOff;
+                } else if(isBody2){
+                    emailBody = header +  msgBody2 + signOff;
+                }
+
+                mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody);
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
             correctionRequest = correctionRequestEmailMapper.toDTO(correctionRequestEmailRepository.save(correctionRequestEmailMapper.toEntity(correctionRequest)));
