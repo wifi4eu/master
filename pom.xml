@@ -12,7 +12,11 @@
 
 
     <modules>
+        <!-- Common modules -->
         <module>wifi4eu-common</module>
+        <module>wifi4eu-persistence</module>
+
+        <!-- Webapp modules -->
         <module>wifi4eu-portal</module>
         <module>wifi4eu-public-portal</module>
         <module>wifi4eu-dgconn</module>

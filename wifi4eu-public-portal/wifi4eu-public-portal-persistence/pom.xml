@@ -17,6 +17,12 @@
   <dependencies>
 
       <dependency>
+          <groupId>wifi4eu.wifi4eu</groupId>
+          <artifactId>wifi4eu-persistence</artifactId>
+          <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
           <groupId>org.eclipse.persistence</groupId>
           <artifactId>eclipselink</artifactId>
       </dependency>
