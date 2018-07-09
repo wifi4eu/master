@@ -12,6 +12,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { createTranslateLoader } from './shared/translate/translate.factory';
 
 import { LocalStorageModule } from 'angular-2-local-storage';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
     declarations: [
@@ -36,6 +37,9 @@ import { LocalStorageModule } from 'angular-2-local-storage';
         }),
     ],
     exports: [
+    ],
+    providers: [
+        CookieService
     ],
     bootstrap: [
         AppComponent
