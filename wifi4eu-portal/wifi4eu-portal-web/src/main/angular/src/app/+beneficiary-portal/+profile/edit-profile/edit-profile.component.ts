@@ -15,6 +15,7 @@ import {MayorApi} from "../../../shared/swagger/api/MayorApi";
 import {MayorDTOBase} from "../../../shared/swagger/model/MayorDTO";
 import {ThreadApi} from "../../../shared/swagger/api/ThreadApi";
 import {ThreadDTOBase} from "../../../shared/swagger/model/ThreadDTO";
+import { Logs } from "selenium-webdriver";
 
 @Component({
     selector: 'edit-beneficiary-profile',
@@ -46,6 +47,10 @@ export class BeneficiaryEditProfileComponent {
     private oneRegistrationNumber: number = 0;
     private threadsByUser : UserThreadsDTOBase[] = [];
     private userThreads: ThreadDTOBase [] = [];
+    private municipalityFinish: boolean = false;
+    private mayorFinish: boolean = false;
+    private userFinish: boolean = false;
+    private buttonEnabled: boolean =  false;
 
     constructor(private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
@@ -135,6 +140,8 @@ export class BeneficiaryEditProfileComponent {
             this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
+                        this.municipalityFinish = true;
+                        this.checkFinishedCalls();
                         this.municipalities[this.currentEditIndex] = response.data;
                     }
                 }
@@ -142,6 +149,8 @@ export class BeneficiaryEditProfileComponent {
             this.mayorApi.updateMayorDetails(this.mayors[i]).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
+                        this.mayorFinish = true;
+                        this.checkFinishedCalls();
                         this.mayors[this.currentEditIndex] = response.data;
                     }
                 }
@@ -150,11 +159,38 @@ export class BeneficiaryEditProfileComponent {
         this.userApi.updateUserDetails(this.user).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
+                    this.userFinish = true;
+                    this.checkFinishedCalls();
                     this.user = response.data;
-                    this.submittingData = false;
                 }
             }
         );
+
+      
     }
 
+    private checkFinishedCalls(){
+        if(this.municipalityFinish && this.mayorFinish && this.userFinish){
+            this.submittingData = false;
+        }
+    }
+
+    private checkButtonEnabled(event, i){
+         this.buttonEnabled = false
+        if(this.municipalities[i].address != null && this.municipalities[i].addressNum != null && this.municipalities[i].postalCode != null && this.mayors[i].name != null  && this.mayors[i].surname != null  && this.mayors[i].email != null
+         && this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != ""  && this.mayors[i].surname.trim() != ""  && this.mayors[i].email.trim() != ""){
+                this.buttonEnabled = true;
+        } else {
+            this.buttonEnabled = false
+
+        }
+    }
+
+    private checkButtonEnabledUser(event){
+    if(this.user.name != null && this.user.surname != null && this.user.name.trim() != "" && this.user.surname.trim() != ""){
+        this.buttonEnabled = true;
+    } else {
+        this.buttonEnabled = false
+    }
+    }
 }
