@@ -802,5 +802,9 @@
   "benefPortal.myVoucher.datatable.signGrantAgreement": "Sign grant agreement",
   "itemMenu.myVoucher": "My voucher",
   "shared.all": "All",
-  "shared.condition.avoid":"You must accept all the conditions before submit this registration."
+  "shared.condition.avoid":"You must accept all the conditions before submit this registration.",
+  "shared.changeLanguage.text1": "The language used by the WiFi4EU portal to send communications by e-mail is currently:",
+  "shared.changeLanguage.text2": "Click the button below if you want to receive communications in another language.",
+  "shared.changeLanguage.button": "Change language",
+  "shared.changeLanguage.modal.title": "Select language"
 }
