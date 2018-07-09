@@ -18,6 +18,7 @@ import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.entity.user.User;
@@ -122,6 +123,7 @@ public class RegistrationService {
 
     @Autowired
     SupplierMapper supplierMapper;
+
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -307,7 +309,7 @@ public class RegistrationService {
             if (map.containsKey("id") && map.containsKey("beneficiaryIndicator")) {
                 Registration registration = registrationRepository.findOne((int) map.get("id"));
 
-                if (!checkPermissionsRegistrations(registration)){
+                if (!checkPermissionsRegistrations(registration)) {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to confirm or reject");
                     return permissionChecker.getAccessDeniedResponse();
                 }
@@ -532,7 +534,13 @@ public class RegistrationService {
     }
 
     @Transactional
-    public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) {
+    public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) throws Exception {
+        List<LegalFileCorrectionReasonDTO> oldLegalFile = getLegalFilesByRegistrationId(legalFileDTO.getRegistrationId());
+        for (LegalFileCorrectionReasonDTO legalFileCorrectionReasonDTO : oldLegalFile) {
+            if (legalFileDTO.getType() == legalFileCorrectionReasonDTO.getType() && legalFileCorrectionReasonDTO.getRequestCorrection()) {
+                throw new Exception("Duplicated correction reason for this file.");
+            }
+        }
         return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
     }
 

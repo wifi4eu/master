@@ -71,8 +71,10 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private displayRequestCorrection = false;
     private loadingData = false;
     private processingRequest = false;
+    private correctionRequested: LegalFileCorrectionReasonDTOBase[] = [];
     private invalidateChecks = [false, false, false, false, false, false, false, false, false];
     private applicationInvalidateReason: ApplicationInvalidateReasonDTO[][] = [];
+    private legalFilesCorrection: LegalFileCorrectionReasonDTOBase[][] = [];
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
@@ -116,7 +118,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                 (mayor: MayorDTOBase) => {
                                                                     this.registrationApi.getLegalFilesByRegistrationId(registration.id, new Date().getTime()).subscribe(
                                                                         (legalFiles: LegalFileCorrectionReasonDTOBase[]) => {
-                                                                            if (mayor) {
+                                                                        if (mayor) {
                                                                                 this.mayors[i] = mayor;
                                                                             } else {
                                                                                 let mayor = new MayorDTOBase();
@@ -127,6 +129,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                                 mayor.email = '-';
                                                                                 this.mayors[i] = mayor;
                                                                             }
+                                                                            this.correctionRequested[i] = legalFiles[i];
                                                                             this.selectedFilesTypes[i] = [];
                                                                             this.selectedReasonTypes[i] = [];
                                                                             this.legalFiles[i] = this.createFrontEndLegalFiles(registration, legalFiles);
@@ -342,23 +345,29 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private requestLegalFilesCorrection() {
         if (!this.processingRequest) {
             if (this.selectedIndex != null) {
-                this.processingRequest = true;
                 let savedFilesCount = 0;
                 let savedFilesLimit = this.selectedFilesTypes[this.selectedIndex].length;
+           
+                this.processingRequest = true;
                 for (let i = 0; i < savedFilesLimit; i++) {
                     let updatedLegalFile = new LegalFileCorrectionReasonDTOBase();
                     let fileType = this.selectedFilesTypes[this.selectedIndex][i];
                     for (let legalFile of this.legalFiles[this.selectedIndex]) {
-                        if (legalFile.type == fileType) {
-                            updatedLegalFile = legalFile;
-                            updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
-                            if (updatedLegalFile.correctionReason != -1) {
-                                updatedLegalFile.requestCorrection = true;
-                            } else {
-                                updatedLegalFile.correctionReason = null;
-                                updatedLegalFile.requestCorrection = false;
+                            if (legalFile.type == fileType) {
+                                 if(legalFile.requestCorrection){
+                                    this.sharedService.growlTranslation('This file has already requested for correction.', 'dgConn.file.alreadyRequested', 'warn');
+                                    this.closeModal();
+                                    return;
                             }
-                        }
+                                updatedLegalFile = legalFile;
+                                updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
+                                if (updatedLegalFile.correctionReason != -1){
+                                    updatedLegalFile.requestCorrection = true;
+                                } else {
+                                    updatedLegalFile.correctionReason = null;
+                                    updatedLegalFile.requestCorrection = false;
+                                }
+                            }
                     }
                     this.registrationApi.saveLegalFile(updatedLegalFile).subscribe(
                         (resLegalFile: LegalFileCorrectionReasonDTOBase) => {
