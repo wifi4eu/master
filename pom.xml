@@ -163,7 +163,9 @@
         <profile>
             <id>full-build</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>!skipFullBuild</name>
+                </property>
             </activation>
             <modules>
                 <module>wifi4eu-common</module>
