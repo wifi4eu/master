@@ -74,7 +74,8 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                 }
             );
             this.threadApi.getThreadByTypeAndReason(1, String(this.lauId)).subscribe(
-                (thread: ThreadDTOBase) => {
+                (response: ResponseDTO) => {
+                    var thread = response.data;
                     if (thread) {
                         this.discussionThread = thread;
                         this.displayedMessages = thread.messages;
