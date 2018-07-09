@@ -607,8 +607,11 @@ public class ApplicationService {
                 correctionReasons[1] = bundle.getString("mail.correctionRequestEmail.reason2");
                 correctionReasons[2] = bundle.getString("mail.correctionRequestEmail.reason3");
                 correctionReasons[3] = bundle.getString("mail.correctionRequestEmail.reason4");
-                correctionReasons[4] = bundle.getString("mail.correctionRequestEmail.reason5");
+                correctionReasons[4] = "";
                 correctionReasons[5] = bundle.getString("mail.correctionRequestEmail.reason6");
+                String reason5Case1 = bundle.getString("mail.correctionRequestEmail.reason5-1");
+                String reason5Case2 = bundle.getString("mail.correctionRequestEmail.reason5-2");
+                String reason5Case3 = bundle.getString("mail.correctionRequestEmail.reason5-3");
                 String[] documentTypesBody1 = {"", ""};
                 String[] documentTypesBody2 = {"", ""};
                 List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
@@ -617,18 +620,22 @@ public class ApplicationService {
                         String emailString = "";
                         switch (legalFileCorrectionReason.getType()) {
                             case 1:
+                                correctionReasons[4] = reason5Case1;
                                 emailString = bundle.getString("mail.correctionRequestEmail.type1");
                                 documentTypesBody1[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
                                 break;
                             case 2:
+                                correctionReasons[4] = reason5Case1;
                                 emailString = bundle.getString("mail.correctionRequestEmail.type3");
-                                documentTypesBody2[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                documentTypesBody2[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
                                 break;
                             case 3:
+                                correctionReasons[4] = reason5Case2;
                                 emailString = bundle.getString("mail.correctionRequestEmail.type2");
-                                documentTypesBody1[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                documentTypesBody1[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
                                 break;
                             case 4:
+                                correctionReasons[4] = reason5Case3;
                                 emailString = bundle.getString("mail.correctionRequestEmail.type4");
                                 documentTypesBody2[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
                                 break;
