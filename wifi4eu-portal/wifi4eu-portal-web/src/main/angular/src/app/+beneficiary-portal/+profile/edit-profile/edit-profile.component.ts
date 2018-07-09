@@ -51,8 +51,20 @@ export class BeneficiaryEditProfileComponent {
     private mayorFinish: boolean = false;
     private userFinish: boolean = false;
     private buttonEnabled: boolean =  false;
+    private displayDeleteMunicipality: boolean = false;
+    private deleteMunicipalityId: number = 0;
 
     constructor(private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+        this.loadDataEditProfile();
+    }
+    
+    private loadDataEditProfile(){
+        this.user = new UserDTOBase;
+        this.municipalities = [];
+        this.mayors = [];
+        this.editedUser = new UserDTOBase();
+        this.editedMunicipality = new MunicipalityDTOBase();
+        this.editedMayor = new MayorDTOBase();
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -134,6 +146,35 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
+    private openModal(idMunicipality: number){
+        this.deleteMunicipalityId = idMunicipality;
+        this.displayDeleteMunicipality = true;
+    }
+
+    private deleteMunicipality(){
+        if (this.deleteMunicipalityId != 0){
+            this.municipalityApi.deleteMunicipalityFromId(this.deleteMunicipalityId).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        this.sharedService.growlTranslation('Your municipality were succesfully deleted.', 'benefPortal.beneficiary.deleteMunicipality.Success', 'success');
+                        this.loadDataEditProfile();
+                    } else {
+                        this.sharedService.growlTranslation('Error. You can\'t delete this municipality. At least one municipality should remain in the registration', 'benefPortal.beneficiary.deleteMunicipality.Error', 'warn');
+                    }
+                    this.closeModal();
+                }
+            );
+        } else {
+            this.sharedService.growlTranslation('Error, you can\'t delete this municipality', 'benefPortal.beneficiary.deleteMunicipality.ErrorMunicipality', 'warn');
+            this.closeModal();
+        }
+    }
+
+    private closeModal(){
+        this.deleteMunicipalityId = 0;
+        this.displayDeleteMunicipality = false;
+    }
+
     private editProfile() {
         this.submittingData = true;
         for(let i = 0; i < this.municipalities.length; i++){
@@ -187,10 +228,10 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private checkButtonEnabledUser(event){
-    if(this.user.name != null && this.user.surname != null && this.user.name.trim() != "" && this.user.surname.trim() != ""){
-        this.buttonEnabled = true;
-    } else {
-        this.buttonEnabled = false
-    }
+        if(this.user.name != null && this.user.surname != null && this.user.name.trim() != "" && this.user.surname.trim() != ""){
+            this.buttonEnabled = true;
+        } else {
+            this.buttonEnabled = false
+        }
     }
 }

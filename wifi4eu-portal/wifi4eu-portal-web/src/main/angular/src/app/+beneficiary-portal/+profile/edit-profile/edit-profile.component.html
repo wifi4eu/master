@@ -5,7 +5,7 @@
     <div class="row">
         <br>
         <div class="col-sm-2"></div>
-        <div class="col-sm-10">
+        <div class="col-sm-8">
             <span class="beneficiaryMayor">{{ 'benefPortal.editProfile.title' | translate }}</span>
         </div>
         <div class="col-sm-2">
@@ -15,10 +15,11 @@
     <br>
     <div class="row">
         <div class="col-sm-2"></div>
-        <div class="col-sm-10">
+        <div class="col-sm-8">
             <span class="edit">{{ 'shared.municipalityDetails.title' | translate}}</span>
         </div>
-        <div class="col-sm-2"></div>
+        <div class="col-sm-2">
+        </div>
     </div>
     <form (ngSubmit)="saveProfileChanges()" #profileEditForm="ngForm"></form>
     <div class="row" *ngIf="municipalities.length > 0 && municipalities.length == mayors.length">
@@ -29,7 +30,12 @@
                 <div class="col-sm-8">
                     <span class="profileData">{{ 'shared.municipality.label' | translate}} {{i+1}}</span>
                 </div>
-                <div class="col-sm-2"></div>
+                <div class="col-sm-2">
+                    <a (click)="openModal(municipality.id)" class="edit">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                        {{ 'shared.delete.button' | translate }}
+                    </a>
+                </div>
             </div>
             <div class="row">
                 <div class="col-sm-2"></div>
@@ -238,4 +244,26 @@
     <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>
+
+<p-dialog [(visible)]="displayDeleteMunicipality" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <h1 class="beneficiaryMayorModal">{{'benefPortal.beneficiary.confirmDeletion.title' | translate }}</h1>
+    <p class="ModalpConfirmation">{{'benefPortal.beneficiary.confirmDeletion.text' | translate }}</p>
+    <p></p>
+    <div class="form-group row">
+            <div class="col-lg-2"></div>
+            <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+                <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                    {{ 'shared.cancel.button' | translate }}
+                </button>
+            </div>
+            <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+                <button type="submit" class="btn btn-primary publish-button" (click)="deleteMunicipality()"
+                        [disabled]="">
+                    {{ 'shared.confirm.button' | translate }}
+                </button>
+            </div>
+            <div class="col-lg-2"></div>
+        </div>
 </p-dialog>
