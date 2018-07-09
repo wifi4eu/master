@@ -398,4 +398,9 @@ public class UserService {
             suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(anElementList));
         }
     }
+
+    public void updateLanguage(UserDTO userDTO, String lang) {
+        userDTO.setLang(lang);
+        this.userRepository.save(this.userMapper.toEntity(userDTO));
+    }
 }
