@@ -8,7 +8,7 @@ import {RegistrationApi} from "../../../shared/swagger/api/RegistrationApi";
 import {RegistrationDTOBase} from "../../../shared/swagger/model/RegistrationDTO";
 import {ThreadApi} from "../../../shared/swagger/api/ThreadApi";
 import {ThreadDTOBase} from "../../../shared/swagger/model/ThreadDTO";
-import {ResponseDTOBase} from "../../../shared/swagger/model/ResponseDTO";
+import {ResponseDTOBase, ResponseDTO} from "../../../shared/swagger/model/ResponseDTO";
 import {SharedService} from "../../../shared/shared.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ThreadMessageDTOBase} from "../../../shared/swagger/model/ThreadMessageDTO";

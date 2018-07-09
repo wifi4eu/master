@@ -598,6 +598,21 @@ CREATE TABLE dbo.voucher_simulations
 );
 
 -- -----------------------------------------------------
+-- Table `dbo`.`application_invalidate_reason`
+-- -----------------------------------------------------
+create table application_invalidate_reason(
+	[id] int identity NOT NULL,
+	[application_id] int NOT NULL,
+	[reason] int NOT NULL
+	PRIMARY KEY ([id]),
+	CONSTRAINT [fk_invalidate_reason_application]
+	FOREIGN KEY ([application_id])
+	REFERENCES dbo.applications ([id])
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
 -- Table `dbo`.`application_comment`
 -- -----------------------------------------------------
 create table application_comment(
