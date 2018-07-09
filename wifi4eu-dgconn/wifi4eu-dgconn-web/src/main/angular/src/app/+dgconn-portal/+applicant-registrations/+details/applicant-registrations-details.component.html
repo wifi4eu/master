@@ -213,14 +213,18 @@
                               </div>
                               <div class="clearfix"></div>
                               <div class="panel-dg panel-dg-voucher panel-dg-plain">
-                                <p-dataTable #tableComments [value]="applicationComments[i]">
-                                  <p-column [style]="{'width':'27%'}" field="username" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="padding-cell"></p-column>
-                                  <p-column [style]="{'width':'20%'}" field="datePosted" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="padding-cell">
+                                <p-dataTable #tableComments [value]="applicationComments[i]" id="tableComments">
+                                  <p-column field="username" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.applicantDetails.comments.table.author' | translate }}" [style]="{'width':'27%'}" styleClass="padding-cell"></p-column>
+                                  <p-column field="datePosted" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.applicantDetails.comments.table.date' | translate }}" [style]="{'width':'20%'}"  styleClass="padding-cell">
                                     <ng-template let-row="rowData" pTemplate="body">
                                       <span *ngIf="row.datePosted">{{ row.datePosted | date: 'dd/MM/yyyy' }}</span>
                                     </ng-template>
                                   </p-column>
-                                  <p-column [style]="{'width':'53%'}" field="comment" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.status' | translate }}" styleClass="padding-cell"></p-column>
+                                  <p-column [style]="{'width':'53%'}" field="comment" header="{{ 'dgConn.applicantDetails.comments.table.comment' | translate }}" styleClass="padding-cell">
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                      <p style="margin: 0px; white-space: pre-wrap;word-break: break-all;">{{ row.comment }}</p>
+                                    </ng-template>
+                                  </p-column>
                                 </p-dataTable>
                                 <footer *ngIf="totalRecords[i] > 0">
                                   <div style="text-align: left; position: relative;">
@@ -238,7 +242,6 @@
                       </div>
                   </div>
                 </div>
-                <br>
             </div>
         </div>
         <div class="ui-g-12" *ngIf="discussionThread">
@@ -352,7 +355,8 @@
                     <p>{{ 'dgConn.comment.mandatory' | translate }}</p>
                     <textarea rows="5" class="form-control widthMax"
                               name="newComment" [(ngModel)]="applicationComment"
-                              [disabled]="processingRequest" required></textarea>
+                              [disabled]="processingRequest" required minlength="1" maxlength="256" #comment="ngModel"></textarea>
+                    <span>{{ 'dgConn.applicantDetails.inputs.length' | translate: {currentCharacters: applicationComment.length, maxCharacters: '256' } }}</span>
                 </div>
                 <div style="padding: 2em; padding-top: 0em;">
                     <div class="row center">
@@ -362,7 +366,7 @@
                             </button>
                         </div>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary publish-button">
+                            <button type="submit" class="btn btn-primary publish-button" [disabled]="processingRequest || !commentConfirmationForm.valid">
                                 {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>

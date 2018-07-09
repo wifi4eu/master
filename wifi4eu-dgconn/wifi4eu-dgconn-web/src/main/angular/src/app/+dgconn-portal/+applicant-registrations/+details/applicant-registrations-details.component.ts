@@ -15,7 +15,7 @@ import { ApplicationDTOBase } from "../../../shared/swagger/model/ApplicationDTO
 import { MayorDTOBase } from "../../../shared/swagger/model/MayorDTO";
 import { MunicipalityDTOBase } from "../../../shared/swagger/model/MunicipalityDTO";
 import { RegistrationDTOBase } from "../../../shared/swagger/model/RegistrationDTO";
-import { ThreadDTOBase } from "../../../shared/swagger/model/ThreadDTO";
+import { ThreadDTOBase, ThreadDTO } from "../../../shared/swagger/model/ThreadDTO";
 import { ThreadMessageDTOBase } from "../../../shared/swagger/model/ThreadMessageDTO";
 import { ResponseDTOBase, ResponseDTO } from "../../../shared/swagger/model/ResponseDTO";
 import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
@@ -186,7 +186,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 }
             );
             this.threadApi.getThreadByTypeAndReason(1, String(this.lauId)).subscribe(
-                (thread: ThreadDTOBase) => {
+                (response: ResponseDTO) => {
+                    var thread = response.data;
                     if (thread) {
                         this.discussionThread = thread;
                         this.displayedMessages = thread.messages;
@@ -228,6 +229,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private sortTable(event, index){
         this.sortField[index] = event.field;
         this.sortDirection[index] = event.order;
+        this.page[index] = 0;
         this.filterTable(index);
     }
 
@@ -255,17 +257,20 @@ export class DgConnApplicantRegistrationsDetailsComponent {
       if(form.valid){
         if(!this.processingRequest){
           if(this.applicationComment != null || this.applicationComment.trim() != ""){
+            if(this.applicationComment.length > 256){
+              form.controls['newComment'].setErrors({'invalid': true});
+              return;
+            }
             this.processingRequest = true;
             this.applicationCommentApi.createApplicationComment({applicationId: this.applications[this.selectedIndex].id, comment: this.applicationComment}).subscribe((response) => {
               this.processingRequest = false;
+              this.page[this.selectedIndex] = 0;
               this.filterTable(this.selectedIndex);
-              // TODO: show success growl
-              //this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
+              this.sharedService.growlTranslation('Your comment has been created.', 'dgConn.applicantDetails.saveComment.success', 'success');
               this.closeModal();
             }, error => {
-              // TODO: show error growl
-              //this.sharedService.growlTranslation('An error occurred while trying to validate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error', 'error');
-              this.closeModal();
+              this.sharedService.growlTranslation('An error occurred while trying to save this comment. Please, try again later.', 'dgConn.applicantDetails.saveComment.error', 'error');
+              //this.closeModal();
             })
           }
         }
@@ -322,6 +327,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.displayInvalidate = false;
         this.displayRequestCorrection = false;
         this.processingRequest = false;
+        this.applicationComment = '';
         this.displayCommentModal = false;
     }
 

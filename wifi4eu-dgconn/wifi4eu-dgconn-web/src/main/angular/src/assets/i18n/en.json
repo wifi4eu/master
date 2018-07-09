@@ -804,5 +804,11 @@
   "shared.all": "All",
   "dgConn.applicantDetails.newComment.button": "New comment",
   "dgConn.applicantDetails.newComment.title": "Add a new comment",
-  "dgConn.applicantDetails.comments.header": "Comments"
+  "dgConn.applicantDetails.comments.header": "Comments",
+  "dgConn.applicantDetails.inputs.length": "{{currentCharacters}} / {{maxCharacters}} characters",
+  "dgConn.applicantDetails.comments.table.author": "Author",
+  "dgConn.applicantDetails.comments.table.date": "Date",
+  "dgConn.applicantDetails.comments.table.comment": "Comment",
+  "dgConn.applicantDetails.saveComment.success": "Your comment has been created.",
+  "dgConn.applicantDetails.saveComment.error": "An error occurred while trying to save this comment. Please, try again later"
 }

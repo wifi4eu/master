@@ -939,6 +939,11 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   padding: 1.2em;
 }
 
+p-dataTable#tableComments thead .ui-column-title, 
+p-dataTable#tableComments tbody.ui-datatable-data.ui-widget-content > .ui-widget-content .ui-cell-data {
+  padding-left: 0px;
+}
+
 .ui-column-title, .ui-cell-data {
   padding-left: 1.8em;
 }
