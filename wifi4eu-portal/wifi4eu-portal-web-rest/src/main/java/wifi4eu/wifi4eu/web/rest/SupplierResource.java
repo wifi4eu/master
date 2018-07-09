@@ -155,7 +155,7 @@ public class SupplierResource {
             supplierDTO.setAccountNumber(connectedSupplier.getAccountNumber());
             supplierDTO.setContactEmail(connectedSupplier.getContactEmail());
             supplierDTO.setUserId(connectedSupplier.getUserId());
-            //supplierDTO.setSuppliedRegions(supplierService.updateSuppliedRegions(connectedSupplier.getSuppliedRegions(), supplierDTO.getSuppliedRegions()));
+            supplierDTO.setSuppliedRegions(supplierService.updateSuppliedRegions(connectedSupplier.getSuppliedRegions(), supplierDTO.getSuppliedRegions()));
             supplierDTO.setLegalCheck1(connectedSupplier.isLegalCheck1());
             supplierDTO.setLegalCheck2(connectedSupplier.isLegalCheck2());
             supplierDTO.setLegalFile1(connectedSupplier.getLegalFile1());

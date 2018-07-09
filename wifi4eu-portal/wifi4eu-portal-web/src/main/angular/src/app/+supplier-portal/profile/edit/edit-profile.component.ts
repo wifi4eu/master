@@ -4,6 +4,7 @@ import { SharedService } from "../../../shared/shared.service";
 import { NutsApi } from "../../../shared/swagger/api/NutsApi";
 import { SupplierApi } from "../../../shared/swagger/api/SupplierApi";
 import { NutsDTOBase } from "../../../shared/swagger/model/NutsDTO";
+import { SuppliedRegionDTOBase } from "../../../shared/swagger/model/SuppliedRegionDTO";
 import { SupplierDTOBase } from "../../../shared/swagger/model/SupplierDTO";
 import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 
@@ -71,8 +72,8 @@ export class SupplierEditProfileComponent {
                                             let countrySuppliedRegions = this.supplier.suppliedRegions.filter(suppliedRegion => suppliedRegion.regionId.id == region.id);
                                             if (countrySuppliedRegions.length > 0) {
                                                 if (!this.selectedRegions[country.label]) {
-                                                    this.selectedCountries.push(country);
                                                     this.selectedRegions[country.label] = [];
+                                                    this.selectedCountries.push(country);
                                                 }
                                                 this.selectedRegions[country.label].push(region);
                                             }
@@ -91,9 +92,19 @@ export class SupplierEditProfileComponent {
     }
 
     private changeLogo(event) {
+        console.log(event);
     }
 
     private saveSupplierData() {
+        this.supplier.suppliedRegions = [];
+        for (let selectedCountry in this.selectedRegions) {
+            for (let selectedRegion of this.selectedRegions[selectedCountry]) {
+                let suppliedRegion = new SuppliedRegionDTOBase();
+                suppliedRegion.regionId = selectedRegion;
+                suppliedRegion.supplierId = this.supplier.id;
+                this.supplier.suppliedRegions.push(suppliedRegion);
+            }
+        }
         this.supplierApi.updateSupplier(this.supplier).subscribe(
             (supplier: SupplierDTOBase) => {
                 console.log('supplier', supplier);

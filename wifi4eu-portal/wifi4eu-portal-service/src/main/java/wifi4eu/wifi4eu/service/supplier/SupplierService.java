@@ -260,13 +260,29 @@ public class SupplierService {
 
     @Transactional
     public List<SuppliedRegionDTO> updateSuppliedRegions(List<SuppliedRegionDTO> originalRegions, List<SuppliedRegionDTO> newRegions) {
+        List<SuppliedRegionDTO> finalRegions = new ArrayList<>();
         for (SuppliedRegionDTO newRegion : newRegions) {
-            if (!originalRegions.contains(newRegion)) {
-                suppliedRegionRepository.save(suppliedRegionMapper.toEntity(newRegion));
+            boolean regionInList = false;
+            for (SuppliedRegionDTO originalRegion : originalRegions) {
+                if (originalRegion.getRegionId() == newRegion.getRegionId()) {
+                    finalRegions.add(originalRegion);
+                    regionInList = true;
+                    break;
+                }
+            }
+            if (!regionInList) {
+                finalRegions.add(newRegion);
             }
         }
         for (SuppliedRegionDTO originalRegion : originalRegions) {
-            if (!newRegions.contains(originalRegion)) {
+            boolean regionInList = false;
+            for (SuppliedRegionDTO newRegion : newRegions) {
+                if (newRegion.getRegionId().getId() == originalRegion.getRegionId().getId()) {
+                    regionInList = true;
+                    break;
+                }
+            }
+            if (!regionInList) {
                 suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(originalRegion));
             }
         }
