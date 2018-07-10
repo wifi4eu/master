@@ -19,6 +19,7 @@
     
     <properties>
 		<app.context.root>${dgconn.context.name}</app.context.root>
+		<apache.poi.version>3.17</apache.poi.version>
     </properties>
     
 

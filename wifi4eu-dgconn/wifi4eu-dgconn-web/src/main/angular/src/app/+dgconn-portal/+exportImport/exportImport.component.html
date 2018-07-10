@@ -1,0 +1,95 @@
+<div class="container">
+    <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
+        <a class="link-label" routerLink=".." routerLinkActive="active">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{'shared.back.button' | translate}}
+        </a>
+        <p class="beneficiaryTitle">ABAC</p>
+        <p>Here you can do this and that (brief explanation).</p>
+    </div>
+    <span class="ui-g-12"><b>Legal Entities (LEF)</b></span>
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12" (click)="importRegistrationData()">
+            <span class="beneficiaryMayor">Import Final list from DG BUDG</span>
+            <p>This button will import the municipalities as completed by DG BUDG into the portal. If a municipality exists already in ABAC, this imported file will give the ABAC reference number to the portal.</p>
+        </div>
+    </div>
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12" (click)="exportBeneficiaryInformation()">
+            <span class="beneficiaryMayor">Export Legal Entities to be created in ABAC</span>
+            <p>This button will export all parameters necessary for the WiFI4EU interface to create the data.</p>
+        </div>
+    </div>
+    <br/><br/>
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12" (click)="importLegalEntityFBCValidate()">
+            <span class="beneficiaryMayor">Import Legal Entities file from ABAC</span>
+            <p>This button will import to the portal the legal entities file created in ABAC.</p>
+        </div>
+    </div>
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12" (click)="importRegistrationData()">
+            <span class="beneficiaryMayor">Import ABAC references for all LEFs</span>
+            <p>This button will import all ABAC LEF references in the portal.</p>
+        </div>
+    </div>
+    <br/><br/>
+    <span class="ui-g-12"><b>Budgetary Commitment (BC)</b></span>
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12" (click)="exportBudgetaryCommitment()">
+            <span class="beneficiaryMayor">Export BC</span>
+            <p>This button will export all parameters necessary for the WiFI4EU interface to create the data.</p>
+        </div>
+    </div>
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12" (click)="importRegistrationData()">
+            <span class="beneficiaryMayor">Import BC from ABAC interface</span>
+            <p>This button will import the ABAC reference numbers into the portal.</p>
+        </div>
+    </div>
+    <br/><br/>
+    <span class="ui-g-12"><b>Legal Commitment (LC)</b></span>
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12 panelDisabled">
+            <span class="beneficiaryMayor">Export LC</span>
+            <p>This button will export all parameters necessary for the WiFI4EU interface to create the data.</p>
+        </div>
+    </div>
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12 panelDisabled">
+            <span class="beneficiaryMayor">Import LC from ABAC interface</span>
+            <p>This button will import the ABAC reference numbers into the portal.</p>
+        </div>
+    </div>
+    <br/><br/>
+    <span class="ui-g-12"><b>Bank Account (BAF)</b></span>
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12 panelDisabled">
+            <span class="beneficiaryMayor">Export BAF to portal</span>
+            <p>This button will export all parameters necessary for the WiFI4EU interface to create the data.</p>
+        </div>
+    </div>
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12 panelDisabled">
+            <span class="beneficiaryMayor">Import BAF from ABAC interface</span>
+            <p>This button will import the ABAC reference numbers into the portal.</p>
+        </div>
+    </div>
+    <br/>
+    <hr class="genericHr">
+    <span class="ui-g-12"><b>Global Commitments</b></span>
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12 panelDisabled">
+            <span class="beneficiaryMayor">Configure Global Commitments</span>
+            <p>Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor.</p>
+        </div>
+    </div>
+    <br/><br/>
+</div>
+
+<p-dialog [(visible)]="processingOperation" [modal]="true" [responsive]="true" [resizable]="false"
+          [draggable]="false" [closable]="false">
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
+    <div style="text-align: center;font-size: 4em;margin: 1em 0em;">
+        <i [@enterSpinner] class="fa fa-spinner loading-icon" style="text-align: center;"></i>
+    </div>
+</p-dialog>
