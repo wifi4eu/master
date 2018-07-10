@@ -939,6 +939,11 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   padding: 1.2em;
 }
 
+p-dataTable#tableComments thead .ui-column-title, 
+p-dataTable#tableComments tbody.ui-datatable-data.ui-widget-content > .ui-widget-content .ui-cell-data {
+  padding-left: 0px;
+}
+
 .ui-column-title, .ui-cell-data {
   padding-left: 1.8em;
 }
@@ -1305,6 +1310,11 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   color: white;
 }
 
+.panel-dg.panel-dg-plain{
+  border-width: 0px;
+  box-shadow: none;
+}
+
 .panel-dg {
   background-color: #fff;
   border: 1px solid rgba(187, 187, 187, 0.8196078431372549);
@@ -1338,6 +1348,10 @@ discussion-component .expanded .content, discussion-component .expanded .header,
     /*  padding: 1.25rem 0.75rem; */
     padding: 1.25rem 0rem;
     text-align: center;
+  }
+
+  .padding-cell{
+    padding: 1.25rem 1rem;
   }
 
   .separator {
@@ -1716,3 +1730,29 @@ input.email_profile::-ms-clear{
   height: 100%;
   z-index: 99999999;
   margin-top: -100px;}
+
+
+.authorizationBox {
+    background-color: #e5eaef;
+    margin-top: 1vw;
+    .innerContent {
+        padding: 2%;
+    }
+    .innerOptions {
+        padding-top: 1vw;
+        div {
+            display: inline-block;
+            position: relative;
+        }
+    }
+    .alertIconDisplay {
+        font-size: 30px;
+        position: absolute;
+        margin-top: -19px;
+        margin-left: -19px;
+        color: #004494;
+        background-color: white;
+        border-radius: 100%;
+        height: 1.2%;
+    }
+}
