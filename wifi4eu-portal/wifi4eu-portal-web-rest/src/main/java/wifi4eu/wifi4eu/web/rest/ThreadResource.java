@@ -66,7 +66,7 @@ public class ThreadResource {
     @ApiOperation(value = "Get thread by specific type")
     @RequestMapping(value = "/type/{type}/reason/{reason}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ThreadDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason, HttpServletResponse response) throws IOException {
+    public ResponseDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting thread by type " + type + " and reason " + reason);
@@ -80,7 +80,7 @@ public class ThreadResource {
                     }
                 }
             }
-            return thread;
+            return new ResponseDTO(true, thread, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this thread", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
