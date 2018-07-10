@@ -70,7 +70,7 @@
                             <p>{{ 'shared.name.label' | translate }}</p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="profileData">{{mayors[i].name}}</p>
+                            <p class="profileData">{{mayors[i]?.name}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -78,7 +78,7 @@
                             <p>{{ 'shared.surname.label' | translate }}</p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="profileData">{{mayors[i].surname}}</p>
+                            <p class="profileData">{{mayors[i]?.surname}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -86,7 +86,7 @@
                             <p>{{ 'shared.email.label' | translate }}</p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="profileData">{{mayors[i].email}}</p>
+                            <p class="profileData">{{mayors[i]?.email}}</p>
                         </div>
                     </div>
                     <br>
@@ -107,7 +107,7 @@
                             <p>{{ 'shared.country.label' | translate }}</p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="profileData">{{municipality.country}}</p>
+                            <p class="profileData">{{municipality?.country}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -115,7 +115,7 @@
                             <p>{{ 'shared.municipality.label' | translate }}</p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="profileData">{{municipality.name}}</p>
+                            <p class="profileData">{{municipality?.name}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -123,7 +123,7 @@
                             <p>{{ 'benefRegistration.address.label' | translate }}</p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="profileData">{{municipality.address}}</p>
+                            <p class="profileData">{{municipality?.address}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -131,7 +131,7 @@
                             <p>{{ 'shared.number.label' | translate }}</p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="profileData">{{municipality.addressNum}}</p>
+                            <p class="profileData">{{municipality?.addressNum}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -139,7 +139,7 @@
                             <p>{{ 'shared.postal-code.label' | translate }}</p>
                         </div>
                         <div class="col-sm-8">
-                            <p class="profileData">{{municipality.postalCode}}</p>
+                            <p class="profileData">{{municipality?.postalCode}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -183,14 +183,22 @@
                     </button>
                 </div>
             </div>
-
             <div class="col-sm-12 margin-top button-content">
                 <p>{{ 'shared.withdraw-registration.text' | translate }}</p>
                 <div style="text-align: center !important">
                     <button type="button" (click)="deleteRegistration()"
-                            class="btn btn-primary changePassword"
-                            [disabled]="withdrawingRegistration || withdrawnSuccess">
-                        {{ 'shared.withdraw-registration.button' | translate }}
+                    class="btn btn-primary changePassword"
+                    [disabled]="withdrawingRegistration || withdrawnSuccess">
+                    {{ 'shared.withdraw-registration.button' | translate }}
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-12 margin-top button-content">
+                <p><span>{{ 'shared.changeLanguage.text1' | translate }}</span> <strong>{{ selectedLanguage.label }}.</strong></p>
+                <p>{{ 'shared.changeLanguage.text2' | translate }}</p>
+                <div style="text-align: center !important">
+                    <button type="button" (click)="changeLanguage()" class="btn btn-primary changePassword">
+                        {{'shared.changeLanguage.button' | translate }}
                     </button>
                 </div>
             </div>
@@ -198,6 +206,7 @@
 
     </div>
 </div>
+
 <!-- MODALS BELOW -->
 <div class="container font">
     <div class="ui-g-1"></div>
@@ -445,6 +454,21 @@
         </form>
     </p-dialog>
 </div>
+
+<!-- Change language modal -->
+<p-dialog [(visible)]="displayLanguageModal" header="{{ 'shared.changeLanguage.modal.title' | translate }}" [modal]="true" [responsive]="true" 
+[resizable]="false" [draggable]="false" [closable]="true">
+    <div class="modal-body">
+        <div *ngFor="let row of languageRows" class="row">
+            <div *ngFor="let language of row" class="col-md-6">
+                <button class="btn language-modal" [class.btn-secondary]="language.code != selectedLanguage.code" [class.btn-primary]="language.code == selectedLanguage.code" (click)="selectLanguage(language.code)">
+                    <label class="text-adjust">{{language.label}} ({{language.code}})</label>
+                </button>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+
 <helpdesk-form-component portal="beneficiary-profile"></helpdesk-form-component>
 <p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
