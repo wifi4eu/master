@@ -227,9 +227,6 @@ export class BeneficiaryEditProfileComponent {
             this.checkMunicipalitiesSelected();
         }
         this.checkEmailsMatch();
-        if (this.newMunicipalities.length < 1){
-            this.emailsMatch = true;
-        }
     }
 
     /*
@@ -263,20 +260,24 @@ export class BeneficiaryEditProfileComponent {
         for (let i = 0; i < this.laus.length; i++) {
             if (!this.laus[i].id) {
                 this.municipalitiesSelected = false;
+                /*
                 if (!this.multipleMunicipalities) {
                     this.municipalityForm.controls['municipality'].setErrors({'incorrect': true});
                 }
                 else {
                     this.municipalityForm.controls[`municipality-${i}`].setErrors({'incorrect': true});
                 }
+                */
                 this.css_class_municipalities[i] = 'notValid';
             } else {
+                /*
                 if (!this.multipleMunicipalities) {
                     if (this.municipalityForm.controls['municipality'] != undefined) this.municipalityForm.controls['municipality'].setErrors(null);
                 }
                 else {
                     this.municipalityForm.controls[`municipality-${i}`].setErrors(null);
                 }
+                */
                 this.css_class_municipalities[i] = 'isValid';
                 this.municipalitiesSelected = true;
             }
@@ -315,11 +316,11 @@ export class BeneficiaryEditProfileComponent {
 
     private checkEmailsMatch(){
         this.emailsMatch = false;
-        for (let i = 0; i < this.mayors.length; i++) {
-            if (this.mayors[i].email != this.emailConfirmations[i] || this.emailConfirmations[i].length < 1) {
+        for (let i = 0; i < this.newMayors.length; i++) {
+            if (this.newMayors[i].email != this.emailConfirmations[i] || this.emailConfirmations[i].length < 1) {
                 this.emailsMatch = false;
                 this.css_class_email[i] = 'notValid';
-            } else if (this.emailPattern.test(this.emailConfirmations[i])) {
+            } else {
                 this.css_class_email[i] = 'isValid';
                 this.emailsMatch = true;
             }
@@ -331,14 +332,7 @@ export class BeneficiaryEditProfileComponent {
                 this.municipalityForm.controls[key].setErrors(null);
             });
         }
-        /*
-        this.emailsMatch = false;
-        if (this.newMayor.email != this.repeatEmail || this.repeatEmail.length < 1){
-            this.emailsMatch = false;
-        } else if (this.emailPattern.test(this.repeatEmail)) {
-            this.emailsMatch = true;
-        }
-        */
+
     }
 
     private submit(){
@@ -422,21 +416,39 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private checkButtonEnabled(event, i){
-        this.buttonEnabled = false
+        this.buttonEnabled = false;
         if(this.municipalities[i].address != null && this.municipalities[i].addressNum != null && this.municipalities[i].postalCode != null && this.mayors[i].name != null  && this.mayors[i].surname != null  && this.mayors[i].email != null
          && this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != ""  && this.mayors[i].surname.trim() != ""  && this.mayors[i].email.trim() != ""){
             this.buttonEnabled = true;
-            this.emailsMatch = true;
-        } else {
-            this.buttonEnabled = false
+            if (this.newMunicipalities.length > 0){
+                for(let j = 0; j < this.newMunicipalities.length; j++){
+                    if (this.newMunicipalities[j].address != null && this.newMunicipalities[j].addressNum != null && this.newMunicipalities[j].postalCode != null && this.newMayors[j].name != null  && this.newMayors[j].surname != null && (this.newMunicipalities[j].address.trim() == "" || this.newMunicipalities[j].addressNum.trim() == "" || this.newMunicipalities[j].postalCode.trim() == "" || this.newMayors[j].name.trim() == "" || this.newMayors[j].surname.trim() == "")){
+                        this.buttonEnabled = false;
+                        break;
+                    }
+                }
+            } else {
+                this.emailsMatch = true;
+                this.municipalitiesSelected = true;
+            }
         }
     }
 
     private checkButtonEnabledUser(event){
+        this.buttonEnabled = false;
         if(this.user.name != null && this.user.surname != null && this.user.name.trim() != "" && this.user.surname.trim() != ""){
             this.buttonEnabled = true;
-        } else {
-            this.buttonEnabled = false
+            if (this.newMunicipalities.length > 0){
+                for(let j = 0; j < this.newMunicipalities.length; j++){
+                    if (this.newMunicipalities[j].address != null && this.newMunicipalities[j].addressNum != null && this.newMunicipalities[j].postalCode != null && this.newMayors[j].name != null  && this.newMayors[j].surname != null && (this.newMunicipalities[j].address.trim() == "" || this.newMunicipalities[j].addressNum.trim() == "" || this.newMunicipalities[j].postalCode.trim() == "" || this.newMayors[j].name.trim() == "" || this.newMayors[j].surname.trim() == "")){
+                        this.buttonEnabled = false;
+                        break;
+                    }
+                }
+            } else {
+                this.emailsMatch = true;
+                this.municipalitiesSelected = true;
+            }
         }
     }
 }

@@ -172,6 +172,7 @@
                                                         <p-autoComplete [id]="'municipality-'+i"
                                                                         class="form-control {{css_class_municipalities[i]}}"
                                                                         [name]="'municipality-'+i" field="name1"
+                                                                        ngcontrol = "'municipality-'+i"
                                                                         [(ngModel)]="laus[i]"
                                                                         [suggestions]="lauSuggestions"
                                                                         (completeMethod)="search($event)"
@@ -192,7 +193,7 @@
                                                         {{ 'benefRegistration.townHall.address' | translate }}</label>
                                                     <input type="text" class="form-control paddingInput" min="1"
                                                            [id]="'address-'+i" [name]="'address-'+i"
-                                                           [(ngModel)]="newMunicipalities[i].address" required>
+                                                           [(ngModel)]="newMunicipalities[i].address" (ngModelChange)="checkButtonEnabled($event, i)" required>
                                                 </div>
                                             </div>
             
@@ -202,7 +203,7 @@
                                                         {{ 'shared.number.label' | translate }}</label>
                                                     <input type="text" class="form-control paddingInput"
                                                            [id]="'addressNum-'+i" [name]="'addressNum-'+i"
-                                                           [(ngModel)]="newMunicipalities[i].addressNum" required>
+                                                           [(ngModel)]="newMunicipalities[i].addressNum" (ngModelChange)="checkButtonEnabled($event, i)" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -215,7 +216,7 @@
                                                         {{ 'shared.postal-code.label' | translate }}</label>
                                                     <input type="text" class="form-control paddingInput"
                                                            [id]="'postalCode-'+i" [name]="'postalCode-'+i"
-                                                           [(ngModel)]="newMunicipalities[i].postalCode" required>
+                                                           [(ngModel)]="newMunicipalities[i].postalCode" (ngModelChange)="checkButtonEnabled($event, i)" required>
                                                 </div>
                                             </div>
                                             <div class="ui-g-8"></div>
@@ -236,7 +237,7 @@
                                         <div class="ui-g-12">
                                             <label class="label floatLeft">{{ 'shared.name.label' | translate }}</label>
                                             <input class="form-control paddingInput" [name]="'name-'+i" [id]="'name-'+i" type="text"
-                                                   [(ngModel)]="newMayors[i].name" required>
+                                                   [(ngModel)]="newMayors[i].name" (ngModelChange)="checkButtonEnabled($event, i)" required>
                                         </div>
                                     </div>
                                     <!-- Mayor last name -->
@@ -247,7 +248,7 @@
                                             </label>
                                             <input class="form-control paddingInput" type="text" [name]="'surname-'+i"
                                                    [id]="'surname-'+i"
-                                                   [(ngModel)]="newMayors[i].surname" required>
+                                                   [(ngModel)]="newMayors[i].surname" (ngModelChange)="checkButtonEnabled($event, i)" required>
                                         </div>
                                     </div>
                                     <!-- Mayor email -->
@@ -495,10 +496,11 @@
                 {{ 'shared.cancel.button' | translate }}
             </button>
         </div>
+
         <div class="col-sm-6 col-lg-4" style="text-align: center !important">
-            <button (click)="editProfile()" class="btn btn-primary publish-button" [disabled]="!emailsMatch || !profileEditForm.form.valid || !buttonEnabled">
-                {{ 'shared.confirm.button' | translate }}
-            </button>
+                <button (click)="editProfile()" class="btn btn-primary publish-button" [disabled]="!municipalitiesSelected || !emailsMatch || !profileEditForm.form.valid || !buttonEnabled">
+                    {{ 'shared.confirm.button' | translate }}
+                </button>
         </div>
         <div class="col-lg-2"></div>
     </div>
