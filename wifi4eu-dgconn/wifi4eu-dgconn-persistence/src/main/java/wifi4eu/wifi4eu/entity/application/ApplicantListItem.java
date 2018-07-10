@@ -21,11 +21,12 @@ public class ApplicantListItem {
     private Boolean warning1;
     private Boolean warning2;
     private Boolean warning3;
+    private Boolean supportingDocuments;
 
     public ApplicantListItem() {
     }
 
-    public ApplicantListItem(Integer lauId, String countryCode, String name, Integer counter, Boolean mediation, Integer status, Long applicationDate, String invalidateReason, Boolean warning1, Boolean warning2, Boolean warning3) {
+    public ApplicantListItem(Integer lauId, String countryCode, String name, Integer counter, Boolean mediation, Integer status, Long applicationDate, String invalidateReason, Boolean warning1, Boolean warning2, Boolean warning3, Boolean supportingDocuments) {
         this.lauId = lauId;
         this.countryCode = countryCode;
         this.name = name;
@@ -37,6 +38,7 @@ public class ApplicantListItem {
         this.warning1 = warning1;
         this.warning2 = warning2;
         this.warning3 = warning3;
+        this.supportingDocuments = supportingDocuments;
     }
 
     public Integer getLauId() {
@@ -125,5 +127,13 @@ public class ApplicantListItem {
 
     public void setWarning3(Boolean warning3) {
         this.warning3 = warning3;
+    }
+
+    public Boolean getSupportingDocuments() {
+      return supportingDocuments;
+    }
+
+    public void setSupportingDocuments(Boolean supportingDocuments) {
+      this.supportingDocuments = supportingDocuments;
     }
 }
