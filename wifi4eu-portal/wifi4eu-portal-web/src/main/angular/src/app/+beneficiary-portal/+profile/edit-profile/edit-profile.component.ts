@@ -84,6 +84,7 @@ export class BeneficiaryEditProfileComponent {
     private initialUser: UserDTOBase = new UserDTOBase();
     @ViewChild('municipalityForm') municipalityForm: NgForm;
     private organizationId: number = 0;
+    private isOrganisation: boolean = false;
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
 
     constructor(private beneficiaryApi: BeneficiaryApi, private translateService: TranslateService, private nutsApi: NutsApi, private lauApi: LauApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
@@ -95,8 +96,10 @@ export class BeneficiaryEditProfileComponent {
         this.municipalities = [];
         this.mayors = [];
         this.editedUser = new UserDTOBase();
-        this.editedMunicipality = new MunicipalityDTOBase();
-        this.editedMayor = new MayorDTOBase();
+        this.newMayors = [];
+        this.newMunicipalities = [];
+        this.emailsMatch = false;
+        this.buttonEnabled = false;
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         this.nutsApi.getNutsByLevel(0).subscribe(
@@ -125,8 +128,11 @@ export class BeneficiaryEditProfileComponent {
                                     } else {
                                         this.oneRegsitration = false;
                                     }
-                                    this.finalBeneficiary.organisationId = registrations[0].organisationId;
-                                    this.finalBeneficiary.associationName = registrations[0].associationName;
+                                    if (registrations[0].organisationId != 0){
+                                        this.isOrganisation = true;
+                                        this.finalBeneficiary.organisationId = registrations[0].organisationId;
+                                        this.finalBeneficiary.associationName = registrations[0].associationName;
+                                    }
                                     for (let registration of registrations) {
                                         this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                                         this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
@@ -332,37 +338,49 @@ export class BeneficiaryEditProfileComponent {
                 this.municipalityForm.controls[key].setErrors(null);
             });
         }
-
     }
 
-    private submit(){
-        /*
-        this.newMunicipality.name = this.laus[0].name1;
-        this.newMunicipality.lauId = this.laus[0].id;
+    private submitNewMunicipalities(){
+        // this.newMunicipality.name = this.laus[0].name1;
+        // this.newMunicipality.lauId = this.laus[0].id;
+        
+        for (let i = 0; i < this.newMunicipalities.length; i++) {
+            this.newMunicipalities[i].name = this.laus[i].name1;
+            this.newMunicipalities[i].country = this.municipalities[0].country;
+            this.newMunicipalities[i].lauId = this.laus[i].id;
+        }
         this.finalBeneficiary.municipalities = [];
-        this.finalBeneficiary.municipalities.push(this.newMunicipality);
-        this.finalBeneficiary.mayors = [];
+        for (let municipality of this.newMunicipalities) {
+            this.finalBeneficiary.municipalities.push(municipality);
+        }
+        // this.finalBeneficiary.municipalities.push(this.newMunicipality);
+        
         let language = this.translateService.currentLang;
         if (!language) {
             language = 'en';
         }
         this.finalBeneficiary.lang = language;
-        this.finalBeneficiary.mayors.push(this.newMayor);
-        this.initialUser.type = 3;
-        this.finalBeneficiary.user = this.initialUser;
+        this.finalBeneficiary.mayors = [];
+        // this.finalBeneficiary.mayors.push(this.newMayor);
+        for (let mayor of this.newMayors) {
+            this.finalBeneficiary.mayors.push(mayor);
+        }
+        this.finalBeneficiary.user = this.user;
         this.beneficiaryApi.submitNewMunicipalities(this.finalBeneficiary).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
                     this.successRegistration = true;
+                    this.sharedService.growlTranslation('Your municipality has been added successfully.', 'benefPortal.beneficiary.addMunicipalities.Success', 'success');
                     this.loadDataEditProfile();
+
                 } else {
+                    this.sharedService.growlTranslation('An error ocurred while trying to add the municipalities. Please try again latern', 'benefPortal.beneficiary.addMunicipalities.Error', 'error');
                     this.successRegistration = false;
                 }
             }, error => {
                 this.successRegistration = false;
             }
         );
-        */
     }
 
     private preventPaste(event: any) {
@@ -405,6 +423,10 @@ export class BeneficiaryEditProfileComponent {
                 }
             }
         );
+
+        if (this.newMunicipalities.length > 0){
+            this.submitNewMunicipalities();
+        }
 
       
     }

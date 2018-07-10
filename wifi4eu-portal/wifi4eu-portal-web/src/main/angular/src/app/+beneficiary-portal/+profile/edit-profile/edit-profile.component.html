@@ -285,139 +285,16 @@
                                 </custom-accordion-box>
                             </div>
                         </ux-accordion-boxes>
-                        <div class="form-group ui-g">
+                        <div *ngIf="isOrganisation" class="form-group ui-g">
                             <button class="btn greenButton" type="button" (click)="addExtraMunicipality()"
                                     style="margin-top: 1.5em;">
                                 {{'benefRegistration.addMunicipalty.label' | translate}}
                             </button>
                         </div>
                     </ng-container>
-            <!--
-            <p *ngIf="!addMunicipality" (click)="addNewMunicipality()">+ Add new municipality</p> 
-            <p *ngIf="addMunicipality" (click)="cancelAddMunicipality()">+ Remove new municipality</p> 
-            <br>
-            <form #municipalityForm="ngForm" (submit)="submit()">
-                    <ng-container *ngIf="addMunicipality">
-                        <div class="ui-g">
-                            <div class="ui-g-12">
-                                <h3 class="beneficiaryTitle">{{ 'shared.municipalityDetails.title' | translate }}</h3>
-                                <div class="ui-g">
-                                    <div class="ui-g-12">
-                                        <div class="form-group">
-                                            <label class="label floatLeft" for="municipality">
-                                                {{ 'benefRegistration.municipalityDropdown' | translate }}</label>
-                                            <div class="clearfix"></div>
-                                            <p-autoComplete id="municipality" class="form-control {{css_class_municipalities[0]}}"
-                                                            name="municipality" field="name1" [(ngModel)]="laus[0]"
-                                                            [suggestions]="lauSuggestions" (completeMethod)="search($event)"
-                                                            (onSelect)="checkMunicipalitiesSelected()"
-                                                            (input)="checkMunicipalitiesSelected()"
-                                                            (focusout)="clearMunicipality(0)" required></p-autoComplete>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g">
-                            <div class="ui-g-12">
-                                <div class="ui-g-8">
-                                    <div class="form-group">
-                                        <label class="label floatLeft" for="address">{{ 'benefRegistration.townHall.address' |
-                                            translate }}</label>
-                                        <input type="text" class="form-control paddingInput" min="1"
-                                               id="addressStep2" name="address" [(ngModel)]="newMunicipality.address" required>
-                                    </div>
-                                </div>
-                
-                                <div class="ui-g-4">
-                                    <div class="form-group">
-                                        <label class="label floatLeft" for="address">{{ 'shared.number.label' | translate
-                                            }}</label>
-                                        <input type="text" class="form-control paddingInput"
-                                               id="addressNumStep2" name="addressNum" [(ngModel)]="newMunicipality.addressNum"
-                                               required>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ui-g">
-                            <div class="ui-g-12">
-                                <div class="ui-g-4">
-                                    <div class="form-group">
-                                        <label class="label floatLeft" for="postalCode">{{ 'shared.postal-code.label' | translate
-                                            }}</label>
-                                        <input type="text" class="form-control paddingInput"
-                                               id="postalCodeStep2" name="postalCode" [(ngModel)]="newMunicipality.postalCode"
-                                               required>
-                                    </div>
-                                </div>
-                                <div class="ui-g-8"></div>
-                            </div>
-                        </div>
-                        <div id="legal-representative" class="form-group ui-g">
-                            <div class="ui-g-12">
-                                <h3 class="beneficiaryTitle">{{ 'benefRegistration.registration.legalRepresentative' | translate
-                                    }}</h3>
-                                <label class="field-desc" style="margin-top: 10px;color: gray;">
-                                    {{ 'benefRegistration.registration.authorisedPerson' | translate }}
-                                </label>
-                            </div>
-                        </div>
-
-                        <div id="mayor-name" class="form-group ui-g">
-                            <div class="ui-g-12">
-                                <label class="label floatLeft">{{ 'shared.name.label' | translate }}</label>
-                                <input class="form-control paddingInput" type="text" name="name" id="nameStep2"
-                                       [(ngModel)]="newMayor.name" required>
-                            </div>
-                        </div>
-
-                        <div id="mayor-last-name" class="form-group ui-g">
-                            <div class="ui-g-12">
-                                <label class="label floatLeft">{{ 'shared.surname.label' | translate }}</label>
-                                <input class="form-control paddingInput" type="text" name="surname" id="surnameStep2"
-                                       [(ngModel)]="newMayor.surname" required>
-                            </div>
-                        </div>
-
-                        <div id="mayor-email" class="form-group ui-g">
-                            <div class="ui-g-12">
-                                <label class="label floatLeft">{{ 'shared.email.label' | translate }}</label>
-                                <input class="form-control paddingInput" type="email" [pattern]="emailPattern"
-                                       [(ngModel)]="newMayor.email" id="emailStep2" name="email"
-                                       (input)="checkEmailsMatch()" maxlength="254" required>
-                                <label class="field-desc" style="margin-top: 10px;color: gray;">
-                                    {{ 'benefRegistration.email.fielddesc' | translate }}
-                                </label>
-                            </div>
-                        </div>
-
-                        <div id="mayor-confirm-email" class="form-group ui-g">
-                            <div class="ui-g-12">
-                                <label class="label floatLeft">{{ 'shared.confirmemail.label' | translate }}</label>
-                                <input class="form-control paddingInput" [pattern]="emailPattern"
-                                       name="confirm-email" id="confirm-emailStep2" type="email"
-                                       (input)="checkEmailsMatch()" (paste)="preventPaste()"
-                                       [(ngModel)]="repeatEmail" maxlength="254" required>
-                            </div>
-                        </div>
-                
-                        <button type="submit" id="navigate-step3" class="btn btn-primary"
-                                [disabled]="!municipalityForm.form.valid || !municipalitiesSelected || !emailsMatch">
-                            Add new municipality
-                        </button>
-
-                        <button type="button" class="btn btn-primary removeMunicipalityBtn" (click)="cancelAddMunicipality()">
-                            Remove new municipality
-                        </button>
-                    </ng-container>
-                </form>
-            -->
         </div>
         <div class="col-lg-2"></div>
     </div>
-
-    <!-- ADD MUNCIPALITY -->
 
     <br>
     <div class="row">
