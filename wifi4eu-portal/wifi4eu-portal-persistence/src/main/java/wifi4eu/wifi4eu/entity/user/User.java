@@ -1,6 +1,9 @@
 package wifi4eu.wifi4eu.entity.user;
 
+import wifi4eu.wifi4eu.entity.registration.Registration;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -63,7 +66,7 @@ public class User {
     }
 
 
-    public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken) {
+    public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken, List<Registration> registrationList) {
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
@@ -80,6 +83,7 @@ public class User {
         this.ecasEmail = ecasEmail;
         this.ecasUsername = ecasUsername;
         this.csrfToken = csrfToken;
+        this.registrationList = registrationList;
     }
 
     public Integer getId() {
@@ -216,6 +220,14 @@ public class User {
 
     public void setCsrfToken(String csrfToken) {
         this.csrfToken = csrfToken;
+    }
+
+    public List<Registration> getRegistrationList() {
+        return registrationList;
+    }
+
+    public void setRegistrationList(List<Registration> registrationList) {
+        this.registrationList = registrationList;
     }
 
 }

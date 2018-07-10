@@ -19,9 +19,8 @@ public class Registration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "_user")
-    private User user;
+    @ManyToMany(mappedBy = "registrationList")
+    private List<User> userList;
 
     @ManyToOne
     @JoinColumn(name = "municipality")
@@ -118,8 +117,8 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
-        this.user = user;
+    public Registration(List<User> userList, Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
+        this.userList = userList;
         this.municipality = municipality;
         this.role = role;
         this.status = status;
@@ -160,16 +159,16 @@ public class Registration {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public List<User> getUserList() {
+        return userList;
     }
 
     public int getStatus() {
         return status;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
     public Municipality getMunicipality() {
