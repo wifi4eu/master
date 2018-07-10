@@ -399,8 +399,8 @@ public class UserService {
         }
     }
 
-    public void updateLanguage(UserDTO userDTO, String lang) {
+    public UserDTO updateLanguage(UserDTO userDTO, String lang) {
         userDTO.setLang(lang);
-        this.userRepository.save(this.userMapper.toEntity(userDTO));
+        return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
     }
 }
