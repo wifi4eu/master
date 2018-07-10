@@ -3,13 +3,14 @@
         <a class="link-label" routerLink=".." routerLinkActive="active">
             <i class="fa fa-arrow-left" aria-hidden="true"></i> {{'shared.back.button' | translate}}
         </a>
-        <p class="beneficiaryTitle">My registration (Editing mode)</p>
-        <p>Edit your company information here.</p>
+        <p class="beneficiaryTitle">{{ 'myRegistration.editingMode' | translate }}</p>
+        <!--<p>In this page you can edit the company information, contact details and geographical scope of your supplier. The contact e-mail address cannot be edited as it is realated to the EU Login account.</p>-->
     </div>
+    <i *ngIf="!supplier" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
     <form *ngIf="supplier" #editProfileForm="ngForm">
         <div class="ui-g-12">
             <hr class="genericHr" />
-            <p class="beneficiaryTitle" style="font-size: 18px;">Company information</p>
+            <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'suppPortal.companyInformation' | translate }}</p>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="name">{{ 'suppRegistration.company.name' | translate }}</label><br>
                 <input id="name" type="text" name="name" class="form-control"
@@ -34,21 +35,28 @@
                        [(ngModel)]="supplier.website" [pattern]="websitePattern">
             </div>
             <br>
-            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+            <div class="form-group ui-g-12">
                 <label for="logo">{{ 'suppRegistration.company.logo' | translate }}</label><br>
-                <label *ngIf="!supplier.logo" id="logo" class="uploadLogoLabel">
-                    <i class="fa fa-upload" style="margin-right: 1em;"></i> Upload your company logo
-                    <input #logoInput type="file" (change)="changeLogo($event)" accept="image/png,image/jpeg">
+                <label *ngIf="!isLogoUploaded" id="logo" for="logoInput" class="uploadLogoLabel">
+                    <i class="fa fa-upload" style="margin-right: 1em;"></i> {{ 'suppPortal.editProfile.uploadLogo' | translate }}
+                    <input #logoInput id="logoInput" name="logoInput" type="file"
+                           (change)="changeLogo($event)" accept="image/png,image/jpeg"
+                           style="visibility:hidden;height: 0;width: 0;padding: 0;margin: 0;">
                 </label>
-                <label *ngIf="supplier.logo" id="logo" class="uploadLogoLabel">
-                    <img src="">
-                    <i class="fa fa-sync-alt" style="margin-right: 1em;"></i> Change company logo
+                <label *ngIf="isLogoUploaded" id="logo" for="logoInput" class="uploadLogoLabel">
+                    <img [src]="supplier.logo" style="max-width: 25em;max-height: 25em;border: 1px solid #d7d7d7;padding: 0;">
+                    <span style="margin-left: 1.5em;">
+                        <i class="fa fa-upload" style="margin-right: 1em;"></i> {{ 'suppPortal.editProfile.changeLogo' | translate }}
+                        <input #logoInput id="logoInput" name="logoInput" type="file"
+                               (change)="changeLogo($event)" accept="image/png,image/jpeg"
+                               style="visibility:hidden;height: 0;width: 0;padding: 0;margin: 0;">
+                    </span>
                 </label>
             </div>
         </div>
         <div class="ui-g-12">
             <hr class="genericHr" />
-            <p class="beneficiaryTitle" style="font-size: 18px;">Contact details</p>
+            <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
             <div class="form-group ui-g-3 ui-lg-3 ui-md-8 ui-sm-12">
                 <label for="contactName">{{ 'shared.name.label' | translate }}</label><br>
                 <input id="contactName" type="text" name="contactName" class="form-control"
@@ -80,7 +88,7 @@
                 <div>
                     <div class="ui-g-4 ui-lg-4 ui-md-12 ui-sm-12">
                         <label>
-                            Select the country(ies) where you operate
+                            {{ 'suppRegistration.registration.selectCountry' | translate }}
                         </label>
                         <br>
                         <p-multiSelect id="selectCountry" #selectCountry name="selectCountry"
@@ -90,7 +98,7 @@
                     </div>
                     <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
                         <label>
-                            Choose one or more areas in this country
+                            {{ 'suppRegistration.registration.chooseAreas' | translate }}
                         </label>
                         <br>
                         <p-tabView>
@@ -113,9 +121,9 @@
                         class="btn btn-primary whiteButton" style="margin-right: 0.5em;">
                     {{ 'shared.cancel.button' | translate }}
                 </button>
-                <button type="button" (click)="saveSupplierData()"
+                <button type="button" (click)="saveSupplierData()" [disabled]="savingData"
                         class="btn btn-primary blueButton" style="margin-left: 0.5em;">
-                    Save
+                    {{ 'shared.save' | translate }} <i *ngIf="savingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
                 </button>
             </div>
             <br style="margin-bottom: 2em;">

@@ -264,7 +264,7 @@ public class SupplierService {
         for (SuppliedRegionDTO newRegion : newRegions) {
             boolean regionInList = false;
             for (SuppliedRegionDTO originalRegion : originalRegions) {
-                if (originalRegion.getRegionId() == newRegion.getRegionId()) {
+                if (originalRegion.getRegionId().getId() == newRegion.getRegionId().getId()) {
                     finalRegions.add(originalRegion);
                     regionInList = true;
                     break;
@@ -286,7 +286,7 @@ public class SupplierService {
                 suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(originalRegion));
             }
         }
-        return newRegions;
+        return finalRegions;
     }
 
     @Transactional
