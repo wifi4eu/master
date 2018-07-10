@@ -88,20 +88,21 @@ public class ExportImportWifi4euAbacService {
 		_log.info("importLegalEntityFBCValidate");
 		JFileChooser fc = new JFileChooser();
 		fc.setAcceptAllFileFilterUsed(false);
-		// FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON Files
-		// (*.json)", "json");
+		
+		// WIFIFOREU-2498 JSON -> CSV
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files (*.csv)", "csv");
+		
 		fc.setFileFilter(filter);
 		int response = fc.showOpenDialog(null);
 		if (response == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			String content = new String(Files.readAllBytes(file.toPath()));
 
-			// CSV2JSON Process the CSV input file into the expected JSON format
+			// WIFIFOREU-2498 JSON -> CSV - Process the CSV input file into the expected JSON format
 			String jsonStringFile = ParserCSV2JSON.parseCSV2JSON(content, "validatedLEF");
 
 			JsonParser parser = new JsonParser();
-			JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonObject();
+			JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonArray().getAsJsonObject();
 			JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
 			for (int i = 0; i < callsJsonArrayLef.size(); i++) {
 				JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
@@ -159,7 +160,7 @@ public class ExportImportWifi4euAbacService {
 		result.setSuccess(true);
 		result.setData("[" + resultJson.toString() + "]");
 
-		// JSON2CSV Process the JSON output into the expected CSV file
+		// WIFIFOREU-2498 JSON -> CSV - Process the JSON output into the expected CSV file
 		String csvStringFile = ParserJSON2CSV.parseJSON2CSV((String) result.getData(), "beneficiaryInformation",
 				new String[] { "id", "mun_OfficialName", "mun_OfficialAddress", "org_Name", "org_TypeCode", "sup_Name",
 						"sup_BankAccount", "reg_RegistartionNumber" });
@@ -239,7 +240,7 @@ public class ExportImportWifi4euAbacService {
 		result.setSuccess(true);
 		result.setData("[" + resultJson.toString() + "]");
 
-		// JSON2CSV Process the JSON output file into the expected CSV
+		// WIFIFOREU-2498 JSON -> CSV - Process the JSON output file into the expected CSV
 		String csvStringFile = ParserJSON2CSV.parseJSON2CSV((String) result.getData(), "budgetaryCommitment",
 				new String[] { "id", "mun_OfficialName", "mun_OfficialAddress", "org_Name", "org_TypeCode", "sup_Name",
 						"sup_BankAccount", "reg_RegistartionNumber", "app_VoucherAwarded", "app_BcStatus",

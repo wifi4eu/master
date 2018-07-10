@@ -70,16 +70,13 @@ export class DgConnExportImportComponent {
 
       private exportBeneficiaryInformation() {
         this.processingOperation = true;
-        this.exportImportApi.exportBeneficiaryInformation().subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    let blob = new Blob([response.data], {type: 'application/json'});
-                    FileSaver.saveAs(blob, "ExportBeneficiaryInformation.json");
-                    this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
-                } else {
-                    this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
-                }
-                this.processingOperation = false;
+        // WIFIFOREU-2498 JSON -> CSV
+        this.exportImportApi.exportBeneficiaryInformation().subscribe(          
+            (response) => {
+                let blob = new Blob([response], {type: 'text/csv'});
+                FileSaver.saveAs(blob, 'exportBeneficiaryInformation.csv');
+                this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
+                this.processingOperation = false;              
             }, error => {
                 this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
                 this.processingOperation = false;
@@ -89,20 +86,17 @@ export class DgConnExportImportComponent {
 
      private exportBudgetaryCommitment() {
         this.processingOperation = true;
+        // WIFIFOREU-2498 JSON -> CSV       
         this.exportImportApi.exportBudgetaryCommitment().subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    let blob = new Blob([response.data], {type: 'application/json'});
-                    FileSaver.saveAs(blob, "ExportBudgetaryCommitment.json");
-                    this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
-                } else {
-                    this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
-                }
-                this.processingOperation = false;
+            (response) => {
+                let blob = new Blob([response], {type: 'text/csv'});
+                FileSaver.saveAs(blob, 'ExportBudgetaryCommitment.csv');
+                this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
+                this.processingOperation = false;              
             }, error => {
                 this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
                 this.processingOperation = false;
-            }
+            }          
         );
      }
 

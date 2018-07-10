@@ -5,7 +5,10 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,9 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euAbacService;
 import wifi4eu.wifi4eu.service.user.UserService;
+
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -79,9 +85,24 @@ public class ExportImportWifi4euAbacResource {
     @ApiOperation(value = "Export Beneficiary Information")
     @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "text/csv")
     @ResponseBody
-    public ResponseDTO exportBeneficiaryInformation(final HttpServletResponse response) throws Exception {
+    public ResponseEntity<byte[]> exportBeneficiaryInformation(final HttpServletResponse response) throws Exception {
         _log.info("exportBeneficiaryInformation");
-        return exportImportWifi4euAbacService.exportBeneficiaryInformation();
+        
+        // WIFIFOREU-2498 JSON -> CSV
+        ResponseEntity<byte[]> responseReturn = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("text/csv"));
+        String filename = "exportBeneficiaryInformation.csv";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+        _log.info("exportBeneficiaryInformation - generating csv file content");
+        String responseData = exportImportWifi4euAbacService.exportBeneficiaryInformation().getData().toString();
+        // getBytes(Charset.forName("UTF-8"));
+        responseReturn = new ResponseEntity<>(responseData.getBytes(), headers, HttpStatus.OK);
+        
+        _log.info("exportBeneficiaryInformation - csv file exported successfully");
+        return responseReturn;
     }
 
     @ApiOperation(value = "Export registration data")
@@ -129,9 +150,24 @@ public class ExportImportWifi4euAbacResource {
     @ApiOperation(value = "Export Budgetary Commitment")
     @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET, produces = "text/csv")
     @ResponseBody
-    public ResponseDTO exportBudgetaryCommitment(final HttpServletResponse response) throws Exception {
+    public ResponseEntity<byte[]> exportBudgetaryCommitment(final HttpServletResponse response) throws Exception {
         _log.info("exportBudgetaryCommitment");
-        return exportImportWifi4euAbacService.exportBudgetaryCommitment();
+
+        // WIFIFOREU-2498 JSON -> CSV
+        ResponseEntity<byte[]> responseReturn = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("text/csv"));
+        String filename = "exportBudgetaryCommitment.csv";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+        _log.info("exportBudgetaryCommitment - generating csv file content");
+        String responseData = exportImportWifi4euAbacService.exportBudgetaryCommitment().getData().toString();
+        // getBytes(Charset.forName("UTF-8"));
+        responseReturn = new ResponseEntity<>(responseData.getBytes(), headers, HttpStatus.OK);
+        
+        _log.info("exportBudgetaryCommitment - csv file exported successfully");
+        return responseReturn;
     }
 
 }
