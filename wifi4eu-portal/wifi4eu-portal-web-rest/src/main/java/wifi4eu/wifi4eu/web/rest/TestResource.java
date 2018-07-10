@@ -28,7 +28,7 @@ import java.util.List;
 @ResponseStatus(HttpStatus.OK)
 public class TestResource {
 
-    @Autowired
+    /*@Autowired
     NutsService nutsService;
 
     @Autowired
@@ -56,7 +56,7 @@ public class TestResource {
                     || countryCode.equals("NL") || countryCode.equals("FI") || countryCode.equals("UK")) {
                 createFolderIfNotexists(countryCode);
 
-            /*List<LegalFiles> listFiles = legalFilesRepository.getAllFilesForCountryTop30Registrations(countryCode, "application/pdf");
+            *//*List<LegalFiles> listFiles = legalFilesRepository.getAllFilesForCountryTop30Registrations(countryCode, "application/pdf");
 
 
 
@@ -77,7 +77,7 @@ public class TestResource {
 
             if(count >= 30){
                 continue;
-            }*/
+            }*//*
 
 
                 List<LegalFiles> listFiles = legalFilesRepository.getAllFilesForCountryTop30RegistrationsF1F3(countryCode, "application/pdf");
@@ -92,7 +92,7 @@ public class TestResource {
                     createFile(fileFolder, fileName, file.getFileData(), countryCode);
                 }
 
-            /*if(count >= 30){
+            *//*if(count >= 30){
                 continue;
             }
 
@@ -136,7 +136,7 @@ public class TestResource {
 
             if(count >= 30){
                 continue;
-            }*/
+            }*//*
                 System.out.println("Missing " + (30 - count) + " files for country " + countryCode);
             }
 
@@ -165,6 +165,6 @@ public class TestResource {
             File dir = new File(basePath + "\\" + registration);
             dir.mkdir();
         }
-    }
+    }*/
 
 }
