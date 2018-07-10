@@ -70,11 +70,11 @@ public class RegistrationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Removing legal documents");
         try {
-            UserDTO userDTO = userConnected;
-            if (userDTO.getId() != registrationDTO.getUserId()) {
+
+            if (userConnected.getId() != registrationDTO.getUserId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+            permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
             RegistrationDTO resRegistration = registrationService.deleteRegistrationDocuments(registrationDTO, request);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Documents removed successfully");
             return new ResponseDTO(true, resRegistration, null);
