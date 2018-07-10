@@ -237,6 +237,10 @@ export class BeneficiaryProfileComponent {
                         this.sharedService.logout();
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
+                    } else {
+                        this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
+                        this.withdrawingRegistration = false;
+                        this.withdrawnSuccess = true;
                     }
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
