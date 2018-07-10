@@ -16,7 +16,10 @@
         <module>wifi4eu-portal</module>
         <module>wifi4eu-public-portal</module>
         <module>wifi4eu-dgconn</module>
+        <!-- Commented because provokes an error in building process
         <module>wifi4eu-supplier</module>
+        -->
+        <module>wifi4eu-abac</module>
         <!--<module>wifi4eu-financial</module>-->
     </modules>
 
