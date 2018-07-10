@@ -303,7 +303,17 @@ export class BeneficiaryProfileComponent {
        }
        
     private selectLanguage(lang) {
-        this.userApi.updateLanguage(lang).subscribe();
+        this.userApi.updateLanguage(lang).subscribe(
+            (data: ResponseDTOBase) => {
+                if (data.success) {
+                    this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                } else {
+                    this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                }
+            }, error => {
+                this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+            }
+        );
         const newSelectedLang = this.languages.find(language => language.code === lang);
         this.selectedLanguage = newSelectedLang;   
         this.displayLanguageModal = false;
