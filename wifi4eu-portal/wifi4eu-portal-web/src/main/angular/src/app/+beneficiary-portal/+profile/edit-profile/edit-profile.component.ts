@@ -16,7 +16,7 @@ import {MayorApi} from "../../../shared/swagger/api/MayorApi";
 import {MayorDTOBase} from "../../../shared/swagger/model/MayorDTO";
 import {ThreadApi} from "../../../shared/swagger/api/ThreadApi";
 import {NutsApi} from "../../../shared/swagger/api/NutsApi";
-import {BeneficiaryApi} from "../../../shared/swagger/api/beneficiaryApi";
+import {BeneficiaryApi} from "../../../shared/swagger/api/BeneficiaryApi";
 import {ThreadDTOBase} from "../../../shared/swagger/model/ThreadDTO";
 import {Logs} from "selenium-webdriver";
 import {LauDTOBase, LauDTO} from "../../../shared/swagger/model/LauDTO";
@@ -47,8 +47,8 @@ export class BeneficiaryEditProfileComponent {
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
     private municipalitiesSelected: boolean = false;
     private municipalities: MunicipalityDTOBase[] = [];
-    private newMunicipality: MunicipalityDTOBase = new MunicipalityDTOBase();
-    private newMayor: MayorDTOBase = new MayorDTOBase();
+    private newMunicipalities: MunicipalityDTOBase[] = [];
+    private newMayors: MayorDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
     private editedUser: UserDTOBase = new UserDTOBase();
     private editedMunicipality: MunicipalityDTOBase = new MunicipalityDTOBase();
@@ -76,8 +76,9 @@ export class BeneficiaryEditProfileComponent {
     private buttonEnabled: boolean =  false;
     private displayDeleteMunicipality: boolean = false;
     private deleteMunicipalityId: number = 0;
+    private emailConfirmations: string[] = [''];
     private addMunicipality: boolean = false;
-    private multipleMunicipalities: boolean = false;
+    private multipleMunicipalities: boolean = true;
     private lauSuggestions: LauDTOBase[] = [];
     private readonly MAX_LENGTH = 2;
     private initialUser: UserDTOBase = new UserDTOBase();
@@ -199,6 +200,39 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
+    private addExtraMunicipality() {
+        if (this.multipleMunicipalities) {
+            this.newMunicipalities.push(new MunicipalityDTOBase());
+            //this.laus.push();
+            this.newMayors.push(new UserDTOBase());
+            this.emailConfirmations.push('');
+            this.css_class_email.push('notValid');
+            this.css_class_municipalities.push('notValid');
+        }
+        this.checkMunicipalitiesSelected();
+    }
+
+    private removeExtraMunicipality(index: number, deleteCount: number = 1){
+        this.newMunicipalities.splice(index, deleteCount);
+        // this.laus.splice(index, deleteCount);
+        this.newMayors.splice(index, deleteCount);
+        this.emailConfirmations.splice(index, deleteCount);
+        this.css_class_email.splice(index, deleteCount);
+        this.css_class_municipalities.splice(index, deleteCount);
+        if (this.newMayors.length < 1) {
+            this.checkMunicipalitiesSelected();
+            this.municipalitiesSelected = true;
+        } else {
+            this.municipalitiesSelected = true;
+            this.checkMunicipalitiesSelected();
+        }
+        this.checkEmailsMatch();
+        if (this.newMunicipalities.length < 1){
+            this.emailsMatch = true;
+        }
+    }
+
+    /*
     private addNewMunicipality(){
         this.addMunicipality = true;
     }
@@ -209,6 +243,7 @@ export class BeneficiaryEditProfileComponent {
         this.newMayor = new MayorDTOBase();
         this.laus = [];
     }
+    */
 
     private search(event: any) {
         let query = encodeURIComponent(event.query);
@@ -280,14 +315,34 @@ export class BeneficiaryEditProfileComponent {
 
     private checkEmailsMatch(){
         this.emailsMatch = false;
+        for (let i = 0; i < this.mayors.length; i++) {
+            if (this.mayors[i].email != this.emailConfirmations[i] || this.emailConfirmations[i].length < 1) {
+                this.emailsMatch = false;
+                this.css_class_email[i] = 'notValid';
+            } else if (this.emailPattern.test(this.emailConfirmations[i])) {
+                this.css_class_email[i] = 'isValid';
+                this.emailsMatch = true;
+            }
+        }
+        if (this.municipalitiesSelected && this.emailsMatch) {
+            const keys = Object.keys(this.municipalityForm.controls);
+            keys.forEach(key => {
+                this.municipalityForm.controls[key].setErrors({'incorrect': true});
+                this.municipalityForm.controls[key].setErrors(null);
+            });
+        }
+        /*
+        this.emailsMatch = false;
         if (this.newMayor.email != this.repeatEmail || this.repeatEmail.length < 1){
             this.emailsMatch = false;
         } else if (this.emailPattern.test(this.repeatEmail)) {
             this.emailsMatch = true;
         }
+        */
     }
 
     private submit(){
+        /*
         this.newMunicipality.name = this.laus[0].name1;
         this.newMunicipality.lauId = this.laus[0].id;
         this.finalBeneficiary.municipalities = [];
@@ -301,7 +356,7 @@ export class BeneficiaryEditProfileComponent {
         this.finalBeneficiary.mayors.push(this.newMayor);
         this.initialUser.type = 3;
         this.finalBeneficiary.user = this.initialUser;
-        this.beneficiaryApi.submitBeneficiaryRegistration(this.finalBeneficiary).subscribe(
+        this.beneficiaryApi.submitNewMunicipalities(this.finalBeneficiary).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
                     this.successRegistration = true;
@@ -313,6 +368,7 @@ export class BeneficiaryEditProfileComponent {
                 this.successRegistration = false;
             }
         );
+        */
     }
 
     private preventPaste(event: any) {
@@ -366,13 +422,13 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private checkButtonEnabled(event, i){
-         this.buttonEnabled = false
+        this.buttonEnabled = false
         if(this.municipalities[i].address != null && this.municipalities[i].addressNum != null && this.municipalities[i].postalCode != null && this.mayors[i].name != null  && this.mayors[i].surname != null  && this.mayors[i].email != null
          && this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != ""  && this.mayors[i].surname.trim() != ""  && this.mayors[i].email.trim() != ""){
-                this.buttonEnabled = true;
+            this.buttonEnabled = true;
+            this.emailsMatch = true;
         } else {
             this.buttonEnabled = false
-
         }
     }
 
