@@ -609,5 +609,25 @@ create table application_invalidate_reason(
 	FOREIGN KEY ([application_id])
 	REFERENCES dbo.applications ([id])
 		ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `dbo`.`application_comment`
+-- -----------------------------------------------------
+create table application_comment(
+	[id] int identity NOT NULL,
+  [user_id] int NOT NULL,
+	[application_id] int NOT NULL,
+	[comment] NVARCHAR(256) NOT NULL,
+  [date_posted] bigint NOT NULL,
+	PRIMARY KEY ([id]),
+	CONSTRAINT [fk_application_comment_application]
+	FOREIGN KEY ([application_id])
+	REFERENCES dbo.applications ([id])
+		ON DELETE CASCADE
 		ON UPDATE CASCADE,
+  CONSTRAINT [fk_application_comment_user]
+  FOREIGN KEY ([user_id])
+  REFERENCES dbo.users ([id])
 );

@@ -62,6 +62,36 @@ public class ThreadResource {
         return threadService.getThreadById(threadId);
     }
 
+
+    @ApiOperation(value = "Get thread by specific type")
+    @RequestMapping(value = "/type/{type}/reason/{reason}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting thread by type " + type + " and reason " + reason);
+        try {
+            UserDTO user = userConnected;
+            ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
+            if (thread != null) {
+                if (user.getType() != 5) {
+                    if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null) {
+                        throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+                    }
+                }
+            }
+            return new ResponseDTO(true, thread, null);
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this thread", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been retrieved", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
+        }
+    }
+
     @ApiOperation(value = "Set mediation to thread")
     @RequestMapping(value = "{threadId}/setMediation", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" >
     <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
         <a class="link-label" (click)="goBack()">
             <i class="fa fa-long-arrow-left fa-2" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
@@ -190,7 +190,7 @@
                                         <p-dataTable [value]="legalFiles[i]">
                                             <p-column field="type" [sortable]="false" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" (ngModelChange)="orderList($event, i)" [(ngModel)]="selectedFilesTypes[i]"></p-checkbox>
+                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" *ngIf="!row.requestCorrection" (ngModelChange)="orderList($event, i)" [(ngModel)]="selectedFilesTypes[i]"></p-checkbox>
                                                 </ng-template>
                                             </p-column>
                                             <p-column field="uploadTime" [sortable]="false" header="{{ 'dgConn.dateRecieved' | translate }}" styleClass="text-center">
@@ -223,8 +223,51 @@
                             </div>
                         </div>
                     </div>
+                    <div class="ui-g-12">
+                      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+                        <p class="applicantDetailsNoMargin municipality-name profileData">
+                            <span class="ui-g-8">{{ 'dgConn.applicantDetails.comments.header' | translate }}</span>
+                        </p>
+                        <div class="applicantDetailsNoMargin">
+                          <ux-accordion-boxes>
+                            <custom-accordion-box [isExpanded]="true" [rightSide]="true">
+                              <div class="ui-g-12 right">
+                                  <a (click)="openCommentModal(i)">
+                                    <i class="fa fa-pencil"></i>
+                                    <span>{{ 'dgConn.applicantDetails.newComment.button' | translate }}</span>
+                                  </a>
+                              </div>
+                              <div class="clearfix"></div>
+                              <div class="panel-dg panel-dg-voucher panel-dg-plain">
+                                <p-dataTable #tableComments [value]="applicationComments[i]" id="tableComments">
+                                  <p-column field="username" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.applicantDetails.comments.table.author' | translate }}" [style]="{'width':'27%'}" styleClass="padding-cell"></p-column>
+                                  <p-column field="datePosted" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.applicantDetails.comments.table.date' | translate }}" [style]="{'width':'20%'}"  styleClass="padding-cell">
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                      <span *ngIf="row.datePosted">{{ row.datePosted | date: 'dd/MM/yyyy' }}</span>
+                                    </ng-template>
+                                  </p-column>
+                                  <p-column [style]="{'width':'53%'}" field="comment" header="{{ 'dgConn.applicantDetails.comments.table.comment' | translate }}" styleClass="padding-cell">
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                      <p style="margin: 0px; white-space: pre-wrap;word-break: break-all;">{{ row.comment }}</p>
+                                    </ng-template>
+                                  </p-column>
+                                </p-dataTable>
+                                <footer *ngIf="totalRecords[i] > 0">
+                                  <div style="text-align: left; position: relative;">
+                                    <p-paginator class="paginator-panel" [first]="page[i] * sizePage[i]" [rows]="sizePage[i]" totalRecords="{{totalRecords[i]}}" #paginator
+                                        (onPageChange)="paginate($event, i)" [rowsPerPageOptions]="[5,10]"></p-paginator>
+                                    <div class="totalRecords" style="position: absolute;top: 0px;transform: translateY(50%);">
+                                      <span style="color: #929292;">{{ 'dgConn.totalRecords' | translate }}: {{totalRecords[i]}} </span>
+                                    </div>
+                                  </div>
+                              </footer>
+                            </div>
+                            </custom-accordion-box>
+                          </ux-accordion-boxes>
+                        </div>
+                      </div>
+                  </div>
                 </div>
-                <br>
             </div>
         </div>
         <div class="ui-g-12" *ngIf="discussionThread">
@@ -311,7 +354,7 @@
                   </div>
                   <div class="row" style="margin-bottom: 1.2em;">
                     <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox name="reason_2" binary="true"  [(ngModel)]="invalidateChecks[1]"></p-checkbox>
+                        <p-checkbox  name="reason_2" binary="true"  [(ngModel)]="invalidateChecks[1]"></p-checkbox>
                     </div>
                     <div class="col-xs-11">
                         <span style="cursor: pointer;" (click)="invalidateChecks[1] = !invalidateChecks[1]">{{ 'dgConn.applicantDetails.invalidate.reason2' | translate }}</span>
@@ -319,7 +362,7 @@
                   </div>
                   <div class="row" style="margin-bottom: 1.2em;">
                     <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox name="reason_3" binary="true"  [(ngModel)]="invalidateChecks[2]"></p-checkbox>
+                        <p-checkbox  name="reason_3" binary="true"  [(ngModel)]="invalidateChecks[2]"></p-checkbox>
                     </div>
                     <div class="col-xs-11">
                         <span style="cursor: pointer;" (click)="invalidateChecks[2] = !invalidateChecks[2]">{{ 'dgConn.applicantDetails.invalidate.reason3' | translate }}</span>
@@ -327,7 +370,7 @@
                   </div>
                   <div class="row" style="margin-bottom: 1.2em;">
                     <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox name="reason_4" binary="true"  [(ngModel)]="invalidateChecks[3]"></p-checkbox>
+                        <p-checkbox  name="reason_4" binary="true"  [(ngModel)]="invalidateChecks[3]"></p-checkbox>
                     </div>
                     <div class="col-xs-11">
                         <span style="cursor: pointer;" (click)="invalidateChecks[3] = !invalidateChecks[3]">{{ 'dgConn.applicantDetails.invalidate.reason4' | translate }}</span>
@@ -384,6 +427,37 @@
                         <div class="col-sm-6">
                             <button type="submit" class="btn btn-primary publish-button"
                                     [disabled]="processingRequest || !checkReasonSelected()"> <!-- || invalidateReason.trim().length < 1 -->
+                                {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+    <p-dialog [(visible)]="displayCommentModal" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+        <form (ngSubmit)="submitApplicationComment(commentConfirmationForm)" #commentConfirmationForm="ngForm">
+            <div class="form-group">
+                <div style="padding: 2em; padding-top: 0em;" class="center">
+                    <h2 class="beneficiaryMayor">{{ 'dgConn.applicantDetails.newComment.title' | translate }}</h2>
+                </div>
+                <div style="padding: 2em; padding-top: 0em;">
+                    <p>{{ 'dgConn.comment.mandatory' | translate }}</p>
+                    <textarea rows="5" class="form-control widthMax"
+                              name="newComment" [(ngModel)]="applicationComment"
+                              [disabled]="processingRequest" required minlength="1" maxlength="256" #comment="ngModel"></textarea>
+                    <span>{{ 'dgConn.applicantDetails.inputs.length' | translate: {currentCharacters: applicationComment.length, maxCharacters: '256' } }}</span>
+                </div>
+                <div style="padding: 2em; padding-top: 0em;">
+                    <div class="row center">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                                {{ 'shared.cancel.button' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-primary publish-button" [disabled]="processingRequest || !commentConfirmationForm.valid">
                                 {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
