@@ -349,6 +349,23 @@ public class UserResource {
         return outMessage;
     }
 
+
+    @ApiOperation(value = "Update new language for user")
+    @RequestMapping(value = "/updateLanguage", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO updateLanguage(@RequestBody final String language, HttpServletResponse response) throws IOException{
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userDTO = userService.getUserByUserContext(userContext);
+
+        try {
+            userDTO = userService.updateLanguage(userDTO, language);
+            return new ResponseDTO(true, userDTO, null);
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userDTO.getEcasUsername() + " - Cannot change email notification language", e);
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
     private void doLogout(HttpSession session) {
         session.invalidate();
     }
