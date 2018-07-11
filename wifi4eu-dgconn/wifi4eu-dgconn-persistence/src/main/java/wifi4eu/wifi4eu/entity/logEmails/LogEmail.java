@@ -1,7 +1,5 @@
 package wifi4eu.wifi4eu.entity.logEmails;
 
-import wifi4eu.wifi4eu.entity.municipality.Municipality;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -14,12 +12,18 @@ public class LogEmail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "municipality")
-    private Municipality municipality;
+    private Municipality municipality;*/
+
+    @Column(name = "municipalityId")
+    private Integer municipalityId;
 
     @Column(name = "sent_date")
-    private Long sendDate;
+    private Long sentDate;
+
+    @Column(name = "action")
+    private String action;
 
     @Column(name = "fromAddress")
     private String from;
@@ -35,12 +39,14 @@ public class LogEmail {
 
     public LogEmail() {}
 
-    public LogEmail(String from, String to, String subject, String body) {
+    public LogEmail(String from, String to, String subject, String body, Integer municipalityId, String action) {
         this.from = from;
         this.to = to;
         this.subject = subject;
         this.body = body;
-        this.sendDate = new Date().getTime();
+        this.sentDate = new Date().getTime();
+        this.municipalityId = municipalityId;
+        this.action = action;
     }
 
     public Integer getId() {
@@ -51,20 +57,28 @@ public class LogEmail {
         this.id = id;
     }
 
-    public Municipality getMunicipality() {
-        return municipality;
+    public Integer getMunicipalityId() {
+        return municipalityId;
     }
 
-    public void setMunicipality(Municipality municipality) {
-        this.municipality = municipality;
+    public void setMunicipalityId(Integer municipalityId) {
+        this.municipalityId = municipalityId;
     }
 
-    public Long getSendDate() {
-        return sendDate;
+    public Long getSentDate() {
+        return sentDate;
     }
 
-    public void setSendDate(Long sendDate) {
-        this.sendDate = sendDate;
+    public void setSentDate(Long sentDate) {
+        this.sentDate = sentDate;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public String getFrom() {
