@@ -103,7 +103,6 @@ public class UserResource {
     }*/
 
 
-
     @ApiOperation(value = "Update user details")
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
