@@ -186,6 +186,40 @@ public class MunicipalityResource {
         }
     }
 
+    @ApiOperation(value = "Update municipality details")
+    @RequestMapping(value = "/delete/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO deleteMunicipalityFromId(@PathVariable("municipalityId") final Integer municipalityId,
+                                                HttpServletResponse response, HttpServletRequest request) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating municipality details");
+        try {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityId);
+            if (registrationDTO.getUserId() != userDTO.getId()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Municipality details updated successfully");
+            if (municipalityService.countMunicipalitiesByUserId(userDTO.getId()) > 1){
+                return new ResponseDTO(true, municipalityService.deleteMunicipality(municipalityId,request), null);
+            } else {
+                return new ResponseDTO(false, "error.deleting.municipality", null);
+            }
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the details of this municipality", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The details of this municipality cannot been updated", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
+
+
     /* @ApiOperation(value = "Delete municipality by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody

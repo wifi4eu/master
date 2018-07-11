@@ -803,5 +803,13 @@
   "itemMenu.myVoucher": "My voucher",
   "shared.all": "All",
   "shared.condition.avoid":"You must accept all the conditions before submit this registration.",
+
+  "benefPortal.beneficiary.confirmDeletion.title": "Confirm deletion",
+  "benefPortal.beneficiary.confirmDeletion.text": "Are you sure you wish to delete this municipality from your registration? At least one municipality should remain in the registration",
+  "benefPortal.beneficiary.addMunicipalities.Success":"Your municipality has been added successfully.",
+  "benefPortal.beneficiary.addMunicipalities.Error":"An error ocurred while trying to add the municipalities. Please try again latern",
+  "benefPortal.beneficiary.deleteMunicipality.Success":"Your municipality were succesfully deleted.",
+  "benefPortal.beneficiary.deleteMunicipality.Error":"Error. You can't delete this municipality. At least one municipality should remain in the registration",
+  "benefPortal.beneficiary.deleteMunicipality.ErrorMunicipality":"Error, you can't delete this municipality",
   "benefPortal.editProfile.title" : "My account (Editing Mode)"
 }
