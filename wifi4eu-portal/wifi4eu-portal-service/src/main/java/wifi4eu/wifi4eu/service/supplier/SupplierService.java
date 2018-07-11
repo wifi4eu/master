@@ -186,6 +186,9 @@ public class SupplierService {
         userDTO.setName(supplierDTO.getContactName());
         userDTO.setSurname(supplierDTO.getContactSurname());
         userDTO.setEmail(supplierDTO.getContactEmail());
+        if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()){
+            userDTO.setEcasEmail(supplierDTO.getContactEmail());
+        }
         userDTO.setCreateDate(new Date().getTime());
         userDTO.setType(1);
         userDTO.setVerified(false);

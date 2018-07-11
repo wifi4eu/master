@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>eu.europa.ec.digit</groupId>
+    <artifactId>wifi4eu-abac</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+
+	<properties>
+		
+		<spring.version>4.3.5.RELEASE</spring.version>
+        	<spring.security.version>3.2.9.RELEASE</spring.security.version>
+        	<spring.data.jpa.version>1.10.4.RELEASE</spring.data.jpa.version>
+
+
+		<jndi.datasource.name>jdbc/Wifi4euAbacDataSource</jndi.datasource.name>
+		<eclipselink.logging.level>WARNING</eclipselink.logging.level>
+		<eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+	        <eclipselink.logging.parameters>true</eclipselink.logging.parameters>			
+	</properties>
+
+	<profiles>
+	<profile>
+           <id>ng-build-mac</id>
+           <build>
+               <plugins>
+                   <plugin>
+                       <groupId>org.codehaus.mojo</groupId>
+                       <artifactId>exec-maven-plugin</artifactId>
+                       <version>1.5.0</version>
+                       <executions>
+                           <execution>
+                               <phase>generate-sources</phase>
+                               <id>1</id>
+                               <goals>
+                                   <goal>exec</goal>
+                               </goals>
+                               <configuration>
+                                   <executable>ng</executable>
+                                   <workingDirectory>src/main/angular</workingDirectory>
+                                   <arguments>
+                                       <argument>build</argument>
+                                       <argument>--prod</argument>
+                                       <argument>--aot</argument>
+                                       <argument>false</argument>
+                                   </arguments>
+                               </configuration>
+                           </execution>
+                       </executions>
+                   </plugin>
+               </plugins>
+           </build>
+       </profile>
+	</profiles>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+	<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+		<version>${spring.version}</version>
+        </dependency>
+	<dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+	<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+		<version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+		<version>${spring.version}</version>
+        </dependency>
+	<!--dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring.data.jpa.version}</version>
+            </dependency-->
+		<!--dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+		<dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency-->
+        <dependency>
+            <groupId>eu.europa.ec.digit.uxatec.eui</groupId>
+            <artifactId>eui-angular2-servlet</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!--dependency>
+            <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
+            <artifactId>ecas-weblogic-10.3-authprovider</artifactId>
+            <version>4.10.1</version>
+            <scope>provided</scope>
+        </dependency-->
+        <!-- This Jackson dependency is only necessary for older versions of WebLogic: -->
+        <!--
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.2.3</version>
+        </dependency>
+        -->
+    </dependencies>
+
+    <build>
+	<finalName>wifi4eu-financial</finalName>	
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/angular/dist</directory>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
