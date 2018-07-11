@@ -94,6 +94,9 @@ public class BeneficiaryResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Submitting beneficiary registration");
         try {
+            if (userConnected == null || userConnected.getType() != 3 || beneficiaryDTO.getOrganisationId() == 0) {
+                throw new AppException("");
+            }
             String forwardedHeaderIp = request.getHeader("X-Forwarded-For");
             String ip = "";
             if (forwardedHeaderIp != null) {

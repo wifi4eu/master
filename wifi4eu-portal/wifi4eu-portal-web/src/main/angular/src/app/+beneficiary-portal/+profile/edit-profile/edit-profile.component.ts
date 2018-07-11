@@ -94,6 +94,9 @@ export class BeneficiaryEditProfileComponent {
         this.municipalities = [];
         this.mayors = [];
         this.editedUser = new UserDTOBase();
+        this.emailConfirmations = [''];
+        this.css_class_municipalities = ['notValid'];
+        this.css_class_email = ['notValid'];
         if (this.newMayors.length > 0){
             for (let a = 0; a < this.newMayors.length; a++){
                 this.laus[a] = null;
@@ -225,6 +228,7 @@ export class BeneficiaryEditProfileComponent {
         this.newMunicipalities.splice(index, deleteCount);
         // this.laus.splice(index, deleteCount);
         this.newMayors.splice(index, deleteCount);
+        this.laus[index] = null;
         this.emailConfirmations.splice(index, deleteCount);
         this.css_class_email.splice(index, deleteCount);
         this.css_class_municipalities.splice(index, deleteCount);

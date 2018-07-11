@@ -195,14 +195,13 @@ public class MunicipalityResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating municipality details");
         try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityId);
-            if (registrationDTO.getUserId() != userDTO.getId()) {
+            if (registrationDTO.getUserId() != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Municipality details updated successfully");
-            if (municipalityService.countMunicipalitiesByUserId(userDTO.getId()) > 1){
+            if (municipalityService.countMunicipalitiesByUserId(userConnected.getId()) > 1){
                 return new ResponseDTO(true, municipalityService.deleteMunicipality(municipalityId,request), null);
             } else {
                 return new ResponseDTO(false, "error.deleting.municipality", null);
