@@ -1,7 +1,10 @@
 import { animate, style, transition, trigger } from "@angular/animations";
+import { Location } from "@angular/common";
 import { Component, ViewChild } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SelectItem } from "primeng/primeng";
 import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
 import { SharedService } from "../../../shared/shared.service";
 import { NutsApi } from "../../../shared/swagger/api/NutsApi";
 import { SupplierApi } from "../../../shared/swagger/api/SupplierApi";
@@ -46,8 +49,9 @@ export class SupplierEditProfileComponent {
     private geographicalScopeLoaded: boolean = false;
     private savingData: boolean = false;
     private isLogoUploaded: boolean = false;
+    private savingDataSubscription: Subscription = new Subscription();
 
-    constructor(private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi) {
+    constructor(private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
         let allow = true;
         if (this.sharedService.user) {
             this.user = this.sharedService.user;
@@ -176,6 +180,11 @@ export class SupplierEditProfileComponent {
         this.isLogoUploaded = false;
     }
 
+    private goBack() {
+        this.savingDataSubscription.unsubscribe();
+        this.router.navigate(['..'], {relativeTo: this.activatedRoute});
+    }
+
     private saveSupplierData() {
         this.savingData = true;
         this.supplier.suppliedRegions = [];
@@ -187,7 +196,7 @@ export class SupplierEditProfileComponent {
                 this.supplier.suppliedRegions.push(suppliedRegion);
             }
         }
-        this.supplierApi.updateSupplier(this.supplier).subscribe(
+        this.savingDataSubscription = this.supplierApi.updateSupplier(this.supplier).subscribe(
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
                     this.supplier = null;

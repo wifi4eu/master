@@ -81,10 +81,10 @@
                 </label>
             </div>
         </div>
-        <div class="ui-g-12">
+        <div class="ui-g-12" *ngIf="geographicalScopeLoaded">
             <hr class="genericHr" />
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'suppRegistration.entity.support' | translate }}</p>
-            <div class="form-group ui-g-12" *ngIf="geographicalScopeLoaded">
+            <div class="form-group ui-g-12">
                 <div>
                     <div class="ui-g-4 ui-lg-4 ui-md-12 ui-sm-12">
                         <label>
@@ -114,10 +114,11 @@
                 </div>
             </div>
         </div>
+        <i *ngIf="!geographicalScopeLoaded" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
         <div class="ui-g-12">
             <hr class="genericHr" />
             <div class="form-group" style="text-align: center;">
-                <button type="button"
+                <button type="button" (click)="goBack()"
                         class="btn btn-primary whiteButton" style="margin-right: 0.5em;">
                     {{ 'shared.cancel.button' | translate }}
                 </button>
