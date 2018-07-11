@@ -247,7 +247,18 @@ public class SupplierService {
 
     @Transactional
     public SupplierDTO updateSupplier(SupplierDTO supplierDTO) {
-        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+        SupplierDTO supplierDBO = getSupplierById(supplierDTO.getId());
+        supplierDBO.setName(supplierDTO.getName());
+        supplierDBO.setAddress(supplierDTO.getAddress());
+        supplierDBO.setVat(supplierDTO.getVat());
+        supplierDBO.setWebsite(supplierDTO.getWebsite());
+        supplierDBO.setContactName(supplierDTO.getContactName());
+        supplierDBO.setContactSurname(supplierDTO.getContactSurname());
+        supplierDBO.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
+        supplierDBO.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
+        supplierDBO.setLogo(supplierDTO.getLogo());
+        supplierDBO.setSuppliedRegions(updateSuppliedRegions(supplierDBO.getSuppliedRegions(), supplierDTO.getSuppliedRegions()));
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDBO)));
     }
 
     @Transactional

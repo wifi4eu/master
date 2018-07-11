@@ -202,6 +202,8 @@ export class SupplierEditProfileComponent {
                     this.supplier = null;
                     this.geographicalScopeLoaded = false;
                     this.isLogoUploaded = false;
+                    this.selectedCountries = [];
+                    this.selectedRegions = [];
                     this.getSupplierData();
                     this.savingData = false;
                     this.sharedService.growlTranslation('Your profile data was updated successfully.', 'suppPortal.editProfile.save.success', 'success');
