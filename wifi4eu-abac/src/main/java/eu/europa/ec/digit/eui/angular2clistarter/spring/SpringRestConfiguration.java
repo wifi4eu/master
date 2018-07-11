@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "eu.europa.ec.digit.eui.angular2clistarter.spring.rest")
+@ComponentScan(basePackages = "wifi4eu.wifi4eu.abac.rest")
 public class SpringRestConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public WebMvcConfigurer corsConfigurer() {

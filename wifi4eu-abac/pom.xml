@@ -161,11 +161,11 @@
                 <artifactId>spring-security-config</artifactId>
                 <version>${spring.security.version}</version>
             </dependency-->
-        <dependency>
+        <!--dependency>
             <groupId>eu.europa.ec.digit.uxatec.eui</groupId>
             <artifactId>eui-angular2-servlet</artifactId>
             <version>1.0.0</version>
-        </dependency>
+        </dependency-->
         <!--dependency>
             <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
             <artifactId>ecas-weblogic-10.3-authprovider</artifactId>

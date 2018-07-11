@@ -8,4 +8,6 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
     <!-- Intentionally empty. -->
     <!-- This file is here to work-around a bug in Spring + Weblogic where a default XML-based dispatcher servlet is expecting a /WEB-INF/dispatcher-servlet.xml file. -->
+
+    <mvc:annotation-driven />
 </beans>
