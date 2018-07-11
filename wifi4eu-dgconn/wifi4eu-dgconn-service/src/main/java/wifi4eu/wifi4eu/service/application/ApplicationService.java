@@ -629,6 +629,14 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
 
+    /**
+     * This method is called by the cron ScheduledTasks.deadlineSubmissionForRequestDocuments().
+     * It gets all applicatns that are on status follow up and check if they have files on requested correction.
+     * If any of those files that are requested, are type 1 or 3 and the beneficiary hasn't uploaded them, this method invalidates this beneficiary.
+     *
+     * @param callId
+     * @param dateRequest
+     */
     public void invalidateApplicationsPostRequestForDocumentsPastDeadline(Integer callId, long dateRequest) {
         List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus
                 .PENDING_FOLLOWUP.getValue());
