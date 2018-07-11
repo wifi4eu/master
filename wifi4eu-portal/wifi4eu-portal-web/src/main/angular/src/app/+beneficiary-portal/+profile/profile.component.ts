@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserApi} from "../../shared/swagger/api/UserApi";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
@@ -15,6 +15,10 @@ import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
 import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
+
+// Languages functionality
+import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import { UserDetailsService } from "../../core/services/user-details.service";
 
 @Component({
     selector: 'beneficiary-profile',
@@ -33,6 +37,7 @@ export class BeneficiaryProfileComponent {
     private displayUser: boolean = false;
     private displayMunicipality: boolean = false;
     private displayMayor: boolean = false;
+    private displayLanguageModal: boolean = false;
     private submittingData = false;
     private isRegisterHold: boolean = false;
     private withdrawingRegistration: boolean = false;
@@ -46,6 +51,12 @@ export class BeneficiaryProfileComponent {
     private oneRegistrationNumber: number = 0;
     private threadsByUser : UserThreadsDTOBase[] = [];
     private userThreads: ThreadDTOBase [] = [];
+
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
+    private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
+    protected modalIsOpen: boolean = false;
+    protected languageRows: UxLanguage [] [];
+    protected languages: UxLanguage [];
 
     constructor(private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
@@ -127,6 +138,8 @@ export class BeneficiaryProfileComponent {
             this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
+
+        this.loadLanguages();
     }
 
     private displayModal(name: string, index?: number) {
@@ -163,6 +176,7 @@ export class BeneficiaryProfileComponent {
         this.displayUser = false;
         this.displayMunicipality = false;
         this.displayMayor = false;
+        this.displayLanguageModal = false;
     }
 
     private deleteRegistration() {
@@ -173,6 +187,10 @@ export class BeneficiaryProfileComponent {
                     if (data.success) {
                         this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
                         this.sharedService.logout();
+                        this.withdrawingRegistration = false;
+                        this.withdrawnSuccess = true;
+                    } else {
+                        this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
                     }
@@ -208,4 +226,59 @@ export class BeneficiaryProfileComponent {
         this.router.navigateByUrl('/beneficiary-portal/voucher');
     }
 
+    /* Language functionalities */
+    private loadLanguages() {
+        if (this.newLanguageArray != null) {
+            let codes: string [] = this.newLanguageArray.split(/[ ,]+/g);
+            this.languages = UxEuLanguages.getLanguages(codes);
+        } else {
+            this.languages = UxEuLanguages.getLanguages();
+        }
+        this.languageRows = this.prepareLanguageRows();
+
+        const userLang = this.languages.find(language => language.code === this.user.lang);
+        this.selectedLanguage = userLang;   
+    }
+    
+    private prepareLanguageRows(): UxLanguage [] [] {
+        let rows: UxLanguage [] [] = [];
+        let row: UxLanguage [] = [];
+        for (let i = 0; i < this.languages.length; i++) {
+            if (i % 4 == 0) {
+                if (row.length > 0) {
+                    rows.push(row);
+                    row = [];
+                }
+            }
+            row.push(this.languages[i]);
+        }
+
+        if (row.length > 0) {
+            rows.push(row);
+        }
+
+        return rows;
+    }
+
+    /* Language modal */ 
+    private changeLanguage() {
+        this.displayLanguageModal = true;
+       }
+       
+    private selectLanguage(lang) {
+        this.userApi.updateLanguage(lang).subscribe(
+            (data: ResponseDTOBase) => {
+                if (data.success) {
+                    this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                } else {
+                    this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                }
+            }, error => {
+                this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+            }
+        );
+        const newSelectedLang = this.languages.find(language => language.code === lang);
+        this.selectedLanguage = newSelectedLang;   
+        this.displayLanguageModal = false;
+    }
 }
