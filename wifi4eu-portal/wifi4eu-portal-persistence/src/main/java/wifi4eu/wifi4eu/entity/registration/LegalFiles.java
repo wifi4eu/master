@@ -67,4 +67,12 @@ public class LegalFiles {
 	public void setFileType(int fileType) {
 		this.fileType = fileType;
 	}
+
+	public Date getUploadTime() {
+		return uploadTime;
+	}
+
+	public void setUploadTime(Date uploadTime) {
+		this.uploadTime = uploadTime;
+	}
 }
