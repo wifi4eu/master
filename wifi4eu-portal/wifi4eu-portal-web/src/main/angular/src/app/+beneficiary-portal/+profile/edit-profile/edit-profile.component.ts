@@ -94,6 +94,11 @@ export class BeneficiaryEditProfileComponent {
         this.municipalities = [];
         this.mayors = [];
         this.editedUser = new UserDTOBase();
+        if (this.newMayors.length > 0){
+            for (let a = 0; a < this.newMayors.length; a++){
+                this.laus[a] = null;
+            }
+        }
         this.newMayors = [];
         this.newMunicipalities = [];
         this.emailsMatch = false;
@@ -107,6 +112,7 @@ export class BeneficiaryEditProfileComponent {
                 console.log(error);
             }
         );
+        
 
         if (this.user != null) {
             this.userApi.getUserById(this.user.id).subscribe(

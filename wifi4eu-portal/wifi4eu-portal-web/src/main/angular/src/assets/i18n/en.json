@@ -803,7 +803,6 @@
   "itemMenu.myVoucher": "My voucher",
   "shared.all": "All",
   "shared.condition.avoid":"You must accept all the conditions before submit this registration.",
-
   "benefPortal.beneficiary.confirmDeletion.title": "Confirm deletion",
   "benefPortal.beneficiary.confirmDeletion.text": "Are you sure you wish to delete this municipality from your registration? At least one municipality should remain in the registration",
   "benefPortal.beneficiary.addMunicipalities.Success":"Your municipality has been added successfully.",
