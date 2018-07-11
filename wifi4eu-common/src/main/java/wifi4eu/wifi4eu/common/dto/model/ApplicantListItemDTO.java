@@ -15,12 +15,12 @@ public class ApplicantListItemDTO {
     private Boolean warning1;
     private Boolean warning2;
     private Boolean warning3;
-    private Boolean supportingDocuments;
+    private Integer supportingDocuments;
 
     public ApplicantListItemDTO() {
     }
     
-    public ApplicantListItemDTO(Integer lauId, String countryCode, String name, Integer counter, Boolean mediation, Integer status, List<Integer> issueStatus, Long applicationDate, String invalidateReason, Boolean warning1, Boolean warning2, Boolean warning3, Boolean supportingDocuments) {
+    public ApplicantListItemDTO(Integer lauId, String countryCode, String name, Integer counter, Boolean mediation, Integer status, List<Integer> issueStatus, Long applicationDate, String invalidateReason, Boolean warning1, Boolean warning2, Boolean warning3, Integer supportingDocuments) {
       this.lauId = lauId;
       this.countryCode = countryCode;
         this.name = name;
@@ -132,11 +132,11 @@ public class ApplicantListItemDTO {
       this.warning3 = warning3;
     }
 
-    public Boolean getSupportingDocuments() {
+    public Integer getSupportingDocuments() {
       return supportingDocuments;
     }
 
-    public void setSupportingDocuments(Boolean supportingDocuments) {
+    public void setSupportingDocuments(Integer supportingDocuments) {
       this.supportingDocuments = supportingDocuments;
     }
 
