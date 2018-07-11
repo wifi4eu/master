@@ -203,7 +203,7 @@ public class ScheduledTasks {
                             String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
                             msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
 
-                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId(), "sendDocRequest");
                         }
                         int mailCounter = registrationDTO.getMailCounter() - 1;
                         registrationDTO.setMailCounter(mailCounter);
