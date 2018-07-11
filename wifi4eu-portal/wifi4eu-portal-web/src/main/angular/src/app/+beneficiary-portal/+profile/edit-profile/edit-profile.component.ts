@@ -51,8 +51,6 @@ export class BeneficiaryEditProfileComponent {
     private newMayors: MayorDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
     private editedUser: UserDTOBase = new UserDTOBase();
-    private editedMunicipality: MunicipalityDTOBase = new MunicipalityDTOBase();
-    private editedMayor: MayorDTOBase = new MayorDTOBase();
     private currentEditIndex: number = 0;
     private displayUser: boolean = false;
     private displayMunicipality: boolean = false;
@@ -209,7 +207,6 @@ export class BeneficiaryEditProfileComponent {
     private addExtraMunicipality() {
         if (this.multipleMunicipalities) {
             this.newMunicipalities.push(new MunicipalityDTOBase());
-            //this.laus.push();
             this.newMayors.push(new UserDTOBase());
             this.emailConfirmations.push('');
             this.css_class_email.push('notValid');
@@ -235,19 +232,6 @@ export class BeneficiaryEditProfileComponent {
         this.checkEmailsMatch();
     }
 
-    /*
-    private addNewMunicipality(){
-        this.addMunicipality = true;
-    }
-
-    private cancelAddMunicipality(){
-        this.addMunicipality = false;
-        this.newMunicipality = new MunicipalityDTOBase();
-        this.newMayor = new MayorDTOBase();
-        this.laus = [];
-    }
-    */
-
     private search(event: any) {
         let query = encodeURIComponent(event.query);
         if (this.country != null && query.length >= this.MAX_LENGTH) {
@@ -266,24 +250,8 @@ export class BeneficiaryEditProfileComponent {
         for (let i = 0; i < this.laus.length; i++) {
             if (!this.laus[i].id) {
                 this.municipalitiesSelected = false;
-                /*
-                if (!this.multipleMunicipalities) {
-                    this.municipalityForm.controls['municipality'].setErrors({'incorrect': true});
-                }
-                else {
-                    this.municipalityForm.controls[`municipality-${i}`].setErrors({'incorrect': true});
-                }
-                */
                 this.css_class_municipalities[i] = 'notValid';
             } else {
-                /*
-                if (!this.multipleMunicipalities) {
-                    if (this.municipalityForm.controls['municipality'] != undefined) this.municipalityForm.controls['municipality'].setErrors(null);
-                }
-                else {
-                    this.municipalityForm.controls[`municipality-${i}`].setErrors(null);
-                }
-                */
                 this.css_class_municipalities[i] = 'isValid';
                 this.municipalitiesSelected = true;
             }
@@ -341,9 +309,6 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private submitNewMunicipalities(){
-        // this.newMunicipality.name = this.laus[0].name1;
-        // this.newMunicipality.lauId = this.laus[0].id;
-        
         for (let i = 0; i < this.newMunicipalities.length; i++) {
             this.newMunicipalities[i].name = this.laus[i].name1;
             this.newMunicipalities[i].country = this.municipalities[0].country;
@@ -353,7 +318,6 @@ export class BeneficiaryEditProfileComponent {
         for (let municipality of this.newMunicipalities) {
             this.finalBeneficiary.municipalities.push(municipality);
         }
-        // this.finalBeneficiary.municipalities.push(this.newMunicipality);
         
         let language = this.translateService.currentLang;
         if (!language) {
@@ -361,7 +325,6 @@ export class BeneficiaryEditProfileComponent {
         }
         this.finalBeneficiary.lang = language;
         this.finalBeneficiary.mayors = [];
-        // this.finalBeneficiary.mayors.push(this.newMayor);
         for (let mayor of this.newMayors) {
             this.finalBeneficiary.mayors.push(mayor);
         }
