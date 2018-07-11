@@ -140,7 +140,7 @@
                         <apiSource>
                             <springmvc>true</springmvc>
                             <!--<locations>wifi4eu.dgconn.web.rest</locations>-->
-                            <locations>wifi4eu.wifi4eu.web.rest</locations>
+                            <locations>wifi4eu.wifi4eu.web.cnect.rest</locations>
                             <schemes>${schemes}</schemes>
                             <host>${server.dgconn.address}${app.context.root}</host>
                             <basePath>/api</basePath>
