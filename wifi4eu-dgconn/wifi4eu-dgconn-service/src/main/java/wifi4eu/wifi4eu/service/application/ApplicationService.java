@@ -630,17 +630,23 @@ public class ApplicationService {
     }
 
     public void invalidateApplicationsPostRequestForDocumentsPastDeadline(Integer callId, long dateRequest) {
-        List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus.PENDING_FOLLOWUP.getValue());
+        List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus
+                .PENDING_FOLLOWUP.getValue());
         if (!applications.isEmpty()) {
             for (ApplicationIssueUtil applicationUtil : applications) {
-                List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(applicationUtil.getRegistrationId());
+                List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(applicationUtil
+                        .getRegistrationId());
                 for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
                     int legalType = legalFileCorrectionReason.getType();
+                    //if document as requested correction and legal type is 1 or 3 we need to check the uploaded time of the file and compare it
                     if (legalFileCorrectionReason.getRequestCorrection() && (legalType == 1 || legalType == 3)) {
-                        LegalFilesDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(applicationUtil.getRegistrationId(), legalType);
+                        LegalFilesDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(applicationUtil.getRegistrationId(),
+                                legalType);
                         if (legalFile == null || (legalFile.getUploadTime().getTime() < dateRequest)) {
+                            // the file either hasn't been uploaded again or never was. We proceed to invalidate this application.
                             ApplicationDTO applicationDTO = getApplicationById(applicationUtil.getApplicationId());
-                            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Deadline for Requested Documents - INVALIDATING application with the id: "+ applicationDTO.getId()+ ". Legal file type: "+ legalType + "Last uploaded : " + legalFile.getUploadTime());
+                            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Deadline for Requested Documents - INVALIDATING application with " +
+                                    "" + "the id: " + applicationDTO.getId() + ". Legal file type: " + legalType);
                             ApplicationInvalidateReasonDTO invalidReasonViewDTO = new ApplicationInvalidateReasonDTO(applicationDTO.getId(), 7);
                             applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntity(invalidReasonViewDTO));
                             applicationDTO.setStatus(ApplicationStatus.KO.getValue());
@@ -650,7 +656,6 @@ public class ApplicationService {
                     }
                 }
             }
-
         }
     }
 
