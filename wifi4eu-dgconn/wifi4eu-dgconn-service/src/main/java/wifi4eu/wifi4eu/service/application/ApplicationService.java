@@ -16,17 +16,16 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
+import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
-import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.application.*;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
@@ -89,6 +88,15 @@ public class ApplicationService {
 
     @Autowired
     ApplicationIssueUtilRepository applicationIssueUtilRepository;
+
+    @Autowired
+    LegalFilesService legalFilesService;
+
+    @Autowired
+    ApplicationInvalidateReasonMapper applicationInvalidateReasonMapper;
+
+    @Autowired
+    ApplicationInvalidateReasonRepository applicationInvalidateReasonRepository;
 
     @Deprecated
     public List<ApplicationDTO> getAllApplications() {
@@ -619,6 +627,31 @@ public class ApplicationService {
 
         applicationDTO.setRejected(false);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+    }
+
+    public void invalidateApplicationsPostRequestForDocumentsPastDeadline(Integer callId, long dateRequest) {
+        List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus.PENDING_FOLLOWUP.getValue());
+        if (!applications.isEmpty()) {
+            for (ApplicationIssueUtil applicationUtil : applications) {
+                List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(applicationUtil.getRegistrationId());
+                for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
+                    int legalType = legalFileCorrectionReason.getType();
+                    if (legalFileCorrectionReason.getRequestCorrection() && (legalType == 1 || legalType == 3)) {
+                        LegalFilesDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(applicationUtil.getRegistrationId(), legalType);
+                        if (legalFile == null || (legalFile.getUploadTime().getTime() < dateRequest)) {
+                            ApplicationDTO applicationDTO = getApplicationById(applicationUtil.getApplicationId());
+                            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Deadline for Requested Documents - INVALIDATING application with the id: "+ applicationDTO.getId()+ ". Legal file type: "+ legalType + "Last uploaded : " + legalFile.getUploadTime());
+                            ApplicationInvalidateReasonDTO invalidReasonViewDTO = new ApplicationInvalidateReasonDTO(applicationDTO.getId(), 7);
+                            applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntity(invalidReasonViewDTO));
+                            applicationDTO.setStatus(ApplicationStatus.KO.getValue());
+                            applicationRepository.save(applicationMapper.toEntity(applicationDTO));
+                            break;
+                        }
+                    }
+                }
+            }
+
+        }
     }
 
 }
