@@ -939,6 +939,11 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   padding: 1.2em;
 }
 
+p-dataTable#tableComments thead .ui-column-title, 
+p-dataTable#tableComments tbody.ui-datatable-data.ui-widget-content > .ui-widget-content .ui-cell-data {
+  padding-left: 0px;
+}
+
 .ui-column-title, .ui-cell-data {
   padding-left: 1.8em;
 }
@@ -1305,6 +1310,11 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   color: white;
 }
 
+.panel-dg.panel-dg-plain{
+  border-width: 0px;
+  box-shadow: none;
+}
+
 .panel-dg {
   background-color: #fff;
   border: 1px solid rgba(187, 187, 187, 0.8196078431372549);
@@ -1338,6 +1348,10 @@ discussion-component .expanded .content, discussion-component .expanded .header,
     /*  padding: 1.25rem 0.75rem; */
     padding: 1.25rem 0rem;
     text-align: center;
+  }
+
+  .padding-cell{
+    padding: 1.25rem 1rem;
   }
 
   .separator {

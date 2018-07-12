@@ -19,7 +19,7 @@ public class Mayor {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "email", updatable = false)
+    @Column(name = "email")
     private String email;
 
     @OneToOne
