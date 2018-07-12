@@ -8,6 +8,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.mail.Multipart;
@@ -25,7 +27,11 @@ public class MailAsyncService implements Runnable {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LogEmailRepository logEmailRepository;
+
     public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
+    public final static String NO_ACTION = "NO ACTION LOGGED";
 
     private final Logger _log = LogManager.getLogger(MailAsyncService.class);
 
@@ -34,13 +40,17 @@ public class MailAsyncService implements Runnable {
     private String subject = null;
     private String msgBody = null;
     private JavaMailSender mailSender = null;
+    private Integer municipalityId = 0;
+    private String action = NO_ACTION;
 
-    public MailAsyncService(String toAddress, String fromAddress, String subject, String msgBody, JavaMailSender mailSender) {
+    public MailAsyncService(String toAddress, String fromAddress, String subject, String msgBody, JavaMailSender mailSender, int municipalityId, String action) {
         this.toAddress = toAddress;
         this.fromAddress = fromAddress;
         this.subject = subject;
         this.msgBody = msgBody;
         this.mailSender = mailSender;
+        this.municipalityId = municipalityId;
+        this.action = action;
     }
 
     @Override
@@ -72,9 +82,24 @@ public class MailAsyncService implements Runnable {
             helper.setFrom(fromAddress);
 
             mailSender.send(message);
+
+            //-- Log email
+            logEmail();
+
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + toAddress);
         } catch (Exception ex) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex.getMessage());
+        }
+    }
+
+    private void logEmail() throws Exception {
+        if (this.toAddress != null && this.toAddress.length() > 0 && this.municipalityId > 0) {
+            String setAction = NO_ACTION;
+            if (this.action != null && this.action.length() > 0) {
+                setAction = this.action;
+            }
+            LogEmail logEmail = new LogEmail(this.toAddress, this.fromAddress, this.subject, this.msgBody, this.municipalityId, setAction);
+            logEmailRepository.save(logEmail);
         }
     }
 }
