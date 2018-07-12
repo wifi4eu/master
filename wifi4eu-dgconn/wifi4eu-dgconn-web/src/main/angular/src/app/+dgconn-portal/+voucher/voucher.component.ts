@@ -14,6 +14,7 @@ import { count } from "rxjs/operator/count";
 import { Paginator, MenuItem, DataTable, TabView } from "primeng/primeng";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as FileSaver from "file-saver";
+import { Subscription } from "rxjs";
 
 @Component({
   templateUrl: 'voucher.component.html', providers: [ApplicationApi, NutsApi, VoucherApi, RegistrationWarningApi, CallApi],
@@ -133,7 +134,9 @@ export class DgConnVoucherComponent {
                 var index = this.calls.findIndex(call => call.id === callId);
                 this.callSelected = calls[index];
               }
-              this.hasCallEnded = this.callSelected.endDate < new Date().getTime();
+              callApi.isCallClosed(this.callSelected.id).subscribe((enabled : boolean) => {
+                  this.hasCallEnded = enabled;
+              });
               this.page = page;
               this.sizePage = size;
               this.selectedCountry = country;
@@ -334,7 +337,9 @@ export class DgConnVoucherComponent {
 
   handleChange(event) {
     this.callSelected = this.calls[event.index];
-    this.hasCallEnded = this.callSelected.endDate < new Date().getTime();
+    this.callApi.isCallClosed(this.callSelected.id).subscribe((enabled : boolean) => {
+      this.hasCallEnded = enabled;
+    });
     this.sortField = 'euRank';
     this.sortDirection = 'ASC';
     this.filterTable();

@@ -609,14 +609,11 @@ public class ApplicationService {
     }
 
     public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
-        CallDTO call = callService.getCallById(callId);
-        if (call != null) {
-            long currentTime = new Date().getTime();
-            if (call.getStartDate() < currentTime && call.getEndDate() < currentTime) {
-                List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(call.getId(), ApplicationStatus.PENDING_FOLLOWUP.getValue()));
-                if (!pendingFollowupApps.isEmpty()) {
-                    return true;
-                }
+        if (callService.isCallClosed(callId)) {
+            List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(callId,
+                    ApplicationStatus.PENDING_FOLLOWUP.getValue()));
+            if (!pendingFollowupApps.isEmpty()) {
+                return true;
             }
         }
         return false;
