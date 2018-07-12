@@ -1,7 +1,5 @@
 package wifi4eu.wifi4eu.entity.supplier;
 
-import wifi4eu.wifi4eu.entity.user.User;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -50,10 +48,6 @@ public class Supplier {
     @Column(name = "logo")
     private String logo;
 
-    @ManyToOne
-    @JoinColumn(name = "_user")
-    private User user;
-
     @OneToMany(mappedBy = "supplier")
     private List<SuppliedRegion> suppliedRegions;
 
@@ -69,7 +63,7 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, User user, List<SuppliedRegion> suppliedRegions, String legalFile1, String legalFile2, int status) {
+    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<SuppliedRegion> suppliedRegions, String legalFile1, String legalFile2, int status) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -83,7 +77,6 @@ public class Supplier {
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;
         this.logo = logo;
-        this.user = user;
         this.suppliedRegions = suppliedRegions;
         this.legalFile1 = legalFile1;
         this.legalFile2 = legalFile2;
@@ -192,14 +185,6 @@ public class Supplier {
 
     public void setLogo(String logo) {
         this.logo = logo;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public List<SuppliedRegion> getSuppliedRegions() {
