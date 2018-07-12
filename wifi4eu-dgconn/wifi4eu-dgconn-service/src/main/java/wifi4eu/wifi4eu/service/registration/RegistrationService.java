@@ -541,6 +541,7 @@ public class RegistrationService {
                 throw new Exception("Duplicated correction reason for this file.");
             }
         }
+        legalFileDTO.setRequestCorrectionDate(new Date());
         return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
     }
 

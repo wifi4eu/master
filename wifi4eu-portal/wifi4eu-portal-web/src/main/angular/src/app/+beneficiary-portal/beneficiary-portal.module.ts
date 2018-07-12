@@ -11,6 +11,7 @@ import {InstallationDetailsComponent} from "./details-installation/installation-
 import {AccessPointListComponent} from "./access-point-list/access-point-list.component";
 import {AccessPointDetailsComponent} from "./access-point-details/access-point-details.component";
 import { BeneficiaryService } from "../core/services/beneficiary-service";
+import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-profile.component";
 
 // import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
 
@@ -24,7 +25,8 @@ import { BeneficiaryService } from "../core/services/beneficiary-service";
         ManageInstallationComponent,
         InstallationDetailsComponent,
         AccessPointListComponent,
-        AccessPointDetailsComponent
+        AccessPointDetailsComponent,
+        BeneficiaryEditProfileComponent
         // SelectSupplierComponent
     ], providers: [
         BeneficiaryService
