@@ -167,8 +167,8 @@
         <encrypted.smtp.password>rAVMaF9Tq672wijgk9LxfA==</encrypted.smtp.password>
         <secret.key.encryption>SBy2hecZS9lA7wiIGmoRiA==</secret.key.encryption>
 
-        <mail.smtp.host>localhost</mail.smtp.host>
-        <mail.smtp.port>25</mail.smtp.port>
+        <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
+        <mail.smtp.port>587</mail.smtp.port>
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
         <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
