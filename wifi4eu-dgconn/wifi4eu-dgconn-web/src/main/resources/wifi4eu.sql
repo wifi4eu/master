@@ -553,6 +553,9 @@ CREATE TABLE dbo.legal_files_correction_reason
     ON UPDATE CASCADE
 );
 
+alter table [wifi4eudb].[dbo].[legal_files_correction_reason] ADD [request_correction_date] DATETIME NULL;
+alter table [wifi4eudb].[dbo].[APPLICANTLISTITEM] ADD [SUPPORTINGDOCUMENTS] BIT DEFAULT(0);
+
 -- -----------------------------------------------------
 -- Table `dbo`.`voucher_assignments`
 -- -----------------------------------------------------

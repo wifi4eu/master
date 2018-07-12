@@ -828,5 +828,7 @@
   "dgConn.applicantDetails.comments.table.date": "Date",
   "dgConn.applicantDetails.comments.table.comment": "Comment",
   "dgConn.applicantDetails.saveComment.success": "Your comment has been created.",
-  "dgConn.applicantDetails.saveComment.error": "An error occurred while trying to save this comment. Please, try again later"
+  "dgConn.applicantDetails.saveComment.error": "An error occurred while trying to save this comment. Please, try again later",
+  "dgConn.manageApplications.table.supportingDocuments": "Supporting documents",
+  "dgConn.manageApplications.newUpload": "New upload"
 }
