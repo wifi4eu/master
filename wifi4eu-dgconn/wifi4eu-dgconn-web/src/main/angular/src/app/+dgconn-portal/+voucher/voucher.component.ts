@@ -81,6 +81,8 @@ export class DgConnVoucherComponent {
   private dateNumberFreeze: string;
   private hourNumberFreeze: string; 
 
+  private hasCallEnded : boolean = false;
+
   private searchedMunicipality = null;
   private selectedCountry = 'All';
 
@@ -131,6 +133,7 @@ export class DgConnVoucherComponent {
                 var index = this.calls.findIndex(call => call.id === callId);
                 this.callSelected = calls[index];
               }
+              this.hasCallEnded = this.callSelected.endDate < new Date().getTime();
               this.page = page;
               this.sizePage = size;
               this.selectedCountry = country;
@@ -331,6 +334,7 @@ export class DgConnVoucherComponent {
 
   handleChange(event) {
     this.callSelected = this.calls[event.index];
+    this.hasCallEnded = this.callSelected.endDate < new Date().getTime();
     this.sortField = 'euRank';
     this.sortDirection = 'ASC';
     this.filterTable();
@@ -477,7 +481,7 @@ export class DgConnVoucherComponent {
   }
 
   sendNotificationToApplicants(){
-    if(!this.callVoucherAssignment.hasFreezeListSaved){
+    if(!this.callVoucherAssignment.hasFreezeListSaved && !this.hasCallEnded){
       return;
     }
     this.voucherApi.sendNotificationForApplicants(this.callSelected.id).subscribe((response: ResponseDTO) => {
