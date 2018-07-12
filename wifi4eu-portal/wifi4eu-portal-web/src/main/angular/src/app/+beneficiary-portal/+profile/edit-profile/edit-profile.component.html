@@ -31,7 +31,7 @@
                     <span class="profileData">{{ 'shared.municipality.label' | translate}} {{i+1}}</span>
                 </div>
                 <div class="col-sm-2">
-                    <a *ngIf="isAbleToDelete[i]" (click)="openModal(municipality.id)" class="edit">
+                    <a *ngIf="isAbleToDelete[i] && isOrganisation" (click)="openModal(municipality.id)" class="edit">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                         {{ 'shared.delete.button' | translate }}
                     </a>

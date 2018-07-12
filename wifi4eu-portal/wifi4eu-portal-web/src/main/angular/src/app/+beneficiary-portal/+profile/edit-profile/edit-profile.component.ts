@@ -168,7 +168,7 @@ export class BeneficiaryEditProfileComponent {
                                                                     (country: LauDTO) => {
                                                                       this.country = country;
                                                                     }, error => {
-                                                                        console.log(error);
+                                                                      console.log(error);
                                                                     }
                                                                 );
                                                             }
@@ -397,8 +397,7 @@ export class BeneficiaryEditProfileComponent {
     private editProfile() {
         this.submittingData = true;
         for(let i = 0; i < this.municipalities.length; i++){
-            alert("municipality : "+this.municipalities[i].name+" enable? =>"+this.isAbleToDelete[i]);
-            if (this.isAbleToDelete[i]){
+            if (!this.isOrganisation || this.isAbleToDelete[i]){
                 this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
                     (response: ResponseDTOBase) => {
                         if (response.success) {
