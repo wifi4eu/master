@@ -481,7 +481,7 @@ export class DgConnVoucherComponent {
   }
 
   sendNotificationToApplicants(){
-    if(!this.callVoucherAssignment.hasFreezeListSaved && !this.hasCallEnded){
+    if(!this.callVoucherAssignment.hasFreezeListSaved || !this.hasCallEnded){
       return;
     }
     this.voucherApi.sendNotificationForApplicants(this.callSelected.id).subscribe((response: ResponseDTO) => {
