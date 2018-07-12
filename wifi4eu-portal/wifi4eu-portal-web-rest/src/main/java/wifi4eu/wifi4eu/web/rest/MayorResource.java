@@ -60,7 +60,7 @@ public class MayorResource {
             }
             permissionChecker.check(userDTO, RightConstants.MAYORS_TABLE + mayorDTO.getId());
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Mayor information updated successfully");
-            return new ResponseDTO(true, mayorService.updateMayor(mayorDetails, mayorDTO.getName(), mayorDTO.getSurname()), null);
+            return new ResponseDTO(true, mayorService.updateMayor(mayorDetails, mayorDTO.getName(), mayorDTO.getSurname(), mayorDTO.getEmail()), null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the mayor information", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());

@@ -123,6 +123,20 @@ public class MunicipalityService {
     }
 
     @Transactional
+    public long countMunicipalitiesByUserId(long idUser){
+        return municipalityRepository.countMunicipalitiesByUserId(idUser);
+    }
+
+    @Transactional
+    public boolean deleteMunicipalityById(int id){
+        if (municipalityRepository.findOne(id) != null){
+            municipalityRepository.delete(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
     public MunicipalityDTO deleteMunicipality(int municipalityId, HttpServletRequest request) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
