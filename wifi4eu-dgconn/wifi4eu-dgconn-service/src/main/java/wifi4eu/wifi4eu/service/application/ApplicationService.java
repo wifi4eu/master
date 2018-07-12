@@ -15,12 +15,14 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.repository.application.*;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
@@ -101,6 +103,9 @@ public class ApplicationService {
 
     @Autowired
     ApplicationInvalidateReasonRepository applicationInvalidateReasonRepository;
+
+    @Autowired
+    LogEmailRepository logEmailRepository;
 
     @Deprecated
     public List<ApplicationDTO> getAllApplications() {
@@ -692,6 +697,18 @@ public class ApplicationService {
                 }
             }
         }
+    }
+
+
+    public boolean hasThisBeneficiaryBeenSentCorrectionEmailThisDay(Integer registrationId, long dateRequest){
+        Integer municipalityId = registrationService.getRegistrationById(registrationId).getMunicipalityId();
+        List<LogEmail> logEmails = logEmailRepository.findAllByMunicipalityIdAndActionOrderBySentDateDesc(municipalityId, "sendCorrectionEmails");
+        for (LogEmail logEmail : logEmails){
+            if(logEmail.getSentDate() == dateRequest){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
