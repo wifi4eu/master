@@ -117,8 +117,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         private translateService: TranslateService, 
         private location: Location
     ) {
-        console.log("Initializing application registration details component");
-        
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
@@ -264,11 +262,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     }
 
     private displayCorrespondenceDetailModal(info) {
-        console.log(info);
         this.correspondenceDialogInfo = info;
-        console.log(this.correspondenceDialogInfo);
         this.displayCorrespondenceDetail = true;
-        
     }
 
     private displayValidateModal(index: number) {
