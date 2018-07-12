@@ -3,7 +3,6 @@ package wifi4eu.wifi4eu.entity.registration;
 import wifi4eu.wifi4eu.entity.user.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -28,6 +27,7 @@ public class LegalFiles {
 	private Date uploadTime;
 
 	public LegalFiles() {
+
 	}
 
 	public LegalFiles(int registration, String fileData, int fileType, Date uploadTime) {

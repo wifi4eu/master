@@ -11,6 +11,7 @@ public class LegalFilesDTO implements Serializable {
 	private Date uploadTime;
 
 	public LegalFilesDTO() {
+    this.uploadTime = new Date();
 	}
 
 	public LegalFilesDTO(int registration, String fileData, int fileType, Date uploadTime) {

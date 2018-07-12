@@ -105,7 +105,7 @@ export class DgConnApplicantRegistrationsComponent {
                                     }
                                     if (queryParams['sortField']) {
                                         let sortField = queryParams['sortField'].toString().toLowerCase().trim();
-                                        if (sortField == 'countryCode' || sortField == 'counter' || sortField == 'mediation')
+                                        if (sortField == 'countryCode' || sortField == 'counter' || sortField == 'mediation' || sortField == 'supportingdocuments')
                                             this.sortField = sortField;
                                         else
                                             this.sortField = 'name';
@@ -252,10 +252,13 @@ export class DgConnApplicantRegistrationsComponent {
     }
 
     private sortData(event) {
+      console.log(event);
         if (event['field'] != null)
             this.sortField = event['field'];
         if (event['order'] != null)
             this.sortOrder = event['order'];
+
+        console.log(this.sortField);    
         this.filterApplicantsSearch();
     }
 

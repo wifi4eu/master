@@ -3,22 +3,31 @@
     <div class="clearfix"></div>
     <div class="row labelModal">
         <div class="col-sm-8">
+            <div class="row" style="margin-top: 1em;">
+                <div class="col-lg-8 col-sm-12">
+                    <p class="beneficiaryTitle" style="margin: 0;">{{ 'benefPortal.profile.title' | translate }}</p>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <a routerLink="./edit" routerLinkActive="active" class="edit">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'discussionForum.editRegistration' | translate }}
+                    </a>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <p class="beneficiaryTitle">{{ 'benefPortal.profile.title' | translate }}</p>
                     <hr class="beneficiaryHr">
                 </div>
             </div>
             <div class="row">
                 <br>
-                <div class="col-sm-10">
+                <div class="col-sm-12">
                     <p class="beneficiaryMayor">{{ 'suppRegistration.contact.person' | translate }}</p>
                 </div>
-                <div class="col-sm-2">
-                    <a (click)="displayModal('contact')" class="edit">
-                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
-                    </a>
-                </div>
+                <!--<div class="col-sm-2">-->
+                    <!--<a (click)="displayModal('contact')" class="edit">-->
+                        <!--<i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}-->
+                    <!--</a>-->
+                <!--</div>-->
             </div>
             <div class="row">
                 <div class="col-sm-4"><p>{{ 'shared.name.label' | translate }}</p></div>
@@ -43,14 +52,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-10">
+                <div class="col-sm-12">
                     <p class="beneficiaryMayor">{{ 'suppRegistration.company.details' | translate }}</p>
                 </div>
-                <div class="col-sm-2">
-                    <a (click)="displayModal('company')">
-                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
-                    </a>
-                </div>
+                <!--<div class="col-sm-2">-->
+                    <!--<a (click)="displayModal('company')">-->
+                        <!--<i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}-->
+                    <!--</a>-->
+                <!--</div>-->
             </div>
 
             <div class="row">
