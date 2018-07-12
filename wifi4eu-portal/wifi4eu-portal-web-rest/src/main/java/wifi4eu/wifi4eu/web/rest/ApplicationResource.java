@@ -71,6 +71,31 @@ public class ApplicationResource {
         return responseApp;
     }
 
+    @ApiOperation(value = "Get application by call and registration id")
+    @RequestMapping(value = "/call/{callId}/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ApplicationDTO getApplicationByCallIdAndMunicipalityId(@PathVariable("callId") final Integer callId, @PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by call id " + callId + " and municipality id " + municipalityId);
+        try {
+            // this rightconstants was with registrations_table, check if it works with municipalities
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found", e.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        }
+
+        ApplicationDTO responseApp = applicationService.getApplicationByCallIdAndMunicipalityId(callId, municipalityId);
+        if (responseApp == null) {
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
+            responseApp = new ApplicationDTO();
+        } else {
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application is retrieved correctly");
+        }
+        return responseApp;
+    }
+
     @ApiOperation(value = "Get applications voucher info by call id")
     @RequestMapping(value = "/voucherInfo/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

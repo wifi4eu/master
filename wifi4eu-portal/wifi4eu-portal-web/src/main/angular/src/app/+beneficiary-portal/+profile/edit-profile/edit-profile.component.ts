@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges, Output} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
+import {ApplicationApi} from "../../../shared/swagger/api/ApplicationApi";
 import {UserApi} from "../../../shared/swagger/api/UserApi";
 import {UserDTOBase} from "../../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../../shared/swagger/model/MunicipalityDTO";
@@ -8,11 +9,13 @@ import {RegistrationApi} from "../../../shared/swagger/api/RegistrationApi";
 import {MunicipalityApi} from "../../../shared/swagger/api/MunicipalityApi";
 import {BeneficiaryDTOBase} from "../../../shared/swagger/model/BeneficiaryDTO";
 import {ResponseDTOBase} from "../../../shared/swagger/model/ResponseDTO";
+import {ApplicationDTOBase} from "../../../shared/swagger/model/ApplicationDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {SharedService} from "../../../shared/shared.service";
 import {UserThreadsApi} from "../../../shared/swagger/api/UserThreadsApi";
 import {UserThreadsDTOBase} from "../../../shared/swagger/model/UserThreadsDTO";
 import {MayorApi} from "../../../shared/swagger/api/MayorApi";
+import {CallApi} from "../../../shared/swagger/api/CallApi";
 import {MayorDTOBase} from "../../../shared/swagger/model/MayorDTO";
 import {ThreadApi} from "../../../shared/swagger/api/ThreadApi";
 import {NutsApi} from "../../../shared/swagger/api/NutsApi";
@@ -26,12 +29,13 @@ import {ViewChild} from "@angular/core";
 import {NgForm} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import { TranslateService } from "ng2-translate";
+import { CallDTO, CallDTOBase } from "../../../shared/swagger";
 
 
 @Component({
     selector: 'edit-beneficiary-profile',
     templateUrl: 'edit-profile.component.html',
-    providers: [BeneficiaryApi, NutsApi, LauApi, UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi]
+    providers: [CallApi, ApplicationApi, BeneficiaryApi, NutsApi, LauApi, UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi]
 })
 
 export class BeneficiaryEditProfileComponent {
@@ -52,6 +56,7 @@ export class BeneficiaryEditProfileComponent {
     private mayors: MayorDTOBase[] = [];
     private editedUser: UserDTOBase = new UserDTOBase();
     private currentEditIndex: number = 0;
+    private isAbleToDelete: boolean[] = [];
     private displayUser: boolean = false;
     private displayMunicipality: boolean = false;
     private displayMayor: boolean = false;
@@ -83,9 +88,10 @@ export class BeneficiaryEditProfileComponent {
     @ViewChild('municipalityForm') municipalityForm: NgForm;
     private organizationId: number = 0;
     private isOrganisation: boolean = false;
+    private currentCall: CallDTOBase;
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
 
-    constructor(private beneficiaryApi: BeneficiaryApi, private translateService: TranslateService, private nutsApi: NutsApi, private lauApi: LauApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+    constructor(private callApi: CallApi, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private translateService: TranslateService, private nutsApi: NutsApi, private lauApi: LauApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         this.loadDataEditProfile();
     }
 
@@ -102,6 +108,7 @@ export class BeneficiaryEditProfileComponent {
                 this.laus[a] = null;
             }
         }
+        this.isAbleToDelete = [];
         this.newMayors = [];
         this.newMunicipalities = [];
         this.emailsMatch = false;
@@ -115,7 +122,12 @@ export class BeneficiaryEditProfileComponent {
                 console.log(error);
             }
         );
-        
+
+        this.callApi.getCurrentCall().subscribe(
+            (call: CallDTOBase) => {
+                this.currentCall = call;
+            }
+        );
 
         if (this.user != null) {
             this.userApi.getUserById(this.user.id).subscribe(
@@ -148,6 +160,7 @@ export class BeneficiaryEditProfileComponent {
                                                 this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                     (mayor: MayorDTOBase) => {
                                                         this.municipalities.push(municipality);
+                                                        this.checkApplicantForMunicipality(municipality.id);
                                                         this.mayors.push(mayor);
                                                         if (this.municipalities.length > 0 && this.municipalities.length < 2){
                                                             if (this.country == null){
@@ -211,6 +224,19 @@ export class BeneficiaryEditProfileComponent {
             this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
+    }
+
+    private checkApplicantForMunicipality(municipalityId: number){
+        this.applicationApi.getApplicationByCallIdAndMunicipalityId(this.currentCall.id, municipalityId).subscribe(
+            (application: ApplicationDTOBase) => {
+                if (application.id != 0){
+                    this.isAbleToDelete.push(false);
+                } else {
+                    this.isAbleToDelete.push(true);
+                }
+            }
+        );
+        
     }
 
     private addExtraMunicipality() {
@@ -283,6 +309,9 @@ export class BeneficiaryEditProfileComponent {
                     } else {
                         this.sharedService.growlTranslation('Error. You can\'t delete this municipality. At least one municipality should remain in the registration', 'benefPortal.beneficiary.deleteMunicipality.Error', 'warn');
                     }
+                    this.closeModal();
+                }, error =>{
+                    this.sharedService.growlTranslation('Error, you can\'t delete this municipality', 'benefPortal.beneficiary.deleteMunicipality.ErrorMunicipality', 'warn');
                     this.closeModal();
                 }
             );
@@ -368,15 +397,18 @@ export class BeneficiaryEditProfileComponent {
     private editProfile() {
         this.submittingData = true;
         for(let i = 0; i < this.municipalities.length; i++){
-            this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
-                (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        this.municipalityFinish = true;
-                        this.checkFinishedCalls();
-                        this.municipalities[this.currentEditIndex] = response.data;
+            alert("municipality : "+this.municipalities[i].name+" enable? =>"+this.isAbleToDelete[i]);
+            if (this.isAbleToDelete[i]){
+                this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
+                    (response: ResponseDTOBase) => {
+                        if (response.success) {
+                            this.municipalityFinish = true;
+                            this.checkFinishedCalls();
+                            this.municipalities[this.currentEditIndex] = response.data;
+                        }
                     }
-                }
-            );
+                );
+            }
             this.mayorApi.updateMayorDetails(this.mayors[i]).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {

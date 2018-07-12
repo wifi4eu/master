@@ -13,6 +13,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
+import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -55,6 +56,9 @@ public class MunicipalityService {
 
     @Autowired
     PermissionChecker permissionChecker;
+
+    @Autowired
+    CallRepository callRepository;
 
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
@@ -131,6 +135,15 @@ public class MunicipalityService {
     public boolean deleteMunicipalityById(int id){
         if (municipalityRepository.findOne(id) != null){
             municipalityRepository.delete(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean checkIfMunicipalityHaveApplication(int registrationId){
+        int callId = callRepository.findCurrentCall().getId();
+        if (applicationService.getApplicationByCallIdAndRegistrationId(callId,registrationId) != null){
             return true;
         }
         return false;

@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -33,6 +34,7 @@ import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
+import javax.servlet.Registration;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.time.DateTimeException;
@@ -89,6 +91,9 @@ public class ApplicationService {
 
     @Autowired
     ApplicationIssueUtilRepository applicationIssueUtilRepository;
+
+    @Autowired
+    RegistrationRepository registrationRepository;
 
     @Deprecated
     public List<ApplicationDTO> getAllApplications() {
@@ -222,6 +227,14 @@ public class ApplicationService {
 
     public ApplicationDTO getApplicationByCallIdAndRegistrationId(int callId, int registrationId) {
         return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
+    }
+
+    public ApplicationDTO getApplicationByCallIdAndMunicipalityId(int callId, int municipalityId) {
+        if (municipalityId != 0 && callId != 0) {
+            int registrationId = registrationRepository.findByMunicipalityId(municipalityId).getId();
+            return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
+        }
+        return null;
     }
 
     public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {
