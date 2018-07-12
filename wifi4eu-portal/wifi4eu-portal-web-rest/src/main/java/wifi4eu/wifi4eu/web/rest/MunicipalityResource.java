@@ -178,30 +178,6 @@ public class MunicipalityResource {
         }
     }
 
-
-
-    /* @ApiOperation(value = "Delete municipality by specific id")
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseDTO deleteMunicipality(@RequestBody final Integer municipalityId, HttpServletResponse response) throws IOException {
-        try {
-            _log.info("deleteMunicipality: " + municipalityId);
-
-            //check permisssion
-            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
-            MunicipalityDTO resMunicipality = municipalityService.deleteMunicipality(municipalityId);
-            return new ResponseDTO(true, resMunicipality, null);
-        } catch (AccessDeniedException ade) {
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteMunicipality' operation.", e);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return new ResponseDTO(true, null, null);
-    } */
-
     @ApiOperation(value = "Get municipalities by specific lau id")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
