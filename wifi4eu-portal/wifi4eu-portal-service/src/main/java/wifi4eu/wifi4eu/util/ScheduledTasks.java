@@ -177,42 +177,6 @@ public class ScheduledTasks {
         }
     }
 
-    //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 8 ? * MON-FRI")
-    public void sendDocRequest() {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending document request");
-        List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
-        for (RegistrationDTO registrationDTO : registrationDTOS) {
-            try {
-                if (registrationDTO != null && registrationDTO.getMailCounter() > 0) {
-                    UserDTO user = userService.getUserById(registrationDTO.getUserId());
-                    if (user != null && user.getEcasEmail() != null) {
-                        if (!userService.isLocalHost()) {
-                            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                            if (user.getLang() != null) {
-                                locale = new Locale(user.getLang());
-                            }
-                            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                            String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                            String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
-                            String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
-                            msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-
-                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId(), "sendDocRequest");
-                        }
-                        int mailCounter = registrationDTO.getMailCounter() - 1;
-                        registrationDTO.setMailCounter(mailCounter);
-                        registrationService.createRegistration(registrationDTO);
-                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Document request sent for registration with id " + registrationDTO.getId());
-                    }
-                }
-            } catch (Exception e) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send document rquest for this registration", e);
-            }
-        }
-    }
-
     private long processQueueMessage(GetResponse response, HttpServletRequest request) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
