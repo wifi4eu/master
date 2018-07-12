@@ -50,40 +50,6 @@ public class BeneficiaryResource {
 
     private final Logger _log = LogManager.getLogger(BeneficiaryResource.class);
 
-    @ApiOperation(value = "Submit beneficiary registration")
-    @RequestMapping(value = "/submit", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO submitBeneficiaryRegistration(@RequestBody final BeneficiaryDTO beneficiaryDTO, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Submitting beneficiary registration");
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 0) {
-                throw new AppException("");
-            }
-            String forwardedHeaderIp = request.getHeader("X-Forwarded-For");
-            String ip = "";
-            if (forwardedHeaderIp != null) {
-                String[] forwardedListIp = forwardedHeaderIp.split(", ");
-                ip = forwardedListIp[0];
-                if (!InetAddresses.isInetAddress(ip)) {
-                    ip = "0:0:0:0:0:0:0:1";
-                }
-            } else {
-                ip = request.getRemoteAddr();
-            }
-            List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO, ip, request);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiary submitted successfully");
-            return new ResponseDTO(true, resRegistrations, null);
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary cannot been submitted", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-        }
-    }
-
     @ApiOperation(value = "getBeneficiaryListItem")
     @RequestMapping(value = "/getBeneficiaryListItem", method = RequestMethod.GET)
     @ResponseBody

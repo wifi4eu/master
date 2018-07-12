@@ -43,47 +43,6 @@ public class HelpdeskIssueResource {
 
     Logger _log = LogManager.getLogger(HelpdeskIssueResource.class);
 
-    @ApiOperation(value = "Get all the helpdesk issues")
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<HelpdeskIssueDTO> allHelpdeskIssues(HttpServletResponse response) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting all the helpdesk issues");
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the helpdesk issues", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issues cannot been retrieved", e);
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return helpdeskService.getAllHelpdeskIssues();
-    }
-
-    @ApiOperation(value = "Get helpdesk issue by specific id")
-    @RequestMapping(value = "/{issueId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public HelpdeskIssueDTO getHelpdeskIssueById(@PathVariable("issueId") final Integer issueId, HttpServletResponse response) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting helpdesk issue by id " + issueId);
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issue cannot been retrieved", e);
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return helpdeskService.getHelpdeskIssueById(issueId);
-    }
-
     @ApiOperation(value = "Create helpdesk issue")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

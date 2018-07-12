@@ -97,11 +97,10 @@ public class RegistrationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating legal documents");
         try {
-            UserDTO userDTO = userConnected;
-            if (userDTO.getId() != registrationDTO.getUserId()) {
+            if (userConnected.getId() != registrationDTO.getUserId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+            permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
             RegistrationDTO resRegistration = registrationService.updateRegistrationDocuments(registrationDTO, request);
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Documents updated successfully");
             return new ResponseDTO(true, resRegistration, null);
@@ -163,8 +162,7 @@ public class RegistrationResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registrations by user thread id " + userThreadId);
         UserThreadsDTO userThreadDTO = userThreadsService.getUserThreadsById(userThreadId);
         RegistrationDTO registration = registrationService.getRegistrationByUserThreadId(userThreadDTO.getThreadId(), userThreadDTO.getUserId());
-        UserDTO user = userConnected;
-        if (userThreadsService.getByUserIdAndThreadId(user.getId(), userThreadDTO.getThreadId()) != null) {
+        if (userThreadsService.getByUserIdAndThreadId(userConnected.getId(), userThreadDTO.getThreadId()) != null) {
             registration.setIpRegistration(null);
             registration.setMailCounter(0);
             registration.setRole(null);

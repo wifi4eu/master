@@ -124,12 +124,11 @@ public class UserResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging in with ECAS User");
         try {
-            UserDTO userDTO = userConnected;
             Cookie cookie = userService.getCSRFCookie();
             if (cookie != null) {
                 response.addCookie(cookie);
             }
-            return new ResponseDTO(true, userDTO, null);
+            return new ResponseDTO(true, userConnected, null);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot be logged in", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
@@ -162,24 +161,6 @@ public class UserResource {
             return new ResponseDTO(true, userService.getChangePassword(), null); //permissionChecker.check(RightConstants.USER_TABLE+userId);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot change ECAS password", e);
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-        }
-    }
-
-    @ApiOperation(value = "Service to resend email with a link to activate account")
-    @RequestMapping(value = "/resendEmail", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public ResponseDTO resendEmail(@RequestBody final String email) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Resending email to activate account to " + email);
-        try {
-            if (userService.resendEmail(email)) {
-                return new ResponseDTO(true, null, null);
-            }
-            return new ResponseDTO(false, null, null);
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot resend email to activate ECAS account", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }

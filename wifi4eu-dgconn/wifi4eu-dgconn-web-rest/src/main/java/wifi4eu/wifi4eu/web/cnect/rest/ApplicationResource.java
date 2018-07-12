@@ -79,8 +79,7 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications voucher by call id " + callId);
         try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
+            if (userConnected.getType() != 5) {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
@@ -122,8 +121,7 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn applicants by call id " + callId);
         try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
+            if (userConnected.getType() != 5) {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
@@ -376,8 +374,8 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Rejecting application");
         try {
-            UserDTO userDTO = userConnected;
-            if (userDTO.getType() != 5) {
+
+            if (userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -402,8 +400,7 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Selecting application");
         try {
-            UserDTO userDTO = userConnected;
-            if (userDTO.getType() != 5) {
+            if (userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 

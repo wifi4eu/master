@@ -50,8 +50,7 @@ public class ThreadResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting thread by id " + threadId);
         try {
-            UserDTO userDTO = userConnected;
-            if (userThreadsService.getByUserIdAndThreadId(userDTO.getId(), threadId) == null) {
+            if (userThreadsService.getByUserIdAndThreadId(userConnected.getId(), threadId) == null) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade) {
@@ -71,11 +70,10 @@ public class ThreadResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting thread by type " + type + " and reason " + reason);
         try {
-            UserDTO user = userConnected;
             ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
             if (thread != null) {
-                if (user.getType() != 5) {
-                    if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null) {
+                if (userConnected.getType() != 5) {
+                    if (userThreadsService.getByUserIdAndThreadId(userConnected.getId(), thread.getId()) == null) {
                         throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
                     }
                 }

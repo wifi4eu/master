@@ -99,13 +99,12 @@ public class RegistrationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating registration");
         try {
-            UserDTO userDTO = userConnected;
-            if (userDTO.getType() != 5) {
-                if (userDTO.getId() != registrationDTO.getUserId()) {
+            if (userConnected.getType() != 5) {
+                if (userConnected.getId() != registrationDTO.getUserId()) {
                     throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
                 }
-                permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
-                permissionChecker.check(userDTO, RightConstants.USER_TABLE + registrationDTO.getUserId());
+                permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+                permissionChecker.check(userConnected, RightConstants.USER_TABLE + registrationDTO.getUserId());
             }
             //RegistrationValidator.validate(registrationDTO);
             RegistrationDTO resRegistration = registrationService.invalidateRegistration(registrationDTO.getId());

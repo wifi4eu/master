@@ -138,25 +138,24 @@ public class MunicipalityResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving municipality by id " + municipalityId + " for thread");
-        UserDTO userDTO = userConnected;
         MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
-        List<UserThreadsDTO> userThreadsDTOList = userThreadsService.getUserThreadsByUserId(userDTO.getId());
-        if (userDTO.getType() == 5) {
+        List<UserThreadsDTO> userThreadsDTOList = userThreadsService.getUserThreadsByUserId(userConnected.getId());
+        if (userConnected.getType() == 5) {
             municipality.setRegistrations(null);
             return municipality;
         } else {
             for (UserThreadsDTO userThread : userThreadsDTOList) {
                 ThreadDTO threadDTO = threadService.getThreadById(userThread.getThreadId());
                 if (threadDTO.getTitle().equals(municipality.getName())) {
-                    if (userThread.getUserId() == userDTO.getId()) {
+                    if (userThread.getUserId() == userConnected.getId()) {
                         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving municipality by id " + municipalityId + " for thread id " + threadDTO.getId());                        municipality.setRegistrations(null);
                         return municipality;
                     } else {
-                        permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+                        permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
                     }
                 }
             }
-            permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             return null;
         }
     }

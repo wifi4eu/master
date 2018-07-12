@@ -99,25 +99,24 @@ public class MunicipalityResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving municipality by id " + municipalityId + " for thread");
-        UserDTO userDTO = userConnected;
         MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
-        List<UserThreadsDTO> userThreadsDTOList = userThreadsService.getUserThreadsByUserId(userDTO.getId());
-        if (userDTO.getType() == 5) {
+        List<UserThreadsDTO> userThreadsDTOList = userThreadsService.getUserThreadsByUserId(userConnected.getId());
+        if (userConnected.getType() == 5) {
             municipality.setRegistrations(null);
             return municipality;
         } else {
             for (UserThreadsDTO userThread : userThreadsDTOList) {
                 ThreadDTO threadDTO = threadService.getThreadById(userThread.getThreadId());
                 if (threadDTO.getTitle().equals(municipality.getName())) {
-                    if (userThread.getUserId() == userDTO.getId()) {
+                    if (userThread.getUserId() == userConnected.getId()) {
                         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving municipality by id " + municipalityId + " for thread id " + threadDTO.getId());                        municipality.setRegistrations(null);
                         return municipality;
                     } else {
-                        permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+                        permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
                     }
                 }
             }
-            permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             return null;
         }
     }
@@ -202,48 +201,4 @@ public class MunicipalityResource {
         return municipalityService.getMunicipalitiesByLauId(lauId);
     }
 
-    @ApiOperation(value = "Get all correspondence for a municipality")
-    @RequestMapping(value = "/correspondence/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public ResponseDTO getCorrespondenceByMunicipality(@PathVariable("municipalityId") Integer municipalityId,
-                                                                  @RequestParam("page") Integer page,
-                                                                  @RequestParam("size") Integer size,
-                                                                  @RequestParam("field") String field,
-                                                                  @RequestParam("direction") String direction, HttpServletResponse response) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving Correspondance of a municipality : " + municipalityId);
-        try {
-            if(!permissionChecker.checkIfDashboardUser()){
-                throw new java.nio.file.AccessDeniedException("Access denied: getCorrespondenceByMunicipality");
-            }
-            if(field.equalsIgnoreCase("username")){
-                field = "user.ecasUsername";
-            }
-            Pageable pageable;
-            if (direction.equals("ASC") || direction.equals("asc")) {
-                pageable = new PageRequest(page, size, Sort.Direction.ASC, field);
-            } else {
-                pageable = new PageRequest(page, size, Sort.Direction.DESC, field);
-            }
-            ResponseDTO responseDTO = municipalityService.getCorrespondenceByMunicipalityId(municipalityId, pageable);
-                    _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Success on retrieving Correspondence for municipality" + municipalityId);
-            return responseDTO;
-        } catch (java.nio.file.AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to retrieve correspondence municipality" , ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
-        } catch (Exception e){
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality correspondence cannot be retrieved", e.getMessage());
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            return null;
-        }
-    }
-
-    @ApiOperation(value = "Create correspondence")
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public LogEmailDTO createApplicationComment() throws IOException {
-        return null;
-    }
 }
