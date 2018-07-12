@@ -830,5 +830,13 @@
   "dgConn.applicantDetails.saveComment.success": "Your comment has been created.",
   "dgConn.applicantDetails.saveComment.error": "An error occurred while trying to save this comment. Please, try again later",
   "dgConn.manageApplications.table.supportingDocuments": "Supporting documents",
-  "dgConn.manageApplications.newUpload": "New upload"
+  "dgConn.manageApplications.newUpload": "New upload",
+  "dgConn.applicantDetails.correspondence.header": "Correspondence",
+  "dgConn.applicantDetails.correspondence.table.title": "Title",
+  "dgConn.applicantDetails.correspondence.table.date": "Date sent",
+  "dgConn.applicantDetails.correspondence.dialog.header": "Correspondence detail",
+  "dgConn.applicantDetails.correspondence.dialog.subject": "Subject",
+  "dgConn.applicantDetails.correspondence.dialog.from": "From",
+  "dgConn.applicantDetails.correspondence.dialog.to": "To",
+  "dgConn.applicantDetails.correspondence.dialog.content": "Content"
 }

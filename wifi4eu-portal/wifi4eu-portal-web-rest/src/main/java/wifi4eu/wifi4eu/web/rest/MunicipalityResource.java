@@ -7,6 +7,9 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
@@ -197,5 +200,50 @@ public class MunicipalityResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return municipalityService.getMunicipalitiesByLauId(lauId);
+    }
+
+    @ApiOperation(value = "Get all correspondence for a municipality")
+    @RequestMapping(value = "/correspondence/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO getCorrespondenceByMunicipality(@PathVariable("municipalityId") Integer municipalityId,
+                                                                  @RequestParam("page") Integer page,
+                                                                  @RequestParam("size") Integer size,
+                                                                  @RequestParam("field") String field,
+                                                                  @RequestParam("direction") String direction, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving Correspondance of a municipality : " + municipalityId);
+        try {
+            if(!permissionChecker.checkIfDashboardUser()){
+                throw new java.nio.file.AccessDeniedException("Access denied: getCorrespondenceByMunicipality");
+            }
+            if(field.equalsIgnoreCase("username")){
+                field = "user.ecasUsername";
+            }
+            Pageable pageable;
+            if (direction.equals("ASC") || direction.equals("asc")) {
+                pageable = new PageRequest(page, size, Sort.Direction.ASC, field);
+            } else {
+                pageable = new PageRequest(page, size, Sort.Direction.DESC, field);
+            }
+            ResponseDTO responseDTO = municipalityService.getCorrespondenceByMunicipalityId(municipalityId, pageable);
+                    _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Success on retrieving Correspondence for municipality" + municipalityId);
+            return responseDTO;
+        } catch (java.nio.file.AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to retrieve correspondence municipality" , ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality correspondence cannot be retrieved", e.getMessage());
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
+        }
+    }
+
+    @ApiOperation(value = "Create correspondence")
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public LogEmailDTO createApplicationComment() throws IOException {
+        return null;
     }
 }

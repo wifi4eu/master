@@ -15,6 +15,7 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
@@ -22,6 +23,9 @@ import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
+import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -38,9 +42,6 @@ import java.util.*;
 
 @Service
 public class ApplicationService {
-
-    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
-
     @Value("${mail.server.location}")
     private String baseUrl;
 
@@ -72,6 +73,9 @@ public class ApplicationService {
     CallService callService;
 
     @Autowired
+    RegistrationWarningRepository registrationWarningRepository;
+
+    @Autowired
     CorrectionRequestEmailMapper correctionRequestEmailMapper;
 
     @Autowired
@@ -80,9 +84,16 @@ public class ApplicationService {
     @Autowired
     VoucherService voucherService;
 
+    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
+
+    @Autowired
+    BeneficiaryService beneficiaryService;
+
     @Autowired
     ApplicationIssueUtilRepository applicationIssueUtilRepository;
 
+    @Autowired
+    RegistrationRepository registrationRepository;
 
     public ApplicationDTO getApplicationById(int applicationId) {
         return applicationMapper.toDTO(applicationRepository.findOne(applicationId));
@@ -179,7 +190,7 @@ public class ApplicationService {
                 String msgBody = bundle.getString("mail.voucherApply.body");
                 msgBody = MessageFormat.format(msgBody, municipality.getName());
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "createApplication");
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
                 }
             }
@@ -487,7 +498,10 @@ public class ApplicationService {
                     }
                 }
                 msgBody = MessageFormat.format(msgBody, documentTypes);
-                mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                Registration registration = registrationRepository.findOne(application.getRegistrationId());
+                if(registration != null) {
+                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipality().getId(), "sendCorrectionEmails");
+                }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
             correctionRequest = correctionRequestEmailMapper.toDTO(correctionRequestEmailRepository.save(correctionRequestEmailMapper.toEntity(correctionRequest)));

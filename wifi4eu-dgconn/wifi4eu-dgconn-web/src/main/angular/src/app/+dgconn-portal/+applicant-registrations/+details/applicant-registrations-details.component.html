@@ -1,4 +1,4 @@
-<div class="container" >
+<div class="container">
     <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
         <a class="link-label" (click)="goBack()">
             <i class="fa fa-long-arrow-left fa-2" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
@@ -78,9 +78,9 @@
                                 <span class="ui-g-12">{{ 'dgConn.voucherAssignment.invalidateReason' | translate }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin">
-                              <span class="ui-g-12" *ngFor="let invalidateReason of applicationInvalidateReason[i]">
-                                {{ 'dgConn.applicantDetails.invalidate.reason'+invalidateReason.reason | translate }}
-                              </span>
+                                <span class="ui-g-12" *ngFor="let invalidateReason of applicationInvalidateReason[i]">
+                                    {{ 'dgConn.applicantDetails.invalidate.reason'+invalidateReason.reason | translate }}
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -190,7 +190,8 @@
                                         <p-dataTable [value]="legalFiles[i]">
                                             <p-column field="type" [sortable]="false" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" *ngIf="!row.requestCorrection" (ngModelChange)="orderList($event, i)" [(ngModel)]="selectedFilesTypes[i]"></p-checkbox>
+                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" *ngIf="!row.requestCorrection" (ngModelChange)="orderList($event, i)"
+                                                        [(ngModel)]="selectedFilesTypes[i]"></p-checkbox>
                                                 </ng-template>
                                             </p-column>
                                             <p-column field="uploadTime" [sortable]="false" header="{{ 'dgConn.dateRecieved' | translate }}" styleClass="text-center">
@@ -223,50 +224,99 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Start section Correspondance log-->
                     <div class="ui-g-12">
-                      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
-                        <p class="applicantDetailsNoMargin municipality-name profileData">
-                            <span class="ui-g-8">{{ 'dgConn.applicantDetails.comments.header' | translate }}</span>
-                        </p>
-                        <div class="applicantDetailsNoMargin">
-                          <ux-accordion-boxes>
-                            <custom-accordion-box [isExpanded]="true" [rightSide]="true">
-                              <div class="ui-g-12 right">
-                                  <a (click)="openCommentModal(i)">
-                                    <i class="fa fa-pencil"></i>
-                                    <span>{{ 'dgConn.applicantDetails.newComment.button' | translate }}</span>
-                                  </a>
-                              </div>
-                              <div class="clearfix"></div>
-                              <div class="panel-dg panel-dg-voucher panel-dg-plain">
-                                <p-dataTable #tableComments [value]="applicationComments[i]" id="tableComments">
-                                  <p-column field="username" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.applicantDetails.comments.table.author' | translate }}" [style]="{'width':'27%'}" styleClass="padding-cell"></p-column>
-                                  <p-column field="datePosted" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.applicantDetails.comments.table.date' | translate }}" [style]="{'width':'20%'}"  styleClass="padding-cell">
-                                    <ng-template let-row="rowData" pTemplate="body">
-                                      <span *ngIf="row.datePosted">{{ row.datePosted | date: 'dd/MM/yyyy' }}</span>
-                                    </ng-template>
-                                  </p-column>
-                                  <p-column [style]="{'width':'53%'}" field="comment" header="{{ 'dgConn.applicantDetails.comments.table.comment' | translate }}" styleClass="padding-cell">
-                                    <ng-template let-row="rowData" pTemplate="body">
-                                      <p style="margin: 0px; white-space: pre-wrap;word-break: break-all;">{{ row.comment }}</p>
-                                    </ng-template>
-                                  </p-column>
-                                </p-dataTable>
-                                <footer *ngIf="totalRecords[i] > 0">
-                                  <div style="text-align: left; position: relative;">
-                                    <p-paginator class="paginator-panel" [first]="page[i] * sizePage[i]" [rows]="sizePage[i]" totalRecords="{{totalRecords[i]}}" #paginator
-                                        (onPageChange)="paginate($event, i)" [rowsPerPageOptions]="[5,10]"></p-paginator>
-                                    <div class="totalRecords" style="position: absolute;top: 0px;transform: translateY(50%);">
-                                      <span style="color: #929292;">{{ 'dgConn.totalRecords' | translate }}: {{totalRecords[i]}} </span>
-                                    </div>
-                                  </div>
-                              </footer>
+                        <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-8">{{ 'dgConn.applicantDetails.correspondence.header' | translate }}</span>
+                            </p>
+                            <div class="applicantDetailsNoMargin">
+                                <ux-accordion-boxes>
+                                    <custom-accordion-box [isExpanded]="true" [rightSide]="true">
+                                        <div class="panel-dg panel-dg-voucher panel-dg-plain">
+                                            <p-dataTable #tableCorrespondence [value]="correspondences[i]" id="tableCorrespondence">
+                                                <p-column field="subject" sortable="custom" (sortFunction)="sortCorrespondenceTable($event,i)" 
+                                                        header="{{ 'dgConn.applicantDetails.correspondence.table.title' | translate }}"
+                                                        [style]="{'width':'50%'}" styleClass="padding-cell">
+                                                </p-column>
+                                                <p-column field="sentDate" sortable="custom" (sortFunction)="sortCorrespondenceTable($event,i)" 
+                                                    header="{{ 'dgConn.applicantDetails.correspondence.table.date' | translate }}"
+                                                    [style]="{'width':'30%'}" styleClass="padding-cell">
+                                                    <ng-template let-row="rowData" pTemplate="body">
+                                                        <span *ngIf="row.sentDate">{{ row.sentDate | date: 'dd/MM/yyyy' }}</span>
+                                                    </ng-template>
+                                                </p-column>
+                                                <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
+                                                    <ng-template let-row="rowData" pTemplate="body">
+                                                        <span class="action-label" (click)="displayCorrespondenceDetailModal(row)">
+                                                            <span class="fa fa-eye"></span> <span>{{ 'dgConn.view' | translate }}</span>
+                                                        </span>
+                                                    </ng-template>
+                                                </p-column>
+                                            </p-dataTable>
+                                            <footer *ngIf="correspondenceTotalRecords[i] > 0">
+                                                <div style="text-align: left; position: relative;">
+                                                    <p-paginator class="paginator-panel" [first]="correspondencePage[i] * correspondenceSizePage[i]" [rows]="correspondenceSizePage[i]" totalRecords="{{correspondenceTotalRecords[i]}}"
+                                                        #paginator (onPageChange)="correspondencePaginate($event, i)" [rowsPerPageOptions]="[5,10]"></p-paginator>
+                                                    <div class="totalRecords" style="position: absolute;top: 0px;transform: translateY(50%);">
+                                                        <span style="color: #929292;">{{ 'dgConn.totalRecords' | translate }}: {{correspondenceTotalRecords[i]}} </span>
+                                                    </div>
+                                                </div>
+                                            </footer>
+                                        </div>
+                                    </custom-accordion-box>
+                                </ux-accordion-boxes>
                             </div>
-                            </custom-accordion-box>
-                          </ux-accordion-boxes>
                         </div>
-                      </div>
-                  </div>
+                    </div>
+                    <!-- End section Correspondance log-->
+                    <div class="ui-g-12">
+                        <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-8">{{ 'dgConn.applicantDetails.comments.header' | translate }}</span>
+                            </p>
+                            <div class="applicantDetailsNoMargin">
+                                <ux-accordion-boxes>
+                                    <custom-accordion-box [isExpanded]="true" [rightSide]="true">
+                                        <div class="ui-g-12 right">
+                                            <a (click)="openCommentModal(i)">
+                                                <i class="fa fa-pencil"></i>
+                                                <span>{{ 'dgConn.applicantDetails.newComment.button' | translate }}</span>
+                                            </a>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="panel-dg panel-dg-voucher panel-dg-plain">
+                                            <p-dataTable #tableComments [value]="applicationComments[i]" id="tableComments">
+                                                <p-column field="username" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.applicantDetails.comments.table.author' | translate }}"
+                                                    [style]="{'width':'27%'}" styleClass="padding-cell"></p-column>
+                                                <p-column field="datePosted" sortable="custom" (sortFunction)="sortTable($event,i)" header="{{ 'dgConn.applicantDetails.comments.table.date' | translate }}"
+                                                    [style]="{'width':'20%'}" styleClass="padding-cell">
+                                                    <ng-template let-row="rowData" pTemplate="body">
+                                                        <span *ngIf="row.datePosted">{{ row.datePosted | date: 'dd/MM/yyyy' }}</span>
+                                                    </ng-template>
+                                                </p-column>
+                                                <p-column [style]="{'width':'53%'}" field="comment" header="{{ 'dgConn.applicantDetails.comments.table.comment' | translate }}"
+                                                    styleClass="padding-cell">
+                                                    <ng-template let-row="rowData" pTemplate="body">
+                                                        <p style="margin: 0px; white-space: pre-wrap;word-break: break-all;">{{ row.comment }}</p>
+                                                    </ng-template>
+                                                </p-column>
+                                            </p-dataTable>
+                                            <footer *ngIf="totalRecords[i] > 0">
+                                                <div style="text-align: left; position: relative;">
+                                                    <p-paginator class="paginator-panel" [first]="page[i] * sizePage[i]" [rows]="sizePage[i]" totalRecords="{{totalRecords[i]}}"
+                                                        #paginator (onPageChange)="paginate($event, i)" [rowsPerPageOptions]="[5,10]"></p-paginator>
+                                                    <div class="totalRecords" style="position: absolute;top: 0px;transform: translateY(50%);">
+                                                        <span style="color: #929292;">{{ 'dgConn.totalRecords' | translate }}: {{totalRecords[i]}} </span>
+                                                    </div>
+                                                </div>
+                                            </footer>
+                                        </div>
+                                    </custom-accordion-box>
+                                </ux-accordion-boxes>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -308,6 +358,21 @@
     <br>
 </div>
 <div class="container font">
+    <!-- Dialog por Correspondence -->
+    <p-dialog [(visible)]="displayCorrespondenceDetail" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="true"
+        [closeOnEscape]="false" (onAfterHide)="closeModal()" header="{{ 'dgConn.applicantDetails.correspondence.dialog.header' | translate }}">
+        <div class="correspondenDetail" *ngIf="correspondenceDialogInfo">
+            <dl>
+                <dd><b>{{ 'dgConn.applicantDetails.correspondence.table.date' | translate }}</b>: {{ correspondenceDialogInfo.sentDate | date: 'dd/MM/yyyy' }}</dd>
+                <dd><b>{{ 'dgConn.applicantDetails.correspondence.dialog.from' | translate }}</b>: {{correspondenceDialogInfo.from}}</dd>
+                <dd><b>{{ 'dgConn.applicantDetails.correspondence.dialog.to' | translate }}</b>: {{correspondenceDialogInfo.to}}</dd>
+                <dd><b>{{ 'dgConn.applicantDetails.correspondence.dialog.subject' | translate }}</b>: {{correspondenceDialogInfo.subject}}</dd>
+                <dd><b>{{ 'dgConn.applicantDetails.correspondence.dialog.content' | translate }}</b>:</dd>
+                <dt>{{correspondenceDialogInfo.body}}</dt>
+            </dl>
+        </div>
+    </p-dialog>
+    <!-- Finish dialog correspondence-->
     <p-dialog [(visible)]="displayValidate" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="!processingRequest"
         [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <form (ngSubmit)="validateApplication()" #validateConfirmationForm="ngForm">
@@ -334,8 +399,8 @@
             </div>
         </form>
     </p-dialog>
-    <p-dialog [(visible)]="displayInvalidate" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+    <p-dialog [(visible)]="displayInvalidate" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="!processingRequest"
+        [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <form (ngSubmit)="invalidateApplication()" #invalidateConfirmationForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
@@ -344,77 +409,77 @@
                     <p>Please select a reason:</p>
                 </div>
                 <div style="padding: 2em; padding-top: 0em;">
-                  <div class="row" style="margin-bottom: 1.2em;">
-                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox name="reason_1" binary="true"  [(ngModel)]="invalidateChecks[0]"></p-checkbox>
-                    </div>
-                    <div class="col-xs-11">
-                        <span style="cursor: pointer;" (click)="invalidateChecks[0] = !invalidateChecks[0]">{{ 'dgConn.applicantDetails.invalidate.reason1' | translate }}</span>
-                    </div>
-                  </div>
-                  <div class="row" style="margin-bottom: 1.2em;">
-                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox  name="reason_2" binary="true"  [(ngModel)]="invalidateChecks[1]"></p-checkbox>
-                    </div>
-                    <div class="col-xs-11">
-                        <span style="cursor: pointer;" (click)="invalidateChecks[1] = !invalidateChecks[1]">{{ 'dgConn.applicantDetails.invalidate.reason2' | translate }}</span>
-                    </div>
-                  </div>
-                  <div class="row" style="margin-bottom: 1.2em;">
-                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox  name="reason_3" binary="true"  [(ngModel)]="invalidateChecks[2]"></p-checkbox>
-                    </div>
-                    <div class="col-xs-11">
-                        <span style="cursor: pointer;" (click)="invalidateChecks[2] = !invalidateChecks[2]">{{ 'dgConn.applicantDetails.invalidate.reason3' | translate }}</span>
-                    </div>
-                  </div>
-                  <div class="row" style="margin-bottom: 1.2em;">
-                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox  name="reason_4" binary="true"  [(ngModel)]="invalidateChecks[3]"></p-checkbox>
-                    </div>
-                    <div class="col-xs-11">
-                        <span style="cursor: pointer;" (click)="invalidateChecks[3] = !invalidateChecks[3]">{{ 'dgConn.applicantDetails.invalidate.reason4' | translate }}</span>
-                      </div>
+                    <div class="row" style="margin-bottom: 1.2em;">
+                        <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                            <p-checkbox name="reason_1" binary="true" [(ngModel)]="invalidateChecks[0]"></p-checkbox>
+                        </div>
+                        <div class="col-xs-11">
+                            <span style="cursor: pointer;" (click)="invalidateChecks[0] = !invalidateChecks[0]">{{ 'dgConn.applicantDetails.invalidate.reason1' | translate }}</span>
+                        </div>
                     </div>
                     <div class="row" style="margin-bottom: 1.2em;">
-                      <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox name="reason_5" binary="true"  [(ngModel)]="invalidateChecks[4]"></p-checkbox>
-                      </div>
-                      <div class="col-xs-11">
-                        <span style="cursor: pointer;" (click)="invalidateChecks[4] = !invalidateChecks[4]">{{ 'dgConn.applicantDetails.invalidate.reason5' | translate }}</span>
-                    </div>
-                  </div>
-                  <div class="row" style="margin-bottom: 1.2em;">
-                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox name="reason_6" binary="true"  [(ngModel)]="invalidateChecks[5]"></p-checkbox>
-                    </div>
-                    <div class="col-xs-11">
-                        <span style="cursor: pointer;" (click)="invalidateChecks[5] = !invalidateChecks[5]">{{ 'dgConn.applicantDetails.invalidate.reason6' | translate }}</span>
-                    </div>
-                  </div>
-                  <div class="row" style="margin-bottom: 1.2em;">
-                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox name="reason_7" binary="true"  [(ngModel)]="invalidateChecks[6]"></p-checkbox>
-                    </div>
-                    <div class="col-xs-11">
-                        <span style="cursor: pointer;" (click)="invalidateChecks[6] = !invalidateChecks[6]">{{ 'dgConn.applicantDetails.invalidate.reason7' | translate }}</span>
-                    </div>
-                  </div>
-                  <div class="row" style="margin-bottom: 1.2em;">
-                    <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox name="reason_8" binary="true"  [(ngModel)]="invalidateChecks[7]"></p-checkbox>
-                    </div>
-                    <div class="col-xs-11">
-                        <span style="cursor: pointer;" (click)="invalidateChecks[7] = !invalidateChecks[7]">{{ 'dgConn.applicantDetails.invalidate.reason8' | translate }}</span>
-                      </div>
+                        <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                            <p-checkbox name="reason_2" binary="true" [(ngModel)]="invalidateChecks[1]"></p-checkbox>
+                        </div>
+                        <div class="col-xs-11">
+                            <span style="cursor: pointer;" (click)="invalidateChecks[1] = !invalidateChecks[1]">{{ 'dgConn.applicantDetails.invalidate.reason2' | translate }}</span>
+                        </div>
                     </div>
                     <div class="row" style="margin-bottom: 1.2em;">
-                      <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
-                        <p-checkbox name="reason_9" binary="true"  [(ngModel)]="invalidateChecks[8]"></p-checkbox>
-                      </div>
-                      <div class="col-xs-11">
-                        <span style="cursor: pointer;" (click)="invalidateChecks[8] = !invalidateChecks[8]">{{ 'dgConn.applicantDetails.invalidate.reason9' | translate }}</span>
-                      </div>
+                        <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                            <p-checkbox name="reason_3" binary="true" [(ngModel)]="invalidateChecks[2]"></p-checkbox>
+                        </div>
+                        <div class="col-xs-11">
+                            <span style="cursor: pointer;" (click)="invalidateChecks[2] = !invalidateChecks[2]">{{ 'dgConn.applicantDetails.invalidate.reason3' | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1.2em;">
+                        <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                            <p-checkbox name="reason_4" binary="true" [(ngModel)]="invalidateChecks[3]"></p-checkbox>
+                        </div>
+                        <div class="col-xs-11">
+                            <span style="cursor: pointer;" (click)="invalidateChecks[3] = !invalidateChecks[3]">{{ 'dgConn.applicantDetails.invalidate.reason4' | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1.2em;">
+                        <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                            <p-checkbox name="reason_5" binary="true" [(ngModel)]="invalidateChecks[4]"></p-checkbox>
+                        </div>
+                        <div class="col-xs-11">
+                            <span style="cursor: pointer;" (click)="invalidateChecks[4] = !invalidateChecks[4]">{{ 'dgConn.applicantDetails.invalidate.reason5' | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1.2em;">
+                        <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                            <p-checkbox name="reason_6" binary="true" [(ngModel)]="invalidateChecks[5]"></p-checkbox>
+                        </div>
+                        <div class="col-xs-11">
+                            <span style="cursor: pointer;" (click)="invalidateChecks[5] = !invalidateChecks[5]">{{ 'dgConn.applicantDetails.invalidate.reason6' | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1.2em;">
+                        <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                            <p-checkbox name="reason_7" binary="true" [(ngModel)]="invalidateChecks[6]"></p-checkbox>
+                        </div>
+                        <div class="col-xs-11">
+                            <span style="cursor: pointer;" (click)="invalidateChecks[6] = !invalidateChecks[6]">{{ 'dgConn.applicantDetails.invalidate.reason7' | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1.2em;">
+                        <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                            <p-checkbox name="reason_8" binary="true" [(ngModel)]="invalidateChecks[7]"></p-checkbox>
+                        </div>
+                        <div class="col-xs-11">
+                            <span style="cursor: pointer;" (click)="invalidateChecks[7] = !invalidateChecks[7]">{{ 'dgConn.applicantDetails.invalidate.reason8' | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1.2em;">
+                        <div class="col-xs-1" style="padding-right: 0px; text-align: right;">
+                            <p-checkbox name="reason_9" binary="true" [(ngModel)]="invalidateChecks[8]"></p-checkbox>
+                        </div>
+                        <div class="col-xs-11">
+                            <span style="cursor: pointer;" (click)="invalidateChecks[8] = !invalidateChecks[8]">{{ 'dgConn.applicantDetails.invalidate.reason9' | translate }}</span>
+                        </div>
                     </div>
                 </div>
                 <div style="padding: 2em; padding-top: 0em;">
@@ -425,9 +490,10 @@
                             </button>
                         </div>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary publish-button"
-                                    [disabled]="processingRequest || !checkReasonSelected()"> <!-- || invalidateReason.trim().length < 1 -->
-                                {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                            <button type="submit" class="btn btn-primary publish-button" [disabled]="processingRequest || !checkReasonSelected()">
+                                <!-- || invalidateReason.trim().length < 1 -->
+                                {{ 'shared.confirm.button' | translate }}
+                                <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
                     </div>
@@ -435,8 +501,8 @@
             </div>
         </form>
     </p-dialog>
-    <p-dialog [(visible)]="displayCommentModal" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+    <p-dialog [(visible)]="displayCommentModal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="!processingRequest"
+        [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <form (ngSubmit)="submitApplicationComment(commentConfirmationForm)" #commentConfirmationForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
@@ -444,10 +510,10 @@
                 </div>
                 <div style="padding: 2em; padding-top: 0em;">
                     <p>{{ 'dgConn.comment.mandatory' | translate }}</p>
-                    <textarea rows="5" class="form-control widthMax"
-                              name="newComment" [(ngModel)]="applicationComment"
-                              [disabled]="processingRequest" required minlength="1" maxlength="256" #comment="ngModel"></textarea>
-                    <span>{{ 'dgConn.applicantDetails.inputs.length' | translate: {currentCharacters: applicationComment.length, maxCharacters: '256' } }}</span>
+                    <textarea rows="5" class="form-control widthMax" name="newComment" [(ngModel)]="applicationComment" [disabled]="processingRequest"
+                        required minlength="1" maxlength="256" #comment="ngModel"></textarea>
+                    <span>{{ 'dgConn.applicantDetails.inputs.length' | translate: {currentCharacters: applicationComment.length,
+                        maxCharacters: '256' } }}</span>
                 </div>
                 <div style="padding: 2em; padding-top: 0em;">
                     <div class="row center">
@@ -458,7 +524,8 @@
                         </div>
                         <div class="col-sm-6">
                             <button type="submit" class="btn btn-primary publish-button" [disabled]="processingRequest || !commentConfirmationForm.valid">
-                                {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                                {{ 'shared.confirm.button' | translate }}
+                                <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
                     </div>
