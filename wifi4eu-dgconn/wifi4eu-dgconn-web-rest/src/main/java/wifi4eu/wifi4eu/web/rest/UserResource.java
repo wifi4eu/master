@@ -84,6 +84,24 @@ public class UserResource {
         return resUser;
     }
 
+    @ApiOperation(value = "Get main user from registration")
+    @RequestMapping(value = "/user/{registrationId}}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public UserDTO getUserByIdFromRegistration(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) {
+        UserDTO resUser = userService.getUserByIdFromRegistration(registrationId);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving main user for registration id " + registrationId);
+        if (userConnected.getType() != 5) {
+            permissionChecker.check(RightConstants.USER_TABLE + resUser.getId());
+        }
+
+        if (resUser != null) {
+            resUser.setPassword(null);
+        }
+        return resUser;
+    }
+
 /*    @ApiOperation(value = "Create user")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

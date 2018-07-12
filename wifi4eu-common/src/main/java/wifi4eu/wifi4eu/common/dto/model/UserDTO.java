@@ -1,7 +1,5 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-import java.util.List;
-
 public class UserDTO {
     private int id;
 
@@ -21,12 +19,11 @@ public class UserDTO {
     private int type;
     private boolean verified;
     private String csrfToken;
-    private List<RegistrationDTO> registrationDTOList;
 
     public UserDTO() {
     }
 
-    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified, String csrfToken, List<RegistrationDTO> registrationDTOList) {
+    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified, String csrfToken) {
         this.id = id;
         this.ecasUsername = ecasUsername;
         this.ecasEmail = ecasEmail;
@@ -44,7 +41,6 @@ public class UserDTO {
         this.type = type;
         this.verified = verified;
         this.csrfToken = csrfToken;
-        this.registrationDTOList = registrationDTOList;
     }
 
     public int getId() {
@@ -175,15 +171,11 @@ public class UserDTO {
         this.ecasEmail = ecasEmail;
     }
 
-    public String getCsrfToken() { return csrfToken; }
-
-    public void setCsrfToken(String csrfToken) { this.csrfToken = csrfToken; }
-
-    public List<RegistrationDTO> getRegistrationDTOList() {
-        return registrationDTOList;
+    public String getCsrfToken() {
+        return csrfToken;
     }
 
-    public void setRegistrationDTOList(List<RegistrationDTO> registrationDTOList) {
-        this.registrationDTOList = registrationDTOList;
+    public void setCsrfToken(String csrfToken) {
+        this.csrfToken = csrfToken;
     }
 }

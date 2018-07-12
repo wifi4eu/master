@@ -38,8 +38,8 @@ public class AccessPointService {
     @Autowired
     InstallationSiteService installationSiteService;
 
-    @Autowired
-    UserService userService;
+ //   @Autowired
+ //   UserService userService;
 
     Logger _log = LogManager.getLogger(AccessPointService.class);
 
@@ -49,25 +49,25 @@ public class AccessPointService {
     @Transactional
     public ResponseDTO getAccessPointById(int id) {
         UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving access points by id " + id);
+   //     UserDTO userConnected = userService.getUserByUserContext(userContext);
+   //     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving access points by id " + id);
         ResponseDTO response = new ResponseDTO();
         AccessPoint accessPoint = accessPointRepository.findOne(id);
         if (accessPoint != null) {
 
             if (!checkPermissions(accessPoint.getIdInstallationSite(), id)) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
+   //             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
                 return permissionChecker.getAccessDeniedResponse();
             }
 
             response.setSuccess(true);
             response.setData(accessPoint);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Access point retrieved correctly");
+   //         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Access point retrieved correctly");
         } else {
             response.setSuccess(false);
             response.setData("Error");
             response.setError(new ErrorDTO(404, "Access Point not found. ID : " + id));
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Access point with id "+ id + "cannot been found");
+    //        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Access point with id "+ id + "cannot been found");
         }
         return response;
     }
@@ -75,8 +75,8 @@ public class AccessPointService {
     @Transactional
     public ResponseDTO findAccessPointsPerInstallationSite(Map<String, Object> map) {
         UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Finding access poitns per installation site ");
+   //     UserDTO userConnected = userService.getUserByUserContext(userContext);
+   //     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Finding access poitns per installation site ");
         ResponseDTO response = new ResponseDTO();
         // we should check if it's null. We don't have the class Validation
         if (!map.isEmpty()) {
@@ -90,7 +90,7 @@ public class AccessPointService {
                 id_installationSite = (int) map.get("id_installationSite");
 
                 if (!checkPermissions(id_installationSite, null)){
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
+    //                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
                     return permissionChecker.getAccessDeniedResponse();
                 }
 
@@ -126,17 +126,17 @@ public class AccessPointService {
                 } catch (Exception ex) {
                     response.setSuccess(false);
                     response.setError(new ErrorDTO(404, "Error - Invalid integers / fields"));
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The fields are invalid");
+    //                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The fields are invalid");
                 }
             } else {
                 response.setSuccess(false);
                 response.setError(new ErrorDTO(404, "Installation Site not found"));
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Installation site not found");
+    //            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Installation site not found");
             }
         } else {
             response.setSuccess(false);
             response.setError(new ErrorDTO(404, "Empty body"));
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Empty body");
+    //        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Empty body");
         }
 
         return response;

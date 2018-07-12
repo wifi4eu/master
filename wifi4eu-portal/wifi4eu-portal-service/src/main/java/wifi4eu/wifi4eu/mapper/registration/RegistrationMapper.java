@@ -13,13 +13,11 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface RegistrationMapper {
     @Mappings({
-            @Mapping(source = "entity.userList", target = "userDTOList"),
             @Mapping(source = "entity.municipality.id", target = "municipalityId")
     })
     RegistrationDTO toDTO(Registration entity);
 
     @Mappings({
-            @Mapping(source = "vo.userDTOList", target = "userList"),
             @Mapping(source = "vo.municipalityId", target = "municipality.id")
     })
     Registration toEntity(RegistrationDTO vo);
@@ -41,6 +39,5 @@ public interface RegistrationMapper {
     List<RegistrationWarningDTO> toDTOListRegistrationWarning(List<RegistrationWarning> list);
 
     List<RegistrationWarning> toEntityListRegistrationWarning(List<RegistrationWarningDTO> list);
-
 
 }

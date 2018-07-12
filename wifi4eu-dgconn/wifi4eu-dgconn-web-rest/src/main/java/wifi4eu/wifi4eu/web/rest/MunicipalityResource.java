@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -60,6 +61,9 @@ public class MunicipalityResource {
     @Autowired
     private ThreadService threadService;
 
+    @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
+
     Logger _log = LogManager.getLogger(MunicipalityResource.class);
 
     @ApiOperation(value = "Get municipality by specific id")
@@ -72,7 +76,7 @@ public class MunicipalityResource {
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityId);
-            if (userDTO.getType() != 5 && (registrationDTO.getUserId() != userDTO.getId())) {
+            if (userDTO.getType() != 5 && registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registrationDTO.getId()) == null) {
                 permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             }
         } catch (Exception e) {
@@ -169,7 +173,7 @@ public class MunicipalityResource {
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
-            if (registrationDTO.getUserId() != userDTO.getId()) {
+            if (registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registrationDTO.getId()) == null) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityDTO.getId());

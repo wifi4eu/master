@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -40,6 +41,9 @@ public class MayorResource {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RegistrationUsersRepository registrationUsersRepository;
 
     Logger _log = LogManager.getLogger(MayorResource.class);
 
@@ -111,7 +115,7 @@ public class MayorResource {
             MayorDTO mayorDetails = mayorService.getMayorById(mayorDTO.getId());
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(mayorDetails.getMunicipalityId());
-            if (userDTO.getId() != registrationDTO.getUserId()) {
+            if (registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registrationDTO.getId()) == null) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userDTO, RightConstants.MAYORS_TABLE + mayorDTO.getId());

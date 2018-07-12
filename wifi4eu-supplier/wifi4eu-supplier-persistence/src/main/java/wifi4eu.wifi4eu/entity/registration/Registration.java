@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.entity.registration;
 
-import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
 
@@ -18,10 +17,6 @@ public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @ManyToMany(mappedBy = "registrationList")
-    @JoinColumn(name = "_user")
-    private List<User> userList;
 
     @ManyToOne
     @JoinColumn(name = "municipality")
@@ -118,8 +113,7 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(List<User> userList, Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
-        this.userList = userList;
+    public Registration(Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
         this.municipality = municipality;
         this.role = role;
         this.status = status;
@@ -160,16 +154,8 @@ public class Registration {
         this.id = id;
     }
 
-    public List<User> getUser() {
-        return userList;
-    }
-
     public int getStatus() {
         return status;
-    }
-
-    public void setUser(List<User> userList) {
-        this.userList = userList;
     }
 
     public Municipality getMunicipality() {

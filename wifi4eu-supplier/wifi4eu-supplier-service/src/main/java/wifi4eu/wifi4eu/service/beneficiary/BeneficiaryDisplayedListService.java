@@ -97,8 +97,8 @@ public class BeneficiaryDisplayedListService {
             // Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             registration.setInstallationSiteSubmission(new java.sql.Date(new Date().getTime()));
             registrationRepository.save(registration);
-            String email = registration.getUser().getEmail();
-            String name = registration.getUser().getName();
+            String email = userService.getUserByIdFromRegistration(registration.getId()).getEmail();
+            String name = userService.getUserByIdFromRegistration(registration.getId()).getName();
             response.setSuccess(true);
             response.setData(beneficiaryDisplayedListMapper.toDTO(beneficiaryDisplayedListRepository.findBeneficiaryByRegistrationId(registration.getId())));
             Locale locale = new Locale(UserConstants.DEFAULT_LANG);

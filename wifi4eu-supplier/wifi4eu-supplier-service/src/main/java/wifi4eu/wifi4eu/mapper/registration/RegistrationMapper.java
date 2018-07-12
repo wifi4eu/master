@@ -11,12 +11,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface RegistrationMapper {
     @Mappings({
-            @Mapping(source = "entity.user.id", target = "userId"),
             @Mapping(source = "entity.municipality.id", target = "municipalityId")
     })
     RegistrationDTO toDTO(Registration entity);
     @Mappings({
-            @Mapping(source = "vo.userId", target = "user.id"),
             @Mapping(source = "vo.municipalityId", target = "municipality.id")
     })
     Registration toEntity(RegistrationDTO vo);

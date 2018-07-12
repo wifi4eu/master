@@ -109,6 +109,11 @@ public class UserService {
         return userMapper.toDTO(userRepository.findByEcasEmail(email));
     }
 
+    public UserDTO getUserByIdFromRegistration(Integer registrationId) {
+        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationId));
+        return user;
+    }
+
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
         UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());

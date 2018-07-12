@@ -61,6 +61,11 @@ public class UserService {
         return userMapper.toDTO(userRepository.findByEmail(email));
     }
 
+    public UserDTO getUserByIdFromRegistration(Integer registrationId) {
+        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationId));
+        return user;
+    }
+
     @Transactional
     public UserDTO getUserByUserContext(UserContext userContext) {
 

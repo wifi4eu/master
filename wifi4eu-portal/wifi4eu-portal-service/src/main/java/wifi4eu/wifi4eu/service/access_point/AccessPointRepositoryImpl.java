@@ -24,16 +24,16 @@ public class AccessPointRepositoryImpl implements AccessPointRepositoryCustom {
     @PersistenceContext
     EntityManager entityManager;
 
-    @Autowired
-    UserService userService;
+  //  @Autowired
+  //  UserService userService;
 
     Logger _log = LogManager.getLogger(AccessPointRepositoryImpl.class);
 
     @Override
     public List<AccessPoint> searchAccessPointByInstallationSite(int page, int delta, int id_installationSite, String fieldName, String orderField) {
         UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Searching access points by installation site with id " + id_installationSite);
+   //     UserDTO userConnected = userService.getUserByUserContext(userContext);
+    //    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Searching access points by installation site with id " + id_installationSite);
         Query query = generateSqlAccessPoint(page, delta, id_installationSite, fieldName, orderField, false);
         return query.getResultList();
     }
@@ -41,16 +41,16 @@ public class AccessPointRepositoryImpl implements AccessPointRepositoryCustom {
     @Override
     public int countAccessPointByInstallationSite(int page, int delta, int id_installationSite, String fieldName, String orderField) {
         UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Counting access points by installation site with id " + id_installationSite);
+   //     UserDTO userConnected = userService.getUserByUserContext(userContext);
+   //     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Counting access points by installation site with id " + id_installationSite);
         Query query = generateSqlAccessPoint(page, delta, id_installationSite, fieldName, orderField, true);
         return (int) query.getSingleResult();
     }
 
     private Query generateSqlAccessPoint(int page, int delta, int id_installationSite, String fieldName, String orderField, boolean count) {
         UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Generating sql for access points by installation site with id " + id_installationSite);
+    //    UserDTO userConnected = userService.getUserByUserContext(userContext);
+   //     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Generating sql for access points by installation site with id " + id_installationSite);
         Query query = null;
         String queryString = "SELECT a.* FROM access_points a WHERE a.id_installation_site = ?1";
         if (count) {
@@ -73,7 +73,7 @@ public class AccessPointRepositoryImpl implements AccessPointRepositoryCustom {
                     .append(" ROWS ONLY");
             query = entityManager.createNativeQuery(sqlBuilder.toString(), AccessPoint.class);
         }
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Generated as: " + sqlBuilder.toString());
+     //   _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Generated as: " + sqlBuilder.toString());
         query.setParameter(1, id_installationSite);
 
         return query;

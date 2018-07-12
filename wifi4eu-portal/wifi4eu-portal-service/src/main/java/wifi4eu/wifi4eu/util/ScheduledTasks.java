@@ -15,6 +15,8 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -68,6 +70,12 @@ public class ScheduledTasks {
 
     @Autowired
     private CallService callService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserMapper userMapper;
 
     private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
@@ -190,7 +198,8 @@ public class ScheduledTasks {
         for (RegistrationDTO registrationDTO : registrationDTOS) {
             try {
                 if (registrationDTO != null && registrationDTO.getMailCounter() > 0) {
-                    UserDTO user = userService.getUserById(registrationDTO.getUserId());
+                    UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
+
                     if (user != null && user.getEcasEmail() != null) {
                         if (!userService.isLocalHost()) {
                             Locale locale = new Locale(UserConstants.DEFAULT_LANG);

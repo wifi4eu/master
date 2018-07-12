@@ -62,17 +62,10 @@ public class User {
     @Column(name = "csrf_token")
     private String csrfToken;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "USER_REGISTRATION",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "registration_id", referencedColumnName = "id"))
-    private List<Registration> registrationList;
-
     public User() {
     }
 
-
-    public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken, List<Registration> registrationList) {
+    public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken) {
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
@@ -89,7 +82,6 @@ public class User {
         this.ecasEmail = ecasEmail;
         this.ecasUsername = ecasUsername;
         this.csrfToken = csrfToken;
-        this.registrationList = registrationList;
     }
 
     public Integer getId() {
@@ -228,11 +220,4 @@ public class User {
         this.csrfToken = csrfToken;
     }
 
-    public List<Registration> getRegistrationList() {
-        return registrationList;
-    }
-
-    public void setRegistrationList(List<Registration> registrationList) {
-        this.registrationList = registrationList;
-    }
 }

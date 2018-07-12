@@ -9,7 +9,6 @@ import java.util.Date;
 
 public class RegistrationDTO implements Serializable {
     private int id;
-    private List<UserDTO> userDTOList;
     private int municipalityId;
     private String role;
     private int status;
@@ -45,7 +44,7 @@ public class RegistrationDTO implements Serializable {
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(List<UserDTO> userDTOList, int municipalityId, String role, int status, long legalFile1Size,
+    public RegistrationDTO(int municipalityId, String role, int status, long legalFile1Size,
                            String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size,
                            String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration,
                            String associationName, int organisationId, long uploadTime, int allFilesFlag, int
@@ -54,7 +53,6 @@ public class RegistrationDTO implements Serializable {
                                    actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck,
                            Timestamp dateRegistered, Date installationSiteSubmission, Date installationSiteRejection,
                            Date installationSiteConfirmation) {
-        this.userDTOList = userDTOList;
         this.municipalityId = municipalityId;
         this.role = role;
         this.status = status;
@@ -117,14 +115,6 @@ public class RegistrationDTO implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public List<UserDTO> getUserDTOList() {
-        return userDTOList;
-    }
-
-    public void setUserDTOList(List<UserDTO> userDTOList) {
-        this.userDTOList = userDTOList;
     }
 
     public int getMunicipalityId() {
@@ -275,7 +265,6 @@ public class RegistrationDTO implements Serializable {
     public String toString() {
         return "RegistrationDTO{" +
                 "id=" + id +
-                ", user=" + userDTOList +
                 ", municipalityId=" + municipalityId +
                 ", role='" + role + '\'' +
                 ", status=" + status +
