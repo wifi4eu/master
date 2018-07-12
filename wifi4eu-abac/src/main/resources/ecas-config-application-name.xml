@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<client-config xmlns="https://ecas.ec.europa.eu/cas/schemas/client-config/ecas/">
+    <requestingUserDetails>true</requestingUserDetails>
+    <redirectionInterceptors>
+        <redirectionInterceptor>eu.cec.digit.ecas.client.http.ajax.JsonAjaxRedirectionInterceptor</redirectionInterceptor>
+    </redirectionInterceptors>
+</client-config>

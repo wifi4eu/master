@@ -230,6 +230,7 @@ public class RegistrationService {
                 legalFilesDTO.setRegistration(registrationDBO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
                 legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf1));
+                legalFilesDTO.setUploadTime(new Date());
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
                 registrationDBO.setLegalFile1Mime(LegalFilesService.getMimeType(lf1));
                 registrationDBO.setLegalFile1Size(lf1ByteArray.length);
@@ -255,6 +256,7 @@ public class RegistrationService {
                 legalFilesDTO.setRegistration(registrationDBO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
                 legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf2));
+                legalFilesDTO.setUploadTime(new Date());
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
                 registrationDBO.setLegalFile2Mime(LegalFilesService.getMimeType(lf2));
                 registrationDBO.setLegalFile2Size(lf2ByteArray.length);
@@ -280,6 +282,7 @@ public class RegistrationService {
                 legalFilesDTO.setRegistration(registrationDBO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
                 legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf3));
+                legalFilesDTO.setUploadTime(new Date());
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
                 registrationDBO.setLegalFile3Mime(LegalFilesService.getMimeType(lf3));
                 registrationDBO.setLegalFile3Size(lf3ByteArray.length);
@@ -305,6 +308,7 @@ public class RegistrationService {
                 legalFilesDTO.setRegistration(registrationDBO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
                 legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf4));
+                legalFilesDTO.setUploadTime(new Date());
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
                 registrationDBO.setLegalFile4Mime(LegalFilesService.getMimeType(lf4));
                 registrationDBO.setLegalFile4Size(lf4ByteArray.length);
@@ -497,7 +501,7 @@ public class RegistrationService {
                 msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
                 _log.info("additionalInfoUrl: " + additionalInfoUrl + " msgBody: " + msgBody + " language: " + locale.getLanguage());
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "requestLegalDocuments");
                 }
                 return true;
             }

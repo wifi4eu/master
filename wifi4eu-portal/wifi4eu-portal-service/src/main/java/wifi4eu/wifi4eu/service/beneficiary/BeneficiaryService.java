@@ -185,7 +185,7 @@ public class BeneficiaryService {
                 String subject = bundle.getString("mail.discussionMunicipality.subject");
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userDTO.getEcasEmail());
                 }
 
@@ -206,7 +206,7 @@ public class BeneficiaryService {
                         subject = bundle.getString("mail.discussionMunicipality.subject");
                         msgBody = bundle.getString("mail.discussionMunicipality.body");
                         if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
                         }
                     }
@@ -229,7 +229,7 @@ public class BeneficiaryService {
                         subject = bundle.getString("mail.discussionMunicipality.subject");
                         msgBody = bundle.getString("mail.discussionMunicipality.body");
                         if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
                         }
                     }

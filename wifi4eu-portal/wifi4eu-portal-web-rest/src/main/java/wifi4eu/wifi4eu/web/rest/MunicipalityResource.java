@@ -7,6 +7,9 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
@@ -191,6 +194,39 @@ public class MunicipalityResource {
         }
     }
 
+    @ApiOperation(value = "Update municipality details")
+    @RequestMapping(value = "/delete/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO deleteMunicipalityFromId(@PathVariable("municipalityId") final Integer municipalityId,
+                                                HttpServletResponse response, HttpServletRequest request) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating municipality details");
+        try {
+            RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityId);
+            if (registrationDTO.getUserId() != userConnected.getId()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Municipality details updated successfully");
+            if (municipalityService.countMunicipalitiesByUserId(userConnected.getId()) > 1){
+                return new ResponseDTO(true, municipalityService.deleteMunicipality(municipalityId,request), null);
+            } else {
+                return new ResponseDTO(false, "error.deleting.municipality", null);
+            }
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the details of this municipality", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The details of this municipality cannot been updated", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
+
+
     /* @ApiOperation(value = "Delete municipality by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
@@ -259,4 +295,49 @@ public class MunicipalityResource {
         return municipalityService.getMunicipalitiesByUserId(userId);
     }
     */
+
+    @ApiOperation(value = "Get all correspondence for a municipality")
+    @RequestMapping(value = "/correspondence/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO getCorrespondenceByMunicipality(@PathVariable("municipalityId") Integer municipalityId,
+                                                                  @RequestParam("page") Integer page,
+                                                                  @RequestParam("size") Integer size,
+                                                                  @RequestParam("field") String field,
+                                                                  @RequestParam("direction") String direction, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving Correspondance of a municipality : " + municipalityId);
+        try {
+            if(!permissionChecker.checkIfDashboardUser()){
+                throw new java.nio.file.AccessDeniedException("Access denied: getCorrespondenceByMunicipality");
+            }
+            if(field.equalsIgnoreCase("username")){
+                field = "user.ecasUsername";
+            }
+            Pageable pageable;
+            if (direction.equals("ASC") || direction.equals("asc")) {
+                pageable = new PageRequest(page, size, Sort.Direction.ASC, field);
+            } else {
+                pageable = new PageRequest(page, size, Sort.Direction.DESC, field);
+            }
+            ResponseDTO responseDTO = municipalityService.getCorrespondenceByMunicipalityId(municipalityId, pageable);
+                    _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Success on retrieving Correspondence for municipality" + municipalityId);
+            return responseDTO;
+        } catch (java.nio.file.AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to retrieve correspondence municipality" , ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality correspondence cannot be retrieved", e.getMessage());
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
+        }
+    }
+
+    @ApiOperation(value = "Create correspondence")
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public LogEmailDTO createApplicationComment() throws IOException {
+        return null;
+    }
 }

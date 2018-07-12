@@ -63,7 +63,7 @@ public class ThreadMessageService {
                             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                             String subject = bundle.getString("mail.thread.subject");
                             String msgBody = bundle.getString("mail.thread.body");
-                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "createThreadMessage");
                         }
                     }
                 }

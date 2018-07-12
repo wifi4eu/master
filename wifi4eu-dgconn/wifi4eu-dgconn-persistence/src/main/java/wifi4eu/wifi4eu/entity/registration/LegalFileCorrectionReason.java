@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.entity.registration;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "legal_files_correction_reason")
@@ -24,15 +25,19 @@ public class LegalFileCorrectionReason {
     @Column(name = "correction_reason")
     private Integer correctionReason;
 
+    @Column(name = "request_correction_date")
+    private Date requestCorrectionDate;
+
     public LegalFileCorrectionReason() {
     }
 
-    public LegalFileCorrectionReason(Integer id, Registration registration, Integer type, Boolean requestCorrection, Integer correctionReason) {
+    public LegalFileCorrectionReason(Integer id, Registration registration, Integer type, Boolean requestCorrection, Integer correctionReason, Date requestCorrectionDate) {
         this.id = id;
         this.registration = registration;
         this.type = type;
         this.requestCorrection = requestCorrection;
         this.correctionReason = correctionReason;
+        this.requestCorrectionDate = requestCorrectionDate;
     }
 
     public Integer getId() {
@@ -73,5 +78,13 @@ public class LegalFileCorrectionReason {
 
     public void setCorrectionReason(Integer correctionReason) {
         this.correctionReason = correctionReason;
+    }
+
+    public Date getRequestCorrectionDate() {
+        return requestCorrectionDate;
+    }
+
+    public void setRequestCorrectionDate(Date requestCorrectionDate) {
+        this.requestCorrectionDate = requestCorrectionDate;
     }
 }
