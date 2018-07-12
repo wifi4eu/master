@@ -15,7 +15,6 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.EncrypterService;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
-import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.service.user.UserService;
 

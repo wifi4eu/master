@@ -50,7 +50,6 @@ public class MailService {
     @Autowired
     private JavaMailSender mailSender;
 
-
     @Autowired
     private LogEmailRepository logEmailRepository;
 
@@ -117,7 +116,7 @@ public class MailService {
 
     public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
         if (enableMail) {
-            MailAsyncService asyncService = new MailAsyncService(toAddress, fromAddress, subject, msgBody, this.mailSender);
+            MailAsyncService asyncService = new MailAsyncService(toAddress, fromAddress, subject, msgBody, this.mailSender, municipalityId, action);
             Thread thread = new Thread(asyncService);
             thread.start();
         }

@@ -821,5 +821,13 @@
   "dgConn.applicantDetails.invalidate.reason8": "8. The application included a merged municipality.",
   "dgConn.applicantDetails.invalidate.reason9": "9. Due to irregularities found in the application, it was invalidated.",
   "dgConn.applicationDetails.contact.auth": "Would you like to authorize {{name}} {{surname}} to sign grant agreement?",
-  "dgConn.applicationDetails.auth.tooltip": "By validating this application, {{name}} {{surname}} will be authorized."
+  "dgConn.applicationDetails.auth.tooltip": "By validating this application, {{name}} {{surname}} will be authorized.",
+  "dgConn.applicantDetails.correspondence.header": "Correspondence",
+  "dgConn.applicantDetails.correspondence.table.title": "Title",
+  "dgConn.applicantDetails.correspondence.table.date": "Date sent",
+  "dgConn.applicantDetails.correspondence.dialog.header": "Correspondence detail",
+  "dgConn.applicantDetails.correspondence.dialog.subject": "Subject",
+  "dgConn.applicantDetails.correspondence.dialog.from": "From",
+  "dgConn.applicantDetails.correspondence.dialog.to": "To",
+  "dgConn.applicantDetails.correspondence.dialog.content": "Content"
 }

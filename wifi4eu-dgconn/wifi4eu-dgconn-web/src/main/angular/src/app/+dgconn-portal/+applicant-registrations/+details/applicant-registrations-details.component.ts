@@ -22,7 +22,7 @@ import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { LegalFileCorrectionReasonDTOBase } from "../../../shared/swagger/model/LegalFileCorrectionReasonDTO";
 import { TranslateService } from "ng2-translate";
 import * as FileSaver from "file-saver";
-import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi } from "../../../shared/swagger";
+import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi, LogEmailDTO } from "../../../shared/swagger";
 import { NgForm, NgModel } from "@angular/forms";
 
 @Component({
@@ -70,6 +70,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private displayValidate = false;
     private displayInvalidate = false;
     private displayRequestCorrection = false;
+    private displayCorrespondenceDetail = false;
     private loadingData = false;
     private processingRequest = false;
     private displayCommentModal = false;
@@ -88,9 +89,36 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private defaultSize = 5;
     private applicationComment:string = '';
 
+    //-- Correspondence
+    private correspondences : LogEmailDTO[][] = [];
+    private correspondenceTotalRecords : number[] = [];
+    private correspondencePage : number[] = [];
+    private correspondenceSizePage : number[] = [];
+    private correspondenceSortField: string[] = [];
+    private correspondenceSortDirection: number[] = [];
+    private correspondenceDialogInfo : LogEmailDTO;
+
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
-    constructor(private applicationCommentApi: ApplicationcommentApi, private applicationInvalidateReasonApi: InvalidateReasonApi,  private registrationWarningApi: RegistrationWarningApi, private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
+    constructor(
+        private applicationCommentApi: ApplicationcommentApi, 
+        private applicationInvalidateReasonApi: InvalidateReasonApi,  
+        private registrationWarningApi: RegistrationWarningApi, 
+        private sanitizer: DomSanitizer, 
+        private route: ActivatedRoute, 
+        private sharedService: SharedService, 
+        private applicationApi: ApplicationApi, 
+        private beneficiaryApi: BeneficiaryApi, 
+        private registrationApi: RegistrationApi, 
+        private threadApi: ThreadApi, 
+        private userApi: UserApi, 
+        private municipalityApi: MunicipalityApi, 
+        private mayorApi: MayorApi, 
+        private translateService: TranslateService, 
+        private location: Location
+    ) {
+        console.log("Initializing application registration details component");
+        
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
@@ -176,6 +204,21 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                             this.loadingData = false;
                                         }
                                     );
+                                    //-- Request registration correspondence here
+                                    this.correspondenceSortField[i] = "sentDate";
+                                    this.correspondenceSortDirection[i] = -1;
+                                    this.correspondencePage[i] = 0;
+                                    this.correspondenceSizePage[i] = this.defaultSize;
+                                    this.municipalityApi.getCorrespondenceByMunicipality(
+                                        registration.municipalityId, 
+                                        this.correspondencePage[i], 
+                                        this.correspondenceSizePage[i], 
+                                        this.correspondenceSortField[i], 
+                                        this.correspondenceSortDirection[i] === 1 ? 'ASC' : 'DESC'
+                                    ).subscribe((response: ResponseDTO) => {
+                                        this.correspondenceTotalRecords[i] = response.xtotalCount;
+                                        this.correspondences[i] = response.data;
+                                    });
                                 } else {
                                     failCount++;
                                 }
@@ -220,6 +263,14 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         return this.registrationApi.getLegalFilesByFileType(this.registrations[index].id, fileNumber);
     }
 
+    private displayCorrespondenceDetailModal(info) {
+        console.log(info);
+        this.correspondenceDialogInfo = info;
+        console.log(this.correspondenceDialogInfo);
+        this.displayCorrespondenceDetail = true;
+        
+    }
+
     private displayValidateModal(index: number) {
         if (index != null) {
             if (this.applications[index].status != 2) {
@@ -245,8 +296,33 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.filterTable(index);
     }
 
+    private sortCorrespondenceTable(event, index) {
+        this.correspondenceSortField[index] = event.field;
+        this.correspondenceSortDirection[index] = event.order;
+        this.filterCorrespondenceTable(index);
+    }
+
+    private filterCorrespondenceTable(index) {
+        this.municipalityApi.getCorrespondenceByMunicipality(
+            this.registrations[index].municipalityId, 
+            this.correspondencePage[index], 
+            this.correspondenceSizePage[index], 
+            this.correspondenceSortField[index],
+            this.correspondenceSortDirection[index] === 1 ? 'ASC' : 'DESC'
+        ).subscribe((response: ResponseDTO) => {
+            this.correspondenceTotalRecords[index] = response.xtotalCount;
+            this.correspondences[index] = response.data;
+        });
+    }
+
     private filterTable(index){
-        this.applicationCommentApi.getApplicationCommentsByApplication(this.applications[index].id, this.page[index], this.sizePage[index], this.sortField[index], this.sortDirection[index] === 1 ? 'ASC' : 'DESC').subscribe((response: ResponseDTO) => {
+        this.applicationCommentApi.getApplicationCommentsByApplication(
+            this.applications[index].id, 
+            this.page[index], 
+            this.sizePage[index], 
+            this.sortField[index], 
+            this.sortDirection[index] === 1 ? 'ASC' : 'DESC'
+        ).subscribe((response: ResponseDTO) => {
           this.totalRecords[index] = response.xtotalCount;
           this.applicationComments[index] = response.data;
         })
@@ -263,6 +339,12 @@ export class DgConnApplicantRegistrationsDetailsComponent {
       this.sizePage[index] = event.rows;
       this.page[index] = event.page;
       this.filterTable(index);
+    }
+
+    private correspondencePaginate(event, index) {
+        this.correspondenceSizePage[index] = event.rows;
+        this.correspondencePage[index] = event.page;
+        this.filterCorrespondenceTable(index);
     }
 
     private submitApplicationComment(form: NgForm){
@@ -345,6 +427,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.processingRequest = false;
         this.applicationComment = '';
         this.displayCommentModal = false;
+        this.displayCorrespondenceDetail = false;
     }
 
     private selectCorrectionReason() {
