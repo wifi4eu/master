@@ -11,7 +11,7 @@ $ cd <base-dir>\app\wifi4eu-abac
 $ mvn clean install -e -Png-build-win
 
 The generated war will be in:
-
+<base-dir>\app\wifi4eu-abac\target\wifi4eu-financial.war
 
 The datasource jndi name configured in WLS should be:
 jdbc/Wifi4euAbacDataSource

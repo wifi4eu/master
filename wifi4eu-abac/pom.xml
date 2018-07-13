@@ -19,8 +19,8 @@
     
     <persistence.unit.name>wifi4eu-financialPersistence</persistence.unit.name>
     <jndi.datasource.name>Wifi4euAbacDataSource</jndi.datasource.name>
-		<eclipselink.logging.level>WARNING</eclipselink.logging.level>
-		<eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+    <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+    <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
 	  <eclipselink.logging.parameters>true</eclipselink.logging.parameters>		
     <eclipselink.target.database>Oracle</eclipselink.target.database>    
     <abac.name>wifi4eu-financial</abac.name>
