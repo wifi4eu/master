@@ -246,15 +246,4 @@ public class SupplierDTO implements Serializable {
                 '}';
     }
 
-    public Integer getUserId() {
-        for(SupplierUserDTO supplierUserDTO: supplierUsers){
-
-            if (supplierUserDTO.getMain() == 1){
-                return supplierUserDTO.getUserDTO().getId();
-            }
-        }
-
-        return null;
-    }
-
 }

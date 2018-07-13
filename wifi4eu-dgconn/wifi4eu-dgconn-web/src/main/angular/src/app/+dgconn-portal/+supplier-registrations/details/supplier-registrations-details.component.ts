@@ -39,11 +39,11 @@ export class DgConnSupplierRegistrationsDetailsComponent {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
-                let supplierId = params['id'];
-                this.supplierApi.getSupplierById(supplierId).subscribe(
+                let supplier = params['id'];
+                this.supplierApi.getSupplierById(supplier).subscribe(
                     (supplier: SupplierDTOBase) => {
                         if (supplier != null) {
-                            this.supplierApi.findSimilarSuppliers(supplierId).subscribe(
+                            this.supplierApi.findSimilarSuppliers(supplier).subscribe(
                                 (suppliers: SupplierDTOBase[]) => {
                                     if (suppliers.length != 0) {
                                         this.similarSuppliers = suppliers;

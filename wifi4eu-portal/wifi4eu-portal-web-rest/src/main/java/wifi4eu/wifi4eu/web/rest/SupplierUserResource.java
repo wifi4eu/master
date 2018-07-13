@@ -37,7 +37,7 @@ public class SupplierUserResource {
 
         try {
 
-            SupplierUserDTO supplierUserDTO = supplierService.createSupplierUser(supplierId, userEmail);
+            SupplierUserDTO supplierUserDTO = supplierService.createSupplierUser(supplierId, null, userEmail);
             _log.debug("SupplierId : " + supplierId + " , supplierUserEmail : " + userEmail + " - Created SupplierUser");
 
             return new ResponseDTO(true, supplierUserDTO, null);
@@ -49,10 +49,10 @@ public class SupplierUserResource {
 
 
     @ApiOperation(value = "Register supplier user")
-    //@RequestMapping(value = "/register/{supplierId}/{userEmail}", method = RequestMethod.POST)
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register/{supplierId}/{userEmail}", method = RequestMethod.POST)
+    //@RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO registerSupplierUser(@RequestBody final int supplierId, @RequestBody final String userEmail) throws IOException {
+    public ResponseDTO registerSupplierUser(@PathVariable("supplierId") final int supplierId, @PathVariable("userEmail") final String userEmail) throws IOException {
 
         try {
 

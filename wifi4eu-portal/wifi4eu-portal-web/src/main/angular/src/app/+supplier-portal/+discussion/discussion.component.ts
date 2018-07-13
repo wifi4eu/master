@@ -102,7 +102,9 @@ export class DiscussionComponent {
                             this.userThreads = userThread;
                             this.supplierApi.getSupplierByUserId(this.userThreads[i].userId).subscribe(
                                 (suppliers: SupplierDTOBase) => {
-                                    if (this.user.id != suppliers.userId) {
+
+                                    if (true){
+                                    //if (this.user.id != suppliers.userId) {
                                         this.otherSuppliers.push(suppliers);
                                         console.log(this.otherSuppliers);
                                         this.counter++;

@@ -16,7 +16,7 @@ public class SupplierUser {
     private int userId;
 
     @Column(name = "supplier_id")
-    private int supplier;
+    private int supplierId;
 
     @Column(name = "main")
     private Integer main;
@@ -47,12 +47,12 @@ public class SupplierUser {
         this.userId = userId;
     }
 
-    public int getSupplier() {
-        return supplier;
+    public int getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier(int supplier) {
-        this.supplier = supplier;
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 
     public Integer getMain() {

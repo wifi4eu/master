@@ -91,7 +91,7 @@ public class SupplierResource {
         SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
         try {
             UserDTO userDTO = userConnected;
-            if (supplierDTO.getUserId() != userDTO.getId() && userDTO.getType() != 5) {
+            if (supplierService.findUserIdBySupplierId(supplierDTO.getId()) != userDTO.getId() && userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier retrieved successfully");
@@ -147,7 +147,7 @@ public class SupplierResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier");
         try {
             UserDTO userDTO = userConnected;
-            if (supplierDTO.getUserId() != userDTO.getId()) {
+            if (supplierService.findUserIdBySupplierId(supplierDTO.getId()) != userDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             SupplierDTO resSupplier = supplierService.updateSupplier(supplierDTO);
@@ -172,11 +172,12 @@ public class SupplierResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating contact details");
         try {
             UserDTO userDTO = userConnected;
-            if (supplierDTO.getUserId() != userDTO.getId()) {
+            int supplierUserId = supplierService.findUserIdBySupplierId(supplierDTO.getId());
+            if (supplierUserId != userDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
-            if (supplierDTO.getId() != sendSupplierDTO.getId()) {
+            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierUserId);
+            if (supplierUserId != sendSupplierDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             SupplierDTO resSupplier = supplierService.updateContactDetails(sendSupplierDTO, supplierDTO.getContactName(), supplierDTO.getContactSurname(), supplierDTO.getContactPhonePrefix(), supplierDTO.getContactPhoneNumber());
@@ -201,10 +202,11 @@ public class SupplierResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier details");
         try {
             UserDTO userDTO = userConnected;
-            if (supplierDTO.getUserId() != userDTO.getId()) {
+            int supplierUserId = supplierService.findUserIdBySupplierId(supplierDTO.getId());
+            if (supplierUserId != userDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
+            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierUserId);
             if (supplierDTO.getId() != sendSupplierDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
@@ -455,4 +457,20 @@ public class SupplierResource {
                 pageObj.getTotalElements(),
                 null);
     }
+
+    @ApiOperation(value = "Get userId from supplier ")
+    @RequestMapping(value = "/getUserId/{supplierId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO getUserIdFrommSupplier(@PathVariable("supplierId") final int supplierId) throws IOException {
+
+        try {
+
+            Integer userId = supplierService.findUserIdBySupplierId(supplierId);
+            return new ResponseDTO(true, userId, null);
+
+        } catch (Exception e) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
 }

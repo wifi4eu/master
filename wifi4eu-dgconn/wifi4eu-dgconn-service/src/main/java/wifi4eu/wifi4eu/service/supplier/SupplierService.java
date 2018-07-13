@@ -71,7 +71,6 @@ public class SupplierService {
     @Transactional
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) throws Exception {
         SupplierDTO finalSupplier = new SupplierDTO();
-        finalSupplier.setUserId(supplierDTO.getUserId());
         finalSupplier.setName(supplierDTO.getName());
         finalSupplier.setAddress(supplierDTO.getAddress());
         finalSupplier.setVat(supplierDTO.getVat());
@@ -192,7 +191,7 @@ public class SupplierService {
     }
 
     public SupplierDTO getSupplierByUserId(int userId) {
-        return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
+        return supplierMapper.toDTO(supplierRepository.getByUserId(userId));
     }
 
     public List<SupplierDTO> getSuppliersByVat(String vat) {
