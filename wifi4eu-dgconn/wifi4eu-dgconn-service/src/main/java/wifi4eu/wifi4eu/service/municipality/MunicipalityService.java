@@ -203,6 +203,6 @@ public class MunicipalityService {
     }
 
     public List<LogEmailDTO> getCorrespondenceByMunicipalityIdAndAction(Integer municipalityId, String action){
-        return municipalityCorrespondenceMapper.toDTOList(logEmailRepository.findAllByMunicipalityIdAndActionEquals(municipalityId, action));
+        return municipalityCorrespondenceMapper.toDTOList(logEmailRepository.findTopByMunicipalityIdAndActionOrderBySentDateDesc(municipalityId, action));
     }
 }

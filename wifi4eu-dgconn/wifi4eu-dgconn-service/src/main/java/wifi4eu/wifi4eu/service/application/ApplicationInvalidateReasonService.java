@@ -18,12 +18,15 @@ import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationInvalidateReason;
 import wifi4eu.wifi4eu.entity.application.CorrectionRequestEmail;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.entity.registration.LegalFile;
+import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
 import wifi4eu.wifi4eu.entity.registration.LegalFiles;
 import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -67,6 +70,12 @@ public class ApplicationInvalidateReasonService {
     @Autowired
     LegalFilesRepository legalFilesRepository;
 
+    @Autowired
+    LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
+
+    @Autowired
+    CorrectionRequestEmailRepository correctionRequestEmailRepository;
+
     public List<ApplicationInvalidateReasonDTO> getInvalidateReasonByApplicationId(Integer applicationId) {
         return applicationInvalidateReasonMapper.toDTOList(applicationInvalidateReasonRepository.findAllByApplicationIdOrderByReason(applicationId));
     }
@@ -90,6 +99,7 @@ public class ApplicationInvalidateReasonService {
             applicationInvalidateReasonDTOS.add(new ApplicationInvalidateReasonDTO(applicationDTO.getId(), integer));
         }
         applicationDTO.setStatus(ApplicationStatus.KO.getValue());
+        legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDTO.getRegistrationId());
         applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
         List<ApplicationInvalidateReason> invalidateReason = applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntityList(applicationInvalidateReasonDTOS));
 
@@ -134,6 +144,7 @@ public class ApplicationInvalidateReasonService {
         applicationDBO.setStatus(ApplicationStatus.OK.getValue());
         deleteInvalidateReasonByApplicationId(applicationDBO.getId());
         applicationDBO.setAuthorizedPerson(applicationDTO.getAuthorizedPerson());
+        legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDBO.getRegistrationId());
         ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
@@ -176,44 +187,47 @@ public class ApplicationInvalidateReasonService {
         Map<String, Boolean> checks = new HashMap<>();
 
         if(applicationDBO.getStatus() != ApplicationStatus.PENDING_FOLLOWUP.getValue()){
-            checks.put("invalidate", false);
-            checks.put("validate", false);
+            checks.put("invalidate", applicationDBO.getStatus() == ApplicationStatus.OK.getValue());
+            checks.put("validate", applicationDBO.getStatus() == ApplicationStatus.KO.getValue());
             return checks;
         }
 
         RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDBO.getRegistrationId());
         List<LogEmailDTO> emails = municipalityService.getCorrespondenceByMunicipalityIdAndAction(registrationDTO.getMunicipalityId(), "sendCorrectionEmails");
 
-        if(emails.size() == 0){
-            if(applicationDBO.getStatus() == ApplicationStatus.OK.getValue()){
-                checks.put("invalidate", true);
-                checks.put("validate", false);
-            }
-            else if(applicationDBO.getStatus() == ApplicationStatus.KO.getValue()){
-                checks.put("invalidate", false);
-                checks.put("validate", true);
-            }
+        if(emails.isEmpty()){
+            checks.put("invalidate", applicationDBO.getStatus() == ApplicationStatus.OK.getValue());
+            checks.put("validate", applicationDBO.getStatus() == ApplicationStatus.KO.getValue());
         }
         else{
             Date sentDate = new Date(emails.get(0).getSentDate());
-            Calendar c = Calendar.getInstance();
-            c.setTime(sentDate);
-            c.add(Calendar.DATE, 7);
 
             List<LegalFiles> legalFiles = legalFilesRepository.findAllByRegistration(applicationDBO.getRegistrationId());
-            boolean valid = true;
-            for (LegalFiles legalFile: legalFiles) {
-                if(legalFile.getUploadTime().before(c.getTime()) && legalFile.getUploadTime().after(sentDate)){
-                    valid = false;
+            for(LegalFiles legalFile: legalFiles){
+                if(legalFile.getUploadTime().after(sentDate)){
+                    checks.put("invalidate", applicationDBO.getStatus() == ApplicationStatus.OK.getValue());
+                    checks.put("validate", applicationDBO.getStatus() == ApplicationStatus.KO.getValue());
+                    return checks;
                 }
-//                else{
-//                    valid = true;
-//                }
+            }
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(sentDate);
+            // Date plus 7 days (deadline)
+            c.add(Calendar.DATE, 7);
+
+            boolean valid = true;
+            List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDBO.getRegistrationId());
+            for (LegalFileCorrectionReason legalFileCorrectionReason: legalFileCorrectionReasons) {
+                if(legalFileCorrectionReason.getRequestCorrection()){
+                    if(legalFileCorrectionReason.getRequestCorrectionDate().before(c.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)){
+                        valid = false;
+                    }
+                }
             }
             checks.put("invalidate", valid);
             checks.put("validate", valid);
         }
-
         return checks;
     }
 
