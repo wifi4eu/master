@@ -295,6 +295,11 @@
         </div>
         <div class="col-lg-2"></div>
     </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8"><p (click)="sendMailToUser()" >+ Add Municipality</p></div>
+        <div class="col-sm-2"></div>
+    </div>
 
     <br>
     <div class="row">
@@ -397,4 +402,37 @@
             </div>
             <div class="col-lg-2"></div>
         </div>
+</p-dialog>
+
+
+<!-- new user -->
+<p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <form #addNewUser="ngForm">
+        <div class="form-group">
+            <h1 class="Modalh1Confirmation ">Email a quién desea añadir como usuario participante:</h1>
+            <div class="row marginStep1 landingFirstText">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8 center">
+                    <input type="email" id="newUserEmail" [(ngModel)]="newUserEmail"
+                    class="form-control" name="newUserEmail" [pattern]="emailPattern" size="50" required>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+        </div>
+    </form>
+    <div class="row marginStep1 landingFirstText form-group ">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                {{ 'shared.cancel.button' | translate }}
+            </button>
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button (click)="addNewContact()" class="btn btn-primary publish-button" [disabled] = "!addNewUser.form.valid">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>   
 </p-dialog>
