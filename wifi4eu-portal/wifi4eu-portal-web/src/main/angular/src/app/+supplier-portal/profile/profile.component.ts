@@ -17,6 +17,7 @@ import { UserDetailsService } from "../../core/services/user-details.service";
 @Component({
     selector: 'supplier-profile',
     templateUrl: 'profile.component.html',
+    styleUrls: ['profile.component.scss'],
     providers: [UserApi, SupplierApi, NutsApi]
 })
 
@@ -79,7 +80,7 @@ export class SupplierProfileComponent {
         this.loadLanguages();
     }
 
-    private selectCountry (event, tableReference) {
+    private selectCountry(event, tableReference) {
         let name = this.selectedCountriesNames[event.index];
         this.regionsToRender = this.supportedRegions[name];
         tableReference.reset();
