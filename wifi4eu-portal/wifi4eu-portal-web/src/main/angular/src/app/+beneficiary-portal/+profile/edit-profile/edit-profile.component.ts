@@ -160,7 +160,7 @@ export class BeneficiaryEditProfileComponent {
                                                 this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                     (mayor: MayorDTOBase) => {
                                                         this.municipalities.push(municipality);
-                                                        this.checkApplicantForMunicipality(municipality.id);
+                                                        this.checkEditPermissionMunicipality(municipality.id);
                                                         this.mayors.push(mayor);
                                                         if (this.municipalities.length > 0 && this.municipalities.length < 2){
                                                             if (this.country == null){
@@ -226,7 +226,28 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
-    private checkApplicantForMunicipality(municipalityId: number){
+    private checkEditPermissionMunicipality(municipalityId: number){
+        this.applicationApi.isMunicipalityEditable(municipalityId).subscribe(
+            (response: ResponseDTOBase) => {
+                if (response.success){
+                    this.isAbleToDelete.push(response.data);
+                } else {
+
+                }
+            }
+        );
+        /*
+        this.applicationApi.isMunicipalityEditable(municipalityId).subscribe(
+            (response: ResponseDTOBase) => {
+                if (response.success){
+                    this.isAbleToDelete.push(response.data);
+                } else {
+
+                }
+            }
+        );
+        */
+        /*
         this.applicationApi.getApplicationByCallIdAndMunicipalityId(this.currentCall.id, municipalityId).subscribe(
             (application: ApplicationDTOBase) => {
                 if (application.id != 0){
@@ -236,6 +257,7 @@ export class BeneficiaryEditProfileComponent {
                 }
             }
         );
+        */
         
     }
 

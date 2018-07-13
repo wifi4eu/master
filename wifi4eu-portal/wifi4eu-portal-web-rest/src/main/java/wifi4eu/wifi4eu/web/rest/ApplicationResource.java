@@ -71,6 +71,7 @@ public class ApplicationResource {
         return responseApp;
     }
 
+    /*
     @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/call/{callId}/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -94,6 +95,48 @@ public class ApplicationResource {
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application is retrieved correctly");
         }
         return responseApp;
+    }
+    */
+
+    @ApiOperation(value = "Check if municipality has edit permissions")
+    @RequestMapping(value = "/municipality/{municipalityId}/editable", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO isMunicipalityEditable(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Checking municipality " + municipalityId + " is editable");
+        try {
+            // this rightconstants was with registrations_table, check if it works with municipalities
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found", e.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        }
+
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            boolean checkIfEditable = applicationService.isMunicipalityEditable(municipalityId);
+            responseDTO.setSuccess(true);
+            responseDTO.setData(checkIfEditable);
+            responseDTO.setError(new ErrorDTO());
+        } catch (Exception e){
+            responseDTO.setSuccess(false);
+            responseDTO.setData("Error on query");
+            responseDTO.setError(new ErrorDTO());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        }
+        return responseDTO;
+    }
+
+    @ApiOperation(value = "Check if municipality has edit permissions")
+    @RequestMapping(value = "/testingit/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO testingIt(@PathVariable("municipalityId")final Integer municipalityId){
+        ResponseDTO responseDTO = new ResponseDTO();
+        boolean checkIfEditable = applicationService.isMunicipalityEditable(municipalityId);
+        responseDTO.setData(checkIfEditable);
+        responseDTO.setSuccess(true);
+        return responseDTO;
     }
 
     @ApiOperation(value = "Get applications voucher info by call id")

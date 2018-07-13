@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
@@ -83,6 +84,9 @@ public class ApplicationService {
 
     @Autowired
     VoucherService voucherService;
+
+    @Autowired
+    MunicipalityRepository municipalityRepository;
 
     private static final Logger _log = LogManager.getLogger(ApplicationService.class);
 
@@ -160,6 +164,15 @@ public class ApplicationService {
                     " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
         }
         return null;
+    }
+
+    @Transactional
+    public boolean isMunicipalityEditable(int municipalityId){
+        Integer firstQuery = municipalityRepository.checkMunicipalityEditPermission(municipalityId);
+        if (firstQuery > 0){
+            return true;
+        }
+        return false;
     }
 
     @Transactional
