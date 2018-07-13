@@ -433,10 +433,13 @@
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <form #addNewUser="ngForm">
         <div class="form-group">
-            <h1 class="Modalh1Confirmation ">Email a quién desea añadir como usuario participante:</h1>
+            
             <div class="row marginStep1 landingFirstText">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8 center">
+                    <h1 class="Modalh1Confirmation ">{{ 'benefPortal.adduser.title' | translate}}</h1>
+                    <p class="left">{{ 'benefPortal.adduser.desc' | translate}}</p>
+                    <p class="left">{{ 'benefPortal.adduser.email' | translate}}</p>
                     <input type="email" id="newUserEmail" [(ngModel)]="newUserEmail"
                            class="form-control" name="newUserEmail" [pattern]="emailPattern" size="50" required>
                 </div>
