@@ -234,33 +234,9 @@ export class BeneficiaryEditProfileComponent {
             (response: ResponseDTOBase) => {
                 if (response.success){
                     this.isMunicipalityEditable[municipalityId] = response.data;
-                    // this.isAbleToDelete.push(response.data);
                 }
             }
-        );
-        /*
-        this.applicationApi.isMunicipalityEditable(municipalityId).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success){
-                    this.isAbleToDelete.push(response.data);
-                } else {
-
-                }
-            }
-        );
-        */
-        /*
-        this.applicationApi.getApplicationByCallIdAndMunicipalityId(this.currentCall.id, municipalityId).subscribe(
-            (application: ApplicationDTOBase) => {
-                if (application.id != 0){
-                    this.isAbleToDelete.push(false);
-                } else {
-                    this.isAbleToDelete.push(true);
-                }
-            }
-        );
-        */
-        
+        ); 
     }
 
     private addExtraMunicipality() {
@@ -276,7 +252,7 @@ export class BeneficiaryEditProfileComponent {
 
     private removeExtraMunicipality(index: number, deleteCount: number = 1){
         this.newMunicipalities.splice(index, deleteCount);
-        // this.laus.splice(index, deleteCount);
+        this.laus.splice(index, deleteCount);
         this.newMayors.splice(index, deleteCount);
         this.laus[index] = null;
         this.emailConfirmations.splice(index, deleteCount);
@@ -450,6 +426,10 @@ export class BeneficiaryEditProfileComponent {
         }
 
       
+    }
+
+    private goBackToProfile(){
+        this.router.navigate(['../'], {relativeTo: this.route});
     }
 
     private checkFinishedCalls(){
