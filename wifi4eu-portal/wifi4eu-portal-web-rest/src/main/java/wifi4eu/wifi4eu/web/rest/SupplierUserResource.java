@@ -18,7 +18,7 @@ import java.io.IOException;
 
 @CrossOrigin(origins = "*")
 @Controller
-@Api(value = "/supplier", description = "Supplier object REST API services")
+@Api(value = "/supplierUser", description = "SupplierUser object REST API services")
 @RequestMapping("supplierUser")
 public class SupplierUserResource {
 

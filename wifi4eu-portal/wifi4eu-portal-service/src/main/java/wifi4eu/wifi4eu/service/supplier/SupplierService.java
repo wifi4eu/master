@@ -404,7 +404,6 @@ public class SupplierService {
         supplierUserDTO.setEmail(userEmail);
         supplierUserDTO.setCreationDate(new Date());
         supplierUserDTO.setSupplierId(supplierId);
-        supplierUserDTO.setUserId(userId);
 
         if (isMain){
             supplierUserDTO.setStatus(SupplierUserStatus.ALREADY_REGISTERED.getStatus());
@@ -413,6 +412,10 @@ public class SupplierService {
         }else{
             supplierUserDTO.setStatus(SupplierUserStatus.NOT_REGISTERED.getStatus());
             supplierUserDTO.setMain(SupplierUserType.INVITED.getType());
+        }
+
+        if (userId != null){
+            supplierUserDTO.setUserId(userId);
         }
 
         return supplierUserMapper.toDTO(supplierUserRepository.save(supplierUserMapper.toEntity(supplierUserDTO)));

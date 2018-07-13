@@ -646,3 +646,18 @@ create table application_invalidate_reason(
 		ON DELETE CASCADE
 		ON UPDATE CASCADE,
 );
+
+-- -----------------------------------------------------
+-- Table `dbo`.`supplier_users`
+-- -----------------------------------------------------
+
+CREATE TABLE [wifi4eu].[dbo].[supplier_users] (
+  id             INTEGER       NOT NULL IDENTITY(1,1),
+  user_id        INTEGER       NOT NULL,
+  supplier_id    INTEGER       NOT NULL,
+  main           INTEGER       NOT NULL,
+  status         INTEGER       NOT NULL,
+  creation_date  TIMESTAMP     NOT NULL,
+  email          VARCHAR(100)  NOT NULL,
+
+  PRIMARY KE

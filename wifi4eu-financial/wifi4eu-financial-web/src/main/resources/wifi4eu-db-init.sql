@@ -275,15 +275,5 @@ CREATE TABLE SEQUENCE (
   PRIMARY KEY (SEQ_NAME)
 );
 INSERT INTO SEQUENCE (SEQ_NAME, SEQ_COUNT) VALUES ('SEQ_GEN', 50);
-
-CREATE TABLE [wifi4eu].[dbo].[supplier_users] (
-  id             INTEGER       NOT NULL IDENTITY(1,1),
-  user_id        INTEGER       NOT NULL,
-  supplier_id    INTEGER       NOT NULL,
-  main           INTEGER       NOT NULL,
-  status         INTEGER       NOT NULL,
-  creation_date  TIMESTAMP     NOT NULL,
-  email          VARCHAR(100)  NOT NULL,
-
-  PRIMARY KEY (id)
+Y (id)
 );
