@@ -368,7 +368,7 @@
                 <dd><b>{{ 'dgConn.applicantDetails.correspondence.dialog.to' | translate }}</b>: {{correspondenceDialogInfo.to}}</dd>
                 <dd><b>{{ 'dgConn.applicantDetails.correspondence.dialog.subject' | translate }}</b>: {{correspondenceDialogInfo.subject}}</dd>
                 <dd><b>{{ 'dgConn.applicantDetails.correspondence.dialog.content' | translate }}</b>:</dd>
-                <dt>{{correspondenceDialogInfo.body}}</dt>
+                <blockquote class="blockquote" [innerHTML]="correspondenceDialogInfo.body"></blockquote>                
             </dl>
         </div>
     </p-dialog>
