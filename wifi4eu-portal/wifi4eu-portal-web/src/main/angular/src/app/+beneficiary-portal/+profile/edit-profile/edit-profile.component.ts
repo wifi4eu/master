@@ -88,6 +88,7 @@ export class BeneficiaryEditProfileComponent {
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private newUserEmail: string = '';
     private registrationIndex: number = null;
+    private addContact:boolean = false;
 
     constructor(private beneficiaryApi: BeneficiaryApi, private translateService: TranslateService, private nutsApi: NutsApi, private lauApi: LauApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         this.loadDataEditProfile();
@@ -369,6 +370,7 @@ export class BeneficiaryEditProfileComponent {
         this.deleteMunicipalityId = 0;
         this.displayDeleteMunicipality = false;
         this.addUser = false;
+        this.addContact = false;
     }
 
     private editProfile() {
@@ -460,7 +462,8 @@ export class BeneficiaryEditProfileComponent {
         this.addUser = true;
     }
 
-    private addNewContact(){        
+    private addNewContact(){       
+        this.addContact = true; 
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
 
@@ -470,13 +473,12 @@ export class BeneficiaryEditProfileComponent {
         this.beneficiaryApi.sendEmailToNewContact(userRegistrationDTO).subscribe(
             (userRegistration: UserRegistrationDTOBase) => {
                 this.registrationIndex = null;
-                this.sharedService.growlTranslation('Email sent successfully', '', 'success');
-                this.addUser = false;
+                this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
                 this.closeModal();
             }, error => {
                 this.registrationIndex = null;
-                this.sharedService.growlTranslation('An error occurred. Please, try again later.', '', 'error');
-                this.addUser = false;
+                this.addContact = false;
+                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
                 this.closeModal();
             }
         );

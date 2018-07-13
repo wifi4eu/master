@@ -539,12 +539,15 @@ public class BeneficiaryService {
         UserDTO user = userService.getUserByUserContext(userContext);
         String userName = user.getName() + ' ' + user.getSurname();
 
+        MunicipalityDTO municipality = municipalityService.getMunicipalityById(userRegistrationDTO.getMunicipalityId());
+        String municipalityName = municipality.getName();
+
         ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
         String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
         String msgBody = bundle.getString("mail.sendUserEmail.beneficiary.body");
-        msgBody = MessageFormat.format(msgBody, userName);
+        msgBody = MessageFormat.format(msgBody, userName, municipalityName);
         if (!userService.isLocalHost()) {
-            mailService.sendEmailAsync(userRegistrationDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            mailService.sendEmail(userRegistrationDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
         return userRegistrationDTO;
     }
