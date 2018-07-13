@@ -190,7 +190,7 @@
                                         <p-dataTable [value]="legalFiles[i]">
                                             <p-column field="type" [sortable]="false" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" *ngIf="!row.requestCorrection" (ngModelChange)="orderList($event, i)"
+                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" [disabled]="row.requestCorrection" (ngModelChange)="orderList($event, i)"
                                                         [(ngModel)]="selectedFilesTypes[i]"></p-checkbox>
                                                 </ng-template>
                                             </p-column>

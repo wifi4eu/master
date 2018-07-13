@@ -667,35 +667,40 @@ public class ApplicationService {
 
     /**
      * This method is called by the cron ScheduledTasks.deadlineSubmissionForRequestDocuments().
-     * It gets all applicatns that are on status follow up and check if they have files on requested correction.
+     * It gets all applicants that are on status follow up and check if they have files on requested correction, that were sent an email on this
+     * day and not afterwards. Also checks if the document was put as requested correction before the date. (This check is necessary because the user can
+     * send the email as many times as its want and we need to make sure that we don't invalidate beneficiaries that still have time to upload the
+     * requested documents.
      * If any of those files that are requested, are type 1 or 3 and the beneficiary hasn't uploaded them, this method invalidates this beneficiary.
      *
      * @param callId
-     * @param dateRequest
+     * @param dateRequest "deadline date". The date that is 7 days ago, its use to compare with the uploaded file and email log.
      */
     public void invalidateApplicationsPostRequestForDocumentsPastDeadline(Integer callId, long dateRequest) {
         List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus
                 .PENDING_FOLLOWUP.getValue());
         if (!applications.isEmpty()) {
             for (ApplicationIssueUtil applicationUtil : applications) {
-                List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(applicationUtil
-                        .getRegistrationId());
-                for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
-                    int legalType = legalFileCorrectionReason.getType();
-                    //if document as requested correction and legal type is 1 or 3 we need to check the uploaded time of the file and compare it
-                    if (legalFileCorrectionReason.getRequestCorrection() && (legalType == 1 || legalType == 3)) {
-                        LegalFilesDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(applicationUtil.getRegistrationId(),
-                                legalType);
-                        if (legalFile == null || (legalFile.getUploadTime().getTime() < dateRequest)) {
-                            // the file either hasn't been uploaded again or never was. We proceed to invalidate this application.
-                            ApplicationDTO applicationDTO = getApplicationById(applicationUtil.getApplicationId());
-                            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Deadline for Requested Documents - INVALIDATING application with " +
-                                    "" + "the id: " + applicationDTO.getId() + ". Legal file type: " + legalType);
-                            ApplicationInvalidateReasonDTO invalidReasonViewDTO = new ApplicationInvalidateReasonDTO(applicationDTO.getId(), 7);
-                            applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntity(invalidReasonViewDTO));
-                            applicationDTO.setStatus(ApplicationStatus.KO.getValue());
-                            applicationRepository.save(applicationMapper.toEntity(applicationDTO));
-                            break;
+                if (hasThisBeneficiaryBeenSentCorrectionEmailThisDay(applicationUtil.getRegistrationId(), dateRequest)) {
+                    List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(applicationUtil.getRegistrationId());
+                    for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
+                        int legalType = legalFileCorrectionReason.getType();
+                        //if document as requested correction and legal type is 1 or 3 we need to check the uploaded time of the file and compare it
+                        //if this document in particular was requested before the the email was sent we check to invalidate it
+                        if (legalFileCorrectionReason.getRequestCorrection() && (legalType == 1 || legalType == 3) && legalFileCorrectionReason
+                                .getRequestCorrectionDate().getTime() < dateRequest) {
+                            LegalFilesDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(applicationUtil.getRegistrationId(),
+                                    legalType);
+                            if (legalFile == null || (legalFile.getUploadTime().getTime() < dateRequest)) {
+                                // the file either hasn't been uploaded again or never was. We proceed to invalidate this application.
+                                ApplicationDTO applicationDTO = getApplicationById(applicationUtil.getApplicationId());
+                                _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Deadline for Requested Documents - INVALIDATING application with " + "" + "the id: " + applicationDTO.getId() + ". Legal file type: " + legalType);
+                                ApplicationInvalidateReasonDTO invalidReasonViewDTO = new ApplicationInvalidateReasonDTO(applicationDTO.getId(), 7);
+                                applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntity(invalidReasonViewDTO));
+                                applicationDTO.setStatus(ApplicationStatus.KO.getValue());
+                                applicationRepository.save(applicationMapper.toEntity(applicationDTO));
+                                break;
+                            }
                         }
                     }
                 }
@@ -704,11 +709,21 @@ public class ApplicationService {
     }
 
 
-    public boolean hasThisBeneficiaryBeenSentCorrectionEmailThisDay(Integer registrationId, long dateRequest){
+    /**
+     * This method is called by the cron ScheduledTasks.deadlineSubmissionForRequestDocuments().
+     * We need to check that this registration was indeed sent an sendCorrectionEmail on this day or afterwards.
+     *
+     * @param registrationId
+     * @param deadlineDay the day that we want to know if this registration was sent an sendCorrectionEmails
+     * @return if this registration was sent an sendCorrectionEmail on deadlineDay
+     */
+    public boolean hasThisBeneficiaryBeenSentCorrectionEmailThisDay(Integer registrationId, long deadlineDay){
         Integer municipalityId = registrationService.getRegistrationById(registrationId).getMunicipalityId();
         List<LogEmail> logEmails = logEmailRepository.findAllByMunicipalityIdAndActionOrderBySentDateDesc(municipalityId, "sendCorrectionEmails");
         for (LogEmail logEmail : logEmails){
-            if(logEmail.getSentDate() == dateRequest){
+            //if there's a log of a sendCorrectionEmail sent on this day, this applicant's deadline is today
+            //otherwise we will not invalidate them
+            if((logEmail.getSentDate() - deadlineDay) / (24 * 60 * 60 * 1000) == 0){
                 return true;
             }
         }
