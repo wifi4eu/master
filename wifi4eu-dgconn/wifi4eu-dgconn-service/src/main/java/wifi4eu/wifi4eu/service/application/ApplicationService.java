@@ -531,6 +531,13 @@ public class ApplicationService {
     }
 
     public CorrectionRequestEmailDTO sendCorrectionEmails(Integer callId) throws Exception {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        if (!checkIfCorrectionRequestEmailIsAvailable(callId)) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "-Emails can only be sent if call is closed and has " + "correction " +
+                    "requests, for the call:  " + "" + callId);
+            throw new AppException("Emails can only be sent if call is closed and has " + "correction requests, for the call:  " + "" + callId);
+        }
         List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus.PENDING_FOLLOWUP.getValue());
         CorrectionRequestEmailDTO correctionRequest = null;
         CorrectionRequestEmailDTO lastCorrectionRequestEmail = getLastCorrectionRequestEmailInCall(callId);
@@ -602,14 +609,11 @@ public class ApplicationService {
     }
 
     public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
-        CallDTO call = callService.getCallById(callId);
-        if (call != null) {
-            long currentTime = new Date().getTime();
-            if (call.getStartDate() < currentTime && currentTime > call.getEndDate()) {
-                List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(call.getId(), ApplicationStatus.PENDING_FOLLOWUP.getValue()));
-                if (!pendingFollowupApps.isEmpty()) {
-                    return true;
-                }
+        if (callService.isCallClosed(callId)) {
+            List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(callId,
+                    ApplicationStatus.PENDING_FOLLOWUP.getValue()));
+            if (!pendingFollowupApps.isEmpty()) {
+                return true;
             }
         }
         return false;

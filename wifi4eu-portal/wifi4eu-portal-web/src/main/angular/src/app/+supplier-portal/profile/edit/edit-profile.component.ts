@@ -199,14 +199,9 @@ export class SupplierEditProfileComponent {
         this.savingDataSubscription = this.supplierApi.updateSupplier(this.supplier).subscribe(
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
-                    this.supplier = null;
-                    this.geographicalScopeLoaded = false;
-                    this.isLogoUploaded = false;
-                    this.selectedCountries = [];
-                    this.selectedRegions = [];
-                    this.getSupplierData();
                     this.savingData = false;
                     this.sharedService.growlTranslation('Your profile data was updated successfully.', 'suppPortal.editProfile.save.success', 'success');
+                    this.goBack();
                 } else {
                     this.savingData = false;
                     this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'suppPortal.editProfile.save.error', 'error');
