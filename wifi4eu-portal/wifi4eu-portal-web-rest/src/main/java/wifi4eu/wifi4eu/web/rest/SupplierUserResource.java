@@ -28,10 +28,10 @@ public class SupplierUserResource {
     Logger _log = LogManager.getLogger(SupplierUserResource.class);
 
     @ApiOperation(value = "Create supplier user")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/{supplierId}/{userEmail}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO createSupplierUser(@RequestBody final int supplierId, @RequestBody final String userEmail) throws IOException {
+    public ResponseDTO createSupplierUser(@PathVariable("supplierId") final int supplierId, @PathVariable("userEmail") final String userEmail) throws IOException {
 
         _log.debug("SupplierId : " + supplierId + " , supplierUserEmail : " + userEmail + " - Creating SupplierUser");
 
