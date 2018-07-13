@@ -811,6 +811,11 @@ public class VoucherService {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Call does not exist with id " + callId);
             throw new AppException("Call not found with id: " + callId);
         }
+        long currentTime = new Date().getTime();
+        if (!(callDTO.getStartDate() < currentTime && callDTO.getEndDate() < currentTime)) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiaries are only to be notified if the call has been closed. CallId:" + callId);
+            throw new AppException("Beneficiaries are only to be notified if the call has been closed. CallId:" + callId);
+        }
 
         List<ApplicationDTO> successfulApplicants;
         List<ApplicationDTO> reserveApplicants;
