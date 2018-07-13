@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -528,4 +529,22 @@ public class BeneficiaryService {
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - CSV generated");
         return sb.toString();
     }
+
+    public void sendEmailToContacts(String newUserEmail) {
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+
+        UserDTO user = new UserDTO();
+        UserContext userContext = UserHolder.getUser();
+
+        String userName = userContext.getName() + ' ' + userContext.getLastName();
+
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
+        String msgBody = bundle.getString("mail.sendUserEmail.beneficiary.body");
+        msgBody = MessageFormat.format(userName, msgBody);
+        if (!userService.isLocalHost()) {
+            mailService.sendEmailAsync(newUserEmail, MailService.FROM_ADDRESS, subject, msgBody);
+        }
+    }
+
 }

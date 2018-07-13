@@ -30,6 +30,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.BadRequestException;
 import java.io.IOException;
 import java.util.List;
 
@@ -275,5 +276,25 @@ public class BeneficiaryResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
+    }
+
+    @ApiOperation(value = "sendEmailToNewContact")
+    @RequestMapping(value = "/sendEmailToNewContact", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO sendEmailToNewContact(@RequestParam("newUserEmail") final String newUserEmail, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (newUserEmail == userContext.getEmail()) {
+                throw new AppException("");
+            }
+            beneficiaryService.sendEmailToContacts(newUserEmail);
+            return new ResponseDTO(true, "your email was successfully sent.", null);
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export Excel", e.getMessage());
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+
     }
 }
