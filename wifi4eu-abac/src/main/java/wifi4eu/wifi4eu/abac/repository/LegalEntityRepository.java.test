@@ -1,0 +1,16 @@
+package wifi4eu.wifi4eu.abac.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+import wifi4eu.wifi4eu.abac.entity.LegalEntity;
+import wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF;
+
+public interface LegalEntityRepository extends CrudRepository<ValidatedLEF, Integer> {
+
+	@Query(value = "SELECT le.id as id, le.key as key FROM ABAC_LEGAL_ENTITIES le WHERE le.key is not null")
+    List<LegalEntity> findLegalEntitiesWithKey();
+
+}

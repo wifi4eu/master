@@ -1,0 +1,91 @@
+package wifi4eu.wifi4eu.abac.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ABAC_LEGAL_ENTITIES")
+public class LegalEntity {
+    @Column(name = "id")
+    @Id
+    private Integer id;
+
+    @Column(name = "status")
+    private String status;
+    
+    @Column(name = "countryCode")
+    private String countryCode;
+    
+    @Column(name = "municipalityName")
+    private String municipalityName;
+
+	@Column(name = "municipalityAddress")
+    private String municipalityAddress;
+
+    @Column(name = "key")
+    private String key;
+
+    public LegalEntity() {}
+
+    public LegalEntity(Integer id) {
+        this.id = id;
+    }
+
+    public LegalEntity(Integer id, String status, String countryCode, String municipalityName, String municipalityAddress) {
+        this.id = id;
+        this.status = status;
+        this.countryCode = countryCode;
+        this.municipalityName = municipalityName;
+        this.municipalityAddress = municipalityAddress;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+	public String getMunicipalityName() {
+		return municipalityName;
+	}
+
+	public void setMunicipalityName(String municipalityName) {
+		this.municipalityName = municipalityName;
+	}
+
+	public String getMunicipalityAddress() {
+		return municipalityAddress;
+	}
+
+	public void setMunicipalityAddress(String municipalityAddress) {
+		this.municipalityAddress = municipalityAddress;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+    public String getStatus() {
+        return status;
+    }
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+}
