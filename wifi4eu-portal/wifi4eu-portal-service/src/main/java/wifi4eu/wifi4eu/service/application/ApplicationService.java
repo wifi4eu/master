@@ -167,15 +167,6 @@ public class ApplicationService {
     }
 
     @Transactional
-    public boolean isMunicipalityEditable(int municipalityId){
-        Integer firstQuery = municipalityRepository.checkMunicipalityEditPermission(municipalityId);
-        if (firstQuery > 0){
-            return true;
-        }
-        return false;
-    }
-
-    @Transactional
     @Deprecated
     public ApplicationDTO createApplication(ApplicationDTO applicationDTO, HttpServletRequest request) {
         UserContext userContext = UserHolder.getUser();
