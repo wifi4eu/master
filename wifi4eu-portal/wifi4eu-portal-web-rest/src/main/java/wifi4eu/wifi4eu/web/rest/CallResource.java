@@ -40,4 +40,12 @@ public class CallResource {
     public CallDTO getCallById(@PathVariable("callId") final Integer callId) {
         return callService.getCallById(callId);
     }
+
+    @ApiOperation(value = "Get if call is closed by specific id or not")
+    @RequestMapping(value = "isCallClosed/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public boolean isCallClosed(@PathVariable("callId") final Integer callId) {
+        return false;
+    }
+
 }
