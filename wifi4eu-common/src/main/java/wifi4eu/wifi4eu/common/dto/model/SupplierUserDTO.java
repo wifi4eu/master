@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class SupplierUserDTO implements Serializable {
 
-    private int id;
-    private int userId;
+    private Integer id;
+    private Integer userId;
     private int supplierId;
     private int main;
     private int status;
@@ -16,27 +16,27 @@ public class SupplierUserDTO implements Serializable {
     public SupplierUserDTO() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public int getSupplierId() {
+    public Integer getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(int supplierId) {
+    public void setSupplierId(Integer supplierId) {
         this.supplierId = supplierId;
     }
 

@@ -13,7 +13,7 @@ public class SupplierUser {
     private Integer id;
 
     @Column(name = "user_id")
-    private int userId;
+    private Integer userId;
 
     @Column(name = "supplier_id")
     private int supplierId;
@@ -39,11 +39,11 @@ public class SupplierUser {
         this.id = id;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
