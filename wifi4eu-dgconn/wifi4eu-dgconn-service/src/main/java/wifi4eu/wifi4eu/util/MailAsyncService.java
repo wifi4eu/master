@@ -81,7 +81,7 @@ public class MailAsyncService implements Runnable {
             helper.setTo(toAddress);
             helper.setFrom(fromAddress);
 
-           // mailSender.send(message);
+            mailSender.send(message);
 
             //-- Log email
             logEmail();

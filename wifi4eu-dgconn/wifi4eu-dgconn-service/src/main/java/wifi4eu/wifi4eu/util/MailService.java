@@ -99,7 +99,7 @@ public class MailService {
                 helper.setSubject(subject);
                 helper.setTo(toAddress);
                 helper.setFrom(fromAddress);
-                //mailSender.send(message);
+                mailSender.send(message);
 
                 //-- Log email
                 logEmail(toAddress, fromAddress, subject, msgBody, municipalityId, action);
@@ -111,7 +111,7 @@ public class MailService {
     }
 
     public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody) {
-        //sendEmailAsync(toAddress, fromAddress, subject, msgBody, 0, NO_ACTION);
+        sendEmailAsync(toAddress, fromAddress, subject, msgBody, 0, NO_ACTION);
     }
 
     public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
