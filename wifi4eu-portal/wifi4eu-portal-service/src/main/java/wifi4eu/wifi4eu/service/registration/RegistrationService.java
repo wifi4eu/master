@@ -386,7 +386,7 @@ public class RegistrationService {
         String name = supplier.getName();
         String email = supplier.getContactEmail();
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-        String lang = userUtils.getUserLangByUserId(supplier.getUser().getId());
+        String lang = userUtils.getUserLangByUserId(supplierService.getUserIdFromSupplier(supplier.getId()));
         if (lang != null) {
             _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - No language specified, using the default language");
             locale = new Locale(lang);

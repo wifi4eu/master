@@ -91,7 +91,7 @@ public class SupplierResource {
         SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
         try {
             UserDTO userDTO = userConnected;
-            if (supplierDTO.getUserId() != userDTO.getId() && userDTO.getType() != 5) {
+            if (supplierService.getUserIdFromSupplier(supplierDTO.getId()) != userDTO.getId() && userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier retrieved successfully");
@@ -146,7 +146,7 @@ public class SupplierResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier");
         try {
-            if (supplierDTO.getUserId() != userConnected.getId()) {
+            if (supplierService.getUserIdFromSupplier(supplierDTO.getId()) != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             SupplierDTO resSupplier = supplierService.updateSupplier(supplierDTO);
@@ -170,11 +170,12 @@ public class SupplierResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating contact details");
         try {
-            if (supplierDTO.getUserId() != userConnected.getId()) {
+            int supplierUserId = supplierService.getUserIdFromSupplier(supplierDTO.getId());
+            if (supplierUserId != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
-            if (supplierDTO.getId() != sendSupplierDTO.getId()) {
+            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierUserId);
+            if (supplierUserId != sendSupplierDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             SupplierDTO resSupplier = supplierService.updateContactDetails(sendSupplierDTO, supplierDTO.getContactName(), supplierDTO.getContactSurname(), supplierDTO.getContactPhonePrefix(), supplierDTO.getContactPhoneNumber());
@@ -198,10 +199,11 @@ public class SupplierResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier details");
         try {
-            if (supplierDTO.getUserId() != userConnected.getId()) {
+            int supplierUserId = supplierService.getUserIdFromSupplier(supplierDTO.getId());
+            if (supplierUserId != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
+            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierUserId);
             if (supplierDTO.getId() != sendSupplierDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
@@ -450,4 +452,20 @@ public class SupplierResource {
                 pageObj.getTotalElements(),
                 null);
     }
+
+    @ApiOperation(value = "Get userId from supplier ")
+    @RequestMapping(value = "/getUserId/{supplierId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO getUserIdFromSupplier(@PathVariable("supplierId") final int supplierId) throws IOException {
+
+        try {
+
+            Integer userId = supplierService.getUserIdFromSupplier(supplierId);
+            return new ResponseDTO(true, userId, null);
+
+        } catch (Exception e) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
 }
