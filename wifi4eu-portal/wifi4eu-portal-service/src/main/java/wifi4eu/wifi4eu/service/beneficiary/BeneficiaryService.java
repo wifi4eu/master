@@ -15,6 +15,7 @@ import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
@@ -540,21 +541,25 @@ public class BeneficiaryService {
         return sb.toString();
     }
 
-    public void sendEmailToContacts(String newUserEmail) {
+    public UserRegistrationDTO sendEmailToContacts(UserRegistrationDTO userRegistrationDTO) {
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
 
-        UserDTO user = new UserDTO();
-        UserContext userContext = UserHolder.getUser();
 
-        String userName = userContext.getName() + ' ' + userContext.getLastName();
+        UserContext userContext = UserHolder.getUser();
+        UserDTO user = userService.getUserByUserContext(userContext);
+        String userName = user.getName() + ' ' + user.getSurname();
+
+        MunicipalityDTO municipality = municipalityService.getMunicipalityById(userRegistrationDTO.getMunicipalityId());
+        String municipalityName = municipality.getName();
 
         ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
         String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
         String msgBody = bundle.getString("mail.sendUserEmail.beneficiary.body");
-        msgBody = MessageFormat.format(userName, msgBody);
+        msgBody = MessageFormat.format(msgBody, userName, municipalityName);
         if (!userService.isLocalHost()) {
-            mailService.sendEmailAsync(newUserEmail, MailService.FROM_ADDRESS, subject, msgBody);
+            mailService.sendEmail(userRegistrationDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
+        return userRegistrationDTO;
     }
 
 }

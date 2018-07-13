@@ -14,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
-import wifi4eu.wifi4eu.common.dto.model.BeneficiaryListItemDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -27,6 +24,7 @@ import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.ScheduledTasks;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,6 +46,9 @@ public class BeneficiaryResource {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ScheduledTasks scheduledTasks;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryResource.class);
 
@@ -281,15 +282,15 @@ public class BeneficiaryResource {
     @ApiOperation(value = "sendEmailToNewContact")
     @RequestMapping(value = "/sendEmailToNewContact", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO sendEmailToNewContact(@RequestParam("newUserEmail") final String newUserEmail, HttpServletResponse response) throws IOException {
+    public ResponseDTO sendEmailToNewContact(@RequestBody final UserRegistrationDTO userRegistrationDTO, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
-            if (newUserEmail == userContext.getEmail()) {
+            if (userRegistrationDTO.getEmail() == userContext.getEmail()) {
                 throw new AppException("");
             }
-            beneficiaryService.sendEmailToContacts(newUserEmail);
-            return new ResponseDTO(true, "your email was successfully sent.", null);
+            beneficiaryService.sendEmailToContacts(userRegistrationDTO);
+            return new ResponseDTO(true, userRegistrationDTO, null);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export Excel", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
@@ -297,4 +298,13 @@ public class BeneficiaryResource {
         }
 
     }
+
+
+    @ApiOperation(value = "getUserRegistration")
+    @RequestMapping(value = "/getUserRegistration", method = RequestMethod.GET)
+    @ResponseBody
+    public UserRegistrationDTO getUserRegistration() {
+        return null;
+    }
+
 }

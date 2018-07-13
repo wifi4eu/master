@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.rabbitmq.client.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,13 +10,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
@@ -33,6 +37,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -76,6 +81,9 @@ public class ScheduledTasks {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RegistrationUsersRepository registrationUsersRepository;
 
     private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
@@ -301,5 +309,15 @@ public class ScheduledTasks {
         }
     }
 
+    @Scheduled(cron = "59 59 23 * * *")
+    public void contactEmailTimer() {
+        List<RegistrationUsers> registrationUsers = Lists.newArrayList(registrationUsersRepository.findAll());
+        for (int i = 0; registrationUsers.size() > i; i++) {
+            RegistrationUsers registrationUser = registrationUsersRepository.findOne(i);
+            if (registrationUser.getUserId() == null && (registrationUser.getCreationDate().toInstant().plus(24, ChronoUnit.HOURS).compareTo(new Date().toInstant()) == -1)) {
+                registrationUsersRepository.delete(registrationUsers);
+            }
+        }
+    }
 
 }

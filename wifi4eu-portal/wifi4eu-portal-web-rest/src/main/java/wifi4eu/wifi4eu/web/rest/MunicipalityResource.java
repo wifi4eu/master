@@ -204,7 +204,7 @@ public class MunicipalityResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating municipality details");
         try {
             RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityId);
-            if (registrationDTO.getUserId() != userConnected.getId()) {
+            if (registrationUsersRepository.findByUserIdAndRegistrationId(userConnected.getId(), registrationDTO.getId()) != null) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
