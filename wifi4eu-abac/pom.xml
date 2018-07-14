@@ -4,24 +4,27 @@
 
     <groupId>eu.europa.ec.digit</groupId>
     <artifactId>wifi4eu-abac</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
 
 	<properties>
 		
-		<spring.version>4.3.5.RELEASE</spring.version>
+    <jdk.version>1.7</jdk.version>
+    <spring.version>4.3.5.RELEASE</spring.version>
     <spring.security.version>3.2.9.RELEASE</spring.security.version>
     <spring.data.jpa.version>1.10.4.RELEASE</spring.data.jpa.version>
-    
+
     <ng.env>local</ng.env>
-		
-    <jndi.datasource.name>jdbc/Wifi4euAbacDataSource</jndi.datasource.name>
-		<eclipselink.logging.level>WARNING</eclipselink.logging.level>
-		<eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
-	  <eclipselink.logging.parameters>true</eclipselink.logging.parameters>			
-    <abac.name>financial</abac.name>
-    <abac.context.name>/financial</abac.context.name>
+    
+    <persistence.unit.name>wifi4eu-financialPersistence</persistence.unit.name>
+    <jndi.datasource.name>Wifi4euAbacDataSource</jndi.datasource.name>
+    <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+    <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+	  <eclipselink.logging.parameters>true</eclipselink.logging.parameters>		
+    <eclipselink.target.database>Oracle</eclipselink.target.database>    
+    <abac.name>wifi4eu-financial</abac.name>
+    <abac.context.name>/wifi4eu-financial</abac.context.name>
 
 	</properties>
 
@@ -183,8 +186,18 @@
     </dependencies>
 
     <build>
-	<finalName>wifi4eu-financial</finalName>	
+      <finalName>wifi4eu-financial</finalName>	
+      
         <plugins>
+        
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>

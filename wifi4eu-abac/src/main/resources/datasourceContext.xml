@@ -15,7 +15,11 @@
     <context:load-time-weaver/>
     <tx:annotation-driven/>
 
-    <jee:jndi-lookup id="dataSource" jndi-name="wifi4eu-financial" expected-type="javax.sql.DataSource"/>
+    <!-- should use the properties -->
+    <!--
+    <jndi.datasource.name>Wifi4euAbacDataSource</jndi.datasource.name>
+    -->
+    <jee:jndi-lookup id="Wifi4euAbacDataSource" jndi-name="jdbc/Wifi4euAbacDataSource" expected-type="javax.sql.DataSource"/>
 
     <!--bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/-->
 

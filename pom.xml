@@ -19,7 +19,9 @@
         <!-- Commented because provokes an error in building process
         <module>wifi4eu-supplier</module>
         -->
+        <!-- should be build with his own pom
         <module>wifi4eu-abac</module>
+        -->
         <!--<module>wifi4eu-financial</module>-->
     </modules>
 
