@@ -22,7 +22,6 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/mediocregopher/radix.v2/pool"
-	_ "github.com/tomasen/realip"
 )
 
 func initDB() map[int64]string {
@@ -135,6 +134,12 @@ func main() {
 
 	})
 	*/
+
+	e.GET("/time", func(c echo.Context) error {
+
+		return c.String(http.StatusOK, strconv.FormatInt(time.Now().Unix(), 10))
+
+	})
 
 	e.GET("/calls/:callId/apply/:r/:u/:m", func(c echo.Context) error {
 
