@@ -11,7 +11,7 @@ import java.io.IOException;
 
 
 @SpringBootApplication
-public class DemoApplication extends SpringBootServletInitializer implements CommandLineRunner {
+public class App extends SpringBootServletInitializer implements CommandLineRunner {
 
 	@Autowired
 	private Environment environment;
@@ -23,13 +23,15 @@ public class DemoApplication extends SpringBootServletInitializer implements Com
 
 		Config.init(environment);
 
-		new LocalDB();
+		QueueConsumer conn = new QueueConsumer();
+
+		Thread thread = new Thread(conn);
+
+		thread.start();
 	}
 
 	public static void main(String[] args) throws IOException {
 
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(App.class, args);
 	}
-
-
 }

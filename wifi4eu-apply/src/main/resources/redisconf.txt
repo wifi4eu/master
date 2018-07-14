@@ -1,0 +1,19 @@
+# GO PACKAGES:
+
+go get github.com/tomasen/realip
+go get github.com/denisenkom/go-mssqldb
+go get github.com/labstack/echo
+go get github.com/labstack/echo/middleware
+go get github.com/mediocregopher/radix.v2/pool
+
+
+
+
+# MODIFY /etc/sysctl.conf:
+fs.file-max = 200000
+net.core.somaxconn = 40000
+vm.overcommit_memory = 1
+
+# DISABLE THP -- https://stackoverflow.com/questions/43032406/gke-cant-disable-transparent-huge-pages-permission-denied/43081893
+sudo sh -c 'echo never > /sys/kernel/mm/transparent_hugepage/enabled'
+

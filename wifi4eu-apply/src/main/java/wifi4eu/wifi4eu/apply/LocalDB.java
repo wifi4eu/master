@@ -1,13 +1,8 @@
 package wifi4eu.wifi4eu.apply;
 
 
-import io.lettuce.core.StreamMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
-
-import java.io.File;
-import java.io.InputStream;
 import java.sql.*;
 
 
@@ -27,9 +22,12 @@ public class LocalDB {
 
         db = DriverManager.getConnection(Config.getEnvironment("wifi4eu.localdb.uri"));
 
-        //bootstrapSchema();
+        bootstrapSchema();
     }
 
+    ///
+    /// Initialise table(s) if they don't exist
+    ///
     private void bootstrapSchema() throws Exception {
 
         String sql = Util.getResource("/static/dbschema.sql");
@@ -38,6 +36,9 @@ public class LocalDB {
         st.executeUpdate(sql);
     }
 
+    ///
+    /// Persist a redis message to local DB
+    ///
     public void saveMessage(Application app) throws SQLException {
 
         PreparedStatement ps = db.prepareStatement(insertSQL);

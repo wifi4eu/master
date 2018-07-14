@@ -5,6 +5,9 @@ import io.lettuce.core.StreamMessage;
 import io.lettuce.core.XReadArgs;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisStreamCommands;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +19,13 @@ import java.util.*;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-@RestController
+@Controller
 public class HelloController {
 
-    @RequestMapping("/")
-    public String index() {
+    @GetMapping("/")
+    public String index(Model model) {
 
+        /*
         RedisClient client = RedisClient.create("redis://localhost");
         StatefulRedisConnection<String, String> connection = client.connect();
         RedisStreamCommands<String, String> streamCommands = connection.sync();
@@ -44,14 +48,20 @@ public class HelloController {
         }
 
         return "Greetings from Spring Boot!";
+        */
+
+        model.addAttribute("numReceived", Monitor.getReceived());
+        model.addAttribute("numProcessed", Monitor.getProcessed());
+
+        return "status";
     }
 
-
+    /*
     @RequestMapping(value = "/util/populate/{amount}", method = GET)
     public String generateData(@PathVariable int amount) {
 
         try {
-            QueueConnection conn = new QueueConnection();
+            QueueConsumer conn = new QueueConsumer();
             String ip = "0.0.0.0";
 
              try {
@@ -79,21 +89,6 @@ public class HelloController {
             return "ERROR: " + Util.getStackTrace(ex);
         }
     }
-
-    @RequestMapping(value = "/listen", method = GET)
-    public String listen() {
-        try {
-            QueueConnection conn = new QueueConnection();
-
-            conn.consume();
-
-        } catch (Exception ex) {
-            String trace = Util.getStackTrace(ex);
-            return trace;
-        }
-
-        return "OK";
-    }
-
+    */
 
 }
