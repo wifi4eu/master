@@ -1,12 +1,26 @@
-apt-get install build-essential tcl
-
-
 
 #INSTALL JDK8
-http://tipsonubuntu.com/2016/07/31/install-oracle-java-8-9-ubuntu-16-04-linux-mint-18/
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt update; sudo apt install oracle-java8-installer
+
+
+INSTALL REDIS 5
+https://github.com/antirez/redis/archive/5.0-rc3.tar.gz
+apt-get install build-essential tcl
+
+make install
+
+apt-get update
+
 
 
 # GO PACKAGES:
+sudo add-apt-repository ppa:gophers/archive
+sudo apt-get update
+sudo apt-get install golang-1.10-go
+sudo ln -s /usr/lib/go-1.10/bin/go /usr/bin/go
+
+
 
 go get github.com/tomasen/realip
 go get github.com/denisenkom/go-mssqldb
