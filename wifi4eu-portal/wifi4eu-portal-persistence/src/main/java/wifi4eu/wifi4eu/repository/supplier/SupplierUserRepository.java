@@ -5,9 +5,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 
+import java.util.List;
+
 public interface SupplierUserRepository extends CrudRepository<SupplierUser,Integer> {
 
     SupplierUser findFirstSupplierUserBySupplierIdAndEmail(@Param("supplierId") int supplierId , @Param("email") String email);
+
+    List<SupplierUser> findByEmail(@Param("email") String email);
 
     //SupplierUser findFirstSupplierUserBySupplierIdAndMain(@Param("supplierId") int supplierId , @Param("main") int main);
 

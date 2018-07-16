@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserType;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
+import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
@@ -446,5 +447,35 @@ public class SupplierService {
 
     public SupplierUserDTO findByCode(String code){
         return supplierUserMapper.toDTO(supplierUserRepository.findFirstSupplierUserByCode(code));
+    }
+
+    public List<SupplierUserDTO> findByEmail(String email){
+        return supplierUserMapper.toDTOList(supplierUserRepository.findByEmail(email));
+    }
+
+    public List<SupplierUserDTO> registerSupplierUserIfApplies(List<SupplierUserDTO> supplierUserDTOList){
+        List<SupplierUserDTO> supplierUserDTOToUpdate = new ArrayList<>();
+
+        for(SupplierUserDTO supplierUserDTO: supplierUserDTOList){
+
+            if (SupplierUserStatus.NOT_REGISTERED.getStatus() == supplierUserDTO.getStatus()
+                    && createdLessThan24HBefore(supplierUserDTO)){
+
+                supplierUserDTO.setStatus(SupplierUserStatus.ALREADY_REGISTERED.getStatus());
+                supplierUserDTOToUpdate.add(supplierUserDTO);
+            }
+        }
+
+        Iterator<SupplierUser> supplierUserIterator = supplierUserRepository.save(supplierUserMapper.toEntityList(supplierUserDTOToUpdate)).iterator();
+        supplierUserDTOToUpdate.clear();
+
+        SupplierUser supplierUser;
+
+        while(supplierUserIterator.hasNext()){
+            supplierUser = supplierUserIterator.next();
+            supplierUserDTOToUpdate.add(supplierUserMapper.toDTO(supplierUser));
+        }
+
+        return supplierUserDTOToUpdate;
     }
 }

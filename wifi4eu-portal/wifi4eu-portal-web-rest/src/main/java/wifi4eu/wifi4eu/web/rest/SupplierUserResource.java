@@ -15,6 +15,7 @@ import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 
 import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -76,11 +77,33 @@ public class SupplierUserResource {
         }
     }
 
+    @ApiOperation(value = "Register supplier user")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO registerSupplierUser(@RequestParam("userEmail") final String userEmail) throws IOException {
+
+        try {
+
+            List<SupplierUserDTO> supplierUserDTOList = supplierService.findByEmail(userEmail);
+
+            if (supplierUserDTOList == null || supplierUserDTOList.isEmpty()) {
+                return new ResponseDTO(false, null, new ErrorDTO(0, "NOT EXISTS"));
+            }
+
+            List<SupplierUserDTO> supplierUserDTOToUpdate = supplierService.registerSupplierUserIfApplies(supplierUserDTOList);
+
+            return new ResponseDTO(true, supplierUserDTOToUpdate, null);
+
+        }catch (Exception ex){
+            return new ResponseDTO(false, null, new ErrorDTO(0, ex.getMessage()));
+        }
+    }
+
     @ApiOperation(value = "Register supplier user by code")
     @RequestMapping(value = "/register/{code}", method = RequestMethod.POST)
     //@RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO registerSupplierUser(@PathVariable("code") final  String code) throws IOException {
+    public ResponseDTO registerSupplierUserByCode(@PathVariable("code") final  String code) throws IOException {
 
         try {
 
