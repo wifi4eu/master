@@ -41,6 +41,14 @@ public class CallResource {
         return callService.getCallById(callId);
     }
 
+    @ApiOperation(value = "Get the current call")
+    @RequestMapping(value = "/current-active", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public CallDTO getCurrentCall() {
+        return callService.getCurrentCall();
+    }
+
+
     @ApiOperation(value = "Get if call is closed by specific id or not")
     @RequestMapping(value = "isCallClosed/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

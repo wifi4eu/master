@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -127,6 +128,32 @@ public class ApplicationInvalidateReasonResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been validated", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Get application by call and registration id")
+    @RequestMapping(value = "/can-change-status/by-application/{applicationId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO changeStatusApplicationEnabled(@PathVariable("applicationId") Integer applicationID, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        //_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Validating applications");
+        try {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            Map<String, Boolean> checks = applicationInvalidateReasonService.changeStatusApplicationEnabled(applicationID, request);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Validation to change application status retrieved");
+            return new ResponseDTO(true, checks, null);
+        } catch (org.springframework.security.access.AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to validate this application", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Validation to change application status cannot be retrieved", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
