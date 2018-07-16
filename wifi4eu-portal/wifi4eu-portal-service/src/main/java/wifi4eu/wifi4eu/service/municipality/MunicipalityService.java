@@ -5,6 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +14,11 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.mapper.municipality.MunicipalityCorrespondenceMapper;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -51,6 +56,12 @@ public class MunicipalityService {
 
     @Autowired
     MunicipalityService municipalityService;
+
+    @Autowired
+    LogEmailRepository logEmailRepository;
+
+    @Autowired
+    MunicipalityCorrespondenceMapper municipalityCorrespondenceMapper;
 
     private final Logger _log = LogManager.getLogger(MayorService.class);
 
@@ -223,5 +234,11 @@ public class MunicipalityService {
             country = "%";
         }
         return municipalityRepository.countDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name);
+    }
+
+    public ResponseDTO getCorrespondenceByMunicipalityId(Integer municipalityId, Pageable pageable) {
+        Page<LogEmail> page = logEmailRepository.findAllByMunicipalityId(municipalityId, pageable);
+        List<LogEmailDTO> correspondanceDTOS = municipalityCorrespondenceMapper.toDTOList(page.getContent());
+        return new ResponseDTO(true, correspondanceDTOS, page.getTotalElements(), null);
     }
 }
