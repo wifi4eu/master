@@ -501,7 +501,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     }
 
     private requestLegalFilesCorrection() {
-        if (!this.processingRequest) {
+        if (!this.processingRequest && this.correctRequestLegalFilesModal) {
             if (this.selectedIndex != null) {
                 let savedFilesCount = 0;
                 let savedFilesLimit = this.selectedFilesTypes[this.selectedIndex].length;

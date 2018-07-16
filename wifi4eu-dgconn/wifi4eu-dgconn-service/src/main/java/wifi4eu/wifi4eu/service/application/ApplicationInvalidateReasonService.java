@@ -186,14 +186,14 @@ public class ApplicationInvalidateReasonService {
         }
 
         RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDBO.getRegistrationId());
-        List<LogEmailDTO> emails = municipalityService.getCorrespondenceByMunicipalityIdAndAction(registrationDTO.getMunicipalityId(), "sendCorrectionEmails");
+        LogEmailDTO email = municipalityService.getCorrespondenceByMunicipalityIdAndAction(registrationDTO.getMunicipalityId(), "sendCorrectionEmails");
 
-        if(emails.isEmpty()){
+        if(email == null){
             checks.put("invalidate", applicationDBO.getStatus() == ApplicationStatus.OK.getValue());
             checks.put("validate", applicationDBO.getStatus() == ApplicationStatus.KO.getValue());
         }
         else{
-            Date sentDate = new Date(emails.get(0).getSentDate());
+            Date sentDate = new Date(email.getSentDate());
 
             List<LegalFiles> legalFiles = legalFilesRepository.findAllByRegistration(applicationDBO.getRegistrationId());
             for(LegalFiles legalFile: legalFiles){
