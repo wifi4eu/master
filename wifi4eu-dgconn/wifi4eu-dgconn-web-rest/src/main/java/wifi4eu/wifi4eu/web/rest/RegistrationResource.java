@@ -18,6 +18,7 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.registration.LegalFiles;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
@@ -476,7 +477,30 @@ public class RegistrationResource {
         }
     }
 
-    @ApiOperation(value = "Create/update a legal file")
+    @ApiOperation(value = "Get legal file uploadTime")
+    @RequestMapping(value = "/getLegalFilesUploadTime/{registrationId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO getLegalFilesUploadTimeByRegistrationId(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting legal files by registration id "+registrationId);
+        try {
+            if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Legal files UploadTime retrieved successfully");
+            return new ResponseDTO(true, legalFilesService.getUploadTimesAllFiles(registrationId), null);
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve these legal files", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal files cannot been retrieved", e);
+            return null;
+        }
+    }
+
+        @ApiOperation(value = "Create/update a legal file")
     @RequestMapping(value = "/saveLegalFile", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody

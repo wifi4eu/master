@@ -63,12 +63,12 @@
                         </span>
                     </span>
                     <span class="right">
-                        <button type="button" class="btn greenButton" (click)="displayValidateModal(i)" [disabled]="applications[i].status == 2 || registrations[i].allFilesFlag != 1">
-                            {{ 'dgConn.applicantDetails.validateApplication.title' | translate }}
-                        </button>
-                        <button type="button" class="btn redButton" (click)="displayInvalidateModal(i)" [disabled]="applications[i].status == 1">
-                            {{ 'dgConn.applicantDetails.invalidateApplication.title' | translate }}
-                        </button>
+                      <button type="button" class="btn greenButton" #validateBtn (click)="displayValidateModal(i)" [disabled]="!buttonStatusEnabled[i]?.validate || applications[i].status == 2 || registrations[i].allFilesFlag != 1">
+                        {{ 'dgConn.applicantDetails.validateApplication.title' | translate }}
+                      </button>
+                      <button type="button" class="btn redButton" #invalidateBtn (click)="displayInvalidateModal(i)" [disabled]="!buttonStatusEnabled[i]?.invalidate || applications[i].status == 1">
+                          {{ 'dgConn.applicantDetails.invalidateApplication.title' | translate }}
+                      </button>
                     </span>
                 </div>
                 <div class="row applicantDetailsPanel">
@@ -190,7 +190,7 @@
                                         <p-dataTable [value]="legalFiles[i]">
                                             <p-column field="type" [sortable]="false" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" *ngIf="!row.requestCorrection" (ngModelChange)="orderList($event, i)"
+                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" [disabled]="row.requestCorrection" (ngModelChange)="orderList($event, i)"
                                                         [(ngModel)]="selectedFilesTypes[i]"></p-checkbox>
                                                 </ng-template>
                                             </p-column>
