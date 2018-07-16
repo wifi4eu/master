@@ -201,4 +201,8 @@ public class MunicipalityService {
         List<LogEmailDTO> correspondanceDTOS = municipalityCorrespondenceMapper.toDTOList(page.getContent());
         return new ResponseDTO(true, correspondanceDTOS, page.getTotalElements(), null);
     }
+
+    public List<LogEmailDTO> getCorrespondenceByMunicipalityIdAndAction(Integer municipalityId, String action){
+        return municipalityCorrespondenceMapper.toDTOList(logEmailRepository.findTopByMunicipalityIdAndActionOrderBySentDateDesc(municipalityId, action));
+    }
 }

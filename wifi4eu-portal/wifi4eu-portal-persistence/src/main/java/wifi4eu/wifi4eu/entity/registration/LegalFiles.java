@@ -30,10 +30,11 @@ public class LegalFiles {
 
 	}
 
-	public LegalFiles(int registration, String fileData, int fileType) {
+	public LegalFiles(int registration, String fileData, int fileType, Date uploadTime) {
 		this.registration = registration;
 		this.fileData = fileData;
 		this.fileType = fileType;
+		this.uploadTime = uploadTime;
 	}
 
 	public Integer getId() {

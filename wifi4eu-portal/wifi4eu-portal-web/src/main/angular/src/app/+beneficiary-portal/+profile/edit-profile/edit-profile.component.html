@@ -27,11 +27,11 @@
             <br>
             <div class="row">
                 <div class="col-sm-2"></div>
-                <div class="col-sm-8">
+                <div class="col-sm-7">
                     <span class="profileData">{{ 'shared.municipality.label' | translate}} {{i+1}}</span>
                 </div>
-                <div class="col-sm-2">
-                    <a (click)="openModal(municipality.id)" class="edit">
+                <div class="col-sm-3">
+                    <a *ngIf="isMunicipalityEditable[municipality.id] && isOrganisation" (click)="openModal(municipality.id)" class="edit">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                         {{ 'shared.delete.button' | translate }}
                     </a>
@@ -54,12 +54,9 @@
             <div class="row">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8">
-                    <input id="address_municipality" type="text" [(ngModel)]="municipality.address" class="form-control"
-                           name="address_municipality"
-                           ngcontrol="address_municipality" #address_municipality="ngModel"
-                           (ngModelChange)="checkButtonEnabled($event, i)" required>
-                    <div [hidden]="address_municipality.valid || address_municipality.pristine"
-                         class="alert alert-danger">
+                    <input id="address_municipality"  type="text" [(ngModel)]="municipality.address" class="form-control" name="address_municipality"
+                        ngcontrol="address_municipality" #address_municipality="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]" required>
+                    <div [hidden]="address_municipality.valid || address_municipality.pristine" class="alert alert-danger">
                     </div>
                 </div>
                 <div class="col-sm-2"></div>
@@ -74,12 +71,9 @@
             <div class="row">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8">
-                    <input id="number_municipality" type="text" [(ngModel)]="municipality.addressNum"
-                           class="form-control" name="number_municipality"
-                           ngcontrol="number_municipality" #number_municipality="ngModel"
-                           (ngModelChange)="checkButtonEnabled($event, i)" required>
-                    <div [hidden]="number_municipality.valid || number_municipality.pristine"
-                         class="alert alert-danger">
+                    <input id="number_municipality" type="text" [(ngModel)]="municipality.addressNum" class="form-control" name="number_municipality"
+                        ngcontrol="number_municipality" #number_municipality="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]" required>
+                    <div [hidden]="number_municipality.valid || number_municipality.pristine" class="alert alert-danger">
                         {{ 'suppRegistration.address.required' | translate }}
                     </div>
                 </div>
@@ -95,12 +89,9 @@
             <div class="row">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8">
-                    <input id="postalCode_municipality" type="text" [(ngModel)]="municipality.postalCode"
-                           class="form-control" name="postalCode_municipality"
-                           ngcontrol="postalCode_municipality" #postalCode_municipality="ngModel"
-                           (ngModelChange)="checkButtonEnabled($event, i)" required>
-                    <div [hidden]="postalCode_municipality.valid || postalCode_municipality.pristine"
-                         class="alert alert-danger">
+                    <input id="postalCode_municipality" type="text" [(ngModel)]="municipality.postalCode" class="form-control" name="postalCode_municipality"
+                        ngcontrol="postalCode_municipality" #postalCode_municipality="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]" required>
+                    <div [hidden]="postalCode_municipality.valid || postalCode_municipality.pristine" class="alert alert-danger">
                         {{ 'suppRegistration.address.required' | translate }}
                     </div>
                 </div>
@@ -116,9 +107,8 @@
             <div class="row">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8">
-                    <input id="name_mayor" type="text" [(ngModel)]="mayors[i].name" class="form-control"
-                           name="name_mayor" ngcontrol="name_mayor"
-                           #name_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" required>
+                    <input id="name_mayor" type="text" [(ngModel)]="mayors[i].name" class="form-control" name="name_mayor" ngcontrol="name_mayor"
+                        #name_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]" required>
                     <div [hidden]="name_mayor.valid || name_mayor.pristine" class="alert alert-danger">
                         {{ 'shared.name.required' | translate }}
                     </div>
@@ -135,9 +125,8 @@
             <div class="row">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8">
-                    <input id="surname_mayor" type="text" [(ngModel)]="mayors[i].surname" class="form-control"
-                           name="surname_mayor" ngcontrol="surname_mayor"
-                           #surname_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" required>
+                    <input id="surname_mayor" type="text" [(ngModel)]="mayors[i].surname" class="form-control" name="surname_mayor" ngcontrol="surname_mayor"
+                        #surname_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event, i)"  [disabled]="!isMunicipalityEditable[municipality.id]" required>
                     <div [hidden]="surname_mayor.valid || surname_mayor.pristine" class="alert alert-danger">
                         {{ 'shared.surname.required' | translate }}
                     </div>
@@ -154,9 +143,8 @@
             <div class="row">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8">
-                    <input id="email_mayor" type="text" [(ngModel)]="mayors[i].email" class="form-control"
-                           name="email_mayor" ngcontrol="email_mayor"
-                           #email_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" required>
+                    <input id="email_mayor" type="text" [(ngModel)]="mayors[i].email" class="form-control" name="email_mayor" ngcontrol="email_mayor"
+                        #email_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]" required>
                 </div>
                 <div class="col-sm-2"></div>
             </div>
@@ -381,7 +369,7 @@
     <div class="row">
         <div class="col-lg-2"></div>
         <div class="col-sm-6 col-lg-4" style="text-align: center !important">
-            <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+            <button type="button" class="btn btn-primary cancel-button" (click)="goBackToProfile()">
                 {{ 'shared.cancel.button' | translate }}
             </button>
         </div>

@@ -15,15 +15,15 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
+import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.application.*;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
@@ -32,6 +32,7 @@ import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
@@ -106,6 +107,18 @@ public class ApplicationService {
 
     @Autowired
     RegistrationRepository registrationRepository;
+
+    @Autowired
+    LegalFilesService legalFilesService;
+
+    @Autowired
+    ApplicationInvalidateReasonMapper applicationInvalidateReasonMapper;
+
+    @Autowired
+    ApplicationInvalidateReasonRepository applicationInvalidateReasonRepository;
+
+    @Autowired
+    LogEmailRepository logEmailRepository;
 
     @Deprecated
     public List<ApplicationDTO> getAllApplications() {
@@ -543,6 +556,13 @@ public class ApplicationService {
     }
 
     public CorrectionRequestEmailDTO sendCorrectionEmails(Integer callId) throws Exception {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        if (!checkIfCorrectionRequestEmailIsAvailable(callId)) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "-Emails can only be sent if call is closed and has " + "correction " +
+                    "requests, for the call:  " + "" + callId);
+            throw new AppException("Emails can only be sent if call is closed and has " + "correction requests, for the call:  " + "" + callId);
+        }
         List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus.PENDING_FOLLOWUP.getValue());
         CorrectionRequestEmailDTO correctionRequest = null;
         CorrectionRequestEmailDTO lastCorrectionRequestEmail = getLastCorrectionRequestEmailInCall(callId);
@@ -595,7 +615,7 @@ public class ApplicationService {
                 Registration registration = registrationRepository.findOne(application.getRegistrationId());
                 if(registration != null) {
                     mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipality().getId(), "sendCorrectionEmails");
-                }
+            }
 
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
@@ -614,14 +634,11 @@ public class ApplicationService {
     }
 
     public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
-        CallDTO call = callService.getCallById(callId);
-        if (call != null) {
-            long currentTime = new Date().getTime();
-            if (call.getStartDate() < currentTime && call.getEndDate() > currentTime) {
-                List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(call.getId(), ApplicationStatus.PENDING_FOLLOWUP.getValue()));
-                if (!pendingFollowupApps.isEmpty()) {
-                    return true;
-                }
+        if (callService.isCallClosed(callId)) {
+            List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(callId,
+                    ApplicationStatus.PENDING_FOLLOWUP.getValue()));
+            if (!pendingFollowupApps.isEmpty()) {
+                return true;
             }
         }
         return false;
@@ -659,6 +676,71 @@ public class ApplicationService {
 
         applicationDTO.setRejected(false);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+    }
+
+    /**
+     * This method is called by the cron ScheduledTasks.deadlineSubmissionForRequestDocuments().
+     * It gets all applicants that are on status follow up and check if they have files on requested correction, that were sent an email on this
+     * day and not afterwards. Also checks if the document was put as requested correction before the date. (This check is necessary because the user can
+     * send the email as many times as its want and we need to make sure that we don't invalidate beneficiaries that still have time to upload the
+     * requested documents.
+     * If any of those files that are requested, are type 1 or 3 and the beneficiary hasn't uploaded them, this method invalidates this beneficiary.
+     *
+     * @param callId
+     * @param dateRequest "deadline date". The date that is 7 days ago, its use to compare with the uploaded file and email log.
+     */
+    public void invalidateApplicationsPostRequestForDocumentsPastDeadline(Integer callId, long dateRequest) {
+        List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus
+                .PENDING_FOLLOWUP.getValue());
+        if (!applications.isEmpty()) {
+            for (ApplicationIssueUtil applicationUtil : applications) {
+                if (hasThisBeneficiaryBeenSentCorrectionEmailThisDay(applicationUtil.getRegistrationId(), dateRequest)) {
+                    List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(applicationUtil.getRegistrationId());
+                    for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
+                        int legalType = legalFileCorrectionReason.getType();
+                        //if document as requested correction and legal type is 1 or 3 we need to check the uploaded time of the file and compare it
+                        //if this document in particular was requested before the the email was sent we check to invalidate it
+                        if (legalFileCorrectionReason.getRequestCorrection() && (legalType == 1 || legalType == 3) && legalFileCorrectionReason
+                                .getRequestCorrectionDate().getTime() < dateRequest) {
+                            LegalFilesDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(applicationUtil.getRegistrationId(),
+                                    legalType);
+                            if (legalFile == null || (legalFile.getUploadTime().getTime() < dateRequest)) {
+                                // the file either hasn't been uploaded again or never was. We proceed to invalidate this application.
+                                ApplicationDTO applicationDTO = getApplicationById(applicationUtil.getApplicationId());
+                                _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Deadline for Requested Documents - INVALIDATING application with " + "" + "the id: " + applicationDTO.getId() + ". Legal file type: " + legalType);
+                                ApplicationInvalidateReasonDTO invalidReasonViewDTO = new ApplicationInvalidateReasonDTO(applicationDTO.getId(), 7);
+                                applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntity(invalidReasonViewDTO));
+                                applicationDTO.setStatus(ApplicationStatus.KO.getValue());
+                                applicationRepository.save(applicationMapper.toEntity(applicationDTO));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * This method is called by the cron ScheduledTasks.deadlineSubmissionForRequestDocuments().
+     * We need to check that this registration was indeed sent an sendCorrectionEmail on this day or afterwards.
+     *
+     * @param registrationId
+     * @param deadlineDay the day that we want to know if this registration was sent an sendCorrectionEmails
+     * @return if this registration was sent an sendCorrectionEmail on deadlineDay
+     */
+    public boolean hasThisBeneficiaryBeenSentCorrectionEmailThisDay(Integer registrationId, long deadlineDay){
+        Integer municipalityId = registrationService.getRegistrationById(registrationId).getMunicipalityId();
+        List<LogEmail> logEmails = logEmailRepository.findAllByMunicipalityIdAndActionOrderBySentDateDesc(municipalityId, "sendCorrectionEmails");
+        for (LogEmail logEmail : logEmails){
+            //if there's a log of a sendCorrectionEmail sent on this day, this applicant's deadline is today
+            //otherwise we will not invalidate them
+            if((logEmail.getSentDate() - deadlineDay) / (24 * 60 * 60 * 1000) == 0){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

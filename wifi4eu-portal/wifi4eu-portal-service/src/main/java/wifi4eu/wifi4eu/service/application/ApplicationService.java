@@ -26,6 +26,7 @@ import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
@@ -86,6 +87,9 @@ public class ApplicationService {
 
     @Autowired
     VoucherService voucherService;
+
+    @Autowired
+    MunicipalityRepository municipalityRepository;
 
     private static final Logger _log = LogManager.getLogger(ApplicationService.class);
 
@@ -239,6 +243,14 @@ public class ApplicationService {
 
     public ApplicationDTO getApplicationByCallIdAndRegistrationId(int callId, int registrationId) {
         return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
+    }
+
+    public ApplicationDTO getApplicationByCallIdAndMunicipalityId(int callId, int municipalityId) {
+        if (municipalityId != 0 && callId != 0) {
+            int registrationId = registrationRepository.findByMunicipalityId(municipalityId).getId();
+            return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
+        }
+        return null;
     }
 
     public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {

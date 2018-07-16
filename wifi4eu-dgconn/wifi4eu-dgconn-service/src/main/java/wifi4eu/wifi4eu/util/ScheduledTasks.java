@@ -9,14 +9,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
+import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -76,6 +79,12 @@ public class ScheduledTasks {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private CorrectionRequestEmailRepository correctionRequestEmailRepository;
+
+    @Autowired
+    private CorrectionRequestEmailMapper correctionRequestEmailMapper;
 
     private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
@@ -301,5 +310,31 @@ public class ScheduledTasks {
         }
     }
 
+    //every day at 4am
+    @Scheduled(cron = "0 0 4 * * *", zone = "Europe/Madrid")
+    public void deadlineSubmissionForRequestDocuments() {
+        _log.debug("SCHEDULED TASK: Deadline for Requested Documents - starting to check deadline submission for request documents");
+        List<CallDTO> callList = callService.getAllCalls();
+        long currentTime = new Date().getTime();
+        for (CallDTO call : callList) {
+            //veryfing that call has ended
+            if (call.getStartDate() < currentTime && call.getEndDate() < currentTime && correctionRequestEmailRepository.countByCallId(call.getId()) > 0) {
+                List<CorrectionRequestEmailDTO> correctionRequests = correctionRequestEmailMapper.toDTOList(correctionRequestEmailRepository.findAllByCallId(call.getId()));
+                //we need to check all requests sent for this call because the user can click the button many times
+                for (CorrectionRequestEmailDTO corretionRequest : correctionRequests) {
+                    //if this call has a request that was sent 7 days ago we invalidate applications that haven't uploaded the requested files
+                    if ((currentTime - corretionRequest.getDate()) / (1000 * 60 * 60 * 24) == 7) {
+                        _log.info("SCHEDULED TASK: Deadline for Requested Documents - DEADLINE TODAY for call id: " + call.getId() + ". Requested "
+                                + "on " + new Date(corretionRequest.getDate()));
+                        applicationService.invalidateApplicationsPostRequestForDocumentsPastDeadline(call.getId(), corretionRequest.getDate());
+                        //we can break because it's by call, we invalidate all the applicants that were in status pending follow up and that had a
+                        // correction request.
+                        break;
+                    }
+                }
+            }
+        }
+        _log.debug("SCHEDULED TASK: Deadline for Requested Documents - finished");
+    }
 
 }
