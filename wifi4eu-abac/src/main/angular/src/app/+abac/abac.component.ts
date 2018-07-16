@@ -28,24 +28,19 @@ export class AbacComponent {
                 this.jsonFile = event.target.files['0'];
                 let reader = new FileReader();
                 reader.onload = (e) => {
-                     var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
-                    //var myWindow =window.open("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
                     this.exportImportApi.importLegalEntityF(reader.result).subscribe(
                         (response: ResponseDTO) => {
                             if (response.success) {
                                 this.exportEnabled = true;
                                 //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
                                 //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
-                                myWindow.close();
                                 window.alert("Import succesful!");
                                 this.exportLegalEntityFBCValidate();
                             } else {
-                                myWindow.close();
                                 window.alert("Import failed!");
                             }
                         }, error => {
                             console.log(error);
-                            myWindow.close();
                             window.alert("Import failed! Make sure that the file you are uploading has the correct format.");
                         }
                     );
