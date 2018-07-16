@@ -202,7 +202,7 @@ public class MunicipalityService {
         return new ResponseDTO(true, correspondanceDTOS, page.getTotalElements(), null);
     }
 
-    public List<LogEmailDTO> getCorrespondenceByMunicipalityIdAndAction(Integer municipalityId, String action){
-        return municipalityCorrespondenceMapper.toDTOList(logEmailRepository.findTopByMunicipalityIdAndActionOrderBySentDateDesc(municipalityId, action));
+    public LogEmailDTO getCorrespondenceByMunicipalityIdAndAction(Integer municipalityId, String action){
+        return municipalityCorrespondenceMapper.toDTO(logEmailRepository.findTopByMunicipalityIdAndActionOrderBySentDateDesc(municipalityId, action));
     }
 }

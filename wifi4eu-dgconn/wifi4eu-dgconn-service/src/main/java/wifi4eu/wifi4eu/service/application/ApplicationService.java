@@ -23,6 +23,7 @@ import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.repository.application.*;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
@@ -485,41 +486,69 @@ public class ApplicationService {
                 }
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.correctionRequestEmail.subject");
-                String msgBody = bundle.getString("mail.correctionRequestEmail.body");
+                String header = bundle.getString("mail.correctionRequestEmail.header");
+                String msgBody = bundle.getString("mail.correctionRequestEmail.body1");
+                String msgBody2 = bundle.getString("mail.correctionRequestEmail.body2");
+                String signOff = bundle.getString("mail.correctionRequestEmail.signOff");
                 String[] correctionReasons = new String[6];
                 correctionReasons[0] = bundle.getString("mail.correctionRequestEmail.reason1");
                 correctionReasons[1] = bundle.getString("mail.correctionRequestEmail.reason2");
                 correctionReasons[2] = bundle.getString("mail.correctionRequestEmail.reason3");
                 correctionReasons[3] = bundle.getString("mail.correctionRequestEmail.reason4");
-                correctionReasons[4] = bundle.getString("mail.correctionRequestEmail.reason5");
+                correctionReasons[4] = "";
                 correctionReasons[5] = bundle.getString("mail.correctionRequestEmail.reason6");
-                String[] documentTypes = {"", "", "", ""};
+                String reason5Case1 = bundle.getString("mail.correctionRequestEmail.reason5-1");
+                String reason5Case2 = bundle.getString("mail.correctionRequestEmail.reason5-2");
+                String reason5Case3 = bundle.getString("mail.correctionRequestEmail.reason5-3");
+                String[] documentTypesBody1 = {"", ""};
+                String[] documentTypesBody2 = {"", ""};
+                String emailBody = "";
+                Registration registration = registrationRepository.findOne(application.getRegistrationId());
+                LogEmail lastEmailSent = logEmailRepository.findTopByMunicipalityIdAndActionOrderBySentDateDesc(registration.getMunicipality().getId(), "sendCorrectionEmails");
                 List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
                 for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
-                    String emailString = "";
-                    switch (legalFileCorrectionReason.getType()) {
-                        case 1:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type1");
-                            documentTypes[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
-                        case 2:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type3");
-                            documentTypes[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
-                        case 3:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type2");
-                            documentTypes[2] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
-                        case 4:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type4");
-                            documentTypes[3] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
+                    if (legalFileCorrectionReason.getRequestCorrection() && (lastEmailSent == null || legalFileCorrectionReason.getRequestCorrectionDate().getTime() > lastEmailSent.getSentDate())) {
+                        String emailString = "";
+                        switch (legalFileCorrectionReason.getType()) {
+                            case 1:
+                                correctionReasons[4] = reason5Case1;
+                                emailString = bundle.getString("mail.correctionRequestEmail.type1");
+                                documentTypesBody1[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                            case 2:
+                                correctionReasons[4] = reason5Case1;
+                                emailString = bundle.getString("mail.correctionRequestEmail.type3");
+                                documentTypesBody2[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                            case 3:
+                                correctionReasons[4] = reason5Case2;
+                                emailString = bundle.getString("mail.correctionRequestEmail.type2");
+                                documentTypesBody1[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                            case 4:
+                                correctionReasons[4] = reason5Case3;
+                                emailString = bundle.getString("mail.correctionRequestEmail.type4");
+                                documentTypesBody2[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                        }
                     }
                 }
-                msgBody = MessageFormat.format(msgBody, documentTypes);
-                Registration registration = registrationRepository.findOne(application.getRegistrationId());
-                if(registration != null) {
-                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipality().getId(), "sendCorrectionEmails");
+                //if document is type 1 or 3 then we need to show body 1
+                boolean isBody1 = !documentTypesBody1[0].isEmpty() || !documentTypesBody1[1].isEmpty();
+                //if document is type 2 or 4 then we need to show body 2
+                boolean isBody2 = !documentTypesBody2[0].isEmpty() || !documentTypesBody2[1].isEmpty();
+                msgBody = MessageFormat.format(msgBody, documentTypesBody1);
+                msgBody2 = MessageFormat.format(msgBody2, documentTypesBody2);
+                if (isBody1 && isBody2) {
+                    emailBody = header + msgBody + msgBody2 + signOff;
+                } else if (isBody1) {
+                    emailBody = header + msgBody + signOff;
+                } else if (isBody2) {
+                    emailBody = header + msgBody2 + signOff;
+                }
+
+                if (!emailBody.isEmpty()) {
+                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration.getMunicipality().getId(), "sendCorrectionEmails");
                 }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
