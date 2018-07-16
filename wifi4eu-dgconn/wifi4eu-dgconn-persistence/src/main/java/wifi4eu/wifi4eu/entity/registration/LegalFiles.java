@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.entity.registration;
 import wifi4eu.wifi4eu.entity.user.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "legal_files")
@@ -20,7 +21,10 @@ public class LegalFiles {
 	private String fileData;
 
 	@Column(name = "type")
-	private int fileType;
+  	private int fileType;
+
+  	@Column(name = "upload_time")
+  	private Date uploadTime;
 
 	public LegalFiles() {
 	}
@@ -61,5 +65,14 @@ public class LegalFiles {
 
 	public void setFileType(int fileType) {
 		this.fileType = fileType;
-	}
+  }
+  
+  public void setUploadTime(Date uploadTime){
+    this.uploadTime = uploadTime;
+  }
+
+  public Date getUploadTime(){
+    return this.uploadTime;
+  }
+
 }

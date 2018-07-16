@@ -247,7 +247,60 @@ public class SupplierService {
 
     @Transactional
     public SupplierDTO updateSupplier(SupplierDTO supplierDTO) {
-        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+        SupplierDTO supplierDBO = getSupplierById(supplierDTO.getId());
+        supplierDBO.setName(supplierDTO.getName());
+        supplierDBO.setAddress(supplierDTO.getAddress());
+        supplierDBO.setVat(supplierDTO.getVat());
+        supplierDBO.setWebsite(supplierDTO.getWebsite());
+        supplierDBO.setContactName(supplierDTO.getContactName());
+        supplierDBO.setContactSurname(supplierDTO.getContactSurname());
+        supplierDBO.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
+        supplierDBO.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
+        supplierDBO.setLogo(supplierDTO.getLogo());
+        supplierDBO.setSuppliedRegions(updateSuppliedRegions(supplierDBO.getSuppliedRegions(), supplierDTO.getSuppliedRegions()));
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDBO)));
+    }
+
+    @Transactional
+    public List<SuppliedRegionDTO> updateSuppliedRegions(SupplierDTO supplierDTO) {
+        List<SuppliedRegionDTO> newRegions = supplierDTO.getSuppliedRegions();
+        SupplierDTO supplierDBO = getSupplierById(supplierDTO.getId());
+        if (supplierDBO != null) {
+            return updateSuppliedRegions(supplierDBO.getSuppliedRegions(), newRegions);
+        } else {
+            return null;
+        }
+    }
+
+    @Transactional
+    public List<SuppliedRegionDTO> updateSuppliedRegions(List<SuppliedRegionDTO> originalRegions, List<SuppliedRegionDTO> newRegions) {
+        List<SuppliedRegionDTO> finalRegions = new ArrayList<>();
+        for (SuppliedRegionDTO newRegion : newRegions) {
+            boolean regionInList = false;
+            for (SuppliedRegionDTO originalRegion : originalRegions) {
+                if (originalRegion.getRegionId().getId() == newRegion.getRegionId().getId()) {
+                    finalRegions.add(originalRegion);
+                    regionInList = true;
+                    break;
+                }
+            }
+            if (!regionInList) {
+                finalRegions.add(newRegion);
+            }
+        }
+        for (SuppliedRegionDTO originalRegion : originalRegions) {
+            boolean regionInList = false;
+            for (SuppliedRegionDTO newRegion : newRegions) {
+                if (newRegion.getRegionId().getId() == originalRegion.getRegionId().getId()) {
+                    regionInList = true;
+                    break;
+                }
+            }
+            if (!regionInList) {
+                suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(originalRegion));
+            }
+        }
+        return finalRegions;
     }
 
     @Transactional

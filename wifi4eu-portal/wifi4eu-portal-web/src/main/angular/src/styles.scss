@@ -431,6 +431,32 @@ body {
   background-color: white;
 }
 
+.discussionWarningBox{
+  border: solid 1px rgba(0, 0, 0, 0.3);
+}
+
+.discussionWarning{
+  color: #c53b0c;
+  background-color: #ffc488;
+ 
+}
+
+.discussionWarning-icon{
+  background-color: #ff9933;
+  text-align: center;
+}
+
+.fa-exclamation-triangle{
+  font-size: 2.5em;
+  margin-top: 25%;
+  color: #fff;
+}
+
+.discussionWarnigButton{
+  margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 .discussion-content {
   border: solid 1px rgba(0, 0, 0, 0.3);
   padding-bottom: 0px;
@@ -586,6 +612,14 @@ body {
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
+}
+
+.removeMunicipalityBtn{
+  font-family: Verdana;
+  font-weight: bold;
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
 }
 
 .cancel-button.cancel-link {
@@ -1761,4 +1795,14 @@ input.email_profile::-ms-clear{
 
 #top-menu ul, #top-menu ul li, #top-menu ul li a{
   display: inline-block;
+}
+
+.language-modal {
+  margin: 10px;
+  width: 100%;
+}
+
+.text-adjust {
+  overflow: hidden;
+  white-space: normal;
 }

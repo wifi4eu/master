@@ -15,6 +15,7 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
@@ -22,6 +23,7 @@ import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -89,6 +91,9 @@ public class ApplicationService {
 
     @Autowired
     ApplicationIssueUtilRepository applicationIssueUtilRepository;
+
+    @Autowired
+    RegistrationRepository registrationRepository;
 
     @Deprecated
     public List<ApplicationDTO> getAllApplications() {
@@ -190,7 +195,7 @@ public class ApplicationService {
                 String msgBody = bundle.getString("mail.voucherApply.body");
                 msgBody = MessageFormat.format(msgBody, municipality.getName());
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "createApplication");
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
                 }
             }
@@ -386,6 +391,25 @@ public class ApplicationService {
                     applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByMediationAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
                 }
                 break;
+            case "supportingdocuments":
+                if (pagingSortingData.getOrderType() == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderBySupportingDocumentsDesc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderBySupportingDocumentsDesc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderBySupportingDocumentsAsc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderBySupportingDocumentsAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                }
+                break;
             default:
                 if (pagingSortingData.getOrderType() == -1) {
                     if (name != null) {
@@ -507,6 +531,13 @@ public class ApplicationService {
     }
 
     public CorrectionRequestEmailDTO sendCorrectionEmails(Integer callId) throws Exception {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        if (!checkIfCorrectionRequestEmailIsAvailable(callId)) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "-Emails can only be sent if call is closed and has " + "correction " +
+                    "requests, for the call:  " + "" + callId);
+            throw new AppException("Emails can only be sent if call is closed and has " + "correction requests, for the call:  " + "" + callId);
+        }
         List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus.PENDING_FOLLOWUP.getValue());
         CorrectionRequestEmailDTO correctionRequest = null;
         CorrectionRequestEmailDTO lastCorrectionRequestEmail = getLastCorrectionRequestEmailInCall(callId);
@@ -542,7 +573,7 @@ public class ApplicationService {
                 String[] documentTypesBody2 = {"", ""};
                 List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
                 for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
-                    if(legalFileCorrectionReason.getRequestCorrection()) {
+                    if (legalFileCorrectionReason.getRequestCorrection()) {
                         String emailString = "";
                         switch (legalFileCorrectionReason.getType()) {
                             case 1:
@@ -567,23 +598,28 @@ public class ApplicationService {
                                 break;
                         }
                     }
-                }
-                //if document is type 1 or 3 then we need to show body 1
-                boolean isBody1= !documentTypesBody1[0].isEmpty() || !documentTypesBody1[1].isEmpty();
-                //if document is type 2 or 4 then we need to show body 2
-                boolean isBody2= !documentTypesBody2[0].isEmpty() || !documentTypesBody2[1].isEmpty();
-                String emailBody = "";
-                msgBody = MessageFormat.format(msgBody, documentTypesBody1);
-                msgBody2 = MessageFormat.format(msgBody2, documentTypesBody2);
-                if(isBody1 && isBody2){
-                    emailBody = header +  msgBody + msgBody2 + signOff;
-                }else if(isBody1){
-                    emailBody = header +  msgBody + signOff;
-                } else if(isBody2){
-                    emailBody = header +  msgBody2 + signOff;
-                }
 
-                mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody);
+                    //if document is type 1 or 3 then we need to show body 1
+                    boolean isBody1 = !documentTypesBody1[0].isEmpty() || !documentTypesBody1[1].isEmpty();
+                    //if document is type 2 or 4 then we need to show body 2
+                    boolean isBody2 = !documentTypesBody2[0].isEmpty() || !documentTypesBody2[1].isEmpty();
+                    String emailBody = "";
+                    msgBody = MessageFormat.format(msgBody, documentTypesBody1);
+                    msgBody2 = MessageFormat.format(msgBody2, documentTypesBody2);
+                    if (isBody1 && isBody2) {
+                        emailBody = header + msgBody + msgBody2 + signOff;
+                    } else if (isBody1) {
+                        emailBody = header + msgBody + signOff;
+                    } else if (isBody2) {
+                        emailBody = header + msgBody2 + signOff;
+                    }
+
+                    Registration registration = registrationRepository.findOne(application.getRegistrationId());
+                    if (registration != null) {
+                        mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration.getMunicipality().getId(), "sendCorrectionEmails");
+
+                    }
+                }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
             correctionRequest = correctionRequestEmailMapper.toDTO(correctionRequestEmailRepository.save(correctionRequestEmailMapper.toEntity(correctionRequest)));
@@ -601,14 +637,11 @@ public class ApplicationService {
     }
 
     public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
-        CallDTO call = callService.getCallById(callId);
-        if (call != null) {
-            long currentTime = new Date().getTime();
-            if (call.getStartDate() < currentTime && call.getEndDate() < currentTime) {
-                List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(call.getId(), ApplicationStatus.PENDING_FOLLOWUP.getValue()));
-                if (!pendingFollowupApps.isEmpty()) {
-                    return true;
-                }
+        if (callService.isCallClosed(callId)) {
+            List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(callId,
+                    ApplicationStatus.PENDING_FOLLOWUP.getValue()));
+            if (!pendingFollowupApps.isEmpty()) {
+                return true;
             }
         }
         return false;
