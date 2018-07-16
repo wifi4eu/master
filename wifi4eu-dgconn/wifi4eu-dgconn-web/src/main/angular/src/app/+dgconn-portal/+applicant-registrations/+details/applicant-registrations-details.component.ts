@@ -87,34 +87,35 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private sortDirection: number[] = [];
     private totalRecords: number[] = [];
     private defaultSize = 5;
-    private applicationComment:string = '';
+    private applicationComment: string = '';
 
     //-- Correspondence
-    private correspondences : LogEmailDTO[][] = [];
-    private correspondenceTotalRecords : number[] = [];
-    private correspondencePage : number[] = [];
-    private correspondenceSizePage : number[] = [];
+    private correspondences: LogEmailDTO[][] = [];
+    private correspondenceTotalRecords: number[] = [];
+    private correspondencePage: number[] = [];
+    private correspondenceSizePage: number[] = [];
     private correspondenceSortField: string[] = [];
     private correspondenceSortDirection: number[] = [];
     private correspondenceDialogInfo : LogEmailDTO;
+    private buttonStatusEnabled : any[][] = [];
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
     constructor(
-        private applicationCommentApi: ApplicationcommentApi, 
-        private applicationInvalidateReasonApi: InvalidateReasonApi,  
-        private registrationWarningApi: RegistrationWarningApi, 
-        private sanitizer: DomSanitizer, 
-        private route: ActivatedRoute, 
-        private sharedService: SharedService, 
-        private applicationApi: ApplicationApi, 
-        private beneficiaryApi: BeneficiaryApi, 
-        private registrationApi: RegistrationApi, 
-        private threadApi: ThreadApi, 
-        private userApi: UserApi, 
-        private municipalityApi: MunicipalityApi, 
-        private mayorApi: MayorApi, 
-        private translateService: TranslateService, 
+        private applicationCommentApi: ApplicationcommentApi,
+        private applicationInvalidateReasonApi: InvalidateReasonApi,
+        private registrationWarningApi: RegistrationWarningApi,
+        private sanitizer: DomSanitizer,
+        private route: ActivatedRoute,
+        private sharedService: SharedService,
+        private applicationApi: ApplicationApi,
+        private beneficiaryApi: BeneficiaryApi,
+        private registrationApi: RegistrationApi,
+        private threadApi: ThreadApi,
+        private userApi: UserApi,
+        private municipalityApi: MunicipalityApi,
+        private mayorApi: MayorApi,
+        private translateService: TranslateService,
         private location: Location
     ) {
         this.loadingData = true;
@@ -137,12 +138,15 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     let failCount = 0;
                     let correctCount = 0;
                     for (let i = 0; i < applications.length; i++) {
-                        if(applications[i].status === 1){
-                          this.applicationInvalidateReasonApi.getInvalidateReasonsByApplication(applications[i].id).subscribe((res: ApplicationInvalidateReasonDTO[]) => {
-                            this.applicationInvalidateReason[i] = res;
-                          })
+                        if (applications[i].status === 1) {
+                            this.applicationInvalidateReasonApi.getInvalidateReasonsByApplication(applications[i].id).subscribe((res: ApplicationInvalidateReasonDTO[]) => {
+                                this.applicationInvalidateReason[i] = res;
+                            })
                         }
                         let application = applications[i];
+                        this.applicationInvalidateReasonApi.changeStatusApplicationEnabled(application.id).subscribe((response: ResponseDTO) => {
+                          this.buttonStatusEnabled[i] = response.data;
+                        })
                         this.registrationApi.getRegistrationById(application.registrationId).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 if (registration) {
@@ -156,7 +160,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                 (mayor: MayorDTOBase) => {
                                                                     this.registrationApi.getLegalFilesByRegistrationId(registration.id, new Date().getTime()).subscribe(
                                                                         (legalFiles: LegalFileCorrectionReasonDTOBase[]) => {
-                                                                        if (mayor) {
+                                                                            if (mayor) {
                                                                                 this.mayors[i] = mayor;
                                                                             } else {
                                                                                 let mayor = new MayorDTOBase();
@@ -171,6 +175,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                             this.selectedFilesTypes[i] = [];
                                                                             this.selectedReasonTypes[i] = [];
                                                                             this.legalFiles[i] = this.createFrontEndLegalFiles(registration, legalFiles);
+                                                                            this.getUploadTimeFiles(registration.id, i);
                                                                             this.applications[i] = application;
                                                                             this.registrations[i] = registration;
                                                                             this.users[i] = user;
@@ -208,10 +213,10 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                     this.correspondencePage[i] = 0;
                                     this.correspondenceSizePage[i] = this.defaultSize;
                                     this.municipalityApi.getCorrespondenceByMunicipality(
-                                        registration.municipalityId, 
-                                        this.correspondencePage[i], 
-                                        this.correspondenceSizePage[i], 
-                                        this.correspondenceSortField[i], 
+                                        registration.municipalityId,
+                                        this.correspondencePage[i],
+                                        this.correspondenceSizePage[i],
+                                        this.correspondenceSortField[i],
                                         this.correspondenceSortDirection[i] === 1 ? 'ASC' : 'DESC'
                                     ).subscribe((response: ResponseDTO) => {
                                         this.correspondenceTotalRecords[i] = response.xtotalCount;
@@ -229,9 +234,9 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                         this.page[i] = 0;
                         this.sizePage[i] = this.defaultSize;
                         this.applicationCommentApi.getApplicationCommentsByApplication(application.id, this.page[i], this.sizePage[i], this.sortField[i], this.sortDirection[i] === 1 ? 'ASC' : 'DESC').subscribe((response: ResponseDTO) => {
-                          var data = response.data;
-                          this.totalRecords[i] = response.xtotalCount;
-                          this.applicationComments[i] = response.data;
+                            var data = response.data;
+                            this.totalRecords[i] = response.xtotalCount;
+                            this.applicationComments[i] = response.data;
                         })
                     }
                 }, (error) => {
@@ -283,8 +288,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             }
         }
     }
-    
-    private sortTable(event, index){
+
+    private sortTable(event, index) {
         this.sortField[index] = event.field;
         this.sortDirection[index] = event.order;
         this.page[index] = 0;
@@ -299,9 +304,9 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private filterCorrespondenceTable(index) {
         this.municipalityApi.getCorrespondenceByMunicipality(
-            this.registrations[index].municipalityId, 
-            this.correspondencePage[index], 
-            this.correspondenceSizePage[index], 
+            this.registrations[index].municipalityId,
+            this.correspondencePage[index],
+            this.correspondenceSizePage[index],
             this.correspondenceSortField[index],
             this.correspondenceSortDirection[index] === 1 ? 'ASC' : 'DESC'
         ).subscribe((response: ResponseDTO) => {
@@ -310,30 +315,30 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         });
     }
 
-    private filterTable(index){
+    private filterTable(index) {
         this.applicationCommentApi.getApplicationCommentsByApplication(
-            this.applications[index].id, 
-            this.page[index], 
-            this.sizePage[index], 
-            this.sortField[index], 
+            this.applications[index].id,
+            this.page[index],
+            this.sizePage[index],
+            this.sortField[index],
             this.sortDirection[index] === 1 ? 'ASC' : 'DESC'
         ).subscribe((response: ResponseDTO) => {
-          this.totalRecords[index] = response.xtotalCount;
-          this.applicationComments[index] = response.data;
+            this.totalRecords[index] = response.xtotalCount;
+            this.applicationComments[index] = response.data;
         })
     }
 
-    private openCommentModal(index: number){
-      if (index != null) {
-        this.selectedIndex = index;
-        this.displayCommentModal = true;
-      }
+    private openCommentModal(index: number) {
+        if (index != null) {
+            this.selectedIndex = index;
+            this.displayCommentModal = true;
+        }
     }
 
-    private paginate(event, index){
-      this.sizePage[index] = event.rows;
-      this.page[index] = event.page;
-      this.filterTable(index);
+    private paginate(event, index) {
+        this.sizePage[index] = event.rows;
+        this.page[index] = event.page;
+        this.filterTable(index);
     }
 
     private correspondencePaginate(event, index) {
@@ -342,32 +347,32 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.filterCorrespondenceTable(index);
     }
 
-    private submitApplicationComment(form: NgForm){
-      if(form.valid){
-        if(!this.processingRequest){
-          if(this.applicationComment != null || this.applicationComment.trim() != ""){
-            if(this.applicationComment.length > 256){
-              form.controls['newComment'].setErrors({'invalid': true});
-              return;
+    private submitApplicationComment(form: NgForm) {
+        if (form.valid) {
+            if (!this.processingRequest) {
+                if (this.applicationComment != null || this.applicationComment.trim() != "") {
+                    if (this.applicationComment.length > 256) {
+                        form.controls['newComment'].setErrors({ 'invalid': true });
+                        return;
+                    }
+                    this.processingRequest = true;
+                    this.applicationCommentApi.createApplicationComment({ applicationId: this.applications[this.selectedIndex].id, comment: this.applicationComment }).subscribe((response) => {
+                        this.processingRequest = false;
+                        this.page[this.selectedIndex] = 0;
+                        this.filterTable(this.selectedIndex);
+                        this.sharedService.growlTranslation('Your comment has been created.', 'dgConn.applicantDetails.saveComment.success', 'success');
+                        this.closeModal();
+                    }, error => {
+                        this.sharedService.growlTranslation('An error occurred while trying to save this comment. Please, try again later.', 'dgConn.applicantDetails.saveComment.error', 'error');
+                        //this.closeModal();
+                    })
+                }
             }
-            this.processingRequest = true;
-            this.applicationCommentApi.createApplicationComment({applicationId: this.applications[this.selectedIndex].id, comment: this.applicationComment}).subscribe((response) => {
-              this.processingRequest = false;
-              this.page[this.selectedIndex] = 0;
-              this.filterTable(this.selectedIndex);
-              this.sharedService.growlTranslation('Your comment has been created.', 'dgConn.applicantDetails.saveComment.success', 'success');
-              this.closeModal();
-            }, error => {
-              this.sharedService.growlTranslation('An error occurred while trying to save this comment. Please, try again later.', 'dgConn.applicantDetails.saveComment.error', 'error');
-              //this.closeModal();
-            })
-          }
         }
-      }
     }
 
-    private checkReasonSelected(){
-      return this.invalidateChecks.some(reason => reason === true);
+    private checkReasonSelected() {
+        return this.invalidateChecks.some(reason => reason === true);
     }
 
     private displayRequestCorrectionModal(index: number) {
@@ -476,20 +481,20 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 this.processingRequest = true;
                 var reasonsNumber: number[] = [];
                 this.invalidateChecks.forEach((invalidateCheck, index) => {
-                  if(invalidateCheck === true){
-                    reasonsNumber.push(index+1);
-                  }
+                    if (invalidateCheck === true) {
+                        reasonsNumber.push(index + 1);
+                    }
                 });
-                this.applicationInvalidateReasonApi.invalidateApplicationWithReason({ applicationId: this.applications[this.selectedIndex].id, reasons: reasonsNumber}).subscribe((response) => {
-                  this.applicationInvalidateReason[this.selectedIndex] = response;
-                  this.applications[this.selectedIndex].status = 1;
-                  this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
-                  this.closeModal();
-                  this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
+                this.applicationInvalidateReasonApi.invalidateApplicationWithReason({ applicationId: this.applications[this.selectedIndex].id, reasons: reasonsNumber }).subscribe((response) => {
+                    this.applicationInvalidateReason[this.selectedIndex] = response;
+                    this.applications[this.selectedIndex].status = 1;
+                    this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
+                    this.closeModal();
+                    this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
                 }, error => {
-                  this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
-                  this.closeModal();
-                  this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
+                    this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
+                    this.closeModal();
+                    this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
                 })
             }
         }
@@ -500,27 +505,27 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             if (this.selectedIndex != null) {
                 let savedFilesCount = 0;
                 let savedFilesLimit = this.selectedFilesTypes[this.selectedIndex].length;
-           
+
                 this.processingRequest = true;
                 for (let i = 0; i < savedFilesLimit; i++) {
                     let updatedLegalFile = new LegalFileCorrectionReasonDTOBase();
                     let fileType = this.selectedFilesTypes[this.selectedIndex][i];
                     for (let legalFile of this.legalFiles[this.selectedIndex]) {
-                            if (legalFile.type == fileType) {
-                                 if(legalFile.requestCorrection){
-                                    this.sharedService.growlTranslation('This file has already requested for correction.', 'dgConn.file.alreadyRequested', 'warn');
-                                    this.closeModal();
-                                    return;
+                        if (legalFile.type == fileType) {
+                            if (legalFile.requestCorrection) {
+                                this.sharedService.growlTranslation('This file has already requested for correction.', 'dgConn.file.alreadyRequested', 'warn');
+                                this.closeModal();
+                                return;
                             }
-                                updatedLegalFile = legalFile;
-                                updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
-                                if (updatedLegalFile.correctionReason != -1){
-                                    updatedLegalFile.requestCorrection = true;
-                                } else {
-                                    updatedLegalFile.correctionReason = null;
-                                    updatedLegalFile.requestCorrection = false;
-                                }
+                            updatedLegalFile = legalFile;
+                            updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
+                            if (updatedLegalFile.correctionReason != -1) {
+                                updatedLegalFile.requestCorrection = true;
+                            } else {
+                                updatedLegalFile.correctionReason = null;
+                                updatedLegalFile.requestCorrection = false;
                             }
+                        }
                     }
                     this.registrationApi.saveLegalFile(updatedLegalFile).subscribe(
                         (resLegalFile: LegalFileCorrectionReasonDTOBase) => {
@@ -674,7 +679,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 lf1.registrationId = registration.id;
                 lf1.type = 1;
             }
-            lf1.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf1);
         }
         if (registration.legalFile2Mime != null && registration.legalFile2Size > 0) {
@@ -682,7 +686,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 lf2.registrationId = registration.id;
                 lf2.type = 2;
             }
-            lf2.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf2);
         }
         if (registration.legalFile3Mime != null && registration.legalFile3Size > 0) {
@@ -690,7 +693,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 lf3.registrationId = registration.id;
                 lf3.type = 3;
             }
-            lf3.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf3);
         }
         if (registration.legalFile4Mime != null && registration.legalFile4Size > 0) {
@@ -698,10 +700,24 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 lf4.registrationId = registration.id;
                 lf4.type = 4;
             }
-            lf4.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf4);
         }
         return finalLegalFiles;
+    }
+
+    private getUploadTimeFiles(registrationId, i) {
+        this.registrationApi.getLegalFilesUploadTimeByRegistrationId(registrationId).subscribe((response: ResponseDTO) => {
+            if (response.success) {
+                response.data.forEach(file => {
+                    for (let index = 0; index < this.legalFiles[i].length; index++) {
+                        if (this.legalFiles[i][index].type == file[1]) {
+                            this.legalFiles[i][index].uploadTime = file[2];
+                        }
+                        
+                    }
+                });
+            }
+        });
     }
 
     private goBack() {

@@ -190,106 +190,118 @@ public class RegistrationService {
         Long currentTime = new Date().getTime();
         String lf1 = registrationDTO.getLegalFile1Mime();
         if (lf1 != null) {
-            byte[] lf1ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf1));
-            String lf1Extension = LegalFilesService.getValidFileExtension(lf1);
-            if (lf1ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                throw new Exception("File size cannot bet greater than 1 MB.");
-            } else if (lf1Extension == null) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                throw new Exception("File must have a valid extension.");
-            } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE1.getValue()));
-                if (legalFilesDTO == null) {
-                    legalFilesDTO = new LegalFilesDTO();
+            String base64 = LegalFilesService.getBase64Data(lf1);
+            if(base64 != null && !base64.isEmpty()) {
+                byte[] lf1ByteArray = Base64.getMimeDecoder().decode(base64);
+                String lf1Extension = LegalFilesService.getValidFileExtension(lf1);
+                if (lf1ByteArray.length > 1024000) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
+                    throw new Exception("File size cannot bet greater than 1 MB.");
+                } else if (lf1Extension == null) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
+                    throw new Exception("File must have a valid extension.");
+                } else {
+                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE1.getValue()));
+                    if (legalFilesDTO == null) {
+                        legalFilesDTO = new LegalFilesDTO();
+                    }
+                    legalFilesDTO.setRegistration(registrationDBO.getId());
+                    legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
+                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf1));
+                    legalFilesDTO.setUploadTime(new Date());
+                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                    registrationDBO.setLegalFile1Mime(LegalFilesService.getMimeType(lf1));
+                    registrationDBO.setLegalFile1Size(lf1ByteArray.length);
+                    registrationDBO.setUploadTime(currentTime);
+                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 1");
                 }
-                legalFilesDTO.setRegistration(registrationDBO.getId());
-                legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
-                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf1));
-                legalFilesDTO.setUploadTime(new Date());
-                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                registrationDBO.setLegalFile1Mime(LegalFilesService.getMimeType(lf1));
-                registrationDBO.setLegalFile1Size(lf1ByteArray.length);
-                registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 1");
             }
         }
         String lf2 = registrationDTO.getLegalFile2Mime();
         if (lf2 != null) {
-            byte[] lf2ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf2));
-            String lf2Extension = LegalFilesService.getValidFileExtension(lf2);
-            if (lf2ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                throw new Exception("File size cannot bet greater than 1 MB.");
-            } else if (lf2Extension == null) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                throw new Exception("File must have a valid extension.");
-            } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE2.getValue()));
-                if (legalFilesDTO == null) {
-                    legalFilesDTO = new LegalFilesDTO();
+            String base64 = LegalFilesService.getBase64Data(lf2);
+            if(base64 != null && !base64.isEmpty()) {
+                byte[] lf2ByteArray = Base64.getMimeDecoder().decode(base64);
+                String lf2Extension = LegalFilesService.getValidFileExtension(lf2);
+                if (lf2ByteArray.length > 1024000) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
+                    throw new Exception("File size cannot bet greater than 1 MB.");
+                } else if (lf2Extension == null) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
+                    throw new Exception("File must have a valid extension.");
+                } else {
+                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE2.getValue()));
+                    if (legalFilesDTO == null) {
+                        legalFilesDTO = new LegalFilesDTO();
+                    }
+                    legalFilesDTO.setRegistration(registrationDBO.getId());
+                    legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
+                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf2));
+                    legalFilesDTO.setUploadTime(new Date());
+                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                    registrationDBO.setLegalFile2Mime(LegalFilesService.getMimeType(lf2));
+                    registrationDBO.setLegalFile2Size(lf2ByteArray.length);
+                    registrationDBO.setUploadTime(currentTime);
+                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 2");
                 }
-                legalFilesDTO.setRegistration(registrationDBO.getId());
-                legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
-                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf2));
-                legalFilesDTO.setUploadTime(new Date());
-                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                registrationDBO.setLegalFile2Mime(LegalFilesService.getMimeType(lf2));
-                registrationDBO.setLegalFile2Size(lf2ByteArray.length);
-                registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 2");
             }
         }
         String lf3 = registrationDTO.getLegalFile3Mime();
         if (lf3 != null) {
-            byte[] lf3ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf3));
-            String lf3Extension = LegalFilesService.getValidFileExtension(lf3);
-            if (lf3ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                throw new Exception("File size cannot bet greater than 1 MB.");
-            } else if (lf3Extension == null) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                throw new Exception("File must have a valid extension.");
-            } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE3.getValue()));
-                if (legalFilesDTO == null) {
-                    legalFilesDTO = new LegalFilesDTO();
+            String base64 = LegalFilesService.getBase64Data(lf3);
+            if(base64 != null && !base64.isEmpty()) {
+                byte[] lf3ByteArray = Base64.getMimeDecoder().decode(base64);
+                String lf3Extension = LegalFilesService.getValidFileExtension(lf3);
+                if (lf3ByteArray.length > 1024000) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
+                    throw new Exception("File size cannot bet greater than 1 MB.");
+                } else if (lf3Extension == null) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
+                    throw new Exception("File must have a valid extension.");
+                } else {
+                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE3.getValue()));
+                    if (legalFilesDTO == null) {
+                        legalFilesDTO = new LegalFilesDTO();
+                    }
+                    legalFilesDTO.setRegistration(registrationDBO.getId());
+                    legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
+                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf3));
+                    legalFilesDTO.setUploadTime(new Date());
+                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                    registrationDBO.setLegalFile3Mime(LegalFilesService.getMimeType(lf3));
+                    registrationDBO.setLegalFile3Size(lf3ByteArray.length);
+                    registrationDBO.setUploadTime(currentTime);
+                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 3");
                 }
-                legalFilesDTO.setRegistration(registrationDBO.getId());
-                legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
-                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf3));
-                legalFilesDTO.setUploadTime(new Date());
-                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                registrationDBO.setLegalFile3Mime(LegalFilesService.getMimeType(lf3));
-                registrationDBO.setLegalFile3Size(lf3ByteArray.length);
-                registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 3");
             }
         }
         String lf4 = registrationDTO.getLegalFile4Mime();
         if (lf4 != null) {
-            byte[] lf4ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf4));
-            String lf4Extension = LegalFilesService.getValidFileExtension(lf4);
-            if (lf4ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                throw new Exception("File size cannot bet greater than 1 MB.");
-            } else if (lf4Extension == null) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                throw new Exception("File must have a valid extension.");
-            } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE4.getValue()));
-                if (legalFilesDTO == null) {
-                    legalFilesDTO = new LegalFilesDTO();
+            String base64 = LegalFilesService.getBase64Data(lf4);
+            if(base64 != null && !base64.isEmpty()){
+                byte[] lf4ByteArray = Base64.getMimeDecoder().decode(base64);
+                String lf4Extension = LegalFilesService.getValidFileExtension(lf4);
+                if (lf4ByteArray.length > 1024000) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
+                    throw new Exception("File size cannot bet greater than 1 MB.");
+                } else if (lf4Extension == null) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
+                    throw new Exception("File must have a valid extension.");
+                } else {
+                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE4.getValue()));
+                    if (legalFilesDTO == null) {
+                        legalFilesDTO = new LegalFilesDTO();
+                    }
+                    legalFilesDTO.setRegistration(registrationDBO.getId());
+                    legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
+                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf4));
+                    legalFilesDTO.setUploadTime(new Date());
+                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                    registrationDBO.setLegalFile4Mime(LegalFilesService.getMimeType(lf4));
+                    registrationDBO.setLegalFile4Size(lf4ByteArray.length);
+                    registrationDBO.setUploadTime(currentTime);
+                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 4");
                 }
-                legalFilesDTO.setRegistration(registrationDBO.getId());
-                legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
-                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf4));
-                legalFilesDTO.setUploadTime(new Date());
-                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                registrationDBO.setLegalFile4Mime(LegalFilesService.getMimeType(lf4));
-                registrationDBO.setLegalFile4Size(lf4ByteArray.length);
-                registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 4");
             }
         }
         if (checkAllFilesFlag(registrationDBO)) {

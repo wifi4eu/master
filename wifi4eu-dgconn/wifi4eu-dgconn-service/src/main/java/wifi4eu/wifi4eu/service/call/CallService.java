@@ -38,7 +38,7 @@ public class CallService {
         CallDTO call = getCallById(callId);
         if (call != null) {
             long currentTime = new Date().getTime();
-            if (call.getStartDate() < currentTime && call.getEndDate() < currentTime) {
+            if (call.getStartDate() < currentTime && currentTime > call.getEndDate()) {
                 return true;
             }
         }
