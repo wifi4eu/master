@@ -9,6 +9,9 @@
 	<version>0.0.1</version>
 	<packaging>${packaging.type}</packaging>
 
+	<name>WiFi4EU Financial module</name>
+	<description>WiFi4EU Financial module to work with ABAC</description>
+ 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -22,14 +25,8 @@
 	</properties>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
-			<scope>provided</scope>
-		</dependency>
-
+		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>javax.servlet-api</artifactId> 
+			<version>3.0.1</version> <scope>provided</scope> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -74,6 +71,13 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -96,6 +100,7 @@
 
 			<properties>
 				<packaging.type>jar</packaging.type>
+				<spring.profile>local</spring.profile>
 			</properties>
 
 			<repositories>
@@ -121,6 +126,7 @@
 			</activation>
 			<properties>
 				<packaging.type>war</packaging.type>
+				<spring.profile>weblogic</spring.profile>
 			</properties>
 			<build>
 				<finalName>wifi4eu-financial</finalName>
@@ -132,6 +138,10 @@
 						<configuration>
 							<failOnMissingWebXml>false</failOnMissingWebXml>
 							<archive>
+								<manifestEntries>
+									<WebLogic-Application-Version>${project.version}_${buildNumber}</WebLogic-Application-Version>
+									<Implementation-Build>${buildNumber}</Implementation-Build>
+								</manifestEntries>
 								<manifest>
 									<addDefaultImplementationEntries>false</addDefaultImplementationEntries>
 								</manifest>

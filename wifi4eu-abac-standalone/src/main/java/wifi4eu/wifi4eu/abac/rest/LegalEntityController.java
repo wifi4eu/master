@@ -56,8 +56,8 @@ public class LegalEntityController {
 
 	// @ PostMapping("import")
 	@RequestMapping(value = "import", method = RequestMethod.POST)
-	public RedirectView importLegalEntity(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
-			throws IOException {
+	public RedirectView importLegalEntity(@RequestParam("file") MultipartFile file,
+			RedirectAttributes redirectAttributes) throws IOException {
 		log.info("importLegalEntity");
 		String[] validContentTypes = new String[] { "application/vnd.ms-excel", "text/csv" };
 
@@ -77,11 +77,8 @@ public class LegalEntityController {
 		}
 
 		RedirectView rv = new RedirectView();
-		rv.setUrl("/");
+		rv.setUrl(URL_HOME);
 		return rv;
-
-		// Redirect to home
-		//return URL_HOME;
 	}
 
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
@@ -115,11 +112,8 @@ public class LegalEntityController {
 		redirectAttributes.addFlashAttribute("showResult", responseData);
 
 		RedirectView rv = new RedirectView();
-		rv.setUrl("/");
+		rv.setUrl(URL_HOME);
 		return rv;
-
-		// Redirect to home
-		//return "uploadForm";
 	}
 
 }
