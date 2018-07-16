@@ -4,7 +4,6 @@ import eu.europa.ec.digit.eui.angular2clistarter.spring.SpringRestConfiguration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-
 public class SpringWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer implements WebApplicationInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -20,7 +19,4 @@ public class SpringWebApplicationInitializer extends AbstractAnnotationConfigDis
     protected String[] getServletMappings() {
         return new String[] { "/api/*" };
     }
-
-
-
 }
