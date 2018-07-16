@@ -80,6 +80,9 @@ export class BeneficiaryProfileComponent {
                                         this.oneRegsitration = false;
                                     }
                                     for (let registration of registrations) {
+                                        if (registration.municipalityId == 0){
+                                            continue;
+                                        }
                                         this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                                         this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                                         this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(

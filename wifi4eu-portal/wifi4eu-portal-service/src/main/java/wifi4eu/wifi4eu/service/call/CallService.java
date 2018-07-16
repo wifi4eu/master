@@ -33,6 +33,10 @@ public class CallService {
         return callMapper.toDTO(callRepository.findOne(callId));
     }
 
+    public CallDTO getCurrentCall(){
+        return callMapper.toDTO(callRepository.findCurrentCall());
+    }
+
 //    public CallDTO createCall(CallDTO callDTO) {
 //        CallDTO resCallDTO = callMapper.toDTO(callRepository.save(callMapper.toEntity(callDTO)));
 //        VoucherManagementDTO voucherManagementDTO = new VoucherManagementDTO();
