@@ -706,8 +706,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             if (response.success) {
                 response.data.forEach(file => {
                     for (let index = 0; index < this.legalFiles[i].length; index++) {
-                        console.log(this.legalFiles[i][index]);
-                        console.log(file);
                         if (this.legalFiles[i][index].type == file[1]) {
                             this.legalFiles[i][index].uploadTime = file[2];
                         }
