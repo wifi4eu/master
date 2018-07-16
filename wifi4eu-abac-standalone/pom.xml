@@ -8,7 +8,7 @@
 	<artifactId>wifi4eu-abac-standalone</artifactId>
 	<version>0.0.1</version>
 	<!-- for local run with spring boot, use JAR -->
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -79,6 +79,22 @@
 	<profiles>
 		<profile>
 			<id>local</id>
+			
+			<repositories>
+		    	<repository>
+		      		<id>codelds</id>
+		      		<url>https://code.lds.org/nexus/content/groups/main-repo</url>
+		    	</repository>
+			</repositories>
+
+			<dependencies>
+				<dependency>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+					<version>11.2.0.3</version>
+				</dependency>
+			</dependencies>
+			
 			<build>
 				<plugins>
 					<plugin>

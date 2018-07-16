@@ -41,29 +41,40 @@ public class Application extends SpringBootServletInitializer implements WebAppl
 
 	@Bean
 	public CommandLineRunner demo(LegalEntityRepository repository) {
-		return (args) -> {
-			// save a couple of legal entities
-			repository.save(new LegalEntity(Integer.valueOf(1), "entity1", "es", "Barcelona", "SPAIN", "ES",
-					"main street", "1", "08040"));
-			repository.save(new LegalEntity(Integer.valueOf(2), "entity2", "es", "Madrid", "SPAIN", "ES", "main street",
-					"2", "08040"));
+		boolean runTestJPA = false;
+		if (runTestJPA) {
+			return (args) -> {
+				log.info("Init - test JPA");
+				
+				// save a couple of legal entities
+				repository.save(new LegalEntity(Integer.valueOf(1), "entity1", "es", "Barcelona", "SPAIN", "ES",
+						"main street", "1", "08040"));
+				repository.save(new LegalEntity(Integer.valueOf(2), "entity2", "es", "Madrid", "SPAIN", "ES",
+						"main street", "2", "08040"));
 
-			// fetch all legal entities
-			log.info("Legal entities found with findAll():");
-			log.info("-------------------------------");
-			for (LegalEntity item : repository.findAll()) {
-				log.info(item.toString());
-			}
-			log.info("");
-
-			// fetch an individual legal entity by ID
-			repository.findById(Integer.valueOf(1)).ifPresent(item -> {
-				log.info("Legal entities found with findById(1):");
-				log.info("--------------------------------");
-				log.info(item.toString());
+				// fetch all legal entities
+				log.info("Legal entities found with findAll():");
+				log.info("-------------------------------");
+				for (LegalEntity item : repository.findAll()) {
+					log.info(item.toString());
+				}
 				log.info("");
-			});
 
-		};
+				// fetch an individual legal entity by ID
+				repository.findById(Integer.valueOf(1)).ifPresent(item -> {
+					log.info("Legal entities found with findById(1):");
+					log.info("--------------------------------");
+					log.info(item.toString());
+					log.info("");
+				});
+
+			};
+		} else {
+			return (args) -> {
+				// Do nothing
+				log.info("Init - do nothing");
+			};
+		}
 	}
+
 }
