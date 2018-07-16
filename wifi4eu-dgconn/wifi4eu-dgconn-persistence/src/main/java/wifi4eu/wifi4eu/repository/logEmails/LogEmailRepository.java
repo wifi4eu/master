@@ -11,4 +11,5 @@ public interface LogEmailRepository extends JpaRepository<LogEmail, Integer> {
     Page<LogEmail> findAllByMunicipalityId(Integer municipalityId, Pageable pageable);
     List<LogEmail> findAllByMunicipalityIdAndActionEquals(Integer municipalityId, String action);
     List<LogEmail> findAllByMunicipalityIdAndActionOrderBySentDateDesc(Integer municipalityId, String action);
+    List<LogEmail> findTopByMunicipalityIdAndActionOrderBySentDateDesc(Integer municipalityId, String action);
 }
