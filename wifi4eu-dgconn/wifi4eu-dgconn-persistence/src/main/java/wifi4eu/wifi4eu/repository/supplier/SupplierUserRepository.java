@@ -15,4 +15,6 @@ public interface SupplierUserRepository extends CrudRepository<SupplierUser,Inte
     int findUserIdBySupplierId(@Param("supplierId") int supplierId);
 
     int countByEmail(@Param("email") String email);
+
+    SupplierUser findFirstSupplierUserByCode(@Param("code") String code);
 }
