@@ -56,7 +56,7 @@ export class BeneficiaryEditProfileComponent {
     private mayors: MayorDTOBase[] = [];
     private editedUser: UserDTOBase = new UserDTOBase();
     private currentEditIndex: number = 0;
-    private isAbleToDelete: boolean[] = [];
+    private isMunicipalityEditable = {};   
     private displayUser: boolean = false;
     private displayMunicipality: boolean = false;
     private displayMayor: boolean = false;
@@ -108,7 +108,7 @@ export class BeneficiaryEditProfileComponent {
                 this.laus[a] = null;
             }
         }
-        this.isAbleToDelete = [];
+        this.isMunicipalityEditable = {};
         this.newMayors = [];
         this.newMunicipalities = [];
         this.emailsMatch = false;
@@ -153,6 +153,9 @@ export class BeneficiaryEditProfileComponent {
                                         this.finalBeneficiary.associationName = registrations[0].associationName;
                                     }
                                     for (let registration of registrations) {
+                                        if (registration.municipalityId == 0){
+                                            continue;
+                                        }
                                         this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                                         this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                                         this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
@@ -230,35 +233,10 @@ export class BeneficiaryEditProfileComponent {
         this.applicationApi.isMunicipalityEditable(municipalityId).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success){
-                    this.isAbleToDelete.push(response.data);
-                } else {
-
+                    this.isMunicipalityEditable[municipalityId] = response.data;
                 }
             }
-        );
-        /*
-        this.applicationApi.isMunicipalityEditable(municipalityId).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success){
-                    this.isAbleToDelete.push(response.data);
-                } else {
-
-                }
-            }
-        );
-        */
-        /*
-        this.applicationApi.getApplicationByCallIdAndMunicipalityId(this.currentCall.id, municipalityId).subscribe(
-            (application: ApplicationDTOBase) => {
-                if (application.id != 0){
-                    this.isAbleToDelete.push(false);
-                } else {
-                    this.isAbleToDelete.push(true);
-                }
-            }
-        );
-        */
-        
+        ); 
     }
 
     private addExtraMunicipality() {
@@ -274,7 +252,7 @@ export class BeneficiaryEditProfileComponent {
 
     private removeExtraMunicipality(index: number, deleteCount: number = 1){
         this.newMunicipalities.splice(index, deleteCount);
-        // this.laus.splice(index, deleteCount);
+        this.laus.splice(index, deleteCount);
         this.newMayors.splice(index, deleteCount);
         this.laus[index] = null;
         this.emailConfirmations.splice(index, deleteCount);
@@ -306,7 +284,7 @@ export class BeneficiaryEditProfileComponent {
     private checkMunicipalitiesSelected() {
         this.municipalitiesSelected = false;
         for (let i = 0; i < this.laus.length; i++) {
-            if (!this.laus[i].id) {
+            if (!this.laus[i]) {
                 this.municipalitiesSelected = false;
                 this.css_class_municipalities[i] = 'notValid';
             } else {
@@ -360,13 +338,6 @@ export class BeneficiaryEditProfileComponent {
                 this.emailsMatch = true;
             }
         }
-        if (this.municipalitiesSelected && this.emailsMatch) {
-            const keys = Object.keys(this.municipalityForm.controls);
-            keys.forEach(key => {
-                this.municipalityForm.controls[key].setErrors({'incorrect': true});
-                this.municipalityForm.controls[key].setErrors(null);
-            });
-        }
     }
 
     private submitNewMunicipalities(){
@@ -419,7 +390,7 @@ export class BeneficiaryEditProfileComponent {
     private editProfile() {
         this.submittingData = true;
         for(let i = 0; i < this.municipalities.length; i++){
-            if (!this.isOrganisation || this.isAbleToDelete[i]){
+            if (!this.isOrganisation || this.isMunicipalityEditable[this.municipalities[i].id]){
                 this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
                     (response: ResponseDTOBase) => {
                         if (response.success) {
@@ -455,6 +426,10 @@ export class BeneficiaryEditProfileComponent {
         }
 
       
+    }
+
+    private goBackToProfile(){
+        this.router.navigate(['../'], {relativeTo: this.route});
     }
 
     private checkFinishedCalls(){

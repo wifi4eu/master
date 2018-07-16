@@ -152,9 +152,9 @@ public class MunicipalityService {
     }
 
     @Transactional
-    public boolean checkIfMunicipalityHaveApplication(int registrationId){
-        int callId = callRepository.findCurrentCall().getId();
-        if (applicationService.getApplicationByCallIdAndRegistrationId(callId,registrationId) != null){
+    public boolean isMunicipalityEditable(int municipalityId){
+        Integer firstQuery = municipalityRepository.checkMunicipalityEditPermission(municipalityId);
+        if (firstQuery > 0){
             return true;
         }
         return false;

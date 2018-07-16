@@ -115,7 +115,7 @@ public class ApplicationResource {
 
         ResponseDTO responseDTO = new ResponseDTO();
         try {
-            boolean checkIfEditable = applicationService.isMunicipalityEditable(municipalityId);
+            boolean checkIfEditable = municipalityService.isMunicipalityEditable(municipalityId);
             responseDTO.setSuccess(true);
             responseDTO.setData(checkIfEditable);
             responseDTO.setError(new ErrorDTO());
@@ -125,17 +125,6 @@ public class ApplicationResource {
             responseDTO.setError(new ErrorDTO());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
-        return responseDTO;
-    }
-
-    @ApiOperation(value = "Check if municipality has edit permissions")
-    @RequestMapping(value = "/testingit/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public ResponseDTO testingIt(@PathVariable("municipalityId")final Integer municipalityId){
-        ResponseDTO responseDTO = new ResponseDTO();
-        boolean checkIfEditable = applicationService.isMunicipalityEditable(municipalityId);
-        responseDTO.setData(checkIfEditable);
-        responseDTO.setSuccess(true);
         return responseDTO;
     }
 
