@@ -433,7 +433,7 @@ public class SupplierService {
     }
 
     public boolean createdLessThan24HBefore(SupplierUserDTO supplierUserDTO){
-        long timePassed = supplierUserDTO.getCreationDate().getTime() - new Date().getTime();
+        long timePassed = new Date().getTime() - supplierUserDTO.getCreationDate().getTime();
         return timePassed < 24 * 60 * 60 * 1000;
     }
 
