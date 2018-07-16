@@ -328,7 +328,7 @@ public class RegistrationService {
         if (!isAnyFileRequestedForCorrection) {
             Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationDBO.getId(), callService
                     .getLastCallClosed().getId());
-            if (applicationDB.getStatus() == ApplicationStatus.PENDING_FOLLOWUP.getValue()) {
+            if (applicationDB != null  && applicationDB.getStatus() == ApplicationStatus.PENDING_FOLLOWUP.getValue()) {
                 applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
                 applicationRepository.save(applicationDB);
                 _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected
