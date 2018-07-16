@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface SupplierRepository extends JpaRepository<Supplier,Integer> {
 
-    @Query(value = "SELECT s.* FROM suppliers s INNER JOIN supplier_users su ON s.id = su.supplier_id WHERE su.user_id = :userId" , nativeQuery = true)
-    Supplier getByUserId(@Param("userId") int userId);
+    @Query(value = "SELECT s.* FROM suppliers s INNER JOIN supplier_users su ON s.id = su.supplier_id WHERE su.user_id = ?1 AND su.main = 1" , nativeQuery = true)
+    Supplier getByUserId(int userId);
 
     Iterable<Supplier> findByVat(String vat);
     Iterable<Supplier> findByAccountNumber(String accountNumber);
