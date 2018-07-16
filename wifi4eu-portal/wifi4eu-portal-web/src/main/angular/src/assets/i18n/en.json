@@ -843,5 +843,9 @@
   "benefPortal.beneficiary.addMunicipalities.Error":"An error ocurred while trying to add the municipalities. Please try again latern",
   "benefPortal.beneficiary.deleteMunicipality.Success":"Your municipality were succesfully deleted.",
   "benefPortal.beneficiary.deleteMunicipality.Error":"Error. You can't delete this municipality. At least one municipality should remain in the registration",
-  "benefPortal.beneficiary.deleteMunicipality.ErrorMunicipality":"Error, you can't delete this municipality"
+  "benefPortal.beneficiary.deleteMunicipality.ErrorMunicipality":"Error, you can't delete this municipalityCorrectionRequestEmail",
+  "benefPortal.beneficary.addMunicipality": "+ Add Contact",
+  "benefPortal.adduser.email": "Email address: ",
+  "benefPortal.adduser.title": "New contact person",
+  "benefPortal.adduser.desc": "Please, fill in the e-mail address of the contact person you want to add. An e-mail will be sent to this person asking them to create an ECAS account. When the account is created, you will see this person added in the system."
 }
