@@ -102,7 +102,6 @@ export class DiscussionComponent {
                             this.userThreads = userThread;
                             this.supplierApi.getSupplierByUserId(this.userThreads[i].userId).subscribe(
                                 (suppliers: SupplierDTOBase) => {
-                                    if (true){ //TODO FIX!!!
                                     this.supplierApi.getUserIdFromSupplier(this.ownSupplier.id).subscribe(
                                         (supplierId : number) =>{
                                             for(let i = 0 ; i < suppliers; i++){
@@ -115,8 +114,6 @@ export class DiscussionComponent {
                                                     }
                                                 }
                                             }
-                                            
-
                                         }, error=>{
                                             console.log(error);
                                             
@@ -124,14 +121,6 @@ export class DiscussionComponent {
 
 
                                     );
-                                    //if (this.user.id != suppliers.userId) {
-                                        this.otherSuppliers.push(suppliers);
-                                        console.log(this.otherSuppliers);
-                                        this.counter++;
-                                        if (this.counter >= this.userThreads.length) {
-                                            this.hasAuthor = true;
-                                        }
-                                    }
                                 }, error => {
                                     console.log(error);
                                 }

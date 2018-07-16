@@ -478,7 +478,6 @@ public class SupplierResource {
             boolean emailSent = supplierService.sendEmailToContacts(newUserEmail);
             return new ResponseDTO(true, emailSent, null);
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export Excel", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }

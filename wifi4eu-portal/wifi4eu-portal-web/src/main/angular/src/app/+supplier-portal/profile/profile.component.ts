@@ -302,20 +302,18 @@ export class SupplierProfileComponent {
     }
         
     private closeModal(){
+        this.addContact = false;
+        this.addUser = false;
         this.displayContact = false;
         this.displayCompany = false;
         this.deletingLogo = false;
         this.clearLogoFile();
         Object.assign(this.editedSupplier, this.supplier);
-        this.addContact = false;
-        this.addUser = false;
+   
         }
     
         private addNewContact(){       
         this.addContact = true; 
-        console.log(this.newUserEmail);
-        
-        
            this.supplierApi.sendEmailToNewContact(this.newUserEmail).subscribe(
                 (responseDTO: ResponseDTOBase) => {
                     this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
