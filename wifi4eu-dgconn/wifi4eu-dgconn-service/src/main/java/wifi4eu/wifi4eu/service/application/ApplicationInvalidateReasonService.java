@@ -169,13 +169,6 @@ public class ApplicationInvalidateReasonService {
     }
 
     public Map<String, Boolean> changeStatusApplicationEnabled(Integer applicationId, HttpServletRequest request){
-        //TODO Check if status of application can be changed from pending follow up:
-        //  Before the email to the applicant is sent for correction of documents:
-        //	    Pending follow-up -> Invalid: can be changed freely to invalid, this will clear the reasons for correction already in the database for all documents submitted for that call.
-        //	    Pending follow-up -> Valid: can be changed freely to valid, this will clear the reasons for correction already in the database for all documents submitted for that call.
-        //  After the email to the applicant is sent for correction of documents:
-        //      Before the deadline to resubmit (7 calendar days) has passed:
-
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
