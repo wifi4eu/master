@@ -618,4 +618,9 @@ public class RegistrationService {
         }
         return false;
     }
+
+    public List<UserDTO> getUsersFromRegistration(Integer registrationId){
+        List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersByRegistrationId(registrationId));
+        return users;
+    }
 }

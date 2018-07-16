@@ -74,6 +74,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private loadingData = false;
     private processingRequest = false;
     private displayCommentModal = false;
+    private contactUsers: UserDTOBase[][] = [];
 
     private correctionRequested: LegalFileCorrectionReasonDTOBase[] = [];
     private invalidateChecks = [false, false, false, false, false, false, false, false, false];
@@ -146,6 +147,11 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                         this.registrationApi.getRegistrationById(application.registrationId).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 if (registration) {
+                                    this.userApi.getUsersByIdFromRegistration(registration.id).subscribe(
+                                        (users: UserDTOBase[])=>{
+                                            this.contactUsers[i]=users;
+                                        }
+                                    )
                                     this.userApi.getUserByIdFromRegistration(registration.id).subscribe(
                                         (user: UserDTOBase) => {
                                             if (user) {

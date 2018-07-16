@@ -167,7 +167,7 @@ public class UserService {
             permissionChecker.addTablePermissions(userDTO, Integer.toString(userDTO.getId()),
                     RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
         }
-        if (registrationUsers != null) {
+        if (registrationUsers != null && (userDTO.getType() != 1 && userDTO.getType() != 5)){
             for (int i = 0; registrationUsers.size() > i; i++) {
                 RegistrationUsers resRegistrationUser = registrationUsers.get(i);
                 if (resRegistrationUser.getUserId() == null) {

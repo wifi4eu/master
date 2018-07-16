@@ -1,21 +1,21 @@
-import {Component} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {UserApi} from "../../shared/swagger/api/UserApi";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {SharedService} from "../../shared/shared.service";
-import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
-import {UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
-import {MayorApi} from "../../shared/swagger/api/MayorApi";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
-import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
-import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
+import { Component } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { UserApi } from "../../shared/swagger/api/UserApi";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
+import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { LocalStorageService } from "angular-2-local-storage";
+import { SharedService } from "../../shared/shared.service";
+import { UserThreadsApi } from "../../shared/swagger/api/UserThreadsApi";
+import { UserThreadsDTOBase } from "../../shared/swagger/model/UserThreadsDTO";
+import { MayorApi } from "../../shared/swagger/api/MayorApi";
+import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
+import { ThreadApi } from "../../shared/swagger/api/ThreadApi";
+import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
 
 
 @Component({
@@ -26,6 +26,7 @@ import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
 
 export class BeneficiaryProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
+    private users: UserDTOBase[] = [];
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
     private editedUser: UserDTOBase = new UserDTOBase();
@@ -42,12 +43,12 @@ export class BeneficiaryProfileComponent {
     private threadId: number;
     private hasDiscussion: boolean = false;
     private discussionThreads: ThreadDTOBase[] = [];
-    private allDocumentsUploaded: boolean [] = [];
+    private allDocumentsUploaded: boolean[] = [];
     private documentUploaded: boolean = false;
     private oneRegsitration: boolean = false;
     private oneRegistrationNumber: number = 0;
- 
-    constructor(private beneficiaryApi: BeneficiaryApi ,private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+
+    constructor(private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -79,6 +80,11 @@ export class BeneficiaryProfileComponent {
                                                         this.mayors.push(mayor);
                                                     }
                                                 );
+                                            }
+                                        );
+                                        this.userApi.getUsersFromRegistration(registration.id).subscribe(
+                                            (users: UserDTOBase[]) => {
+                                                    this.users = users;
                                             }
                                         );
                                     }
@@ -236,18 +242,18 @@ export class BeneficiaryProfileComponent {
     }
 
     private goToDiscussion() {
-        this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
+        this.router.navigate(['../discussion-forum/', this.threadId], { relativeTo: this.route });
     }
 
     private goToUploadDocuments() {
-        this.router.navigate(['../additional-info/', this.oneRegistrationNumber], {relativeTo: this.route});
+        this.router.navigate(['../additional-info/', this.oneRegistrationNumber], { relativeTo: this.route });
     }
 
     private goToapplyForVOucher() {
         this.router.navigateByUrl('/beneficiary-portal/voucher');
     }
 
-    private goToEditProfile(){
-        this.router.navigate(['../profile/edit-profile'], {relativeTo: this.route});
+    private goToEditProfile() {
+        this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
     }
 }
