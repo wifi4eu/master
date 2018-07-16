@@ -70,11 +70,11 @@ export class DgConnExportImportComponent {
 
       private exportBeneficiaryInformation() {
         this.processingOperation = true;
-        // WIFIFOREU-2498 JSON -> CSV
+        //-- WIFIFOREU-2540
         this.exportImportApi.exportBeneficiaryInformation().subscribe(          
             (response) => {
-                let blob = new Blob([response], {type: 'text/csv'});
-                FileSaver.saveAs(blob, 'exportBeneficiaryInformation.csv');
+                let blob = new Blob([response], {type: 'text/zip'});
+                FileSaver.saveAs(blob, 'exportBeneficiaryInformation.zip');
                 this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
                 this.processingOperation = false;              
             }, error => {

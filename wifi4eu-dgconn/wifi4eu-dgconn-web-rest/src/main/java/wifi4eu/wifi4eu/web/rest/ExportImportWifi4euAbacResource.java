@@ -18,11 +18,8 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euAbacService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONObject;
-import org.json.JSONArray;
+import java.io.ByteArrayOutputStream;
 
 
 @CrossOrigin(origins = "*")
@@ -83,7 +80,7 @@ public class ExportImportWifi4euAbacResource {
 //    }
 
     @ApiOperation(value = "Export Beneficiary Information")
-    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "text/csv")
+    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "application/zip")
     @ResponseBody
     public ResponseEntity<byte[]> exportBeneficiaryInformation(final HttpServletResponse response) throws Exception {
         _log.info("exportBeneficiaryInformation");
@@ -91,15 +88,15 @@ public class ExportImportWifi4euAbacResource {
         // WIFIFOREU-2498 JSON -> CSV
         ResponseEntity<byte[]> responseReturn = null;
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("text/csv"));
-        String filename = "exportBeneficiaryInformation.csv";
+        headers.setContentType(MediaType.parseMediaType("application/zip"));
+
+        String filename = "exportBeneficiaryInformation.zip";
         headers.setContentDispositionFormData(filename, filename);
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-        _log.info("exportBeneficiaryInformation - generating csv file content");
-        String responseData = exportImportWifi4euAbacService.exportBeneficiaryInformation().getData().toString();
-        // getBytes(Charset.forName("UTF-8"));
-        responseReturn = new ResponseEntity<>(responseData.getBytes(), headers, HttpStatus.OK);
+        _log.info("exportBeneficiaryInformation - generating zip file content");
+        ByteArrayOutputStream file = exportImportWifi4euAbacService.exportBeneficiaryInformation();
+        responseReturn = new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
         
         _log.info("exportBeneficiaryInformation - csv file exported successfully");
         return responseReturn;
@@ -169,5 +166,4 @@ public class ExportImportWifi4euAbacResource {
         _log.info("exportBudgetaryCommitment - csv file exported successfully");
         return responseReturn;
     }
-
 }

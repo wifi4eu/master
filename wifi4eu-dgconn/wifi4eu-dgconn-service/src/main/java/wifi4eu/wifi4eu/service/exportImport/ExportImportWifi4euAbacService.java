@@ -2,6 +2,10 @@ package wifi4eu.wifi4eu.service.exportImport;
 
 import com.google.common.collect.Lists;
 import com.google.gson.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +36,14 @@ import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class ExportImportWifi4euAbacService {
@@ -140,34 +148,80 @@ public class ExportImportWifi4euAbacService {
 		return false;
 	}
 
-	public ResponseDTO exportBeneficiaryInformation() throws Exception {
+	public ByteArrayOutputStream exportBeneficiaryInformation() throws Exception {
 		_log.info("exportBeneficiaryInformation");
-		ResponseDTO result = new ResponseDTO();
 		Gson gson = new GsonBuilder().create();
 		JsonParser parser = new JsonParser();
-		JsonObject resultJson = new JsonObject();
+		JsonObject rootElement = new JsonObject();
+		JsonArray result = new JsonArray();
+
 		List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation = exportImportBeneficiaryInformationMapper
 				.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findExportImportBI()));
-		JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
+
 		if (applicationsBeneficiaryInformation != null && !applicationsBeneficiaryInformation.isEmpty()) {
+			JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
+
 			for (ExportImportBeneficiaryInformationDTO application : applicationsBeneficiaryInformation) {
 				JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
 				applicationsBeneficiaryInformationJsonArray.add(applicationJson);
 			}
-		}
-		resultJson.addProperty("createTime", new Date().getTime());
-		resultJson.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
-		result.setSuccess(true);
-		result.setData("[" + resultJson.toString() + "]");
 
-		// WIFIFOREU-2498 JSON -> CSV - Process the JSON output into the expected CSV file
-		String csvStringFile = ParserJSON2CSV.parseJSON2CSV((String) result.getData(), "beneficiaryInformation",
+			rootElement.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
+		}
+
+		result.add(rootElement);
+
+		String csvStringFile = ParserJSON2CSV.parseJSON2CSV(result.toString(), "beneficiaryInformation",
 				new String[] { "id", "mun_OfficialName", "mun_OfficialAddress", "org_Name", "org_TypeCode", "sup_Name",
 						"sup_BankAccount", "reg_RegistartionNumber" });
-		result.setData(csvStringFile);
 
-		result.setError(null);
-		return result;
+		return generateZipFile("exportBeneficiaryInformation", csvStringFile, applicationsBeneficiaryInformation.size());
+	}
+
+	public ByteArrayOutputStream generateZipFile(String containedFileName, String csvString, int numberOfEntries) {
+
+		if (csvString == null || csvString.length() == 0) {
+			_log.error("Invalid parameters - generateZipFile");
+			return new ByteArrayOutputStream();
+		}
+
+		if (containedFileName == null || containedFileName.length() == 0) {
+			containedFileName = "document";
+		}
+
+		//-- Creating a zip
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try(ZipOutputStream zos = new ZipOutputStream(baos)) {
+			ZipEntry entry = new ZipEntry(containedFileName + ".csv"); //-- Not the name of the zip file but the name of the inserted files
+			zos.putNextEntry(entry);
+			zos.write(csvString.getBytes());
+			zos.closeEntry();
+
+			for (int i = 0; i < numberOfEntries; i++) {
+				//-- PDF i
+				Document document = new Document();
+				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+				PdfWriter.getInstance(document, outputStream);
+				document.open();
+				String docName = "PDF Document" + (i+1);
+				document.addTitle(docName);
+				document.addSubject(docName);
+				document.add(new Paragraph(docName));
+				document.close();
+
+				//-- Zip Entry
+				ZipEntry pdfEntry = new ZipEntry("file" + String.valueOf(i+1) + ".pdf");
+				zos.putNextEntry(pdfEntry);
+				zos.write(outputStream.toByteArray());
+				zos.closeEntry();
+			}
+		} catch (IOException ex) {
+			_log.error("Could not generate a zip file for exportZIP.csv");
+		} catch (DocumentException ex) {
+			_log.error("Could not generate PDF inside ZIP file");
+		}
+
+		return baos;
 	}
 
 	public void exportRegistrationData() throws Exception {
