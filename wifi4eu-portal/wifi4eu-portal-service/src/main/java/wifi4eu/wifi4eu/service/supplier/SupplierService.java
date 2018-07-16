@@ -1,10 +1,14 @@
 package wifi4eu.wifi4eu.service.supplier;
 
 import com.google.common.collect.Lists;
+import com.mysema.query.annotations.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -34,6 +38,8 @@ import wifi4eu.wifi4eu.util.MailService;
 import java.text.MessageFormat;
 import java.util.*;
 
+@Configuration
+@PropertySource({"classpath:env.properties"})
 @Service("portalSupplierService")
 public class SupplierService {
     @Autowired
@@ -196,7 +202,7 @@ public class SupplierService {
         userDTO.setName(supplierDTO.getContactName());
         userDTO.setSurname(supplierDTO.getContactSurname());
         userDTO.setEmail(supplierDTO.getContactEmail());
-        if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()){
+        if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()) {
             userDTO.setEcasEmail(supplierDTO.getContactEmail());
         }
         userDTO.setCreateDate(new Date().getTime());
@@ -207,7 +213,7 @@ public class SupplierService {
         userService.sendActivateAccountMail(userDTO);
         supplierDTO = createSupplier(supplierDTO);
 
-        createSupplierUser(supplierDTO.getId(), userDTO.getId(), userDTO.getEmail() ,true);
+        createSupplierUser(supplierDTO.getId(), userDTO.getId(), userDTO.getEmail(), true);
         return supplierDTO;
     }
 
@@ -400,66 +406,66 @@ public class SupplierService {
         return supplierRepository.findSuppliersByRegion(regionId, pageable);
     }
 
-    public SupplierUserDTO createSupplierUser(int supplierId, Integer userId, String userEmail, boolean isMain){
+    public SupplierUserDTO createSupplierUser(int supplierId, Integer userId, String userEmail, boolean isMain) {
         SupplierUserDTO supplierUserDTO = new SupplierUserDTO();
         supplierUserDTO.setEmail(userEmail);
         supplierUserDTO.setCreationDate(new Date());
         supplierUserDTO.setSupplierId(supplierId);
 
-        if (isMain){
+        if (isMain) {
             supplierUserDTO.setStatus(SupplierUserStatus.ALREADY_REGISTERED.getStatus());
             supplierUserDTO.setMain(SupplierUserType.MAIN.getType());
 
-        }else{
+        } else {
             supplierUserDTO.setStatus(SupplierUserStatus.NOT_REGISTERED.getStatus());
             supplierUserDTO.setMain(SupplierUserType.INVITED.getType());
         }
 
-        if (userId != null){
+        if (userId != null) {
             supplierUserDTO.setUserId(userId);
         }
 
         return supplierUserMapper.toDTO(supplierUserRepository.save(supplierUserMapper.toEntity(supplierUserDTO)));
     }
 
-    public SupplierUserDTO getSupplierUserBySupplierIdAndEmail(int supplierId, String userEmail){
+    public SupplierUserDTO getSupplierUserBySupplierIdAndEmail(int supplierId, String userEmail) {
         return supplierUserMapper.toDTO(supplierUserRepository.findFirstSupplierUserBySupplierIdAndEmail(supplierId, userEmail));
     }
 
-    public SupplierUserDTO registerSupplierUser(SupplierUserDTO supplierUserDTO){
+    public SupplierUserDTO registerSupplierUser(SupplierUserDTO supplierUserDTO) {
         supplierUserDTO.setStatus(SupplierUserStatus.ALREADY_REGISTERED.getStatus());
 
         return supplierUserMapper.toDTO(supplierUserRepository.save(supplierUserMapper.toEntity(supplierUserDTO)));
     }
 
-    public boolean createdLessThan24HBefore(SupplierUserDTO supplierUserDTO){
+    public boolean createdLessThan24HBefore(SupplierUserDTO supplierUserDTO) {
         long timePassed = new Date().getTime() - supplierUserDTO.getCreationDate().getTime();
         return timePassed < 24 * 60 * 60 * 1000;
     }
 
-    public int countSupplierUsersByEmail(String email){
+    public int countSupplierUsersByEmail(String email) {
         return supplierUserRepository.countByEmail(email);
     }
 
-    public int getUserIdFromSupplier(int supplierId){
+    public int getUserIdFromSupplier(int supplierId) {
         return supplierUserRepository.findUserIdBySupplierId(supplierId);
     }
 
-    public SupplierUserDTO findByCode(String code){
+    public SupplierUserDTO findByCode(String code) {
         return supplierUserMapper.toDTO(supplierUserRepository.findFirstSupplierUserByCode(code));
     }
 
-    public List<SupplierUserDTO> findByEmail(String email){
+    public List<SupplierUserDTO> findByEmail(String email) {
         return supplierUserMapper.toDTOList(supplierUserRepository.findByEmail(email));
     }
 
-    public List<SupplierUserDTO> registerSupplierUserIfApplies(List<SupplierUserDTO> supplierUserDTOList){
+    public List<SupplierUserDTO> registerSupplierUserIfApplies(List<SupplierUserDTO> supplierUserDTOList) {
         List<SupplierUserDTO> supplierUserDTOToUpdate = new ArrayList<>();
 
-        for(SupplierUserDTO supplierUserDTO: supplierUserDTOList){
+        for (SupplierUserDTO supplierUserDTO : supplierUserDTOList) {
 
             if (SupplierUserStatus.NOT_REGISTERED.getStatus() == supplierUserDTO.getStatus()
-                    && createdLessThan24HBefore(supplierUserDTO)){
+                    && createdLessThan24HBefore(supplierUserDTO)) {
 
                 supplierUserDTO.setStatus(SupplierUserStatus.ALREADY_REGISTERED.getStatus());
                 supplierUserDTOToUpdate.add(supplierUserDTO);
@@ -471,11 +477,27 @@ public class SupplierService {
 
         SupplierUser supplierUser;
 
-        while(supplierUserIterator.hasNext()){
+        while (supplierUserIterator.hasNext()) {
             supplierUser = supplierUserIterator.next();
             supplierUserDTOToUpdate.add(supplierUserMapper.toDTO(supplierUser));
         }
 
         return supplierUserDTOToUpdate;
+    }
+
+    public boolean sendEmailToContacts(String newUserEmail) {
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+
+        UserContext userContext = UserHolder.getUser();
+        UserDTO user = userService.getUserByUserContext(userContext);
+        String urlSent = userService.getBaseUrl() + "api/supplierUser/register?UserEmail=" + newUserEmail.trim();
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.sendNewUserSupplier.subject");
+        String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
+        msgBody = MessageFormat.format(msgBody, urlSent);
+        if (!userService.isLocalHost()) {
+            mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+        }
+        return true;
     }
 }

@@ -46,6 +46,10 @@ export class SupplierProfileComponent {
     protected modalIsOpen: boolean = false;
     protected languageRows: UxLanguage [] [];
     protected languages: UxLanguage [];
+    private addContact: boolean = false;
+    private addUser: boolean = false;
+    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
+    private newUserEmail: string = '';
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private userApi: UserApi) {
         let storedUser = this.localStorageService.get('user');
@@ -108,13 +112,6 @@ export class SupplierProfileComponent {
         }
     }
 
-    private closeModal() {
-        this.displayContact = false;
-        this.displayCompany = false;
-        this.deletingLogo = false;
-        this.clearLogoFile();
-        Object.assign(this.editedSupplier, this.supplier);
-    }
 
     private saveContactChanges() {
         this.submittingData = true;
@@ -303,4 +300,37 @@ export class SupplierProfileComponent {
         this.deletingLogo = true;
         this.clearLogoFile();
     }
+        
+    private closeModal(){
+        this.displayContact = false;
+        this.displayCompany = false;
+        this.deletingLogo = false;
+        this.clearLogoFile();
+        Object.assign(this.editedSupplier, this.supplier);
+        this.addContact = false;
+        this.addUser = false;
+        }
+    
+        private addNewContact(){       
+        this.addContact = true; 
+        console.log(this.newUserEmail);
+        
+        
+           this.supplierApi.sendEmailToNewContact(this.newUserEmail).subscribe(
+                (responseDTO: ResponseDTOBase) => {
+                    this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
+                    this.closeModal();
+                }, error => {
+                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.closeModal();
+                }
+            );
+        }
+    
+    
+        
+        /* New contact funciontality */
+        private sendMailToUser(){
+        this.addUser = true;
+        }
 }
