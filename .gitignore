@@ -33,8 +33,6 @@ npm-debug.log
 .vscode
 *.log
 *.stackdump
-**/swagger
-**/swagger/**
 .vagrant/
 *.box
 cleanEnv.sh
