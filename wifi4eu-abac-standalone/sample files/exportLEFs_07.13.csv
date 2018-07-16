@@ -1,0 +1,31 @@
+id,LANG,Name1,Name2,NAME,Region,Country,Code,Address,Nr,PostalCode
+1,en,Buje,Buje,BUJE,Istarska županija,HRVATSKA,HR,Istarska ,2,52460
+2,bg,?????? ???????-Polski Trambesh,?????? ???????-Polski Trambesh,?????? ???????-POLSKI TRAMBESH,?????? ??????? (Veliko Tarnovo),???????? (BULGARIA),BG,??. ????? ???? ,4,5180
+3,fr,Frontignan,Frontignan,FRONTIGNAN,Hérault,FRANCE,FR,Place de l'Hôtel de ville,467185000,34110
+4,fr,Bayonne,Bayonne,BAYONNE,Pyrénées-Atlantiques,FRANCE,FR,Avenue du maréchal Leclerc,1,64100
+5,fr,Erdeven,Erdeven,ERDEVEN,Morbihan,FRANCE,FR,PLACE DE LA MAIRIE,0,56410
+6,fr,Poisy,Poisy,POISY,Haute-Savoie,FRANCE,FR,Route d'Annecy,75,74330
+7,es,Tornabous,Tornabous,TORNABOUS,Lleida,ESPAÑA,ES,Plaça de la Vila,1,25331
+8,es,Agaete,Agaete,AGAETE,Gran Canaria,ESPAÑA,ES,Antonio de armas,1,35480
+9,fr,Landerneau,Landerneau,LANDERNEAU,Finistère,FRANCE,FR,Rue de la Tour d'Auvergne,2,29800
+10,fr,L'Île-d'Yeu,L'Île-d'Yeu,L'ÎLE-D'YEU,Vendée,FRANCE,FR,quai de la Mairie,11,85350
+11,es,Vila-real,Vila-real,VILA-REAL,Castellón / Castelló,ESPAÑA,ES,Plaza Mayor,1,12540
+12,en,Cieza (Murcia),Cieza (Murcia),CIEZA (MURCIA),Murcia,ESPAÑA,ES,Plaza Mayor,1,30530
+13,es,Oleiros,Oleiros,OLEIROS,A Coruña,ESPAÑA,ES,Plaza de Galicia,1,15173
+14,es,Firgas,Firgas,FIRGAS,Gran Canaria,ESPAÑA,ES,Plaza San Roque,1,35430
+15,fr,Imphy,Imphy,IMPHY,Nièvre,FRANCE,FR,Avenue Jean Jaurès,0,58160
+16,bg,???????-Gramada,???????-Gramada,???????-GRAMADA,????? (Vidin),???????? (BULGARIA),BG,??. ???? ????? ,1,3830
+17,fr,Le Cannet,Le Cannet,LE CANNET,Alpes-Maritimes,FRANCE,FR,BOULEVARD SADI CARNOT,20,6110
+18,es,Llutxent,Llutxent,LLUTXENT,Valencia / València,ESPAÑA,ES,Calle sant Domenec,18,46838
+19,fr,Boncourt (Eure-et-Loir),Boncourt (Eure-et-Loir),BONCOURT (EURE-ET-LOIR),Eure-et-Loir,FRANCE,FR,Place de l'Eglise,3,28260
+20,en,Parthenay,Parthenay,PARTHENAY,Deux-Sèvres,FRANCE,FR,2 Rue de la Citadelle,549949023,79200
+21,fr,Fleury-sur-Orne,Fleury-sur-Orne,FLEURY-SUR-ORNE,Calvados,FRANCE,FR,rue Serge Rouzière,10,14123
+22,bg,????? ??????-Dolni chiflik,????? ??????-Dolni chiflik,????? ??????-DOLNI CHIFLIK,????? (Varna),???????? (BULGARIA),BG,"??. ????? ??????, ??. ""????"" ?1",05142 2001,9120
+23,en,Cerdanyola del Vallès,Cerdanyola del Vallès,CERDANYOLA DEL VALLÈS,Barcelona,ESPAÑA,ES,Francesc Layret s/n,s/n,8290
+24,es,Corbins,Corbins,CORBINS,Lleida,ESPAÑA,ES,Pl. de la vila ,s/n,25137
+25,it,Ciminna,Ciminna,CIMINNA,Palermo,ITALIA ,IT,VIA DOTT. VITO GRAZIANO,2,90023
+26,es,Solsona,Solsona,SOLSONA,Lleida,ESPAÑA,ES,C.CASTELL ,20,25280
+27,en,Ripoll,Ripoll,RIPOLL,Girona,ESPAÑA,ES,Plaça Ajuntament,3,17500
+28,en,Sant Pere de Ribes,Sant Pere de Ribes,SANT PERE DE RIBES,Barcelona,ESPAÑA,ES,Plaça de la Vila,s/n,8810
+29,es,Bellpuig,Bellpuig,BELLPUIG,Lleida,ESPAÑA,ES,C/ Homenatge a la Vellesa,6,25250
+30,en,"Seu d'Urgell, La","Seu d'Urgell, La","SEU D'URGELL, LA",Lleida,ESPAÑA,ES,"Plaça dels Oms, 1",973350010,25700

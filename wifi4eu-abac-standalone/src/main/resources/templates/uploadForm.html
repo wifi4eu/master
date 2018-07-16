@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+	<div>
+		<h2>Import Legal Entities to ABAC from WIFI4EU files</h2>
+		<form method="POST" enctype="multipart/form-data" action="legalEntity/import/">
+			<table>
+				<tr><td>File to upload:</td><td><input type="file" name="file" accept=".csv,text/csv"/></td></tr>
+				<tr><td></td><td><input type="submit" value="Import" /></td></tr>
+			</table>
+		</form>
+		<div th:if="${importResult}">
+			<h3 th:text="${importResult}"/>
+		</div>
+	</div>
+
+	<div>
+		<h2>Export Legal Entities from ABAC</h2>
+<!--	
+		<form method="GET" enctype="multipart/form-data" action="legalEntity/export/">
+			<table>
+				<tr><td>File to upload:</td><td><input type="file" name="file" accept=".csv,text/csv"/></td></tr>
+				<tr><td></td><td><input type="submit" value="Import" /></td></tr>
+			</table>
+		</form>
+-->
+		<div th:if="${exportResult}">
+			<h3 th:text="${exportResult}"/>
+		</div>
+	</div>
+
+</body>
+</html>

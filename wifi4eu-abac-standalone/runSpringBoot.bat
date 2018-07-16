@@ -1,0 +1,1 @@
+call java -jar target/wifi4eu-abac-standalone-0.0.1.jar
