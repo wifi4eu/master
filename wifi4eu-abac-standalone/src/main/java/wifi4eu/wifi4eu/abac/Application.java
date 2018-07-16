@@ -5,10 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.WebApplicationInitializer;
 
 /*
@@ -26,6 +28,8 @@ import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
 
 @ComponentScan
 @SpringBootApplication
+@EnableJpaRepositories(basePackageClasses = LegalEntityRepository.class)
+@EntityScan(basePackageClasses = LegalEntity.class)
 public class Application extends SpringBootServletInitializer implements WebApplicationInitializer {
 
 	private final Logger log = LoggerFactory.getLogger(Application.class);
@@ -45,12 +49,12 @@ public class Application extends SpringBootServletInitializer implements WebAppl
 		if (runTestJPA) {
 			return (args) -> {
 				log.info("Init - test JPA");
-				
+
 				// save a couple of legal entities
 				repository.save(new LegalEntity(Integer.valueOf(1), "entity1", "es", "Barcelona", "SPAIN", "ES",
-						"main street", "1", "08040"));
+						"main street", "1", "08040", null, null));
 				repository.save(new LegalEntity(Integer.valueOf(2), "entity2", "es", "Madrid", "SPAIN", "ES",
-						"main street", "2", "08040"));
+						"main street", "2", "08040", null, null));
 
 				// fetch all legal entities
 				log.info("Legal entities found with findAll():");

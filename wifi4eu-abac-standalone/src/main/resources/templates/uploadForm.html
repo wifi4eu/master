@@ -16,16 +16,16 @@
 
 	<div>
 		<h2>Export Legal Entities from ABAC</h2>
-<!--	
-		<form method="GET" enctype="multipart/form-data" action="legalEntity/export/">
-			<table>
-				<tr><td>File to upload:</td><td><input type="file" name="file" accept=".csv,text/csv"/></td></tr>
-				<tr><td></td><td><input type="submit" value="Import" /></td></tr>
-			</table>
-		</form>
--->
+		<a href="/legalEntity/export/">Click here to get the export file</a></h2>
 		<div th:if="${exportResult}">
 			<h3 th:text="${exportResult}"/>
+		</div>
+	</div>
+
+	<div>
+		<h2>Show Legal Entities</h2>
+		<div th:if="${itemsResult}">
+			<h3 th:text="${itemsResult}"/>
 		</div>
 	</div>
 

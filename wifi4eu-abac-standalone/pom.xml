@@ -7,8 +7,7 @@
 	<groupId>wifi4eu.wifi4eu</groupId>
 	<artifactId>wifi4eu-abac-standalone</artifactId>
 	<version>0.0.1</version>
-	<!-- for local run with spring boot, use JAR -->
-	<packaging>jar</packaging>
+	<packaging>${packaging.type}</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -73,18 +72,30 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
 	<profiles>
 		<profile>
 			<id>local</id>
-			
+
+			<properties>
+				<packaging.type>jar</packaging.type>
+			</properties>
+
 			<repositories>
-		    	<repository>
-		      		<id>codelds</id>
-		      		<url>https://code.lds.org/nexus/content/groups/main-repo</url>
-		    	</repository>
+				<repository>
+					<id>codelds</id>
+					<url>https://code.lds.org/nexus/content/groups/main-repo</url>
+				</repository>
 			</repositories>
 
 			<dependencies>
@@ -94,7 +105,7 @@
 					<version>11.2.0.3</version>
 				</dependency>
 			</dependencies>
-			
+
 			<build>
 				<plugins>
 					<plugin>
@@ -108,8 +119,6 @@
 									<addDefaultImplementationEntries>false</addDefaultImplementationEntries>
 								</manifest>
 							</archive>
-							<!-- <webResources> <resource> <directory>src/main/web/</directory> 
-								</resource> </webResources> -->
 						</configuration>
 					</plugin>
 				</plugins>
@@ -117,17 +126,15 @@
 		</profile>
 		<profile>
 			<id>weblogic</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<packaging.type>war</packaging.type>
+			</properties>
 			<build>
 				<finalName>wifi4eu-financial</finalName>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<configuration>
-							<source>${java.version}</source>
-							<target>${java.version}</target>
-						</configuration>
-					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>

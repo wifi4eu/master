@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.abac.rest;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,7 +59,8 @@ public class LegalEntityController {
 	}
 
 	@PostMapping("import")
-	public String importLegalEntity(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
+	public String importLegalEntity(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+			throws IOException {
 		String[] validContentTypes = new String[] { "application/vnd.ms-excel", "text/csv" };
 
 		log.info("importLegalEntity");
@@ -91,33 +96,26 @@ public class LegalEntityController {
 		return null;
 	}
 
-	// @ ApiOperation(value = "Export a CSV file with created legal entities in
-	// ABAC")
-	// @ RequestMapping(value = "/export", method = RequestMethod.GET, produces =
-	// "text/csv")
-	// @ ResponseBody
-	@RequestMapping(value = "test1", method = RequestMethod.GET, produces = "text/plain")
-	public ResponseEntity<byte[]> exportLegalEntity(final HttpServletResponse response) throws Exception {
-		// @ PostMapping("export")
-		// public String exportLegalEntity(@RequestParam("file") MultipartFile file,
-		// Model model) throws IOException {
+	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
+	public ResponseEntity<byte[]> exportLegalEntity(final HttpServletResponse response, Model model) throws Exception {
 
 		// WIFIFOREU-2498 JSON -> CSV
 		ResponseEntity<byte[]> responseReturn = null;
-		/*
-		 * HttpHeaders headers = new HttpHeaders();
-		 * headers.setContentType(MediaType.parseMediaType("text/csv")); String filename
-		 * = "exportLegalEntity.csv"; headers.setContentDispositionFormData(filename,
-		 * filename);
-		 * headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-		 * 
-		 * log.info("exportLegalEntity - generating csv file content"); String
-		 * responseData = legalEntityService.exportLegalEntity().getData().toString();
-		 * // getBytes(Charset.forName("UTF-8")); responseReturn = new
-		 * ResponseEntity<>(responseData.getBytes(), headers, HttpStatus.OK);
-		 * 
-		 * log.info("exportLegalEntity - csv file exported successfully");
-		 */
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.parseMediaType("text/csv"));
+		String filename = "exportLegalEntity.csv";
+		headers.setContentDispositionFormData(filename, filename);
+		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+		log.info("exportLegalEntity - generating csv file content");
+		String responseData = legalEntityService.exportLegalEntityFile();
+		// getBytes(Charset.forName("UTF-8"));
+		responseReturn = new ResponseEntity<byte[]>(responseData.getBytes(StandardCharsets.UTF_8), headers,
+				HttpStatus.OK);
+
+		model.addAttribute("exportResult", "File exported successfully...");
+		log.info("exportLegalEntity - csv file exported successfully");
+
 		return responseReturn;
 	}
 
