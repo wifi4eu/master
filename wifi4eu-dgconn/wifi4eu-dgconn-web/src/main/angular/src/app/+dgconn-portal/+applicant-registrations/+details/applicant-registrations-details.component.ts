@@ -96,7 +96,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private correspondenceSizePage: number[] = [];
     private correspondenceSortField: string[] = [];
     private correspondenceSortDirection: number[] = [];
-    private correspondenceDialogInfo: LogEmailDTO;
+    private correspondenceDialogInfo : LogEmailDTO;
+    private buttonStatusEnabled : any[][] = [];
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
@@ -143,6 +144,9 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                             })
                         }
                         let application = applications[i];
+                        this.applicationInvalidateReasonApi.changeStatusApplicationEnabled(application.id).subscribe((response: ResponseDTO) => {
+                          this.buttonStatusEnabled[i] = response.data;
+                        })
                         this.registrationApi.getRegistrationById(application.registrationId).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 if (registration) {
