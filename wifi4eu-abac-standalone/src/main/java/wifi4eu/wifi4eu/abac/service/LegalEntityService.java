@@ -39,12 +39,53 @@ public class LegalEntityService {
 		log.info("printing list of items");
 		for (LegalEntity legalEntity : items) {
 			log.info("Item recovered: " + legalEntity.toString());
-			// legalEntityrepository.save(legalEntity);
+			legalEntityrepository.save(legalEntity);
 		}
 
 		log.info("storing list of items");
 		// TODO
 
+	}
+
+	public String showLegalEntityFile() {
+		log.info("showLegalEntityFile");
+
+		log.info("recovering list of items");
+		Iterable<LegalEntity> list = legalEntityrepository.findAll();
+
+		log.info("parsing list of items");
+		StringBuilder data = new StringBuilder();
+
+		boolean first = true;
+		data.append("<table style=\"width:100%\" border=\"1\">\r\n");
+		data.append("<tr>\r\n");
+
+		// headers
+		String headers[] = new String[] { "id", "name", "lang", "region", "country", "code", "address", "nr",
+				"postalCode", "idAbac", "status" };
+		for (String header : headers) {
+			data.append("<th>").append(header).append("</th>\r\n");
+		}
+
+		// data
+		for (LegalEntity legalEntity : list) {
+			data.append("</tr><tr>\r\n");
+			data.append("<td>").append(legalEntity.getId()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getName()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getLang()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getRegion()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getCountry()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getCode()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getAddress()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getNr()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getPostalCode()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getIdAbac()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getStatus()).append("</td>\r\n");
+		}
+		data.append("</tr>\r\n");
+		data.append("</table>\r\n");
+
+		return data.toString();
 	}
 
 	public String exportLegalEntityFile() {
@@ -54,12 +95,8 @@ public class LegalEntityService {
 		List<LegalEntity> list = legalEntityrepository.findLegalEntitiesWithIdAbac();
 
 		log.info("parsing list of items");
-		// TODO do stuff
-		// String data = "id|name|idAbac|status\r\n" + "1,Buje,ABAC-CODE-1,0\r\n" +
-		// "2,Frontignan,ABAC-CODE-2,0\r\n" + "3,Oleiros,ABAC-CODE-3,0\r\n" +
-		// "4,Madrid,ABAC-CODE-4,0\r\n";
 		String data = parseLegalEntity2String(list);
-		log.info("data: " + data);
+		// log.info("data: " + data);
 
 		return data;
 	}
@@ -83,7 +120,7 @@ public class LegalEntityService {
 			}
 		}
 		data.append("\r\n");
-		
+
 		// data
 		if (list != null && !list.isEmpty()) {
 			for (LegalEntity legalEntity : list) {

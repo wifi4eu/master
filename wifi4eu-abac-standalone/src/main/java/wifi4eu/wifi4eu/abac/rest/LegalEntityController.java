@@ -8,22 +8,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 
@@ -58,12 +54,12 @@ public class LegalEntityController {
 		return false;
 	}
 
-	@PostMapping("import")
-	public String importLegalEntity(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
+	// @ PostMapping("import")
+	@RequestMapping(value = "import", method = RequestMethod.POST)
+	public RedirectView importLegalEntity(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
 			throws IOException {
-		String[] validContentTypes = new String[] { "application/vnd.ms-excel", "text/csv" };
-
 		log.info("importLegalEntity");
+		String[] validContentTypes = new String[] { "application/vnd.ms-excel", "text/csv" };
 
 		if (file == null || file.isEmpty()) {
 			log.info("importLegalEntity - not valid file");
@@ -74,32 +70,24 @@ public class LegalEntityController {
 			redirectAttributes.addFlashAttribute("importResult", "The file is not valid, please upload a CSV file");
 		} else {
 			log.info("importLegalEntity - processing file");
-			// do stuff
-			// TODO
 			legalEntityService.importLegalEntityFile(file);
 
 			redirectAttributes.addFlashAttribute("importResult",
 					"File successfully uploaded " + file.getOriginalFilename() + "!");
 		}
 
+		RedirectView rv = new RedirectView();
+		rv.setUrl("/");
+		return rv;
+
 		// Redirect to home
-		return "redirect:" + URL_HOME;
-	}
-
-	@GetMapping("/test/{filename:.+}")
-	@ResponseBody
-	public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
-		// Resource file = fileStorageService.loadAsResource(filename);
-		// return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-		// "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-		return null;
+		//return URL_HOME;
 	}
 
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
 	public ResponseEntity<byte[]> exportLegalEntity(final HttpServletResponse response, Model model) throws Exception {
+		log.info("exportLegalEntity");
 
-		// WIFIFOREU-2498 JSON -> CSV
 		ResponseEntity<byte[]> responseReturn = null;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("text/csv"));
@@ -119,8 +107,19 @@ public class LegalEntityController {
 		return responseReturn;
 	}
 
-	@RequestMapping(value = "test2", method = RequestMethod.GET, produces = "text/plain")
-	public String testRest() throws IOException {
-		return "OK";
+	@RequestMapping(value = "show", method = RequestMethod.GET)
+	public RedirectView showLegalEntity(RedirectAttributes redirectAttributes) throws IOException {
+		log.info("showLegalEntity");
+
+		String responseData = legalEntityService.showLegalEntityFile();
+		redirectAttributes.addFlashAttribute("showResult", responseData);
+
+		RedirectView rv = new RedirectView();
+		rv.setUrl("/");
+		return rv;
+
+		// Redirect to home
+		//return "uploadForm";
 	}
+
 }
