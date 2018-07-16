@@ -210,7 +210,7 @@ public class ScheduledTasks {
                     UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
 
                     if (user != null && user.getEcasEmail() != null) {
-                        if (!userService.isLocalHost()) {
+                        /*if (!userService.isLocalHost()) {*/
                             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
                             if (user.getLang() != null) {
                                 locale = new Locale(user.getLang());
@@ -228,7 +228,7 @@ public class ScheduledTasks {
                         registrationService.createRegistration(registrationDTO);
                         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Document request sent for registration with id " + registrationDTO.getId());
                     }
-                }
+                /*}*/
             } catch (Exception e) {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send document rquest for this registration", e);
             }

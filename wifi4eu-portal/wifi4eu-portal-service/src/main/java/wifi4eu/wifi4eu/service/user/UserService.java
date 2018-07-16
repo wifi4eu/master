@@ -168,8 +168,7 @@ public class UserService {
                     RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
         }
         if (registrationUsers != null && (userDTO.getType() != 1 && userDTO.getType() != 5)){
-            for (int i = 0; registrationUsers.size() > i; i++) {
-                RegistrationUsers resRegistrationUser = registrationUsers.get(i);
+            for (RegistrationUsers resRegistrationUser : registrationUsers) {
                 if (resRegistrationUser.getUserId() == null) {
                     resRegistrationUser.setUserId(userRepository.findByEcasUsername(userContext.getUsername()).getId());
                     registrationUsersRepository.save(resRegistrationUser);

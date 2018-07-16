@@ -290,16 +290,18 @@ public class BeneficiaryResource {
             if (userRegistrationDTO.getEmail() == userContext.getEmail()) {
                 throw new AppException("");
             }
-            beneficiaryService.sendEmailToContacts(userRegistrationDTO);
-            return new ResponseDTO(true, userRegistrationDTO, null);
+            if (!beneficiaryService.checkContactEmailWithMunicipality(userRegistrationDTO.getEmail(), userRegistrationDTO.getMunicipalityId())) {
+                beneficiaryService.sendEmailToContacts(userRegistrationDTO);
+                return new ResponseDTO(true, userRegistrationDTO, null);
+            } else {
+                throw new AppException("Already sent to this email");
+            }
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export Excel", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
-
     }
-
 
     @ApiOperation(value = "getUserRegistration")
     @RequestMapping(value = "/getUserRegistration", method = RequestMethod.GET)

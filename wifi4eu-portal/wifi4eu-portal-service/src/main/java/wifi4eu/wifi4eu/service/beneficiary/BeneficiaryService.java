@@ -19,6 +19,7 @@ import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -89,6 +90,9 @@ public class BeneficiaryService {
 
     @Autowired
     ApplicationService applicationService;
+
+    @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
@@ -602,22 +606,27 @@ public class BeneficiaryService {
     public UserRegistrationDTO sendEmailToContacts(UserRegistrationDTO userRegistrationDTO) {
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
 
-
         UserContext userContext = UserHolder.getUser();
         UserDTO user = userService.getUserByUserContext(userContext);
         String userName = user.getName() + ' ' + user.getSurname();
 
         MunicipalityDTO municipality = municipalityService.getMunicipalityById(userRegistrationDTO.getMunicipalityId());
         String municipalityName = municipality.getName();
-
         ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
         String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
         String msgBody = bundle.getString("mail.sendUserEmail.beneficiary.body");
-        msgBody = MessageFormat.format(msgBody, userName, municipalityName);
+        String additionalInfoUrl = userService.getBaseUrl() + "cas/eim/external/register.cgi?email=";
+        msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, userRegistrationDTO.getEmail());
         if (!userService.isLocalHost()) {
             mailService.sendEmail(userRegistrationDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
         return userRegistrationDTO;
     }
 
+    public boolean checkContactEmailWithMunicipality(String email, Integer municipalityId){
+        if(registrationUsersRepository.findByContactEmailAndMunicipality(email, municipalityId) != null){
+            return true;
+        }
+        return false;
+    }
 }
