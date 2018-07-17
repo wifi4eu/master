@@ -112,7 +112,6 @@ export class SupplierEditProfileComponent {
                 }
             }
         );
-        console.log("Selected Regions are: ", this.selectedRegions);
     }
 
     private changeLogo(event): any {
