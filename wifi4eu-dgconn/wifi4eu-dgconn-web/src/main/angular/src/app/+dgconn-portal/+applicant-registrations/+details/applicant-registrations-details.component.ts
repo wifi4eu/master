@@ -264,6 +264,18 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     }
 
     private displayRegistrationByAuthor(authorId) {
+        console.log("AuthorId: " + authorId);
+        console.log("All Registrations: ");
+        console.log(this.registrations);
+        console.log("Find: ");
+        //var registration = this.registrations.find(x => x.userId == authorId);
+        console.log(registration);
+        console.log("------------------");
+        
+
+        
+        
+        
         var registration = this.registrations[0];
         //var registration = this.registrations.find(x => x.userId == authorId);
         if(registration == null){
