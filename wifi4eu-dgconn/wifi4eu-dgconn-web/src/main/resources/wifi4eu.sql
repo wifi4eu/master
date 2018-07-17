@@ -553,6 +553,9 @@ CREATE TABLE dbo.legal_files_correction_reason
     ON UPDATE CASCADE
 );
 
+alter table [wifi4eudb].[dbo].[legal_files_correction_reason] ADD [request_correction_date] DATETIME NULL;
+alter table [wifi4eudb].[dbo].[APPLICANTLISTITEM] ADD [SUPPORTINGDOCUMENTS] BIT DEFAULT(0);
+
 -- -----------------------------------------------------
 -- Table `dbo`.`voucher_assignments`
 -- -----------------------------------------------------
@@ -595,6 +598,41 @@ CREATE TABLE dbo.voucher_simulations
   REFERENCES dbo.voucher_assignments ([id])
     ON DELETE CASCADE
     ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `dbo`.`application_invalidate_reason`
+-- -----------------------------------------------------
+create table application_invalidate_reason(
+	[id] int identity NOT NULL,
+	[application_id] int NOT NULL,
+	[reason] int NOT NULL
+	PRIMARY KEY ([id]),
+	CONSTRAINT [fk_invalidate_reason_application]
+	FOREIGN KEY ([application_id])
+	REFERENCES dbo.applications ([id])
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `dbo`.`application_comment`
+-- -----------------------------------------------------
+create table application_comment(
+	[id] int identity NOT NULL,
+  [user_id] int NOT NULL,
+	[application_id] int NOT NULL,
+	[comment] NVARCHAR(256) NOT NULL,
+  [date_posted] bigint NOT NULL,
+	PRIMARY KEY ([id]),
+	CONSTRAINT [fk_application_comment_application]
+	FOREIGN KEY ([application_id])
+	REFERENCES dbo.applications ([id])
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+  CONSTRAINT [fk_application_comment_user]
+  FOREIGN KEY ([user_id])
+  REFERENCES dbo.users ([id])
 );
 
 -- -----------------------------------------------------

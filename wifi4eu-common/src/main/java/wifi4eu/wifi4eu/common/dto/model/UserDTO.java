@@ -174,4 +174,5 @@ public class UserDTO {
     public String getCsrfToken() { return csrfToken; }
 
     public void setCsrfToken(String csrfToken) { this.csrfToken = csrfToken; }
+
 }

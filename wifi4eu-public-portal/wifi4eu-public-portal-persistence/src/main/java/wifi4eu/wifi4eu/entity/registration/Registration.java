@@ -4,7 +4,7 @@ import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
 import javax.persistence.*;
-
+import java.sql.Timestamp;
 @Entity
 @Table(name = "registrations")
 public class Registration {
@@ -45,11 +45,37 @@ public class Registration {
     @Column(name = "organisation_id")
     private int organisationId;
 
+    @Column(name = "id_status_beneficiary")
+    private int idStatusBeneficiary;
+
+    @Column(name = "id_pm")
+    private int idUserPM;
+
+    @Column(name = "id_bpm")
+    private int idUserBPM;
+
+    @Column(name = "compliance")
+    private boolean compliance;
+
+    @Column(name = "action_to_be_taken")
+    private int actionToBeTaken;
+
+    @Column(name = "action_taken")
+    private int actionTaken;
+
+    @Column(name = "conformity")
+    private boolean conformity;
+
+    @Column(name = "first_false_check")
+    private Timestamp firstFalseCheck;
+
+    @Column(name = "date_registered")
+    private Timestamp dateRegistered;
 
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String associationName, int organisationId) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String associationName, int organisationId, int idStatusBeneficiary, boolean compliance, int actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, int idPM, int idBPM) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -60,6 +86,15 @@ public class Registration {
         this.legalFile4 = legalFile4;
         this.associationName = associationName;
         this.organisationId = organisationId;
+        this.idStatusBeneficiary = idStatusBeneficiary;
+        this.idUserPM = idPM;
+        this.idUserBPM = idBPM;
+        this.compliance = compliance;
+        this.actionToBeTaken = actionToBeTaken;
+        this.actionTaken = actionTaken;
+        this.conformity = conformity;
+        this.firstFalseCheck = firstFalseCheck;
+        this.dateRegistered = dateRegistered;
     }
 
     public Integer getId() {
@@ -148,5 +183,77 @@ public class Registration {
 
     public void setOrganisationId(int organisationId) {
         this.organisationId = organisationId;
+    }
+
+    public int getIdStatusBeneficiary() {
+        return idStatusBeneficiary;
+    }
+
+    public void setIdStatusBeneficiary(int idStatusBeneficiary) {
+        this.idStatusBeneficiary = idStatusBeneficiary;
+    }
+
+    public boolean isCompliance() {
+        return compliance;
+    }
+
+    public void setCompliance(boolean compliance) {
+        this.compliance = compliance;
+    }
+
+     public int getActionToBeTaken() {
+        return actionToBeTaken;
+    }
+
+    public void setActionToBeTaken(int actionToBeTaken) {
+        this.actionToBeTaken = actionToBeTaken;
+    }
+
+    public int getActionTaken() {
+        return actionTaken;
+    }
+
+    public void setActionTaken(int actionTaken) {
+        this.actionTaken = actionTaken;
+    }
+
+    public boolean isConformity() {
+        return conformity;
+    }
+
+    public void setConformity(boolean conformity) {
+        this.conformity = conformity;
+    }
+
+    public Timestamp getFirstFalseCheck() {
+        return firstFalseCheck;
+    }
+
+    public void setFirstFalseCheck(Timestamp firstFalseCheck) {
+        this.firstFalseCheck = firstFalseCheck;
+    }
+
+    public Timestamp getDateRegistered() {
+        return dateRegistered;
+    }
+
+    public void setDateRegistered(Timestamp dateRegistered) {
+        this.dateRegistered = dateRegistered;
+    }
+
+    public int getIdUserPM() {
+        return idUserPM;
+    }
+
+    public void setIdUserPM(int idUserPM) {
+        this.idUserPM = idUserPM;
+    }
+
+    public int getIdUserBPM() {
+        return idUserBPM;
+    }
+
+    public void setIdUserBPM(int idUserBPM) {
+        this.idUserBPM = idUserBPM;
     }
 }

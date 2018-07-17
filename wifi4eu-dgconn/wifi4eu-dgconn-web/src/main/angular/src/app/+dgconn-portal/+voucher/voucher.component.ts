@@ -14,6 +14,7 @@ import { count } from "rxjs/operator/count";
 import { Paginator, MenuItem, DataTable, TabView } from "primeng/primeng";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as FileSaver from "file-saver";
+import { Subscription } from "rxjs";
 
 @Component({
   templateUrl: 'voucher.component.html', providers: [ApplicationApi, NutsApi, VoucherApi, RegistrationWarningApi, CallApi],
@@ -45,6 +46,7 @@ export class DgConnVoucherComponent {
   private displayMessage: boolean = false;
   displayConfirmingData: boolean = false;
   private preSelectedEnabledButton: Boolean = false;
+  private freezeButtonEnabled: Boolean = false;
 
   private countrySelected: NutsDTOBase = {id: 0, code: '0', label: 'All', level: 0, countryCode: "ALL", order: 1, sorting: 1};
   private simulationAssignment = null;
@@ -80,6 +82,8 @@ export class DgConnVoucherComponent {
   private dateNumberFreeze: string;
   private hourNumberFreeze: string; 
 
+  private hasCallEnded : boolean = false;
+
   private searchedMunicipality = null;
   private selectedCountry = 'All';
 
@@ -108,35 +112,39 @@ export class DgConnVoucherComponent {
               if(municipality === ""){
                 municipality == 'All';
               }
-
+              
               if(page < 0){
                 this.page = 0;
               }
-
+              
               if(size > 100){
                 this.sizePage = 100;
               }
               else if(size < 20){
                 this.sizePage = 20;
               }
-
+              
               if(!this.columns.some(x => x === sortField)){
                 sortField = this.columns[0];
               }       
-
+              
               if(!this.calls.some(call => call.id === callId)){
                 this.callSelected = calls[0];
               }else{
                 var index = this.calls.findIndex(call => call.id === callId);
                 this.callSelected = calls[index];
               }
+              callApi.isCallClosed(this.callSelected.id).subscribe((enabled : boolean) => {
+                  this.hasCallEnded = enabled;
+              });
               this.page = page;
               this.sizePage = size;
               this.selectedCountry = country;
               this.searchedMunicipality = municipality;
               this.sortField = sortField;
               this.sortDirection = sortDirection.toUpperCase();
-
+              
+              
               setTimeout(() => {
                 if(this.searchedMunicipality.toUpperCase() !== 'ALL'){
                   this.municipalitySearch.nativeElement.value = this.searchedMunicipality;
@@ -154,7 +162,7 @@ export class DgConnVoucherComponent {
                 });
                 this.tableVoucher.sortSingle();        
               }, 200);
-
+              
               this.nutsApi.getNutsByLevel(0).subscribe((countries) => {
                 this.countries = <NutsDTOBase[]>countries;
                 this.countries.splice(0, 0, {id: 0, code: '0', label: 'All', level: 0, countryCode: "ALL", order: 1, sorting: 1});
@@ -165,7 +173,7 @@ export class DgConnVoucherComponent {
                   }
                 });
               });
-
+              
               this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callSelected.id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
                 if(data != null){
                   this.callVoucherAssignment = data;
@@ -174,12 +182,17 @@ export class DgConnVoucherComponent {
                   this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
                   this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
                     this.preSelectedEnabledButton = response;
-                  },(error) => {
-                    console.log(error);      
+                  },(error) => { 
+                    this.sharedService.growlTranslation('An error occured while checking if pre-list is enabled', 'dgConn.voucherAssignment.error.checkPreList', 'error');
                   })
+                  this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
+                    this.freezeButtonEnabled = enabled;
+                  }, (error) => {
+                    this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
+                  });
                   if(data.hasFreezeListSaved){
                     this.voucherApi.getVoucherAssignmentByCallAndStatus(this.callSelected.id, 3).subscribe(
-                     (response: VoucherAssignmentAuxiliarDTO) => {
+                      (response: VoucherAssignmentAuxiliarDTO) => {
                         if(response != null){
                           this.callVoucherAssignment.id = response.id;
                           let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
@@ -187,17 +200,18 @@ export class DgConnVoucherComponent {
                           this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
                           this.loadPage();
                         }                    
-                    }, error => {
-                      console.log(error);
-                    });
-                  }
-                  else{
-                    this.loadPage();
-                  }
+                      }, error => {
+                        this.sharedService.growlTranslation('Error retrieving list.', 'dgConn.voucherAssignment.error.retrievingList', 'error');
+                      });
+                    }
+                    else{
+                      this.loadPage();
+                    }
                 }       
                 else{
                   this.loadingSimulation = false;
                   this.listAssignment = [];
+                  this.sharedService.growlTranslation('Voucher assignment list not found for this call', 'dgConn.voucherAssignment.warning.noVoucherForCall', 'warn');
                 }     
               })
               this.applicationApi.getApplicationsNotInvalidated(this.callSelected.id).subscribe((data) => {
@@ -214,7 +228,7 @@ export class DgConnVoucherComponent {
       }
     ) 
   }
-
+  
   filterTable(){
     this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, page: this.page, size: this.sizePage, municipality: this.searchedMunicipality, country: this.selectedCountry, sortField : this.sortField, sortDirection: this.sortDirection} });
   }
@@ -224,7 +238,7 @@ export class DgConnVoucherComponent {
     this.page = 0;
     this.filterTable();
   }
-
+  
   fillPaginator(response) {
     this.totalRecords = response.xtotalCount;
     this.pageLinks = Math.ceil(this.totalRecords / this.sizePage);
@@ -237,7 +251,7 @@ export class DgConnVoucherComponent {
       this.filterTable();
     }
   }
-
+  
   exportListExcel(){
     this.loadingSimulation = true;
     this.downloadingExcel = true;
@@ -247,26 +261,27 @@ export class DgConnVoucherComponent {
       this.loadingSimulation = false;
       this.downloadingExcel = false;
     }, (error) => {
+      this.sharedService.growlTranslation('An error ocurred while downloading the list', 'dgConn.voucherAssignment.error.exportExcel', 'error');
       this.downloadingExcel = false;
     });
   }
-
+  
   compareFn(n1: NutsDTOBase, n2: NutsDTOBase): boolean {
     return n1 && n2 ? n1.id === n2.id : n1 === n2;
   }
-
+  
   paginate(event){
     this.simulationAssignment.unsubscribe();
     this.page = event.page;
     this.filterTable();
   }
-
+  
   changeRowSelection(pageSize: number){
     this.sizePage = pageSize;
     this.page = 0;
     this.filterTable();
   }
-
+  
   loadPage(){
     this.loadingSimulation = true;
     if (this.getApplicationsCall != null && !this.getApplicationsCall['closed']) {
@@ -281,18 +296,19 @@ export class DgConnVoucherComponent {
       this.fillPaginator(response);
     })
   }
-
+  
   checkPreListEnabled(){
     if(this.callVoucherAssignment.hasPreListSaved){
       return;
     }
     this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
       this.preSelectedEnabled = response;
-    },(error) => {
-      console.log(error);      
-    })
+      if(!response){
+        this.sharedService.growlTranslation('It\'s not possible to pre-save the list with applications left to be validated.', 'dgConn.voucherAssignment.warning.savingPreList', 'warn');
+      }
+    });
   }
-
+  
   savePreList(savePreListBtn){
     savePreListBtn.disabled = true;
     if(this.callVoucherAssignment.hasPreListSaved){
@@ -303,14 +319,16 @@ export class DgConnVoucherComponent {
       this.callVoucherAssignment.hasPreListSaved = true;
       this.callVoucherAssignment.preListExecutionDate = response.data.executionDate;
       let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+      this.freezeButtonEnabled = true;
+      this.filterTable();
       this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
       this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
       savePreListBtn.disabled = false;
     }, error => {
-      console.log("error => ", error);
+      this.sharedService.growlTranslation('An error ocurred while saving pre-list', 'dgConn.voucherAssignment.error.savingPreList', 'error');
     })
   }
-
+  
   sortTable(event){
     this.sortField = event.field;
     this.sortDirection = event.order === 1 ? 'ASC' : 'DESC';
@@ -319,7 +337,9 @@ export class DgConnVoucherComponent {
 
   handleChange(event) {
     this.callSelected = this.calls[event.index];
-    console.log(this.callSelected);
+    this.callApi.isCallClosed(this.callSelected.id).subscribe((enabled : boolean) => {
+      this.hasCallEnded = enabled;
+    });
     this.sortField = 'euRank';
     this.sortDirection = 'ASC';
     this.filterTable();
@@ -368,8 +388,14 @@ export class DgConnVoucherComponent {
           this.callVoucherAssignment.id = resp.data.id;
         }
         this.loadPage();
+        this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
+          this.freezeButtonEnabled = enabled;
+        }, (error) => {
+          this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
+        });
         this.loadingSimulation = false;
       }, (error) => {
+        this.sharedService.growlTranslation('An error occurred while simulating.', 'dgConn.voucherAssignment.error.runningSimulation', 'error');
         this.loadingSimulation = false;
         this.displayConfirmingData = false;
       })
@@ -414,7 +440,7 @@ export class DgConnVoucherComponent {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
     }, error => {
-      console.log("error => ", error);
+      this.sharedService.growlTranslation('An error occurred while rejecting an application.', 'dgConn.voucherAssignment.error.rejectingApplication', 'error');
     })
   }
 
@@ -426,15 +452,19 @@ export class DgConnVoucherComponent {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
     }, error => {
-      console.log("error => ", error);
+      this.sharedService.growlTranslation('An error occurred while selecting an application.', 'dgConn.voucherAssignment.error.selectingApplication', 'error');
     }) 
   }
 
   private freezeList(){
-    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment != null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
-      return;
-    }
-    this.displayFreezeConfirmation = true;
+    this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
+      this.displayFreezeConfirmation = enabled;
+      if(!enabled){
+        this.sharedService.growlTranslation('It\'s not possible to freeze the list with applications left to be validated', 'dgConn.voucherAssignment.warning.savingFreezeList','warn');
+      }
+    }, (error) => {
+      this.sharedService.growlTranslation('An error occured while checking if freeze list is enabled', 'dgConn.voucherAssignment.error.checkFreezeList', 'error');
+    });
   }
 
   private saveFreezeList(saveFreezeBtn){
@@ -451,16 +481,20 @@ export class DgConnVoucherComponent {
       this.loadPage();
       saveFreezeBtn.disabled = false;
     }, error => {
-      console.log(error);
+      this.sharedService.growlTranslation('An error occurred while freezing the list.', 'dgConn.voucherAssignment.error.savingFreezeList', 'error');
     });    
   }
 
   sendNotificationToApplicants(){
-    if(!this.callVoucherAssignment.hasFreezeListSaved){
+    if(!this.callVoucherAssignment.hasFreezeListSaved || !this.hasCallEnded){
       return;
     }
     this.voucherApi.sendNotificationForApplicants(this.callSelected.id).subscribe((response: ResponseDTO) => {
-      console.log(response.success ? 'Success sending notifications': 'Failed sending notifications');
+      if(!response.success){
+        this.sharedService.growlTranslation('An error occurred while sending notifications.', 'dgConn.voucherAssignment.error.sendingNotifications', 'error');
+      }
+    }, (error) => {
+      this.sharedService.growlTranslation('An error occurred while sending notifications.', 'dgConn.voucherAssignment.error.sendingNotifications', 'error');
     })
   }
 

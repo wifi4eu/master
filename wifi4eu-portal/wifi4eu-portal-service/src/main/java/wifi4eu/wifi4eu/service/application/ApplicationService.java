@@ -15,6 +15,7 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
@@ -22,6 +23,8 @@ import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -82,6 +85,9 @@ public class ApplicationService {
     @Autowired
     VoucherService voucherService;
 
+    @Autowired
+    MunicipalityRepository municipalityRepository;
+
     private static final Logger _log = LogManager.getLogger(ApplicationService.class);
 
     @Autowired
@@ -89,6 +95,9 @@ public class ApplicationService {
 
     @Autowired
     ApplicationIssueUtilRepository applicationIssueUtilRepository;
+
+    @Autowired
+    RegistrationRepository registrationRepository;
 
     @Deprecated
     public List<ApplicationDTO> getAllApplications() {
@@ -190,7 +199,7 @@ public class ApplicationService {
                 String msgBody = bundle.getString("mail.voucherApply.body");
                 msgBody = MessageFormat.format(msgBody, municipality.getName());
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "createApplication");
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
                 }
             }
@@ -222,6 +231,14 @@ public class ApplicationService {
 
     public ApplicationDTO getApplicationByCallIdAndRegistrationId(int callId, int registrationId) {
         return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
+    }
+
+    public ApplicationDTO getApplicationByCallIdAndMunicipalityId(int callId, int municipalityId) {
+        if (municipalityId != 0 && callId != 0) {
+            int registrationId = registrationRepository.findByMunicipalityId(municipalityId).getId();
+            return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
+        }
+        return null;
     }
 
     public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {
@@ -630,7 +647,10 @@ public class ApplicationService {
                     }
                 }
                 msgBody = MessageFormat.format(msgBody, documentTypes);
-                mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                Registration registration = registrationRepository.findOne(application.getRegistrationId());
+                if(registration != null) {
+                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipality().getId(), "sendCorrectionEmails");
+                }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
             correctionRequest = correctionRequestEmailMapper.toDTO(correctionRequestEmailRepository.save(correctionRequestEmailMapper.toEntity(correctionRequest)));

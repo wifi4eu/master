@@ -15,18 +15,22 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
+import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
-import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.application.*;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
@@ -89,6 +93,20 @@ public class ApplicationService {
 
     @Autowired
     ApplicationIssueUtilRepository applicationIssueUtilRepository;
+
+    @Autowired
+    RegistrationRepository registrationRepository;
+    @Autowired
+    LegalFilesService legalFilesService;
+
+    @Autowired
+    ApplicationInvalidateReasonMapper applicationInvalidateReasonMapper;
+
+    @Autowired
+    ApplicationInvalidateReasonRepository applicationInvalidateReasonRepository;
+
+    @Autowired
+    LogEmailRepository logEmailRepository;
 
     @Deprecated
     public List<ApplicationDTO> getAllApplications() {
@@ -190,7 +208,7 @@ public class ApplicationService {
                 String msgBody = bundle.getString("mail.voucherApply.body");
                 msgBody = MessageFormat.format(msgBody, municipality.getName());
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "createApplication");
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
                 }
             }
@@ -386,6 +404,25 @@ public class ApplicationService {
                     applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByMediationAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
                 }
                 break;
+            case "supportingdocuments":
+                if (pagingSortingData.getOrderType() == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderBySupportingDocumentsDesc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderBySupportingDocumentsDesc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderBySupportingDocumentsAsc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderBySupportingDocumentsAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                }
+                break;
             default:
                 if (pagingSortingData.getOrderType() == -1) {
                     if (name != null) {
@@ -420,80 +457,6 @@ public class ApplicationService {
             List<Integer> warnings = registrationWarningRepository.findAllByLauId(applicantListItemDTO.getLauId());
             applicantListItemDTO.setIssueStatus(warnings);
         }
-    }
-
-    public ApplicationDTO validateApplication(ApplicationDTO applicationDTO, HttpServletRequest request) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Validating application");
-        RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
-        if (registration.getAllFilesFlag() != 1) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application can not be validated due to missing files");
-            throw new AppException();
-        }
-        ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
-        if (applicationDBO == null) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application does not exist");
-            throw new AppException("Incorrect application id");
-        }
-
-        applicationDBO.setStatus(ApplicationStatus.OK.getValue());
-        applicationDBO.setInvalidateReason(null);
-        ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
-        /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
-        RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
-        if (registration != null) {
-            UserDTO user = userService.getUserById(registration.getUserId());
-            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-            if (user != null && municipality != null) {
-                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                if (user.getLang() != null) {
-                    locale = new Locale(user.getLang());
-                }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.validateApplication.subject");
-                String msgBody = bundle.getString("mail.validateApplication.body");
-                msgBody = MessageFormat.format(msgBody, municipality.getName());
-                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
-        }
-        */
-        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is valid");
-        return validatedApplication;
-    }
-
-    public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO, HttpServletRequest request) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating application");
-        ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
-        if (applicationDBO == null) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application does not exist");
-            throw new AppException("Incorrect application id");
-        }
-        applicationDBO.setStatus(ApplicationStatus.KO.getValue());
-        applicationDBO.setInvalidateReason(applicationDTO.getInvalidateReason());
-        ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
-        /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
-        RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
-        if (registration != null) {
-            UserDTO user = userService.getUserById(registration.getUserId());
-            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-            if (user != null && municipality != null) {
-                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                if (user.getLang() != null) {
-                    locale = new Locale(user.getLang());
-                }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.invalidateApplication.subject");
-                String msgBody = bundle.getString("mail.invalidateApplication.body");
-                msgBody = MessageFormat.format(msgBody, municipality.getName());
-                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
-        }
-        */
-        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - The application is invalid due the following reason: " + invalidatedApplication.getInvalidateReason());
-        return invalidatedApplication;
     }
 
     public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application, HttpServletRequest request) {
@@ -581,6 +544,13 @@ public class ApplicationService {
     }
 
     public CorrectionRequestEmailDTO sendCorrectionEmails(Integer callId) throws Exception {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        if (!checkIfCorrectionRequestEmailIsAvailable(callId)) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "-Emails can only be sent if call is closed and has " + "correction " +
+                    "requests, for the call:  " + "" + callId);
+            throw new AppException("Emails can only be sent if call is closed and has " + "correction requests, for the call:  " + "" + callId);
+        }
         List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus.PENDING_FOLLOWUP.getValue());
         CorrectionRequestEmailDTO correctionRequest = null;
         CorrectionRequestEmailDTO lastCorrectionRequestEmail = getLastCorrectionRequestEmailInCall(callId);
@@ -598,39 +568,71 @@ public class ApplicationService {
                 }
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.correctionRequestEmail.subject");
-                String msgBody = bundle.getString("mail.correctionRequestEmail.body");
+                String header = bundle.getString("mail.correctionRequestEmail.header");
+                String msgBody = bundle.getString("mail.correctionRequestEmail.body1");
+                String msgBody2 = bundle.getString("mail.correctionRequestEmail.body2");
+                String signOff = bundle.getString("mail.correctionRequestEmail.signOff");
                 String[] correctionReasons = new String[6];
                 correctionReasons[0] = bundle.getString("mail.correctionRequestEmail.reason1");
                 correctionReasons[1] = bundle.getString("mail.correctionRequestEmail.reason2");
                 correctionReasons[2] = bundle.getString("mail.correctionRequestEmail.reason3");
                 correctionReasons[3] = bundle.getString("mail.correctionRequestEmail.reason4");
-                correctionReasons[4] = bundle.getString("mail.correctionRequestEmail.reason5");
+                correctionReasons[4] = "";
                 correctionReasons[5] = bundle.getString("mail.correctionRequestEmail.reason6");
-                String[] documentTypes = {"", "", "", ""};
+                String reason5Case1 = bundle.getString("mail.correctionRequestEmail.reason5-1");
+                String reason5Case2 = bundle.getString("mail.correctionRequestEmail.reason5-2");
+                String reason5Case3 = bundle.getString("mail.correctionRequestEmail.reason5-3");
+                String[] documentTypesBody1 = {"", ""};
+                String[] documentTypesBody2 = {"", ""};
+                String emailBody = "";
+                Registration registration = registrationRepository.findOne(application.getRegistrationId());
+                LogEmail lastEmailSent = logEmailRepository.findTopByMunicipalityIdAndActionOrderBySentDateDesc(registration.getMunicipality().getId(), "sendCorrectionEmails");
                 List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
                 for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
-                    String emailString = "";
-                    switch (legalFileCorrectionReason.getType()) {
-                        case 1:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type1");
-                            documentTypes[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
-                        case 2:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type3");
-                            documentTypes[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
-                        case 3:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type2");
-                            documentTypes[2] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
-                        case 4:
-                            emailString = bundle.getString("mail.correctionRequestEmail.type4");
-                            documentTypes[3] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
-                            break;
+                    if (legalFileCorrectionReason.getRequestCorrection() && (lastEmailSent == null || legalFileCorrectionReason.getRequestCorrectionDate().getTime() > lastEmailSent.getSentDate())) {
+                        String emailString = "";
+                        switch (legalFileCorrectionReason.getType()) {
+                            case 1:
+                                correctionReasons[4] = reason5Case1;
+                                emailString = bundle.getString("mail.correctionRequestEmail.type1");
+                                documentTypesBody1[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                            case 2:
+                                correctionReasons[4] = reason5Case1;
+                                emailString = bundle.getString("mail.correctionRequestEmail.type3");
+                                documentTypesBody2[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                            case 3:
+                                correctionReasons[4] = reason5Case2;
+                                emailString = bundle.getString("mail.correctionRequestEmail.type2");
+                                documentTypesBody1[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                            case 4:
+                                correctionReasons[4] = reason5Case3;
+                                emailString = bundle.getString("mail.correctionRequestEmail.type4");
+                                documentTypesBody2[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                break;
+                        }
                     }
                 }
-                msgBody = MessageFormat.format(msgBody, documentTypes);
-                mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                //if document is type 1 or 3 then we need to show body 1
+                boolean isBody1 = !documentTypesBody1[0].isEmpty() || !documentTypesBody1[1].isEmpty();
+                //if document is type 2 or 4 then we need to show body 2
+                boolean isBody2 = !documentTypesBody2[0].isEmpty() || !documentTypesBody2[1].isEmpty();
+                msgBody = MessageFormat.format(msgBody, documentTypesBody1);
+                msgBody2 = MessageFormat.format(msgBody2, documentTypesBody2);
+                if (isBody1 && isBody2) {
+                    emailBody = header + msgBody + msgBody2 + signOff;
+                } else if (isBody1) {
+                    emailBody = header + msgBody + signOff;
+                } else if (isBody2) {
+                    emailBody = header + msgBody2 + signOff;
+                }
+
+                if (!emailBody.isEmpty()) {
+                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration
+                            .getMunicipality().getId(), "sendCorrectionEmails");
+                }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
             correctionRequest = correctionRequestEmailMapper.toDTO(correctionRequestEmailRepository.save(correctionRequestEmailMapper.toEntity(correctionRequest)));
@@ -648,14 +650,11 @@ public class ApplicationService {
     }
 
     public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
-        CallDTO call = callService.getCallById(callId);
-        if (call != null) {
-            long currentTime = new Date().getTime();
-            if (call.getStartDate() < currentTime && call.getEndDate() > currentTime) {
-                List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(call.getId(), ApplicationStatus.PENDING_FOLLOWUP.getValue()));
-                if (!pendingFollowupApps.isEmpty()) {
-                    return true;
-                }
+        if (callService.isCallClosed(callId)) {
+            List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(callId,
+                    ApplicationStatus.PENDING_FOLLOWUP.getValue()));
+            if (!pendingFollowupApps.isEmpty()) {
+                return true;
             }
         }
         return false;
@@ -693,6 +692,71 @@ public class ApplicationService {
 
         applicationDTO.setRejected(false);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+    }
+
+    /**
+     * This method is called by the cron ScheduledTasks.deadlineSubmissionForRequestDocuments().
+     * It gets all applicants that are on status follow up and check if they have files on requested correction, that were sent an email on this
+     * day and not afterwards. Also checks if the document was put as requested correction before the date. (This check is necessary because the user can
+     * send the email as many times as its want and we need to make sure that we don't invalidate beneficiaries that still have time to upload the
+     * requested documents.
+     * If any of those files that are requested, are type 1 or 3 and the beneficiary hasn't uploaded them, this method invalidates this beneficiary.
+     *
+     * @param callId
+     * @param dateRequest "deadline date". The date that is 7 days ago, its use to compare with the uploaded file and email log.
+     */
+    public void invalidateApplicationsPostRequestForDocumentsPastDeadline(Integer callId, long dateRequest) {
+        List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus
+                .PENDING_FOLLOWUP.getValue());
+        if (!applications.isEmpty()) {
+            for (ApplicationIssueUtil applicationUtil : applications) {
+                if (hasThisBeneficiaryBeenSentCorrectionEmailThisDay(applicationUtil.getRegistrationId(), dateRequest)) {
+                    List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(applicationUtil.getRegistrationId());
+                    for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
+                        int legalType = legalFileCorrectionReason.getType();
+                        //if document as requested correction and legal type is 1 or 3 we need to check the uploaded time of the file and compare it
+                        //if this document in particular was requested before the the email was sent we check to invalidate it
+                        if (legalFileCorrectionReason.getRequestCorrection() && (legalType == 1 || legalType == 3) && legalFileCorrectionReason
+                                .getRequestCorrectionDate().getTime() < dateRequest) {
+                            LegalFilesDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(applicationUtil.getRegistrationId(),
+                                    legalType);
+                            if (legalFile == null || (legalFile.getUploadTime().getTime() < dateRequest)) {
+                                // the file either hasn't been uploaded again or never was. We proceed to invalidate this application.
+                                ApplicationDTO applicationDTO = getApplicationById(applicationUtil.getApplicationId());
+                                _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Deadline for Requested Documents - INVALIDATING application with " + "" + "the id: " + applicationDTO.getId() + ". Legal file type: " + legalType);
+                                ApplicationInvalidateReasonDTO invalidReasonViewDTO = new ApplicationInvalidateReasonDTO(applicationDTO.getId(), 7);
+                                applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntity(invalidReasonViewDTO));
+                                applicationDTO.setStatus(ApplicationStatus.KO.getValue());
+                                applicationRepository.save(applicationMapper.toEntity(applicationDTO));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * This method is called by the cron ScheduledTasks.deadlineSubmissionForRequestDocuments().
+     * We need to check that this registration was indeed sent an sendCorrectionEmail on this day or afterwards.
+     *
+     * @param registrationId
+     * @param deadlineDay the day that we want to know if this registration was sent an sendCorrectionEmails
+     * @return if this registration was sent an sendCorrectionEmail on deadlineDay
+     */
+    public boolean hasThisBeneficiaryBeenSentCorrectionEmailThisDay(Integer registrationId, long deadlineDay){
+        Integer municipalityId = registrationService.getRegistrationById(registrationId).getMunicipalityId();
+        List<LogEmail> logEmails = logEmailRepository.findAllByMunicipalityIdAndActionOrderBySentDateDesc(municipalityId, "sendCorrectionEmails");
+        for (LogEmail logEmail : logEmails){
+            //if there's a log of a sendCorrectionEmail sent on this day, this applicant's deadline is today
+            //otherwise we will not invalidate them
+            if((logEmail.getSentDate() - deadlineDay) / (24 * 60 * 60 * 1000) == 0){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

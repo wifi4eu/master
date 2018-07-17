@@ -93,9 +93,6 @@ public class UserService {
     @Autowired
     UserThreadsService userThreadsService;
 
-    @Autowired
-    UserService userService;
-
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
     }
@@ -400,5 +397,10 @@ public class UserService {
         for (SuppliedRegionDTO anElementList : suppliedRegionDTOList) {
             suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(anElementList));
         }
+    }
+
+    public UserDTO updateLanguage(UserDTO userDTO, String lang) {
+        userDTO.setLang(lang);
+        return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
     }
 }

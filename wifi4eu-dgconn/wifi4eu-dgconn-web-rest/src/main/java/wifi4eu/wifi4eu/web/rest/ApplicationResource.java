@@ -164,32 +164,6 @@ public class ApplicationResource {
         return new ResponseDTO(false, null, null);
     }
 
-    @ApiOperation(value = "Validate application")
-    @RequestMapping(value = "/validate", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO validateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Validating applications");
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            ApplicationDTO resApplication = applicationService.validateApplication(applicationDTO, request);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Application validated");
-            return new ResponseDTO(true, resApplication, null);
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to validate this application", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been validated", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
     @ApiOperation(value = "Get applications voucher2 info by call id")
     @RequestMapping(value = "/valid/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -210,32 +184,6 @@ public class ApplicationResource {
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Applications not validated cannot been retrieved", e);
             return null;
-        }
-    }
-
-    @ApiOperation(value = "Invalidate application")
-    @RequestMapping(value = "/invalidate", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO invalidateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating applications");
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            ApplicationDTO resApplication = applicationService.invalidateApplication(applicationDTO, request);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Application invalidated successfully");
-            return new ResponseDTO(true, resApplication, null);
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to invalidate this application", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Application cannot been invalidated", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            return new ResponseDTO(false, null, null);
         }
     }
 

@@ -28,6 +28,9 @@ public class User {
     @Column(name = "postal_code")
     private String postalCode;
 
+    @Column(name = "lang")
+    private String lang;
+
     @Column(name = "email")
     private String email;
 
@@ -126,6 +129,14 @@ public class User {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     public String getEmail() {

@@ -125,11 +125,17 @@ public class SupplierService {
     }
 
     @Transactional
-    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String logo) throws Exception {
+    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String accountNumber, String website, String logo) throws Exception {
         supplierDTO.setName(name);
         supplierDTO.setAddress(address);
         supplierDTO.setVat(vat);
         supplierDTO.setBic(bic);
+        supplierDTO.setAccountNumber(accountNumber);
+        if (website != null) {
+            supplierDTO.setWebsite(website);
+        } else {
+            supplierDTO.setWebsite(null);
+        }
         if (logo != null) {
             byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(logo));
             String logoMimeType = LegalFilesService.getMimeType(logo);
@@ -180,6 +186,9 @@ public class SupplierService {
         userDTO.setName(supplierDTO.getContactName());
         userDTO.setSurname(supplierDTO.getContactSurname());
         userDTO.setEmail(supplierDTO.getContactEmail());
+        if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()){
+            userDTO.setEcasEmail(supplierDTO.getContactEmail());
+        }
         userDTO.setCreateDate(new Date().getTime());
         userDTO.setType(1);
         userDTO.setVerified(false);
@@ -238,7 +247,60 @@ public class SupplierService {
 
     @Transactional
     public SupplierDTO updateSupplier(SupplierDTO supplierDTO) {
-        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+        SupplierDTO supplierDBO = getSupplierById(supplierDTO.getId());
+        supplierDBO.setName(supplierDTO.getName());
+        supplierDBO.setAddress(supplierDTO.getAddress());
+        supplierDBO.setVat(supplierDTO.getVat());
+        supplierDBO.setWebsite(supplierDTO.getWebsite());
+        supplierDBO.setContactName(supplierDTO.getContactName());
+        supplierDBO.setContactSurname(supplierDTO.getContactSurname());
+        supplierDBO.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
+        supplierDBO.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
+        supplierDBO.setLogo(supplierDTO.getLogo());
+        supplierDBO.setSuppliedRegions(updateSuppliedRegions(supplierDBO.getSuppliedRegions(), supplierDTO.getSuppliedRegions()));
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDBO)));
+    }
+
+    @Transactional
+    public List<SuppliedRegionDTO> updateSuppliedRegions(SupplierDTO supplierDTO) {
+        List<SuppliedRegionDTO> newRegions = supplierDTO.getSuppliedRegions();
+        SupplierDTO supplierDBO = getSupplierById(supplierDTO.getId());
+        if (supplierDBO != null) {
+            return updateSuppliedRegions(supplierDBO.getSuppliedRegions(), newRegions);
+        } else {
+            return null;
+        }
+    }
+
+    @Transactional
+    public List<SuppliedRegionDTO> updateSuppliedRegions(List<SuppliedRegionDTO> originalRegions, List<SuppliedRegionDTO> newRegions) {
+        List<SuppliedRegionDTO> finalRegions = new ArrayList<>();
+        for (SuppliedRegionDTO newRegion : newRegions) {
+            boolean regionInList = false;
+            for (SuppliedRegionDTO originalRegion : originalRegions) {
+                if (originalRegion.getRegionId().getId() == newRegion.getRegionId().getId()) {
+                    finalRegions.add(originalRegion);
+                    regionInList = true;
+                    break;
+                }
+            }
+            if (!regionInList) {
+                finalRegions.add(newRegion);
+            }
+        }
+        for (SuppliedRegionDTO originalRegion : originalRegions) {
+            boolean regionInList = false;
+            for (SuppliedRegionDTO newRegion : newRegions) {
+                if (newRegion.getRegionId().getId() == originalRegion.getRegionId().getId()) {
+                    regionInList = true;
+                    break;
+                }
+            }
+            if (!regionInList) {
+                suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(originalRegion));
+            }
+        }
+        return finalRegions;
     }
 
     @Transactional
@@ -270,21 +332,21 @@ public class SupplierService {
             direction = Direction.ASC;
         }
 
-        if(name == null || name.trim().isEmpty()){
+        if (name == null || name.trim().isEmpty()) {
             name = "";
         }
         List<SupplierListItemDTO> suppliers;
 
-        switch(orderField){
+        switch (orderField) {
             case "website":
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteDesc(name, page * count, count));
                 }
                 break;
             case "vat":
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatDesc(name, page * count, count));
@@ -292,7 +354,7 @@ public class SupplierService {
 
                 break;
             case "status":
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusDesc(name, page * count, count));
@@ -301,7 +363,7 @@ public class SupplierService {
                 break;
             case "name":
             default:
-                if(direction.equals(Direction.ASC)) {
+                if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameAsc(name, page * count, count));
                 } else {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameDesc(name, page * count, count));

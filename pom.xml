@@ -16,6 +16,7 @@
         <module>wifi4eu-portal</module>
         <module>wifi4eu-public-portal</module>
         <module>wifi4eu-dgconn</module>
+        <module>wifi4eu-supplier</module>
         <!--<module>wifi4eu-financial</module>-->
     </modules>
 
@@ -93,6 +94,7 @@
         <swagger.plugin.version>3.1.3</swagger.plugin.version>
         <swagger-codegen.version>2.2.1</swagger-codegen.version>
         <jersey.version>2.22.2</jersey.version>
+        <commons-codec.version>1.10</commons-codec.version>
 
         <!-- ECAS PROPERTIES -->
 
@@ -153,11 +155,22 @@
         <enable.appinsights.end></enable.appinsights.end>
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
 
+        <!-- CNS -->
+        <cns.client.system.key>KEY-WiFi4EU-B49nLE82Cx</cns.client.system.key>
+        <cns.client.system.password>secret</cns.client.system.password>
+        <cns.notification.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/NotificationWebService</cns.notification.service.url>
+        <cns.user.preferences.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/UserPreferencesWebService</cns.user.preferences.service.url>
+        <cns.notification.group.code>WiFi4EU_OP</cns.notification.group.code>
+
         <!-- SMTP -->
+        <encrypted.azure.smtp.password>EXdNJgAGhKHJNcH3M9F2XuFcjyY0vx4dsvGcOkv8Bkt5HjXq5uvc6fvMP1/jqDo2</encrypted.azure.smtp.password>
+        <encrypted.smtp.password>rAVMaF9Tq672wijgk9LxfA==</encrypted.smtp.password>
+        <secret.key.encryption>SBy2hecZS9lA7wiIGmoRiA==</secret.key.encryption>
+
         <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
         <mail.smtp.port>587</mail.smtp.port>
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
-        <mail.smtp.password></mail.smtp.password>
+        <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
         <mail.serv.enable>true</mail.serv.enable>
 
@@ -190,7 +203,7 @@
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
-                <mail.smtp.password></mail.smtp.password>
+                <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -212,19 +225,19 @@
                 <eclipselink.logging.level>WARNING</eclipselink.logging.level>
                 <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
-                <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
                 <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
                 <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
                 <ecas.server.dgconn.address>${server.azure.dev.dgconn.address}</ecas.server.dgconn.address>
                 <ecas.server.port>${server.pro.port}</ecas.server.port>
-                <ecas.config.strength>BASIC</ecas.config.strength>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
                 <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
                 <mail.serv.enable>false</mail.serv.enable>
                 <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password></mail.smtp.password>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
@@ -255,7 +268,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password></mail.smtp.password>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password></rabbitmq.password>
@@ -288,7 +301,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password></mail.smtp.password>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -313,7 +326,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password></mail.smtp.password>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -336,7 +349,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password></mail.smtp.password>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -360,7 +373,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password></mail.smtp.password>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -391,7 +404,7 @@
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password></mail.smtp.password>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
             </properties>
         </profile>
     </profiles>
@@ -599,19 +612,16 @@
                 <version>${log4j.version}</version>
             </dependency>
 
-
-            <!--<dependency>
+            <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
+                <artifactId>log4j-slf4j-impl</artifactId>
                 <version>${log4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
+                <artifactId>log4j-jcl</artifactId>
                 <version>${log4j.version}</version>
-            </dependency>-->
-
-
+            </dependency>
             <dependency>
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>eclipselink</artifactId>
@@ -758,6 +768,12 @@
                 <version>2.4.0</version>
             </dependency>
 
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -786,6 +802,15 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-jcl</artifactId>
         </dependency>
 
 

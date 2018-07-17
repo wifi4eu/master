@@ -21,6 +21,9 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
     @Query("SELECT vs FROM VoucherSimulation vs JOIN vs.voucherAssignment a WHERE a.id =:idVoucherAssignment AND vs.selectionStatus != 2")
     List<VoucherSimulation> findAllByVoucherAssignmentAndStatusOrderByEuRank(@Param("idVoucherAssignment") int idVoucherAssignment);
 
+    @Query(value = "SELECT CAST(CASE WHEN count(*) = 0 THEN 1 ELSE 0 END AS BIT) FROM voucher_simulations vs INNER JOIN applications a ON a.id = vs.application INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id WHERE va.status = 1 AND va.call = ?1 and a._status != 2 AND vs.selection_status != 2", nativeQuery = true)
+    Boolean checkApplicationAreValidForFreezeList(int callId);
+
     @Query("SELECT vs FROM VoucherSimulation vs JOIN vs.voucherAssignment a WHERE a.id =:idVoucherAssignment")
     List<VoucherSimulation> findAllByVoucherAssignmentOrderByEuRank(@Param("idVoucherAssignment") int idVoucherAssignment);
 

@@ -15,6 +15,8 @@ import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
+import wifi4eu.wifi4eu.repository.call.CallRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -71,6 +73,13 @@ public class BeneficiaryService {
     @Autowired
     MailService mailService;
 
+    @Autowired
+    CallRepository callRepository;
+
+    @Autowired
+    ApplicationService applicationService;
+
+
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
     private List<Integer> municipalitiesLauIdToHold = new ArrayList<>();
@@ -99,6 +108,7 @@ public class BeneficiaryService {
             user.setAddressNum(beneficiaryDTO.getUser().getAddressNum());
             user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
             user.setEmail(beneficiaryDTO.getUser().getEmail());
+            user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
             user.setType(3);
             isEcasUser = true;
         }
@@ -119,6 +129,56 @@ public class BeneficiaryService {
 
         /* send Activate Account Email*/
         userService.sendActivateAccountMail(resUser);
+
+        /*send request for documents email*/
+        registrationService.requestLegalDocuments(registrations.get(0).getId());
+
+        /* check Duplicates and crate Threads if apply */
+        checkDuplicates(resUser, resMunicipalities);
+
+        return registrations;
+    }
+
+    @Transactional
+    public List<RegistrationDTO> submitNewMunicipalities(BeneficiaryDTO beneficiaryDTO, String ip, HttpServletRequest request) throws Exception {
+        /* Validate municipalities */
+        for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
+            MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
+                    nutsService.getNutsByLevel(0));
+        }
+
+        /* Get user from ECAS */
+        UserDTO user = new UserDTO();
+        UserContext userContext = UserHolder.getUser();
+        boolean isEcasUser = false;
+
+        if (userContext != null) {
+            /* user from ECAS */
+            user = userService.getUserByUserContext(userContext);
+            user.setName(beneficiaryDTO.getUser().getName());
+            user.setSurname(beneficiaryDTO.getUser().getSurname());
+            user.setAddress(beneficiaryDTO.getUser().getAddress());
+            user.setAddressNum(beneficiaryDTO.getUser().getAddressNum());
+            user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
+            user.setEmail(beneficiaryDTO.getUser().getEmail());
+            user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
+            user.setType(3);
+            isEcasUser = true;
+        }
+
+        user.setCreateDate(new Date().getTime());
+        user.setLang(beneficiaryDTO.getLang());
+
+        UserDTO resUser = new UserDTO();
+        if (isEcasUser) {
+            resUser = userService.saveUserChanges(user);
+        }
+
+        /* create municipalities and check duplicates */
+        List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
+
+        /* create registrations between user and municipality */
+        List<RegistrationDTO> registrations = getRegistrationsList(resUser, beneficiaryDTO, resMunicipalities, ip, request);
 
         /*send request for documents email*/
         registrationService.requestLegalDocuments(registrations.get(0).getId());
@@ -175,7 +235,7 @@ public class BeneficiaryService {
                 String subject = bundle.getString("mail.discussionMunicipality.subject");
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userDTO.getEcasEmail());
                 }
 
@@ -196,7 +256,7 @@ public class BeneficiaryService {
                         subject = bundle.getString("mail.discussionMunicipality.subject");
                         msgBody = bundle.getString("mail.discussionMunicipality.body");
                         if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
                         }
                     }
@@ -219,7 +279,7 @@ public class BeneficiaryService {
                         subject = bundle.getString("mail.discussionMunicipality.subject");
                         msgBody = bundle.getString("mail.discussionMunicipality.body");
                         if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
                         }
                     }

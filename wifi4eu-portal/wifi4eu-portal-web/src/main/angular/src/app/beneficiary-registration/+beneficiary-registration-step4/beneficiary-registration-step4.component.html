@@ -135,7 +135,7 @@
                 </div>
                 <div class="row-municipality">
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.email.label' | translate }}</span>
-                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.email }}</b></span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.ecasEmail }}</b></span>
                 </div>
                 <div class="row-municipality">
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.address.label' | translate }}</span>
@@ -149,6 +149,7 @@
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.postal-code.label' | translate }}</span>
                     <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.postalCode }}</b></span>
                 </div>
+                
             </span>
             <span class="ui-lg-1"></span>
         </div>
@@ -271,7 +272,7 @@
             <!-- Next button -->
             <div class="ui-g-6 ui-md-6 ui-lg-3">
                 <button type="submit" id="submitRegistration" class="btn btn-primary publish-button"
-                        [disabled]="!legalChecks[0] || !legalChecks[1] || !legalChecks[2] || !legalChecks[3]
+                        [disabled]="!legalChecks[1] || !legalChecks[2] || !legalChecks[3]
                         || !legalChecks[4] || !legalChecks[5] || !legalChecks[6] || !legalChecks[7]
                         || !legalChecks[8]"
                         (click)="submit()">

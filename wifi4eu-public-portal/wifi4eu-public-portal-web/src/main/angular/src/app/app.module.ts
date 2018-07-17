@@ -10,6 +10,7 @@ import { BeneficiaryLandingComponent } from "./+beneficiary-landing/beneficiary-
 import { SupplierLandingComponent } from "./+supplier-landing/supplier-landing.component";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
+import { SharedModule } from "./shared/shared.module";
 import { SharedService } from "./shared/shared.service";
 import { DataGridModule } from "primeng/primeng";
 import { ListMunicipalitiesComponent } from "app/list-municipalities/list-municipalities.component";
@@ -31,6 +32,7 @@ export function translateFactory(http: Http) {
     ],
     exports: [
         NotFoundComponent,
+        SharedModule
     ],
     imports: [
         BrowserModule,
@@ -44,7 +46,8 @@ export function translateFactory(http: Http) {
         LocalStorageModule.withConfig({
             prefix: 'wifi4eu',
             storageType: 'localStorage'
-        })
+        }),
+        SharedModule
     ],
     providers: [
         UxService,
