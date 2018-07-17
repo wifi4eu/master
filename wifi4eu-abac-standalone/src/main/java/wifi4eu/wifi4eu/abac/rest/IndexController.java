@@ -6,7 +6,6 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class IndexController implements ErrorController {
@@ -16,12 +15,12 @@ public class IndexController implements ErrorController {
 
 	@RequestMapping(value = PATH_HOME_PAGE)
 	public String getHome(Model model) throws IOException {
-		return "uploadForm";
+		return "uploadForm.html";
 	}
 
 	@RequestMapping(value = PATH_ERROR_PAGE)
 	public String error() {
-		return "Error handling";
+		return "errorPage.html";
 	}
 
 	@Override

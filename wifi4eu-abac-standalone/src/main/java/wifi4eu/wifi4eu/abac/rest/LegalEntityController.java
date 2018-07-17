@@ -24,12 +24,13 @@ import org.springframework.web.servlet.view.RedirectView;
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 
 @RestController
-@RequestMapping(path = "/legalEntity")
+@RequestMapping(path = "legalEntity")
 public class LegalEntityController {
 
 	private final Logger log = LoggerFactory.getLogger(LegalEntityController.class);
 
-	private static final String URL_HOME = "/";
+	// TODO hardcoded, should be dynamic
+	private static final String URL_HOME = "/wifi4eu-financial/";
 
 	private LegalEntityService legalEntityService;
 
