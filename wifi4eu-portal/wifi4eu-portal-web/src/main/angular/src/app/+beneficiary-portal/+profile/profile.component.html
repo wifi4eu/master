@@ -225,6 +225,20 @@
     </div>
 </div>
 
+<!-- Change language modal -->
+<p-dialog [(visible)]="displayLanguageModal" header="{{ 'shared.changeLanguage.modal.title' | translate }}" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="true">
+    <div class="modal-body">
+        <div *ngFor="let row of languageRows" class="row">
+            <div *ngFor="let language of row" class="col-md-6">
+                <button class="btn language-modal" [class.btn-secondary]="language.code != selectedLanguage.code" [class.btn-primary]="language.code == selectedLanguage.code" (click)="selectLanguage(language.code)">
+                    <label class="text-adjust">{{language.label}} ({{language.code}})</label>
+                </button>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+
 <helpdesk-form-component portal="beneficiary-profile"></helpdesk-form-component>
 <p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
     [closable]="false" [closeOnEscape]="false">

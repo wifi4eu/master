@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +67,7 @@ public class AccessPointService {
         } else {
             response.setSuccess(false);
             response.setData("Error");
-            response.setError(new ErrorDTO(404, "Access Point not found. ID : " + id));
+            response.setError(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "Access Point not found. ID : " + id));
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Access point with id "+ id + "cannot been found");
         }
         return response;
@@ -82,7 +83,7 @@ public class AccessPointService {
         if (!map.isEmpty()) {
             String order = "asc";
             String field = "device_brand";
-            int id_installationSite = 0;
+            int id_installationSite;
             int page = 0;
             int delta = 10;
 
@@ -114,7 +115,7 @@ public class AccessPointService {
                         field = acceptFieldNameQueryInstallationSites(String.valueOf(map.get("fieldOrder")));
                     }
 
-                    Map<String, Object> mapResult = new HashMap<String, Object>();
+                    Map<String, Object> mapResult = new HashMap<>();
 
                     ArrayList<AccessPoint> installationSites = Lists.newArrayList(accessPointRepository.searchAccessPointByInstallationSite(page, delta, id_installationSite, field, order));
                     int countResults = accessPointRepository.countAccessPointByInstallationSite(page, delta, id_installationSite, field, order);
@@ -125,17 +126,17 @@ public class AccessPointService {
 
                 } catch (Exception ex) {
                     response.setSuccess(false);
-                    response.setError(new ErrorDTO(404, "Error - Invalid integers / fields"));
+                    response.setError(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "Error - Invalid integers / fields"));
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The fields are invalid");
                 }
             } else {
                 response.setSuccess(false);
-                response.setError(new ErrorDTO(404, "Installation Site not found"));
+                response.setError(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "Installation Site not found"));
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Installation site not found");
             }
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "Empty body"));
+            response.setError(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "Empty body"));
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Empty body");
         }
 
@@ -144,24 +145,23 @@ public class AccessPointService {
 
     private String acceptFieldNameQueryInstallationSites(String fieldEntry) {
         String field = "device_brand";
-        String fieldJson = fieldEntry;
-        for (int i = 0; i < FIELDS_ACCESS_POINTS_ORDER.length; i++) {
-            if (fieldJson.equals(FIELDS_ACCESS_POINTS_ORDER[i])) {
-                field = fieldJson;
+        for (String fieldAccessPoint : FIELDS_ACCESS_POINTS_ORDER) {
+            if (fieldEntry.equals(fieldAccessPoint)) {
+                field = fieldEntry;
                 break;
             }
         }
         return field;
     }
 
-    public boolean checkPermissions(Integer idInstSite, Integer idAccessPoint) throws AccessDeniedException {
+    private boolean checkPermissions(Integer idInstSite, Integer idAccessPoint) throws AccessDeniedException {
         //we already verify that this id exists before this point
         try {
             Integer idMunicipality = installationSiteRepository.findOne(idInstSite).getMunicipality();
 
-            if (!installationSiteService.checkPermissions(idMunicipality, idInstSite) || (idAccessPoint != null && accessPointRepository
-                    .findAccessPointByIdAndIdInstallationSite(idAccessPoint, idInstSite) == null)) {
-                throw new AccessDeniedException("403 FORBIDDEN");
+            if (!installationSiteService.checkPermissions(idMunicipality, idInstSite)
+                    || (idAccessPoint != null && accessPointRepository.findAccessPointByIdAndIdInstallationSite(idAccessPoint, idInstSite) == null)) {
+                throw new AccessDeniedException(HttpStatus.FORBIDDEN.getReasonPhrase());
             }
         } catch (Exception e) {
             return false;

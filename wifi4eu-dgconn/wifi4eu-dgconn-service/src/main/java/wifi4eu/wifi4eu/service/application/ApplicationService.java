@@ -121,11 +121,6 @@ public class ApplicationService {
     @Autowired
     LogEmailRepository logEmailRepository;
 
-    @Deprecated
-    public List<ApplicationDTO> getAllApplications() {
-        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findAll()));
-    }
-
     public ApplicationDTO getApplicationById(int applicationId) {
         return applicationMapper.toDTO(applicationRepository.findOne(applicationId));
     }
@@ -247,20 +242,12 @@ public class ApplicationService {
         }
     }
 
-    public List<ApplicationDTO> getApplicationsBySupplierId(int supplierId) {
-        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findBySupplierId(supplierId)));
-    }
-
     public ApplicationDTO getApplicationByCallIdAndRegistrationId(int callId, int registrationId) {
         return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
     }
 
     public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
-    }
-
-    public ApplicationDTO getApplicationByRegistrationId(int callId, int registrationsId) {
-        return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationsId));
     }
 
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {
@@ -282,34 +269,8 @@ public class ApplicationService {
         return applicationsVoucherInfo;
     }
 
-    public ApplicationVoucherInfoDTO getApplicationsVoucherInfoByApplication(int applicationId) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving applications' voucher information");
-        ApplicationVoucherInfoDTO appVoucherInfoDTO = null;
-        ApplicationDTO appDTO = getApplicationById(applicationId);
-        if (appDTO != null) {
-            RegistrationDTO regDTO = registrationService.getRegistrationById(appDTO.getRegistrationId());
-            if (regDTO != null) {
-                MunicipalityDTO munDTO = municipalityService.getMunicipalityById(regDTO.getMunicipalityId());
-                if (munDTO != null) {
-                    appVoucherInfoDTO = new ApplicationVoucherInfoDTO(appDTO.getCallId(), applicationId, munDTO.getName(), munDTO.getCountry(), appDTO.isVoucherAwarded());
-                }
-            }
-        }
-        return appVoucherInfoDTO;
-    }
-
-    public List<ApplicationDTO> getApplicationsByRegistrationNotInvalidated(int callId) {
-        return applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
-    }
-
     public Integer countApplicationsNotInvalidated(int callId) {
         return applicationRepository.findApplicationsNotInvalidated(callId);
-    }
-
-    public List<ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
-        return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateAsc(callId));
     }
 
     public List<ApplicationDTO> findByCallIdOrderByDateBeforeCallDateAsc(int callId, long startDate) {
@@ -318,14 +279,6 @@ public class ApplicationService {
 
     public List<ApplicationDTO> getApplicationByCallAndCountry(int callId, String country, long date) {
         return applicationMapper.toDTOList(applicationRepository.findApplicationsByCountry(callId, country, date));
-    }
-
-    public List<ApplicationDTO> getApplicationsCountryNameCall(int callId, String country) {
-        return applicationMapper.toDTOList(applicationRepository.findApplicationsCountry(country, callId));
-    }
-
-    public List<Integer> getApplicationsIdByCountryAndNameAndCall(int callId, String country, long date) {
-        return applicationRepository.findIdApplications(country, callId, date);
     }
 
     public Integer countApplicationWithSameMunicipalityName(int lauId, int callId, long date) {
@@ -456,20 +409,7 @@ public class ApplicationService {
                 }
                 break;
         }
-
-        //setIssues(applicantsList);
-
         return applicantsList;
-    }
-
-    private void setIssues(List<ApplicantListItemDTO> applicantsList) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Setting issues");
-        for (ApplicantListItemDTO applicantListItemDTO : applicantsList) {
-            List<Integer> warnings = registrationWarningRepository.findAllByLauId(applicantListItemDTO.getLauId());
-            applicantListItemDTO.setIssueStatus(warnings);
-        }
     }
 
     public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application, HttpServletRequest request) {
@@ -501,32 +441,10 @@ public class ApplicationService {
         return applicationResponse;
     }
 
-    public List<ApplicationDTO> getApplicationsByCallId(int callId) {
-        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByDateAsc(callId)));
-    }
-
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving applications");
-        List<ApplicationDTO> applications = new ArrayList<>();
-        for (ApplicationDTO application : getApplicationsByCallIdAndLauIdCustom(callId, lauId)) {
-            RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
-            if (registration != null) {
-                MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-                if (municipality != null) {
-                    if (municipality.getLauId() == lauId) {
-                        applications.add(application);
-                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Application with id " + application.getId() + " added to the list");
-                    }
-                }
-            }
-        }
-        return applications;
-    }
-
-    //Optimal
-    private List<ApplicationDTO> getApplicationsByCallIdAndLauIdCustom(int callId, int lauId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdAndLauIdOrderByDateAsc(callId, lauId)));
     }
 
@@ -534,10 +452,10 @@ public class ApplicationService {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting excel");
-        int totalCount = municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country);
-        int pageSize = totalCount;
-        PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
+        PagingSortingDTO pagingSortingData = new PagingSortingDTO(0,
+                municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country), "lauId", 1);
         List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, null, pagingSortingData);
+
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Excel exported");
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
@@ -547,10 +465,10 @@ public class ApplicationService {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting excel");
-        int totalCount = municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name);
-        int pageSize = totalCount;
+        int pageSize = municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name);
         PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
         List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, name, pagingSortingData);
+
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Excel exported");
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
@@ -643,8 +561,7 @@ public class ApplicationService {
                 }
 
                 if (!emailBody.isEmpty()) {
-                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration
-                            .getMunicipality().getId(), "sendCorrectionEmails");
+                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration.getMunicipality().getId(), "sendCorrectionEmails");
                 }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);

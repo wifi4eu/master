@@ -24,6 +24,7 @@ import java.util.List;
 @Api(value = "/nuts", description = "Nuts object REST API services")
 @RequestMapping("nuts")
 public class NutsResource {
+
     @Autowired
     NutsService nutsService;
 
