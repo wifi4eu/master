@@ -45,12 +45,14 @@ export class BeneficiaryProfileComponent {
     private withdrawingRegistration: boolean = false;
     private withdrawnSuccess: boolean = false;
     private threadId: number;
-    private hasDiscussion: boolean = false;
+    private hasDiscussion: boolean[] = [];
     private discussionThreads: ThreadDTOBase[] = [];
     private allDocumentsUploaded: boolean[] = [];
     private documentUploaded: boolean = false;
     private oneRegsitration: boolean = false;
     private oneRegistrationNumber: number = 0;
+    private userThreads: ThreadDTOBase [] = [];
+    private threadsByUser : UserThreadsDTOBase[] = [];
 
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
     private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
@@ -119,14 +121,16 @@ export class BeneficiaryProfileComponent {
                         this.threadApi.getThreadById(utByUser.threadId).subscribe(
                             (thread: ThreadDTOBase) => {
                                 if (thread != null) {
+                                    this.userThreads.push(thread);
                                     this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
                                         (utsByThread: UserThreadsDTOBase[]) => {
                                             this.discussionThreads.push(thread);
                                             if (utsByThread.length > 1) {
-                                                for (let utByThread of utsByThread) {
-                                                    if (utByThread.userId != this.user.id && !this.hasDiscussion) {
-                                                        this.threadId = thread.id;
-                                                        this.hasDiscussion = true;
+                                                 for (let i = 0; i < utsByThread.length; ++i) {
+                                                    if (utsByThread[i].userId != this.user.id) {
+                                                        this.threadsByUser.push(utsByThread[i]);
+                                                        this.hasDiscussion[i] = true;
+                                                        
                                                     }
                                                 }
                                             }
@@ -261,8 +265,14 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-    private goToDiscussion() {
-        this.router.navigate(['../discussion-forum/', this.threadId], { relativeTo: this.route });
+    private goToDiscussion(index) {
+
+        for(let i = 0; i < this.userThreads.length; i++){
+            if(this.userThreads[i].title == this.municipalities[index].name){
+                this.threadId = this.discussionThreads[i].id;
+                this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
+           }
+        }
     }
 
     private goToUploadDocuments() {
