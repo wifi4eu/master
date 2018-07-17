@@ -619,6 +619,7 @@ public class BeneficiaryService {
         msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, userRegistrationDTO.getEmail());
         if (!userService.isLocalHost()) {
             mailService.sendEmail(userRegistrationDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            userService.createNewRegistrationUser(userRegistrationDTO);
         }
         return userRegistrationDTO;
     }
