@@ -21,10 +21,10 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
+import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
@@ -34,6 +34,7 @@ import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -44,10 +45,7 @@ import wifi4eu.wifi4eu.util.MailService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -87,6 +85,9 @@ public class UserService {
 
     @Autowired
     SupplierRepository supplierRepository;
+
+    @Autowired
+    SupplierUserRepository supplierUserRepository;
 
     @Autowired
     SuppliedRegionMapper suppliedRegionMapper;
@@ -175,6 +176,23 @@ public class UserService {
                 }
             }
         }
+
+        List<SupplierUser> supplierUsers = supplierUserRepository.findByEmail(userContext.getEmail());
+        List<SupplierUser> supplierUsersToUpdate = new ArrayList<>();
+        int userId = userRepository.findByEcasUsername(userContext.getUsername()).getId();
+
+        if (supplierUsers != null && (userDTO.getType() != 3 && userDTO.getType() != 5)){
+
+            for(SupplierUser supplierUser:supplierUsersToUpdate){
+                if (supplierUser.getId() == null){
+                    supplierUser.setUserId(userId);
+                    supplierUsersToUpdate.add(supplierUser);
+                }
+            }
+
+            supplierUserRepository.save(supplierUsersToUpdate);
+        }
+
         return userDTO;
     }
 

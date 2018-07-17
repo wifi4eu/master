@@ -334,4 +334,8 @@ public class SupplierService {
     public int getUserIdFromSupplier(int supplierId){
         return supplierUserRepository.findUserIdBySupplierId(supplierId);
     }
+
+    private boolean checkHasNoNotBeingRegisteredBefore(String userEmail, Integer supplierId){
+        return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
+    }
 }

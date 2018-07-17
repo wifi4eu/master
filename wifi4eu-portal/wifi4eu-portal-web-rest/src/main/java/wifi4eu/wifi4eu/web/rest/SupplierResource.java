@@ -472,9 +472,9 @@ public class SupplierResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
-            boolean emailSent = supplierService.sendEmailToContacts(newUserEmail);
-
             int supplierId = supplierService.getSupplierByUserId(userConnected.getId()).getId();
+
+            boolean emailSent = supplierService.sendEmailToContacts(newUserEmail, supplierId);
             supplierService.createSupplierUser(supplierId, null, newUserEmail, false);
 
             return new ResponseDTO(true, emailSent, null);

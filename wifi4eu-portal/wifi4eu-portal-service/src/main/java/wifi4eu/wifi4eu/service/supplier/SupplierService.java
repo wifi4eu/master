@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierUserMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierListItemRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
@@ -68,6 +69,9 @@ public class SupplierService {
 
     @Autowired
     SupplierUserMapper supplierUserMapper;
+
+    @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
 
     private final Logger _log = LogManager.getLogger(SupplierService.class);
 
@@ -476,27 +480,40 @@ public class SupplierService {
         return supplierUserDTOToUpdate;
     }
 
-    public boolean sendEmailToContacts(String newUserEmail) throws Exception {
+    public boolean sendEmailToContacts(String newUserEmail, Integer supplierId) throws Exception {
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
 
         UserContext userContext = UserHolder.getUser();
         UserDTO user = userService.getUserByUserContext(userContext);
 
+        if (getSupplierByUserId(user.getId()) == null) {
+            throw new Exception("User data is not correct.");
 
-        if (getSupplierByUserId(user.getId()) != null) {
-            int supplierId = getSupplierByUserId(user.getId()).getId();
+        }else if (!checkHasNoRegistrations(newUserEmail)) {
+            throw new Exception("This email has registrations related to.");
 
-            String urlSent = userService.getBaseUrl() + "api/supplierUser/register?UserEmail=" + newUserEmail.trim() + "?suppId=" + supplierId;
+        } else if (!checkContactHasNotBeenAddedBefore(newUserEmail, supplierId)){
+            throw new Exception("This contact has been added to this supplier before.");
+
+        } else { // ALL OK
+            String urlSent = "https://ecas.acceptance.ec.europa.eu/cas/eim/external/register.cgi?email=" + newUserEmail.trim();
+
             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
             String subject = bundle.getString("mail.sendNewUserSupplier.subject");
             String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
             msgBody = MessageFormat.format(msgBody, urlSent);
-            if (!userService.isLocalHost()) {
-                mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
+            // if (!userService.isLocalHost()) {
+            mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            //}
             return true;
-        } else {
-            throw new Exception("User data is not correct.");
         }
+    }
+
+    private boolean checkHasNoRegistrations(String userEmail){
+        return registrationUsersRepository.findByContactEmail(userEmail).isEmpty();
+    }
+
+    private boolean checkContactHasNotBeenAddedBefore(String userEmail, Integer supplierId){
+        return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
     }
 }

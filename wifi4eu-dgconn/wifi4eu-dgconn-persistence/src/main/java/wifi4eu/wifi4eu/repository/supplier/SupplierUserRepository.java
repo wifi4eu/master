@@ -15,6 +15,8 @@ public interface SupplierUserRepository extends CrudRepository<SupplierUser,Inte
 
     List<SupplierUser> findByEmail(@Param("email") String email);
 
+    List<SupplierUser> findByEmailAndSupplierId(@Param("email") String email, @Param("supplierId") Integer supplierId);
+
     @Query(value = "SELECT user_id FROM supplier_users WHERE supplier_id = ?1 AND main = 1", nativeQuery = true)
     int findUserIdBySupplierId(int supplierId);
 
