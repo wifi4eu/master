@@ -323,7 +323,7 @@ public class SupplierService {
     public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) {
         supplierDTO.setStatus(1);
         supplierDTO = updateSupplier(supplierDTO);
-        UserDTO user = null;//userService.getUserById(supplierDTO.getUserId());
+        UserDTO user = userService.getUserById(getUserIdFromSupplier(supplierDTO.getId()));
         if (user != null) {
             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
             if (user.getLang() != null) {

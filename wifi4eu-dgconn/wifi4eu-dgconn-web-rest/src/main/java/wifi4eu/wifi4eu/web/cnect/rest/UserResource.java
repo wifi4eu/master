@@ -168,46 +168,6 @@ public class UserResource {
         }
     }
 
-
-//    @ApiOperation(value = "Save user changes")
-//    @RequestMapping(value = "/saveChanges", method = RequestMethod.POST)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ResponseBody
-//    public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO,
-//                                       HttpServletResponse response) throws IOException {
-//        try {
-//            _log.info("saveUserChanges");
-//
-//            //TODO: create saveMayorsChanges
-//            //TODO: https://webgate.ec.europa.eu/CITnet/jira/browse/WIFIFOREU-1548
-//            //check permission
-//            int userId = userDTO.getId();
-//            permissionChecker.check(RightConstants.USER_TABLE + userId);
-//
-//            UserDTO user = userService.getUserById(userDTO.getId());
-//
-//            user.setName(userDTO.getName());
-//            user.setSurname(userDTO.getSurname());
-//
-//            UserDTO resUser = userService.saveUserChanges(user);
-//            resUser.setEmail(user.getEmail());
-//            resUser.setPassword(null);
-//            return new ResponseDTO(true, resUser, null);
-//        } catch (AccessDeniedException ade) {
-//            if (_log.isErrorEnabled()) {
-//                _log.error("Error with permission on 'saveUserChanges' operation.", ade);
-//            }
-//            response.sendError(HttpStatus.FORBIDDEN.value());
-//            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.FORBIDDEN.value(), ade.getMessage()));
-//        } catch (Exception e) {
-//            if (_log.isErrorEnabled()) {
-//                _log.error("Error on 'saveUserChanges' operation.", e);
-//            }
-//            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
-//            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
-//        }
-//    }
-
     @ApiOperation(value = "Delete user by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody

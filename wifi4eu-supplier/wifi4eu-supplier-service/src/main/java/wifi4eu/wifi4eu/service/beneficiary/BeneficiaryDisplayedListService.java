@@ -20,6 +20,7 @@ import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryDisplayedListRepository
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.utils.UserUtils;
@@ -49,6 +50,9 @@ public class BeneficiaryDisplayedListService {
     ApplicationService applicationService;
 
     @Autowired
+    SupplierService supplierService;
+
+    @Autowired
     UserUtils userUtils;
 
     @Autowired
@@ -73,7 +77,8 @@ public class BeneficiaryDisplayedListService {
             return permissionChecker.getAccessDeniedResponse();
         }
 
-        response.setData(beneficiaryDisplayedListMapper.toDTOList(Lists.newArrayList(beneficiaryDisplayedListRepository.findBeneficiariesList(supplier.getUserId()))));
+        Integer userId = supplierService.getSupplierMainUserId(supplier);
+        response.setData(beneficiaryDisplayedListMapper.toDTOList(beneficiaryDisplayedListRepository.findBeneficiariesList(userId)));
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieved beneficiary list successfully");
         return response;
     }
@@ -102,7 +107,8 @@ public class BeneficiaryDisplayedListService {
             response.setSuccess(true);
             response.setData(beneficiaryDisplayedListMapper.toDTO(beneficiaryDisplayedListRepository.findBeneficiaryByRegistrationId(registration.getId())));
             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-            String lang = userUtils.getUserLangByUserId(supplier.getUserId());
+            Integer userId = supplierService.getSupplierMainUserId(supplier);
+            String lang = userUtils.getUserLangByUserId(userId);
             if (lang != null) {
                 locale = new Locale(lang);
             }

@@ -20,4 +20,8 @@ public class SupplierService {
         //So we don't need to log this.
         return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
     }
+
+    public Integer getSupplierMainUserId(SupplierDTO supplier) {
+        return supplierRepository.findMainSupplierByUserId(supplier.getId());
+    }
 }
