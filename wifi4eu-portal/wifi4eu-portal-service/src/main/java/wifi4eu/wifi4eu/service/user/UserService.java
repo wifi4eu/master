@@ -21,6 +21,8 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.mayor.Mayor;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
@@ -29,6 +31,8 @@ import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
+import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
@@ -106,6 +110,12 @@ public class UserService {
     @Autowired
     RegistrationRepository registrationRepository;
 
+    @Autowired
+    MayorRepository mayorRepository;
+
+    @Autowired
+    MunicipalityRepository municipalityRepository;
+
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
     }
@@ -170,11 +180,25 @@ public class UserService {
             permissionChecker.addTablePermissions(userDTO, Integer.toString(userDTO.getId()),
                     RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
         }
-        if (registrationUsers != null && (userDTO.getType() != 1 && userDTO.getType() != 5)){
+        if (registrationUsers != null ) {
+            if (userDTO.getType() == 0) {
+                userDTO.setType(3);
+                userDTO.setLang(UserConstants.DEFAULT_LANG);
+                userRepository.save(userMapper.toEntity(userDTO));
+            }
             for (RegistrationUsers resRegistrationUser : registrationUsers) {
                 if (resRegistrationUser.getUserId() == null) {
                     resRegistrationUser.setUserId(userRepository.findByEcasUsername(userContext.getUsername()).getId());
                     registrationUsersRepository.save(resRegistrationUser);
+                    Registration registration = registrationRepository.findOne(resRegistrationUser.getRegistrationId());
+                    Municipality municipality = municipalityRepository.findOne(registration.getMunicipality().getId());
+                    Mayor mayor = mayorRepository.findByMunicipalityId(municipality.getId());
+                    permissionChecker.addTablePermissions(userDTO, Integer.toString(mayor.getId()),
+                            RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipality().getId());
+                    permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getId()),
+                            RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipality().getId());
+                    permissionChecker.addTablePermissions(userDTO, Integer.toString(municipality.getId()),
+                            RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + municipality.getId() + " - Country: " + municipality.getCountry() + " - Lau Id: " + municipality.getLau().getId());
                 }
             }
         }

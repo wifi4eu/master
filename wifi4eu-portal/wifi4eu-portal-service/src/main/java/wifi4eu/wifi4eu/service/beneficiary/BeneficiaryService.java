@@ -284,7 +284,7 @@ public class BeneficiaryService {
                             continue;
                         }
                         UserDTO userRegistration = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-                        if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                        if (userRegistration == null || userRegistration.getId() == userDTO.getId()) {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
                         }
