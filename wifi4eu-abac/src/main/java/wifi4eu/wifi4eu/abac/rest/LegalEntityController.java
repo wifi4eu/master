@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
+import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 
 @RestController
@@ -55,31 +54,35 @@ public class LegalEntityController {
 	// public String importLegalEntity(@RequestParam("file") MultipartFile file,
 	// RedirectAttributes redirectAttributes) throws IOException {
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
-	public String importLegalEntity(@RequestBody String file) throws IOException {
+	public ResponseVO importLegalEntity(@RequestBody String file) throws IOException {
 		log.info("importLegalEntity");
-		
+
 		/*
-		String[] validContentTypes = new String[] { "application/vnd.ms-excel", "text/csv" };
+		 * String[] validContentTypes = new String[] { "application/vnd.ms-excel",
+		 * "text/csv" };
+		 * 
+		 * if (file == null || file.isEmpty()) {
+		 * log.info("importLegalEntity - not valid file");
+		 * redirectAttributes.addFlashAttribute("importResult",
+		 * "The file was null or empty, please upload a valid file"); } else if
+		 * (!checkContentType(file.getContentType(), validContentTypes)) {
+		 * log.info("importLegalEntity - not valid content type");
+		 * redirectAttributes.addFlashAttribute("importResult",
+		 * "The file is not valid, please upload a CSV file"); } else {
+		 * log.info("importLegalEntity - processing file");
+		 * legalEntityService.importLegalEntityFile(file);
+		 * 
+		 * redirectAttributes.addFlashAttribute("importResult",
+		 * "File successfully uploaded " + file.getOriginalFilename() + "!"); }
+		 */
 
-		if (file == null || file.isEmpty()) {
-			log.info("importLegalEntity - not valid file");
-			redirectAttributes.addFlashAttribute("importResult",
-					"The file was null or empty, please upload a valid file");
-		} else if (!checkContentType(file.getContentType(), validContentTypes)) {
-			log.info("importLegalEntity - not valid content type");
-			redirectAttributes.addFlashAttribute("importResult", "The file is not valid, please upload a CSV file");
-		} else {
-			log.info("importLegalEntity - processing file");
-			legalEntityService.importLegalEntityFile(file);
-
-			redirectAttributes.addFlashAttribute("importResult",
-					"File successfully uploaded " + file.getOriginalFilename() + "!");
-		}
-		*/
-		
 		legalEntityService.importLegalEntityContent(file);
-		
-		return "{\"result\":\"OK imported\"}";
+
+		// write result and return
+		ResponseVO result = new ResponseVO();
+		result.setSuccess(true);
+		result.setData("Imported OK!");
+		return result;
 	}
 
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
@@ -106,12 +109,16 @@ public class LegalEntityController {
 	}
 
 	@RequestMapping(value = "show", method = RequestMethod.GET, produces = "application/json")
-	public String showLegalEntity() throws IOException {
+	public ResponseVO showLegalEntity() throws IOException {
 		log.info("showLegalEntity");
 
 		String responseData = legalEntityService.showLegalEntityFile();
 
-		return "{\"result\":\""+responseData+"\"}";
+		// write result and return
+		ResponseVO result = new ResponseVO();
+		result.setSuccess(true);
+		result.setData(responseData);
+		return result;
 	}
 
 }

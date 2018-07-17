@@ -1,43 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://java.sun.com/xml/ns/javaee"
-         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
 
-    <!-- This is an example security constraint for a resource that requires only authentication but not authorization: -->
-    <!--security-constraint>
-        <web-resource-collection>
-            <web-resource-name>protected</web-resource-name>
-            <url-pattern>/*</url-pattern>
-            <http-method-omission>OPTIONS</http-method-omission>
-        </web-resource-collection>
-        <auth-constraint>
-            <description>
-                Requires users to be authenticated but
-                does not require them to be authorized.
-            </description>
-            <role-name>*</role-name>
-        </auth-constraint>
-        <user-data-constraint>
-            <description>
-                Encryption is not required for this area.
-            </description>
-            <transport-guarantee>NONE</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint-->
-    <!--servlet>
-        <servlet-name>spring-REST</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
+	<!-- This is an example security constraint for a resource that requires 
+		only authentication but not authorization: -->
+	<!--security-constraint> <web-resource-collection> <web-resource-name>protected</web-resource-name> 
+		<url-pattern>/*</url-pattern> <http-method-omission>OPTIONS</http-method-omission> 
+		</web-resource-collection> <auth-constraint> <description> Requires users 
+		to be authenticated but does not require them to be authorized. </description> 
+		<role-name>*</role-name> </auth-constraint> <user-data-constraint> <description> 
+		Encryption is not required for this area. </description> <transport-guarantee>NONE</transport-guarantee> 
+		</user-data-constraint> </security-constraint -->
+	<servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 
-    <servlet-mapping>
-        <servlet-name>spring-REST</servlet-name>
-        <url-pattern>/svc/*</url-pattern>
-    </servlet-mapping-->
+	<servlet-mapping>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>/svc/*</url-pattern>
+	</servlet-mapping>
 
-    <welcome-file-list>
-        <welcome-file>/index.jsp</welcome-file>
-    </welcome-file-list>
+	<welcome-file-list>
+		<welcome-file>/index.jsp</welcome-file>
+	</welcome-file-list>
 </web-app>

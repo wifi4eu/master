@@ -35,7 +35,7 @@ export class AbacComponent {
                                 //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
                                 //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
                                 window.alert("Import succesful!");
-                                this.exportLegalEntityFBCValidate();
+                                //this.exportLegalEntityFBCValidate();
                             } else {
                                 window.alert("Import failed!");
                             }

@@ -52,7 +52,7 @@ export interface IExportImportApi {
 
 @Injectable()
 export class ExportImportApi implements IExportImportApi {
-    protected basePath = 'http://localhost:7001/wifi4eu-financial/api';
+    protected basePath = 'http://localhost:7001/wifi4eu-financial';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();
 
@@ -142,7 +142,7 @@ export class ExportImportApi implements IExportImportApi {
      * 
      */
     private exportLegalEntityFBCValidateWithHttpInfo(): Observable<Response> {
-        const path = this.basePath + `/exportImport/exportLegalEntityFBCValidate`;
+        const path = this.basePath + `/legalEntity/export`;
 
 
         let queryParameters = new URLSearchParams();
@@ -195,7 +195,7 @@ export class ExportImportApi implements IExportImportApi {
      */
     private importLegalEntityFWithHttpInfo(body?: string ): Observable<Response> {
         
-        const path = this.basePath + `/svc/upload/LEF`;
+        const path = this.basePath + `/legalEntity/import`;
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
