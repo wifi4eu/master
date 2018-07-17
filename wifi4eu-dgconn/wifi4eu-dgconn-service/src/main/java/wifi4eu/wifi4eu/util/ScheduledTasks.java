@@ -18,14 +18,13 @@ import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,11 +34,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -194,43 +190,6 @@ public class ScheduledTasks {
                 }
             } catch (Exception e) {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process this helpdesk issue", e);
-            }
-        }
-    }
-
-    //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 8 ? * MON-FRI")
-    public void sendDocRequest() {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending document request");
-        List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
-        for (RegistrationDTO registrationDTO : registrationDTOS) {
-            try {
-                if (registrationDTO != null && registrationDTO.getMailCounter() > 0) {
-                    UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-
-                    if (user != null && user.getEcasEmail() != null) {
-                        /*if (!userService.isLocalHost()) {*/
-                            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                            if (user.getLang() != null) {
-                                locale = new Locale(user.getLang());
-                            }
-                            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                            String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                            String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
-                            String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
-                            msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-
-                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId(), "sendDocRequest");
-                        }
-                        int mailCounter = registrationDTO.getMailCounter() - 1;
-                        registrationDTO.setMailCounter(mailCounter);
-                        registrationService.createRegistration(registrationDTO);
-                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Document request sent for registration with id " + registrationDTO.getId());
-                    }
-                /*}*/
-            } catch (Exception e) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send document rquest for this registration", e);
             }
         }
     }

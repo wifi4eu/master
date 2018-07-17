@@ -24,11 +24,9 @@ import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.ScheduledTasks;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.BadRequestException;
 import java.io.IOException;
 import java.util.List;
 
@@ -46,9 +44,6 @@ public class BeneficiaryResource {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private ScheduledTasks scheduledTasks;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryResource.class);
 
