@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public interface SupplierUserRepository extends CrudRepository<SupplierUser,Inte
     int countByEmail(@Param("email") String email);
 
     @Modifying
+    @Transactional
     @Query(value = "DELETE supplier_users WHERE supplier_id = ?1", nativeQuery = true)
     void deleteBySupplierId(@Param("supplierId") Long supplierId);
 }
