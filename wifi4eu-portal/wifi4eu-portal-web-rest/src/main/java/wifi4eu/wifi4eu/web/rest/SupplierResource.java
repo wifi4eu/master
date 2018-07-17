@@ -15,10 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
-import wifi4eu.wifi4eu.common.dto.model.SuppliersCacheDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -476,6 +473,10 @@ public class SupplierResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
             boolean emailSent = supplierService.sendEmailToContacts(newUserEmail);
+
+            int supplierId = supplierService.getSupplierByUserId(userConnected.getId()).getId();
+            supplierService.createSupplierUser(supplierId, null, newUserEmail, false);
+
             return new ResponseDTO(true, emailSent, null);
         } catch (Exception e) {
             response.sendError(HttpStatus.BAD_REQUEST.value());

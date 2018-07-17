@@ -659,7 +659,6 @@ CREATE TABLE [wifi4eu].[dbo].[supplier_users] (
   status         INTEGER       NOT NULL,
   creation_date  TIMESTAMP     NOT NULL,
   email          VARCHAR(100)  NOT NULL,
-  code          VARCHAR(100)  NOT NULL,
 
   PRIMARY KEY ([id])
 );

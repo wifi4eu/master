@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.SupplierUserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 
 import java.io.IOException;
@@ -48,35 +47,6 @@ public class SupplierUserResource {
         }
     }
 
-
-    @ApiOperation(value = "Register supplier user")
-    @RequestMapping(value = "/register/{supplierId}/{userEmail}", method = RequestMethod.POST)
-    //@RequestMapping(value = "/register", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO registerSupplierUser(@PathVariable("supplierId") final int supplierId, @PathVariable("userEmail") final String userEmail) throws IOException {
-
-        try {
-
-            SupplierUserDTO supplierUserDTO = supplierService.getSupplierUserBySupplierIdAndEmail(supplierId, userEmail);
-
-            if (supplierUserDTO == null) {
-                return new ResponseDTO(false, null, new ErrorDTO(0, "NOT EXISTS"));
-
-            } else if (SupplierUserStatus.ALREADY_REGISTERED.getStatus() == supplierUserDTO.getStatus()) {
-                return new ResponseDTO(false, null, new ErrorDTO(0, "DONE"));
-
-            } else if (!supplierService.createdLessThan24HBefore(supplierUserDTO)) {
-                return new ResponseDTO(false, null, new ErrorDTO(0, "TIME EXPIRED"));
-            }
-
-            supplierUserDTO = supplierService.registerSupplierUser(supplierUserDTO);
-            return new ResponseDTO(true, supplierUserDTO, null);
-
-        }catch (Exception ex){
-            return new ResponseDTO(false, null, new ErrorDTO(0, ex.getMessage()));
-        }
-    }
-
     @ApiOperation(value = "Register supplier user")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
@@ -98,33 +68,4 @@ public class SupplierUserResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, ex.getMessage()));
         }
     }
-
-    @ApiOperation(value = "Register supplier user by code")
-    @RequestMapping(value = "/register/{code}", method = RequestMethod.POST)
-    //@RequestMapping(value = "/register", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO registerSupplierUserByCode(@PathVariable("code") final  String code) throws IOException {
-
-        try {
-
-            SupplierUserDTO supplierUserDTO = supplierService.findByCode(code);
-
-            if (supplierUserDTO == null) {
-                return new ResponseDTO(false, null, new ErrorDTO(0, "NOT EXISTS"));
-
-            } else if (SupplierUserStatus.ALREADY_REGISTERED.getStatus() == supplierUserDTO.getStatus()) {
-                return new ResponseDTO(false, null, new ErrorDTO(0, "DONE"));
-
-            } else if (!supplierService.createdLessThan24HBefore(supplierUserDTO)) {
-                return new ResponseDTO(false, null, new ErrorDTO(0, "TIME EXPIRED"));
-            }
-
-            supplierUserDTO = supplierService.registerSupplierUser(supplierUserDTO);
-            return new ResponseDTO(true, supplierUserDTO, null);
-
-        }catch (Exception ex){
-            return new ResponseDTO(false, null, new ErrorDTO(0, ex.getMessage()));
-        }
-    }
-
 }

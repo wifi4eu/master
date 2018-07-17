@@ -31,9 +31,6 @@ public class SupplierUser {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "code")
-    private String code;
-
     public Integer getId() {
         return id;
     }
@@ -88,13 +85,5 @@ public class SupplierUser {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 }
