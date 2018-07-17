@@ -480,19 +480,27 @@ public class SupplierService {
         return supplierUserDTOToUpdate;
     }
 
-    public boolean sendEmailToContacts(String newUserEmail) {
+    public boolean sendEmailToContacts(String newUserEmail) throws Exception {
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
 
         UserContext userContext = UserHolder.getUser();
         UserDTO user = userService.getUserByUserContext(userContext);
-        String urlSent = userService.getBaseUrl() + "api/supplierUser/register?UserEmail=" + newUserEmail.trim();
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.sendNewUserSupplier.subject");
-        String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
-        msgBody = MessageFormat.format(msgBody, urlSent);
-        if (!userService.isLocalHost()) {
-            mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+
+
+        if (getSupplierByUserId(user.getId()) != null) {
+            int supplierId = getSupplierByUserId(user.getId()).getId();
+
+            String urlSent = userService.getBaseUrl() + "api/supplierUser/register?UserEmail=" + newUserEmail.trim() + "?suppId=" + supplierId;
+            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+            String subject = bundle.getString("mail.sendNewUserSupplier.subject");
+            String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
+            msgBody = MessageFormat.format(msgBody, urlSent);
+            if (!userService.isLocalHost()) {
+                mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            }
+            return true;
+        } else {
+            throw new Exception("User data is not correct.");
         }
-        return true;
     }
 }
