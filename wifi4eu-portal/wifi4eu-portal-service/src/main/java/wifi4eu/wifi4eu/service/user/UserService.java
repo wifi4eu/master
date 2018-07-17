@@ -219,12 +219,17 @@ public class UserService {
         List<SupplierUser> supplierUsersToUpdate = new ArrayList<>();
         int userId = userRepository.findByEcasUsername(userContext.getUsername()).getId();
 
-        if (supplierUsers != null && (userDTO.getType() == 0) || (userDTO.getType() == 1)){
+        if (supplierUsers != null && ((userDTO.getType() == 0) || (userDTO.getType() == 1))){
 
             for(SupplierUser supplierUser:supplierUsers){
-                if (supplierUser.getId() == null){
+                if (supplierUser.getUserId() == null){
 
                     if (supplierService.createdLessThan24HBefore(supplierUserMapper.toDTO(supplierUser))){
+                        if(userDTO.getType() == 0){
+                            userDTO.setType(1);
+                            userDTO.setLang(UserConstants.DEFAULT_LANG);
+                            userRepository.save(userMapper.toEntity(userDTO));
+                        }
                         supplierUser.setUserId(userId);
                         supplierUser.setStatus(SupplierUserStatus.ALREADY_REGISTERED.getStatus());
                         supplierUsersToUpdate.add(supplierUser);

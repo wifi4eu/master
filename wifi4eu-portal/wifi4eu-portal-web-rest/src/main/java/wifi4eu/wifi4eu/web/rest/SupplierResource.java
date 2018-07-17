@@ -339,12 +339,21 @@ public class SupplierResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
-            int supplierId = supplierService.getSupplierByUserId(userConnected.getId()).getId();
 
-            boolean emailSent = supplierService.sendEmailToContacts(newUserEmail, supplierId);
-            supplierService.createSupplierUser(supplierId, null, newUserEmail, false);
+            UserDTO newUser = userService.getUserByEmail(userConnected.getEmail());
 
-            return new ResponseDTO(true, emailSent, null);
+            if(newUser == null || newUser.getType() == 1) {
+                int supplierId = supplierService.getSupplierByUserId(userConnected.getId()).getId();
+
+                boolean emailSent = supplierService.sendEmailToContacts(newUserEmail, supplierId);
+                supplierService.createSupplierUser(supplierId, null, newUserEmail, false);
+
+                return new ResponseDTO(true, emailSent, null);
+            } else {
+                throw new AppException("User already registered");
+            }
+
+
         } catch (Exception e) {
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
