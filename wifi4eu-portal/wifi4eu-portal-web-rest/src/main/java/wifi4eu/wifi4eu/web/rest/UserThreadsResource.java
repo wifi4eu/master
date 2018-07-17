@@ -39,67 +39,12 @@ public class UserThreadsResource {
 
     Logger _log = LogManager.getLogger(UserThreadsResource.class);
 
-    /*
-    @ApiOperation(value = "Get all the userThreads entries")
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "Get userThreads")
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserThreadsDTO> allUserThreads() {
-        return userThreadsService.getAllUserThreads();
+    public UserThreadsDTO getUserThreadsById() {
+        return new UserThreadsDTO();
     }
-    */
-
-    @ApiOperation(value = "Get userThreads by specific id")
-    @RequestMapping(value = "/{userThreadsId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public UserThreadsDTO getUserThreadsById(@PathVariable("userThreadsId") final Integer userThreadsId) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving user threads by id " + userThreadsId);
-        UserThreadsDTO userThreadsDTO = userThreadsService.getUserThreadsById(userThreadsId);
-        permissionChecker.check(RightConstants.USER_TABLE + userThreadsDTO.getUserId());
-        return userThreadsDTO;
-    }
-
-    /*
-
-    @ApiOperation(value = "Create userThreads")
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO createUserThreads(@RequestBody final UserThreadsDTO userThreadsDTO) {
-        try {
-            _log.info("createUserThreads");
-            UserThreadsDTO resUserThreads = userThreadsService.createUserThreads(userThreadsDTO);
-            return new ResponseDTO(true, resUserThreads, null);
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'createUserThreads' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
-    */
-
-    /*
-
-    @ApiOperation(value = "Delete userThreads by specific id")
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseDTO deleteUserThreads(@RequestBody final Integer userThreadsId) {
-        try {
-            _log.info("deleteUserThreads: " + userThreadsId);
-            UserThreadsDTO resUserThreads = userThreadsService.deleteUserThreads(userThreadsId);
-            return new ResponseDTO(true, resUserThreads, null);
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteUserThreads' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
-    */
 
     @ApiOperation(value = "Get Threads by specific user id")
     @RequestMapping(value = "/userId/{userId}", method = RequestMethod.GET, produces = "application/json")
@@ -121,9 +66,8 @@ public class UserThreadsResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving user by thread id " + threadId);
         List<UserThreadsDTO> listUserThreadsDTO = userThreadsService.getUserThreadsByThreadId(threadId);
         boolean isUserThread = false;
-        UserDTO currentUserDTO = userConnected;
         for (UserThreadsDTO utDTO : listUserThreadsDTO) {
-            if (utDTO.getUserId() == currentUserDTO.getId()) {
+            if (utDTO.getUserId() == userConnected.getId()) {
                 isUserThread = true;
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - User thread with id " + utDTO.getId() + " is from this user");
                 break;

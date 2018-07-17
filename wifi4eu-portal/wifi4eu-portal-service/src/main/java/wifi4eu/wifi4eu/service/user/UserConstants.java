@@ -13,7 +13,7 @@ public class UserConstants {
     /**
      *	Mocked user data used by the UserFilterMocked filter to login directly into the portal  
      */
-    public final static String MOCKED_USER_NAME = "Mr. Tester 0";
+    public final static String MOCKED_USER_NAME = "Mr. Tester";
     public final static String MOCKED_MAIL = "tester@test.com";
     public final static String MOCKED_DOMAIN = "TemporalDom";
     public final static DetailedUser MOCKED_DETAILED_USER = null;

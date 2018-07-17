@@ -89,7 +89,7 @@
         <dependency>
             <groupId>wifi4eu.wifi4eu</groupId>
             <artifactId>wifi4eu-public-portal-persistence</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

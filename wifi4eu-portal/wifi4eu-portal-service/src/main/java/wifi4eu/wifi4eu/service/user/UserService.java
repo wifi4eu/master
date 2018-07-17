@@ -58,6 +58,9 @@ public class UserService {
     @Value("${mail.server.location}")
     private String baseUrl;
 
+    @Value("${ecas.location}")
+    private String ecasUrl;
+
     @Autowired
     UserMapper userMapper;
 
@@ -400,8 +403,8 @@ public class UserService {
         return baseUrl;
     }
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
+    public String getEcasUrl() {
+        return ecasUrl;
     }
 
     private void removeTempToken(UserDTO userDTO) {

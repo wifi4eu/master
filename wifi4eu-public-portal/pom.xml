@@ -27,7 +27,6 @@
         <module>wifi4eu-public-portal-web-rest-swagger</module>
         <module>wifi4eu-public-portal-web-rest</module>
         <module>wifi4eu-public-portal-web</module>
-        <module>wifi4eu-public-portal-ear</module>
     </modules>
 
 </project>

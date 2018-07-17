@@ -313,7 +313,7 @@ public class ExportImportWifi4euAbacService {
 			MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipality.getId());
 			RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipality.getId());
 			if (registration != null && mayor != null) {
-				UserDTO user = userService.getUserById(registration.getUserId());
+				UserDTO user = userService.getMainUserByIdFromRegistration(registration.getId());
 				if (user != null) {
 					switch (lau.getCountryCode().toUpperCase()) {
 					case "AT":
