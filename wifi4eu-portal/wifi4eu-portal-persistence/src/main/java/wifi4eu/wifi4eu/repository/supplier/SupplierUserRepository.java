@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.repository.supplier;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -18,8 +19,7 @@ public interface SupplierUserRepository extends CrudRepository<SupplierUser,Inte
 
     int countByEmail(@Param("email") String email);
 
-    SupplierUser findFirstSupplierUserByCode(@Param("code") String code);
-
+    @Modifying
     @Query(value = "DELETE supplier_users WHERE supplier_id = ?1", nativeQuery = true)
-    Long deleteBySupplierId(@Param("supplierId") Long supplierId);
+    void deleteBySupplierId(@Param("supplierId") Long supplierId);
 }

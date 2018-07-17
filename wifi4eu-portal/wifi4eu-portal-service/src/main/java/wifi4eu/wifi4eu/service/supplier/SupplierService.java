@@ -446,10 +446,6 @@ public class SupplierService {
         return supplierUserRepository.findUserIdBySupplierId(supplierId);
     }
 
-    public SupplierUserDTO findByCode(String code) {
-        return supplierUserMapper.toDTO(supplierUserRepository.findFirstSupplierUserByCode(code));
-    }
-
     public List<SupplierUserDTO> findByEmail(String email) {
         return supplierUserMapper.toDTOList(supplierUserRepository.findByEmail(email));
     }
