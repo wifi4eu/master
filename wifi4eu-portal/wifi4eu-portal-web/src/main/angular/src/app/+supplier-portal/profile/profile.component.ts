@@ -329,6 +329,7 @@ export class SupplierProfileComponent {
         
         /* New contact funciontality */
         private sendMailToUser(){
+        this.newUserEmail = '';
         this.addUser = true;
         }
 }
