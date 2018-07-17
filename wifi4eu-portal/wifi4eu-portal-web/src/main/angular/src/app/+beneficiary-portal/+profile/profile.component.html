@@ -8,10 +8,10 @@
                     <p class="beneficiaryTitle">{{ 'benefPortal.profile.title' | translate }}</p>
                 </div>
                 <div class="col-sm-2">
-            <a (click)="goToEditProfile()" class="edit">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                            {{ 'shared.edit.button' | translate }}
-                        </a>
+                    <a (click)="goToEditProfile()" class="edit">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                        {{ 'shared.edit.button' | translate }}
+                    </a>
                 </div>
             </div>
             <div class="row">
@@ -19,36 +19,38 @@
                     <hr class="beneficiaryHr">
                 </div>
             </div>
-            <div class="row">
-                <br>
-                <div class="col-sm-10">
-                    <span class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
+            <div *ngFor="let user of users; let i = index">
+                <div class="row">
+                    <br>
+                    <div class="col-sm-10">
+                        <span class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
+                    </div>
+                    <div class="col-sm-2">
+                    </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <p>{{ 'shared.name.label' | translate }}</p>
+                    </div>
+                    <div class="col-sm-8">
+                        <p class="profileData">{{user?.name}}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <p>{{ 'shared.name.label' | translate }}</p>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <p>{{ 'shared.surname.label' | translate }}</p>
+                    </div>
+                    <div class="col-sm-8">
+                        <p class="profileData">{{user?.surname}}</p>
+                    </div>
                 </div>
-                <div class="col-sm-8">
-                    <p class="profileData">{{user?.name}}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <p>{{ 'shared.surname.label' | translate }}</p>
-                </div>
-                <div class="col-sm-8">
-                    <p class="profileData">{{user?.surname}}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <p>{{ 'shared.email.label' | translate }}</p>
-                </div>
-                <div class="col-sm-8">
-                    <p class="profileData">{{user?.email}}</p>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <p>{{ 'shared.email.label' | translate }}</p>
+                    </div>
+                    <div class="col-sm-8">
+                        <p class="profileData">{{user?.email}}</p>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -102,21 +104,21 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-10 ">
-                                <div *ngIf="hasDiscussion[i]" class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <i class="fa fa-exclamation-triangle"></i>
-                                        </div>
-                                        <div class="col-sm-10 discussionWarning">
-                                            <p>{{ 'benefPortal.beneficiary.goDiscussionText' | translate }}</p>
-                                        </div>
+                            <div *ngIf="hasDiscussion[i]" class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <i class="fa fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="col-sm-10 discussionWarning">
+                                        <p>{{ 'benefPortal.beneficiary.goDiscussionText' | translate }}</p>
                                     </div>
                                 </div>
-                                <div style="text-align: center !important">
-                                    <button *ngIf="hasDiscussion[i]" class="btn btn-primary discussionWarnigButton" id="muncicipalityButton"
-                                        (click)="goToDiscussion(i)"> {{'discussionForum.beneficiary.goDiscussion' | translate }}
-                                    </button>
-                                </div>
+                            </div>
+                            <div style="text-align: center !important">
+                                <button *ngIf="hasDiscussion[i]" class="btn btn-primary discussionWarnigButton" id="muncicipalityButton" (click)="goToDiscussion(i)">
+                                {{'discussionForum.beneficiary.goDiscussion' | translate }}
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -173,18 +175,15 @@
             <div class="col-sm-12 margin-top  button-content" *ngIf="!documentUploaded || !allDocumentsUploaded">
                 <p>{{ 'shared.statusUploadDocs' | translate }}</p>
                 <div style="text-align: center !important">
-                    <button type="button" (click)="goToapplyForVOucher()"
-                            *ngIf="allDocumentsUploaded && !oneRegsitration"
-                            class="btn btn-primary changePassword">
+                    <button type="button" (click)="goToapplyForVOucher()" *ngIf="allDocumentsUploaded && !oneRegsitration" class="btn btn-primary changePassword">
                         {{'shared.uploadDocuments' | translate }}
                     </button>
-                    <button type="button" (click)="goToUploadDocuments()" *ngIf="oneRegsitration"
-                            class="btn btn-primary changePassword">
+                    <button type="button" (click)="goToUploadDocuments()" *ngIf="oneRegsitration" class="btn btn-primary changePassword">
                         {{'shared.uploadDocuments' | translate }}
                     </button>
                 </div>
             </div>
-             <!--<div class="col-sm-12 margin-top  button-content" *ngIf="hasDiscussion">
+            <!--<div class="col-sm-12 margin-top  button-content" *ngIf="hasDiscussion">
                 <p>{{ 'benefPortal.beneficiary.goDiscussionText' | translate }}</p>
                 <div style="text-align: center !important">
                     <button type="button" (click)="goToDiscussion()" class="btn btn-primary changePassword">
@@ -203,15 +202,16 @@
             <div class="col-sm-12 margin-top button-content">
                 <p>{{ 'shared.withdraw-registration.text' | translate }}</p>
                 <div style="text-align: center !important">
-                    <button type="button" (click)="deleteRegistration()"
-                    class="btn btn-primary changePassword"
-                    [disabled]="withdrawingRegistration || withdrawnSuccess">
-                    {{ 'shared.withdraw-registration.button' | translate }}
+                    <button type="button" (click)="deleteRegistration()" class="btn btn-primary changePassword" [disabled]="withdrawingRegistration || withdrawnSuccess">
+                        {{ 'shared.withdraw-registration.button' | translate }}
                     </button>
                 </div>
             </div>
             <div class="col-sm-12 margin-top button-content">
-                <p><span>{{ 'shared.changeLanguage.text1' | translate }}</span> <strong>{{ selectedLanguage.label }}.</strong></p>
+                <p>
+                    <span>{{ 'shared.changeLanguage.text1' | translate }}</span>
+                    <strong>{{ selectedLanguage?.label }}.</strong>
+                </p>
                 <p>{{ 'shared.changeLanguage.text2' | translate }}</p>
                 <div style="text-align: center !important">
                     <button type="button" (click)="changeLanguage()" class="btn btn-primary changePassword">
@@ -219,7 +219,7 @@
                     </button>
                 </div>
             </div>
-       <!--  </div> -->
+            <!--  </div> -->
 
         </div>
     </div>
@@ -240,9 +240,13 @@
 </p-dialog>
 
 <helpdesk-form-component portal="beneficiary-profile"></helpdesk-form-component>
-<p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true"
-          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
-    <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
+<p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+    [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots">
+        <span>·</span>
+        <span>·</span>
+        <span>·</span>
+    </p>
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>

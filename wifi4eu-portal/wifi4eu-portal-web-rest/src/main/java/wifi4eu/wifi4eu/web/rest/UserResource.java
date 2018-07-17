@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -204,4 +206,22 @@ public class UserResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
        }
    }
+
+    @ApiOperation(value = "Get all users from registration")
+    @RequestMapping (value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<UserDTO> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId){
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
+        try {
+            List<UserDTO> users = new ArrayList<>();
+            users = registrationService.getUsersFromRegistration(registrationId);
+            return users;
+        } catch (Exception e){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
+            return null;
+        }
+    }
+
 }

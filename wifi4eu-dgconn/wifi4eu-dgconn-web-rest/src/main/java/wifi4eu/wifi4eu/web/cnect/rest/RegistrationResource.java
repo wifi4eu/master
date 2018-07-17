@@ -29,6 +29,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -91,7 +92,7 @@ public class RegistrationResource {
         return registrationService.getRegistrationById(registrationId);
     }
 
-    @ApiOperation(value = "Create registration")
+    @ApiOperation(value = "Invalidate registration")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -100,12 +101,12 @@ public class RegistrationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating registration");
         try {
-            if (userConnected.getType() != 5) {
-                if (userConnected.getId() != registrationDTO.getUserId()) {
+            UserDTO userDTO = userConnected;
+            if (userDTO.getType() != 5) {
+                if (registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
                     throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
                 }
-                permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
-                permissionChecker.check(userConnected, RightConstants.USER_TABLE + registrationDTO.getUserId());
+                permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
             }
             //RegistrationValidator.validate(registrationDTO);
             RegistrationDTO resRegistration = registrationService.invalidateRegistration(registrationDTO.getId());
@@ -139,7 +140,7 @@ public class RegistrationResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Removing legal documents");
         try {
             UserDTO userDTO = userConnected;
-            if (userDTO.getId() != registrationDTO.getUserId()) {
+            if (registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
@@ -166,7 +167,7 @@ public class RegistrationResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating legal documents");
         try {
             UserDTO userDTO = userConnected;
-            if (userDTO.getId() != registrationDTO.getUserId()) {
+            if (registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
@@ -219,8 +220,10 @@ public class RegistrationResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registrations by user id " + userId);
         try {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
+            List<RegistrationDTO> registrationResult = new ArrayList<>();
+            registrationResult = registrationService.getRegistrationsByUserId(userId);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Registration retrieved successfully");
-            return registrationService.getRegistrationsByUserId(userId);
+            return registrationResult;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -389,7 +392,7 @@ public class RegistrationResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId + " and file type " + fileType);
         UserDTO user = userConnected;
         RegistrationDTO registration = registrationService.getRegistrationById(registrationId);
-        if (registration != null && user != null && (registration.getUserId() == user.getId() || user.getType() == 5)) {
+        if (registration != null && user != null && (registrationService.checkUserWithRegistration(registration.getId(), userConnected.getId()) || user.getType() == 5)) {
             LegalFilesDTO registrationFile = legalFilesService.getLegalFileByRegistrationIdFileType(registration.getId(), fileType);
             if (registrationFile != null) {
                 String fileName = "";

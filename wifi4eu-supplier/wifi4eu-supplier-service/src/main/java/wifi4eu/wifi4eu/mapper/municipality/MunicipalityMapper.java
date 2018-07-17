@@ -17,12 +17,10 @@ public interface MunicipalityMapper {
     @Mapping(source = "vo.lauId", target = "lau.id")
     Municipality toEntity(MunicipalityDTO vo);
     @Mappings({
-            @Mapping(source = "entity.user.id", target = "userId"),
             @Mapping(source = "entity.municipality.id", target = "municipalityId")
     })
     RegistrationDTO toDTO(Registration entity);
     @Mappings({
-            @Mapping(source = "vo.userId", target = "user.id"),
             @Mapping(source = "vo.municipalityId", target = "municipality.id")
     })
     Registration toEntity(RegistrationDTO vo);

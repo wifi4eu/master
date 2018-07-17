@@ -12,9 +12,12 @@ import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -71,6 +74,12 @@ public class BeneficiaryService {
     @Autowired
     MailService mailService;
 
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    UserRepository userRepository;
+
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
     private List<Integer> municipalitiesLauIdToHold = new ArrayList<>();
@@ -99,6 +108,7 @@ public class BeneficiaryService {
             user.setAddressNum(beneficiaryDTO.getUser().getAddressNum());
             user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
             user.setEmail(beneficiaryDTO.getUser().getEmail());
+            user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
             user.setType(3);
             isEcasUser = true;
         }
@@ -186,7 +196,7 @@ public class BeneficiaryService {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
                         }
-                        UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
+                        UserDTO userRegistration = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
                         if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
@@ -209,7 +219,7 @@ public class BeneficiaryService {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
                         }
-                        UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
+                        UserDTO userRegistration = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
                         if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
@@ -242,7 +252,7 @@ public class BeneficiaryService {
                         RegistrationDTO conflictRegistrationDTO = registrationService.getRegistrationByMunicipalityId(conflictMunicipality.getId());
                         if (conflictRegistrationDTO != null) {
                             UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
-                            userThreadsDTO.setUserId(conflictRegistrationDTO.getUserId());
+                            userThreadsDTO.setUserId(userRepository.findMainUserFromRegistration(conflictRegistrationDTO.getId()).getId());
                             userThreadsDTO.setThreadId(threadDTO.getId());
                             userThreadsService.createUserThreads(userThreadsDTO);
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - User thread " + threadDTO.getId() + " added");
@@ -268,9 +278,10 @@ public class BeneficiaryService {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         RegistrationDTO registration = new RegistrationDTO();
+        RegistrationUsers registrationUsers = new RegistrationUsers();
         registration.setRole(role);
         registration.setMunicipalityId(municipality.getId());
-        registration.setUserId(userId);
+       // registration.setUserId(userId);
         registration.setStatus(generateRegistrationStatus(municipality));
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - New registration generated");
         return registration;
@@ -303,14 +314,14 @@ public class BeneficiaryService {
      * The update registration status to hold
      */
     private void updateRegistrationStatusToHold(List<MunicipalityDTO> municipalitiesWithSameLau) {
-        final String LOG_STATUS_2_HOLD = "Registraion Id {0} updated to the status HOLD";
+        final String LOG_STATUS_2_HOLD = "Registration Id {0} updated to the status HOLD";
 
-        /* put all the registrations for a given municiaplity on Hold*/
+        /* put all the registrations for a given municipality on Hold*/
         for (MunicipalityDTO aMunicipality : municipalitiesWithSameLau) {
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(aMunicipality.getId());
             if (registration != null) {
                 registration.setStatus(RegistrationStatus.HOLD.getValue());
-                registrationService.createRegistration(registration);
+                registrationService.saveRegistration(registration);
                 _log.info(MessageFormat.format(LOG_STATUS_2_HOLD, registration.getId()));
             }
         }

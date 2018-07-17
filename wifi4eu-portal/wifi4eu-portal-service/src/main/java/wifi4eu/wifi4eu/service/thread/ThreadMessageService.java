@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.mapper.thread.ThreadMessageMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.thread.ThreadMessageRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
@@ -38,6 +40,12 @@ public class ThreadMessageService {
     @Autowired
     MailService mailService;
 
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    UserRepository userRepository;
+
     public ThreadMessageDTO createThreadMessage(ThreadMessageDTO threadMessageDTO) {
         ThreadMessageDTO threadMessage = threadMessageMapper.toDTO(threadMessageRepository.save(threadMessageMapper.toEntity(threadMessageDTO)));
         ThreadDTO thread = threadService.getThreadById(threadMessage.getThreadId());
@@ -46,7 +54,7 @@ public class ThreadMessageService {
             if (municipalities.size() <= 10) {
                 if (!userService.isLocalHost()) {
                     for (MunicipalityDTO municipality : municipalities) {
-                        UserDTO user = userService.getUserById(municipality.getRegistrations().get(0).getUserId());
+                        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(municipality.getRegistrations().get(0).getId()));
                         if (user != null) {
                             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
                             if (user.getLang() != null) {

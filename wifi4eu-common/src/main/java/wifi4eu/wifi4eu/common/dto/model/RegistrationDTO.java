@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 import javax.persistence.Column;
+import javax.xml.registry.infomodel.User;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.Date;
 
 public class RegistrationDTO implements Serializable {
     private int id;
-    private int userId;
     private int municipalityId;
     private String role;
     private int status;
@@ -44,7 +44,7 @@ public class RegistrationDTO implements Serializable {
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int userId, int municipalityId, String role, int status, long legalFile1Size,
+    public RegistrationDTO(int municipalityId, String role, int status, long legalFile1Size,
                            String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size,
                            String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration,
                            String associationName, int organisationId, long uploadTime, int allFilesFlag, int
@@ -53,7 +53,6 @@ public class RegistrationDTO implements Serializable {
                                    actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck,
                            Timestamp dateRegistered, Date installationSiteSubmission, Date installationSiteRejection,
                            Date installationSiteConfirmation) {
-        this.userId = userId;
         this.municipalityId = municipalityId;
         this.role = role;
         this.status = status;
@@ -116,14 +115,6 @@ public class RegistrationDTO implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public int getMunicipalityId() {
@@ -274,7 +265,6 @@ public class RegistrationDTO implements Serializable {
     public String toString() {
         return "RegistrationDTO{" +
                 "id=" + id +
-                ", userId=" + userId +
                 ", municipalityId=" + municipalityId +
                 ", role='" + role + '\'' +
                 ", status=" + status +

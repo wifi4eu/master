@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.rabbitmq.client.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,12 +10,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
@@ -30,6 +36,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -64,6 +71,15 @@ public class ScheduledTasks {
 
     @Autowired
     private CallService callService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private RegistrationUsersRepository registrationUsersRepository;
 
     private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
@@ -177,6 +193,43 @@ public class ScheduledTasks {
         }
     }
 
+    //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 8 ? * MON-FRI")
+    public void sendDocRequest() {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending document request");
+        List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
+        for (RegistrationDTO registrationDTO : registrationDTOS) {
+            try {
+                if (registrationDTO != null && registrationDTO.getMailCounter() > 0) {
+                    UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
+
+                    if (user != null && user.getEcasEmail() != null) {
+                        if (!userService.isLocalHost()) {
+                            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                            if (user.getLang() != null) {
+                                locale = new Locale(user.getLang());
+                            }
+                            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                            String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
+                            String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
+                            String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
+                            msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
+
+                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId(), "sendDocRequest");
+                        }
+                        int mailCounter = registrationDTO.getMailCounter() - 1;
+                        registrationDTO.setMailCounter(mailCounter);
+                        registrationService.createRegistration(registrationDTO);
+                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Document request sent for registration with id " + registrationDTO.getId());
+                    }
+                }
+            } catch (Exception e) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send document rquest for this registration", e);
+            }
+        }
+    }
+
     private long processQueueMessage(GetResponse response, HttpServletRequest request) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
@@ -252,5 +305,15 @@ public class ScheduledTasks {
         }
     }
 
+    @Scheduled(cron = "59 59 23 * * *")
+    public void contactEmailTimer() {
+        List<RegistrationUsers> registrationUsers = Lists.newArrayList(registrationUsersRepository.findAll());
+        for (int i = 0; registrationUsers.size() > i; i++) {
+            RegistrationUsers registrationUser = registrationUsersRepository.findOne(i);
+            if (registrationUser.getUserId() == null && (registrationUser.getCreationDate().toInstant().plus(24, ChronoUnit.HOURS).compareTo(new Date().toInstant()) == -1)) {
+                registrationUsersRepository.delete(registrationUsers);
+            }
+        }
+    }
 
 }
