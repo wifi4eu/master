@@ -52,11 +52,10 @@ public class ThreadMessageResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating thread message");
         try {
-            UserDTO user = userConnected;
-            if (userThreadsService.getByUserIdAndThreadId(user.getId(), threadMessageDTO.getThreadId()) == null && !permissionChecker.checkIfDashboardUser()) {
+            if (userThreadsService.getByUserIdAndThreadId(userConnected.getId(), threadMessageDTO.getThreadId()) == null && !permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            if (threadMessageDTO.getAuthorId() != user.getId()) {
+            if (threadMessageDTO.getAuthorId() != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             threadMessageDTO.setCreateDate(new Date().getTime());

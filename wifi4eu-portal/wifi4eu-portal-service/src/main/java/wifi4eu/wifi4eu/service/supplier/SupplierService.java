@@ -496,7 +496,7 @@ public class SupplierService {
             throw new Exception("This contact has been added to this supplier before.");
 
         } else { // ALL OK
-            String urlSent = "https://ecas.acceptance.ec.europa.eu/cas/eim/external/register.cgi?email=" + newUserEmail.trim();
+            String urlSent = userService.getEcasUrl()+"/cas/eim/external/register.cgi?email=" + newUserEmail.trim();
 
             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
             String subject = bundle.getString("mail.sendNewUserSupplier.subject");

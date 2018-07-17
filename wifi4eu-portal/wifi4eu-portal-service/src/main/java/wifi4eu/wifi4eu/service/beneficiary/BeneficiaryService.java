@@ -261,7 +261,7 @@ public class BeneficiaryService {
                             continue;
                         }
                         UserDTO userRegistration = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-                        if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                        if (userRegistration == null || userRegistration.getId() == userDTO.getId()) {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
                         }
@@ -615,18 +615,16 @@ public class BeneficiaryService {
         ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
         String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
         String msgBody = bundle.getString("mail.sendUserEmail.beneficiary.body");
-        String additionalInfoUrl = userService.getBaseUrl() + "cas/eim/external/register.cgi?email=";
+        String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
         msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, userRegistrationDTO.getEmail());
         if (!userService.isLocalHost()) {
             mailService.sendEmail(userRegistrationDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            userService.createNewRegistrationUser(userRegistrationDTO);
         }
         return userRegistrationDTO;
     }
 
     public boolean checkContactEmailWithMunicipality(String email, Integer municipalityId){
-        if(registrationUsersRepository.findByContactEmailAndMunicipality(email, municipalityId) != null){
-            return true;
-        }
-        return false;
+        return registrationUsersRepository.findByContactEmailAndMunicipality(email, municipalityId) != null;
     }
 }

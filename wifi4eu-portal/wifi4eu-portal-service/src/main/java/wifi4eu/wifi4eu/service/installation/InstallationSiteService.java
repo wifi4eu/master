@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
@@ -23,8 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//import wifi4eu.wifi4eu.repository.status.StatusRepository;
-
 @Service
 public class InstallationSiteService {
 
@@ -34,9 +33,6 @@ public class InstallationSiteService {
 
     @Autowired
     MunicipalityRepository municipalityRepository;
-
-//    @Autowired
-//    StatusRepository statusRepository;
 
     @Autowired
     private PermissionChecker permissionChecker;
@@ -49,6 +45,7 @@ public class InstallationSiteService {
 
     @Autowired
     UserService userService;
+
     Logger _log = LogManager.getLogger(InstallationSiteService.class);
 
     // TODO missing field number (not appears on DB)
@@ -105,18 +102,18 @@ public class InstallationSiteService {
 
                 } catch (Exception ex) {
                     response.setSuccess(false);
-                    response.setError(new ErrorDTO(404, "Error - Invalid integers / fields"));
+                    response.setError(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "Error - Invalid integers / fields"));
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The fields are invalid", ex);
                 }
             } else {
                 response.setSuccess(false);
-                response.setError(new ErrorDTO(404, "Municipality not found"));
+                response.setError(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "Municipality not found"));
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The municipality is not found");
             }
 
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "Error json query"));
+            response.setError(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "Error json query"));
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Json query is invalid");
         }
 
@@ -151,7 +148,7 @@ public class InstallationSiteService {
             response.setData(installationSite);
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "Installation site not found"));
+            response.setError(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "Installation site not found"));
         }
         return response;
     }
@@ -163,7 +160,7 @@ public class InstallationSiteService {
             if (!municipalityService.checkPermissions(idMunicipality) ||
                     (idInstSite != null && installationSiteRepository.findInstallationSiteByIdAndMunicipality
                             (idInstSite, idMunicipality) == null)) {
-                throw new AccessDeniedException("403 FORBIDDEN");
+                throw new AccessDeniedException(HttpStatus.FORBIDDEN.getReasonPhrase());
             }
 
         } catch (Exception e) {

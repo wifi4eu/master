@@ -33,7 +33,7 @@ public interface MunicipalityRepository extends CrudRepository<Municipality, Int
 
     Long countMunicipalitiesById(Integer id);
 
-    @Query(value = "SELECT count(m.id) FROM registrations r INNER JOIN municipalities m ON m.id = r.municipality WHERE r._user = ?1", nativeQuery = true)
+    @Query(value = "SELECT count(m.id) FROM registrations r INNER JOIN municipalities m ON m.id = r.municipality INNER JOIN registration_users ru on ru.registration = r.id WHERE ru._user = ?1", nativeQuery = true)
     Long countMunicipalitiesByUserId(long idUser);
 
     /* if value 1 = DISABLE EDIT, if value = 0 ENABLE EDIT*/

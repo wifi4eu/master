@@ -18,6 +18,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -28,6 +29,7 @@ import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierUserMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
@@ -56,6 +58,9 @@ public class UserService {
     @Value("${mail.server.location}")
     private String baseUrl;
 
+    @Value("${ecas.location}")
+    private String ecasUrl;
+
     @Autowired
     UserMapper userMapper;
 
@@ -82,6 +87,9 @@ public class UserService {
 
     @Autowired
     SupplierMapper supplierMapper;
+
+    @Autowired
+    SupplierUserMapper supplierUserMapper;
 
     @Autowired
     SupplierRepository supplierRepository;
@@ -181,12 +189,16 @@ public class UserService {
         List<SupplierUser> supplierUsersToUpdate = new ArrayList<>();
         int userId = userRepository.findByEcasUsername(userContext.getUsername()).getId();
 
-        if (supplierUsers != null && (userDTO.getType() != 3 && userDTO.getType() != 5)){
+        if (supplierUsers != null && (userDTO.getType() == 0) || (userDTO.getType() == 1)){
 
-            for(SupplierUser supplierUser:supplierUsersToUpdate){
+            for(SupplierUser supplierUser:supplierUsers){
                 if (supplierUser.getId() == null){
-                    supplierUser.setUserId(userId);
-                    supplierUsersToUpdate.add(supplierUser);
+
+                    if (supplierService.createdLessThan24HBefore(supplierUserMapper.toDTO(supplierUser))){
+                        supplierUser.setUserId(userId);
+                        supplierUser.setStatus(SupplierUserStatus.ALREADY_REGISTERED.getStatus());
+                        supplierUsersToUpdate.add(supplierUser);
+                    }
                 }
             }
 
@@ -418,8 +430,8 @@ public class UserService {
         return baseUrl;
     }
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
+    public String getEcasUrl() {
+        return ecasUrl;
     }
 
     private void removeTempToken(UserDTO userDTO) {

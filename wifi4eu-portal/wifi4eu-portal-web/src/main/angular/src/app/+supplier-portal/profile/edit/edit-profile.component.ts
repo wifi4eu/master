@@ -193,8 +193,16 @@ export class SupplierEditProfileComponent {
 
     private saveSupplierData() {
         this.savingData = true;
+        var newRegions = [];
+
+        this.selectedCountries.forEach(selectedCountry => {
+            if(typeof this.selectedRegions[selectedCountry.label] !== "undefined") {
+                newRegions[selectedCountry.label] = this.selectedRegions[selectedCountry.label];
+            }
+        });
+
         this.supplier.suppliedRegions = [];
-        for (let selectedCountry in this.selectedRegions) {
+        for (let selectedCountry in newRegions) {
             for (let selectedRegion of this.selectedRegions[selectedCountry]) {
                 let suppliedRegion = new SuppliedRegionDTOBase();
                 suppliedRegion.regionId = selectedRegion;
