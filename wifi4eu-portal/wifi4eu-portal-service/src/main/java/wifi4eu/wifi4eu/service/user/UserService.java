@@ -18,6 +18,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -27,9 +28,11 @@ import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
+import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierUserMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
@@ -38,6 +41,7 @@ import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -49,10 +53,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -94,7 +95,13 @@ public class UserService {
     SupplierMapper supplierMapper;
 
     @Autowired
+    SupplierUserMapper supplierUserMapper;
+
+    @Autowired
     SupplierRepository supplierRepository;
+
+    @Autowired
+    SupplierUserRepository supplierUserRepository;
 
     @Autowired
     SuppliedRegionMapper suppliedRegionMapper;
@@ -207,6 +214,32 @@ public class UserService {
                 }
             }
         }
+
+        List<SupplierUser> supplierUsers = supplierUserRepository.findByEmail(userContext.getEmail());
+        List<SupplierUser> supplierUsersToUpdate = new ArrayList<>();
+        int userId = userRepository.findByEcasUsername(userContext.getUsername()).getId();
+
+        if (supplierUsers != null && ((userDTO.getType() == 0) || (userDTO.getType() == 1))){
+
+            for(SupplierUser supplierUser:supplierUsers){
+                if (supplierUser.getUserId() == null){
+
+                    if (supplierService.createdLessThan24HBefore(supplierUserMapper.toDTO(supplierUser))){
+                        if(userDTO.getType() == 0){
+                            userDTO.setType(1);
+                            userDTO.setLang(UserConstants.DEFAULT_LANG);
+                            userRepository.save(userMapper.toEntity(userDTO));
+                        }
+                        supplierUser.setUserId(userId);
+                        supplierUser.setStatus(SupplierUserStatus.ALREADY_REGISTERED.getStatus());
+                        supplierUsersToUpdate.add(supplierUser);
+                    }
+                }
+            }
+
+            supplierUserRepository.save(supplierUsersToUpdate);
+        }
+
         return userDTO;
     }
 
@@ -443,7 +476,7 @@ public class UserService {
     }
 
     private void removeSuppliedRegion(UserDTO userDTO) {
-        SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findByUserId(userDTO.getId()));
+        SupplierDTO supplierDTO = supplierService.getSupplierByUserId(userDTO.getId());
         List<SuppliedRegionDTO> suppliedRegionDTOList = supplierDTO.getSuppliedRegions();
         for (SuppliedRegionDTO anElementList : suppliedRegionDTOList) {
             suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(anElementList));

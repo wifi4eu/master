@@ -23,6 +23,7 @@ import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierListItemRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -49,6 +50,9 @@ public class SupplierService {
     SuppliedRegionMapper suppliedRegionMapper;
 
     @Autowired
+    SupplierUserRepository supplierUserRepository;
+
+    @Autowired
     SuppliedRegionRepository suppliedRegionRepository;
 
     @Autowired
@@ -71,7 +75,6 @@ public class SupplierService {
     @Transactional
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) throws Exception {
         SupplierDTO finalSupplier = new SupplierDTO();
-        finalSupplier.setUserId(supplierDTO.getUserId());
         finalSupplier.setName(supplierDTO.getName());
         finalSupplier.setAddress(supplierDTO.getAddress());
         finalSupplier.setVat(supplierDTO.getVat());
@@ -151,7 +154,9 @@ public class SupplierService {
         //TODO: change to a soft delete
         SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
         if (supplierDTO != null) {
+            supplierUserRepository.deleteBySupplierId((long) supplierId);
             supplierRepository.delete(supplierMapper.toEntity(supplierDTO));
+
             return supplierDTO;
         } else {
             return null;
@@ -186,13 +191,12 @@ public class SupplierService {
         userDTO.setLang(supplierDTO.getLang());
         userDTO = userService.saveUserChanges(userDTO);
         userService.sendActivateAccountMail(userDTO);
-        supplierDTO.setUserId(userDTO.getId());
         supplierDTO = createSupplier(supplierDTO);
         return supplierDTO;
     }
 
     public SupplierDTO getSupplierByUserId(int userId) {
-        return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
+        return supplierMapper.toDTO(supplierRepository.getByUserId(userId));
     }
 
     public List<SupplierDTO> getSuppliersByVat(String vat) {
@@ -216,7 +220,7 @@ public class SupplierService {
     public boolean requestLegalDocuments(int supplierId) {
         SupplierDTO supplier = getSupplierById(supplierId);
         if (supplier != null) {
-            UserDTO user = userService.getUserById(supplier.getUserId());
+            UserDTO user = userService.getUserById(getUserIdFromSupplier(supplier.getId()));
             if (user != null) {
                 Locale locale = new Locale(UserConstants.DEFAULT_LANG);
                 if (user.getLang() != null) {
@@ -245,7 +249,7 @@ public class SupplierService {
     public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) {
         supplierDTO.setStatus(1);
         supplierDTO = updateSupplier(supplierDTO);
-        UserDTO user = userService.getUserById(supplierDTO.getUserId());
+        UserDTO user = userService.getUserById( getUserIdFromSupplier(supplierDTO.getId()));
         if (user != null) {
             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
             if (user.getLang() != null) {
@@ -325,5 +329,13 @@ public class SupplierService {
             return supplierRepository.findSuppliersByCountryCode(countryCode, pageable);
         }
         return supplierRepository.findSuppliersByRegion(regionId, pageable);
+    }
+
+    public int getUserIdFromSupplier(int supplierId){
+        return supplierUserRepository.findUserIdBySupplierId(supplierId);
+    }
+
+    private boolean checkHasNoNotBeingRegisteredBefore(String userEmail, Integer supplierId){
+        return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
     }
 }

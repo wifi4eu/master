@@ -17,9 +17,7 @@ public interface SupplierMapper {
 
     NutsDTO toDTO(Nuts entity);
 
-    @Mapping(source = "entity.user.id", target = "userId")
     SupplierDTO toDTO(Supplier entity);
-    @Mapping(source = "vo.userId", target = "user.id")
     Supplier toEntity(SupplierDTO vo);
     @Mappings({
             @Mapping(source = "entity.supplier.id", target = "supplierId"),

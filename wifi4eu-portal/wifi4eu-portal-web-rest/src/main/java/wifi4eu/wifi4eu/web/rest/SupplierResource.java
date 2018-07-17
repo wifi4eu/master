@@ -15,10 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
-import wifi4eu.wifi4eu.common.dto.model.SuppliersCacheDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -62,7 +59,7 @@ public class SupplierResource {
         _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting supplier by id " + supplierId);
         SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
         try {
-            if (supplierDTO.getUserId() != userConnected.getId() && userConnected.getType() != 5) {
+            if (supplierService.getUserIdFromSupplier(supplierDTO.getId()) != userConnected.getId() && userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier retrieved successfully");
@@ -86,7 +83,7 @@ public class SupplierResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier");
         try {
-            if (supplierDTO.getUserId() != userConnected.getId()) {
+            if (supplierService.getUserIdFromSupplier(supplierDTO.getId()) != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             SupplierDTO resSupplier = supplierService.updateSupplier(supplierDTO);
@@ -110,11 +107,12 @@ public class SupplierResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating contact details");
         try {
-            if (supplierDTO.getUserId() != userConnected.getId()) {
+            int supplierUserId = supplierService.getUserIdFromSupplier(supplierDTO.getId());
+            if (supplierUserId != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
-            if (supplierDTO.getId() != sendSupplierDTO.getId()) {
+            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierUserId);
+            if (supplierUserId != sendSupplierDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             SupplierDTO resSupplier = supplierService.updateContactDetails(sendSupplierDTO, supplierDTO.getContactName(), supplierDTO.getContactSurname(), supplierDTO.getContactPhonePrefix(), supplierDTO.getContactPhoneNumber());
@@ -138,10 +136,11 @@ public class SupplierResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier details");
         try {
-            if (supplierDTO.getUserId() != userConnected.getId()) {
+            int supplierUserId = supplierService.getUserIdFromSupplier(supplierDTO.getId());
+            if (supplierUserId != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
+            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierUserId);
             if (supplierDTO.getId() != sendSupplierDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
@@ -317,4 +316,49 @@ public class SupplierResource {
                 pageObj.getTotalElements(),
                 null);
     }
+
+    @ApiOperation(value = "Get userId from supplier ")
+    @RequestMapping(value = "/getUserId/{supplierId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO getUserIdFromSupplier(@PathVariable("supplierId") final int supplierId) throws IOException {
+
+        try {
+
+            Integer userId = supplierService.getUserIdFromSupplier(supplierId);
+            return new ResponseDTO(true, userId, null);
+
+        } catch (Exception e) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "sendEmailToNewContact")
+    @RequestMapping(value = "/sendEmailToNewContact", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO sendEmailToNewContact(@RequestBody String newUserEmail, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+
+            UserDTO newUser = userService.getUserByEmail(userConnected.getEmail());
+
+            if(newUser == null || newUser.getType() == 1) {
+                int supplierId = supplierService.getSupplierByUserId(userConnected.getId()).getId();
+
+                boolean emailSent = supplierService.sendEmailToContacts(newUserEmail, supplierId);
+                supplierService.createSupplierUser(supplierId, null, newUserEmail, false);
+
+                return new ResponseDTO(true, emailSent, null);
+            } else {
+                throw new AppException("User already registered");
+            }
+
+
+        } catch (Exception e) {
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+
+    }
+
 }

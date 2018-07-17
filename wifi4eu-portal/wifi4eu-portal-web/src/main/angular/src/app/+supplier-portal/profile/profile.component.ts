@@ -108,13 +108,6 @@ export class SupplierProfileComponent {
         }
     }
 
-    private closeModal() {
-        this.displayContact = false;
-        this.displayCompany = false;
-        this.deletingLogo = false;
-        this.clearLogoFile();
-        Object.assign(this.editedSupplier, this.supplier);
-    }
 
     private saveContactChanges() {
         this.submittingData = true;
@@ -303,4 +296,14 @@ export class SupplierProfileComponent {
         this.deletingLogo = true;
         this.clearLogoFile();
     }
+        
+    private closeModal(){
+        this.displayContact = false;
+        this.displayCompany = false;
+        this.deletingLogo = false;
+        this.clearLogoFile();
+        Object.assign(this.editedSupplier, this.supplier);
+   
+        }
+
 }

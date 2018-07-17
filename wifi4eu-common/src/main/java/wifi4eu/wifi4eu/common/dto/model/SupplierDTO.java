@@ -17,7 +17,7 @@ public class SupplierDTO implements Serializable {
     private String contactPhoneNumber;
     private String contactEmail;
     private String logo;
-    private int userId;
+    private List<SupplierUserDTO> supplierUsers;
     private List<SuppliedRegionDTO> suppliedRegions;
     private boolean legalCheck1;
     private boolean legalCheck2;
@@ -29,7 +29,7 @@ public class SupplierDTO implements Serializable {
     public SupplierDTO() {
     }
 
-    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, int userId, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status, String lang) {
+    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<SupplierUserDTO> supplierUsers, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status, String lang) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -43,7 +43,7 @@ public class SupplierDTO implements Serializable {
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;
         this.logo = logo;
-        this.userId = userId;
+        this.supplierUsers = supplierUsers;
         this.suppliedRegions = suppliedRegions;
         this.legalCheck1 = legalCheck1;
         this.legalCheck2 = legalCheck2;
@@ -157,12 +157,12 @@ public class SupplierDTO implements Serializable {
         this.logo = logo;
     }
 
-    public int getUserId() {
-        return userId;
+    public List<SupplierUserDTO> getSupplierUsers() {
+        return supplierUsers;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setSupplierUsers(List<SupplierUserDTO> supplierUsers) {
+        this.supplierUsers = supplierUsers;
     }
 
     public List<SuppliedRegionDTO> getSuppliedRegions() {
@@ -237,7 +237,6 @@ public class SupplierDTO implements Serializable {
                 ", contactPhoneNumber='" + contactPhoneNumber + '\'' +
                 ", contactEmail='" + contactEmail + '\'' +
                 ", logo='" + logo + '\'' +
-                ", userId=" + userId +
                 ", suppliedRegions=" + suppliedRegions +
                 ", legalCheck1=" + legalCheck1 +
                 ", legalCheck2=" + legalCheck2 +
@@ -246,4 +245,5 @@ public class SupplierDTO implements Serializable {
                 ", status='" + status + '\'' +
                 '}';
     }
+
 }
