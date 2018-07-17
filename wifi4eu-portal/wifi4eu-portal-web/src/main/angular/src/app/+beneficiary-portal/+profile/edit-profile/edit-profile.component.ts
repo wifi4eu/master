@@ -21,6 +21,7 @@ import {ThreadApi} from "../../../shared/swagger/api/ThreadApi";
 import {NutsApi} from "../../../shared/swagger/api/NutsApi";
 import {BeneficiaryApi} from "../../../shared/swagger/api/BeneficiaryApi";
 import {ThreadDTOBase} from "../../../shared/swagger/model/ThreadDTO";
+import {UserRegistrationDTO, UserRegistrationDTOBase} from "../../../shared/swagger/model/UserRegistrationDTO";
 import {Logs} from "selenium-webdriver";
 import {LauDTOBase, LauDTO} from "../../../shared/swagger/model/LauDTO";
 import {NutsDTOBase} from "../../../shared/swagger/model/NutsDTO";
@@ -56,7 +57,7 @@ export class BeneficiaryEditProfileComponent {
     private mayors: MayorDTOBase[] = [];
     private editedUser: UserDTOBase = new UserDTOBase();
     private currentEditIndex: number = 0;
-    private isMunicipalityEditable = {};   
+    private isMunicipalityEditable = {};
     private displayUser: boolean = false;
     private displayMunicipality: boolean = false;
     private displayMayor: boolean = false;
@@ -88,8 +89,12 @@ export class BeneficiaryEditProfileComponent {
     @ViewChild('municipalityForm') municipalityForm: NgForm;
     private organizationId: number = 0;
     private isOrganisation: boolean = false;
+    private addUser: boolean = false;
     private currentCall: CallDTOBase;
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
+    private newUserEmail: string = '';
+    private registrationIndex: number = null;
+    private addContact:boolean = false;
 
     constructor(private callApi: CallApi, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private translateService: TranslateService, private nutsApi: NutsApi, private lauApi: LauApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         this.loadDataEditProfile();
@@ -236,7 +241,7 @@ export class BeneficiaryEditProfileComponent {
                     this.isMunicipalityEditable[municipalityId] = response.data;
                 }
             }
-        ); 
+        );
     }
 
     private addExtraMunicipality() {
@@ -383,8 +388,11 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private closeModal(){
+        this.registrationIndex = null;
         this.deleteMunicipalityId = 0;
         this.displayDeleteMunicipality = false;
+        this.addUser = false;
+        this.addContact = false;
     }
 
     private editProfile() {
@@ -458,7 +466,7 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private checkButtonEnabledUser(event){
-        this.buttonEnabled = false;
+         this.buttonEnabled = false;
         if(this.user.name != null && this.user.surname != null && this.user.name.trim() != "" && this.user.surname.trim() != ""){
             this.buttonEnabled = true;
             if (this.newMunicipalities.length > 0){
@@ -473,5 +481,34 @@ export class BeneficiaryEditProfileComponent {
                 this.municipalitiesSelected = true;
             }
         }
+    }
+
+
+    /* New contact funciontality */
+    private sendMailToUser(i){
+        this.registrationIndex = i;
+        this.addUser = true;
+    }
+
+    private addNewContact(){
+        this.addContact = true;
+        let storedUser = this.localStorageService.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+
+        let userRegistrationDTO: UserRegistrationDTOBase = new UserRegistrationDTOBase();
+        userRegistrationDTO.email = this.newUserEmail;
+        userRegistrationDTO.municipalityId = this.municipalities[this.registrationIndex].id;
+        this.beneficiaryApi.sendEmailToNewContact(userRegistrationDTO).subscribe(
+            (userRegistration: UserRegistrationDTOBase) => {
+                this.registrationIndex = null;
+                this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
+                this.closeModal();
+            }, error => {
+                this.registrationIndex = null;
+                this.addContact = false;
+                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                this.closeModal();
+            }
+        );
     }
 }

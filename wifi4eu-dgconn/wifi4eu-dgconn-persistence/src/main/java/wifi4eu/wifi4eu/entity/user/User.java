@@ -1,6 +1,9 @@
 package wifi4eu.wifi4eu.entity.user;
 
+import wifi4eu.wifi4eu.entity.registration.Registration;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -61,7 +64,6 @@ public class User {
 
     public User() {
     }
-
 
     public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken) {
         this.treatment = treatment;

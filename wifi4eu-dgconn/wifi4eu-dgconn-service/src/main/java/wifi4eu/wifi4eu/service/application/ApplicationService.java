@@ -21,8 +21,11 @@ import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.*;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
@@ -95,7 +98,17 @@ public class ApplicationService {
     ApplicationIssueUtilRepository applicationIssueUtilRepository;
 
     @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
     RegistrationRepository registrationRepository;
+
     @Autowired
     LegalFilesService legalFilesService;
 
@@ -135,7 +148,7 @@ public class ApplicationService {
             if (queueTimestamp / 1000000000 > callDTO.getStartDate() && queueTimestamp / 1000000000 < callDTO.getEndDate()) {
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue is from the specified call");
                 //check information on the queue is right
-                if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationDTO.getUserId() == userId) {
+                if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationDTO.getId()) != null) {
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - All the information of this queue is right");
                     //check if this application was received previously
                     ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
@@ -193,7 +206,7 @@ public class ApplicationService {
         MunicipalityDTO municipality = null;
         if (registration.getAllFilesFlag() == 1) {
             if (registration != null) {
-                user = userService.getUserById(registration.getUserId());
+                user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registration.getId()));
                 municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
             }
             if (user != null && municipality != null) {

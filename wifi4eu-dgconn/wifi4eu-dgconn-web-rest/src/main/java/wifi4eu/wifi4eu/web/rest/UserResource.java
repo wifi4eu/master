@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -82,6 +83,43 @@ public class UserResource {
             resUser.setPassword(null);
         }
         return resUser;
+    }
+
+    @ApiOperation(value = "Get main user from registration")
+    @RequestMapping(value = "/user/{registrationId}}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public UserDTO getUserByIdFromRegistration(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) {
+        UserDTO resUser = userService.getMainUserByIdFromRegistration(registrationId);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving main user for registration id " + registrationId);
+        if (userConnected.getType() != 5) {
+            permissionChecker.check(RightConstants.USER_TABLE + resUser.getId());
+        }
+
+        if (resUser != null) {
+            resUser.setPassword(null);
+        }
+        return resUser;
+    }
+
+    @ApiOperation(value = "Get users from registration")
+    @RequestMapping(value = "/users/{registrationId}}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<UserDTO> getUsersByIdFromRegistration(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) {
+        List<UserDTO> resUsers = userService.getUsersByIdFromRegistration(registrationId);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving main user for registration id " + registrationId);
+        for (UserDTO userDTO : resUsers) {
+            if (userConnected.getType() != 5) {
+                permissionChecker.check(RightConstants.USER_TABLE + userDTO.getId());
+            }
+            if (userDTO != null) {
+                userDTO.setPassword(null);
+            }
+        }
+        return resUsers;
     }
 
 /*    @ApiOperation(value = "Create user")
