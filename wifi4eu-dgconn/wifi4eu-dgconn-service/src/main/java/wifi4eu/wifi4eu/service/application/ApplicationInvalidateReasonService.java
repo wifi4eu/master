@@ -180,40 +180,34 @@ public class ApplicationInvalidateReasonService {
         Map<String, Boolean> checks = new HashMap<>();
 
         if(applicationDBO.getStatus() != ApplicationStatus.PENDING_FOLLOWUP.getValue()){
-            checks.put("invalidate", applicationDBO.getStatus() == ApplicationStatus.OK.getValue());
-            checks.put("validate", applicationDBO.getStatus() == ApplicationStatus.KO.getValue());
+            checks.put("invalidate", true);
+            checks.put("validate", true);
             return checks;
         }
 
         RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDBO.getRegistrationId());
-        List<LogEmailDTO> emails = municipalityService.getCorrespondenceByMunicipalityIdAndAction(registrationDTO.getMunicipalityId(), "sendCorrectionEmails");
+        LogEmailDTO email = municipalityService.getCorrespondenceByMunicipalityIdAndAction(registrationDTO.getMunicipalityId(), "sendCorrectionEmails");
 
-        if(emails.isEmpty()){
-            checks.put("invalidate", applicationDBO.getStatus() == ApplicationStatus.OK.getValue());
-            checks.put("validate", applicationDBO.getStatus() == ApplicationStatus.KO.getValue());
+        if(email == null){
+            checks.put("invalidate", true);
+            checks.put("validate", true);
         }
         else{
-            Date sentDate = new Date(emails.get(0).getSentDate());
-
-            List<LegalFiles> legalFiles = legalFilesRepository.findAllByRegistration(applicationDBO.getRegistrationId());
-            for(LegalFiles legalFile: legalFiles){
-                if(legalFile.getUploadTime().after(sentDate)){
-                    checks.put("invalidate", applicationDBO.getStatus() == ApplicationStatus.OK.getValue());
-                    checks.put("validate", applicationDBO.getStatus() == ApplicationStatus.KO.getValue());
-                    return checks;
-                }
-            }
-
-            Calendar c = Calendar.getInstance();
-            c.setTime(sentDate);
+            Date sentDate = new Date(email.getSentDate());
+            Calendar deadline = Calendar.getInstance();
+            deadline.setTime(sentDate);
             // Date plus 7 days (deadline)
-            c.add(Calendar.DATE, 7);
+            deadline.add(Calendar.DATE, 7);
 
             boolean valid = true;
             List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDBO.getRegistrationId());
             for (LegalFileCorrectionReason legalFileCorrectionReason: legalFileCorrectionReasons) {
                 if(legalFileCorrectionReason.getRequestCorrection()){
-                    if(legalFileCorrectionReason.getRequestCorrectionDate().before(c.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)){
+                    if(legalFileCorrectionReason.getRequestCorrectionDate().after(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)){
+                        valid = true;
+                        break;
+                    }
+                    if(legalFileCorrectionReason.getRequestCorrectionDate().before(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)){
                         valid = false;
                     }
                 }
