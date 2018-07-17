@@ -263,10 +263,15 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         }
     }
 
-   /*  private displayRegistrationByAuthor(authorId) {
-        var registration = this.registrations.find(x => x.userId == authorId);
-        return registration.id;
-    } */
+    private displayRegistrationByAuthor(authorId) {
+        var registration = this.registrations[0];
+        //var registration = this.registrations.find(x => x.userId == authorId);
+        if(registration == null){
+            return 0;
+        } else {
+            return registration.id;
+        }
+    }
 
     private getLegalFileUrl(index: number, fileNumber: number) {
         return this.registrationApi.getLegalFilesByFileType(this.registrations[index].id, fileNumber);

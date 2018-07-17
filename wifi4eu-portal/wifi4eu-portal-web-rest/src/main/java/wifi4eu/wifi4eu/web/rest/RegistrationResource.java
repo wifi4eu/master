@@ -102,7 +102,7 @@ public class RegistrationResource {
         try {
             UserDTO userDTO = userConnected;
             if (userDTO.getType() != 5) {
-                if (registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
+                if (!registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
                     throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
                 }
                 permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
@@ -139,7 +139,7 @@ public class RegistrationResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Removing legal documents");
         try {
             UserDTO userDTO = userConnected;
-            if (registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
+            if (!registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
@@ -166,7 +166,7 @@ public class RegistrationResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating legal documents");
         try {
             UserDTO userDTO = userConnected;
-            if (registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
+            if (!registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
@@ -258,7 +258,7 @@ public class RegistrationResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId + " and file type " + fileType);
         UserDTO user = userConnected;
         RegistrationDTO registration = registrationService.getRegistrationById(registrationId);
-        if (registration != null && user != null && (registrationService.checkUserWithRegistration(registration.getId(), userConnected.getId()) || user.getType() == 5)) {
+        if (registration != null && (!registrationService.checkUserWithRegistration(registration.getId(), userConnected.getId()) || user.getType() == 5)) {
             LegalFilesDTO registrationFile = legalFilesService.getLegalFileByRegistrationIdFileType(registration.getId(), fileType);
             if (registrationFile != null) {
                 String fileName = "";
