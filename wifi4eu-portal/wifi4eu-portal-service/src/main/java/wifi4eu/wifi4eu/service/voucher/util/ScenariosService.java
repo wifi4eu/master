@@ -170,7 +170,6 @@ public class ScenariosService {
                         MunicipalityDTO resM = municipalityService.createMunicipality(municipalityDTO);
                         registrationDTO.setMunicipalityId(resM.getId());
                         registrationDTO.setAllFilesFlag(1);
-                        registrationDTO.setUserId(user.getId());
                         RegistrationDTO resR = registrationService.createRegistration(registrationDTO);
                         applicationDTO.setCallId(callId);
                         applicationDTO.setRegistrationId(resR.getId());
@@ -188,7 +187,6 @@ public class ScenariosService {
                             MunicipalityDTO resM = municipalityService.createMunicipality(municipalityDTO);
                             registrationDTO.setMunicipalityId(resM.getId());
                             registrationDTO.setAllFilesFlag(1);
-                            registrationDTO.setUserId(user.getId());
                             RegistrationDTO resR = registrationService.createRegistration(registrationDTO);
                             applicationDTO.setCallId(callId);
                             applicationDTO.setRegistrationId(resR.getId());
@@ -209,7 +207,6 @@ public class ScenariosService {
                                 MunicipalityDTO resM = municipalityService.createMunicipality(municipalityDTO);
                                 registrationDTO.setMunicipalityId(resM.getId());
                                 registrationDTO.setAllFilesFlag(1);
-                                registrationDTO.setUserId(user.getId());
                                 RegistrationDTO resR = registrationService.createRegistration(registrationDTO);
                                 applicationDTO.setCallId(callId);
                                 applicationDTO.setRegistrationId(resR.getId());
@@ -228,7 +225,6 @@ public class ScenariosService {
                                     MunicipalityDTO resM = municipalityService.createMunicipality(municipalityDTO);
                                     registrationDTO.setMunicipalityId(resM.getId());
                                     registrationDTO.setAllFilesFlag(1);
-                                    registrationDTO.setUserId(user.getId());
                                     RegistrationDTO resR = registrationService.createRegistration(registrationDTO);
                                     applicationDTO.setCallId(callId);
                                     applicationDTO.setRegistrationId(resR.getId());

@@ -274,4 +274,35 @@ public class BeneficiaryResource {
             return null;
         }
     }
+
+    @ApiOperation(value = "sendEmailToNewContact")
+    @RequestMapping(value = "/sendEmailToNewContact", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO sendEmailToNewContact(@RequestBody final UserRegistrationDTO userRegistrationDTO, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (userRegistrationDTO.getEmail() == userContext.getEmail()) {
+                throw new AppException("");
+            }
+            if (!beneficiaryService.checkContactEmailWithMunicipality(userRegistrationDTO.getEmail(), userRegistrationDTO.getMunicipalityId())) {
+                beneficiaryService.sendEmailToContacts(userRegistrationDTO);
+                return new ResponseDTO(true, userRegistrationDTO, null);
+            } else {
+                throw new AppException("Already sent to this email");
+            }
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export Excel", e.getMessage());
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
+    @ApiOperation(value = "getUserRegistration")
+    @RequestMapping(value = "/getUserRegistration", method = RequestMethod.GET)
+    @ResponseBody
+    public UserRegistrationDTO getUserRegistration() {
+        return null;
+    }
+
 }

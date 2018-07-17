@@ -171,8 +171,11 @@ public class UserDTO {
         this.ecasEmail = ecasEmail;
     }
 
-    public String getCsrfToken() { return csrfToken; }
+    public String getCsrfToken() {
+        return csrfToken;
+    }
 
-    public void setCsrfToken(String csrfToken) { this.csrfToken = csrfToken; }
-
+    public void setCsrfToken(String csrfToken) {
+        this.csrfToken = csrfToken;
+    }
 }

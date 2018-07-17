@@ -74,6 +74,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private loadingData = false;
     private processingRequest = false;
     private displayCommentModal = false;
+    private contactUsers: UserDTOBase[][] = [];
 
     private correctionRequested: LegalFileCorrectionReasonDTOBase[] = [];
     private invalidateChecks = [false, false, false, false, false, false, false, false, false];
@@ -150,7 +151,12 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                         this.registrationApi.getRegistrationById(application.registrationId).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 if (registration) {
-                                    this.userApi.getUserById(registration.userId).subscribe(
+                                    this.userApi.getUsersByIdFromRegistration(registration.id).subscribe(
+                                        (users: UserDTOBase[])=>{
+                                            this.contactUsers[i]=users;
+                                        }
+                                    )
+                                    this.userApi.getUserByIdFromRegistration(registration.id).subscribe(
                                         (user: UserDTOBase) => {
                                             if (user) {
                                                 this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
@@ -257,10 +263,10 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         }
     }
 
-    private displayRegistrationByAuthor(authorId) {
+   /*  private displayRegistrationByAuthor(authorId) {
         var registration = this.registrations.find(x => x.userId == authorId);
         return registration.id;
-    }
+    } */
 
     private getLegalFileUrl(index: number, fileNumber: number) {
         return this.registrationApi.getLegalFilesByFileType(this.registrations[index].id, fileNumber);

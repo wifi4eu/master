@@ -16,10 +16,12 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.enums.FileTypes;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
@@ -27,11 +29,14 @@ import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.mapper.registrationWarning.RegistrationWarningMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.location.LauService;
@@ -126,6 +131,15 @@ public class RegistrationService {
     SupplierMapper supplierMapper;
 
     @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
     CallService callService;
 
     public List<RegistrationDTO> getAllRegistrations() {
@@ -142,10 +156,20 @@ public class RegistrationService {
 
     @Transactional
     public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
+        RegistrationUsers registrationUsers = new RegistrationUsers();
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (registrationDTO.getId() == 0) {
             registrationDTO.setMailCounter(3);
         }
         RegistrationDTO registrationCreated = saveRegistration(registrationDTO);
+        registrationUsers.setUserId(userConnected.getId());
+        registrationUsers.setRegistrationId(registrationCreated.getId());
+        registrationUsers.setMain(1);
+        registrationUsers.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
+        registrationUsers.setCreationDate(new Date());
+        registrationUsers.setContactEmail(userConnected.getEcasEmail());
+        registrationUsersRepository.save(registrationUsers);
         registrationWarningService.createWarningsByRegistration(registrationCreated);
         return registrationCreated;
     }
@@ -426,7 +450,7 @@ public class RegistrationService {
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             permissionChecker.checkBeneficiaryPermission(userDTO.getType(), registration.getMunicipality().getId(), registration.getId());
-            if (registration.getUser().getId() != userDTO.getId()) {
+            if (registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registration.getId()) == null) {
                 throw new AccessDeniedException("403 FORBIDDEN");
             }
         } catch (Exception e) {
@@ -468,7 +492,7 @@ public class RegistrationService {
             Date dateReject = registration.getInstallationSiteRejection();
             if (dateSubmission.before(dateReject)) {
                 // if rejection date is bigger than submission date, send email
-                User user = registration.getUser();
+                User user = userRepository.findMainUserFromRegistration(registration.getId());
                 String ccName = user.getName();
                 String ccEmail = user.getEmail();
                 cnsManager.sendInstallationRejectionFromBeneficiary(email, name, beneficiaryName, ccEmail,
@@ -531,7 +555,7 @@ public class RegistrationService {
     public boolean requestLegalDocuments(int registrationId) {
         RegistrationDTO registration = getRegistrationById(registrationId);
         if (registration != null) {
-            UserDTO user = userService.getUserById(registration.getUserId());
+            UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationId));
             if (user != null) {
                 Locale locale = new Locale(UserConstants.DEFAULT_LANG);
                 if (user.getLang() != null) {
@@ -613,7 +637,7 @@ public class RegistrationService {
     }
 
     public boolean checkIfMayor(RegistrationDTO registrationDTO) {
-        UserDTO user = userService.getUserById(registrationDTO.getUserId());
+        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
         MayorDTO mayor = mayorService.getMayorByMunicipalityId(registrationDTO.getMunicipalityId());
         if (user != null && mayor != null) {
             if (mayor.getName().equals(user.getName()) && mayor.getSurname().equals(user.getSurname())) {
@@ -653,5 +677,17 @@ public class RegistrationService {
             }
         }
         return allFilesFlag;
+    }
+
+    public boolean checkUserWithRegistration(Integer registrationId, Integer userId){
+        if(registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId) != null){
+            return true;
+        }
+        return false;
+    }
+
+    public List<UserDTO> getUsersFromRegistration(Integer registrationId){
+        List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersByRegistrationId(registrationId));
+        return users;
     }
 }
