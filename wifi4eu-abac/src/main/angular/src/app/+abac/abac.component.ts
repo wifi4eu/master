@@ -84,7 +84,7 @@ export class AbacComponent {
     }
 
     exportLegalEntityFBCValidate() {
-            var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
+/*            var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
             //var myWindow =window.open("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
             this.exportImportApi.exportLegalEntityFBCValidate().subscribe(
                 (response: ResponseDTO) => {
@@ -103,6 +103,7 @@ export class AbacComponent {
                     window.alert("Something went wrong.");
                 }
             );
+*/            
     }
 
 
