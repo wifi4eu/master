@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<weblogic-web-app xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app"
-                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3.0.xsd http://xmlns.oracle.com/weblogic/weblogic-web-app http://xmlns.oracle.com/weblogic/weblogic-web-app/1.8/weblogic-web-app.xsd">
-
-    <session-descriptor>
-        <cookie-path>/wifi4eu-abac</cookie-path>
-    </session-descriptor>
-
-    <!-- We want to allow some resources to be accessed by authenticated users who do not possess any role -->
-    <container-descriptor>
-        <allow-all-roles>true</allow-all-roles>
-    </container-descriptor>
-
-    <context-root>/wifi4eu-financial</context-root>
+<weblogic-web-app
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app http://xmlns.oracle.com/weblogic/weblogic-web-app/1.5/weblogic-web-app.xsd"
+	xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app">
+	<context-root>/wifi4eu-financial</context-root>
+	<container-descriptor>
+		<prefer-application-packages>
+			<package-name>org.apache.logging.*</package-name>
+			<package-name>org.apache.log4j.*</package-name>
+			<package-name>org.hibernate.*</package-name>
+			<package-name>org.springframework.*</package-name>
+			<package-name>org.slf4j.*</package-name>
+			<package-name>com.fasterxml.jackson.*</package-name>
+			<package-name>javax.el.*</package-name>
+			<package-name>javax.persistence.*</package-name>
+			<package-name>javax.validation.*</package-name>
+        	<package-name>javax.validation.spi.*</package-name>
+        	<package-name>javassist</package-name>
+		</prefer-application-packages>
+	</container-descriptor>
 </weblogic-web-app>

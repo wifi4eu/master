@@ -1,9 +1,7 @@
-package eu.europa.ec.digit.eui.angular2clistarter.servlet;
+package wifi4eu.wifi4eu.abac;
 
-import eu.europa.ec.digit.eui.angular2clistarter.spring.SpringRestConfiguration;
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
+public class SpringWebApplicationInitializer {} 
+/*
 public class SpringWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer implements WebApplicationInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -20,3 +18,4 @@ public class SpringWebApplicationInitializer extends AbstractAnnotationConfigDis
         return new String[] { "/api/*" };
     }
 }
+*/    

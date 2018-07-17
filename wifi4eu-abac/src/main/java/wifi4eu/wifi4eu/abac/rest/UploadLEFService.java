@@ -15,7 +15,6 @@ import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 public class UploadLEFService {
 
     @PostMapping("upload/LEF")
-    
     public String singleFileUpload(@RequestBody String csvContents) throws IOException  {
 
     	boolean fileOk=true;

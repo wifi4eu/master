@@ -1,4 +1,4 @@
-package eu.europa.ec.digit.eui.angular2clistarter.spring;
+package wifi4eu.wifi4eu.abac;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,16 +11,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "wifi4eu.wifi4eu.abac.rest")
-
 public class SpringRestConfiguration extends WebMvcConfigurerAdapter {
-	
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*").allowedMethods("*").allowedHeaders("*").allowCredentials(true);
-            }
-        };
-    }
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurerAdapter() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("*").allowedMethods("*").allowedHeaders("*")
+						.allowCredentials(true);
+			}
+		};
+	}
 }
