@@ -13,12 +13,13 @@ public interface SupplierUserRepository extends CrudRepository<SupplierUser,Inte
 
     List<SupplierUser> findByEmail(@Param("email") String email);
 
-    //SupplierUser findFirstSupplierUserBySupplierIdAndMain(@Param("supplierId") int supplierId , @Param("main") int main);
-
     @Query(value = "SELECT user_id FROM supplier_users WHERE supplier_id = ?1 AND main = 1", nativeQuery = true)
     int findUserIdBySupplierId(int supplierId);
 
     int countByEmail(@Param("email") String email);
 
     SupplierUser findFirstSupplierUserByCode(@Param("code") String code);
+
+    @Query(value = "DELETE supplier_users WHERE supplier_id = ?1", nativeQuery = true)
+    Long deleteBySupplierId(@Param("supplierId") Long supplierId);
 }

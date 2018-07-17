@@ -154,7 +154,9 @@ public class SupplierService {
         //TODO: change to a soft delete
         SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
         if (supplierDTO != null) {
+            supplierUserRepository.deleteBySupplierId((long) supplierId);
             supplierRepository.delete(supplierMapper.toEntity(supplierDTO));
+
             return supplierDTO;
         } else {
             return null;

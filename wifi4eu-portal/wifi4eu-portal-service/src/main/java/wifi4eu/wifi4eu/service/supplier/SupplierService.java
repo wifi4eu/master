@@ -1,14 +1,10 @@
 package wifi4eu.wifi4eu.service.supplier;
 
 import com.google.common.collect.Lists;
-import com.mysema.query.annotations.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -38,8 +34,6 @@ import wifi4eu.wifi4eu.util.MailService;
 import java.text.MessageFormat;
 import java.util.*;
 
-@Configuration
-@PropertySource({"classpath:env.properties"})
 @Service("portalSupplierService")
 public class SupplierService {
     @Autowired
@@ -173,6 +167,7 @@ public class SupplierService {
         //TODO: change to a soft delete
         SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
         if (supplierDTO != null) {
+            supplierUserRepository.deleteBySupplierId((long) supplierId);
             supplierRepository.delete(supplierMapper.toEntity(supplierDTO));
             return supplierDTO;
         } else {
@@ -202,7 +197,7 @@ public class SupplierService {
         userDTO.setName(supplierDTO.getContactName());
         userDTO.setSurname(supplierDTO.getContactSurname());
         userDTO.setEmail(supplierDTO.getContactEmail());
-        if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()) {
+        if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()){
             userDTO.setEcasEmail(supplierDTO.getContactEmail());
         }
         userDTO.setCreateDate(new Date().getTime());
@@ -213,7 +208,7 @@ public class SupplierService {
         userService.sendActivateAccountMail(userDTO);
         supplierDTO = createSupplier(supplierDTO);
 
-        createSupplierUser(supplierDTO.getId(), userDTO.getId(), userDTO.getEmail(), true);
+        createSupplierUser(supplierDTO.getId(), userDTO.getId(), userDTO.getEmail() ,true);
         return supplierDTO;
     }
 
