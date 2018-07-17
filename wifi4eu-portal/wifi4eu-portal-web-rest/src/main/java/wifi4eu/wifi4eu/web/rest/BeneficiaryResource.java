@@ -23,6 +23,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -282,17 +283,23 @@ public class BeneficiaryResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
-            if (userRegistrationDTO.getEmail() == userContext.getEmail()) {
-                throw new AppException("");
+            if (userRegistrationDTO.getEmail().equals(userContext.getEmail())) {
+                throw new AppException("Incorrect email");
             }
-            if (!beneficiaryService.checkContactEmailWithMunicipality(userRegistrationDTO.getEmail(), userRegistrationDTO.getMunicipalityId())) {
-                beneficiaryService.sendEmailToContacts(userRegistrationDTO);
-                return new ResponseDTO(true, userRegistrationDTO, null);
+            if (!beneficiaryService.checkContactEmailWithMunicipality(userRegistrationDTO.getEmail(), userRegistrationDTO.getMunicipalityId()) ) {
+                UserDTO newUser = userService.getUserByEmail(userRegistrationDTO.getEmail());
+
+                if(newUser == null || newUser.getType() == 3) {
+                    beneficiaryService.sendEmailToContacts(userRegistrationDTO);
+                    return new ResponseDTO(true, userRegistrationDTO, null);
+                } else {
+                    throw new AppException("User already registered");
+                }
             } else {
                 throw new AppException("Already sent to this email");
             }
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export Excel", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Incorrect request when adding contacts for suppliers", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
