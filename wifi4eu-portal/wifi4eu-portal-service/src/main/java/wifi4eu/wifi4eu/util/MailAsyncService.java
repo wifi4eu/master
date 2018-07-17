@@ -18,10 +18,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 
-/**
- * Created by rgarcita on 11/02/2017.
- */
-
 public class MailAsyncService implements Runnable {
 
     @Autowired
@@ -55,9 +51,7 @@ public class MailAsyncService implements Runnable {
 
     @Override
     public void run() {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
+        _log.debug("Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
         try {
             MimeMessage message = mailSender.createMimeMessage();
             message.setSubject(subject, "UTF-8");
@@ -86,9 +80,9 @@ public class MailAsyncService implements Runnable {
             //-- Log email
             logEmail();
 
-            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + toAddress);
+            _log.debug(" - Email sent to " + toAddress);
         } catch (Exception ex) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex.getMessage());
+            _log.error(" - Cannot send the message", ex.getMessage());
         }
     }
 
