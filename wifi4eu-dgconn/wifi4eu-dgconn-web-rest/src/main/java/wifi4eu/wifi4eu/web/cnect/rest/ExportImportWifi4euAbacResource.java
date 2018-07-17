@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.web.rest;
+package wifi4eu.wifi4eu.web.cnect.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

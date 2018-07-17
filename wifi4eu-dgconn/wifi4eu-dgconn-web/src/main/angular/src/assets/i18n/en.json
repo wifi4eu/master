@@ -838,7 +838,7 @@
   "dgConn.applicantDetails.correspondence.dialog.subject": "Subject",
   "dgConn.applicantDetails.correspondence.dialog.from": "From",
   "dgConn.applicantDetails.correspondence.dialog.to": "To",
-  "dgConn.applicantDetails.correspondence.dialog.content": "Content"
+  "dgConn.applicantDetails.correspondence.dialog.content": "Content",
   "dgconn.sendRequestCorrectionEmails.lastRequestSentOn": "Last request sent on {{date}} at {{time}}",
   "dgConn.importexport.title":"ABAC",
   "dgConn.importexport.introduction":"Breif explanation TBU",
