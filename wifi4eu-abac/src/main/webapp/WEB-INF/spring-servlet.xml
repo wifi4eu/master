@@ -11,6 +11,6 @@
 
     <mvc:annotation-driven />
 
-    <context:component-scan base-package="wifi4eu.wifi4eu.abac.rest"/>
+    <context:component-scan base-package="wifi4eu.wifi4eu.abac"/>
 
 </beans>

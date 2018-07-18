@@ -14,6 +14,7 @@
 		<role-name>*</role-name> </auth-constraint> <user-data-constraint> <description> 
 		Encryption is not required for this area. </description> <transport-guarantee>NONE</transport-guarantee> 
 		</user-data-constraint> </security-constraint -->
+ 		
 	<servlet>
 		<servlet-name>spring</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
