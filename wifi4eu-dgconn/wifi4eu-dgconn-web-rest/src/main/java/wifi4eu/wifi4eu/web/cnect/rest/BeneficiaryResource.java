@@ -208,4 +208,34 @@ public class BeneficiaryResource {
             return null;
         }
     }
+
+    @ApiOperation(value = "Get beneficiaries from final list by call")
+    @RequestMapping(value = "/finalBeneficiaries/call/{callId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO getBeneficiariesFromFinalList(@PathVariable("callId") final Integer callId,
+                                                     @RequestParam("countryCode") final String countryCode,
+                                                     @RequestParam("municipality") final String municipality,
+                                                     @RequestParam("page") final Integer page,
+                                                     @RequestParam("size") final Integer size,
+                                                     @RequestParam("field") final String field,
+                                                     @RequestParam("sortDirection") final String sortDirection,
+                                                     HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            ResponseDTO responseDTO = beneficiaryService.findBeneficiariesFromFinalList(callId, countryCode, municipality, page, size, field, sortDirection);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiaries from final list retrieved successfully");
+            return responseDTO;
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve beneficiaries from final list", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+
+    }
+
+
 }

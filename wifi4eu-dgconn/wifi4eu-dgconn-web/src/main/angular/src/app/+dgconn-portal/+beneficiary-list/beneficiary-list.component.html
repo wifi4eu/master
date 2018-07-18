@@ -1,0 +1,117 @@
+<div class="container">
+  <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
+    <a class="link-label" routerLink=".." routerLinkActive="active">
+      <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+    </a>
+    <p class="beneficiaryTitle">{{ 'dgConn.beneficiariesList.title' | translate }}</p>
+    <p><!-- {{ 'dgConn.manageApplications.desc' | translate }} --></p>
+  </div>
+  <div class="ui-g-12 center">
+    <p-tabView *ngIf="calls.length > 0" (onChange)="changeCall($event)">
+      <p-tabPanel *ngFor="let call of calls; let i = index" header="{{ 'dgConn.call.number' | translate:{number:i+1} }}" [selected]="i == currentIndex"
+        [headerStyle]="{'margin-left': '-3px', 'padding-left': '7px', 'padding-right': '13px'}">
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+  <div class="ui-g-12 center">
+    <div class="panel-dg panel-padding panel-input">
+      <div class="row">
+        <div class="col-md-6">
+          <span>{{ 'dgConn.filterByCountry' | translate }}</span>
+          <br>
+          <br>
+          <select [(ngModel)]="country" (ngModelChange)="searchBeneficiaries()" id="country" name="country" class="form-control"
+            [disabled]="countries.length < 1 || loading">
+            <option selected [ngValue]="null">
+              -
+            </option>
+            <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry">
+              {{currentCountry.label | slice:0:1 | uppercase }}{{currentCountry.label | slice:1:currentCountry.label.length | lowercase }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <span>{{ 'dgConn.searchByMunicipality' | translate }}</span>
+          <br>
+          <br>
+          <div class="input-group">
+            <span class="input-group-addon">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </span>
+            <input type="text" [(ngModel)]="inputSearch" class="form-control" [disabled]="loading" (keyup.enter)="searchByName()"
+              placeholder="{{ 'dgConn.searchByMunicipality.placeholder' | translate }}">
+            <span class="input-group-btn">
+              <button class="btn btn-primary" (click)="searchByName()" type="button" [disabled]="loadingData">
+                <span *ngIf="!loading">{{ 'shared.search.button' | translate }}</span>
+                <span *ngIf="loading">
+                  <i class="fa fa-spinner loading-icon"></i>
+                </span>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-dg">
+      <div class="ui-g-12" style="padding: 1em 2em;border-bottom: 1px solid #bdbdbd;">
+        <a class="link-label right" [class.link-disabled]="loadingData || downloadingList" (click)="exportListExcel()">
+          <i class="fa fa-download" aria-hidden="true"></i> {{ 'dgConn.exportExcel' | translate }}
+          <i *ngIf="downloadingList" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+        </a>
+      </div>
+      <p-dataTable *ngIf="!firstDataDownload" #tableBeneficiaries [value]="finalBeneficiaries" (onSort)="sortData($event)" styleClass="tableBeneficiaries {{(loading === true) ? 'table-disabled': ''}}">
+        <p-column field="countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
+        <p-column field="name" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
+        <p-column field="registrationId" [sortable]="true" header="{{ 'dgConn.beneficiariesList.table.registration' | translate }}" styleClass="text-center"></p-column>
+        <p-column field="status" [sortable]="false" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
+          <ng-template let-row="rowData" pTemplate="body">
+            <span *ngIf="row.status != 5 && row.status != 6 && row.status != 7">{{ 'dgConn.beneficiariesList.status.selected' | translate }}</span>
+            <span *ngIf="row.status == 5 || (row.dateSignature != null && row.dateCounterSignature == null)">{{ 'dgConn.beneficiariesList.status.signed' | translate }}</span>
+            <span *ngIf="row.status == 6 || (row.dateSignature == null && row.dateCounterSignature != null)">{{ 'dgConn.beneficiariesList.status.counterSigned' | translate }}</span>
+            <span *ngIf="row.status == 7">{{ 'dgConn.beneficiariesList.status.cancelled' | translate }}</span>
+          </ng-template>
+        </p-column>
+        <p-column field="verifiedToSign" [sortable]="true" header="{{ 'dgConn.beneficiariesList.table.verifiedSign' | translate }}" styleClass="text-center">
+            <ng-template let-row="rowData" pTemplate="body">
+                <span *ngIf="row.verifiedToSign">{{ 'shared.yes' | translate }}</span>
+                <span *ngIf="!row.verifiedToSign">{{ 'shared.no' | translate }}</span>
+              </ng-template>
+        </p-column>
+        <p-column field="dateSignature" [sortable]="true" header="{{ 'dgConn.beneficiariesList.table.dateSignature' | translate }}e" styleClass="text-center">
+            <ng-template let-row="rowData" pTemplate="body">
+                <span *ngIf="row.dateSignature == null">-</span>
+                <span *ngIf="row.dateSignature != null">{{row.dateSignature | date: 'shortDate'}}</span>
+              </ng-template>
+        </p-column>
+        <p-column field="dateCounterSignature" [sortable]="true" header="{{ 'dgConn.beneficiariesList.table.dateCounterSignature' | translate }}" styleClass="text-center">
+            <ng-template let-row="rowData" pTemplate="body">
+                <span *ngIf="row.dateCounterSignature == null">-</span>
+                <span *ngIf="row.dateCounterSignature != null">{{ row.dateCounterSignature | date: 'shortDate'}}</span>
+              </ng-template>
+        </p-column>
+        <p-column [sortable]="false" header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
+          <ng-template let-row="rowData" pTemplate="body">
+            <span [routerLink]="['../applicant-registrations', row.lauId, 'call', currentCall.id]" routerLinkActive="active" class="action-label">
+              <span class="fa fa-eye"></span>
+              <span>{{ 'dgConn.view' | translate }}</span>
+            </span>
+          </ng-template>
+        </p-column>
+        <footer>
+          <div style="position: absolute; bottom: 25px; left: 20px;">
+            <span *ngIf="!loadingData">
+              {{ 'dgConn.totalRecords' | translate }}: {{tableBeneficiaries.totalRecords}}
+            </span>
+            <span *ngIf="loadingData">
+              {{ 'shared.loading.modal.title' | translate }}
+              <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+            </span>
+          </div>
+          <p-paginator class="paginator-panel" #paginator (onPageChange)="paginateData($event)" [rows]="itemsPerPage" [first]="currentPage * sizePage"
+            [rowsPerPageOptions]="sizePageOptions" [totalRecords]="totalItems">
+          </p-paginator>
+        </footer>
+      </p-dataTable>
+    </div>
+  </div>
+</div>

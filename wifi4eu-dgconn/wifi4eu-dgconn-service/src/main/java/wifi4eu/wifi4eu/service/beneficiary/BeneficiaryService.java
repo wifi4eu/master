@@ -1,21 +1,30 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
+import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
+import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryFinalListItem;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryFinalListItemMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryFinalListItemRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.location.LauService;
@@ -79,6 +88,12 @@ public class BeneficiaryService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    BeneficiaryFinalListItemRepository beneficiaryFinalListItemRepository;
+
+    @Autowired
+    BeneficiaryFinalListItemMapper beneficiaryFinalListItemMapper;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
@@ -538,4 +553,34 @@ public class BeneficiaryService {
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - CSV generated");
         return sb.toString();
     }
+
+    // TODO: Finish filter by countryCode or country and municipality and pagination
+    public ResponseDTO findBeneficiariesFromFinalList(Integer callId, String countryCode, String municipality, Integer page, Integer sizePage, String field, String sortDirection){
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Finding beneficiary list");
+        if(municipality.equalsIgnoreCase("%")){
+            municipality = "";
+        }
+        if(countryCode.equalsIgnoreCase("%")){
+            countryCode = "";
+        }
+        List<BeneficiaryFinalListItemDTO> beneficiaryFinalListItemDTOList;
+        if(field.equalsIgnoreCase("name")){
+            if(sortDirection.equalsIgnoreCase("asc")){
+                beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByNameASC(callId, countryCode, municipality, page, sizePage));
+            }
+            else{
+                beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByNameDESC(callId, countryCode, municipality, page, sizePage));
+            }
+        }else{
+            beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalList(callId));
+        }
+
+        ResponseDTO response = new ResponseDTO();
+        response.setSuccess(true);
+        response.setData(beneficiaryFinalListItemDTOList);
+        return response;
+    }
+
 }
