@@ -4,9 +4,10 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,23 +26,39 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import wifi4eu.wifi4eu.abac.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
 
+/*
+ * @ ComponentScan
+ * @ SpringBootApplication
+ * @ EnableJpaRepositories(basePackageClasses = LegalEntityRepository.class)
+ * @ EntityScan(basePackageClasses = LegalEntity.class)
+ */
+
+public class SpringRestConfiguration {
+}
+
+/*
 @Configuration
-@EnableConfigurationProperties
 @EnableWebMvc
 @ComponentScan("wifi4eu.wifi4eu.abac")
 // @ EnableJpaRepositories(basePackageClasses = LegalEntityRepository.class,
 // entityManagerFactoryRef = "emf")
 @EnableJpaRepositories(basePackageClasses = LegalEntityRepository.class)
 @EnableTransactionManagement
-// @ EntityScan(basePackages = LegalEntity.class)
 public class SpringRestConfiguration extends WebMvcConfigurerAdapter {
 
-	@Value("${spring.datasource.jndi-name}")
-	private String jndiDatasource;
+	private final Logger log = LoggerFactory.getLogger(Application.class);
 
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(Application.class);
+	}
+	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/**").addResourceLocations("/");
@@ -76,21 +93,19 @@ public class SpringRestConfiguration extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public DataSource dataSource() throws NamingException {
-		/*
-		 * if (jndiDatasource != null && !jndiDatasource.isEmpty()) { return
-		 * (DataSource) new JndiTemplate().lookup(jndiDatasource); } return null;
-		 */ 
+	public DataSource dataSource() throws NamingException {		
+		// if (jndiDatasource != null && !jndiDatasource.isEmpty()) { return
+		// (DataSource) new JndiTemplate().lookup(jndiDatasource); } return null;
+		// 
 		return (DataSource) new JndiTemplate().lookup("jdbc/Wifi4euAbacDataSource");
 		// return (DataSource) new
 		// JndiTemplate().lookup(env.getProperty("spring.datasource.jndi"));
-		/*
-		 * DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		 * dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		 * dataSource.setUrl("jdbc:mysql://localhost:3306/spring_jpa");
-		 * dataSource.setUsername("tutorialuser");
-		 * dataSource.setPassword("tutorialmy5ql"); return dataSource;
-		 */
+		
+		 //DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		 //dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+		 //dataSource.setUrl("jdbc:mysql://localhost:3306/spring_jpa");
+		 //dataSource.setUsername("tutorialuser");
+		 //dataSource.setPassword("tutorialmy5ql"); return dataSource;		 
 	}
 
 	@Bean
@@ -101,6 +116,7 @@ public class SpringRestConfiguration extends WebMvcConfigurerAdapter {
 	}
 
 }
+*/
 
 /*
  * @Configuration

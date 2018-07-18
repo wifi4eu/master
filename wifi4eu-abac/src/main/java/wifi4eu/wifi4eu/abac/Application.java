@@ -30,5 +30,5 @@ public class Application extends SpringBootServletInitializer implements WebAppl
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(Application.class);
 	}
-
+	
 }
