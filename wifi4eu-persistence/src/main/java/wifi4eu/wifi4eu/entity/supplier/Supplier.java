@@ -50,9 +50,12 @@ public class Supplier {
     @Column(name = "logo")
     private String logo;
 
-    @ManyToOne
-    @JoinColumn(name = "_user")
-    private User user;
+    @OneToMany
+    @JoinTable(name = "supplier_users",
+            joinColumns = @JoinColumn(name = "supplier_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private List<User> users;
+
 
     @OneToMany(mappedBy = "supplier")
     private List<SuppliedRegion> suppliedRegions;
@@ -69,7 +72,7 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, User user, List<SuppliedRegion> suppliedRegions, String legalFile1, String legalFile2, int status) {
+    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<User> users, List<SuppliedRegion> suppliedRegions, String legalFile1, String legalFile2, int status) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -83,7 +86,7 @@ public class Supplier {
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;
         this.logo = logo;
-        this.user = user;
+        this.users = users;
         this.suppliedRegions = suppliedRegions;
         this.legalFile1 = legalFile1;
         this.legalFile2 = legalFile2;
@@ -194,12 +197,12 @@ public class Supplier {
         this.logo = logo;
     }
 
-    public User getUser() {
-        return user;
+    public List<User> getUser() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(List<User> users) {
+        this.users = users;
     }
 
     public List<SuppliedRegion> getSuppliedRegions() {

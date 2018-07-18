@@ -47,26 +47,28 @@
             </div>
             <br/><br/>
             <p class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
-            <div class="ui-g-12 whitePanel">
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"><b>{{ supplier.contactName }}</b></span>
+                <div *ngFor="let user of users; let i = index">
+                <div class="ui-g-12 whitePanel">
+                    <div class="ui-g-12">
+                        <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
+                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.name }}</b></span>
+                    </div>
+                    <div class="ui-g-12">
+                        <span class="ui-g-4 ui-sm-12">{{ 'shared.surname.label' | translate }}</span>
+                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.surname }}</b></span>
+                    </div>
+                    <div class="ui-g-12">
+                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.legal.address' | translate }}</span>
+                        <span class="ui-g-8 ui-sm-12">
+                            <b>{{ user?.prefix }}{{ user?.phoneNumber }}</b>
+                        </span>
+                    </div>
+                    <div class="ui-g-12">
+                        <span class="ui-g-4 ui-sm-12">{{ 'shared.email.label' | translate }}</span>
+                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.email }}</b></span>
+                    </div>
                 </div>
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'shared.surname.label' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"><b>{{ supplier.contactSurname }}</b></span>
-                </div>
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.phone.number' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12">
-                        <b>{{ supplier.contactPhonePrefix }} {{ supplier.contactPhoneNumber }}</b>
-                    </span>
-                </div>
-                <div class="ui-g-12">
-                    <span class="ui-g-4 ui-sm-12">{{ 'shared.email.label' | translate }}</span>
-                    <span class="ui-g-8 ui-sm-12"><b>{{ supplier.contactEmail }}</b></span>
-                </div>
-            </div>
+             </div>   
             <br/><br/>
             <p class="beneficiaryMayor">{{ 'suppRegistration.entity.support' | translate }}</p>
             <div class="ui-g-12 whitePanel" style="padding: 0;">
