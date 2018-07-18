@@ -50,6 +50,7 @@ export class VoucherComponent {
     private storedRegistrationQueues = [];
     private disableQueuing = [];
     private displayError = false;
+    private displayCallClosed = false;
     private errorMessage = null;
     private rabbitmqURI: string = "/queue";
 
@@ -269,6 +270,7 @@ export class VoucherComponent {
             }
         } else {
             //trying to apply before the opening of the call
+            this.displayCallClosed = true;
             this.sharedService.growlTranslation(
                 "An error occurred and your application could not be received.",
                 "shared.registration.update.error",
@@ -280,6 +282,7 @@ export class VoucherComponent {
     private closeModal() {
         this.errorMessage = null;
         this.displayError = false;
+        this.displayCallClosed = false;
     }
 
     private openApplyForVoucher() {

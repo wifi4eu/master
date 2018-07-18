@@ -887,5 +887,7 @@
   "dgConn.importexport.baf.import.desc": "This button will import the ABAC reference numbers into the portal.",
   "dgConn.importexport.gc": "Global Commitments",
   "dgConn.importexport.gc.configure": "Configure Global Commitments",
-  "dgConn.importexport.gc.configure.desc": "Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor."
+  "dgConn.importexport.gc.configure.desc": "Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor.",
+  "benefPortal.voucher.callClosed.title":"Sorry, but call is not yet open",
+  "benefPortal.voucher.callClosed.body":"Sorry, the call is not yet open. After the call opens on {{date}} at {{hour}} (Central European Summer Time) you may submit your application"
 }
