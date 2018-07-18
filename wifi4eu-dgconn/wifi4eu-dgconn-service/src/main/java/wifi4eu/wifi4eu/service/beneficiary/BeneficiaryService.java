@@ -562,9 +562,6 @@ public class BeneficiaryService {
         if(municipality.equalsIgnoreCase("%")){
             municipality = "";
         }
-        if(countryCode.equalsIgnoreCase("%")){
-            countryCode = "";
-        }
         List<BeneficiaryFinalListItemDTO> beneficiaryFinalListItemDTOList;
         if(field.equalsIgnoreCase("name")){
             if(sortDirection.equalsIgnoreCase("asc")){
@@ -579,6 +576,7 @@ public class BeneficiaryService {
 
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(true);
+        //TODO : Return number total results
         response.setData(beneficiaryFinalListItemDTOList);
         return response;
     }

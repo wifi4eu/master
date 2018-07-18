@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CallDTOBase, CallApi, NutsApi, NutsDTOBase, BeneficiaryApi, ResponseDTO } from '../../shared/swagger';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-beneficiary-list',
@@ -15,7 +16,7 @@ export class BeneficiaryListComponent implements OnInit {
   private countries: NutsDTOBase[] = [];
   private country: NutsDTOBase = null;
   private finalBeneficiaries = [];
-  private beneficiaryRequest;
+  private beneficiaryRequest: Subscription = new Subscription();
 
   private currentPage: number = 0;
   private sizePage: number = 5;
@@ -48,18 +49,18 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   private searchBeneficiaries(){
+    this.finalBeneficiaries = [];
     if(typeof this.beneficiaryRequest !== "undefined"){
       this.beneficiaryRequest.unsubscribe();
     }
+    this.firstDataDownload = false;
+    this.loading = true;
     this.beneficiaryRequest = this.beneficiaryApi.getBeneficiariesFromFinalList(this.currentCall.id, 
                                                                                 this.country != null ? this.country.countryCode : '%', 
                                                                                 this.nameSearched == '' ? '%' : this.nameSearched, 
                                                                                 this.currentPage, this.sizePage, 
                                                                                 this.sortField == '' ? 'name' : this.sortField, 
-                                                                                this.sortDirection);
-    this.firstDataDownload = false;
-    this.loading = true;
-    this.beneficiaryRequest.subscribe(
+                                                                                this.sortDirection).subscribe(
       (response: ResponseDTO) => {
         this.finalBeneficiaries = response.data;
         this.totalItems = response.xtotalCount == null ? 0 : response.xtotalCount;
