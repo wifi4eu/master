@@ -53,6 +53,7 @@ export class VoucherComponent {
     private displayCallClosed = false;
     private errorMessage = null;
     private rabbitmqURI: string = "/queue";
+    private currentDate: number;
 
     private httpOptions = {
         headers: new Headers({
@@ -72,6 +73,7 @@ export class VoucherComponent {
                     this.registrationsDocs = registrations;
                     this.checkForCalls(registrations);
                     if (registrations.length < 2) {
+                        this.getCurrentTime();
                         // JUST FOR ONE MUNICIPALITY
                         this.registration = registrations[0];
                         this.mayorApi.getMayorByMunicipalityId(registrations[0].municipalityId).subscribe(
@@ -126,7 +128,7 @@ export class VoucherComponent {
                                                     let date = new Date(this.currentCall.startDate);
                                                     this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                                                     this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-                                                    if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
+                                                    if ((this.currentCall.startDate - this.currentDate) <= 0) {
                                                         this.voucherCompetitionState = 2;
                                                         this.openedCalls = "greyImage";
                                                     } else {
@@ -206,81 +208,77 @@ export class VoucherComponent {
         if (this.voucherCompetitionState == 2) {
             let startCallDate = this.currentCall.startDate;
             let actualDateTime = new Date().getTime();
+            if (!this.loadingButtons[registrationNumber]) {
 
-            if (startCallDate <= actualDateTime) {
-                if (!this.loadingButtons[registrationNumber]) {
+                let body =
+                    '{"callId":' +
+                    this.currentCall.id +
+                    ', "registrationId":' +
+                    this.registrations[registrationNumber].id +
+                    ', "userId":' +
+                    this.user.id +
+                    ', "fileUploadTimestamp":' +
+                    this.registrations[registrationNumber].uploadTime +
+                    "}";
 
-                    let body =
-                        '{"callId":' +
-                        this.currentCall.id +
-                        ', "registrationId":' +
-                        this.registrations[registrationNumber].id +
-                        ', "userId":' +
-                        this.user.id +
-                        ', "fileUploadTimestamp":' +
-                        this.registrations[registrationNumber].uploadTime +
-                        "}";
+                this.http.post(this.rabbitmqURI, body, this.httpOptions).subscribe(
+                    response => {
+                        this.loadingButtons[registrationNumber] = true;
+                        this.voucherApplied = "greyImage";
+                        this.voucherCompetitionState = 3;
 
+                        var oneHourLater = new Date();
+                        oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
+                        var timestamp = Math.floor(oneHourLater.getTime() / 1000);
 
-                    this.http.post(this.rabbitmqURI, body, this.httpOptions).subscribe(
-                        response => {
-                            this.loadingButtons[registrationNumber] = true;
-                            this.voucherApplied = "greyImage";
-                            this.voucherCompetitionState = 3;
+                        var queueStored = {
+                            expires_in: timestamp,
+                            idRegistration: this.registrations[registrationNumber].id,
+                            call: this.currentCall.id
+                        };
+                        this.storedRegistrationQueues.push(queueStored);
+                        this.localStorage.set(
+                            "registrationQueue",
+                            JSON.stringify(this.storedRegistrationQueues)
+                        );
+                        this.sharedService.growlTranslation(
+                            "Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.",
+                            "benefPortal.voucher.statusmessage5",
+                            "success"
+                        );
+                    },
+                    error => {
+                        //error sending the information to the MQ
+                        this.errorMessage = error;
+                        this.displayError = true;
+                        this.sharedService.growlTranslation(
+                            "An error occurred and your application could not be received.",
+                            "shared.registration.update.error",
+                            "error"
+                        )
+                    }
+                );
 
-                            var oneHourLater = new Date();
-                            oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
-                            var timestamp = Math.floor(oneHourLater.getTime() / 1000);
+                event.target.style.pointerEvents = "none";
+                event.target.style.opacity = "0.5";
+                event.target.disabled = true;
 
-                            var queueStored = {
-                                expires_in: timestamp,
-                                idRegistration: this.registrations[registrationNumber].id,
-                                call: this.currentCall.id
-                            };
-                            this.storedRegistrationQueues.push(queueStored);
-                            this.localStorage.set(
-                                "registrationQueue",
-                                JSON.stringify(this.storedRegistrationQueues)
-                            );
-                            this.sharedService.growlTranslation(
-                                "Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.",
-                                "benefPortal.voucher.statusmessage5",
-                                "success"
-                            );
-                        },
-                        error => {
-                            //error sending the information to the MQ
-                            this.errorMessage = error;
-                            this.displayError = true;
-                            this.sharedService.growlTranslation(
-                                "An error occurred and your application could not be received.",
-                                "shared.registration.update.error",
-                                "error"
-                            )
-                        }
-                    );
-
-                    event.target.style.pointerEvents = "none";
-                    event.target.style.opacity = "0.5";
-                    event.target.disabled = true;
-
-                } else {
-                    //trying to apply before sending the support documents
-                    this.sharedService.growlTranslation(
-                        "An error occurred and your application could not be received.",
-                        "shared.registration.update.error",
-                        "error"
-                    )
-                }
             } else {
-                //trying to apply before the opening of the call
-                this.displayCallClosed = true;
+                //trying to apply before sending the support documents
                 this.sharedService.growlTranslation(
                     "An error occurred and your application could not be received.",
                     "shared.registration.update.error",
                     "error"
                 )
             }
+        } else if (this.voucherCompetitionState == 1) {
+            //trying to apply before the opening of the call
+            this.displayCallClosed = true;
+            this.sharedService.growlTranslation(
+                "An error occurred and your application could not be received.",
+                "shared.registration.update.error",
+                "error"
+            )
         }
     }
 
@@ -320,6 +318,14 @@ export class VoucherComponent {
 
 
         }
+    }
+
+    private getCurrentTime() {
+        this.callApi.getTime().subscribe(
+            (date: any) => {
+                this.currentDate = date;
+            }
+        );
     }
 
 }

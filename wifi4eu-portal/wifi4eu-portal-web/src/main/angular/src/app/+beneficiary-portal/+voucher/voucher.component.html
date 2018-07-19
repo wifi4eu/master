@@ -70,7 +70,7 @@
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1 || !docsOpen[i]">
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || !docsOpen[i]">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
                         <span *ngIf="applications[i]">
