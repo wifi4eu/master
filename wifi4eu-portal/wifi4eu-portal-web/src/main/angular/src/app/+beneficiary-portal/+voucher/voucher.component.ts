@@ -1,20 +1,20 @@
-import {Component} from '@angular/core';
-import {ApplicationApi} from "../../shared/swagger/api/ApplicationApi";
-import {CallApi} from "../../shared/swagger/api/CallApi";
-import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {ApplicationDTOBase} from "../../shared/swagger/model/ApplicationDTO";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {MayorApi} from "../../shared/swagger/api/MayorApi";
-import {SharedService} from "../../shared/shared.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Http, RequestOptions, Headers} from "@angular/http";
+import { Component } from '@angular/core';
+import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
+import { CallApi } from "../../shared/swagger/api/CallApi";
+import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { LocalStorageService } from "angular-2-local-storage";
+import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { ApplicationDTOBase } from "../../shared/swagger/model/ApplicationDTO";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
+import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import { MayorApi } from "../../shared/swagger/api/MayorApi";
+import { SharedService } from "../../shared/shared.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Http, RequestOptions, Headers } from "@angular/http";
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -45,7 +45,7 @@ export class VoucherComponent {
     private isMayor: boolean = false;
     private registration: RegistrationDTOBase;
     private mayor: MayorDTOBase;
-    private docsOpen: boolean [] = [];
+    private docsOpen: boolean[] = [];
     private registrationsDocs: RegistrationDTOBase[] = [];
     private storedRegistrationQueues = [];
     private disableQueuing = [];
@@ -196,86 +196,91 @@ export class VoucherComponent {
     }
 
     private goToDocuments(registrationNumber: number) {
-        this.router.navigate(['../additional-info/', this.registrations[registrationNumber].municipalityId], {relativeTo: this.route});
+        this.router.navigate(['../additional-info/', this.registrations[registrationNumber].municipalityId], { relativeTo: this.route });
     }
 
     private applyForVoucher(registrationNumber: number, event) {
-        let startCallDate = this.currentCall.startDate;
-        let actualDateTime = new Date().getTime();
+        //we just need to check this variable
+        //voucherCompetitionState is 2 is call is open
+        //or when timer component emits that has finished
+        if (this.voucherCompetitionState == 2) {
+            let startCallDate = this.currentCall.startDate;
+            let actualDateTime = new Date().getTime();
 
-        if (startCallDate <= actualDateTime) {
-            if (!this.loadingButtons[registrationNumber]) {
+            if (startCallDate <= actualDateTime) {
+                if (!this.loadingButtons[registrationNumber]) {
 
-                let body =
-                    '{"callId":' +
-                    this.currentCall.id +
-                    ', "registrationId":' +
-                    this.registrations[registrationNumber].id +
-                    ', "userId":' +
-                    this.user.id +
-                    ', "fileUploadTimestamp":' +
-                    this.registrations[registrationNumber].uploadTime +
-                    "}";
+                    let body =
+                        '{"callId":' +
+                        this.currentCall.id +
+                        ', "registrationId":' +
+                        this.registrations[registrationNumber].id +
+                        ', "userId":' +
+                        this.user.id +
+                        ', "fileUploadTimestamp":' +
+                        this.registrations[registrationNumber].uploadTime +
+                        "}";
 
 
-                this.http.post(this.rabbitmqURI, body, this.httpOptions).subscribe(
-                    response => {
-                        this.loadingButtons[registrationNumber] = true;
-                        this.voucherApplied = "greyImage";
-                        this.voucherCompetitionState = 3;
+                    this.http.post(this.rabbitmqURI, body, this.httpOptions).subscribe(
+                        response => {
+                            this.loadingButtons[registrationNumber] = true;
+                            this.voucherApplied = "greyImage";
+                            this.voucherCompetitionState = 3;
 
-                        var oneHourLater = new Date();
-                        oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
-                        var timestamp = Math.floor(oneHourLater.getTime() / 1000);
+                            var oneHourLater = new Date();
+                            oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
+                            var timestamp = Math.floor(oneHourLater.getTime() / 1000);
 
-                        var queueStored = {
-                            expires_in: timestamp,
-                            idRegistration: this.registrations[registrationNumber].id,
-                            call: this.currentCall.id
-                        };
-                        this.storedRegistrationQueues.push(queueStored);
-                        this.localStorage.set(
-                            "registrationQueue",
-                            JSON.stringify(this.storedRegistrationQueues)
-                        );
-                        this.sharedService.growlTranslation(
-                            "Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.",
-                            "benefPortal.voucher.statusmessage5",
-                            "success"
-                        );
-                    },
-                    error => {
-                        //error sending the information to the MQ
-                        this.errorMessage = error;
-                        this.displayError = true;
-                        this.sharedService.growlTranslation(
-                            "An error occurred and your application could not be received.",
-                            "shared.registration.update.error",
-                            "error"
-                        )
-                    }
-                );
+                            var queueStored = {
+                                expires_in: timestamp,
+                                idRegistration: this.registrations[registrationNumber].id,
+                                call: this.currentCall.id
+                            };
+                            this.storedRegistrationQueues.push(queueStored);
+                            this.localStorage.set(
+                                "registrationQueue",
+                                JSON.stringify(this.storedRegistrationQueues)
+                            );
+                            this.sharedService.growlTranslation(
+                                "Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.",
+                                "benefPortal.voucher.statusmessage5",
+                                "success"
+                            );
+                        },
+                        error => {
+                            //error sending the information to the MQ
+                            this.errorMessage = error;
+                            this.displayError = true;
+                            this.sharedService.growlTranslation(
+                                "An error occurred and your application could not be received.",
+                                "shared.registration.update.error",
+                                "error"
+                            )
+                        }
+                    );
 
-                event.target.style.pointerEvents = "none";
-                event.target.style.opacity = "0.5";
-                event.target.disabled = true;
+                    event.target.style.pointerEvents = "none";
+                    event.target.style.opacity = "0.5";
+                    event.target.disabled = true;
 
+                } else {
+                    //trying to apply before sending the support documents
+                    this.sharedService.growlTranslation(
+                        "An error occurred and your application could not be received.",
+                        "shared.registration.update.error",
+                        "error"
+                    )
+                }
             } else {
-                //trying to apply before sending the support documents
+                //trying to apply before the opening of the call
+                this.displayCallClosed = true;
                 this.sharedService.growlTranslation(
                     "An error occurred and your application could not be received.",
                     "shared.registration.update.error",
                     "error"
                 )
             }
-        } else {
-            //trying to apply before the opening of the call
-            this.displayCallClosed = true;
-            this.sharedService.growlTranslation(
-                "An error occurred and your application could not be received.",
-                "shared.registration.update.error",
-                "error"
-            )
         }
     }
 
