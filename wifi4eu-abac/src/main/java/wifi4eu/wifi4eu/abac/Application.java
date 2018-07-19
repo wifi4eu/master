@@ -11,13 +11,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.WebApplicationInitializer;
 
-import wifi4eu.wifi4eu.abac.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
-
 @ComponentScan
 @SpringBootApplication
-@EnableJpaRepositories(basePackageClasses = LegalEntityRepository.class)
-@EntityScan(basePackageClasses = LegalEntity.class)
+@EnableJpaRepositories(basePackages = "wifi4eu.wifi4eu.abac.repository")
+@EntityScan(basePackages = "wifi4eu.wifi4eu.abac.entity")
 public class Application extends SpringBootServletInitializer implements WebApplicationInitializer {
 
 	private final Logger log = LoggerFactory.getLogger(Application.class);
@@ -30,5 +27,5 @@ public class Application extends SpringBootServletInitializer implements WebAppl
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(Application.class);
 	}
-	
+
 }

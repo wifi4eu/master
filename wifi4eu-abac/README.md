@@ -4,13 +4,13 @@
 
 Check node version:
 ```
-C:\DEV\WIFI4EU\workspace\app\wifi4eu-abac\src\main\angular>node -v
+<projecFolder>\app\wifi4eu-abac\src\main\angular> node -v
 v8.9.4
 ```
 
 Check ng version:
 ```
-C:\DEV\WIFI4EU\workspace\app\wifi4eu-abac\src\main\angular>ng -v
+<projecFolder>\app\wifi4eu-abac\src\main\angular> ng -v
 Your global Angular CLI version (1.5.3) is greater than your local
 version (1.2.0). The local Angular CLI version is used.
 
@@ -38,17 +38,27 @@ os: win32 x64
 
 Install dependencies:
 ```
-C:\DEV\WIFI4EU\workspace\app\wifi4eu-abac\src\main\angular>npm install
+<projecFolder>\app\wifi4eu-abac\src\main\angular> npm install
 ```
 
 ## Build WAR for weblogic
 
 To execute a full build (angular and java), run:
 ```
-mvn clean package -Png-build,weblogic
+<projecFolder>\app\wifi4eu-abac> mvn clean package -Png-build,weblogic
 ```
 
 To execute a build of the java code (weblogic profile is enabled by default), run:
 ```
-mvn clean package
+<projecFolder>\app\wifi4eu-abac> mvn clean package
 ```
+
+## Deploy WAR in weblogic
+
+To execute a full build (angular and java), run:
+```
+<projecFolder>\app\wifi4eu-abac> mvn clean package -Png-build,weblogic
+```
+
+
+

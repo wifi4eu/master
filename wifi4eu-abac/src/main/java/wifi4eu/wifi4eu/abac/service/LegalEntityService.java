@@ -73,34 +73,34 @@ public class LegalEntityService {
 		StringBuilder data = new StringBuilder();
 
 		boolean first = true;
-		data.append("<table style=\"width:100%\" border=\"1\">\r\n");
-		data.append("<tr>\r\n");
+		data.append("<table style=\"width:100%\" border=\"1\">");
+		data.append("<tr>");
 
 		// headers
 		String headers[] = new String[] { "id", "mid", "officialName", "region", "languageCode", "countryCode", "officialAddress", 
 				"officialAddressStrNo", "postalCode", "abacFelId", "wfStatus", "dateCreated" };
 		for (String header : headers) {
-			data.append("<th>").append(header).append("</th>\r\n");
+			data.append("<th>").append(header).append("</th>");
 		}
 
 		// data
 		for (LegalEntity legalEntity : list) {
 			data.append("</tr><tr>\r\n");
-			data.append("<td>").append(legalEntity.getId()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getMid()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getOfficialName()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getRegion()).append("</td>\r\n");			
-			data.append("<td>").append(legalEntity.getLanguageCode()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getCountryCode()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getOfficialAddress()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getOfficialAddressStrNo()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getPostalCode()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getAbacFelId()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getWfStatus()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getDateCreated()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getId()).append("</td>");
+			data.append("<td>").append(legalEntity.getMid()).append("</td>");
+			data.append("<td>").append(legalEntity.getOfficialName()).append("</td>");
+			data.append("<td>").append(legalEntity.getRegion()).append("</td>");			
+			data.append("<td>").append(legalEntity.getLanguageCode()).append("</td>");
+			data.append("<td>").append(legalEntity.getCountryCode()).append("</td>");
+			data.append("<td>").append(legalEntity.getOfficialAddress()).append("</td>");
+			data.append("<td>").append(legalEntity.getOfficialAddressStrNo()).append("</td>");
+			data.append("<td>").append(legalEntity.getPostalCode()).append("</td>");
+			data.append("<td>").append(legalEntity.getAbacFelId()).append("</td>");
+			data.append("<td>").append(legalEntity.getWfStatus()).append("</td>");
+			data.append("<td>").append(legalEntity.getDateCreated()).append("</td>");
 		}
-		data.append("</tr>\r\n");
-		data.append("</table>\r\n");
+		data.append("</tr>");
+		data.append("</table>");
 
 		return data.toString();
 	}
