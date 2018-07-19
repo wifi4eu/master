@@ -563,20 +563,66 @@ public class BeneficiaryService {
             municipality = "";
         }
         List<BeneficiaryFinalListItemDTO> beneficiaryFinalListItemDTOList;
-        if(field.equalsIgnoreCase("name")){
-            if(sortDirection.equalsIgnoreCase("asc")){
-                beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByNameASC(callId, countryCode, municipality, page, sizePage));
-            }
-            else{
-                beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByNameDESC(callId, countryCode, municipality, page, sizePage));
-            }
-        }else{
-            beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalList(callId));
+        field = field.toLowerCase();
+        switch (field){
+
+            case "name":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByNameASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByNameDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            case "countrycode":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByCountryASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByCountryDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            case "registrationid":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByRegistrationIdASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByRegistrationIdDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            case "verifiedtosign":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByVerifiedToSignASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByVerifiedToSignDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            case "datesignature":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByDateSignatureASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByDateSignatureDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            case "datecountersignature":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByDateCounterSignatureASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByDateCounterSignatureDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            default:
+                beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalList(callId));
+                break;
         }
 
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(true);
         //TODO : Return number total results
+        response.setXTotalCount(beneficiaryFinalListItemDTOList.size());
         response.setData(beneficiaryFinalListItemDTOList);
         return response;
     }
