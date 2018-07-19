@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import wifi4eu.wifi4eu.abac.entity.LegalCommitment;
 
-public interface LegalCommitmentyRepository extends CrudRepository<LegalCommitment, Integer> {
+public interface LegalCommitmentRepository extends CrudRepository<LegalCommitment, Integer> {
 
 	@Query(value = "SELECT lc FROM LegalCommitment lc WHERE lc.wfStatus in ('ABAC_FINISH', 'ABAC_ERROR')")
 	List<LegalCommitment> findLCFinishedInAbac();

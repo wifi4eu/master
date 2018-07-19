@@ -57,6 +57,8 @@ public class LegalEntityService {
 		log.info("printing list of items");
 		for (LegalEntity legalEntity : items) {
 			log.info("Item recovered: " + legalEntity.toString());
+			// Override status
+			legalEntity.setWfStatus(AbacWorkflowStatusEnum.IMPORTED.getValue());
 			legalEntityrepository.save(legalEntity);
 		}
 
@@ -77,11 +79,12 @@ public class LegalEntityService {
 		data.append("<tr>");
 
 		// headers
-		String headers[] = new String[] { "id", "mid", "officialName", "region", "languageCode", "countryCode", "officialAddress", 
-				"officialAddressStrNo", "postalCode", "abacFelId", "wfStatus", "dateCreated" };
+		String headers[] = new String[] { "id", "mid", "officialName", "region", "languageCode", "countryCode",
+				"officialAddress", "officialAddressStrNo", "postalCode", "abacFelId", "wfStatus", "dateCreated" };
 		for (String header : headers) {
 			data.append("<th>").append(header).append("</th>");
 		}
+		data.append("\r\n");
 
 		// data
 		for (LegalEntity legalEntity : list) {
@@ -89,7 +92,7 @@ public class LegalEntityService {
 			data.append("<td>").append(legalEntity.getId()).append("</td>");
 			data.append("<td>").append(legalEntity.getMid()).append("</td>");
 			data.append("<td>").append(legalEntity.getOfficialName()).append("</td>");
-			data.append("<td>").append(legalEntity.getRegion()).append("</td>");			
+			data.append("<td>").append(legalEntity.getRegion()).append("</td>");
 			data.append("<td>").append(legalEntity.getLanguageCode()).append("</td>");
 			data.append("<td>").append(legalEntity.getCountryCode()).append("</td>");
 			data.append("<td>").append(legalEntity.getOfficialAddress()).append("</td>");
@@ -136,15 +139,17 @@ public class LegalEntityService {
 				data.append(separator).append(header);
 			}
 		}
+		data.append("\r\n");
 
 		// data
 		if (list != null && !list.isEmpty()) {
 			for (LegalEntity legalEntity : list) {
 				data.append(legalEntity.getId()).append(separator).append(legalEntity.getMid()).append(separator)
-					.append(legalEntity.getOfficialName()).append(separator).append(legalEntity.getAbacFelId()).append(separator)
-					.append(legalEntity.getWfStatus());
+						.append(legalEntity.getOfficialName()).append(separator).append(legalEntity.getAbacFelId())
+						.append(separator).append(legalEntity.getWfStatus()).append("\r\n");
 			}
 		}
+		data.append("\r\n");
 
 		return data.toString();
 	}

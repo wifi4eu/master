@@ -2,14 +2,21 @@ package wifi4eu.wifi4eu.abac.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+
+import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
 @Entity
 @Table(name = "WIF_LEGAL_ENTITY")
 public class LegalEntity {
 
+	//@ GeneratedValue(strategy = GenerationType.AUTO)
 	@Id
+	@Column(name = "id", updatable = false, nullable = false)
 	private Integer id;
 
 	@Column(name = "mid")
@@ -165,14 +172,19 @@ public class LegalEntity {
 	public void setWfStatus(String wfStatus) {
 		this.wfStatus = wfStatus;
 	}
-	
+
 	public String getDateCreated() {
 		return dateCreated;
 	}
 
 	public void setDateCreated(String dateCreated) {
 		this.dateCreated = dateCreated;
-	}	
+	}
+
+	@PrePersist
+	protected void onCreate() {
+		this.dateCreated = DateTimeUtils.getCurrentDateTime();
+	}
 
 	@Override
 	public String toString() {
@@ -181,5 +193,5 @@ public class LegalEntity {
 				+ officialAddress + ", officialAddressStrNo=" + officialAddressStrNo + ", postalCode=" + postalCode
 				+ ", abacFelId=" + abacFelId + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated + "]";
 	}
-	
+
 }

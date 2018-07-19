@@ -19,26 +19,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
-import wifi4eu.wifi4eu.abac.service.LegalEntityService;
+import wifi4eu.wifi4eu.abac.service.BudgetaryCommitmentService;
 
 @RestController
-@RequestMapping(path = "legalEntity")
-public class LegalEntityController {
+@RequestMapping(path = "budgetaryCommitment")
+public class BudgetaryCommitmentController {
 
-	private final Logger log = LoggerFactory.getLogger(LegalEntityController.class);
+	private final Logger log = LoggerFactory.getLogger(BudgetaryCommitmentController.class);
 
-	private LegalEntityService legalEntityService;
+	private BudgetaryCommitmentService budgetaryCommitmentService;
 
 	@Autowired
-	public LegalEntityController(LegalEntityService legalEntityService) {
-		this.legalEntityService = legalEntityService;
+	public BudgetaryCommitmentController(BudgetaryCommitmentService budgetaryCommitmentService) {
+		this.budgetaryCommitmentService = budgetaryCommitmentService;
 	}
 
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
-	public ResponseVO importLegalEntity(@RequestBody String file) throws IOException {
-		log.info("importLegalEntity");
+	public ResponseVO importBudgetaryCommitment(@RequestBody String file) throws IOException {
+		log.info("importBudgetaryCommitment");
 
-		legalEntityService.importLegalEntityContent(file);
+		budgetaryCommitmentService.importBudgetaryCommitmentyContent(file);
 
 		// write result and return
 		ResponseVO result = new ResponseVO();
@@ -48,39 +48,26 @@ public class LegalEntityController {
 	}
 
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
-	public ResponseEntity<byte[]> exportLegalEntity(final HttpServletResponse response, Model model) throws Exception {
-		log.info("exportLegalEntity");
+	public ResponseEntity<byte[]> exportBudgetaryCommitment(final HttpServletResponse response, Model model)
+			throws Exception {
+		log.info("exportBudgetaryCommitment");
 
 		ResponseEntity<byte[]> responseReturn = null;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("text/csv"));
-		String filename = "exportLegalEntity.csv";
+		String filename = "exportBudgetaryCommitment.csv";
 		headers.setContentDispositionFormData(filename, filename);
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-		log.info("exportLegalEntity - generating csv file content");
-		String responseData = legalEntityService.exportLegalEntityFile();
+		log.info("exportBudgetaryCommitment - generating csv file content");
+		String responseData = budgetaryCommitmentService.exportBudgetaryCommitmentyContent();
 		// getBytes(Charset.forName("UTF-8"));
 		responseReturn = new ResponseEntity<byte[]>(responseData.getBytes(StandardCharsets.UTF_8), headers,
 				HttpStatus.OK);
 
-		model.addAttribute("exportResult", "File exported successfully...");
-		log.info("exportLegalEntity - csv file exported successfully");
+		log.info("exportBudgetaryCommitment - csv file exported successfully");
 
 		return responseReturn;
-	}
-
-	@RequestMapping(value = "show", method = RequestMethod.GET, produces = "application/json")
-	public ResponseVO showLegalEntity() throws IOException {
-		log.info("showLegalEntity");
-
-		String responseData = legalEntityService.showLegalEntityFile();
-
-		// write result and return
-		ResponseVO result = new ResponseVO();
-		result.setSuccess(true);
-		result.setData(responseData);
-		return result;
 	}
 
 }

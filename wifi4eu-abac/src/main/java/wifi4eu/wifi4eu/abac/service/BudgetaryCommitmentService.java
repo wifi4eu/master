@@ -7,17 +7,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import wifi4eu.wifi4eu.abac.repository.BudgetaryCommitmentyRepository;
+import wifi4eu.wifi4eu.abac.repository.BudgetaryCommitmentRepository;
 
 @Service
 public class BudgetaryCommitmentService {
 
 	private final Logger log = LoggerFactory.getLogger(BudgetaryCommitmentService.class);
 
-	private BudgetaryCommitmentyRepository budgetaryCommitmentyRepository;
+	private BudgetaryCommitmentRepository budgetaryCommitmentyRepository;
 
 	@Autowired
-	public BudgetaryCommitmentService(BudgetaryCommitmentyRepository budgetaryCommitmentyRepository) {
+	public BudgetaryCommitmentService(BudgetaryCommitmentRepository budgetaryCommitmentyRepository) {
 		this.budgetaryCommitmentyRepository = budgetaryCommitmentyRepository;
 	}
 
