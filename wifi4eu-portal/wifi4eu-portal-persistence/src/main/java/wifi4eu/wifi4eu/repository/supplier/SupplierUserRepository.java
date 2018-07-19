@@ -13,6 +13,8 @@ public interface SupplierUserRepository extends CrudRepository<SupplierUser,Inte
 
     SupplierUser findFirstSupplierUserBySupplierIdAndEmail(@Param("supplierId") int supplierId , @Param("email") String email);
 
+    List<SupplierUser> findByEmailAndStatus(@Param("email") String email, @Param("status") Integer status);
+
     List<SupplierUser> findByEmail(@Param("email") String email);
 
     List<SupplierUser> findByEmailAndSupplierId(@Param("email") String email, @Param("supplierId") Integer supplierId);
@@ -26,4 +28,6 @@ public interface SupplierUserRepository extends CrudRepository<SupplierUser,Inte
     @Transactional
     @Query(value = "DELETE supplier_users WHERE supplier_id = ?1", nativeQuery = true)
     void deleteBySupplierId(@Param("supplierId") Long supplierId);
+
+    List<SupplierUser> findByUserId(@Param("status") Integer userId);
 }

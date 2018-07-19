@@ -7,10 +7,11 @@ import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface MunicipalityMapper {
     @Mapping(source = "entity.lau.id", target = "lauId")
     MunicipalityDTO toDTO(Municipality entity);

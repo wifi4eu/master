@@ -343,7 +343,7 @@ public class BeneficiaryService {
         RegistrationUsers registrationUsers = new RegistrationUsers();
         registration.setRole(role);
         registration.setMunicipalityId(municipality.getId());
-       // registration.setUserId(userId);
+
         registration.setStatus(generateRegistrationStatus(municipality));
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - New registration generated");
         return registration;

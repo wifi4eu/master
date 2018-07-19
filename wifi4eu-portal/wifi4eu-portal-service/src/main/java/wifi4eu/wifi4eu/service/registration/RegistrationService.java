@@ -20,6 +20,7 @@ import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.call.Call;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
@@ -350,14 +351,33 @@ public class RegistrationService {
 
         //if user doesn't have any documents as requested for correction we put its status on HOLD
         if (!isAnyFileRequestedForCorrection) {
-            Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationDBO.getId(), callService
-                    .getLastCallClosed().getId());
-            if (applicationDB != null  && applicationDB.getStatus() == ApplicationStatus.PENDING_FOLLOWUP.getValue()) {
-                applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
-                applicationRepository.save(applicationDB);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected
-                        .getEcasUsername() + " - Changing applicant status for HOLD, as it doesn't have any more documents as requested for " +
-                        "correction. Application id: " + applicationDB.getId() + ". Registration id: "+ registrationDBO.getId());
+
+            //three cases
+            //1. if last closed call exists it's in the revision period so the status is set automatically to HOLD
+            //2. if last closed call is null then check if some other call is open
+            //2.1 if there's a call going on the user should not be able to edit the documents if he's applied
+            // if he's not applied there's no application
+            //2.2  if there's no call going on we set the status to HOLD
+
+            CallDTO lastCall = callService.getLastCallClosed();
+            if(lastCall != null) {
+                Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationDBO.getId(), lastCall.getId());
+                if (applicationDB != null && applicationDB.getStatus() == ApplicationStatus.PENDING_FOLLOWUP.getValue()) {
+                    applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
+                    applicationRepository.save(applicationDB);
+                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected
+                            .getEcasUsername() + " - Changing applicant status for HOLD, as it doesn't have any more documents as requested for " +
+                            "correction. Application id: " + applicationDB.getId() + ". Registration id: " + registrationDBO.getId());
+                }
+            } else {
+                CallDTO currentCall = callService.getCurrentCall();
+                if(currentCall == null){
+                    //do nothing there's no application
+
+                } else {
+                    //call going on
+                    //pending to define when it's allowed to upload documents
+                }
             }
         }
         return saveRegistration(registrationDBO);
