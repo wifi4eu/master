@@ -9,9 +9,11 @@ import wifi4eu.wifi4eu.abac.entity.LegalEntity;
 
 public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integer> {
 
-	LegalEntity findByName(String name);
+	LegalEntity findByMid(Integer mid);
 
-	@Query(value = "SELECT le FROM LegalEntity le WHERE le.idAbac is not null")
-	List<LegalEntity> findLegalEntitiesWithIdAbac();
+	LegalEntity findByOfficialName(String officialName);
+
+	@Query(value = "SELECT le FROM LegalEntity le WHERE le.abacFelId is not null")
+	List<LegalEntity> findLegalEntitiesProcessedInAbac();
 
 }

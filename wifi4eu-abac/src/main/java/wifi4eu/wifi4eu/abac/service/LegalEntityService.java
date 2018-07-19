@@ -77,8 +77,8 @@ public class LegalEntityService {
 		data.append("<tr>\r\n");
 
 		// headers
-		String headers[] = new String[] { "id", "name", "lang", "region", "country", "code", "address", "nr",
-				"postalCode", "idAbac", "status" };
+		String headers[] = new String[] { "id", "mid", "officialName", "region", "languageCode", "countryCode", "officialAddress", 
+				"officialAddressStrNo", "postalCode", "abacFelId", "wfStatus", "dateCreated" };
 		for (String header : headers) {
 			data.append("<th>").append(header).append("</th>\r\n");
 		}
@@ -87,16 +87,17 @@ public class LegalEntityService {
 		for (LegalEntity legalEntity : list) {
 			data.append("</tr><tr>\r\n");
 			data.append("<td>").append(legalEntity.getId()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getName()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getLang()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getRegion()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getCountry()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getCode()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getAddress()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getNr()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getMid()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getOfficialName()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getRegion()).append("</td>\r\n");			
+			data.append("<td>").append(legalEntity.getLanguageCode()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getCountryCode()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getOfficialAddress()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getOfficialAddressStrNo()).append("</td>\r\n");
 			data.append("<td>").append(legalEntity.getPostalCode()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getIdAbac()).append("</td>\r\n");
-			data.append("<td>").append(legalEntity.getStatus()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getAbacFelId()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getWfStatus()).append("</td>\r\n");
+			data.append("<td>").append(legalEntity.getDateCreated()).append("</td>\r\n");
 		}
 		data.append("</tr>\r\n");
 		data.append("</table>\r\n");
@@ -108,7 +109,7 @@ public class LegalEntityService {
 		log.info("exportLegalEntityFile");
 
 		log.info("recovering list of items");
-		List<LegalEntity> list = legalEntityrepository.findLegalEntitiesWithIdAbac();
+		List<LegalEntity> list = legalEntityrepository.findLegalEntitiesProcessedInAbac();
 
 		log.info("parsing list of items");
 		String data = parseLegalEntity2String(list);
@@ -122,7 +123,7 @@ public class LegalEntityService {
 	 */
 	private String parseLegalEntity2String(List<LegalEntity> list) {
 		String separator = "|";
-		String headers[] = new String[] { "id", "name", "idAbac", "status" };
+		String headers[] = new String[] { "id", "mid", "officialName", "abacFelId", "wfStatus" };
 		StringBuilder data = new StringBuilder();
 
 		// headers
@@ -135,14 +136,13 @@ public class LegalEntityService {
 				data.append(separator).append(header);
 			}
 		}
-		data.append("\r\n");
 
 		// data
 		if (list != null && !list.isEmpty()) {
 			for (LegalEntity legalEntity : list) {
-				data.append(legalEntity.getId()).append(separator).append(legalEntity.getName()).append(separator)
-						.append(legalEntity.getIdAbac()).append(separator).append(legalEntity.getStatus())
-						.append("\r\n");
+				data.append(legalEntity.getId()).append(separator).append(legalEntity.getMid()).append(separator)
+					.append(legalEntity.getOfficialName()).append(separator).append(legalEntity.getAbacFelId()).append(separator)
+					.append(legalEntity.getWfStatus());
 			}
 		}
 

@@ -6,71 +6,76 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ABAC_LEGAL_ENTITIES")
+@Table(name = "WIF_LEGAL_ENTITY")
 public class LegalEntity {
 
 	@Id
 	private Integer id;
 
-	@Column(name = "name")
-	private String name;
+	@Column(name = "mid")
+	private Integer mid;
 
-	@Column(name = "lang")
-	private String lang;
+	@Column(name = "official_name", length = 400)
+	private String officialName;
 
-	@Column(name = "region")
+	@Column(name = "region", length = 400)
 	private String region;
 
-	@Column(name = "country")
-	private String country;
+	@Column(name = "language_code", length = 3)
+	private String languageCode;
 
-	@Column(name = "code")
-	private String code;
+	@Column(name = "country_code", length = 2)
+	private String countryCode;
 
-	@Column(name = "address")
-	private String address;
+	@Column(name = "official_address", length = 400)
+	private String officialAddress;
 
-	@Column(name = "nr")
-	private String nr;
+	@Column(name = "official_address_str_no", length = 20)
+	private String officialAddressStrNo;
 
-	@Column(name = "postalCode")
+	@Column(name = "postal_code", length = 50)
 	private String postalCode;
 
-	@Column(name = "idAbac")
-	private String idAbac;
+	@Column(name = "abac_fel_id", length = 50)
+	private String abacFelId;
 
-	@Column(name = "status")
-	private String status;
+	@Column(name = "wf_status", length = 20)
+	private String wfStatus;
+
+	@Column(name = "date_created", length = 20)
+	private String dateCreated;
 
 	public LegalEntity() {
 	}
 
-	public LegalEntity(Integer id, String name) {
+	public LegalEntity(Integer id, String officialName) {
 		this.id = id;
-		this.name = name;
+		this.officialName = officialName;
 	}
 
-	public LegalEntity(Integer id, String name, String idAbac, String status) {
+	public LegalEntity(Integer id, String officialName, String idAbac, String status) {
 		this.id = id;
-		this.name = name;
-		this.idAbac = idAbac;
-		this.status = status;
+		this.officialName = officialName;
+		this.abacFelId = idAbac;
+		this.wfStatus = status;
 	}
 
-	public LegalEntity(Integer id, String name, String lang, String region, String country, String code, String address,
-			String nr, String postalCode, String idAbac, String status) {
+	public LegalEntity(Integer id, Integer mid, String officialName, String region, String languageCode,
+			String countryCode, String officialAddress, String officialAddressStrNo, String postalCode,
+			String abacFelId, String wfStatus, String dateCreated) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.lang = lang;
+		this.mid = mid;
+		this.officialName = officialName;
 		this.region = region;
-		this.country = country;
-		this.code = code;
-		this.address = address;
-		this.nr = nr;
+		this.languageCode = languageCode;
+		this.countryCode = countryCode;
+		this.officialAddress = officialAddress;
+		this.officialAddressStrNo = officialAddressStrNo;
 		this.postalCode = postalCode;
-		this.idAbac = idAbac;
-		this.status = status;
+		this.abacFelId = abacFelId;
+		this.wfStatus = wfStatus;
+		this.dateCreated = dateCreated;
 	}
 
 	public Integer getId() {
@@ -81,20 +86,28 @@ public class LegalEntity {
 		this.id = id;
 	}
 
-	public String getLang() {
-		return lang;
+	public Integer getMid() {
+		return mid;
 	}
 
-	public void setLang(String lang) {
-		this.lang = lang;
+	public void setMid(Integer mid) {
+		this.mid = mid;
 	}
 
-	public String getName() {
-		return name;
+	public String getLanguageCode() {
+		return languageCode;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLanguageCode(String languageCode) {
+		this.languageCode = languageCode;
+	}
+
+	public String getOfficialName() {
+		return officialName;
+	}
+
+	public void setOfficialName(String officialName) {
+		this.officialName = officialName;
 	}
 
 	public String getRegion() {
@@ -105,36 +118,28 @@ public class LegalEntity {
 		this.region = region;
 	}
 
-	public String getCountry() {
-		return country;
+	public String getCountryCode() {
+		return countryCode;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
 	}
 
-	public String getCode() {
-		return code;
+	public String getOfficialAddress() {
+		return officialAddress;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setOfficialAddress(String officialAddress) {
+		this.officialAddress = officialAddress;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getOfficialAddressStrNo() {
+		return officialAddressStrNo;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getNr() {
-		return nr;
-	}
-
-	public void setNr(String nr) {
-		this.nr = nr;
+	public void setOfficialAddressStrNo(String officialAddressStrNo) {
+		this.officialAddressStrNo = officialAddressStrNo;
 	}
 
 	public String getPostalCode() {
@@ -145,27 +150,36 @@ public class LegalEntity {
 		this.postalCode = postalCode;
 	}
 
-	public String getIdAbac() {
-		return idAbac;
+	public String getAbacFelId() {
+		return abacFelId;
 	}
 
-	public void setIdAbac(String idAbac) {
-		this.idAbac = idAbac;
+	public void setAbacFelId(String abacFelId) {
+		this.abacFelId = abacFelId;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getWfStatus() {
+		return wfStatus;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setWfStatus(String wfStatus) {
+		this.wfStatus = wfStatus;
 	}
+	
+	public String getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(String dateCreated) {
+		this.dateCreated = dateCreated;
+	}	
 
 	@Override
 	public String toString() {
-		return "LegalEntity [id=" + id + ", name=" + name + ", lang=" + lang + ", region=" + region + ", country="
-				+ country + ", code=" + code + ", address=" + address + ", nr=" + nr + ", postalCode=" + postalCode
-				+ ", idAbac=" + idAbac + ", status=" + status + "]";
+		return "LegalEntity [id=" + id + ", mid=" + mid + ", officialName=" + officialName + ", region=" + region
+				+ ", languageCode=" + languageCode + ", countryCode=" + countryCode + ", officialAddress="
+				+ officialAddress + ", officialAddressStrNo=" + officialAddressStrNo + ", postalCode=" + postalCode
+				+ ", abacFelId=" + abacFelId + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated + "]";
 	}
-
+	
 }

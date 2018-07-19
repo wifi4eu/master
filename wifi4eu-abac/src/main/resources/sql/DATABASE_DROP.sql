@@ -1,4 +1,4 @@
 -- -----------------------------------------------------
--- Table ABAC_LEGAL_ENTITIES
+-- Table "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY"
 -- -----------------------------------------------------
-DROP TABLE ABAC_LEGAL_ENTITIES;
+DROP TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY";

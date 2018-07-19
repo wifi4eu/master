@@ -27,10 +27,10 @@ public final class ParserCSV2Entity<T> {
 	 * 
 	 * Example of CSV input content:
 	 * 
-	 * <pre>
-	 * id|LANG|Name1|Name2|NAME|Region|Country|Code|Address|Nr|PostalCode
-	 * 1|en|Buje|Buje|BUJE|Istarska županija|HRVATSKA|HR|Istarska |2|52460
-	 * 2|es|Vila-real|Vila-real|VILA-REAL|Castellón / Castelló|ESPAÑA|ES|Plaza Mayor|1|12540
+	 * <pre> 
+	 * id|mid|languageCode|countryCode|region|officialAddress|officialAddressStrNo|postalCode|
+	 * 1|123|eng|GB|London|London Wall|34|EC2M 5QX
+	 * 2|234|spa|ES|Castellón|Plaza mayor|5|12540
 	 * </pre>
 	 * 
 	 * @param inputCSV
