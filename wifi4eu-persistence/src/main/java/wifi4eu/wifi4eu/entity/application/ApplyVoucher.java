@@ -6,28 +6,37 @@ import javax.persistence.Id;
 @Entity
 public class ApplyVoucher {
 
-    @Column(name = "reg_id", length = 20)
+    @Column(name = "reg_id")
     @Id
     private Long idRegistration;
 
-    @Column(name = "mun_id", length = 20)
+    @Column(name = "mun_id")
     private Long idMunicipality;
 
-    @Column(name = "files_uploaded", length = 20)
+    @Column(name = "municipality")
+    private String municipality;
+
+    @Column(name = "files_uploaded")
     private int filesUploaded;
 
-    @Column(name = "upload_time", length = 100)
+    @Column(name = "upload_time")
     private long uploadTime;
+
+    @Column(name = "numberApplicant")
+    private int numberApplicant;
+
 
     public ApplyVoucher(){
 
     }
 
-    public ApplyVoucher(Long idRegistration, Long idMunicipality, int filesUploaded, long uploadTime) {
+    public ApplyVoucher(Long idRegistration, Long idMunicipality, String municipality, int filesUploaded, long uploadTime, int numberApplicant) {
         this.idRegistration = idRegistration;
         this.idMunicipality = idMunicipality;
+        this.municipality = municipality;
         this.filesUploaded = filesUploaded;
         this.uploadTime = uploadTime;
+        this.numberApplicant = numberApplicant;
     }
 
     public Long getIdRegistration() {
@@ -46,6 +55,14 @@ public class ApplyVoucher {
         this.idMunicipality = idMunicipality;
     }
 
+    public String getMunicipality() {
+        return municipality;
+    }
+
+    public void setMunicipality(String municipality) {
+        this.municipality = municipality;
+    }
+
     public int getFilesUploaded() {
         return filesUploaded;
     }
@@ -60,5 +77,13 @@ public class ApplyVoucher {
 
     public void setUploadTime(long uploadTime) {
         this.uploadTime = uploadTime;
+    }
+
+    public int getNumberApplicant() {
+        return numberApplicant;
+    }
+
+    public void setNumberApplicant(int numberApplicant) {
+        this.numberApplicant = numberApplicant;
     }
 }

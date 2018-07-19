@@ -11,14 +11,16 @@ import {ApplicationDTOBase} from "../../shared/swagger/model/ApplicationDTO";
 import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
+import {ApplyvoucherApi} from "../../shared/swagger/api/ApplyvoucherApi";
 import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {SharedService} from "../../shared/shared.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Http, RequestOptions, Headers} from "@angular/http";
+import { ApplyVoucherBase } from '../../shared/swagger/model/ApplyVoucher';
 
 @Component({
     templateUrl: 'voucher.component.html',
-    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi]
+    providers: [ApplyvoucherApi, ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi]
 })
 
 export class VoucherComponent {
@@ -31,6 +33,7 @@ export class VoucherComponent {
     private voucherCompetitionState: number;
     private user: UserDTOBase;
     private currentCall: CallDTOBase = new CallDTOBase();
+    private applyVouchersData: ApplyVoucherBase[] = [];
     private registrations: RegistrationDTOBase[] = [];
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
@@ -38,6 +41,8 @@ export class VoucherComponent {
     private loadingButtons: boolean[] = [];
     private dateNumber: string;
     private hourNumber: string;
+    private uploadDateTime = {};
+    private uploadHourTime = {};
     private uploadDate: string[] = [];
     private uploadHour: string[] = [];
     private voucherApplied: string = "";
@@ -59,13 +64,31 @@ export class VoucherComponent {
         })
     };
 
-    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
+    constructor(private router: Router, private route: ActivatedRoute, private applyVoucherApi: ApplyvoucherApi, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
         this.storedRegistrationQueues = storedRegistrations ? storedRegistrations : [];
         // Check if there are Calls
         if (this.user != null) {
+            // ALEX PART
+            // callId hardcoded
+            this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,1).subscribe(
+                (applyVoucher: ApplyVoucherBase[]) => {
+                    this.applyVouchersData = applyVoucher;
+                    for (let i = 0; i < this.applyVouchersData.length; i++){
+                        if (this.applyVouchersData[i].filesUploaded == 1){
+                            let uploaddate = new Date(this.applyVouchersData[i].uploadTime);
+                            this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                            this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+                        }
+                    }
+                }, 
+                error => {
+                }
+            );
+
+
             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                 (registrations: RegistrationDTOBase[]) => {
                     this.registrationsDocs = registrations;

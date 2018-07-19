@@ -13,8 +13,8 @@ public class ApplyVoucherService {
     @Autowired
     ApplyVoucherRepository applyVoucherRepository;
 
-    public List<ApplyVoucher> getDataForApplyVoucher(Integer userId){
-        List<ApplyVoucher> applyVouchers = applyVoucherRepository.findDataToApplyVoucher(userId);
+    public List<ApplyVoucher> getDataForApplyVoucher(Integer callId, Integer userId){
+        List<ApplyVoucher> applyVouchers = applyVoucherRepository.findDataToApplyVoucher(callId,userId);
         return applyVouchers;
     }
 }
