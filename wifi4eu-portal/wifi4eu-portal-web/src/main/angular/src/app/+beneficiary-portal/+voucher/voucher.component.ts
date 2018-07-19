@@ -7,6 +7,7 @@ import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
 import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+import {ConditionsAgreementDTO} from "../../shared/swagger/model/ConditionsAgreementDTO";
 import {ApplicationDTOBase} from "../../shared/swagger/model/ApplicationDTO";
 import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
@@ -64,6 +65,7 @@ export class VoucherComponent {
     private signedConditionsAgreement : boolean;
     private conditionsAgreements : Object = {};
     private conditionsAgreement : ConditionsAgreementDTO;
+    private condition : number;
 
     constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
         let storedUser = this.localStorage.get('user');
@@ -110,7 +112,8 @@ export class VoucherComponent {
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
                             this.registrationApi.getConditionsAgreementStatus(registration.id).subscribe(
-                                (condition : number) => {
+                                (condition : ResponseDTO) => {
+                                    this.condition = condition.data;
                                     if (municipality != null) {
                                         this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                             (mayor: MayorDTOBase) => {
@@ -329,28 +332,27 @@ export class VoucherComponent {
 
     }
 
-    private conditionsAgreement(municipality) {
+    private setConditionsAgreement(municipality) {
         console.log("You clicked on conditions agreement", municipality);
         this.registrationsDocs.forEach(
             element => {
                 if(element.municipalityId == municipality.id) {
-                    this.conditionsAgreement.registrationId = element.id;
-                    this.conditionsAgreement.status = 1;
+                    this.registrationApi.changeConditionsAgreementStatus(element.id, 1).subscribe(
+                        (res : ResponseDTOBase) => {
+
+                        }
+                    );
                 }
                 console.log("Registration is ", element);
             }
         );
 
-        this.registrationApi.changeConditionsAgreementStatus(this.conditionsAgreement).subscribe(
-            (res : ResponseDTOBase) => {
-                
-            }
-        );
+
     }
     /* onRowToggle(event) {
         console.log("Event was trigered and is ", event);
     } */
-    
+
     // expand row
     // this.expandedItems.pop(this.gridData[rownumber]);
     // hide row

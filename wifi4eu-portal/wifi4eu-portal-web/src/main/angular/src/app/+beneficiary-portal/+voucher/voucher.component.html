@@ -43,7 +43,7 @@
         {{ 'benefPortal.voucher.counterSubtitle' | translate:{date:dateNumber,hour:hourNumber} }}
     </p>
     <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-3 ui-lg-6 ui-g-12" (timerEvent)="openApplyForVoucher()"
-        [expirationTimestamp]="currentCall.startDate">
+                     [expirationTimestamp]="currentCall.startDate">
     </timer-component>
     <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
@@ -82,14 +82,14 @@
                 </p-column>
                 <template let-municipality pTemplate="rowexpansion" let-i="rowIndex">
                     <div class="ui-grid ui-grid-responsive ui-fluid">
-                        <div *ngIf="conditionsAgreements[municipality.id]">
-                            <button class="modal-content ui-g-1 ui-sm-1" (click)=conditionsAgreement(municipality)>
+                        <div *ngIf="!conditionsAgreements[municipality.id]">
+                            <button class="modal-content ui-g-1 ui-sm-1" (click)=setConditionsAgreement(municipality)>
                                 <i class="fa fa-square-o" aria-hidden="true"></i>
                             </button>
                             <div class="ui-g-11 ui-sm-11">{{ 'benefPortal.voucher.conditionsAgreement' | translate }}</div>
                         </div>
                         <div *ngIf="conditionsAgreements[municipality.id]">
-                            <button class="modal-content ui-g-1 ui-sm-1" (click)=conditionsAgreement(municipality)>
+                            <button class="modal-content ui-g-1 ui-sm-1" (click)=setConditionsAgreement(municipality)>
                                 <i class="fa fa-check-square-o" aria-hidden="true"></i>
                             </button>
                             <div class="ui-g-11 ui-sm-11">{{ 'benefPortal.voucher.conditionsAgreement' | translate }}</div>
@@ -132,20 +132,20 @@
 <helpdesk-form-component portal="beneficiary-voucher"></helpdesk-form-component>
 
 <div class="container font">
-  <div class="ui-g-1"></div>
-  <p-dialog [(visible)]="displayError" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false" 
-    [closeOnEscape]="false" (onAfterHide)="closeModal()">
-    <div class="row">
-      <div class="col-xs-12">
-        <span>{{errorMessage}}</span>
-      </div>
-    </div>
-    <div class="row" style="margin-top: 30px;">
-      <div class="col-xs-12 col-lg-6 offset-lg-3" style="text-align: center;">
-        <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
-          {{ 'shared.confirm.button' | translate }}
-        </button>
-      </div>
-    </div>
-  </p-dialog>
+    <div class="ui-g-1"></div>
+    <p-dialog [(visible)]="displayError" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
+              [closeOnEscape]="false" (onAfterHide)="closeModal()">
+        <div class="row">
+            <div class="col-xs-12">
+                <span>{{errorMessage}}</span>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 30px;">
+            <div class="col-xs-12 col-lg-6 offset-lg-3" style="text-align: center;">
+                <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                    {{ 'shared.confirm.button' | translate }}
+                </button>
+            </div>
+        </div>
+    </p-dialog>
 </div>

@@ -370,4 +370,29 @@ public class RegistrationResource {
         }
     }
 
-}
+    @ApiOperation(value = "Delete legal documents")
+    @RequestMapping(value = "/changeConditionsAgreementStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO changeConditionsAgreementStatus(@RequestParam("registrationId") final Integer registrationId, @RequestParam("status") final Integer status) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+
+        try {
+            ConditionsAgreementDTO conditionsAgreementDTO = registrationService.saveConditionsAgreementDTO(userConnected.getId(), registrationId, status);
+
+            return new ResponseDTO(true, conditionsAgreementDTO, null);
+        } catch (Exception e) {
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+    }
+
+    @ApiOperation(value = "Get the conditions agreement status")
+    @RequestMapping(value = "/getConditionsAgreementStatus/{registrationId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO getConditionsAgreementStatus(@PathVariable("registrationId") final Integer registrationId) throws IOException {
+        try {
+            return new ResponseDTO(true, registrationService.getStatusConditionsAgreement(registrationId), null);
+        } catch (Exception e) {
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+    }}
