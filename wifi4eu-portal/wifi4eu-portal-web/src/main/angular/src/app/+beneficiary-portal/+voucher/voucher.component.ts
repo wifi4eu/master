@@ -7,7 +7,6 @@ import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
 import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {ConditionsAgreementDTO} from "../../shared/swagger/model/ConditionsAgreementDTO";
 import {ApplicationDTOBase} from "../../shared/swagger/model/ApplicationDTO";
 import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
@@ -64,7 +63,6 @@ export class VoucherComponent {
     private expandedItems: Array<any> = new Array<any>();
     private signedConditionsAgreement : boolean;
     private conditionsAgreements : Object = {};
-    private conditionsAgreement : ConditionsAgreementDTO;
     private condition : number;
 
     constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
@@ -112,7 +110,7 @@ export class VoucherComponent {
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
                             this.registrationApi.getConditionsAgreementStatus(registration.id).subscribe(
-                                (condition : ResponseDTO) => {
+                                (condition : ResponseDTOBase) => {
                                     this.condition = condition.data;
                                     if (municipality != null) {
                                         this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
