@@ -63,7 +63,7 @@ export class VoucherComponent {
     private expandedItems: Array<any> = new Array<any>();
     private signedConditionsAgreement : boolean;
     private conditionsAgreements : Object = {};
-    private condition : number;
+    private conditionsAgreementStatus : number;
 
     constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
         let storedUser = this.localStorage.get('user');
@@ -110,8 +110,7 @@ export class VoucherComponent {
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
                             this.registrationApi.getConditionsAgreementStatus(registration.id).subscribe(
-                                (condition : ResponseDTOBase) => {
-                                    this.condition = condition.data;
+                                (status : ResponseDTOBase) => {
                                     if (municipality != null) {
                                         this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                             (mayor: MayorDTOBase) => {
@@ -121,7 +120,7 @@ export class VoucherComponent {
                                                             this.registrations.push(registration);
                                                             this.municipalities.push(municipality);
                                                             this.mayors.push(mayor);
-                                                            if(this.condition == 1) {
+                                                            if(status.data == 1) {
                                                                 this.conditionsAgreements[municipality.id] = true;
                                                             } else {
                                                                 this.conditionsAgreements[municipality.id] = false;
@@ -334,8 +333,9 @@ export class VoucherComponent {
         console.log("You clicked on conditions agreement", municipality);
         for(var j = 0; j < this.registrationsDocs.length; j++) {
             if(this.registrationsDocs[j].municipalityId == municipality.id) {
-                this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreements[municipality.id] = 1 : this.conditionsAgreements[municipality.id] = 0;
-                this.registrationApi.changeConditionsAgreementStatus(this.registrationsDocs[j].id, this.conditionsAgreements[municipality.id]).subscribe(
+                this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreementStatus = 1 : this.conditionsAgreementStatus = 0;
+                this.conditionsAgreements[municipality.id] = this.conditionsAgreementStatus;
+                this.registrationApi.changeConditionsAgreementStatus(this.registrationsDocs[j].id, this.conditionsAgreementStatus).subscribe(
                     (data : ResponseDTOBase) => {
                         if (data.success) {
                             this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
