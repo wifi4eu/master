@@ -102,7 +102,7 @@ public class SupplierResource {
     @ApiOperation(value = "update Contact Details")
     @RequestMapping(value = "update/contactDetails", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO updateContactDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO updateContactDetails(@RequestBody final SupplierDTO supplierDTO, @RequestBody final UserDTO userDTO,HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating contact details");
@@ -115,7 +115,7 @@ public class SupplierResource {
             if (supplierUserId != sendSupplierDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO resSupplier = supplierService.updateContactDetails(sendSupplierDTO, supplierDTO.getContactName(), supplierDTO.getContactSurname(), supplierDTO.getContactPhonePrefix(), supplierDTO.getContactPhoneNumber());
+            List<UserDTO> resSupplier = supplierService.updateContactDetails(userDTO, supplierDTO);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Contact details updated successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
@@ -131,7 +131,7 @@ public class SupplierResource {
     @ApiOperation(value = "update Supplier Details")
     @RequestMapping(value = "update/supplierDetails", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO updateSupplierDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO updateSupplierDetails(@RequestBody final SupplierDTO supplierDTO, @RequestBody final UserDTO userDTO, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier details");
@@ -162,7 +162,7 @@ public class SupplierResource {
     @RequestMapping(value = "/submitRegistration", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO, @RequestBody final UserDTO userDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Submitting supplier registration");
@@ -170,7 +170,7 @@ public class SupplierResource {
             if (userConnected.getType() != 0) {
                 throw new AppException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO resSupplier = supplierService.submitSupplierRegistration(supplierDTO);
+            SupplierDTO resSupplier = supplierService.submitSupplierRegistration(supplierDTO, userDTO);
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Supplier registration submitted successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (Exception e) {
@@ -342,7 +342,7 @@ public class SupplierResource {
 
             UserDTO newUser = userService.getUserByEmail(userConnected.getEmail());
 
-            if(newUser == null || newUser.getType() == 1) {
+            if (newUser == null || newUser.getType() == 1) {
                 int supplierId = supplierService.getSupplierByUserId(userConnected.getId()).getId();
 
                 boolean emailSent = supplierService.sendEmailToContacts(newUserEmail, supplierId);

@@ -72,6 +72,7 @@ export class SupplierProfileComponent {
                                 }
                                 this.regionsToRender = this.supportedRegions[this.selectedCountriesNames[0]];
                                 this.users = this.supplier.users;
+
                             }
                         );
                     }

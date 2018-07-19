@@ -46,8 +46,11 @@
                 </div>
             </div>
             <br/><br/>
-            <p class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
+            <p *ngIf="users" class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
                 <div *ngFor="let user of users; let i = index">
+                <p><b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b></p>
+
+                <p>DEACTIVATE</p>
                 <div class="ui-g-12 whitePanel">
                     <div class="ui-g-12">
                         <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
@@ -58,9 +61,9 @@
                         <span class="ui-g-8 ui-sm-12"><b>{{ user?.surname }}</b></span>
                     </div>
                     <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.legal.address' | translate }}</span>
+                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.phone.number' | translate }}</span>
                         <span class="ui-g-8 ui-sm-12">
-                            <b>{{ user?.prefix }}{{ user?.phoneNumber }}</b>
+                            <b>{{ user?.phone_number }}{{ user?.phone_prefix }}</b>
                         </span>
                     </div>
                     <div class="ui-g-12">
@@ -68,6 +71,7 @@
                         <span class="ui-g-8 ui-sm-12"><b>{{ user?.email }}</b></span>
                     </div>
                 </div>
+                <br><br>
              </div>   
             <br/><br/>
             <p class="beneficiaryMayor">{{ 'suppRegistration.entity.support' | translate }}</p>

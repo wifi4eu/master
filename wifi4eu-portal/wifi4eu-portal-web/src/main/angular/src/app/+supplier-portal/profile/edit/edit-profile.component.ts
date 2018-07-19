@@ -13,6 +13,7 @@ import { SuppliedRegionDTOBase } from "../../../shared/swagger/model/SuppliedReg
 import { SupplierDTOBase } from "../../../shared/swagger/model/SupplierDTO";
 import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { ResponseDTO, ResponseDTOBase } from "../../../shared/swagger";
+import { LocalStorageService } from "angular-2-local-storage";
 
 @Component({
     selector: 'supplier-edit-profile',
@@ -55,9 +56,9 @@ export class SupplierEditProfileComponent {
     private addUser: boolean = false;
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private newUserEmail: string = '';
+ 
 
-
-    constructor(private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
+    constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
         let allow = true;
         if (this.sharedService.user) {
             this.user = this.sharedService.user;
@@ -192,6 +193,9 @@ export class SupplierEditProfileComponent {
     }
 
     private saveSupplierData() {
+        let storedUser = this.localStorageService.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+
         this.savingData = true;
         var newRegions = [];
 
@@ -225,6 +229,17 @@ export class SupplierEditProfileComponent {
                 this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'suppPortal.editProfile.save.error', 'error');
             }
         );
+
+        this.supplierApi.updateContactDetails(this.supplier, this.user).subscribe(
+            (user: UserDTOBase) =>{
+                
+
+            }, error =>{
+
+            }
+
+        )
+
     }
 
     private closeModal(){
@@ -252,4 +267,5 @@ export class SupplierEditProfileComponent {
         this.newUserEmail = '';
         this.addUser = true;
         }
+        
 }

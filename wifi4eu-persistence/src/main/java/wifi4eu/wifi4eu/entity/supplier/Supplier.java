@@ -32,18 +32,6 @@ public class Supplier {
     @Column(name = "website")
     private String website;
 
-    @Column(name = "contact_name")
-    private String contactName;
-
-    @Column(name = "contact_surname")
-    private String contactSurname;
-
-    @Column(name = "contact_phone_prefix")
-    private String contactPhonePrefix;
-
-    @Column(name = "contact_phone_number")
-    private String contactPhoneNumber;
-
     @Column(name = "contact_email")
     private String contactEmail;
 
@@ -55,7 +43,6 @@ public class Supplier {
             joinColumns = @JoinColumn(name = "supplier_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<User> users;
-
 
     @OneToMany(mappedBy = "supplier")
     private List<SuppliedRegion> suppliedRegions;
@@ -72,7 +59,7 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<User> users, List<SuppliedRegion> suppliedRegions, String legalFile1, String legalFile2, int status) {
+    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactEmail, String logo, List<User> users, List<SuppliedRegion> suppliedRegions, String legalFile1, String legalFile2, int status) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -80,10 +67,6 @@ public class Supplier {
         this.bic = bic;
         this.accountNumber = accountNumber;
         this.website = website;
-        this.contactName = contactName;
-        this.contactSurname = contactSurname;
-        this.contactPhonePrefix = contactPhonePrefix;
-        this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;
         this.logo = logo;
         this.users = users;
@@ -147,38 +130,6 @@ public class Supplier {
 
     public void setWebsite(String website) {
         this.website = website;
-    }
-
-    public String getContactName() {
-        return contactName;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-
-    public String getContactSurname() {
-        return contactSurname;
-    }
-
-    public void setContactSurname(String contactSurname) {
-        this.contactSurname = contactSurname;
-    }
-
-    public String getContactPhonePrefix() {
-        return contactPhonePrefix;
-    }
-
-    public void setContactPhonePrefix(String contactPhonePrefix) {
-        this.contactPhonePrefix = contactPhonePrefix;
-    }
-
-    public String getContactPhoneNumber() {
-        return contactPhoneNumber;
-    }
-
-    public void setContactPhoneNumber(String contactPhoneNumber) {
-        this.contactPhoneNumber = contactPhoneNumber;
     }
 
     public String getContactEmail() {

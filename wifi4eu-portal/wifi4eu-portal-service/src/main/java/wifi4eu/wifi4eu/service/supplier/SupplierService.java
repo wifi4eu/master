@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.common.enums.SupplierUserType;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
 import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
+import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
@@ -27,6 +28,7 @@ import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierListItemRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -73,6 +75,9 @@ public class SupplierService {
     @Autowired
     RegistrationUsersRepository registrationUsersRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     private final Logger _log = LogManager.getLogger(SupplierService.class);
 
     public List<SupplierDTO> getAllSuppliers() {
@@ -111,11 +116,7 @@ public class SupplierService {
                 finalSupplier.setLogo(supplierDTO.getLogo());
             }
         }
-        finalSupplier.setContactName(supplierDTO.getContactName());
-        finalSupplier.setContactSurname(supplierDTO.getContactSurname());
         finalSupplier.setContactEmail(supplierDTO.getContactEmail());
-        finalSupplier.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
-        finalSupplier.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
         List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
         List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
         finalSupplier.setSuppliedRegions(null);
@@ -130,12 +131,30 @@ public class SupplierService {
 
 
     @Transactional
-    public SupplierDTO updateContactDetails(SupplierDTO supplierDTO, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber) {
-        supplierDTO.setContactName(contactName);
-        supplierDTO.setContactSurname(contactSurname);
-        supplierDTO.setContactPhonePrefix(contactPhonePrefix);
-        supplierDTO.setContactPhoneNumber(contactPhoneNumber);
-        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+    public List<UserDTO> updateContactDetails(UserDTO userDTOFront, SupplierDTO supplierDTO) {
+        UserDTO userDTO = new UserDTO();
+        UserContext userContext = UserHolder.getUser();
+        if (userContext != null) {
+            // with ECAS
+            userDTO = userService.getUserByUserContext(userContext);
+        } else {
+            // without ECAS (only testing purpose)
+            String password = "12345678";
+            userDTO.setPassword(password);
+        }
+        List<UserDTO> userDTOList = userMapper.toDTOList(userRepository.findUsersBySupplierId(supplierDTO.getId()));
+        List<UserDTO> updatedUserList = new ArrayList<>();
+        for (UserDTO user : userDTOList) {
+            user.setName(userDTOFront.getName());
+            user.setSurname(userDTOFront.getSurname());
+            user.setPhone_number(userDTOFront.getPhone_number());
+            user.setPhone_prefix(userDTOFront.getPhone_prefix());
+            updatedUserList.add(user);
+        }
+        userRepository.save(userMapper.toEntityList(updatedUserList));
+        return updatedUserList;
+
+        //TODO Move this to user
     }
 
     @Transactional
@@ -184,7 +203,7 @@ public class SupplierService {
     }
 
     @Transactional
-    public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
+    public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO, UserDTO userDTOFront) throws Exception {
         UserDTO userDTO;
         SupplierValidator.validateSupplier(supplierDTO);
         UserContext userContext = UserHolder.getUser();
@@ -197,22 +216,25 @@ public class SupplierService {
             String password = "12345678";
             userDTO.setPassword(password);
         }
-
-        userDTO.setName(supplierDTO.getContactName());
-        userDTO.setSurname(supplierDTO.getContactSurname());
         userDTO.setEmail(supplierDTO.getContactEmail());
-        if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()){
+        if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()) {
             userDTO.setEcasEmail(supplierDTO.getContactEmail());
         }
         userDTO.setCreateDate(new Date().getTime());
         userDTO.setType(1);
         userDTO.setVerified(false);
+        // TODO Is this setting the enterprise name as contact name?
+//        userDTO.setName(supplierDTO.getName());
         userDTO.setLang(supplierDTO.getLang());
+        userDTO.setPhone_number(userDTOFront.getPhone_number());
+        userDTO.setPhone_prefix(userDTOFront.getPhone_prefix());
+        userDTO.setName(userDTOFront.getName());
+        userDTO.setSurname(userDTOFront.getSurname());
         userDTO = userService.saveUserChanges(userDTO);
         userService.sendActivateAccountMail(userDTO);
         supplierDTO = createSupplier(supplierDTO);
 
-        createSupplierUser(supplierDTO.getId(), userDTO.getId(), userDTO.getEmail() ,true);
+        createSupplierUser(supplierDTO.getId(), userDTO.getId(), userDTO.getEmail(), true);
         return supplierDTO;
     }
 
@@ -268,10 +290,6 @@ public class SupplierService {
         supplierDBO.setAddress(supplierDTO.getAddress());
         supplierDBO.setVat(supplierDTO.getVat());
         supplierDBO.setWebsite(supplierDTO.getWebsite());
-        supplierDBO.setContactName(supplierDTO.getContactName());
-        supplierDBO.setContactSurname(supplierDTO.getContactSurname());
-        supplierDBO.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
-        supplierDBO.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
         supplierDBO.setLogo(supplierDTO.getLogo());
         supplierDBO.setSuppliedRegions(updateSuppliedRegions(supplierDBO.getSuppliedRegions(), supplierDTO.getSuppliedRegions()));
         return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDBO)));
@@ -489,14 +507,14 @@ public class SupplierService {
         if (getSupplierByUserId(user.getId()) == null) {
             throw new Exception("User data is not correct.");
 
-        }else if (!checkHasNoRegistrations(newUserEmail)) {
+        } else if (!checkHasNoRegistrations(newUserEmail)) {
             throw new Exception("This email has registrations related to.");
 
-        } else if (!checkContactHasNotBeenAddedBefore(newUserEmail, supplierId)){
+        } else if (!checkContactHasNotBeenAddedBefore(newUserEmail, supplierId)) {
             throw new Exception("This contact has been added to this supplier before.");
 
         } else { // ALL OK
-            String urlSent = userService.getEcasUrl()+"/cas/eim/external/register.cgi?email=" + newUserEmail.trim();
+            String urlSent = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=" + newUserEmail.trim();
 
             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
             String subject = bundle.getString("mail.sendNewUserSupplier.subject");
@@ -509,11 +527,11 @@ public class SupplierService {
         }
     }
 
-    private boolean checkHasNoRegistrations(String userEmail){
+    private boolean checkHasNoRegistrations(String userEmail) {
         return registrationUsersRepository.findByContactEmail(userEmail).isEmpty();
     }
 
-    private boolean checkContactHasNotBeenAddedBefore(String userEmail, Integer supplierId){
+    private boolean checkContactHasNotBeenAddedBefore(String userEmail, Integer supplierId) {
         return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
     }
 }

@@ -11,10 +11,6 @@ public class SupplierDTO implements Serializable {
     private String bic;
     private String accountNumber;
     private String website;
-    private String contactName;
-    private String contactSurname;
-    private String contactPhonePrefix;
-    private String contactPhoneNumber;
     private String contactEmail;
     private String logo;
     private List<UserDTO> users;
@@ -29,7 +25,7 @@ public class SupplierDTO implements Serializable {
     public SupplierDTO() {
     }
 
-    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<UserDTO> users, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status, String lang) {
+    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactEmail, String logo, List<UserDTO> users, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status, String lang) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -37,10 +33,6 @@ public class SupplierDTO implements Serializable {
         this.bic = bic;
         this.accountNumber = accountNumber;
         this.website = website;
-        this.contactName = contactName;
-        this.contactSurname = contactSurname;
-        this.contactPhonePrefix = contactPhonePrefix;
-        this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;
         this.logo = logo;
         this.users = users;
@@ -107,38 +99,6 @@ public class SupplierDTO implements Serializable {
 
     public void setWebsite(String website) {
         this.website = website;
-    }
-
-    public String getContactName() {
-        return contactName;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-
-    public String getContactSurname() {
-        return contactSurname;
-    }
-
-    public void setContactSurname(String contactSurname) {
-        this.contactSurname = contactSurname;
-    }
-
-    public String getContactPhonePrefix() {
-        return contactPhonePrefix;
-    }
-
-    public void setContactPhonePrefix(String contactPhonePrefix) {
-        this.contactPhonePrefix = contactPhonePrefix;
-    }
-
-    public String getContactPhoneNumber() {
-        return contactPhoneNumber;
-    }
-
-    public void setContactPhoneNumber(String contactPhoneNumber) {
-        this.contactPhoneNumber = contactPhoneNumber;
     }
 
     public String getContactEmail() {
@@ -231,10 +191,6 @@ public class SupplierDTO implements Serializable {
                 ", bic='" + bic + '\'' +
                 ", accountNumber='" + accountNumber + '\'' +
                 ", website='" + website + '\'' +
-                ", contactName='" + contactName + '\'' +
-                ", contactSurname='" + contactSurname + '\'' +
-                ", contactPhonePrefix='" + contactPhonePrefix + '\'' +
-                ", contactPhoneNumber='" + contactPhoneNumber + '\'' +
                 ", contactEmail='" + contactEmail + '\'' +
                 ", logo='" + logo + '\'' +
                 ", suppliedRegions=" + suppliedRegions +
