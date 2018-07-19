@@ -342,16 +342,26 @@ export class VoucherComponent {
                         } else {
                             this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
                         }
-                    }, error => {
-                        this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
                     }
                 );
-                break;
+            }
+    }
             }
 
-    }
 
 
     }
+        console.log("Event was trigered and is ", event);
+    } */
+
+    // expand row
+    // this.expandedItems.pop(this.gridData[rownumber]);
+    // hide row
+    // this.expandedItems.push(this.gridData[rownumber]);
+    /* onRowClick() {
+        console.log("Row clicked");
+        this.expandedItems.push("1");
+    } */
+
 
 }
