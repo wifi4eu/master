@@ -332,32 +332,26 @@ export class VoucherComponent {
 
     private setConditionsAgreement(municipality) {
         console.log("You clicked on conditions agreement", municipality);
-        this.registrationsDocs.forEach(
-            element => {
-                if(element.municipalityId == municipality.id) {
-                    this.registrationApi.changeConditionsAgreementStatus(element.id, 1).subscribe(
-                        (res : ResponseDTOBase) => {
-
+        for(var j = 0; j < this.registrationsDocs.length; j++) {
+            if(this.registrationsDocs[j].municipalityId == municipality.id) {
+                this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreements[municipality.id] = 1 : this.conditionsAgreements[municipality.id] = 0;
+                this.registrationApi.changeConditionsAgreementStatus(this.registrationsDocs[j].id, this.conditionsAgreements[municipality.id]).subscribe(
+                    (data : ResponseDTOBase) => {
+                        if (data.success) {
+                            this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                        } else {
+                            this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
                         }
-                    );
-                }
-                console.log("Registration is ", element);
+                    }, error => {
+                        this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                    }
+                );
+                break;
             }
-        );
+
+    }
 
 
     }
-    /* onRowToggle(event) {
-        console.log("Event was trigered and is ", event);
-    } */
-
-    // expand row
-    // this.expandedItems.pop(this.gridData[rownumber]);
-    // hide row
-    // this.expandedItems.push(this.gridData[rownumber]);
-    /* onRowClick() {
-        console.log("Row clicked");
-        this.expandedItems.push("1");
-    } */
 
 }
