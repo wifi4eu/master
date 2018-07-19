@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CallDTOBase, CallApi, NutsApi, NutsDTOBase, BeneficiaryApi, ResponseDTO } from '../../shared/swagger';
 import { Subscription } from 'rxjs';
+import {SharedService} from "../../shared/shared.service";
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-beneficiary-list',
@@ -17,7 +19,8 @@ export class BeneficiaryListComponent implements OnInit {
   private country: NutsDTOBase = null;
   private finalBeneficiaries = [];
   private beneficiaryRequest: Subscription = new Subscription();
-
+  private cancelBeneficiaryId: number = 0;
+  private cancelReason: string = '';
   private currentPage: number = 0;
   private sizePage: number = 5;
   private sizePageOptions: number[] = [5,20,50];
@@ -31,7 +34,7 @@ export class BeneficiaryListComponent implements OnInit {
   private loading = false;
   private nameSearched = '';
 
-  constructor(private callApi: CallApi, private nutsApi: NutsApi, private beneficiaryApi: BeneficiaryApi) { }
+  constructor(private sharedService: SharedService, private callApi: CallApi, private nutsApi: NutsApi, private beneficiaryApi: BeneficiaryApi) { }
 
   ngOnInit() {
     this.nutsApi.getNutsByLevel(0).subscribe(
@@ -68,6 +71,43 @@ export class BeneficiaryListComponent implements OnInit {
       }
     )
   }
+
+  private cancelBeneficiary(){
+    if (this.cancelBeneficiaryId != 0 && this.cancelReason.trim().length > 0){
+      this.beneficiaryApi.cancelBeneficiaryFromRegistrationId(this.cancelBeneficiaryId, this.cancelReason, this.currentCall.id).subscribe(
+        (response: ResponseDTO) => {
+          console.log(response);
+          if (response.success){
+            this.sharedService.growlTranslation("Beneficiary cancelled correctly", "dgConn.beneficiariesList.cancel.confirm", "success");    
+          } else {
+            this.sharedService.growlTranslation("An error has ocurred during canceling the beneficiary. Please, try again later", "dgConn.beneficiariesList.cancel.failure", "error");
+          }
+          this.cancelBeneficiaryId = 0;
+        }, 
+        error => {
+          this.sharedService.growlTranslation("An error has ocurred during canceling the beneficiary. Please, try again later", "dgConn.beneficiariesList.cancel.failure", "error");
+          this.cancelBeneficiaryId = 0;
+        }
+      )
+    } else {
+      this.sharedService.growlTranslation("Please, complete the reason field to cancel the beneficiary", "dgConn.beneficiariesList.cancel.empty", "error");
+      // this.cancelBeneficiaryId = 0;
+    }
+  }
+
+  private downloadPdfGrantAgreement(registrationId: number){
+    this.beneficiaryApi.exportBeneficiaryPdfGrantAgreement(registrationId).subscribe(          
+      (response) => {
+          let blob = new Blob([response], {type: 'application/pdf'});
+          FileSaver.saveAs(blob, 'grantAgreementPdf.pdf');
+          this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");              
+      }, error => {
+          this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
+      }
+  );
+  }
+
+
 
   private searchByName() {
     if (this.inputSearch.trim().length > 0) {

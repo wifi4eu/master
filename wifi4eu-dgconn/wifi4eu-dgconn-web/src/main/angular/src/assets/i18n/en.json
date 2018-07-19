@@ -896,5 +896,13 @@
   "dgConn.beneficiariesList.status.selected": "Selected",
   "dgConn.beneficiariesList.status.signed": "Signed",
   "dgConn.beneficiariesList.status.counterSigned": "Counter signed",
-  "dgConn.beneficiariesList.status.cancelled": "Cancelled"
+  "dgConn.beneficiariesList.status.cancelled": "Cancelled",
+
+  "dgConn.beneficiariesList.cancel.title" : "Cancel beneficiary",
+  "dgConn.beneficiariesList.cancel.body" : "Are you sure you want to cancel this beneficiary? Please add a reason for cancellation:",
+  "dgConn.beneficiariesList.cancel.reason" : "Reason",
+  "dgConn.beneficiariesList.cancel.confirm" : "Beneficiary cancelled correctly",
+  "dgConn.beneficiariesList.cancel.failure" : "An error has ocurred during canceling the beneficiary. Please, try again later",
+  "dgConn.beneficiariesList.cancel.empty" : "Please, complete the reason field to cancel the beneficiary"
+
 }

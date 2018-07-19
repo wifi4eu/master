@@ -18,6 +18,7 @@ public class ApplicationDTO {
     private int lcStatus;
     private int status;
     private String invalidateReason;
+    private String cancelReason;
     private Boolean preSelectedFlag;
     private Boolean rejected;
     private Integer authorizedPerson;
@@ -25,7 +26,7 @@ public class ApplicationDTO {
     public ApplicationDTO() {
     }
 
-    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson) {
+    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -43,6 +44,7 @@ public class ApplicationDTO {
         this.lcStatus = lcStatus;
         this.status = status;
         this.invalidateReason = invalidateReason;
+        this.cancelReason = cancelReason;
         this.preSelectedFlag = preSelectedFlag;
         this.rejected = rejected;
         this.authorizedPerson = authorizedPerson;
@@ -203,4 +205,12 @@ public class ApplicationDTO {
     public Integer getAuthorizedPerson() { return authorizedPerson; }
 
     public void setAuthorizedPerson(Integer authorizedPerson) { this.authorizedPerson = authorizedPerson; }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
 }

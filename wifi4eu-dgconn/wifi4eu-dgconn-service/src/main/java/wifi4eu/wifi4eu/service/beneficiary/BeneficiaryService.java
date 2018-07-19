@@ -1,6 +1,10 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
 import com.google.common.collect.Lists;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +18,11 @@ import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryFinalListItem;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
@@ -24,6 +30,7 @@ import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryFinalListItemMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryFinalListItemRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
@@ -41,6 +48,7 @@ import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayOutputStream;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -88,6 +96,9 @@ public class BeneficiaryService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ApplicationRepository applicationRepository;
 
     @Autowired
     BeneficiaryFinalListItemRepository beneficiaryFinalListItemRepository;
@@ -625,6 +636,40 @@ public class BeneficiaryService {
         response.setXTotalCount(beneficiaryFinalListItemDTOList.size());
         response.setData(beneficiaryFinalListItemDTOList);
         return response;
+    }
+
+    public ByteArrayOutputStream downloadGrantAgreementPdfFromRegistrationId(int registrationId){
+        ByteArrayOutputStream outputStream = null;
+        try {
+            Document document = new Document();
+            outputStream = new ByteArrayOutputStream();
+            PdfWriter.getInstance(document, outputStream);
+            document.open();
+            String docName = "Lorem ipsum registration " + registrationId;
+            document.addTitle(docName);
+            document.addSubject(docName);
+            document.add(new Paragraph(docName));
+            document.close();
+        } catch (DocumentException e){
+            e.printStackTrace();
+        }
+        return outputStream;
+    }
+
+    public ResponseDTO cancelBeneficiaryFromRegistrationId(int registrationId, String reason, int callId){
+        ResponseDTO responseDTO = new ResponseDTO();
+        Application application = applicationRepository.findByRegistrationIdAndCallId(registrationId, callId);
+        if (application != null && reason.trim().length() > 0){
+            application.setStatus(ApplicationStatus.CANCELLED.getValue());
+            application.setCanceledReason(reason);
+            applicationRepository.save(application);
+            responseDTO.setSuccess(true);
+            responseDTO.setData("CANCELING BENEFICIARY BY REGISTRATION ID - "+registrationId+" - "+reason);
+        } else {
+            responseDTO.setSuccess(false);
+            responseDTO.setData("Error on requirements");
+        }
+        return responseDTO;
     }
 
 }

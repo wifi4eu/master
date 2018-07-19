@@ -64,6 +64,9 @@ public class Application {
     @Column(name = "invalidate_reason")
     private String invalidateReason;
 
+    @Column(name = "cancel_reason")
+    private String cancelReason;
+
     @Column(name = "pre_selected_flag")
     private Boolean preSelectedFlag;
 
@@ -82,7 +85,7 @@ public class Application {
     public Application() {
     }
 
-    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, Date dateSignature, Date dateCounterSignature) {
+    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, Date dateSignature, Date dateCounterSignature) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -100,14 +103,13 @@ public class Application {
         this.lcStatus = lcStatus;
         this.status = status;
         this.invalidateReason = invalidateReason;
+        this.cancelReason = cancelReason;
         this.preSelectedFlag = preSelectedFlag;
         this.rejected = rejected;
         this.authorizedPerson = authorizedPerson;
         this.dateSignature = dateSignature;
         this.dateCounterSignature = dateCounterSignature;
     }
-
-
 
     public Integer getId() {
         return id;
@@ -243,6 +245,14 @@ public class Application {
 
     public void setInvalidateReason(String invalidateReason) {
         this.invalidateReason = invalidateReason;
+    }
+
+    public String getCanceledReason() {
+        return cancelReason;
+    }
+
+    public void setCanceledReason(String cancelReason) {
+        this.cancelReason = cancelReason;
     }
 
     public Boolean getPreSelectedFlag() {

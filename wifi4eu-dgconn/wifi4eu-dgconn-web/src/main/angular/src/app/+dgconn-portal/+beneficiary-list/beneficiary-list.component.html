@@ -89,18 +89,25 @@
                 <span *ngIf="row.dateCounterSignature != null">{{ row.dateCounterSignature | date: 'shortDate'}}</span>
               </ng-template>
         </p-column>
-        <p-column [sortable]="false" header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
+        <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
           <ng-template let-row="rowData" pTemplate="body">
+              
+              <!-- <button (click)="downloadPdfGrantAgreement(row.registrationId)" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button> -->
+              <button (click)="cancelBeneficiaryId = row.registrationId" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+
+              
+            <!--
             <span [routerLink]="['../applicant-registrations', row.lauId, 'call', currentCall.id]" routerLinkActive="active" class="action-label">
               <span class="fa fa-eye"></span>
               <span>{{ 'dgConn.view' | translate }}</span>
             </span>
+          -->
           </ng-template>
         </p-column>
         <footer>
           <div style="position: absolute; bottom: 25px; left: 20px;">
             <span *ngIf="!loadingData">
-              {{ 'dgConn.totalRecords' | translate }}: {{tableBeneficiaries.totalRecords}}
+              {{ 'dgConn.totalRecords' | translate }}: {{totalItems}}
             </span>
             <span *ngIf="loadingData">
               {{ 'shared.loading.modal.title' | translate }}
@@ -115,3 +122,23 @@
     </div>
   </div>
 </div>
+
+<p-dialog [(visible)]="cancelBeneficiaryId" [modal]="true" [responsive]="true" [resizable]="false"
+  [draggable]="false" [closable]="false" [closeOnEscape]="false">
+  <div class="controller">
+    <h2 class="Modalh1Confirmation">{{ 'dgConn.beneficiariesList.cancel.title' | translate }}</h2>
+    <br>
+    <p class="center">{{ 'dgConn.beneficiariesList.cancel.body' | translate }}</p>
+    <br>
+    <span>{{ 'dgConn.beneficiariesList.cancel.reason' | translate}}</span>
+    <input type="text" [(ngModel)]="cancelReason" class="form-control">
+  </div>
+  <div class="row center">
+    <div class="col-sm-6 marginStep1">
+      <button (click)="cancelBeneficiaryId = 0" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    </div>
+    <div class="col-sm-6 marginStep1">
+      <button (click)="cancelBeneficiary()" class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>
