@@ -18,9 +18,9 @@
 
         <!-- Webapp modules -->
         <module>wifi4eu-portal</module>
-        <!--<module>wifi4eu-public-portal</module>-->
-        <!--<module>wifi4eu-dgconn</module>-->
-        <!--<module>wifi4eu-supplier</module>-->
+        <module>wifi4eu-public-portal</module>
+        <module>wifi4eu-dgconn</module>
+        <module>wifi4eu-supplier</module>
         <!--<module>wifi4eu-financial</module>-->
     </modules>
 
@@ -172,7 +172,7 @@
         <encrypted.smtp.password>rAVMaF9Tq672wijgk9LxfA==</encrypted.smtp.password>
         <secret.key.encryption>SBy2hecZS9lA7wiIGmoRiA==</secret.key.encryption>
 
-        <mail.smtp.host>127.0.0.1</mail.smtp.host>
+        <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
         <mail.smtp.port>587</mail.smtp.port>
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
         <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>

@@ -71,62 +71,6 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.findOne(supplierId));
     }
 
-
-    @Transactional
-    public SupplierDTO createSupplier(SupplierDTO supplierDTO) throws Exception {
-        SupplierDTO finalSupplier = new SupplierDTO();
-        finalSupplier.setName(supplierDTO.getName());
-        finalSupplier.setAddress(supplierDTO.getAddress());
-        finalSupplier.setVat(supplierDTO.getVat());
-        finalSupplier.setBic(supplierDTO.getBic());
-        finalSupplier.setAccountNumber(supplierDTO.getAccountNumber());
-        if (supplierDTO.getWebsite() != null) {
-            if (!supplierDTO.getWebsite().trim().isEmpty()) {
-                finalSupplier.setWebsite(supplierDTO.getWebsite());
-            } else {
-                finalSupplier.setWebsite(null);
-            }
-        } else {
-            finalSupplier.setWebsite(null);
-        }
-        if (supplierDTO.getLogo() != null) {
-            byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(supplierDTO.getLogo()));
-            String logoMimeType = LegalFilesService.getMimeType(supplierDTO.getLogo());
-            if (logoByteArray.length > 2560000) {
-                throw new Exception("File size cannot bet greater than 2.5 MB.");
-            } else if (!logoMimeType.equals("image/png") && !logoMimeType.equals("image/jpg") && !logoMimeType.equals("image/jpeg")) {
-                throw new Exception("File must have a valid extension.");
-            } else {
-                finalSupplier.setLogo(supplierDTO.getLogo());
-            }
-        }
-        finalSupplier.setContactName(supplierDTO.getContactName());
-        finalSupplier.setContactSurname(supplierDTO.getContactSurname());
-        finalSupplier.setContactEmail(supplierDTO.getContactEmail());
-        finalSupplier.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
-        finalSupplier.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
-        List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
-        List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
-        finalSupplier.setSuppliedRegions(null);
-        finalSupplier = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(finalSupplier)));
-        for (SuppliedRegionDTO region : originalRegions) {
-            region.setSupplierId(finalSupplier.getId());
-            correctRegions.add(region);
-        }
-        finalSupplier.setSuppliedRegions(correctRegions);
-        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(finalSupplier)));
-    }
-
-
-    @Transactional
-    public SupplierDTO updateContactDetails(SupplierDTO supplierDTO, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber) {
-        supplierDTO.setContactName(contactName);
-        supplierDTO.setContactSurname(contactSurname);
-        supplierDTO.setContactPhonePrefix(contactPhonePrefix);
-        supplierDTO.setContactPhoneNumber(contactPhoneNumber);
-        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
-    }
-
     @Transactional
     public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String logo) throws Exception {
         supplierDTO.setName(name);
@@ -165,34 +109,6 @@ public class SupplierService {
 
     public List<SuppliedRegionDTO> getAllSuppliedRegions() {
         return suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findAll()));
-    }
-
-    @Transactional
-    public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
-        UserDTO userDTO;
-        SupplierValidator.validateSupplier(supplierDTO);
-        UserContext userContext = UserHolder.getUser();
-        if (userContext != null) {
-            // with ECAS
-            userDTO = userService.getUserByUserContext(userContext);
-        } else {
-            // without ECAS (only testing purpose)
-            userDTO = new UserDTO();
-            String password = "12345678";
-            userDTO.setPassword(password);
-        }
-
-        userDTO.setName(supplierDTO.getContactName());
-        userDTO.setSurname(supplierDTO.getContactSurname());
-        userDTO.setEmail(supplierDTO.getContactEmail());
-        userDTO.setCreateDate(new Date().getTime());
-        userDTO.setType(1);
-        userDTO.setVerified(false);
-        userDTO.setLang(supplierDTO.getLang());
-        userDTO = userService.saveUserChanges(userDTO);
-        userService.sendActivateAccountMail(userDTO);
-        supplierDTO = createSupplier(supplierDTO);
-        return supplierDTO;
     }
 
     public SupplierDTO getSupplierByUserId(int userId) {

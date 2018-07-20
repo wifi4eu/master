@@ -102,7 +102,7 @@ export class SupplierRegistrationComponent {
             language = 'en';
         }
         this.supplier.lang = language;
-        this.supplierApi.submitSupplierRegistration(this.supplier, this.user).subscribe(
+        this.supplierApi.submitSupplierRegistration(this.supplier).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
                     this.sharedService.update();
