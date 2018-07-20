@@ -146,12 +146,6 @@ public class RegistrationService {
     @Autowired
     CallService callService;
 
-    @Autowired
-    ConditionsAgreementMapper conditionsAgreementMapper;
-
-    @Autowired
-    ConditionsAgreementRepository conditionsAgreementRepository;
-
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
     }
@@ -718,21 +712,5 @@ public class RegistrationService {
     public List<UserDTO> getUsersFromRegistration(Integer registrationId){
         List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersByRegistrationId(registrationId));
         return users;
-    }
-
-    public ConditionsAgreementDTO saveConditionsAgreementDTO(Integer userId, Integer registrationId, Integer status){
-        ConditionsAgreementDTO conditionsAgreementDTO = new ConditionsAgreementDTO();
-        conditionsAgreementDTO.setRegistrationId(registrationId);
-        conditionsAgreementDTO.setStatus(status);
-        conditionsAgreementDTO.setUserId(userId);
-        conditionsAgreementDTO.setChangeStatusDate(new Date());
-
-        return conditionsAgreementMapper.toDTO(conditionsAgreementRepository.save(conditionsAgreementMapper.toEntity(conditionsAgreementDTO)));
-    }
-
-    public int getStatusConditionsAgreement(Integer supplierId){
-        ConditionsAgreement conditionsAgreement = conditionsAgreementRepository.findFirstByRegistrationIdOrderByIdDesc(supplierId);
-
-        return conditionsAgreement == null ? 0 : conditionsAgreement.getStatus();
     }
 }
