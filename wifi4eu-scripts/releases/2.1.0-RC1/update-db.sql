@@ -24,3 +24,7 @@ ALTER TABLE suppliers DROP COLUMN contact_phone_prefix;
 ALTER TABLE suppliers DROP COLUMN contact_phone_number;
 ALTER TABLE suppliers DROP COLUMN contact_name;
 ALTER TABLE suppliers DROP COLUMN contact_surname;
+
+UPDATE ru set creation_date  = dateadd(s, convert(bigint, u.create_date) / 1000, convert(datetime, '1-1-1970 00:00:00'))
+FROM dbo.[registration_users] as ru
+inner join users as u on ru._user = u.id

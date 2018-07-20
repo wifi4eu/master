@@ -1,20 +1,20 @@
-import {Component} from '@angular/core';
-import {ApplicationApi} from "../../shared/swagger/api/ApplicationApi";
-import {CallApi} from "../../shared/swagger/api/CallApi";
-import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {ApplicationDTOBase} from "../../shared/swagger/model/ApplicationDTO";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {MayorApi} from "../../shared/swagger/api/MayorApi";
-import {SharedService} from "../../shared/shared.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Http, RequestOptions, Headers} from "@angular/http";
+import { Component } from '@angular/core';
+import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
+import { CallApi } from "../../shared/swagger/api/CallApi";
+import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { LocalStorageService } from "angular-2-local-storage";
+import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { ApplicationDTOBase } from "../../shared/swagger/model/ApplicationDTO";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
+import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import { MayorApi } from "../../shared/swagger/api/MayorApi";
+import { SharedService } from "../../shared/shared.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Http, RequestOptions, Headers } from "@angular/http";
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -45,13 +45,15 @@ export class VoucherComponent {
     private isMayor: boolean = false;
     private registration: RegistrationDTOBase;
     private mayor: MayorDTOBase;
-    private docsOpen: boolean [] = [];
+    private docsOpen: boolean[] = [];
     private registrationsDocs: RegistrationDTOBase[] = [];
     private storedRegistrationQueues = [];
     private disableQueuing = [];
     private displayError = false;
+    private displayCallClosed = false;
     private errorMessage = null;
     private rabbitmqURI: string = "/queue";
+    private currentDate: number;
 
     private httpOptions = {
         headers: new Headers({
@@ -71,6 +73,7 @@ export class VoucherComponent {
                     this.registrationsDocs = registrations;
                     this.checkForCalls(registrations);
                     if (registrations.length < 2) {
+                        this.getCurrentTime();
                         // JUST FOR ONE MUNICIPALITY
                         this.registration = registrations[0];
                         this.mayorApi.getMayorByMunicipalityId(registrations[0].municipalityId).subscribe(
@@ -125,7 +128,7 @@ export class VoucherComponent {
                                                     let date = new Date(this.currentCall.startDate);
                                                     this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                                                     this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-                                                    if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
+                                                    if ((this.currentCall.startDate - this.currentDate) <= 0) {
                                                         this.voucherCompetitionState = 2;
                                                         this.openedCalls = "greyImage";
                                                     } else {
@@ -195,14 +198,16 @@ export class VoucherComponent {
     }
 
     private goToDocuments(registrationNumber: number) {
-        this.router.navigate(['../additional-info/', this.registrations[registrationNumber].municipalityId], {relativeTo: this.route});
+        this.router.navigate(['../additional-info/', this.registrations[registrationNumber].municipalityId], { relativeTo: this.route });
     }
 
     private applyForVoucher(registrationNumber: number, event) {
-        let startCallDate = this.currentCall.startDate;
-        let actualDateTime = new Date().getTime();
-
-        if (startCallDate <= actualDateTime) {
+        //we just need to check this variable
+        //voucherCompetitionState is 2 is call is open
+        //or when timer component emits that has finished
+        if (this.voucherCompetitionState == 2) {
+            let startCallDate = this.currentCall.startDate;
+            let actualDateTime = new Date().getTime();
             if (!this.loadingButtons[registrationNumber]) {
 
                 let body =
@@ -215,7 +220,6 @@ export class VoucherComponent {
                     ', "fileUploadTimestamp":' +
                     this.registrations[registrationNumber].uploadTime +
                     "}";
-
 
                 this.http.post(this.rabbitmqURI, body, this.httpOptions).subscribe(
                     response => {
@@ -254,11 +258,6 @@ export class VoucherComponent {
                         )
                     }
                 );
-
-                event.target.style.pointerEvents = "none";
-                event.target.style.opacity = "0.5";
-                event.target.disabled = true;
-
             } else {
                 //trying to apply before sending the support documents
                 this.sharedService.growlTranslation(
@@ -267,19 +266,16 @@ export class VoucherComponent {
                     "error"
                 )
             }
-        } else {
+        } else if (this.voucherCompetitionState == 1) {
             //trying to apply before the opening of the call
-            this.sharedService.growlTranslation(
-                "An error occurred and your application could not be received.",
-                "shared.registration.update.error",
-                "error"
-            )
+            this.displayCallClosed = true;
         }
     }
 
     private closeModal() {
         this.errorMessage = null;
         this.displayError = false;
+        this.displayCallClosed = false;
     }
 
     private openApplyForVoucher() {
@@ -312,6 +308,14 @@ export class VoucherComponent {
 
 
         }
+    }
+
+    private getCurrentTime() {
+        this.callApi.getTime().subscribe(
+            (date: any) => {
+                this.currentDate = date;
+            }
+        );
     }
 
 }

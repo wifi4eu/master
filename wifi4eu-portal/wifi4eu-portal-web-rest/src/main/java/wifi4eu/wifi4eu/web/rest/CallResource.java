@@ -15,6 +15,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -54,6 +55,14 @@ public class CallResource {
     @ResponseBody
     public boolean isCallClosed(@PathVariable("callId") final Integer callId) {
         return false;
+    }
+
+
+    @ApiOperation(value = "time")
+    @RequestMapping(value = "/time", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Date getTime() {
+        return callService.getTime();
     }
 
 }
