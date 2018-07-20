@@ -1,21 +1,21 @@
-import {Component} from '@angular/core';
-import {ApplicationApi} from "../../shared/swagger/api/ApplicationApi";
-import {CallApi} from "../../shared/swagger/api/CallApi";
-import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {ConditionsAgreementDTOBase} from "../../shared/swagger/model/ConditionsAgreementDTO";
-import {ApplicationDTOBase} from "../../shared/swagger/model/ApplicationDTO";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {MayorApi} from "../../shared/swagger/api/MayorApi";
-import {SharedService} from "../../shared/shared.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Http, RequestOptions, Headers} from "@angular/http";
+import { Component } from '@angular/core';
+import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
+import { CallApi } from "../../shared/swagger/api/CallApi";
+import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { LocalStorageService } from "angular-2-local-storage";
+import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { ConditionsAgreementDTOBase } from "../../shared/swagger/model/ConditionsAgreementDTO";
+import { ApplicationDTOBase } from "../../shared/swagger/model/ApplicationDTO";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
+import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import { MayorApi } from "../../shared/swagger/api/MayorApi";
+import { SharedService } from "../../shared/shared.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Http, RequestOptions, Headers } from "@angular/http";
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -46,13 +46,15 @@ export class VoucherComponent {
     private isMayor: boolean = false;
     private registration: RegistrationDTOBase;
     private mayor: MayorDTOBase;
-    private docsOpen: boolean [] = [];
+    private docsOpen: boolean[] = [];
     private registrationsDocs: RegistrationDTOBase[] = [];
     private storedRegistrationQueues = [];
     private disableQueuing = [];
     private displayError = false;
+    private displayCallClosed = false;
     private errorMessage = null;
     private rabbitmqURI: string = "/queue";
+    private currentDate: number;
 
     private expandedItems: Array<any> = new Array<any>();
     private signedConditionsAgreement : boolean;
@@ -78,6 +80,7 @@ export class VoucherComponent {
                     this.registrationsDocs = registrations;
                     this.checkForCalls(registrations);
                     if (registrations.length < 2) {
+                        this.getCurrentTime();
                         // JUST FOR ONE MUNICIPALITY
                         this.registration = registrations[0];
                         this.mayorApi.getMayorByMunicipalityId(registrations[0].municipalityId).subscribe(
@@ -134,21 +137,21 @@ export class VoucherComponent {
                                                                 return registration.id == queue['idRegistration'];
                                                             })
                                                             this.disableQueuing.push(res[0] ? res[0] : null);
-        
+
                                                             this.loadingButtons.push(false);
                                                             let date = new Date(this.currentCall.startDate);
                                                             this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                                                             this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-                                                            if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
+                                                            if ((this.currentCall.startDate - this.currentDate) <= 0) {
                                                                 this.voucherCompetitionState = 2;
                                                                 this.openedCalls = "greyImage";
                                                             } else {
                                                                 this.voucherCompetitionState = 1;
                                                             }
-        
+
                                                             this.checkForDocuments();
                                                             if (this.applications.length == registrations.length) {
-        
+
                                                                 this.disableQueuing.forEach((element, index) => {
                                                                     if (element) {
                                                                         if (element['expires_in'] < Math.floor(new Date().getTime() / 1000)) {
@@ -162,16 +165,16 @@ export class VoucherComponent {
                                                                         }
                                                                     }
                                                                 });
-        
+
                                                                 var newStoredRegistrationQueues = [];
                                                                 this.disableQueuing.forEach((disableQueuingEl, index) => {
                                                                     this.loadingButtons[index] = disableQueuingEl ? true : false;
                                                                     if (disableQueuingEl != null) newStoredRegistrationQueues.push(disableQueuingEl);
                                                                 });
-        
+
                                                                 this.storedRegistrationQueues = newStoredRegistrationQueues;
                                                                 this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
-        
+
                                                                 let allApplied = true;
                                                                 for (let app of this.applications) {
                                                                     if (!app) {
@@ -185,7 +188,7 @@ export class VoucherComponent {
                                                             }
                                                         }
                                                     );
-        
+
                                                 } else {
                                                     this.registrations.push(registration);
                                                     this.municipalities.push(municipality);
@@ -211,14 +214,16 @@ export class VoucherComponent {
     }
 
     private goToDocuments(registrationNumber: number) {
-        this.router.navigate(['../additional-info/', this.registrations[registrationNumber].municipalityId], {relativeTo: this.route});
+        this.router.navigate(['../additional-info/', this.registrations[registrationNumber].municipalityId], { relativeTo: this.route });
     }
 
     private applyForVoucher(registrationNumber: number, event) {
-        let startCallDate = this.currentCall.startDate;
-        let actualDateTime = new Date().getTime();
-
-        if (startCallDate <= actualDateTime) {
+        //we just need to check this variable
+        //voucherCompetitionState is 2 is call is open
+        //or when timer component emits that has finished
+        if (this.voucherCompetitionState == 2) {
+            let startCallDate = this.currentCall.startDate;
+            let actualDateTime = new Date().getTime();
             if (!this.loadingButtons[registrationNumber]) {
 
                 let body =
@@ -231,7 +236,6 @@ export class VoucherComponent {
                     ', "fileUploadTimestamp":' +
                     this.registrations[registrationNumber].uploadTime +
                     "}";
-
 
                 this.http.post(this.rabbitmqURI, body, this.httpOptions).subscribe(
                     response => {
@@ -270,11 +274,6 @@ export class VoucherComponent {
                         )
                     }
                 );
-
-                event.target.style.pointerEvents = "none";
-                event.target.style.opacity = "0.5";
-                event.target.disabled = true;
-
             } else {
                 //trying to apply before sending the support documents
                 this.sharedService.growlTranslation(
@@ -283,19 +282,16 @@ export class VoucherComponent {
                     "error"
                 )
             }
-        } else {
+        } else if (this.voucherCompetitionState == 1) {
             //trying to apply before the opening of the call
-            this.sharedService.growlTranslation(
-                "An error occurred and your application could not be received.",
-                "shared.registration.update.error",
-                "error"
-            )
+            this.displayCallClosed = true;
         }
     }
 
     private closeModal() {
         this.errorMessage = null;
         this.displayError = false;
+        this.displayCallClosed = false;
     }
 
     private openApplyForVoucher() {
@@ -332,7 +328,7 @@ export class VoucherComponent {
     private changeConditionsAgreement(municipality) {
         for(var j = 0; j < this.registrationsDocs.length; j++) {
             if(this.registrationsDocs[j].municipalityId == municipality.id) {
-                this.conditionsAgreement.registrationId = this.registrationsDocs[j].id; 
+                this.conditionsAgreement.registrationId = this.registrationsDocs[j].id;
                 this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreement.status = 1 : this.conditionsAgreement.status = 0;
                 this.conditionsAgreements[municipality.id] = this.conditionsAgreement.status;
                 this.registrationApi.changeConditionsAgreementStatus(this.conditionsAgreement).subscribe(
@@ -352,6 +348,15 @@ export class VoucherComponent {
     }
 
 
-    }
+}
+
+
+     private getCurrentTime() {
+            this.callApi.getTime().subscribe(
+                (date: any) => {
+                    this.currentDate = date;
+                }
+            );
+        }
 
 }
