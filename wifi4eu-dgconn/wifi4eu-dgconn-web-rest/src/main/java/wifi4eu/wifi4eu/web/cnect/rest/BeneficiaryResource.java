@@ -248,15 +248,13 @@ public class BeneficiaryResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            // ResponseDTO responseDTO = beneficiaryService.downloadGrantAgreementPdfFromRegistrationId(registrationId);
-            // _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Download PDF Grant Agreement successfully");
-            // return responseDTO;
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/pdf"));
             String filename = "grantAgreementPdf.pdf";
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             ByteArrayOutputStream file = beneficiaryService.downloadGrantAgreementPdfFromRegistrationId(registrationId);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - PDF Grant Agreement generated correctly");
             return new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to download the PDF Grant Agreement", ade.getMessage());
@@ -277,7 +275,7 @@ public class BeneficiaryResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             ResponseDTO responseDTO = beneficiaryService.cancelBeneficiaryFromRegistrationId(registrationId,reason,callId);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary cancelled successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary cancelled correctly");
             return responseDTO;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to cancel this beneficiary", ade.getMessage());
@@ -286,8 +284,5 @@ public class BeneficiaryResource {
         }
 
     }
-
-
-
 
 }

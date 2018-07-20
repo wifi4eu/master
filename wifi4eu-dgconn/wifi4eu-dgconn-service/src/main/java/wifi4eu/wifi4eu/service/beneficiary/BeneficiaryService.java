@@ -565,7 +565,6 @@ public class BeneficiaryService {
         return sb.toString();
     }
 
-    // TODO: Finish filter by countryCode or country and municipality and pagination
     public ResponseDTO findBeneficiariesFromFinalList(Integer callId, String countryCode, String municipality, Integer page, Integer sizePage, String field, String sortDirection){
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
@@ -632,7 +631,6 @@ public class BeneficiaryService {
 
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(true);
-        //TODO : Return number total results
         response.setXTotalCount(beneficiaryFinalListItemDTOList.size());
         response.setData(beneficiaryFinalListItemDTOList);
         return response;
@@ -640,6 +638,9 @@ public class BeneficiaryService {
 
     public ByteArrayOutputStream downloadGrantAgreementPdfFromRegistrationId(int registrationId){
         ByteArrayOutputStream outputStream = null;
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Downloading Grant Agreement Pdf");
         try {
             Document document = new Document();
             outputStream = new ByteArrayOutputStream();
@@ -651,12 +652,16 @@ public class BeneficiaryService {
             document.add(new Paragraph(docName));
             document.close();
         } catch (DocumentException e){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Error generating PDF Grant Agreement");
             e.printStackTrace();
         }
         return outputStream;
     }
 
     public ResponseDTO cancelBeneficiaryFromRegistrationId(int registrationId, String reason, int callId){
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Cancel beneficiary with a reason");
         ResponseDTO responseDTO = new ResponseDTO();
         Application application = applicationRepository.findByRegistrationIdAndCallId(registrationId, callId);
         if (application != null && reason.trim().length() > 0){
@@ -668,6 +673,7 @@ public class BeneficiaryService {
         } else {
             responseDTO.setSuccess(false);
             responseDTO.setData("Error on requirements");
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Error cancelling beneficiary");
         }
         return responseDTO;
     }
