@@ -20,13 +20,11 @@ import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.registration.ConditionsAgreement;
 import wifi4eu.wifi4eu.entity.call.Call;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.entity.user.User;
-import wifi4eu.wifi4eu.mapper.registration.ConditionsAgreementMapper;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
@@ -35,7 +33,6 @@ import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.registration.ConditionsAgreementRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
@@ -145,12 +142,6 @@ public class RegistrationService {
 
     @Autowired
     CallService callService;
-
-    @Autowired
-    ConditionsAgreementMapper conditionsAgreementMapper;
-
-    @Autowired
-    ConditionsAgreementRepository conditionsAgreementRepository;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -718,21 +709,5 @@ public class RegistrationService {
     public List<UserDTO> getUsersFromRegistration(Integer registrationId){
         List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersByRegistrationId(registrationId));
         return users;
-    }
-
-    public ConditionsAgreementDTO saveConditionsAgreementDTO(Integer userId, Integer registrationId, Integer status){
-        ConditionsAgreementDTO conditionsAgreementDTO = new ConditionsAgreementDTO();
-        conditionsAgreementDTO.setRegistrationId(registrationId);
-        conditionsAgreementDTO.setStatus(status);
-        conditionsAgreementDTO.setUserId(userId);
-        conditionsAgreementDTO.setChangeStatusDate(new Date());
-
-        return conditionsAgreementMapper.toDTO(conditionsAgreementRepository.save(conditionsAgreementMapper.toEntity(conditionsAgreementDTO)));
-    }
-
-    public int getStatusConditionsAgreement(Integer supplierId){
-        ConditionsAgreement conditionsAgreement = conditionsAgreementRepository.findFirstByRegistrationIdOrderByIdDesc(supplierId);
-
-        return conditionsAgreement == null ? 0 : conditionsAgreement.getStatus();
     }
 }

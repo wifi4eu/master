@@ -1,25 +1,25 @@
-import {Component} from '@angular/core';
-import {ApplicationApi} from "../../shared/swagger/api/ApplicationApi";
-import {CallApi} from "../../shared/swagger/api/CallApi";
-import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {ConditionsAgreementDTOBase} from "../../shared/swagger/model/ConditionsAgreementDTO";
-import {ApplicationDTOBase} from "../../shared/swagger/model/ApplicationDTO";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {MayorApi} from "../../shared/swagger/api/MayorApi";
-import {SharedService} from "../../shared/shared.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Http, RequestOptions, Headers} from "@angular/http";
-
+import { Component } from '@angular/core';
+import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
+import { CallApi } from "../../shared/swagger/api/CallApi";
+import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { LocalStorageService } from "angular-2-local-storage";
+import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { ConditionsAgreementApi } from "../../shared/swagger/api/ConditionsAgreementApi";
+import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { ConditionsAgreementDTOBase } from "../../shared/swagger/model/ConditionsAgreementDTO";
+import { ApplicationDTOBase } from "../../shared/swagger/model/ApplicationDTO";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
+import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import { MayorApi } from "../../shared/swagger/api/MayorApi";
+import { SharedService } from "../../shared/shared.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Http, RequestOptions, Headers } from "@angular/http";
 @Component({
     templateUrl: 'voucher.component.html',
-    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi]
+    providers: [ApplicationApi, CallApi, RegistrationApi, ConditionsAgreementApi, MunicipalityApi, MayorApi]
 })
 
 export class VoucherComponent {
@@ -68,7 +68,7 @@ export class VoucherComponent {
     };
 
 
-    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
+    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private conditionsAgreementApi: ConditionsAgreementApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
@@ -112,7 +112,7 @@ export class VoucherComponent {
                 for (let registration of registrations) {
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
-                            this.registrationApi.getConditionsAgreementStatus(registration.id).subscribe(
+                            this.conditionsAgreementApi.getConditionsAgreementStatus(registration.id).subscribe(    
                                 (status : ResponseDTOBase) => {
                                     if (municipality != null) {
                                         this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
@@ -142,7 +142,7 @@ export class VoucherComponent {
                                                             let date = new Date(this.currentCall.startDate);
                                                             this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                                                             this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-                                                            if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
+                                                            if ((this.currentCall.startDate - this.currentDate) <= 0) {
                                                                 this.voucherCompetitionState = 2;
                                                                 this.openedCalls = "greyImage";
                                                             } else {
@@ -333,14 +333,14 @@ export class VoucherComponent {
         }
 
     }
-
+ 
     private changeConditionsAgreement(municipality) {
         for(var j = 0; j < this.registrationsDocs.length; j++) {
             if(this.registrationsDocs[j].municipalityId == municipality.id) {
                 this.conditionsAgreement.registrationId = this.registrationsDocs[j].id; 
                 this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreement.status = 1 : this.conditionsAgreement.status = 0;
                 this.conditionsAgreements[municipality.id] = this.conditionsAgreement.status;
-                this.registrationApi.changeConditionsAgreementStatus(this.conditionsAgreement).subscribe(
+                this.conditionsAgreementApi.changeConditionsAgreementStatus(this.conditionsAgreement).subscribe(
                     (data : ResponseDTOBase) => {
                         if (data.success) {
                             this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
