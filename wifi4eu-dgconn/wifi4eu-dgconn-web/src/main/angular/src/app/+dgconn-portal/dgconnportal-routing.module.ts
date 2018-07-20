@@ -1,4 +1,4 @@
-import {NgModule} from "@angular/core";
+import {NgModule, Component} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {DgConnPortalComponent} from "./dgconnportal.component";
 import {DgConnPublicationComponent} from "./+publication/publication.component";
@@ -13,6 +13,7 @@ import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-reg
 import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrations/details/supplier-registrations-details.component";
 import {DgConnApplicantRegistrationsDetailsComponent} from "./+applicant-registrations/+details/applicant-registrations-details.component";
 import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
+import { BeneficiaryListComponent } from "./+beneficiary-list/beneficiary-list.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -26,6 +27,10 @@ import {DgConnExportImportComponent} from "./+exportImport/exportImport.componen
             path: 'voucher',
             component: DgConnVoucherComponent,
         },
+        {
+          path: 'beneficiaries',
+          component: BeneficiaryListComponent
+        },
          /* {
             path: 'statistics',
             component: DgConnStatisticsComponent,
@@ -37,13 +42,13 @@ import {DgConnExportImportComponent} from "./+exportImport/exportImport.componen
             path: 'supplier-registrations/:id',
             component: DgConnSupplierRegistrationsDetailsComponent
         }
-        , {
+        ,*/ {
             path: 'beneficiary-registrations',
             component: DgConnBeneficiaryRegistrationsComponent,
-        }, {
+        }/*, {
             path: 'beneficiary-registrations/:id',
             component: DgConnBeneficiaryRegistrationsDetailsComponent,
-        },*/
+        }*/,
          {
             path: 'applicant-registrations',
             component: DgConnApplicantRegistrationsComponent,

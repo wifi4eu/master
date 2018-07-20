@@ -16,6 +16,7 @@ import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
 import { PaginatorModule, OverlayPanelModule, TooltipModule, RadioButtonModule } from "primeng/primeng";
 import {SharedModule as SharedNgModule} from 'primeng/primeng';
+import { BeneficiaryListComponent } from './+beneficiary-list/beneficiary-list.component';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import {SharedModule as SharedNgModule} from 'primeng/primeng';
         DgConnApplicantRegistrationsDetailsComponent,
         DgConnManageLauComponent,
         DgConnDiscussionComponent,
-        DgConnExportImportComponent
+        DgConnExportImportComponent,
+        BeneficiaryListComponent
     ],
     bootstrap: [DgConnPortalComponent]
 })
