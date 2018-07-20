@@ -59,6 +59,10 @@ public class CallService {
         return false;
     }
 
+    public Date getTime(){
+        return new Date();
+    }
+
 //    public CallDTO createCall(CallDTO callDTO) {
 //        CallDTO resCallDTO = callMapper.toDTO(callRepository.save(callMapper.toEntity(callDTO)));
 //        VoucherManagementDTO voucherManagementDTO = new VoucherManagementDTO();
