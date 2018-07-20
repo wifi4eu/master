@@ -148,11 +148,11 @@ public class Supplier {
         this.logo = logo;
     }
 
-    public List<User> getUser() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUser(List<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 

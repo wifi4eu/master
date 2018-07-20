@@ -72,7 +72,6 @@ export class SupplierProfileComponent {
                                 }
                                 this.regionsToRender = this.supportedRegions[this.selectedCountriesNames[0]];
                                 this.users = this.supplier.users;
-
                             }
                         );
                     }
@@ -246,7 +245,6 @@ export class SupplierProfileComponent {
         this.languageRows = this.prepareLanguageRows();
 
         const userLang = this.languages.find(language => language.code === this.user.lang);
-        console.log("User language (res) is ", userLang);
         this.selectedLanguage = userLang;
 
     }

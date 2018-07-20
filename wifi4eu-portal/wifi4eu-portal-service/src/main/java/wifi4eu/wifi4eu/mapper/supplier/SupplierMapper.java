@@ -18,14 +18,8 @@ public interface SupplierMapper {
 
     NutsDTO toDTO(Nuts entity);
 
-    @Mappings({
-            @Mapping(source = "entity.user", target = "users")
-    })
     SupplierDTO toDTO(Supplier entity);
 
-    @Mappings({
-            @Mapping(source = "vo.users", target = "user")
-    })
     Supplier toEntity(SupplierDTO vo);
 
     @Mappings({

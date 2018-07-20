@@ -49,8 +49,6 @@
             <p *ngIf="users" class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
                 <div *ngFor="let user of users; let i = index">
                 <p><b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b></p>
-
-                <p>DEACTIVATE</p>
                 <div class="ui-g-12 whitePanel">
                     <div class="ui-g-12">
                         <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
@@ -62,9 +60,7 @@
                     </div>
                     <div class="ui-g-12">
                         <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.phone.number' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12">
-                            <b>{{ user?.phone_number }}{{ user?.phone_prefix }}</b>
-                        </span>
+                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.phoneNumber }} {{ user?.phonePrefix }}</b></span>
                     </div>
                     <div class="ui-g-12">
                         <span class="ui-g-4 ui-sm-12">{{ 'shared.email.label' | translate }}</span>

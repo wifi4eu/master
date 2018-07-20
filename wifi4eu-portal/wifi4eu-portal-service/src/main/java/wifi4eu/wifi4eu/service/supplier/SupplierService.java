@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.SupplierContactStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserType;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
 import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
-import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
@@ -131,28 +131,24 @@ public class SupplierService {
 
 
     @Transactional
-    public List<UserDTO> updateContactDetails(UserDTO userDTOFront, SupplierDTO supplierDTO) {
-        UserDTO userDTO = new UserDTO();
-        UserContext userContext = UserHolder.getUser();
-        if (userContext != null) {
-            // with ECAS
-            userDTO = userService.getUserByUserContext(userContext);
-        } else {
-            // without ECAS (only testing purpose)
-            String password = "12345678";
-            userDTO.setPassword(password);
+    public List<UserDTO> updateContactDetails(SupplierDTO supplierDTO) {
+//        UserDTO userDTO = new UserDTO();
+//        UserContext userContext = UserHolder.getUser();
+        List<UserDTO> userDBOList = userMapper.toDTOList(userRepository.findUsersBySupplierId(supplierDTO.getId()));
+        for (UserDTO user : userDBOList) {
+            for (UserDTO userSupplier : supplierDTO.getUsers()) {
+                if (userSupplier.getId() == user.getId()) {
+                    user.setName(userSupplier.getName());
+                    user.setSurname(userSupplier.getSurname());
+                    user.setPhone_number(userSupplier.getPhone_number());
+                    user.setPhone_prefix(userSupplier.getPhone_prefix());
+                    break;
+                }
+            }
+
         }
-        List<UserDTO> userDTOList = userMapper.toDTOList(userRepository.findUsersBySupplierId(supplierDTO.getId()));
-        List<UserDTO> updatedUserList = new ArrayList<>();
-        for (UserDTO user : userDTOList) {
-            user.setName(userDTOFront.getName());
-            user.setSurname(userDTOFront.getSurname());
-            user.setPhone_number(userDTOFront.getPhone_number());
-            user.setPhone_prefix(userDTOFront.getPhone_prefix());
-            updatedUserList.add(user);
-        }
-        userRepository.save(userMapper.toEntityList(updatedUserList));
-        return updatedUserList;
+        userRepository.save(userMapper.toEntityList(userDBOList));
+        return userDBOList;
 
         //TODO Move this to user
     }
@@ -223,8 +219,6 @@ public class SupplierService {
         userDTO.setCreateDate(new Date().getTime());
         userDTO.setType(1);
         userDTO.setVerified(false);
-        // TODO Is this setting the enterprise name as contact name?
-//        userDTO.setName(supplierDTO.getName());
         userDTO.setLang(supplierDTO.getLang());
         userDTO.setPhone_number(userDTOFront.getPhone_number());
         userDTO.setPhone_prefix(userDTOFront.getPhone_prefix());
@@ -533,5 +527,27 @@ public class SupplierService {
 
     private boolean checkContactHasNotBeenAddedBefore(String userEmail, Integer supplierId) {
         return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
+    }
+
+    public SupplierUserDTO deactivateSupplierContact(Integer userId) throws Exception {
+        List<SupplierUser> supplierUsers = supplierUserRepository.findByUserId(userId);
+        SupplierUser supplierUserToSave = null;
+        for (SupplierUser supplierUser : supplierUsers) {
+            if (supplierUser.getUserId().equals(userId)) {
+                supplierUser.setStatus(SupplierUserStatus.DEACTIVATED.getStatus());
+                supplierUserToSave = supplierUser;
+                UserDTO contactDeactivated = userService.getUserById(userId);
+                contactDeactivated.setType(SupplierContactStatus.DEACTIVATED.getStatus());
+                userService.saveUserChanges(contactDeactivated);
+
+            }
+        }
+        if (supplierUserToSave == null) {
+            throw new Exception("Incorrect userId");
+        } else {
+            supplierUserRepository.save(supplierUserToSave);
+        }
+
+        return supplierUserMapper.toDTO(supplierUserToSave);
     }
 }
