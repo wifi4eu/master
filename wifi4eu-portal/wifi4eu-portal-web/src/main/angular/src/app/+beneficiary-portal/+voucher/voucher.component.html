@@ -86,13 +86,17 @@
                             <button class="modal-content ui-g-1 ui-sm-1" (click)=setConditionsAgreement(municipality)>
                                 <i class="fa fa-square-o" aria-hidden="true"></i>
                             </button>
-                            <div class="ui-g-11 ui-sm-11">{{ 'benefPortal.voucher.conditionsAgreement' | translate }}</div>
+                            <div class="ui-g-11 ui-sm-11">
+                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
+                            </div>
                         </div>
                         <div *ngIf="conditionsAgreements[municipality.id]">
                             <button class="modal-content ui-g-1 ui-sm-1" (click)=setConditionsAgreement(municipality)>
                                 <i class="fa fa-check-square-o" aria-hidden="true"></i>
                             </button>
-                            <div class="ui-g-11 ui-sm-11">{{ 'benefPortal.voucher.conditionsAgreement' | translate }}</div>
+                            <div class="ui-g-11 ui-sm-11">
+                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
+                            </div>
                         </div>
                     </div>
                 </template>
