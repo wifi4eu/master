@@ -83,10 +83,10 @@ public class ConditionsAgreementResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
-            _log.info("Get Current ConditionsAgreement Status From Registration [Id = " + registrationId + "]");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Get Current ConditionsAgreement Status From Registration [Id = " + registrationId + "]");
             return new ResponseDTO(true, conditionsAgreementService.getStatusConditionsAgreement(registrationId), null);
         } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to save legal files", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to save get ConditionsAgreement Status From Registration ", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
