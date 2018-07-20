@@ -305,7 +305,11 @@ export class VoucherComponent {
     private checkForDocuments() {
 
         if (this.isMayor) {
-            this.docsOpen[0] = (this.registrations[0].legalFile1Size != null && this.registrations[0].legalFile1Size > 0 && this.registrations[0].legalFile3Size != null && this.registrations[0].legalFile3Size > 0);
+            this.docsOpen[0] = (this.registrations[0].legalFile1Size != null && this.registrations[0].legalFile1Size > 0 && 
+                                this.registrations[0].legalFile2Size != null && this.registrations[0].legalFile2Size > 0 &&
+                                this.registrations[0].legalFile3Size != null && this.registrations[0].legalFile3Size > 0 &&
+                                this.registrations[0].legalFile4Size != null && this.registrations[0].legalFile4Size > 0
+                            );
 
             if (this.docsOpen[0]) {
                 let uploaddate = new Date(this.registrations[0].uploadTime);
@@ -314,7 +318,12 @@ export class VoucherComponent {
             }
         } else {
             for (let i = 0; i < this.registrations.length; i++) {
-                this.docsOpen[i] = (this.registrations[i].legalFile1Size != null && this.registrations[i].legalFile1Size > 0 && this.registrations[i].legalFile3Size != null && this.registrations[i].legalFile3Size > 0);
+                this.docsOpen[i] = (
+                    this.registrations[i].legalFile1Size != null && this.registrations[i].legalFile1Size > 0 &&
+                    this.registrations[i].legalFile2Size != null && this.registrations[i].legalFile2Size > 0 && 
+                    this.registrations[i].legalFile3Size != null && this.registrations[i].legalFile3Size > 0 &&
+                    this.registrations[i].legalFile4Size != null && this.registrations[i].legalFile4Size > 0
+                );
                 if (this.docsOpen[i]) {
                     let uploaddate = new Date(this.registrations[i].uploadTime);
                     this.uploadDate[i] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
