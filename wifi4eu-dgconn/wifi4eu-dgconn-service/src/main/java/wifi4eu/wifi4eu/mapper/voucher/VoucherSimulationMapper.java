@@ -9,10 +9,11 @@ import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface VoucherSimulationMapper {
 
     @Mappings({

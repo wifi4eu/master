@@ -16,3 +16,7 @@ update [dbo].[legal_files]
 set [upload_time] = (select dateadd(s, convert(bigint, r.upload_time) / 1000, convert(datetime, '1-1-1970 00:00:00')))
 from [dbo].[legal_files]  inner join
 [dbo].[registrations] r on r.id = registration;
+
+UPDATE ru set creation_date  = dateadd(s, convert(bigint, u.create_date) / 1000, convert(datetime, '1-1-1970 00:00:00'))
+FROM dbo.[registration_users] as ru
+inner join users as u on ru._user = u.id

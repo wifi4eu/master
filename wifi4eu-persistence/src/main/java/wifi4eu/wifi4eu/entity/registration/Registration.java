@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.entity.registration;
 
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
+import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
 
 import javax.persistence.*;
@@ -110,10 +111,16 @@ public class Registration {
     @Column(name = "date_registered")
     private Timestamp dateRegistered;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "registration_users",
+          joinColumns = @JoinColumn( name="registration", referencedColumnName = "id"),
+          inverseJoinColumns = @JoinColumn( name="_user", referencedColumnName = "id"))
+    private List<User> users;
+
     public Registration() {
     }
 
-    public Registration(Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
+    public Registration(Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, List<User> users) {
         this.municipality = municipality;
         this.role = role;
         this.status = status;
@@ -144,6 +151,7 @@ public class Registration {
         this.conformity = conformity;
         this.firstFalseCheck = firstFalseCheck;
         this.dateRegistered = dateRegistered;
+        this.users = users;
     }
 
     public Integer getId() {
@@ -392,5 +400,13 @@ public class Registration {
 
     public void setInstallationSiteConfirmation(Date installationSiteConfirmation) {
         this.installationSiteConfirmation = installationSiteConfirmation;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

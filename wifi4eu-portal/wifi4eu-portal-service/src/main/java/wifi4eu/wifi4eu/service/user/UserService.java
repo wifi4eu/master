@@ -18,6 +18,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
@@ -174,7 +175,9 @@ public class UserService {
         _log.debug("User Email: " + userContext.getEmail() + " and User PerId: " + userContext.getPerId());
 
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
-        List<RegistrationUsers> registrationUsers = registrationUsersRepository.findByContactEmail(userContext.getEmail());
+
+        //get registrationUsers relation pending to be approved for the user logging in
+        List<RegistrationUsers> registrationUsers = registrationUsersRepository.findByContactEmailAndStatus(userContext.getEmail(), RegistrationUsersStatus.UNREGISTERED.getValue());
 
         if (userDTO == null) {
             userDTO = new UserDTO();
@@ -215,7 +218,7 @@ public class UserService {
             }
         }
 
-        List<SupplierUser> supplierUsers = supplierUserRepository.findByEmail(userContext.getEmail());
+        List<SupplierUser> supplierUsers = supplierUserRepository.findByEmailAndStatus(userContext.getEmail(), SupplierUserStatus.NOT_REGISTERED.getStatus());
         List<SupplierUser> supplierUsersToUpdate = new ArrayList<>();
         int userId = userRepository.findByEcasUsername(userContext.getUsername()).getId();
 
@@ -249,6 +252,14 @@ public class UserService {
         if (userDTO != null) {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
+
+                    //first remove connections with registration by setting the status to deleted
+                    List<RegistrationUsers> registrationUsers = registrationUsersRepository.findByUserId(userDTO.getId());
+                    for(RegistrationUsers rUser : registrationUsers){
+                        rUser.setStatus(RegistrationUsersStatus.DELETED.getValue());
+                    }
+                    registrationUsersRepository.save(registrationUsers);
+
                     removeTempToken(userDTO);
                     for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
                         municipalityService.deleteMunicipality(municipality.getId(), request);
@@ -258,6 +269,15 @@ public class UserService {
                     }
                     break;
                 case (int) Constant.ROLE_SUPPLIER:
+
+                    //first remove connections with suppliers by setting the status to deleted
+                    List<SupplierUser> supplierUsers = supplierUserRepository.findByUserId(userDTO.getId());
+                    for(SupplierUser sUser : supplierUsers){
+                        sUser.setStatus(SupplierUserStatus.DELETED.getStatus());
+                    }
+                    supplierUserRepository.save(supplierUsers);
+
+
                     removeTempToken(userDTO);
                     removeSuppliedRegion(userDTO);
 
