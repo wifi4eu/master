@@ -1,22 +1,3 @@
-<<<<<<< HEAD
-import { Component } from '@angular/core';
-import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
-import { CallApi } from "../../shared/swagger/api/CallApi";
-import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
-import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
-import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
-import { LocalStorageService } from "angular-2-local-storage";
-import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
-import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
-import { ApplicationDTOBase } from "../../shared/swagger/model/ApplicationDTO";
-import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
-import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
-import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
-import { MayorApi } from "../../shared/swagger/api/MayorApi";
-import { SharedService } from "../../shared/shared.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Http, RequestOptions, Headers } from "@angular/http";
-=======
 import {Component} from '@angular/core';
 import {ApplicationApi} from "../../shared/swagger/api/ApplicationApi";
 import {CallApi} from "../../shared/swagger/api/CallApi";
@@ -35,7 +16,6 @@ import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {SharedService} from "../../shared/shared.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Http, RequestOptions, Headers} from "@angular/http";
->>>>>>> 8de2c612ccb2a419a4a495c19d75d5870e0dadb1
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -132,50 +112,6 @@ export class VoucherComponent {
                 for (let registration of registrations) {
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
-<<<<<<< HEAD
-                            if (municipality != null) {
-                                this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
-                                    (mayor: MayorDTOBase) => {
-                                        if (this.currentCall) {
-                                            this.applicationApi.getApplicationByCallIdAndRegistrationId(this.currentCall.id, registration.id).subscribe(
-                                                (application: ApplicationDTOBase) => {
-                                                    this.registrations.push(registration);
-                                                    this.municipalities.push(municipality);
-                                                    this.mayors.push(mayor);
-                                                    if (application.id != 0) {
-                                                        this.applications.push(application);
-                                                    } else {
-                                                        this.applications.push(null);
-                                                    }
-                                                    var res = this.storedRegistrationQueues.filter((queue) => {
-                                                        return registration.id == queue['idRegistration'];
-                                                    })
-                                                    this.disableQueuing.push(res[0] ? res[0] : null);
-
-                                                    this.loadingButtons.push(false);
-                                                    let date = new Date(this.currentCall.startDate);
-                                                    this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                                                    this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-                                                    if ((this.currentCall.startDate - this.currentDate) <= 0) {
-                                                        this.voucherCompetitionState = 2;
-                                                        this.openedCalls = "greyImage";
-                                                    } else {
-                                                        this.voucherCompetitionState = 1;
-                                                    }
-
-                                                    this.checkForDocuments();
-                                                    if (this.applications.length == registrations.length) {
-
-                                                        this.disableQueuing.forEach((element, index) => {
-                                                            if (element) {
-                                                                if (element['expires_in'] < Math.floor(new Date().getTime() / 1000)) {
-                                                                    this.disableQueuing[index] = null;
-                                                                    this.loadingButtons[index] = false;
-                                                                } else {
-                                                                    if (this.applications[index] != null) {
-                                                                        this.loadingButtons[index] = true;
-                                                                        this.disableQueuing[index] = null;
-=======
                             this.registrationApi.getConditionsAgreementStatus(registration.id).subscribe(
                                 (status : ResponseDTOBase) => {
                                     if (municipality != null) {
@@ -243,7 +179,6 @@ export class VoucherComponent {
                                                                 for (let app of this.applications) {
                                                                     if (!app) {
                                                                         allApplied = false;
->>>>>>> 8de2c612ccb2a419a4a495c19d75d5870e0dadb1
                                                                     }
                                                                 }
                                                                 if (allApplied) {
@@ -415,7 +350,6 @@ export class VoucherComponent {
 
     }
 
-<<<<<<< HEAD
     private getCurrentTime() {
         this.callApi.getTime().subscribe(
             (date: any) => {
@@ -425,6 +359,3 @@ export class VoucherComponent {
     }
 
 }
-=======
-}
->>>>>>> 8de2c612ccb2a419a4a495c19d75d5870e0dadb1
