@@ -7,6 +7,7 @@ import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
 import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+import {ConditionsAgreementDTOBase} from "../../shared/swagger/model/ConditionsAgreementDTO";
 import {ApplicationDTOBase} from "../../shared/swagger/model/ApplicationDTO";
 import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
@@ -53,17 +54,17 @@ export class VoucherComponent {
     private errorMessage = null;
     private rabbitmqURI: string = "/queue";
 
+    private expandedItems: Array<any> = new Array<any>();
+    private signedConditionsAgreement : boolean;
+    private conditionsAgreements : Object = {};
+    private conditionsAgreement : ConditionsAgreementDTOBase = new ConditionsAgreementDTOBase();
+
     private httpOptions = {
         headers: new Headers({
             'Content-Type': 'application/json'
         })
     };
 
-    // NEW PROPERTYYYY
-    private expandedItems: Array<any> = new Array<any>();
-    private signedConditionsAgreement : boolean;
-    private conditionsAgreements : Object = {};
-    private conditionsAgreementStatus : number;
 
     constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
         let storedUser = this.localStorage.get('user');
@@ -331,9 +332,10 @@ export class VoucherComponent {
     private changeConditionsAgreement(municipality) {
         for(var j = 0; j < this.registrationsDocs.length; j++) {
             if(this.registrationsDocs[j].municipalityId == municipality.id) {
-                this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreementStatus = 1 : this.conditionsAgreementStatus = 0;
-                this.conditionsAgreements[municipality.id] = this.conditionsAgreementStatus;
-                this.registrationApi.changeConditionsAgreementStatus(this.registrationsDocs[j].id, this.conditionsAgreementStatus).subscribe(
+                this.conditionsAgreement.registrationId = this.registrationsDocs[j].id; 
+                this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreement.status = 1 : this.conditionsAgreement.status = 0;
+                this.conditionsAgreements[municipality.id] = this.conditionsAgreement.status;
+                this.registrationApi.changeConditionsAgreementStatus(this.conditionsAgreement).subscribe(
                     (data : ResponseDTOBase) => {
                         if (data.success) {
                             this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
