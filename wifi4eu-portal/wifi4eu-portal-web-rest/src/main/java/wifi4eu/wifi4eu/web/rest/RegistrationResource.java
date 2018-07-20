@@ -373,7 +373,7 @@ public class RegistrationResource {
     @ApiOperation(value = "Change ConditionsAgreement Status")
     @RequestMapping(value = "/changeConditionsAgreementStatus", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO changeConditionsAgreementStatus(@RequestBody final ConditionsAgreementDTO conditionsAgreementDTO, @RequestParam("status") final Integer status, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public ResponseDTO changeConditionsAgreementStatus(@RequestBody final ConditionsAgreementDTO conditionsAgreementDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
 
