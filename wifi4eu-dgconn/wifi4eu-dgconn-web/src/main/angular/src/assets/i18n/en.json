@@ -903,6 +903,7 @@
   "dgConn.beneficiariesList.cancel.reason" : "Reason",
   "dgConn.beneficiariesList.cancel.confirm" : "Beneficiary cancelled correctly",
   "dgConn.beneficiariesList.cancel.failure" : "An error has ocurred during canceling the beneficiary. Please, try again later",
-  "dgConn.beneficiariesList.cancel.empty" : "Please, complete the reason field to cancel the beneficiary"
+  "dgConn.beneficiariesList.cancel.empty" : "Please, complete the reason field to cancel the beneficiary",
+  "dgconn.dashboard.card.beneficiaries.home" : "Beneficiaries"
 
 }
