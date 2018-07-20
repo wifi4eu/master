@@ -74,7 +74,6 @@ export class VoucherComponent {
         if (this.user != null) {
             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                 (registrations: RegistrationDTOBase[]) => {
-                    console.log("Registrations are ", registrations);
                     this.registrationsDocs = registrations;
                     this.checkForCalls(registrations);
                     if (registrations.length < 2) {
@@ -330,7 +329,6 @@ export class VoucherComponent {
     }
 
     private setConditionsAgreement(municipality) {
-        console.log("You clicked on conditions agreement", municipality);
         for(var j = 0; j < this.registrationsDocs.length; j++) {
             if(this.registrationsDocs[j].municipalityId == municipality.id) {
                 this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreementStatus = 1 : this.conditionsAgreementStatus = 0;
