@@ -645,7 +645,7 @@ public class BeneficiaryService {
             outputStream = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, outputStream);
             document.open();
-            String docName = "Lorem ipsum registration " + registrationId;
+            String docName = "This pdf will show the Grant Agreement of the registration" + registrationId;
             document.addTitle(docName);
             document.addSubject(docName);
             document.add(new Paragraph(docName));

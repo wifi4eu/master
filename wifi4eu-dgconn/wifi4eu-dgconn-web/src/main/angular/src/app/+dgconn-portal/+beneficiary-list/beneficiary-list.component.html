@@ -89,19 +89,43 @@
                 <span *ngIf="row.dateCounterSignature != null">{{ row.dateCounterSignature | date: 'shortDate'}}</span>
               </ng-template>
         </p-column>
-        <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
+        <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center not-hide-overflow">
           <ng-template let-row="rowData" pTemplate="body">
-              
-              <!-- <button (click)="downloadPdfGrantAgreement(row.registrationId)" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button> -->
-              <button (click)="cancelBeneficiaryId = row.registrationId" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
-
-              
-            <!--
-            <span [routerLink]="['../applicant-registrations', row.lauId, 'call', currentCall.id]" routerLinkActive="active" class="action-label">
-              <span class="fa fa-eye"></span>
-              <span>{{ 'dgConn.view' | translate }}</span>
-            </span>
-          -->
+                  <div style="position:relative;" (click)="ap.show($event)">
+                    <p-overlayPanel #ap>
+                      <div class="row">
+                          <a [routerLink]="['../applicant-registrations', row.lauId, 'call', currentCall.id]" routerLinkActive="active" class="action-label-list-beneficiaries">
+                          <div class="col-sm-2">
+                            <span class="fa fa-eye"></span>
+                          </div>
+                          <div class="col-sm-6">
+                            <span>{{'dgConn.voucherAssignment.applicationStatus.view' | translate}}</span>
+                          </div>
+                        </a>
+                      </div>
+                      <div class="row topBetweenDivs">
+                          <a (click)="downloadPdfGrantAgreement(row.registrationId)" class="action-label-list-beneficiaries">
+                            <div class="col-sm-2">
+                              <span class="fa fa-file-pdf-o paddingLeftAlignEye"></span>
+                            </div>
+                            <div class="col-sm-6">
+                              <span>{{'shared.download' | translate}}</span>
+                            </div>
+                          </a>
+                      </div>
+                      <div class="row topBetweenDivs">
+                          <a (click)="cancelBeneficiaryId = row.registrationId" class="action-label-list-beneficiaries">
+                            <div class="col-sm-2">
+                              <span class="fa fa-ban paddingLeftAlignEye"></span>
+                            </div>
+                            <div class="col-sm-6">
+                              <span>{{'shared.cancel.button' | translate}}</span>
+                            </div>
+                          </a>
+                      </div>
+                    </p-overlayPanel>
+                    <i class="fa fa-ellipsis-v actions-icon" aria-hidden="true"></i>
+                  </div>
           </ng-template>
         </p-column>
         <footer>

@@ -1670,9 +1670,22 @@ p-tabview.white .ui-widget-content.ui-tabview {
 
 .action-label {
   cursor: pointer;
-  color: $dark-blue;
+  color: $dark-blue !important;
   text-decoration: none;
   font-weight: bold;
+}
+
+.action-label-list-beneficiaries {
+  cursor: pointer;
+  color: $dark-grey !important;
+  text-decoration: none;
+  font-weight: bold;
+  text-align: left !important;
+}
+
+.action-label-list-beneficiaries:hover {
+  color: $darkish-blue !important;
+  text-decoration: underline;
 }
 
 .action-label:hover {

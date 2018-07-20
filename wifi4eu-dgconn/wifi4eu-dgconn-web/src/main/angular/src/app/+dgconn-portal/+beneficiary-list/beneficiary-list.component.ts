@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { OnInit, Component, ViewEncapsulation, ViewChild, ElementRef } from "@angular/core";
+import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
 import { CallDTOBase, CallApi, NutsApi, NutsDTOBase, BeneficiaryApi, ResponseDTO } from '../../shared/swagger';
 import { Subscription } from 'rxjs';
+import {ActivatedRoute, Router} from "@angular/router";
 import {SharedService} from "../../shared/shared.service";
 import * as FileSaver from 'file-saver';
 
@@ -8,7 +10,22 @@ import * as FileSaver from 'file-saver';
   selector: 'app-beneficiary-list',
   templateUrl: './beneficiary-list.component.html',
   styleUrls: ['./beneficiary-list.component.scss'],
-  providers: [CallApi, NutsApi, BeneficiaryApi]
+  providers: [CallApi, NutsApi, BeneficiaryApi],
+  encapsulation: ViewEncapsulation.None,
+  animations: [
+    trigger('opacityTransition', [
+      state('*', style({ opacity: 1 })),
+      state('void', style({ opacity: 0 })),
+      transition('* => void', [
+        style({ opacity: 1 }),
+        animate('0.2s linear', style({ opacity: 0 }))
+      ]),
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate('0.2s linear', style({ opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class BeneficiaryListComponent implements OnInit {
 
@@ -34,7 +51,7 @@ export class BeneficiaryListComponent implements OnInit {
   private loading = false;
   private nameSearched = '';
 
-  constructor(private sharedService: SharedService, private callApi: CallApi, private nutsApi: NutsApi, private beneficiaryApi: BeneficiaryApi) { }
+  constructor(private router: Router, private sharedService: SharedService, private callApi: CallApi, private nutsApi: NutsApi, private beneficiaryApi: BeneficiaryApi) { }
 
   ngOnInit() {
     this.nutsApi.getNutsByLevel(0).subscribe(
@@ -76,22 +93,23 @@ export class BeneficiaryListComponent implements OnInit {
     if (this.cancelBeneficiaryId != 0 && this.cancelReason.trim().length > 0){
       this.beneficiaryApi.cancelBeneficiaryFromRegistrationId(this.cancelBeneficiaryId, this.cancelReason, this.currentCall.id).subscribe(
         (response: ResponseDTO) => {
-          console.log(response);
           if (response.success){
-            this.sharedService.growlTranslation("Beneficiary cancelled correctly", "dgConn.beneficiariesList.cancel.confirm", "success");    
+            this.sharedService.growlTranslation("Beneficiary cancelled correctly", "dgConn.beneficiariesList.cancel.confirm", "success");
+            this.searchBeneficiaries();    
           } else {
             this.sharedService.growlTranslation("An error has ocurred during canceling the beneficiary. Please, try again later", "dgConn.beneficiariesList.cancel.failure", "error");
           }
+          this.cancelReason = '';
           this.cancelBeneficiaryId = 0;
         }, 
         error => {
           this.sharedService.growlTranslation("An error has ocurred during canceling the beneficiary. Please, try again later", "dgConn.beneficiariesList.cancel.failure", "error");
           this.cancelBeneficiaryId = 0;
+          this.cancelReason = '';
         }
       )
     } else {
       this.sharedService.growlTranslation("Please, complete the reason field to cancel the beneficiary", "dgConn.beneficiariesList.cancel.empty", "error");
-      // this.cancelBeneficiaryId = 0;
     }
   }
 
@@ -118,6 +136,13 @@ export class BeneficiaryListComponent implements OnInit {
     this.searchBeneficiaries();
 }
 
+private changeCall(event){
+  if (event['index']!= null){
+    this.currentCall = this.calls[event['index']];
+    this.searchBeneficiaries();
+  }
+}
+
   private paginateData(event) {
     if (event['rows'] != null) {
         if (this.sizePage != event['rows']) {
@@ -141,6 +166,10 @@ export class BeneficiaryListComponent implements OnInit {
           this.sortDirection = event['order'] === -1 ? 'DESC' : 'ASC';
       }
       this.searchBeneficiaries(); 
+  }
+
+  private goToMunicipalityDetails(lauId: number) {
+    this.router.navigate(['../applicant-registrations', lauId, 'call' ,this.currentCall.id]);
   }
 
 }
