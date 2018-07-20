@@ -2,8 +2,8 @@ package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
 
 public class RegistrationDTO implements Serializable {
     private int id;
