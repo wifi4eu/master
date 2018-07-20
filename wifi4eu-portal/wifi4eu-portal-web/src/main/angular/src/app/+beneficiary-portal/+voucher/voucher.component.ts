@@ -328,7 +328,7 @@ export class VoucherComponent {
 
     }
 
-    private setConditionsAgreement(municipality) {
+    private changeConditionsAgreement(municipality) {
         for(var j = 0; j < this.registrationsDocs.length; j++) {
             if(this.registrationsDocs[j].municipalityId == municipality.id) {
                 this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreementStatus = 1 : this.conditionsAgreementStatus = 0;
