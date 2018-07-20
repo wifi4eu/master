@@ -83,7 +83,7 @@ public class ConditionsAgreementResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
-            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
+            _log.info("Get Current ConditionsAgreement Status From Registration [Id = " + registrationId + "]");
             return new ResponseDTO(true, conditionsAgreementService.getStatusConditionsAgreement(registrationId), null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to save legal files", ade.getMessage());
