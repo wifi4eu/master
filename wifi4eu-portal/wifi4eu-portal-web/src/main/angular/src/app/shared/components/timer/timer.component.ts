@@ -2,8 +2,9 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Http } from '@angular/http';
 import { SharedService } from '../../shared.service';
+import { CallApi } from "../../swagger/api/CallApi";
 
-@Component({ selector: 'timer-component', templateUrl: 'timer.component.html' , styleUrls: ['timer.component.scss']})
+@Component({ selector: 'timer-component', templateUrl: 'timer.component.html' , styleUrls: ['timer.component.scss'], providers: [CallApi]})
 export class TimerComponent {
     @Output() timerEvent = new EventEmitter<any>();
     private currentTimestamp: number;
@@ -16,7 +17,7 @@ export class TimerComponent {
     private baseURLApi: string = 'http://localhost:8080/wifi4eu/api/call';
     private timeGate: string = "/time";
 
-    constructor(private http: Http, private sharedService: SharedService) {
+    constructor(private http: Http, private sharedService: SharedService, private callApi: CallApi) {
     }
 
     ngOnInit() {
@@ -54,7 +55,7 @@ export class TimerComponent {
     }
 
     private getTime() {
-        let url = this.baseURLApi + this.timeGate;
+        /*let url = this.baseURLApi + this.timeGate;
         this.http.get(url).subscribe(
             response => {
                 if (response.status == 200 && !isNaN(parseInt(response.text()))) {
@@ -64,7 +65,14 @@ export class TimerComponent {
                 }
             }, error => {
                 this.handleTimeError();
-            });
+            });*/
+        // temporary endpoint
+        this.callApi.getTime().subscribe(
+            (date: any) => {
+                this.currentTimestamp = date;
+            }
+        );
+
     }
 
     private handleTimeError() {
