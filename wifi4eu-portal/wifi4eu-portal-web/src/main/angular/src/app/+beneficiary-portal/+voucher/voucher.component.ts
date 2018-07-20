@@ -258,11 +258,6 @@ export class VoucherComponent {
                         )
                     }
                 );
-
-                event.target.style.pointerEvents = "none";
-                event.target.style.opacity = "0.5";
-                event.target.disabled = true;
-
             } else {
                 //trying to apply before sending the support documents
                 this.sharedService.growlTranslation(
@@ -274,11 +269,6 @@ export class VoucherComponent {
         } else if (this.voucherCompetitionState == 1) {
             //trying to apply before the opening of the call
             this.displayCallClosed = true;
-            this.sharedService.growlTranslation(
-                "An error occurred and your application could not be received.",
-                "shared.registration.update.error",
-                "error"
-            )
         }
     }
 
