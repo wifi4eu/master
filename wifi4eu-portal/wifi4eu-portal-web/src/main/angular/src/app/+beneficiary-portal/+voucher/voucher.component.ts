@@ -345,10 +345,9 @@ export class VoucherComponent {
                 break;
             }
 
+        }
+
     }
-
-
-}
 
 
      private getCurrentTime() {
