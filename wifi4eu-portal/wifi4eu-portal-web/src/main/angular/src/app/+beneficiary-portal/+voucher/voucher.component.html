@@ -47,7 +47,7 @@
     </timer-component>
     <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
-            <p-dataTable [value]="municipalities">
+            <p-dataTable [value]="municipalities" [expandableRows]="true" [expandedRows]="municipalities">
                 <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <span>
@@ -70,7 +70,7 @@
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || !docsOpen[i]">
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(rowIndex)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1 || !docsOpen[i]">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
                         <span *ngIf="applications[i]">
@@ -79,6 +79,26 @@
                         </span>
                     </template>
                 </p-column>
+                <template let-municipality pTemplate="rowexpansion" let-i="rowIndex">
+                    <div class="ui-grid ui-grid-responsive ui-fluid">
+                        <div *ngIf="!conditionsAgreements[municipality.id]">
+                            <button class="modal-content ui-g-1 ui-sm-1" (click)=changeConditionsAgreement(municipality)>
+                                <i class="fa fa-square-o" aria-hidden="true"></i>
+                            </button>
+                            <div class="ui-g-11 ui-sm-11">
+                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
+                            </div>
+                        </div>
+                        <div *ngIf="conditionsAgreements[municipality.id]">
+                            <button class="modal-content ui-g-1 ui-sm-1" (click)=changeConditionsAgreement(municipality)>
+                                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                            </button>
+                            <div class="ui-g-11 ui-sm-11">
+                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
+                            </div>
+                        </div>
+                    </div>
+                </template>
             </p-dataTable>
         </div>
     </div>
@@ -117,7 +137,7 @@
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayError" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
-        [closeOnEscape]="false" (onAfterHide)="closeModal()">
+              [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <div class="row">
             <div class="col-xs-12">
                 <span>{{errorMessage}}</span>
