@@ -6,7 +6,9 @@ import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO"
 import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
 import { LocalStorageService } from "angular-2-local-storage";
 import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { ConditionsAgreementApi } from "../../shared/swagger/api/ConditionsAgreementApi";
 import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { ConditionsAgreementDTOBase } from "../../shared/swagger/model/ConditionsAgreementDTO";
 import { ApplicationDTOBase } from "../../shared/swagger/model/ApplicationDTO";
 import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
@@ -18,7 +20,7 @@ import { Http, RequestOptions, Headers } from "@angular/http";
 
 @Component({
     templateUrl: 'voucher.component.html',
-    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi]
+    providers: [ApplicationApi, CallApi, RegistrationApi, ConditionsAgreementApi, MunicipalityApi, MayorApi]
 })
 
 export class VoucherComponent {
@@ -55,13 +57,19 @@ export class VoucherComponent {
     private rabbitmqURI: string = "/queue";
     private currentDate: number;
 
+    private expandedItems: Array<any> = new Array<any>();
+    private signedConditionsAgreement : boolean;
+    private conditionsAgreements : Object = {};
+    private conditionsAgreement : ConditionsAgreementDTOBase = new ConditionsAgreementDTOBase();
+
     private httpOptions = {
         headers: new Headers({
             'Content-Type': 'application/json'
         })
     };
 
-    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
+
+    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private conditionsAgreementApi: ConditionsAgreementApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
@@ -105,86 +113,95 @@ export class VoucherComponent {
                 for (let registration of registrations) {
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
-                            if (municipality != null) {
-                                this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
-                                    (mayor: MayorDTOBase) => {
-                                        if (this.currentCall) {
-                                            this.applicationApi.getApplicationByCallIdAndRegistrationId(this.currentCall.id, registration.id).subscribe(
-                                                (application: ApplicationDTOBase) => {
+                            this.conditionsAgreementApi.getConditionsAgreementStatus(registration.id).subscribe(
+                                (status : ResponseDTOBase) => {
+                                    if (municipality != null) {
+                                        this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
+                                            (mayor: MayorDTOBase) => {
+                                                if (this.currentCall) {
+                                                    this.applicationApi.getApplicationByCallIdAndRegistrationId(this.currentCall.id, registration.id).subscribe(
+                                                        (application: ApplicationDTOBase) => {
+                                                            this.registrations.push(registration);
+                                                            this.municipalities.push(municipality);
+                                                            this.mayors.push(mayor);
+                                                            if(status.data == 1) {
+                                                                this.conditionsAgreements[municipality.id] = true;
+                                                            } else {
+                                                                this.conditionsAgreements[municipality.id] = false;
+                                                            }
+                                                            if (application.id != 0) {
+                                                                this.applications.push(application);
+                                                            } else {
+                                                                this.applications.push(null);
+                                                            }
+                                                            var res = this.storedRegistrationQueues.filter((queue) => {
+                                                                return registration.id == queue['idRegistration'];
+                                                            })
+                                                            this.disableQueuing.push(res[0] ? res[0] : null);
+
+                                                            this.loadingButtons.push(false);
+                                                            let date = new Date(this.currentCall.startDate);
+                                                            this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                                                            this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+                                                            if ((this.currentCall.startDate - this.currentDate) <= 0) {
+                                                                this.voucherCompetitionState = 2;
+                                                                this.openedCalls = "greyImage";
+                                                            } else {
+                                                                this.voucherCompetitionState = 1;
+                                                            }
+
+                                                            this.checkForDocuments();
+                                                            if (this.applications.length == registrations.length) {
+
+                                                                this.disableQueuing.forEach((element, index) => {
+                                                                    if (element) {
+                                                                        if (element['expires_in'] < Math.floor(new Date().getTime() / 1000)) {
+                                                                            this.disableQueuing[index] = null;
+                                                                            this.loadingButtons[index] = false;
+                                                                        } else {
+                                                                            if (this.applications[index] != null) {
+                                                                                this.loadingButtons[index] = true;
+                                                                                this.disableQueuing[index] = null;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
+
+                                                                var newStoredRegistrationQueues = [];
+                                                                this.disableQueuing.forEach((disableQueuingEl, index) => {
+                                                                    this.loadingButtons[index] = disableQueuingEl ? true : false;
+                                                                    if (disableQueuingEl != null) newStoredRegistrationQueues.push(disableQueuingEl);
+                                                                });
+
+                                                                this.storedRegistrationQueues = newStoredRegistrationQueues;
+                                                                this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
+
+                                                                let allApplied = true;
+                                                                for (let app of this.applications) {
+                                                                    if (!app) {
+                                                                        allApplied = false;
+                                                                    }
+                                                                }
+                                                                if (allApplied) {
+                                                                    this.voucherCompetitionState = 3;
+                                                                    this.voucherApplied = "greyImage";
+                                                                }
+                                                            }
+                                                        }
+                                                    );
+
+                                                } else {
                                                     this.registrations.push(registration);
                                                     this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
-                                                    if (application.id != 0) {
-                                                        this.applications.push(application);
-                                                    } else {
-                                                        this.applications.push(null);
-                                                    }
-                                                    var res = this.storedRegistrationQueues.filter((queue) => {
-                                                        return registration.id == queue['idRegistration'];
-                                                    })
-                                                    this.disableQueuing.push(res[0] ? res[0] : null);
-
                                                     this.loadingButtons.push(false);
-                                                    let date = new Date(this.currentCall.startDate);
-                                                    this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                                                    this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-                                                    if ((this.currentCall.startDate - this.currentDate) <= 0) {
-                                                        this.voucherCompetitionState = 2;
-                                                        this.openedCalls = "greyImage";
-                                                    } else {
-                                                        this.voucherCompetitionState = 1;
-                                                    }
-
-                                                    this.checkForDocuments();
-                                                    if (this.applications.length == registrations.length) {
-
-                                                        this.disableQueuing.forEach((element, index) => {
-                                                            if (element) {
-                                                                if (element['expires_in'] < Math.floor(new Date().getTime() / 1000)) {
-                                                                    this.disableQueuing[index] = null;
-                                                                    this.loadingButtons[index] = false;
-                                                                } else {
-                                                                    if (this.applications[index] != null) {
-                                                                        this.loadingButtons[index] = true;
-                                                                        this.disableQueuing[index] = null;
-                                                                    }
-                                                                }
-                                                            }
-                                                        });
-
-                                                        var newStoredRegistrationQueues = [];
-                                                        this.disableQueuing.forEach((disableQueuingEl, index) => {
-                                                            this.loadingButtons[index] = disableQueuingEl ? true : false;
-                                                            if (disableQueuingEl != null) newStoredRegistrationQueues.push(disableQueuingEl);
-                                                        });
-
-                                                        this.storedRegistrationQueues = newStoredRegistrationQueues;
-                                                        this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
-
-                                                        let allApplied = true;
-                                                        for (let app of this.applications) {
-                                                            if (!app) {
-                                                                allApplied = false;
-                                                            }
-                                                        }
-                                                        if (allApplied) {
-                                                            this.voucherCompetitionState = 3;
-                                                            this.voucherApplied = "greyImage";
-                                                        }
-                                                    }
+                                                    this.voucherCompetitionState = 0;
                                                 }
-                                            );
-
-                                        } else {
-                                            this.registrations.push(registration);
-                                            this.municipalities.push(municipality);
-                                            this.mayors.push(mayor);
-                                            this.loadingButtons.push(false);
-                                            this.voucherCompetitionState = 0;
-                                        }
+                                            }
+                                        );
                                     }
-                                );
-                            }
+                                }
+                            );
                         }
                     );
                 }
@@ -305,17 +322,41 @@ export class VoucherComponent {
                     this.uploadHour[i] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
                 }
             }
+        }
 
+    }
+
+    private changeConditionsAgreement(municipality) {
+        for(var j = 0; j < this.registrationsDocs.length; j++) {
+            if(this.registrationsDocs[j].municipalityId == municipality.id) {
+                this.conditionsAgreement.registrationId = this.registrationsDocs[j].id;
+                this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreement.status = 1 : this.conditionsAgreement.status = 0;
+                this.conditionsAgreements[municipality.id] = this.conditionsAgreement.status;
+                this.conditionsAgreementApi.changeConditionsAgreementStatus(this.conditionsAgreement).subscribe(
+                    (data : ResponseDTOBase) => {
+                        if (data.success) {
+                            this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                        } else {
+                            this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                        }
+                    }, error => {
+                        this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                    }
+                );
+                break;
+            }
 
         }
+
     }
 
-    private getCurrentTime() {
-        this.callApi.getTime().subscribe(
-            (date: any) => {
-                this.currentDate = date;
-            }
-        );
-    }
+
+     private getCurrentTime() {
+            this.callApi.getTime().subscribe(
+                (date: any) => {
+                    this.currentDate = date;
+                }
+            );
+        }
 
 }
