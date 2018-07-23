@@ -58,16 +58,12 @@ export interface ICallApi {
 
 @Injectable()
 export class CallApi implements ICallApi {
-    protected basePath = 'http://localhost:7001/wifi4eu-financial/api';
+    protected basePath = '/';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();
 
-    constructor(protected http: Http,
-                @Optional() @Inject(BASE_PATH) basePath: string,
-                @Optional() configuration: Configuration) {
-        if (basePath) {
-            this.basePath = basePath;
-        }
+    constructor(protected http: Http, @Optional() @Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
+        this.basePath=document.querySelector("html head base").getAttribute("href");
         if (configuration) {
             this.configuration = configuration;
         }

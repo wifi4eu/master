@@ -55,7 +55,10 @@ To execute a build of the java code (weblogic profile is enabled by default), ru
 
 ## Deploy WAR in weblogic
 
-Access to deployments, click "Install" and select the WAR file (should be in "<projecFolder>\app\wifi4eu-abac\target\wifi4eu-financial.war").
+Access to Weblogic Console, then to deployments. Click "Install" and select the WAR file (should be in "<projecFolder>\app\wifi4eu-abac\target\wifi4eu-financial.war").
 Select the option "Install this deployment as an application" and "Finish".
+
+You should be able to access the application using the following URL (default values):
+http://localhost:7001/wifi4eu-financial/
 
 
