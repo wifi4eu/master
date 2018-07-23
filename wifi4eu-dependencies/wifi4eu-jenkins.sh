@@ -16,6 +16,12 @@ fi
 if [[ $2 = "" || $2 = *"wifi4eu-dgconn"* ]]; then
 npm install --prefix ./wifi4eu-dgconn/wifi4eu-dgconn-web/src/main/angular/
 fi
+if [[ $2 = "" || $2 = *"wifi4eu-supplier"* ]]; then
+npm install --prefix ./wifi4eu-supplier/wifi4eu-supplier-web/src/main/angular/
+fi
+if [[ $2 = "" || $2 = *"wifi4eu-financial"* ]]; then
+npm install --prefix ./wifi4eu-financial/wifi4eu-financial-web/src/main/angular/
+fi
 echo "Install ECAS dependency"
 mvn install:install-file -Dfile=wifi4eu-dependencies/ecas-tomcat-8.0-4.22.0.jar  -DgroupId=eu.europa.ec.digit.iam.ecas.client -DartifactId=ecas-tomcat-8.0 -Dversion=4.22.0 -Dpackaging=jar
 echo "Compile project"
