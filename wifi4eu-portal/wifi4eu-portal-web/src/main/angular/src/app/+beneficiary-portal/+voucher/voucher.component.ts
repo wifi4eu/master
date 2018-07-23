@@ -38,8 +38,11 @@ export class VoucherComponent {
     private mayors: MayorDTOBase[] = [];
     private applications: ApplicationDTOBase[] = [];
     private loadingButtons: boolean[] = [];
-    private dateNumber: string;
-    private hourNumber: string;
+    //date and hour when call starts
+    private startDate: string;
+    private startHour: string;
+    private endDate: string;
+    private endHour: string;
     private uploadDate: string[] = [];
     private uploadHour: string[] = [];
     private voucherApplied: string = "";
@@ -55,7 +58,6 @@ export class VoucherComponent {
     private displayCallClosed = false;
     private errorMessage = null;
     private rabbitmqURI: string = "/queue";
-    private currentDate: number;
 
     private expandedItems: Array<any> = new Array<any>();
     private signedConditionsAgreement : boolean;
@@ -81,7 +83,6 @@ export class VoucherComponent {
                     this.registrationsDocs = registrations;
                     this.checkForCalls(registrations);
                     if (registrations.length < 2) {
-                        this.getCurrentTime();
                         // JUST FOR ONE MUNICIPALITY
                         this.registration = registrations[0];
                         this.mayorApi.getMayorByMunicipalityId(registrations[0].municipalityId).subscribe(
@@ -140,10 +141,14 @@ export class VoucherComponent {
                                                             this.disableQueuing.push(res[0] ? res[0] : null);
 
                                                             this.loadingButtons.push(false);
-                                                            let date = new Date(this.currentCall.startDate);
-                                                            this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                                                            this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
-                                                            if ((this.currentCall.startDate - this.currentDate) <= 0) {
+                                                            let startDateCall = new Date(this.currentCall.startDate);
+                                                            let endDateCall = new Date(this.currentCall.endDate);
+                                                            this.startDate = ('0' + startDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (startDateCall.getUTCMonth() + 1)).slice(-2) + "/" + startDateCall.getUTCFullYear();
+                                                            this.startHour = ('0' + (startDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + startDateCall.getUTCMinutes()).slice(-2);
+                                                            this.endDate = ('0' + endDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (endDateCall.getUTCMonth() + 1)).slice(-2) + "/" + endDateCall.getUTCFullYear();
+                                                            this.endHour = ('0' + (endDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + endDateCall.getUTCMinutes()).slice(-2);
+                                                            
+                                                            if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
                                                                 this.voucherCompetitionState = 2;
                                                                 this.openedCalls = "greyImage";
                                                             } else {
@@ -220,7 +225,7 @@ export class VoucherComponent {
 
     private applyForVoucher(registrationNumber: number, event) {
         //we just need to check this variable
-        //voucherCompetitionState is 2 is call is open
+        //voucherCompetitionState is 2 then call is open
         //or when timer component emits that has finished
         if (this.voucherCompetitionState == 2) {
             let startCallDate = this.currentCall.startDate;
@@ -349,14 +354,5 @@ export class VoucherComponent {
         }
 
     }
-
-
-     private getCurrentTime() {
-            this.callApi.getTime().subscribe(
-                (date: any) => {
-                    this.currentDate = date;
-                }
-            );
-        }
 
 }
