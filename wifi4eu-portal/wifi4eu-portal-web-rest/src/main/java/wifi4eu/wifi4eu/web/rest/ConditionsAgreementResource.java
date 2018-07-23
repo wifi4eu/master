@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.ConditionsAgreementDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -20,12 +21,14 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.conditionsAgreement.ConditionsAgreementService;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -42,6 +45,9 @@ public class ConditionsAgreementResource {
     @Autowired
     private ConditionsAgreementService conditionsAgreementService;
 
+    @Autowired
+    ApplicationService applicationService;
+
     Logger _log = LogManager.getLogger(ConditionsAgreementResource.class);
 
     @ApiOperation(value = "Change ConditionsAgreement Status")
@@ -52,7 +58,11 @@ public class ConditionsAgreementResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
 
         try {
-
+            // PREVENT BENEFICIARY CANNOT UNCLICK CONDITIONS AGREEMENT IF HE ALREADY APPLIED FOR A VOUCHER 
+            // List<ApplicationDTO> applications = applicationService.getApplicationsByRegistrationId(conditionsAgreementDTO.getRegistrationId());
+            // if(applications != null || !applications.isEmpty()) {
+            //    throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            // }
             if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + conditionsAgreementDTO.getRegistrationId())) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
