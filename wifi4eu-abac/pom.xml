@@ -144,7 +144,7 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<webResources>
 						<resource>
-							<directory>src/main/angular/dist</directory>
+							<directory>src/main/eui/dist</directory>
 						</resource>
 					</webResources>
 				</configuration>
@@ -207,7 +207,7 @@
 			</build>
 		</profile>
 
-		<profile>
+		<!-- profile>
 			<id>ng-build</id>
 
 			<build>
@@ -228,10 +228,39 @@
 									<arguments>
 										<argument>/c</argument>
 										<argument>"ng build"</argument>
-									</arguments>
+									</arguments -->
 									<!-- <arguments> <argument>/c</argument> <argument>"ng build - -base-href 
 										${context.name}"</argument> <argument>- -prod</argument> <argument>- -aot</argument> 
 										<argument>false</argument> </arguments> -->
+								<!--/configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile-->
+		
+		<profile>
+			<id>npm-build</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.5.0</version>
+						<executions>
+							<execution>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>cmd</executable>
+									<workingDirectory>src/main/eui</workingDirectory>
+									<arguments>
+										<argument>/c</argument>
+										<argument>"npm run build"</argument>
+									</arguments>
 								</configuration>
 							</execution>
 						</executions>
