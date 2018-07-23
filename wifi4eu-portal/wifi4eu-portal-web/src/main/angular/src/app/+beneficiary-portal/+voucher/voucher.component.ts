@@ -17,7 +17,6 @@ import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { SharedService } from "../../shared/shared.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Http, RequestOptions, Headers } from "@angular/http";
-
 @Component({
     templateUrl: 'voucher.component.html',
     providers: [ApplicationApi, CallApi, RegistrationApi, ConditionsAgreementApi, MunicipalityApi, MayorApi]
@@ -63,6 +62,7 @@ export class VoucherComponent {
     private signedConditionsAgreement : boolean;
     private conditionsAgreements : Object = {};
     private conditionsAgreement : ConditionsAgreementDTOBase = new ConditionsAgreementDTOBase();
+    private disableConditionsAgreements : Object = {};
 
     private httpOptions = {
         headers: new Headers({
@@ -132,8 +132,10 @@ export class VoucherComponent {
                                                             }
                                                             if (application.id != 0) {
                                                                 this.applications.push(application);
+                                                                this.disableConditionsAgreements[municipality.id] = true;
                                                             } else {
                                                                 this.applications.push(null);
+                                                                this.disableConditionsAgreements[municipality.id] = false;
                                                             }
                                                             var res = this.storedRegistrationQueues.filter((queue) => {
                                                                 return registration.id == queue['idRegistration'];
@@ -311,7 +313,11 @@ export class VoucherComponent {
     private checkForDocuments() {
 
         if (this.isMayor) {
-            this.docsOpen[0] = (this.registrations[0].legalFile1Size != null && this.registrations[0].legalFile1Size > 0 && this.registrations[0].legalFile3Size != null && this.registrations[0].legalFile3Size > 0);
+            this.docsOpen[0] = (this.registrations[0].legalFile1Size != null && this.registrations[0].legalFile1Size > 0 && 
+                                this.registrations[0].legalFile2Size != null && this.registrations[0].legalFile2Size > 0 &&
+                                this.registrations[0].legalFile3Size != null && this.registrations[0].legalFile3Size > 0 &&
+                                this.registrations[0].legalFile4Size != null && this.registrations[0].legalFile4Size > 0
+                            );
 
             if (this.docsOpen[0]) {
                 let uploaddate = new Date(this.registrations[0].uploadTime);
@@ -320,7 +326,12 @@ export class VoucherComponent {
             }
         } else {
             for (let i = 0; i < this.registrations.length; i++) {
-                this.docsOpen[i] = (this.registrations[i].legalFile1Size != null && this.registrations[i].legalFile1Size > 0 && this.registrations[i].legalFile3Size != null && this.registrations[i].legalFile3Size > 0);
+                this.docsOpen[i] = (
+                    this.registrations[i].legalFile1Size != null && this.registrations[i].legalFile1Size > 0 &&
+                    this.registrations[i].legalFile2Size != null && this.registrations[i].legalFile2Size > 0 && 
+                    this.registrations[i].legalFile3Size != null && this.registrations[i].legalFile3Size > 0 &&
+                    this.registrations[i].legalFile4Size != null && this.registrations[i].legalFile4Size > 0
+                );
                 if (this.docsOpen[i]) {
                     let uploaddate = new Date(this.registrations[i].uploadTime);
                     this.uploadDate[i] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
@@ -332,15 +343,15 @@ export class VoucherComponent {
     }
 
     private changeConditionsAgreement(municipality) {
-        for(var j = 0; j < this.registrationsDocs.length; j++) {
+        for(let j = 0; j < this.registrationsDocs.length; j++) {
             if(this.registrationsDocs[j].municipalityId == municipality.id) {
                 this.conditionsAgreement.registrationId = this.registrationsDocs[j].id;
                 this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreement.status = 1 : this.conditionsAgreement.status = 0;
-                this.conditionsAgreements[municipality.id] = this.conditionsAgreement.status;
                 this.conditionsAgreementApi.changeConditionsAgreementStatus(this.conditionsAgreement).subscribe(
                     (data : ResponseDTOBase) => {
                         if (data.success) {
                             this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                            this.conditionsAgreements[municipality.id] = this.conditionsAgreement.status;
                         } else {
                             this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
                         }
@@ -350,9 +361,7 @@ export class VoucherComponent {
                 );
                 break;
             }
-
         }
-
     }
 
 }

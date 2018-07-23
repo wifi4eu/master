@@ -888,22 +888,22 @@
   "dgConn.importexport.gc": "Global Commitments",
   "dgConn.importexport.gc.configure": "Configure Global Commitments",
   "dgConn.importexport.gc.configure.desc": "Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor.",
+  "benefPortal.voucher.callClosed.title": "Sorry, but call is not yet open",
+  "benefPortal.voucher.callClosed.body": "Sorry, the call is not yet open. After the call opens on {{date}} at {{hour}} (Central European Summer Time) you may submit your application",
   "dgConn.beneficiariesList.title": "View beneficiaries",
   "dgConn.beneficiariesList.table.registration": "Registration number",
   "dgConn.beneficiariesList.table.verifiedSign": "Verified to sign",
-  "dgConn.beneficiariesList.table.dateSignature": "Date of signature",
+  "dgConn.beneficiariesList.table.dateSignature": "\"Date of signature",
   "dgConn.beneficiariesList.table.dateCounterSignature": "Date of counter signature",
   "dgConn.beneficiariesList.status.selected": "Selected",
   "dgConn.beneficiariesList.status.signed": "Signed",
   "dgConn.beneficiariesList.status.counterSigned": "Counter signed",
   "dgConn.beneficiariesList.status.cancelled": "Cancelled",
-
-  "dgConn.beneficiariesList.cancel.title" : "Cancel beneficiary",
-  "dgConn.beneficiariesList.cancel.body" : "Are you sure you want to cancel this beneficiary? Please add a reason for cancellation:",
-  "dgConn.beneficiariesList.cancel.reason" : "Reason",
-  "dgConn.beneficiariesList.cancel.confirm" : "Beneficiary cancelled correctly",
-  "dgConn.beneficiariesList.cancel.failure" : "An error has ocurred during canceling the beneficiary. Please, try again later",
-  "dgConn.beneficiariesList.cancel.empty" : "Please, complete the reason field to cancel the beneficiary",
-  "dgconn.dashboard.card.beneficiaries.home" : "Beneficiaries"
-
+  "dgConn.beneficiariesList.cancel.title": "Cancel beneficiary",
+  "dgConn.beneficiariesList.cancel.body": "Are you sure you want to cancel this beneficiary? Please add a reason for cancellation:",
+  "dgConn.beneficiariesList.cancel.reason": "Reason",
+  "dgConn.beneficiariesList.cancel.confirm": "Beneficiary cancelled correctly",
+  "dgConn.beneficiariesList.cancel.failure": "An error has ocurred during canceling the beneficiary. Please, try again later",
+  "dgConn.beneficiariesList.cancel.empty": "Please, complete the reason field to cancel the beneficiary",
+  "dgconn.dashboard.card.beneficiaries.home": "Beneficiaries"
 }

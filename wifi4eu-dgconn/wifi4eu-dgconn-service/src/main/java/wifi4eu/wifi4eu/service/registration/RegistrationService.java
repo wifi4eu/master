@@ -336,7 +336,7 @@ public class RegistrationService {
             if (map.containsKey("id") && map.containsKey("beneficiaryIndicator")) {
                 Registration registration = registrationRepository.findOne((int) map.get("id"));
 
-                if (!checkPermissionsRegistrations(registration)){
+                if (!checkPermissionsRegistrations(registration)) {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to confirm or reject");
                     return permissionChecker.getAccessDeniedResponse();
                 }
@@ -571,7 +571,7 @@ public class RegistrationService {
             }
         }
         legalFileDTO.setRequestCorrectionDate(new Date());
-        if(legalFileDTO.getCorrectionReason() == null){
+        if (legalFileDTO.getCorrectionReason() == null) {
             legalFileDTO.setRequestCorrection(false);
         }
         return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
@@ -624,8 +624,8 @@ public class RegistrationService {
         return allFilesFlag;
     }
 
-    public boolean checkUserWithRegistration(Integer registrationId, Integer userId){
-        if(registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId) != null){
+    public boolean checkUserWithRegistration(Integer registrationId, Integer userId) {
+        if (registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId) != null) {
             return true;
         }
         return false;
