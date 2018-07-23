@@ -890,5 +890,7 @@
   "dgConn.importexport.gc.configure.desc": "Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor. Lorem ipsum dolor sit amet consecutor.",
   "benefPortal.voucher.conditionsAgreement": "I agree with the <a href=\"\">Call Conditions</a> and I declare that the municipality I represent is not included in any of the situations listed in article 136 (1) of the <a href=\"\">Regulation XXX/2018</a>.",
   "benefPortal.voucher.callClosed.title":"Sorry, but call is not yet open",
-  "benefPortal.voucher.callClosed.body":"Sorry, the call is not yet open. After the call opens on {{date}} at {{hour}} (Central European Summer Time) you may submit your application"
+  "benefPortal.voucher.callClosed.body":"Sorry, the call is not yet open. After the call opens on {{date}} at {{hour}} (Central European Summer Time) you may submit your application",
+  "shared.deactivateContactModalAreYouSure": "Are you sure you want to deactivate this contact?",
+  "shared.deactivate.button" : "DEACTIVATE"
 }
