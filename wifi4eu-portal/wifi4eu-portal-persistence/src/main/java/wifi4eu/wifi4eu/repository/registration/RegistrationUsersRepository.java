@@ -10,6 +10,9 @@ public interface RegistrationUsersRepository extends CrudRepository<Registration
 
     RegistrationUsers findByUserIdAndRegistrationId(Integer userId, Integer registrationId);
 
+    @Query(value = "select ru.* from registration_users ru inner join registrations r on ru.registration = r.id inner join municipalities m on r.municipality = m.id where ru._user = ?#{[0]} and r.id = ?#{[1]} and m.id = ?#{[2]}", nativeQuery = true)
+    RegistrationUsers findByUserIdAndRegistrationIdAndMunicipalityId(Integer userId, Integer registrationId, Integer municipalityId);
+
     List<RegistrationUsers> findByContactEmailAndStatus(String email, Integer status);
 
     List<RegistrationUsers> findByContactEmail(String email);
