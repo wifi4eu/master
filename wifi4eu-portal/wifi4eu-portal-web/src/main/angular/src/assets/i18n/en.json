@@ -905,5 +905,8 @@
   "dgConn.beneficiariesList.cancel.confirm": "Beneficiary cancelled correctly",
   "dgConn.beneficiariesList.cancel.failure": "An error has ocurred during canceling the beneficiary. Please, try again later",
   "dgConn.beneficiariesList.cancel.empty": "Please, complete the reason field to cancel the beneficiary",
-  "dgconn.dashboard.card.beneficiaries.home": "Beneficiaries"
+  "dgconn.dashboard.card.beneficiaries.home": "Beneficiaries",
+  "benefPortal.voucher.conditionsAgreement": "I agree with the <a href=\"\">Call Conditions</a> and I declare that the municipality I represent is not included in any of the situations listed in article 136 (1) of the <a href=\"\">Regulation XXX/2018</a>.",
+  "benefPortal.grantAgreement.title" : "Grant Agreement",
+  "benefProtal.grantAgreement.description" : "Congratulations! <br> Your municipality has been selected for voucher assignment as part of WiFi4EU program. Please validate the information below which will be used to sign grant agreement with your municipality. This information will be used for communication with your municipality for the duration of the contract. You are expected to sign the grant agreement as soon as possible."
 }
