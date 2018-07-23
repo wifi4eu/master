@@ -9,7 +9,7 @@ import {InstallationDetailsComponent} from "./details-installation/installation-
 import {AccessPointListComponent} from "./access-point-list/access-point-list.component";
 import {AccessPointDetailsComponent} from "./access-point-details/access-point-details.component";
 import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-profile.component";
-
+import { MyHistoryComponent } from "./+my-history/my-history.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -43,6 +43,9 @@ import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-pr
         }, {
             path: 'profile/edit-profile',
             component: BeneficiaryEditProfileComponent
+        }, {
+            path: 'my-history',
+            component: MyHistoryComponent
         }
         
         
