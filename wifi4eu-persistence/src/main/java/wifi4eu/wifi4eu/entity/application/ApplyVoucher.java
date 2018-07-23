@@ -25,18 +25,21 @@ public class ApplyVoucher {
     @Column(name = "numberApplicant")
     private int numberApplicant;
 
+    @Column(name = "conditionAgreement")
+    private int conditionAgreement;
 
     public ApplyVoucher(){
 
     }
 
-    public ApplyVoucher(Long idRegistration, Long idMunicipality, String municipality, int filesUploaded, long uploadTime, int numberApplicant) {
+    public ApplyVoucher(Long idRegistration, Long idMunicipality, String municipality, int filesUploaded, long uploadTime, int numberApplicant, int conditionAgreement) {
         this.idRegistration = idRegistration;
         this.idMunicipality = idMunicipality;
         this.municipality = municipality;
         this.filesUploaded = filesUploaded;
         this.uploadTime = uploadTime;
         this.numberApplicant = numberApplicant;
+        this.conditionAgreement = conditionAgreement;
     }
 
     public Long getIdRegistration() {
@@ -85,5 +88,13 @@ public class ApplyVoucher {
 
     public void setNumberApplicant(int numberApplicant) {
         this.numberApplicant = numberApplicant;
+    }
+
+    public int getConditionAgreement() {
+        return conditionAgreement;
+    }
+
+    public void setConditionAgreement(int conditionAgreement) {
+        this.conditionAgreement = conditionAgreement;
     }
 }

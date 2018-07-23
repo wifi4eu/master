@@ -102,7 +102,7 @@
                 </template>
             </p-dataTable>
             <p>ALEX TEST</p>
-            <p-dataTable [value]="applyVouchersData">
+            <p-dataTable [value]="applyVouchersData" [expandableRows]="true" [expandedRows]="applyVouchersData">
                 <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
                         <span>
@@ -126,7 +126,6 @@
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
-                        <!-- missing on disable button the call time -->
                         <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!data.numberApplicant" [disabled]="!data.filesUploaded || data.numberApplicant">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
@@ -136,7 +135,21 @@
                         </span>
                     </template>
                 </p-column>
+                <template let-data pTemplate="rowexpansion" let-i="rowIndex">
+                    <div class="ui-grid ui-grid-responsive ui-fluid">
+                        <div>
+                            <button class="modal-content ui-g-1 ui-sm-1" (click)=changeConditionsAgreement(data)>
+                                <i *ngIf="!data.conditionAgreement" class="fa fa-square-o" aria-hidden="true"></i>
+                                <i *ngIf="data.conditionAgreement" class="fa fa-check-square-o" aria-hidden="true"></i>
+                            </button>
+                            <div class="ui-g-11 ui-sm-11">
+                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
+                            </div>
+                        </div>
+                    </div>
+                </template>
             </p-dataTable>
+        
         </div>
     </div>
 </div>

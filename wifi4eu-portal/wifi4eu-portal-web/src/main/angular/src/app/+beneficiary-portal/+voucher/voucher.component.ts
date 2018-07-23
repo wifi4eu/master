@@ -87,6 +87,7 @@ export class VoucherComponent {
                 (applyVoucher: ApplyVoucherBase[]) => {
                     this.applyVouchersData = applyVoucher;
                     for (let i = 0; i < this.applyVouchersData.length; i++){
+                        // this.conditionsAgreements[this.applyVouchersData[i].idMunicipality] = this.applyVouchersData[i].conditionAgreement;
                         if (this.applyVouchersData[i].filesUploaded == 1){
                             let uploaddate = new Date(this.applyVouchersData[i].uploadTime);
                             this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
@@ -360,26 +361,27 @@ export class VoucherComponent {
 
     }
 
-    private changeConditionsAgreement(municipality) {
-        for(let j = 0; j < this.registrationsDocs.length; j++) {
-            if(this.registrationsDocs[j].municipalityId == municipality.id) {
-                this.conditionsAgreement.registrationId = this.registrationsDocs[j].id;
-                this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreement.status = 1 : this.conditionsAgreement.status = 0;
-                this.conditionsAgreementApi.changeConditionsAgreementStatus(this.conditionsAgreement).subscribe(
-                    (data : ResponseDTOBase) => {
-                        if (data.success) {
-                            this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
-                            this.conditionsAgreements[municipality.id] = this.conditionsAgreement.status;
-                        } else {
-                            this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+    private changeConditionsAgreement(applyVoucherData: ApplyVoucherBase) {
+        let conditionsAgreement = new ConditionsAgreementDTOBase();
+        conditionsAgreement.registrationId = applyVoucherData.idRegistration;
+        applyVoucherData.conditionAgreement == 0 ? conditionsAgreement.status = 1 : conditionsAgreement.status = 0;
+        this.conditionsAgreementApi.changeConditionsAgreementStatus(conditionsAgreement).subscribe(
+            (data : ResponseDTOBase) => {
+                if (data.success) {
+                    this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                    for (let i = 0; i < this.applyVouchersData.length; i++){
+                        if (applyVoucherData.idRegistration == this.applyVouchersData[i].idRegistration){
+                            this.applyVouchersData[i].conditionAgreement = data.data;
+                            break;
                         }
-                    }, error => {
-                        this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
                     }
-                );
-                break;
+                } else {
+                    this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
+                }
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
             }
-        }
+        );
     }
 
     private getCurrentTime() {
