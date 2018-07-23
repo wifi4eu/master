@@ -11,6 +11,11 @@ public class AbacIntegrationService {
     private final Logger log = LoggerFactory.getLogger(AbacIntegrationService.class);
 
     public void createLegalEntity(LegalEntity legalEntity) {
-        //log.info(String.format("TODO: insert legal entity %s into abac", legalEntity.getId()));
+        log.info(String.format("TODO: insert legal entity %s into abac", legalEntity.getId()));
+    }
+
+    public String checkLegalEntityCreationStatus(LegalEntity legalEntity) {
+        log.info(String.format("TODO: check status of legal entity %s in abac", legalEntity.getId()));
+        return AbacWorkflowStatusEnum.ABAC_FINISH.toString();
     }
 }

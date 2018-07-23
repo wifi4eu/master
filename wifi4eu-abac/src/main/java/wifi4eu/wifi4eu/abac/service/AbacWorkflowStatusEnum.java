@@ -1,7 +1,7 @@
 package wifi4eu.wifi4eu.abac.service;
 
 public enum AbacWorkflowStatusEnum {
-	IMPORTED("IMPORTED"), READY_FOR_ABAC("READY"), WAITING_FOR_ABAC("WAITING_FOR_ABAC"), ABAC_FINISH(
+	IMPORTED("IMPORTED"), READY_FOR_ABAC("READY_FOR_ABAC"), WAITING_FOR_ABAC("WAITING_FOR_ABAC"), ABAC_FINISH(
 			"ABAC_FINISH"), ABAC_ERROR("ABAC_ERROR");
 
 	private String value;

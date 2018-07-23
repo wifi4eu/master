@@ -1,24 +1,30 @@
 package wifi4eu.wifi4eu.abac.service;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import wifi4eu.wifi4eu.abac.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
 import wifi4eu.wifi4eu.abac.utils.ParserCSV2Entity;
 
+import javax.transaction.Transactional;
+import java.io.IOException;
+import java.util.List;
+
 @Service
 public class LegalEntityService {
 
-	private final Logger log = LoggerFactory.getLogger(LegalEntityService.class);
+	private static int FIRST_PAGE = 0;
 
+	private final Logger log = LoggerFactory.getLogger(LegalEntityService.class);
 	private LegalEntityRepository legalEntityrepository;
+
+	@Autowired
+	private AbacIntegrationService abacIntegrationService;
 
 	@Autowired
 	public LegalEntityService(LegalEntityRepository legalEntityrepository) {
@@ -119,6 +125,47 @@ public class LegalEntityService {
 		// log.info("data: " + data);
 
 		return data;
+	}
+
+	/**
+	 * Send the legal entities with status READY_FOR_ABAC, limited to a maximum of @maxRecords
+	 * @param maxRecords
+	 */
+	public void findAndSendLegalEntitiesReadyToABAC(Integer maxRecords) {
+		Pageable pageable = PageRequest.of(FIRST_PAGE, maxRecords);
+		List<LegalEntity> legalEntities = legalEntityrepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum.READY_FOR_ABAC.toString(), pageable);
+
+		if (!legalEntities.isEmpty()) {
+			log.info(String.format("Found %s legal entities ready to be sent to ABAC...", legalEntities.size()));
+		}
+
+		for (LegalEntity legalEntity: legalEntities) {
+			sendLegalEntityToABAC(legalEntity);
+		}
+	}
+
+	@Transactional
+	private void sendLegalEntityToABAC(LegalEntity legalEntity) {
+		//Requet the creation of the legal entity in ABAC
+		abacIntegrationService.createLegalEntity(legalEntity);
+
+		//Update the legal entity status in Wifi4EU DB
+		legalEntity.setWfStatus(AbacWorkflowStatusEnum.WAITING_FOR_ABAC.toString());
+		legalEntityrepository.save(legalEntity);
+	}
+
+	public void checkLegalEntityCreationStatus(Integer maxRecords) {
+		Pageable pageable = PageRequest.of(FIRST_PAGE, maxRecords);
+		List<LegalEntity> legalEntities = legalEntityrepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum.WAITING_FOR_ABAC.toString(), pageable);
+
+		if (!legalEntities.isEmpty()) {
+			log.info(String.format("Found %s legal entities waiting for ABAC to create them", legalEntities.size()));
+		}
+
+		for(LegalEntity legalEntity : legalEntities) {
+			String status = abacIntegrationService.checkLegalEntityCreationStatus(legalEntity);
+			legalEntity.setWfStatus(status);
+		}
 	}
 
 	/**
