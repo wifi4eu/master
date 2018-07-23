@@ -60,6 +60,7 @@ export class VoucherComponent {
     private signedConditionsAgreement : boolean;
     private conditionsAgreements : Object = {};
     private conditionsAgreement : ConditionsAgreementDTOBase = new ConditionsAgreementDTOBase();
+    private disableConditionsAgreements : Object = {};
 
     private httpOptions = {
         headers: new Headers({
@@ -130,8 +131,10 @@ export class VoucherComponent {
                                                             }
                                                             if (application.id != 0) {
                                                                 this.applications.push(application);
+                                                                this.disableConditionsAgreements[municipality.id] = true;
                                                             } else {
                                                                 this.applications.push(null);
+                                                                this.disableConditionsAgreements[municipality.id] = false;
                                                             }
                                                             var res = this.storedRegistrationQueues.filter((queue) => {
                                                                 return registration.id == queue['idRegistration'];
@@ -335,15 +338,15 @@ export class VoucherComponent {
     }
  
     private changeConditionsAgreement(municipality) {
-        for(var j = 0; j < this.registrationsDocs.length; j++) {
+        for(let j = 0; j < this.registrationsDocs.length; j++) {
             if(this.registrationsDocs[j].municipalityId == municipality.id) {
                 this.conditionsAgreement.registrationId = this.registrationsDocs[j].id; 
                 this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreement.status = 1 : this.conditionsAgreement.status = 0;
-                this.conditionsAgreements[municipality.id] = this.conditionsAgreement.status;
                 this.conditionsAgreementApi.changeConditionsAgreementStatus(this.conditionsAgreement).subscribe(
                     (data : ResponseDTOBase) => {
                         if (data.success) {
                             this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                            this.conditionsAgreements[municipality.id] = this.conditionsAgreement.status;
                         } else {
                             this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
                         }
@@ -353,10 +356,7 @@ export class VoucherComponent {
                 );
                 break;
             }
-
-    }
-
-
+        }
     }
 
     private getCurrentTime() {
