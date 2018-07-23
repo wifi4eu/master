@@ -892,5 +892,10 @@
   "benefPortal.voucher.callClosed.title":"Sorry, but call is not yet open",
   "benefPortal.voucher.callClosed.body":"Sorry, the call is not yet open. After the call opens on {{date}} at {{hour}} (Central European Summer Time) you may submit your application",
   "benefPortal.grantAgreement.title" : "Grant Agreement",
-  "benefProtal.grantAgreement.description" : "Congratulations! <br> Your municipality has been selected for voucher assignment as part of WiFi4EU program. Please validate the information below which will be used to sign grant agreement with your municipality. This information will be used for communication with your municipality for the duration of the contract. You are expected to sign the grant agreement as soon as possible."
+  "benefProtal.grantAgreement.description" : "Congratulations! <br> Your municipality has been selected for voucher assignment as part of WiFi4EU program. Please validate the information below which will be used to sign grant agreement with your municipality. This information will be used for communication with your municipality for the duration of the contract. You are expected to sign the grant agreement as soon as possible.",
+  "benefPortal.grantAgreement.languageButton" : "Change language of grant agreement",
+  "benefPortal.grantAgreement.document" : "Grant Agreement document",
+  "benefPortal.grantAgreement.documentDownload" : "Please download the model Grant Agreement here for your review.",
+  "benefPortal.grantAgreement.downloadText":"Please download the Grant Agreement and carefully read the document before confirming that you understand the conditions in the grant agreement. Finally press the button \"Sign\" on the page to sign the grant agreement ",
+  "benefPortal.grantAgreement.confirmCheckbox" : "I confirm that I have read and understand the conditions in the Grant Agreement for WiFi4EU."
 }
