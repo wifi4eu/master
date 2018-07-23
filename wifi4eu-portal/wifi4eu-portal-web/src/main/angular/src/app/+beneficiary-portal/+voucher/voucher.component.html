@@ -1,6 +1,6 @@
 <!-- Competition & user registration status -->
 <div id="upper-block" class="ui-g-12 center">
-    <div *ngIf="voucherCompetitionState == 0 || voucherCompetitionState == 1" class="ui-g-12">
+    <div *ngIf="voucherCompetitionState == 0" class="ui-g-12">
         <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i>
         <br>
         <br>
@@ -42,12 +42,12 @@
     <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3">
         {{ 'benefPortal.voucher.counterSubtitle' | translate:{date:dateNumber,hour:hourNumber} }}
     </p>
-    <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-3 ui-lg-6 ui-g-12" (timerEvent)="openApplyForVoucher()"
+    <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-4 ui-lg-4 ui-g-12" (timerEvent)="openApplyForVoucher()"
         [expirationTimestamp]="currentCall.startDate">
     </timer-component>
     <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
-            <p-dataTable [value]="municipalities">
+            <p-dataTable [value]="municipalities" [expandableRows]="true" [expandedRows]="municipalities">
                 <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <span>
@@ -60,18 +60,17 @@
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button *ngIf="!docsOpen[i]" class="btn btn-primary" id="muncicipalityButton"
-                                (click)="goToDocuments(i)">{{ 'shared.uploadDocuments' | translate}}
+                        <button *ngIf="!docsOpen[i]" class="btn btn-primary" id="muncicipalityButton" (click)="goToDocuments(i)">{{ 'shared.uploadDocuments' | translate}}
                         </button>
                         <span *ngIf="docsOpen[i]">
                             <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
-                          <span>{{ 'shared.documentsUploaded' | translate:{date:uploadDate[i],time:uploadHour[i]} }}</span>
+                            <span>{{ 'shared.documentsUploaded' | translate:{date:uploadDate[i],time:uploadHour[i]} }}</span>
                         </span>
                     </template>
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1 || !docsOpen[i]">
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || !docsOpen[i] || !this.conditionsAgreements[this.registrations[i].municipalityId]">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
                         <span *ngIf="applications[i]">
@@ -80,6 +79,27 @@
                         </span>
                     </template>
                 </p-column>
+                <template let-municipality pTemplate="rowexpansion" let-i="rowIndex">
+                    <div class="ui-grid ui-grid-responsive ui-fluid">
+                        <div *ngIf="!conditionsAgreements[municipality.id]">
+                            <button class="modal-content ui-g-1 ui-sm-1" (click)=changeConditionsAgreement(municipality)>
+                                <i class="fa fa-square-o" aria-hidden="true"></i>
+                            </button>
+                            <div class="ui-g-11 ui-sm-11">
+                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
+                            </div>
+                        </div>
+                        <div *ngIf="conditionsAgreements[municipality.id]">
+                            <button class="modal-content ui-g-1 ui-sm-1" (click)="changeConditionsAgreement(municipality)">
+                                <!-- prevent user can make changes if already applied for a voucher: [disabled]="disableConditionsAgreements[municipality.id] -->
+                                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                            </button>
+                            <div class="ui-g-11 ui-sm-11">
+                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
+                            </div>
+                        </div>
+                    </div>
+                </template>
             </p-dataTable>
             <p>ALEX TEST</p>
             <p-dataTable [value]="applyVouchersData">
@@ -152,20 +172,42 @@
 <helpdesk-form-component portal="beneficiary-voucher"></helpdesk-form-component>
 
 <div class="container font">
-  <div class="ui-g-1"></div>
-  <p-dialog [(visible)]="displayError" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false" 
-    [closeOnEscape]="false" (onAfterHide)="closeModal()">
-    <div class="row">
-      <div class="col-xs-12">
-        <span>{{errorMessage}}</span>
-      </div>
-    </div>
-    <div class="row" style="margin-top: 30px;">
-      <div class="col-xs-12 col-lg-6 offset-lg-3" style="text-align: center;">
-        <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
-          {{ 'shared.confirm.button' | translate }}
-        </button>
-      </div>
-    </div>
-  </p-dialog>
+    <div class="ui-g-1"></div>
+    <p-dialog [(visible)]="displayError" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
+        [closeOnEscape]="false" (onAfterHide)="closeModal()">
+        <div class="row">
+            <div class="col-xs-12">
+                <span>{{errorMessage}}</span>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 30px;">
+            <div class="col-xs-12 col-lg-6 offset-lg-3" style="text-align: center;">
+                <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                    {{ 'shared.confirm.button' | translate }}
+                </button>
+            </div>
+        </div>
+    </p-dialog>
+
+    <p-dialog [(visible)]="displayCallClosed" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="!processingRequest"
+        [closeOnEscape]="false" (onAfterHide)="closeModal()">
+        <div class="form-group">
+            <div style="padding: 2em; padding-top: 0em;" class="center">
+                <h2 class="beneficiaryMayor">{{ 'benefPortal.voucher.callClosed.title' | translate }}</h2>
+                <div style="text-align: start !important; padding-top:1em;">
+                    <span>
+                        {{ 'benefPortal.voucher.callClosed.body' | translate:{date:dateNumber,hour:hourNumber} }}
+                    </span>
+                </div>
+            </div>
+            <div>
+                <div class="row center">
+                    <button type="button" class="btn btn-primary publish-button" [disabled]="processingRequest" (click)="closeModal()">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </p-dialog>
+
 </div>

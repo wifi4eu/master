@@ -30,6 +30,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -208,4 +209,80 @@ public class BeneficiaryResource {
             return null;
         }
     }
+
+    @ApiOperation(value = "Get beneficiaries from final list by call")
+    @RequestMapping(value = "/finalBeneficiaries/call/{callId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO getBeneficiariesFromFinalList(@PathVariable("callId") final Integer callId,
+                                                     @RequestParam("countryCode") final String countryCode,
+                                                     @RequestParam("municipality") final String municipality,
+                                                     @RequestParam("page") final Integer page,
+                                                     @RequestParam("size") final Integer size,
+                                                     @RequestParam("field") final String field,
+                                                     @RequestParam("sortDirection") final String sortDirection,
+                                                     HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            ResponseDTO responseDTO = beneficiaryService.findBeneficiariesFromFinalList(callId, countryCode, municipality, page, size, field, sortDirection);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiaries from final list retrieved successfully");
+            return responseDTO;
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve beneficiaries from final list", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+
+    }
+
+    @ApiOperation(value = "Download PDF grant agreement by beneficiaryId")
+    @RequestMapping(value = "exportBeneficiaryPdfGrantAgreement", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<byte[]> exportBeneficiaryPdfGrantAgreement(@RequestParam("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/pdf"));
+            String filename = "grantAgreementPdf.pdf";
+            headers.setContentDispositionFormData(filename, filename);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            ByteArrayOutputStream file = beneficiaryService.downloadGrantAgreementPdfFromRegistrationId(registrationId);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - PDF Grant Agreement generated correctly");
+            return new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to download the PDF Grant Agreement", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+
+    }
+
+    @ApiOperation(value = "Cancel beneficiary by registration ID")
+    @RequestMapping(value = "cancel/registration/{registrationId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO cancelBeneficiaryFromRegistrationId(@PathVariable("registrationId") final Integer registrationId, @RequestParam("reason") final String reason, @RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            ResponseDTO responseDTO = beneficiaryService.cancelBeneficiaryFromRegistrationId(registrationId,reason,callId);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary cancelled correctly");
+            return responseDTO;
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to cancel this beneficiary", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+
+    }
+
 }

@@ -54,36 +54,46 @@
                 </label>
             </div>
         </div>
+
+
         <div class="ui-g-12">
             <hr class="genericHr" />
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
-            <div class="form-group ui-g-3 ui-lg-3 ui-md-8 ui-sm-12">
-                <label for="contactName">{{ 'shared.name.label' | translate }}</label><br>
-                <input id="contactName" type="text" name="contactName" class="form-control"
-                       [(ngModel)]="supplier.contactName" required>
-            </div>
-            <br>
-            <div class="form-group ui-g-3 ui-lg-3 ui-md-8 ui-sm-12">
-                <label for="contactSurname">{{ 'shared.surname.label' | translate }}</label><br>
-                <input id="contactSurname" type="text" name="contactSurname" class="form-control"
-                       [(ngModel)]="supplier.contactSurname" required>
-            </div>
-            <br>
-            <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
-                <label for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate }}</label><br>
-                <input id="contactPhonePrefix" type="text" name="contactPhonePrefix" class="form-control ui-g-2 ui-sm-4"
-                       style="margin-right: 1em;" [(ngModel)]="supplier.contactPhonePrefix" required>
-                <input id="contactPhoneNumber" type="text" name="contactPhoneNumber" class="form-control ui-g-3 ui-sm-7"
-                       [(ngModel)]="supplier.contactPhoneNumber" required>
+            <div *ngFor="let user of supplier.users; let i = index">
+                <div class="form-group ui-g-3 ui-lg-3 ui-md-8 ui-sm-12"> 
+                    <b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>
+                    <span class="btn redButton right" (click)="deactivateShowModal(i)">{{ 'shared.deactivate.button' | translate}}</span>
+                </div>  
+                <div class="form-group ui-g-3 ui-lg-3 ui-md-8 ui-sm-12">
+                    <label>{{ 'shared.name.label' | translate }}</label><br>
+                    <input [id]="'name-'+i" type="text" [name]="'name-'+i" class="form-control"
+                        [(ngModel)]="users[i].name" required>
+                </div>
                 <br>
-                <label for="contactPhonePrefix" class="ui-g-2 ui-sm-4" style="font-size: 70%;color: #8f8f8f;">
-                    {{ 'suppRegistration.prefix.number' | translate }}
-                </label>
+                <div class="form-group ui-g-3 ui-lg-3 ui-md-8 ui-sm-12">
+                    <label>{{ 'shared.surname.label' | translate }}</label><br>
+                    <input [id]="'surname-'+i" type="text" [name]="'surname-'+i" class="form-control"
+                        [(ngModel)]="users[i].surname" required>
+                </div>
+                <br>
+                <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
+                    <label>{{ 'suppRegistration.phone.number' | translate }}</label><br>
+                    <input [id]="'phone-prefix-'+i" type="text" [name]="'phone-prefix-'+i" class="form-control ui-g-2 ui-sm-4"
+                        style="margin-right: 1em;" [(ngModel)]="users[i].phone_prefix" required>
+                    <input [id]="'phone-number-'+i" type="text" [name]="'phone-number-'+i" class="form-control ui-g-3 ui-sm-7"
+                        [(ngModel)]="users[i].phone_number" required>
+                    <br>
+                    <label class="ui-g-2 ui-sm-4" style="font-size: 70%;color: #8f8f8f;">
+                        {{ 'suppRegistration.prefix.number' | translate }}
+                    </label>
+                </div>
+               
             </div>
-            <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
-                <p (click)="sendMailToUser()">{{ "benefPortal.beneficary.addMunicipality" | translate}}</p>
-            </div>
+            <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">   
+                    <p (click)="sendMailToUser()">{{ "benefPortal.beneficary.addMunicipality" | translate}}</p>   
+             </div>
         </div>
+  
         <div class="ui-g-12" *ngIf="geographicalScopeLoaded">
             <hr class="genericHr" />
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'suppRegistration.entity.support' | translate }}</p>
@@ -178,3 +188,21 @@
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
+<p-dialog [(visible)]="displayAddContactModal">
+        <div class="form-group ui-g">
+                <h1 class="Modalh1Confirmation">{{ 'shared.deactivateContactModalAreYouSure' | translate}}</h1>
+            <div class="ui-lg-3"></div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                <button (click)="closeModal()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' |
+                        translate }}
+                </button>
+            </div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                    <button (click)="deactivateContactModal()" class="btn btn-primary cancel-button">
+                            {{ 'shared.confirm.button' | translate }}
+                    </button>
+            </div>
+        
+            <div class="ui-lg-3"></div>
+        </div>
+    </p-dialog>

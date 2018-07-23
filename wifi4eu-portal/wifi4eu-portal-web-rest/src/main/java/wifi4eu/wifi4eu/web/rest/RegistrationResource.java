@@ -178,7 +178,7 @@ public class RegistrationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These documents cannot been removed", e);
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These documents cannot been updated", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }

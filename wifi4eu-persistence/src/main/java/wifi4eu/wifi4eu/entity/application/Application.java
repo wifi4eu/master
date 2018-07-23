@@ -5,6 +5,7 @@ import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "applications")
@@ -63,6 +64,9 @@ public class Application {
     @Column(name = "invalidate_reason")
     private String invalidateReason;
 
+    @Column(name = "cancel_reason")
+    private String cancelReason;
+
     @Column(name = "pre_selected_flag")
     private Boolean preSelectedFlag;
 
@@ -72,11 +76,16 @@ public class Application {
     @Column(name = "authorized_person")
     private Integer authorizedPerson;
 
+    @Column(name = "date_signature")
+    private Date dateSignature;
+
+    @Column(name = "date_counter_signature")
+    private Date dateCounterSignature;
 
     public Application() {
     }
 
-    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson) {
+    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, Date dateSignature, Date dateCounterSignature) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -94,9 +103,12 @@ public class Application {
         this.lcStatus = lcStatus;
         this.status = status;
         this.invalidateReason = invalidateReason;
+        this.cancelReason = cancelReason;
         this.preSelectedFlag = preSelectedFlag;
         this.rejected = rejected;
         this.authorizedPerson = authorizedPerson;
+        this.dateSignature = dateSignature;
+        this.dateCounterSignature = dateCounterSignature;
     }
 
     public Integer getId() {
@@ -235,6 +247,14 @@ public class Application {
         this.invalidateReason = invalidateReason;
     }
 
+    public String getCanceledReason() {
+        return cancelReason;
+    }
+
+    public void setCanceledReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
+
     public Boolean getPreSelectedFlag() {
         return preSelectedFlag;
     }
@@ -254,4 +274,20 @@ public class Application {
     public Integer getAuthorizedPerson(){ return authorizedPerson; }
 
     public void setAuthorizedPerson(Integer authorizedPerson) { this.authorizedPerson = authorizedPerson; }
+
+    public Date getDateSignature() {
+        return dateSignature;
+    }
+
+    public void setDateSignature(Date dateSignature) {
+        this.dateSignature = dateSignature;
+    }
+
+    public Date getDateCounterSignature() {
+        return dateCounterSignature;
+    }
+
+    public void setDateCounterSignature(Date dateCounterSignature) {
+        this.dateCounterSignature = dateCounterSignature;
+    }
 }

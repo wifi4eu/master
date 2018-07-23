@@ -336,7 +336,7 @@ public class RegistrationService {
             if (map.containsKey("id") && map.containsKey("beneficiaryIndicator")) {
                 Registration registration = registrationRepository.findOne((int) map.get("id"));
 
-                if (!checkPermissionsRegistrations(registration)){
+                if (!checkPermissionsRegistrations(registration)) {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to confirm or reject");
                     return permissionChecker.getAccessDeniedResponse();
                 }
@@ -410,8 +410,10 @@ public class RegistrationService {
         String name = supplier.getName();
         String email = supplier.getContactEmail();
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-        String lang = userUtils.getUserLangByUserId(supplier.getUser().getId());
-        if (lang != null) {
+
+        Integer userId = supplierService.getUserIdFromSupplier(supplier.getId());
+        if(userId != 0) {
+            String lang = userUtils.getUserLangByUserId(userId);
             _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - No language specified, using the default language");
             locale = new Locale(lang);
         }
@@ -569,7 +571,7 @@ public class RegistrationService {
             }
         }
         legalFileDTO.setRequestCorrectionDate(new Date());
-        if(legalFileDTO.getCorrectionReason() == null){
+        if (legalFileDTO.getCorrectionReason() == null) {
             legalFileDTO.setRequestCorrection(false);
         }
         return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
@@ -622,8 +624,8 @@ public class RegistrationService {
         return allFilesFlag;
     }
 
-    public boolean checkUserWithRegistration(Integer registrationId, Integer userId){
-        if(registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId) != null){
+    public boolean checkUserWithRegistration(Integer registrationId, Integer userId) {
+        if (registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId) != null) {
             return true;
         }
         return false;

@@ -1,7 +1,5 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-import javax.persistence.Column;
-import javax.xml.registry.infomodel.User;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
@@ -39,7 +37,7 @@ public class RegistrationDTO implements Serializable {
     private Date installationSiteSubmission;
     private Date installationSiteRejection;
     private Date installationSiteConfirmation;
-
+    private List<UserDTO> users;
 
     public RegistrationDTO() {
     }
@@ -52,7 +50,7 @@ public class RegistrationDTO implements Serializable {
                                    idUserPM, int idUserBPM, int idStatusBeneficiary, boolean compliance, int
                                    actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck,
                            Timestamp dateRegistered, Date installationSiteSubmission, Date installationSiteRejection,
-                           Date installationSiteConfirmation) {
+                           Date installationSiteConfirmation, List<UserDTO> users) {
         this.municipalityId = municipalityId;
         this.role = role;
         this.status = status;
@@ -83,6 +81,7 @@ public class RegistrationDTO implements Serializable {
         this.installationSiteSubmission = installationSiteSubmission;
         this.installationSiteRejection = installationSiteRejection;
         this.installationSiteConfirmation = installationSiteConfirmation;
+        this.users = users;
     }
 
     public Date getInstallationSiteSubmission() {
@@ -345,5 +344,13 @@ public class RegistrationDTO implements Serializable {
 
     public void setIdUserBPM(int idUserBPM) {
         this.idUserBPM = idUserBPM;
+    }
+
+    public List<UserDTO> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserDTO> users) {
+        this.users = users;
     }
 }

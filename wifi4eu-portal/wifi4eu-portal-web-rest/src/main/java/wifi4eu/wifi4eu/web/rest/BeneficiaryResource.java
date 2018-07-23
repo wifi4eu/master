@@ -58,7 +58,7 @@ public class BeneficiaryResource {
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 0) {
-                throw new AppException("");
+                throw new AppException(" User is already registered as another type");
             }
             String forwardedHeaderIp = request.getHeader("X-Forwarded-For");
             String ip = "";
