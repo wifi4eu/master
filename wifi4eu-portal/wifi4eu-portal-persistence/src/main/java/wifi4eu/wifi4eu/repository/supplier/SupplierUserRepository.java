@@ -9,9 +9,9 @@ import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 
 import java.util.List;
 
-public interface SupplierUserRepository extends CrudRepository<SupplierUser,Integer> {
+public interface SupplierUserRepository extends CrudRepository<SupplierUser, Integer> {
 
-    SupplierUser findFirstSupplierUserBySupplierIdAndEmail(@Param("supplierId") int supplierId , @Param("email") String email);
+    SupplierUser findFirstSupplierUserBySupplierIdAndEmail(@Param("supplierId") int supplierId, @Param("email") String email);
 
     List<SupplierUser> findByEmailAndStatus(@Param("email") String email, @Param("status") Integer status);
 
@@ -30,4 +30,5 @@ public interface SupplierUserRepository extends CrudRepository<SupplierUser,Inte
     void deleteBySupplierId(@Param("supplierId") Long supplierId);
 
     List<SupplierUser> findByUserId(@Param("status") Integer userId);
+
 }
