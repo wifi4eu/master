@@ -58,10 +58,11 @@ public class ConditionsAgreementResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
 
         try {
-            List<ApplicationDTO> applications = applicationService.getApplicationsByRegistrationId(conditionsAgreementDTO.getRegistrationId());
-            if(applications != null || !applications.isEmpty()) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
+            // PREVENT BENEFICIARY CANNOT UNCLICK CONDITIONS AGREEMENT IF HE ALREADY APPLIED FOR A VOUCHER 
+            // List<ApplicationDTO> applications = applicationService.getApplicationsByRegistrationId(conditionsAgreementDTO.getRegistrationId());
+            // if(applications != null || !applications.isEmpty()) {
+            //    throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            // }
             if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + conditionsAgreementDTO.getRegistrationId())) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
