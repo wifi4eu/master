@@ -163,36 +163,6 @@ public class SupplierResource {
         }
     }
 
-    @ApiOperation(value = "update Contact Details")
-    @RequestMapping(value = "update/contactDetails", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO updateContactDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating contact details");
-        try {
-            UserDTO userDTO = userConnected;
-            int supplierUserId = supplierService.getUserIdFromSupplier(supplierDTO.getId());
-            if (supplierUserId != userDTO.getId()) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierUserId);
-            if (supplierDTO.getId() != sendSupplierDTO.getId()) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            SupplierDTO resSupplier = supplierService.updateContactDetails(sendSupplierDTO, supplierDTO.getContactName(), supplierDTO.getContactSurname(), supplierDTO.getContactPhonePrefix(), supplierDTO.getContactPhoneNumber());
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Contact details updated successfully");
-            return new ResponseDTO(true, resSupplier, null);
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update these contact details", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These contact details cannot been updated", e);
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-        }
-    }
-
     @ApiOperation(value = "update Supplier Details")
     @RequestMapping(value = "update/supplierDetails", method = RequestMethod.POST)
     @ResponseBody
@@ -220,56 +190,6 @@ public class SupplierResource {
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier's contact details cannot been updated", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-        }
-    }
-
-    //TODO: limit access to this service
-//    @ApiOperation(value = "Delete supplier by specific id")
-//    @RequestMapping(method = RequestMethod.DELETE)
-//    @ResponseBody
-//    public ResponseDTO deleteSupplier(@RequestBody final Integer supplierId, HttpServletResponse response) throws IOException {
-//        try {
-//            SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
-//            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-//
-//            if (userDTO.getId() != supplierDTO.getUserId()) {
-//                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-//            }
-//            _log.info("deleteSupplier: " + supplierId);
-//            SupplierDTO resSupplier = supplierService.deleteSupplier(supplierId);
-//            return new ResponseDTO(true, resSupplier, null);
-//        } catch (AccessDeniedException ade) {
-//            response.sendError(HttpStatus.NOT_FOUND.value());
-//            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
-//        } catch (Exception e) {
-//            if (_log.isErrorEnabled()) {
-//                _log.error("Error on 'deleteSupplier' operation.", e);
-//            }
-//            response.sendError(HttpStatus.NOT_FOUND.value());
-//            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-//        }
-//    }
-
-    @ApiOperation(value = "Submit supplier registration")
-    @RequestMapping(value = "/submitRegistration", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Submitting supplier registration");
-        try {
-            UserDTO userDTO = userConnected;
-            if (userDTO.getType() != 0) {
-                throw new AppException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            SupplierDTO resSupplier = supplierService.submitSupplierRegistration(supplierDTO);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Supplier registration submitted successfully");
-            return new ResponseDTO(true, resSupplier, null);
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been submitted", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }

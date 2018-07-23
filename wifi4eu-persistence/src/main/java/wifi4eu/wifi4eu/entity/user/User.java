@@ -62,10 +62,17 @@ public class User {
     @Column(name = "csrf_token")
     private String csrfToken;
 
+    @Column(name = "contact_phone_prefix")
+    private String phone_prefix;
+
+    @Column(name = "contact_phone_number")
+    private String phone_number;
+
     public User() {
     }
 
-    public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken) {
+    public User(Integer id, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken, String phone_prefix, String phone_number) {
+        this.id = id;
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
@@ -82,6 +89,8 @@ public class User {
         this.ecasEmail = ecasEmail;
         this.ecasUsername = ecasUsername;
         this.csrfToken = csrfToken;
+        this.phone_prefix = phone_prefix;
+        this.phone_number = phone_number;
     }
 
     public Integer getId() {
@@ -148,6 +157,14 @@ public class User {
         this.email = email;
     }
 
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -172,14 +189,6 @@ public class User {
         this.accessDate = accessDate;
     }
 
-    public boolean isVerified() {
-        return verified;
-    }
-
-    public void setVerified(boolean verified) {
-        this.verified = verified;
-    }
-
     public Integer getType() {
         return type;
     }
@@ -188,20 +197,20 @@ public class User {
         this.type = type;
     }
 
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
     public String getEcasEmail() {
         return ecasEmail;
     }
 
     public void setEcasEmail(String ecasEmail) {
         this.ecasEmail = ecasEmail;
-    }
-
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
     }
 
     public String getEcasUsername() {
@@ -220,4 +229,19 @@ public class User {
         this.csrfToken = csrfToken;
     }
 
+    public String getPhone_prefix() {
+        return phone_prefix;
+    }
+
+    public void setPhone_prefix(String phone_prefix) {
+        this.phone_prefix = phone_prefix;
+    }
+
+    public String getPhone_number() {
+        return phone_number;
+    }
+
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
+    }
 }
