@@ -1,0 +1,29 @@
+<ux-layout-app-shell [isScrollHandlerActive]="true"
+                     headerAppFullName="Application name"
+                     headerAppShortName="App"
+                     [headerUserInfos]="(userState | async)?.fullName"
+                     (headerLanguageChanged)="onLanguageChanged($event)"
+                     [navBarNotificationLinks]="notificationLinks"
+                     [navBarTopMenuLinks]="menuLinks"
+                     footerAppVersion="@eui.version"
+                     footerAppReleaseDate="@timestamp@">
+
+    <uxAppShellNavBarItemsContent>
+        <ux-layout-nav-bar-action-item iconClass="fa fa-info-circle">
+            <ul>
+                <li><a href="http://www.google.be" target="_blank">About</a></li>
+                <li><a>Contact</a></li>
+            </ul>
+            <ul>
+                <li><a>Legal notice</a></li>
+                <li><a>...</a></li>
+            </ul>
+        </ux-layout-nav-bar-action-item>
+
+        <ux-layout-nav-bar-action-item iconClass="fa fa-search" contentClass="search-bar">
+            <app-search-input></app-search-input>
+        </ux-layout-nav-bar-action-item>
+    </uxAppShellNavBarItemsContent>
+
+</ux-layout-app-shell>
+

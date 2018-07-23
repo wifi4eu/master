@@ -1,0 +1,32 @@
+{
+    "name": "angular-app",
+    "version": "0.1.0",
+    "license": "EUPL-1.1",
+    "scripts": {
+        "ng": "ng",
+        "clean": "rimraf out-tsc dist",
+        "inject-openID": "eui-scripts inject-openid-html",
+        "start-mock-server": "json-server --watch ./src/mock/db.js --routes ./src/mock/routes.json",
+        "start": "parallelshell \"ng serve --proxy-config proxy-mock.conf.json --open=true\" \"npm run start-mock-server\"",
+        "start-lean-server": "nodemon server/server.js",
+        "start-lean": "parallelshell \"ng serve --proxy-config proxy-lean.conf.json --open=true\" \"npm run start-lean-server\"",
+        "start-proxy": "ng serve --proxy-config proxy.conf.json --open=true",
+        "test": "ng test --watch=false --single-run",
+        "lint": "npm run tslint && npm run stylelint \"src/**/*.scss\"",
+        "e2e": "ng e2e",
+        "prebuild": "npm run lint && npm test",
+        "build": "ng build",
+        "build-prod": "npm run prebuild && ng build --prod --build-optimizer",
+        "stylelint": "stylelint",
+        "tslint": "tslint --exclude \"src/libs/**/*.*\" \"src/**/*.ts\""
+    },
+    "private": true,
+    "dependencies": {
+        "@eui/deps-base": "3.3.7"
+    },
+    "devDependencies": {
+        "@angular/cli": "1.7.4",
+        "karma": "1.7.1",
+        "typescript": "2.4.2"
+    }
+}

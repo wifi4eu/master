@@ -1,0 +1,21 @@
+{
+    "openIdConnect": {
+        "enabled": true,
+        "stripIdTokenFromLocation": true,
+        "maximumRequestRetries": 1,
+        "authorizeUrl": "https://ecasa.cc.cec.eu.int:7002/cas/oauth2/authorize",
+        "euLoginAccessTokenUrl": "https://ecasa.cc.cec.eu.int:7002/cas/oauth2/token",
+        "spaClientId": "your-SPA-client_id",
+        "spaRedirectUrl": "http://d02di1637961dit.net1.cec.eu.int:4200",
+        "apiGatewayAccessTokenUrl": "https://api.acceptance.tech.ec.europa.eu/gateway/token",
+        "apiGatewayAccessTokenAudienceId": "rbBwrZk4G9uUb9m2rPyu2ZR5_mEH90RZH7UzcxAsSCYTk_PA9y58wW1ByWtTT40zukMQIi_H4WfsBpfuk_bg-rzsHRI2-uhTlfiFIzUABeXPqfNBEVWEio2BVUVnrjTyZZxN8AMi1nnkBxE-Aen6kPYjKCsvWxvSunppr2Ay5Os",
+        "apiGatewayConsumerKey": "your-application-consumer-key",
+        "apiGatewayServices": {
+            "iopServices": {
+                "endpoint": "https://api.acceptance.tech.ec.europa.eu/your-service-name/your-service-version/*",
+                "audienceId": "your-service-client_id"
+            }
+        },
+        "services": {}
+    }
+}
