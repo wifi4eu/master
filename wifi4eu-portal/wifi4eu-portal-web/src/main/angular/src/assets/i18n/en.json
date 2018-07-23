@@ -908,5 +908,18 @@
   "dgconn.dashboard.card.beneficiaries.home": "Beneficiaries",
   "benefPortal.voucher.conditionsAgreement": "I agree with the <a href=\"\">Call Conditions</a> and I declare that the municipality I represent is not included in any of the situations listed in article 136 (1) of the <a href=\"\">Regulation XXX/2018</a>.",
   "benefPortal.grantAgreement.title" : "Grant Agreement",
-  "benefProtal.grantAgreement.description" : "Congratulations! <br> Your municipality has been selected for voucher assignment as part of WiFi4EU program. Please validate the information below which will be used to sign grant agreement with your municipality. This information will be used for communication with your municipality for the duration of the contract. You are expected to sign the grant agreement as soon as possible."
+  "benefProtal.grantAgreement.description" : "Congratulations! <br> Your municipality has been selected for voucher assignment as part of WiFi4EU program. Please validate the information below which will be used to sign grant agreement with your municipality. This information will be used for communication with your municipality for the duration of the contract. You are expected to sign the grant agreement as soon as possible.",
+
+  "benefPortal.grantAgreement.authorisation.status": "You got the voucher. Please sign the grant agreement.",
+  "benefPortal.grantAgreement.authorisation.title": "Indicate who can sign the grant agreement",
+  "benefPortal.grantAgreement.authorisation.text1": "In order to sign the grant agreement you need an EU login account associated to WiFi4EU and the relevant supporting documents.",
+  "benefPortal.grantAgreement.authorisation.datatable.euLogin": "EU login",
+  "benefPortal.grantAgreement.authorisation.datatable.authorised": "Authorised to sign",
+  "benefPortal.grantAgreement.authorisation.datatable.required": "EU login is required to sign",
+  "benefPortal.grantAgreement.authorisation.datatable.waiting": "Waiting for authorisation",
+  "benefPortal.grantAgreement.authorisation.text2": "Do you want to add a new authorised person who can sign the grant agreement?",
+  "benefPortal.grantAgreement.authorisation.editRegistration": "Edit your registration here",
+  "benefPortal.grantAgreement.authorisation.alert": "Your user account is not authorised to sign the grant agreement according to the table above. If you wish to sign the grant agreement, please make sure that your account needs the following conditions: 1) Your supporting documents are provided. 2) You're authorised in the system.",
+  "benefPortal.grantAgreement.authorisation.withdraw": "Withdraw from current call"
+
 }
