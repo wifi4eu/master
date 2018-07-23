@@ -138,16 +138,16 @@
         <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
         -->
         <server.azure.dev.address>wifi4eu-dev.everincloud.com</server.azure.dev.address>
-        <server.azure.devb.address>wifi4eu-devb.everincloud.com/</server.azure.devb.address>
-        <server.azure.devhf.address>wifi4eu-devhf.everincloud.com/</server.azure.devhf.address>
-        <server.azure.devpg.address>wifi4eu-dev1.everincloud.com/</server.azure.devpg.address>
-        <server.azure.devnf.address>wifi4eu-devnf.everincloud.com/</server.azure.devnf.address>
+        <server.azure.devb.address>wifi4eu-devb.everincloud.com</server.azure.devb.address>
+        <server.azure.devhf.address>wifi4eu-devhf.everincloud.com</server.azure.devhf.address>
+        <server.azure.devpg.address>wifi4eu-dev1.everincloud.com</server.azure.devpg.address>
+        <server.azure.devnf.address>wifi4eu-devnf.everincloud.com</server.azure.devnf.address>
         <server.azure.sec.address>wifi4eu-sec.everincloud.com</server.azure.sec.address>
         <server.azure.dev.dgconn.address>cnect-wifi4eu-dev.everincloud.com</server.azure.dev.dgconn.address>
-        <server.azure.devb.dgconn.address>wifi4eu-devb.everincloud.com/</server.azure.devb.dgconn.address>
-        <server.azure.devhf.dgconn.address>wifi4eu-devhf.everincloud.com/</server.azure.devhf.dgconn.address>
-        <server.azure.devpg.dgconn.address>wifi4eu-dev1.everincloud.com/</server.azure.devpg.dgconn.address>
-        <server.azure.devnf.dgconn.address>wifi4eu-devnf.everincloud.com/</server.azure.devnf.dgconn.address>
+        <server.azure.devb.dgconn.address>wifi4eu-devb.everincloud.com</server.azure.devb.dgconn.address>
+        <server.azure.devhf.dgconn.address>wifi4eu-devhf.everincloud.com</server.azure.devhf.dgconn.address>
+        <server.azure.devpg.dgconn.address>wifi4eu-dev1.everincloud.com</server.azure.devpg.dgconn.address>
+        <server.azure.devnf.dgconn.address>wifi4eu-devnf.everincloud.com</server.azure.devnf.dgconn.address>
         <dgconn.name>dashboard</dgconn.name>
         <dgconn.context.name>/dashboard</dgconn.context.name>
         <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
