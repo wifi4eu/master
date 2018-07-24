@@ -906,5 +906,6 @@
   "dgConn.beneficiariesList.cancel.failure": "An error has ocurred during canceling the beneficiary. Please, try again later",
   "dgConn.beneficiariesList.cancel.empty": "Please, complete the reason field to cancel the beneficiary",
   "dgconn.dashboard.card.beneficiaries.home": "Beneficiaries",
-  "benefPortal.voucher.disclaimer": "Please note that this countdown is indicative, please click on apply below at the time of opening of the call"
+  "benefPortal.voucher.disclaimer": "Please note that this countdown is indicative, please click on apply below at the time of opening of the call",
+  "benefPortal.voucher.noCall" : "There is no call foreseen"
 }
