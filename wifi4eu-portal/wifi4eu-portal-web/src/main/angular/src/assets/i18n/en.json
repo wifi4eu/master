@@ -905,5 +905,10 @@
   "dgConn.beneficiariesList.cancel.confirm": "Beneficiary cancelled correctly",
   "dgConn.beneficiariesList.cancel.failure": "An error has ocurred during canceling the beneficiary. Please, try again later",
   "dgConn.beneficiariesList.cancel.empty": "Please, complete the reason field to cancel the beneficiary",
-  "dgconn.dashboard.card.beneficiaries.home": "Beneficiaries"
+  "dgconn.dashboard.card.beneficiaries.home": "Beneficiaries",
+  "benefPortal.myHistory.title": "My history",
+  "benefPortal.myHistory.desc": "Nam porttitor accumsan. Ut vel dictum sem, a pretium dui. In malesuada enim in dolor euismod, id commodo mi conectetur.",
+  "benefPortal.myHistory.actionPerformed": "Action performed",
+  "benefPortal.myHistory.actionPerformed.supportingDocumentsUploaded": "Supporting documents uploaded",
+  "benefPortal.myHistory.actionPerformed.applicationSubmitted": "Application submitted"
 }
