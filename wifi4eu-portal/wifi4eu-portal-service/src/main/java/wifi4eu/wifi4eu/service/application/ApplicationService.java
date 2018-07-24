@@ -189,8 +189,6 @@ public class ApplicationService {
             throw new DateTimeException("The call is not available at the moment");
         }
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
-        User user = null;
-        Municipality municipality = null;
         if (registration.getAllFilesFlag() == 1) {
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
