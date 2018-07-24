@@ -263,8 +263,8 @@
                 <schemes>https</schemes>
                 <server.address>${server.azure.devb.address}</server.address>
                 <server.dgconn.address>${server.azure.devb.dgconn.address}</server.dgconn.address>
-                <dgconn.name>cnect</dgconn.name>
-                <dgconn.context.name>/cnect</dgconn.context.name>
+                <dgconn.name>dashboard</dgconn.name>
+                <dgconn.context.name>/dashboard</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
@@ -300,8 +300,8 @@
                 <schemes>https</schemes>
                 <server.address>${server.azure.devhf.address}</server.address>
                 <server.dgconn.address>${server.azure.devhf.dgconn.address}</server.dgconn.address>
-                <dgconn.name>cnect</dgconn.name>
-                <dgconn.context.name>/cnect</dgconn.context.name>
+                <dgconn.name>dashboard</dgconn.name>
+                <dgconn.context.name>/dashboard</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
@@ -337,8 +337,8 @@
                 <schemes>https</schemes>
                 <server.address>${server.azure.devpg.address}</server.address>
                 <server.dgconn.address>${server.azure.devpg.dgconn.address}</server.dgconn.address>
-                <dgconn.name>cnect</dgconn.name>
-                <dgconn.context.name>/cnect</dgconn.context.name>
+                <dgconn.name>dashboard</dgconn.name>
+                <dgconn.context.name>/dashboard</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
@@ -374,8 +374,8 @@
                 <schemes>https</schemes>
                 <server.address>${server.azure.devnf.address}</server.address>
                 <server.dgconn.address>${server.azure.devnf.dgconn.address}</server.dgconn.address>
-                <dgconn.name>cnect</dgconn.name>
-                <dgconn.context.name>/cnect</dgconn.context.name>
+                <dgconn.name>dashboard</dgconn.name>
+                <dgconn.context.name>/dashboard</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
