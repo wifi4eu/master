@@ -1,4 +1,4 @@
-<!-- Competition & user registration status -->
+<!--Competition and registration status not found here anymore-->
 <div id="upper-block" class="ui-g-12 center">
     <div *ngIf="voucherCompetitionState == 0" class="ui-g-12">
         <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i>
@@ -8,41 +8,27 @@
         <br>
         <success-component status="shared.submitregistration.success.title"></success-component>
     </div>
-    <div *ngIf="voucherCompetitionState == 2" class="ui-g-12">
-        <i class="fa fa-info-circle success-failure-icon" style="color: #0074CA" aria-hidden="true"></i>
-        <br>
-        <br>
-        <h2 class="beneficiaryTitle">{{ 'benefPortal.voucher.statusmessage4' | translate }}</h2>
-        <success-component status="benefPortal.voucher.apply.title"></success-component>
-    </div>
-    <div *ngIf="voucherCompetitionState == 3" class="ui-g-12">
-        <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i>
-        <br>
-        <br>
-        <h2 class="beneficiaryTitle offset-lg-2 ui-lg-8 ui-g-12">
-            {{ 'benefPortal.voucher.statusmessage5' | translate }}
-        </h2>
-    </div>
 </div>
-
 <!-- Timer & "Apply For Voucher" -->
 <div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
-    <h2 *ngIf="voucherCompetitionState != 1" class="beneficiaryTitle marginTop">
-        {{ 'itemMenu.appPortal' | translate }}
-    </h2>
+    <div class="ui-g-12 right">
+        <a routerLink="../profile">
+            <i class="fa fa-share"></i> {{'benefPortal.profile.title' | translate }}</a>
+    </div>
     <h2 *ngIf="voucherCompetitionState == 1" class="beneficiaryTitle marginTop">
-        {{ 'benefPortal.voucher.timeleft.title' | translate }}
+        {{ 'home.part3.text4' | translate }}
     </h2>
+    <h2 *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="beneficiaryTitle marginTop">
+        {{ 'benefPortal.voucher.statusmessage4' | translate }}
+    </h2>
+
     <p *ngIf="voucherCompetitionState == 0">
         {{ 'benefPortal.voucher.step2' | translate }}
     </p>
-    <p *ngIf="voucherCompetitionState == 1">
-        {{ 'benefPortal.voucher.timeleft.subtitle' | translate:{date:dateNumber,hour:hourNumber} }}
+    <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="offset-lg-3 ui-lg-6" [innerHTML]="
+        'benefPortal.voucher.counterSubtitle' | translate:{startDate:startDate,startHour:startHour, endDate:endDate, endHour:endHour}">
     </p>
-    <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3">
-        {{ 'benefPortal.voucher.counterSubtitle' | translate:{date:dateNumber,hour:hourNumber} }}
-    </p>
-    <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-4 ui-lg-4 ui-g-12" (timerEvent)="openApplyForVoucher()"
+    <timer-component *ngIf="voucherCompetitionState == 1" class="ui-g-12 center" (timerEvent)="openApplyForVoucher()"
         [expirationTimestamp]="currentCall.startDate">
     </timer-component>
     <div class="ui-g-12 ui-md-8 offset-md-2">
