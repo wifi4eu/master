@@ -82,18 +82,39 @@ export class VoucherComponent {
         // Check if there are Calls
         if (this.user != null) {
             // ALEX PART
-            // callId hardcoded
-            this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,1).subscribe(
-                (applyVoucher: ApplyVoucherBase[]) => {
-                    this.applyVouchersData = applyVoucher;
-                    for (let i = 0; i < this.applyVouchersData.length; i++){
-                        // this.conditionsAgreements[this.applyVouchersData[i].idMunicipality] = this.applyVouchersData[i].conditionAgreement;
-                        if (this.applyVouchersData[i].filesUploaded == 1){
-                            let uploaddate = new Date(this.applyVouchersData[i].uploadTime);
-                            this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
-                            this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+            this.getCurrentTime();
+            this.callApi.getCurrentCallWithoutRelatedObjects().subscribe(
+                (call: CallDTOBase) => {
+                    this.currentCall = call;
+                    if (this.currentCall){
+                        let date = new Date(this.currentCall.startDate);
+                        this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                        this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+                        if ((this.currentCall.startDate - this.currentDate) <= 0) {
+                            this.voucherCompetitionState = 2;
+                            this.openedCalls = "greyImage";
+                        } else {
+                            this.voucherCompetitionState = 1;
                         }
+                        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,this.currentCall.id).subscribe(
+                            (applyVoucher: ApplyVoucherBase[]) => {
+                                this.applyVouchersData = applyVoucher;
+                                for (let i = 0; i < this.applyVouchersData.length; i++){
+                                    // this.conditionsAgreements[this.applyVouchersData[i].idMunicipality] = this.applyVouchersData[i].conditionAgreement;
+                                    if (this.applyVouchersData[i].filesUploaded == 1){
+                                        let uploaddate = new Date(this.applyVouchersData[i].uploadTime);
+                                        this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                                        this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+                                    }
+                                }
+                            },
+                            error => {
+                            }
+                        );
+                    } else {
+                        this.voucherCompetitionState = 0;
                     }
+
                 },
                 error => {
                 }
