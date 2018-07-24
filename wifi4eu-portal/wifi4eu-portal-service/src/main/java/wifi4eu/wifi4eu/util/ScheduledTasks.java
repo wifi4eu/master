@@ -334,7 +334,8 @@ public class ScheduledTasks {
         long fourHoursAgo = new Date().toInstant().minus(4, ChronoUnit.HOURS).toEpochMilli();
         //in case of server failure also search for applications that weren't sent the email and that were created at least four hours ago
         List<Application> applicationList = applicationRepository.findByCreateApplicationEmailNotSent(fourHoursAgo);
-        _log.info("SCHEDULED TASK: Create Application Emails - There is " + applicationList.size() + " emails to be sent in this last four hours.");
+        _log.info("SCHEDULED TASK: Create Application Emails - There is " + applicationList.size() + " municipalities to be sent the email in this " +
+                "last four hours.");
         for (Application app : applicationList) {
             Municipality municipality = municipalityRepository.findByRegistrationId(app.getRegistrationId());
             List<User> userList = userRepository.findUsersByRegistrationId(app.getRegistrationId());

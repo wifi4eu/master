@@ -210,11 +210,10 @@ public class ApplicationService {
         ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
         String subject = bundle.getString("mail.voucherApply.subject");
         String msgBody = bundle.getString("mail.voucherApply.body");
-        //if (!userService.isLocalHost()) {
+        if (!userService.isLocalHost()) {
             mailService.sendEmailAsync(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "createApplication");
-            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email sent to " + user.getEcasEmail() + " for the " +
-                    "application id: " + applicationId);
-        //}
+            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
+        }
     }
 
     @Transactional
