@@ -14,9 +14,15 @@ import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 @Table(name = "WIF_LEGAL_ENTITY")
 public class LegalEntity {
 
-	//@ GeneratedValue(strategy = GenerationType.AUTO)
-	@Id
+	// @Column(name = "id")
+	// @Id
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
+	// private Integer id;
+
+	// @ GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", updatable = false, nullable = false)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "mid")
