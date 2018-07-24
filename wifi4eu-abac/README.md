@@ -2,15 +2,24 @@
 
 ## Angular requirements
 
+Check npm version:
+```
+<projecFolder>\app\wifi4eu-abac\src\main\eui> node -v
+v4.6.1
+```
+
+Make sure you have eUI registry set to your NPM configuration
+npm set registry = "https://ecdevops.eu/repository/npm-all/"
+
 Check node version:
 ```
-<projecFolder>\app\wifi4eu-abac\src\main\angular> node -v
+<projecFolder>\app\wifi4eu-abac\src\main\eui> node -v
 v8.9.4
 ```
 
 Check ng version:
 ```
-<projecFolder>\app\wifi4eu-abac\src\main\angular> ng -v
+<projecFolder>\app\wifi4eu-abac\src\main\eui> ng -v
 Your global Angular CLI version (1.5.3) is greater than your local
 version (1.2.0). The local Angular CLI version is used.
 
@@ -38,14 +47,14 @@ os: win32 x64
 
 Install dependencies:
 ```
-<projecFolder>\app\wifi4eu-abac\src\main\angular> npm install
+<projecFolder>\app\wifi4eu-abac\src\main\eui> npm install
 ```
 
 ## Build WAR for weblogic
 
 To execute a full build (angular and java), run:
 ```
-<projecFolder>\app\wifi4eu-abac> mvn clean package -Png-build,weblogic
+<projecFolder>\app\wifi4eu-abac> mvn clean package -Pnpm-build,weblogic
 ```
 
 To execute a build of the java code (weblogic profile is enabled by default), run:
