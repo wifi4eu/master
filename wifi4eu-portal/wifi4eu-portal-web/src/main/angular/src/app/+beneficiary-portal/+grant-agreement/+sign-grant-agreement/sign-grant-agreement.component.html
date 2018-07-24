@@ -86,34 +86,52 @@
     <div class="col-sm-8 whitePanel">
         <div class="row">
             <div class="col-sm-4">
-                <p>{{ 'shared.name.label' | translate }}</p>
+                <p>{{ 'benefPortal.granAgreement.nameContact' | translate }}</p>
             </div>
             <div class="col-sm-8">
-                <p class="profileData">{{authorizedUser?.name}}</p>
+                <p class="profileData">{{authorizedUser?.name}} {{authorizedUser?.surname}}</p>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-4">
-                <p>{{ 'shared.surname.label' | translate }}</p>
-            </div>
-            <div class="col-sm-8">
-                <p class="profileData">{{authorizedUser?.surname}}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4">
-                <p>{{ 'shared.email.label' | translate }}</p>
+                <p>{{ 'benefPortal.granAgreement.emailContact' | translate }}</p>
             </div>
             <div class="col-sm-8">
                 <p class="profileData">{{authorizedUser?.email}}</p>
             </div>
         </div>
+      <!--   <div class="row">
+            <div class="col-sm-4">
+                <p>{{ 'benefPortal.granAgreement.addressLabel' | translate }}</p>
+            </div>
+            <div class="col-sm-8">
+                <p class="profileData">{{authorizedUser?.address}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <p>{{ 'shared.number.label' | translate }}</p>
+            </div>
+            <div class="col-sm-8">
+                <p class="profileData">{{authorizedUser?.addressNum}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <p>{{ 'shared.postal-code.label' | translate }}</p>
+            </div>
+            <div class="col-sm-8">
+                <p class="profileData">{{authorizedUser?.postalCode}}</p>
+            </div>
+        </div> -->
     </div>  
     <div class="col-sm-8">
         <div class="col-sm-12">
             <br><br>
             <select name="" id="">
-                <option value="english">English</option>
+                <option *ngFor="let lang of languagesArray" [ngValue]="lang.code">
+                    {{lang.label}}
+                </option>
             </select>
             <button class="btn btn-primary whiteButton">{{ 'benefPortal.grantAgreement.languageButton' | translate}}</button>
             <br><br>
@@ -127,7 +145,7 @@
             <div class="col-sm-8">
                 <p class="profileData">{{ 'benefPortal.grantAgreement.document' | translate}}</p>
                 <p class="smallCharacters">{{ 'benefPortal.grantAgreement.documentDownload' | translate}}</p>
-                <p class="smallCharacters"><i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate}}</p>
+                <a class="smallCharacters" (click)="downladPDF()"><i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate}}</a>
             </div>   
         </div>
     </div>

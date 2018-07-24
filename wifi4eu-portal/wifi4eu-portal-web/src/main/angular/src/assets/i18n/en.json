@@ -897,5 +897,8 @@
   "benefPortal.grantAgreement.document" : "Grant Agreement document",
   "benefPortal.grantAgreement.documentDownload" : "Please download the model Grant Agreement here for your review.",
   "benefPortal.grantAgreement.downloadText":"Please download the Grant Agreement and carefully read the document before confirming that you understand the conditions in the grant agreement. Finally press the button \"Sign\" on the page to sign the grant agreement ",
-  "benefPortal.grantAgreement.confirmCheckbox" : "I confirm that I have read and understand the conditions in the Grant Agreement for WiFi4EU."
+  "benefPortal.grantAgreement.confirmCheckbox" : "I confirm that I have read and understand the conditions in the Grant Agreement for WiFi4EU.",
+  "benefPortal.granAgreement.addressLabel" : "Street name",
+  "benefPortal.granAgreement.nameContact" : "Name of the contact person",
+  "benefPortal.granAgreement.emailContact" : "E-mail address of the contact person"
 }
