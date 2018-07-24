@@ -327,8 +327,7 @@ public class ScheduledTasks {
         }
     }
 
-    //@Scheduled(cron = "0 0 0/4 * * *")
-    @Scheduled(cron = "0 0/2 * * * *")
+    @Scheduled(cron = "0 0 0/4 * * *")
     public void contactEmaislTimer() {
         _log.debug("SCHEDULED TASK: Create Application Emails - STARTING");
         long fourHoursAgo = new Date().toInstant().minus(4, ChronoUnit.HOURS).toEpochMilli();
