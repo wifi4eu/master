@@ -8,6 +8,11 @@ Check npm version:
 v4.6.1
 ```
 
+If you need to update it:
+```
+<projecFolder>\app\wifi4eu-abac\src\main\eui> npm install -g npm@4.6.1
+```
+
 Make sure you have eUI registry set to your NPM configuration
 npm set registry = "https://ecdevops.eu/repository/npm-all/"
 
