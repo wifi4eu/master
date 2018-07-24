@@ -327,31 +327,4 @@ public class ScheduledTasks {
         }
     }
 
-    @Scheduled(cron = "0 0 0/4 * * *")
-    public void contactEmaislTimer() {
-        _log.debug("SCHEDULED TASK: Create Application Emails - STARTING");
-        long fourHoursAgo = new Date().toInstant().minus(4, ChronoUnit.HOURS).toEpochMilli();
-        //in case of server failure also search for applications that weren't sent the email and that were created at least four hours ago
-        List<Application> applicationList = applicationRepository.findByCreateApplicationEmailNotSent(fourHoursAgo);
-        _log.info("SCHEDULED TASK: Create Application Emails - There is " + applicationList.size() + " municipalities to be sent the email in this " +
-                "last four hours.");
-        for (Application app : applicationList) {
-            Municipality municipality = municipalityRepository.findByRegistrationId(app.getRegistrationId());
-            List<User> userList = userRepository.findUsersByRegistrationId(app.getRegistrationId());
-            if (municipality != null && !userList.isEmpty()) {
-                //send to all their contacts
-                for (User user : userList) {
-                    applicationService.sendCreateApplicationEmail(user, municipality, app.getId());
-                }
-            } else {
-                _log.error("SCHEDULED TASK: Create Application Emails - inconsistency in data. User or municipality is null. Application id: " +
-                        app.getId());
-            }
-        }
-        _log.debug("SCHEDULED TASK: Create Application Emails - FINISHED");
-    }
-
-
-
-
 }
