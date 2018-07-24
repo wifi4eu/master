@@ -40,7 +40,7 @@ public final class ParserCSV2Entity<T> {
 	 * @return list of entities
 	 */
 	public List<T> parseCSV2Entity(byte[] inputCSV, Class<T> t) {
-		List<T> result = new LinkedList<>();
+		List<T> result = new LinkedList<T>();
 		String[] columnNames = null;
 		boolean isColumnNames = true;
 

@@ -39,3 +39,4 @@ cleanEnv.sh
 .settings/*
 .project
 bin
+wifi4eu-abac-standalone/.settings/
