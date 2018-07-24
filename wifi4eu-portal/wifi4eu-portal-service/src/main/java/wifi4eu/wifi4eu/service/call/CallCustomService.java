@@ -11,18 +11,34 @@ public class CallCustomService {
     @Autowired
     CallCustomRepository callCustomRepository;
 
+    public CallCustom getCallForApply(){
+        CallCustom callReturn =  getCurrentCallCustomWithVoucherCompetitionState();
+        if (callReturn == null){
+            callReturn = getNearestCallCustomWithVoucherCompetitionState();
+        }
+        return callReturn;
+    }
+
     public CallCustom getCurrentCallCustomWithVoucherCompetitionState(){
         CallCustom callCustom = callCustomRepository.findCurrentCall();
-        int voucherCompetitionState = 0;
-
         if (callCustom != null){
+            int voucherCompetitionState = 0;
             if ((callCustom.getStartDate() - System.currentTimeMillis()) <= 0) {
                 voucherCompetitionState = 2;
             } else {
                 voucherCompetitionState = 1;
             }
+            callCustom.setVoucherCompetitionState(voucherCompetitionState);
         }
+        return callCustom;
+    }
+
+    public CallCustom getNearestCallCustomWithVoucherCompetitionState(){
+        CallCustom callCustom = callCustomRepository.findNearestCall();
+        int voucherCompetitionState = 1;
         callCustom.setVoucherCompetitionState(voucherCompetitionState);
         return callCustom;
     }
+
+
 }

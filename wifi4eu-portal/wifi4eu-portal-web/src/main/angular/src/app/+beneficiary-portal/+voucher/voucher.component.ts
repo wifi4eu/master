@@ -57,55 +57,75 @@ export class VoucherComponent {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
-            this.callCustomApi.getCurrentCall().subscribe(
+            this.callCustomApi.getCallForApply().subscribe(
                 (call: CallCustomBase) => {
                     this.currentCall = call;
-                    this.voucherCompetitionState = this.currentCall.voucherCompetitionState;
-                    if (this.voucherCompetitionState == 2){
-                        this.openedCalls = "greyImage";
-                    }
                     if (this.currentCall){
-                        let startDateCall = new Date(this.currentCall.startDate);
-                        let endDateCall = new Date(this.currentCall.endDate);
-                        this.startDate = ('0' + startDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (startDateCall.getUTCMonth() + 1)).slice(-2) + "/" + startDateCall.getUTCFullYear();
-                        this.startHour = ('0' + (startDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + startDateCall.getUTCMinutes()).slice(-2);
-                        this.endDate = ('0' + endDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (endDateCall.getUTCMonth() + 1)).slice(-2) + "/" + endDateCall.getUTCFullYear();
-                        this.endHour = ('0' + (endDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + endDateCall.getUTCMinutes()).slice(-2);
-                        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,this.currentCall.id).subscribe(
-                            (applyVoucher: ApplyVoucherBase[]) => {
-                                this.applyVouchersData = applyVoucher;
-                                for (let i = 0; i < this.applyVouchersData.length; i++){
-                                    if (this.applyVouchersData[i].filesUploaded == 1){
-                                        let uploaddate = new Date(this.applyVouchersData[i].uploadTime);
-                                        this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
-                                        this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
-                                    }
-                                }
-                            },
-                            error => {
-                            }
-                        );
+                        this.voucherCompetitionState = this.currentCall.voucherCompetitionState;
+                        if (this.voucherCompetitionState == 2){
+                            this.openedCalls = "greyImage";
+                        }
+                        this.loadVoucherData();
                     } else {
                         this.voucherCompetitionState = 0;
                     }
-
                 },
                 error => {
                     this.voucherCompetitionState = 0;
                 }
             );
-            
         }
+    }
+
+    private loadVoucherData(){
+        let startDateCall = new Date(this.currentCall.startDate);
+        let endDateCall = new Date(this.currentCall.endDate);
+        this.startDate = ('0' + startDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (startDateCall.getUTCMonth() + 1)).slice(-2) + "/" + startDateCall.getUTCFullYear();
+        this.startHour = ('0' + (startDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + startDateCall.getUTCMinutes()).slice(-2);
+        this.endDate = ('0' + endDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (endDateCall.getUTCMonth() + 1)).slice(-2) + "/" + endDateCall.getUTCFullYear();
+        this.endHour = ('0' + (endDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + endDateCall.getUTCMinutes()).slice(-2);
+        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,this.currentCall.id).subscribe(
+            (applyVoucher: ApplyVoucherBase[]) => {
+                this.applyVouchersData = applyVoucher;
+                for (let i = 0; i < this.applyVouchersData.length; i++){
+                    if (this.applyVouchersData[i].filesUploaded == 1){
+                        let uploaddate = new Date(this.applyVouchersData[i].uploadTime);
+                        this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                        this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+                    }
+                }
+            },
+            error => {
+            }
+        );
     }
 
     private goToDocuments(municipalityId: number) {
         this.router.navigate(['../additional-info/', municipalityId], { relativeTo: this.route });
     }
 
-    private applyForVoucher(registrationNumber: number, event) {
+    private applyForVoucher(applyVoucher: ApplyVoucherBase) {
         //we just need to check this variable
         //voucherCompetitionState is 2 then call is open
         //or when timer component emits that has finished
+        if (this.voucherCompetitionState == 2) {
+            if (applyVoucher){
+                let urlQueue = this.rabbitmqURI;
+                urlQueue += "?idRegistration="+applyVoucher.idRegistration+"?idMunicipality="+applyVoucher.idMunicipality+"?idUser="+this.user.id;
+                console.log(urlQueue);
+                this.http.get(urlQueue).subscribe(
+                    data => {
+                        console.log(data);
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
+            }
+        } else if (this.voucherCompetitionState == 1) {
+            //trying to apply before the opening of the call
+            this.displayCallClosed = true;
+        }
         /*
         if (this.voucherCompetitionState == 2) {
             let startCallDate = this.currentCall.startDate;
@@ -123,6 +143,12 @@ export class VoucherComponent {
                     this.registrations[registrationNumber].uploadTime +
                     "}";
 
+                    this.http.get('https://api.github.com/users/seeschweiler').subscribe(
+                    data => {
+                        console.log(data);
+                    });
+                        
+                    
                 this.http.post(this.rabbitmqURI, body, this.httpOptions).subscribe(
                     response => {
                         this.loadingButtons[registrationNumber] = true;

@@ -19,13 +19,12 @@ public class CallCustomResource {
     @Autowired
     CallCustomService callCustomService;
 
-    @ApiOperation(value = "Get the current call")
-    @RequestMapping(value = "/current-active", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "Get the call to apply")
+    @RequestMapping(value = "/applyvoucher", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public CallCustom getCurrentCall() {
-        return callCustomService.getCurrentCallCustomWithVoucherCompetitionState();
+    public CallCustom getCallForApply() {
+        return callCustomService.getCallForApply();
     }
-
 
     @ApiOperation(value = "Edit CallCustom")
     @RequestMapping(value  = "/edit", method = RequestMethod.PUT, produces = "application/json")

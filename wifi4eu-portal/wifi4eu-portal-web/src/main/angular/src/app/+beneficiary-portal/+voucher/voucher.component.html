@@ -33,61 +33,6 @@
     </timer-component>
     <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
-            <!--
-            <p-dataTable [value]="municipalities" [expandableRows]="true" [expandedRows]="municipalities">
-                <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
-                    <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <span>
-                            <img alt="" class="municipality-icon" src="assets/images/account-balance-material-icons-regular.png">
-                            <a (click)="goToDocuments(i)">
-                                <span class="municipality-name">{{municipality.name}}</span>
-                            </a>
-                        </span>
-                    </template>
-                </p-column>
-                <p-column header="" styleClass="label">
-                    <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button *ngIf="!docsOpen[i]" class="btn btn-primary" id="muncicipalityButton" (click)="goToDocuments(i)">{{ 'shared.uploadDocuments' | translate}}
-                        </button>
-                        <span *ngIf="docsOpen[i]">
-                            <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
-                            <span>{{ 'shared.documentsUploaded' | translate:{date:uploadDate[i],time:uploadHour[i]} }}</span>
-                        </span>
-                    </template>
-                </p-column>
-                <p-column header="" styleClass="label">
-                    <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || !docsOpen[i] || !this.conditionsAgreements[this.registrations[i].municipalityId]">
-                            {{ 'benefPortal.voucher.applyforvoucher' | translate }}
-                        </button>
-                        <span *ngIf="applications[i]">
-                            <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
-                            {{ 'benefPortal.voucher.applied' | translate }}
-                        </span>
-                    </template>
-                </p-column>
-                <template let-municipality pTemplate="rowexpansion" let-i="rowIndex">
-                    <div class="ui-grid ui-grid-responsive ui-fluid">
-                        <div *ngIf="!conditionsAgreements[municipality.id]">
-                            <button class="modal-content ui-g-1 ui-sm-1" (click)=changeConditionsAgreement(municipality)>
-                                <i class="fa fa-square-o" aria-hidden="true"></i>
-                            </button>
-                            <div class="ui-g-11 ui-sm-11">
-                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
-                            </div>
-                        </div>
-                        <div *ngIf="conditionsAgreements[municipality.id]">
-                            <button class="modal-content ui-g-1 ui-sm-1" (click)="changeConditionsAgreement(municipality)">
-                                <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                            </button>
-                            <div class="ui-g-11 ui-sm-11">
-                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
-                            </div>
-                        </div>
-                    </div>
-                </template>
-            </p-dataTable>
-            -->
             <p-dataTable [value]="applyVouchersData" [expandableRows]="true" [expandedRows]="applyVouchersData">
                 <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
@@ -112,12 +57,7 @@
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
-                        <!--
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || !docsOpen[i] || !this.conditionsAgreements[this.registrations[i].municipalityId]">
-                            {{ 'benefPortal.voucher.applyforvoucher' | translate }}
-                        </button>
-                        -->
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!data.numberApplicant" [disabled]="!data.filesUploaded || data.numberApplicant">
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
                         <span *ngIf="data.numberApplicant">
@@ -199,7 +139,7 @@
                 <h2 class="beneficiaryMayor">{{ 'benefPortal.voucher.callClosed.title' | translate }}</h2>
                 <div style="text-align: start !important; padding-top:1em;">
                     <span>
-                        {{ 'benefPortal.voucher.callClosed.body' | translate:{date:dateNumber,hour:hourNumber} }}
+                        {{ 'benefPortal.voucher.callClosed.body' | translate:{date:startDate,hour:startHour} }}
                     </span>
                 </div>
             </div>
