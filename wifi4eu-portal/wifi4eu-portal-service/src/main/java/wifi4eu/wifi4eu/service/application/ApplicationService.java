@@ -124,20 +124,20 @@ public class ApplicationService {
      */
     public ApplicationDTO registerApplication(int callId, int userId, int registrationId, int municipalityId,
                                               long uploadDocTimestamp, long queueTimestamp, HttpServletRequest request) {
-        _log.debug("- Registering application");
+        _log.debug("Registering application");
         CallDTO callDTO = callService.getCallById(callId);
         UserDTO userDTO = userService.getUserById(userId);
         RegistrationDTO registrationDTO = registrationService.getRegistrationById(registrationId);
         MunicipalityDTO municipalityDTO = municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
         // check all the information provided exists on DB
         if (callDTO != null && userDTO != null && registrationDTO != null && municipalityDTO != null) {
-            _log.debug("- All information provided exists");
+            _log.debug("All information provided exists");
             // check the queue date is between start/end of the call
             if (queueTimestamp >= callDTO.getStartDate() && queueTimestamp <= callDTO.getEndDate()) {
-                _log.debug("- The queue is from the specified call");
+                _log.debug("The queue is from the specified call");
                 //check information on the queue is right
-                if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationUsersRepository.findByUserIdAndRegistrationIdAndMunicipalityId(userId, registrationId, municipalityId) != null) {
-                    _log.debug("- All the information of this queue is right");
+                if (registrationDTO.getUploadTime() == uploadDocTimestamp) {
+                    _log.debug("All the information of this queue is right");
                     //check if this application was received previously
                     ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
                     if (applicationDTO == null || applicationDTO.getDate() > queueTimestamp) {
@@ -146,30 +146,30 @@ public class ApplicationService {
                             applicationDTO = new ApplicationDTO();
                             applicationDTO.setRegistrationId(registrationDTO.getId());
                             applicationDTO.setCallId(callDTO.getId());
-                            _log.debug("- New application created");
+                            _log.debug("New application created");
                         }
                         applicationDTO.setDate(queueTimestamp);
                         applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                        _log.info("- Application " + applicationDTO.getId() + " created successfully");
+                        _log.info("Application " + applicationDTO.getId() + " created successfully");
                         return applicationDTO;
                     } else {
-                        _log.error("- Trying to register an application existent on the DB, callId: "
+                        _log.error("Trying to register an application existent on the DB, callId: "
                                 + callId + " userId: " + userId + " registrationId: " + registrationId +
                                 " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
                         return applicationDTO;
                     }
                 } else {
-                    _log.error("- Trying to register an application with incorrect uploadDocTimestamp or userId not match, callId: "
+                    _log.error("Trying to register an application with incorrect uploadDocTimestamp, callId: "
                             + callId + " userId: " + userId + " registrationId: " + registrationId +
                             " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
                 }
             } else {
-                _log.error("- Trying to register an application out of the call period, callId: "
+                _log.error("Trying to register an application out of the call period, callId: "
                         + callId + " userId: " + userId + " registrationId: " + registrationId +
                         " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
             }
         } else {
-            _log.error("- The information provided is wrong, callId: "
+            _log.error("The information provided is wrong, callId: "
                     + callId + " userId: " + userId + " registrationId: " + registrationId +
                     " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
         }
