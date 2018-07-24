@@ -1,4 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+.abac-upload {
+    display: none;
+}
+
 .ux-dashboard-card {
-    min-height: 200px;
+    height: 100%;
+}
+
+.ux-dashboard-card__content-label {
+    min-height: 50px;
+}
+
+.ux-layout-page-header-wrapper {
+    margin: 2rem 0 0 0;
 }

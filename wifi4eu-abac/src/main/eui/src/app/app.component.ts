@@ -29,18 +29,7 @@ export class AppComponent implements OnInit {
 
     private _createMenuLinks() {
         this.menuLinks = [
-            new UxLink({ label: 'HOME', url: '/screen/home', isHome: true }),
-//            new UxLink({
-//                label: 'Module1', url: '/screen/module1', children: [
-//                    new UxLink({ label: 'Page 1', url: '/screen/module1/page1' }),
-//                    new UxLink({ label: 'Page 2', url: '/screen/module1/page2' })
-//                ]
-//            }),
-//            new UxLink(
-//                {
-//                    label: 'Module2', url: '/screen/module2'
-//                }
-//            )
+            new UxLink({ label: 'HOME', url: '/screen/home', isHome: true })
         ];
     }
 }

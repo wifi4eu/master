@@ -22,11 +22,11 @@ import { REDUCER_TOKEN, getReducers, metaReducers } from './reducers/index';
 
 import { SearchInputComponent } from './components/shell/search-input/search-input.component';
 
-import { SharedModule } from '../shared/shared.module';
+import { ApiModule } from '../shared/api.module';
 
 @NgModule({
     imports: [
-        SharedModule,
+        ApiModule,
         UxCoreModule.forRoot({ appConfig: appConfig, environment: environment }),
         StoreModule.forRoot(REDUCER_TOKEN, { metaReducers }),
         !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
@@ -36,7 +36,7 @@ import { SharedModule } from '../shared/shared.module';
         SearchInputComponent
     ],
     exports: [
-        SharedModule,
+        ApiModule,
         SearchInputComponent
     ],
     providers: [
