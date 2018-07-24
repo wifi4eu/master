@@ -13,13 +13,16 @@ import { ApplicationDTOBase } from "../../shared/swagger/model/ApplicationDTO";
 import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import {ApplyvoucherApi} from "../../shared/swagger/api/ApplyvoucherApi";
 import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { SharedService } from "../../shared/shared.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Http, RequestOptions, Headers } from "@angular/http";
+import { ApplyVoucherBase } from '../../shared/swagger/model/ApplyVoucher'
+
 @Component({
     templateUrl: 'voucher.component.html',
-    providers: [ApplicationApi, CallApi, RegistrationApi, ConditionsAgreementApi, MunicipalityApi, MayorApi]
+    providers: [ApplyvoucherApi, ApplicationApi, CallApi, RegistrationApi, ConditionsAgreementApi, MunicipalityApi, MayorApi]
 })
 
 export class VoucherComponent {
@@ -32,6 +35,7 @@ export class VoucherComponent {
     private voucherCompetitionState: number;
     private user: UserDTOBase;
     private currentCall: CallDTOBase = new CallDTOBase();
+    private applyVouchersData: ApplyVoucherBase[] = [];
     private registrations: RegistrationDTOBase[] = [];
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
@@ -42,6 +46,8 @@ export class VoucherComponent {
     private startHour: string;
     private endDate: string;
     private endHour: string;
+    private uploadDateTime = {};
+    private uploadHourTime = {};
     private uploadDate: string[] = [];
     private uploadHour: string[] = [];
     private voucherApplied: string = "";
@@ -70,14 +76,55 @@ export class VoucherComponent {
         })
     };
 
-
-    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private conditionsAgreementApi: ConditionsAgreementApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
+    constructor(private router: Router, private route: ActivatedRoute, private applyVoucherApi: ApplyvoucherApi, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private conditionsAgreementApi: ConditionsAgreementApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
         this.storedRegistrationQueues = storedRegistrations ? storedRegistrations : [];
         // Check if there are Calls
         if (this.user != null) {
+            // ALEX PART
+            this.callApi.getCurrentCallWithoutRelatedObjects().subscribe(
+                (call: CallDTOBase) => {
+                    this.currentCall = call;
+                    if (this.currentCall){
+                        let startDateCall = new Date(this.currentCall.startDate);
+                        let endDateCall = new Date(this.currentCall.endDate);
+                        this.startDate = ('0' + startDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (startDateCall.getUTCMonth() + 1)).slice(-2) + "/" + startDateCall.getUTCFullYear();
+                        this.startHour = ('0' + (startDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + startDateCall.getUTCMinutes()).slice(-2);
+                        this.endDate = ('0' + endDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (endDateCall.getUTCMonth() + 1)).slice(-2) + "/" + endDateCall.getUTCFullYear();
+                        this.endHour = ('0' + (endDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + endDateCall.getUTCMinutes()).slice(-2);
+                        if ((this.currentCall.startDate - this.currentDate) <= 0) {
+                            this.voucherCompetitionState = 2;
+                            this.openedCalls = "greyImage";
+                        } else {
+                            this.voucherCompetitionState = 1;
+                        }
+                        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,this.currentCall.id).subscribe(
+                            (applyVoucher: ApplyVoucherBase[]) => {
+                                this.applyVouchersData = applyVoucher;
+                                for (let i = 0; i < this.applyVouchersData.length; i++){
+                                    // this.conditionsAgreements[this.applyVouchersData[i].idMunicipality] = this.applyVouchersData[i].conditionAgreement;
+                                    if (this.applyVouchersData[i].filesUploaded == 1){
+                                        let uploaddate = new Date(this.applyVouchersData[i].uploadTime);
+                                        this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                                        this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+                                    }
+                                }
+                            },
+                            error => {
+                            }
+                        );
+                    } else {
+                        this.voucherCompetitionState = 0;
+                    }
+
+                },
+                error => {
+                }
+            );
+
+
             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                 (registrations: RegistrationDTOBase[]) => {
                     this.registrationsDocs = registrations;
@@ -143,13 +190,7 @@ export class VoucherComponent {
                                                             this.disableQueuing.push(res[0] ? res[0] : null);
 
                                                             this.loadingButtons.push(false);
-                                                            let startDateCall = new Date(this.currentCall.startDate);
-                                                            let endDateCall = new Date(this.currentCall.endDate);
-                                                            this.startDate = ('0' + startDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (startDateCall.getUTCMonth() + 1)).slice(-2) + "/" + startDateCall.getUTCFullYear();
-                                                            this.startHour = ('0' + (startDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + startDateCall.getUTCMinutes()).slice(-2);
-                                                            this.endDate = ('0' + endDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (endDateCall.getUTCMonth() + 1)).slice(-2) + "/" + endDateCall.getUTCFullYear();
-                                                            this.endHour = ('0' + (endDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + endDateCall.getUTCMinutes()).slice(-2);
-                                                            
+  
                                                             if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
                                                                 this.voucherCompetitionState = 2;
                                                                 this.openedCalls = "greyImage";
@@ -342,26 +383,27 @@ export class VoucherComponent {
 
     }
 
-    private changeConditionsAgreement(municipality) {
-        for(let j = 0; j < this.registrationsDocs.length; j++) {
-            if(this.registrationsDocs[j].municipalityId == municipality.id) {
-                this.conditionsAgreement.registrationId = this.registrationsDocs[j].id;
-                this.conditionsAgreements[municipality.id] == 0 ? this.conditionsAgreement.status = 1 : this.conditionsAgreement.status = 0;
-                this.conditionsAgreementApi.changeConditionsAgreementStatus(this.conditionsAgreement).subscribe(
+    private changeConditionsAgreement(applyVoucherData: ApplyVoucherBase) {
+        let conditionsAgreement = new ConditionsAgreementDTOBase();
+        conditionsAgreement.registrationId = applyVoucherData.idRegistration;
+        applyVoucherData.conditionAgreement == 0 ? conditionsAgreement.status = 1 : conditionsAgreement.status = 0;
+        this.conditionsAgreementApi.changeConditionsAgreementStatus(conditionsAgreement).subscribe(
                     (data : ResponseDTOBase) => {
                         if (data.success) {
                             this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
-                            this.conditionsAgreements[municipality.id] = this.conditionsAgreement.status;
+                    for (let i = 0; i < this.applyVouchersData.length; i++){
+                        if (applyVoucherData.idRegistration == this.applyVouchersData[i].idRegistration){
+                            this.applyVouchersData[i].conditionAgreement = data.data;
+                            break;
+                        }
+                    }
                         } else {
-                            this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                    this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
                         }
                     }, error => {
-                        this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
                     }
                 );
-                break;
             }
-        }
-    }
 
 }

@@ -215,10 +215,10 @@ public class ApplicationService {
                 String subject = bundle.getString("mail.voucherApply.subject");
                 String msgBody = bundle.getString("mail.voucherApply.body");
                 msgBody = MessageFormat.format(msgBody, municipality.getName());
-                if (!userService.isLocalHost()) {
+                //if (!userService.isLocalHost()) {
                     mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "createApplication");
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
-                }
+                //}
             }
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
