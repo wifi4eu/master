@@ -15,10 +15,15 @@ import org.springframework.stereotype.Controller;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
+import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -80,6 +85,12 @@ public class ScheduledTasks {
 
     @Autowired
     private RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    private ApplicationRepository applicationRepository;
+
+    @Autowired
+    private MunicipalityRepository municipalityRepository;
 
     private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
@@ -315,5 +326,32 @@ public class ScheduledTasks {
             }
         }
     }
+
+    //@Scheduled(cron = "0 0 0/4 * * *")
+    @Scheduled(cron = "0 0/2 * * * *")
+    public void contactEmaislTimer() {
+        _log.debug("SCHEDULED TASK: Create Application Emails - STARTING");
+        long fourHoursAgo = new Date().toInstant().minus(4, ChronoUnit.HOURS).toEpochMilli();
+        //in case of server failure also search for applications that weren't sent the email and that were created at least four hours ago
+        List<Application> applicationList = applicationRepository.findByCreateApplicationEmailNotSent(fourHoursAgo);
+        _log.info("SCHEDULED TASK: Create Application Emails - There is " + applicationList.size() + " emails to be sent in this last four hours.");
+        for (Application app : applicationList) {
+            Municipality municipality = municipalityRepository.findByRegistrationId(app.getRegistrationId());
+            List<User> userList = userRepository.findUsersByRegistrationId(app.getRegistrationId());
+            if (municipality != null && !userList.isEmpty()) {
+                //send to all their contacts
+                for (User user : userList) {
+                    applicationService.sendCreateApplicationEmail(user, municipality, app.getId());
+                }
+            } else {
+                _log.error("SCHEDULED TASK: Create Application Emails - inconsistency in data. User or municipality is null. Application id: " +
+                        app.getId());
+            }
+        }
+        _log.debug("SCHEDULED TASK: Create Application Emails - FINISHED");
+    }
+
+
+
 
 }
