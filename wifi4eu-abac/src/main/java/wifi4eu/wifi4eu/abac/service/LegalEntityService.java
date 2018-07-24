@@ -64,7 +64,7 @@ public class LegalEntityService {
 		for (LegalEntity legalEntity : items) {
 			log.info("Item recovered: " + legalEntity.toString());
 			// Override status
-			legalEntity.setWfStatus(AbacWorkflowStatusEnum.IMPORTED.getValue());
+			legalEntity.setWfStatus(AbacWorkflowStatusEnum.READY_FOR_ABAC);
 			legalEntityrepository.save(legalEntity);
 		}
 
@@ -131,9 +131,10 @@ public class LegalEntityService {
 	 * Send the legal entities with status READY_FOR_ABAC, limited to a maximum of @maxRecords
 	 * @param maxRecords
 	 */
+	@Transactional
 	public void findAndSendLegalEntitiesReadyToABAC(Integer maxRecords) {
 		Pageable pageable = PageRequest.of(FIRST_PAGE, maxRecords);
-		List<LegalEntity> legalEntities = legalEntityrepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum.READY_FOR_ABAC.toString(), pageable);
+		List<LegalEntity> legalEntities = legalEntityrepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum.READY_FOR_ABAC, pageable);
 
 		if (!legalEntities.isEmpty()) {
 			log.info(String.format("Found %s legal entities ready to be sent to ABAC...", legalEntities.size()));
@@ -144,19 +145,14 @@ public class LegalEntityService {
 		}
 	}
 
-	@Transactional
 	private void sendLegalEntityToABAC(LegalEntity legalEntity) {
 		//Requet the creation of the legal entity in ABAC
-		abacIntegrationService.createLegalEntity(legalEntity);
-
-		//Update the legal entity status in Wifi4EU DB
-		legalEntity.setWfStatus(AbacWorkflowStatusEnum.WAITING_FOR_ABAC.toString());
-		legalEntityrepository.save(legalEntity);
+		abacIntegrationService.createLegalEntityInAbac(legalEntity);
 	}
 
 	public void checkLegalEntityCreationStatus(Integer maxRecords) {
 		Pageable pageable = PageRequest.of(FIRST_PAGE, maxRecords);
-		List<LegalEntity> legalEntities = legalEntityrepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum.WAITING_FOR_ABAC.toString(), pageable);
+		List<LegalEntity> legalEntities = legalEntityrepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum.WAITING_FOR_ABAC, pageable);
 
 		if (!legalEntities.isEmpty()) {
 			log.info(String.format("Found %s legal entities waiting for ABAC to create them", legalEntities.size()));
@@ -164,7 +160,7 @@ public class LegalEntityService {
 
 		for(LegalEntity legalEntity : legalEntities) {
 			String status = abacIntegrationService.checkLegalEntityCreationStatus(legalEntity);
-			legalEntity.setWfStatus(status);
+			//legalEntity.setWfStatus(status);
 		}
 	}
 

@@ -1,23 +1,41 @@
 package wifi4eu.wifi4eu.abac.entity;
 
+import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
 import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
-
-import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
+import java.util.List;
 
 @Entity
 @Table(name = "WIF_LEGAL_ENTITY")
+@NamedStoredProcedureQueries({
+		@NamedStoredProcedureQuery(name = "CREATE_LEF_IN_ABAC",
+				procedureName = "CREATE_LEF_IN_ABAC",
+				parameters = {
+						@StoredProcedureParameter(mode = ParameterMode.IN, name = "LEGALENTITYID", type = Long.class)
+				})
+})
 public class LegalEntity {
-
-	//@ GeneratedValue(strategy = GenerationType.AUTO)
 	@Id
-	@Column(name = "id", updatable = false, nullable = false)
-	private Integer id;
+	@Column(name = "ID", unique = true, nullable = false, precision = 18, scale = 0)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leIDGenerator")
+	@SequenceGenerator(name = "leIDGenerator", sequenceName = "SEQ_LEGAL_ENTITY", allocationSize = 1)
+	private Long id;
 
 	@Column(name = "mid")
 	private Integer mid;
@@ -47,29 +65,27 @@ public class LegalEntity {
 	private String abacFelId;
 
 	@Column(name = "wf_status", length = 20)
-	private String wfStatus;
+	@Enumerated(EnumType.STRING)
+	private AbacWorkflowStatusEnum wfStatus;
 
 	@Column(name = "date_created", length = 20)
 	private String dateCreated;
 
+	@OneToMany(
+			mappedBy = "legalEntity",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private List<AbacBatchStatus> abacBatchStatusList;
+
 	public LegalEntity() {
 	}
 
-	public LegalEntity(Integer id, String officialName) {
-		this.id = id;
-		this.officialName = officialName;
-	}
 
-	public LegalEntity(Integer id, String officialName, String idAbac, String status) {
-		this.id = id;
-		this.officialName = officialName;
-		this.abacFelId = idAbac;
-		this.wfStatus = status;
-	}
 
-	public LegalEntity(Integer id, Integer mid, String officialName, String region, String languageCode,
+	public LegalEntity(Long id, Integer mid, String officialName, String region, String languageCode,
 			String countryCode, String officialAddress, String officialAddressStrNo, String postalCode,
-			String abacFelId, String wfStatus, String dateCreated) {
+			String abacFelId, AbacWorkflowStatusEnum wfStatus, String dateCreated) {
 		super();
 		this.id = id;
 		this.mid = mid;
@@ -85,11 +101,11 @@ public class LegalEntity {
 		this.dateCreated = dateCreated;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -165,11 +181,11 @@ public class LegalEntity {
 		this.abacFelId = abacFelId;
 	}
 
-	public String getWfStatus() {
+	public AbacWorkflowStatusEnum getWfStatus() {
 		return wfStatus;
 	}
 
-	public void setWfStatus(String wfStatus) {
+	public void setWfStatus(AbacWorkflowStatusEnum wfStatus) {
 		this.wfStatus = wfStatus;
 	}
 
@@ -179,6 +195,14 @@ public class LegalEntity {
 
 	public void setDateCreated(String dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+
+	public List<AbacBatchStatus> getAbacBatchStatusList() {
+		return abacBatchStatusList;
+	}
+
+	public void setAbacBatchStatusList(List<AbacBatchStatus> abacBatchStatusList) {
+		this.abacBatchStatusList = abacBatchStatusList;
 	}
 
 	@PrePersist
