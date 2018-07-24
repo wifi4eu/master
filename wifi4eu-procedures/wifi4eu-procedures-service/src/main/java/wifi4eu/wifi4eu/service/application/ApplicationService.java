@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.user.UserConstants;
@@ -47,6 +48,9 @@ public class ApplicationService {
     @Autowired
     private ApplicationService applicationService;
 
+    @Autowired
+    private CallRepository callRepository;
+
     public void sendCreateApplicationEmail(User user, Municipality municipality, int applicationId) {
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
         if (user.getLang() != null) {
@@ -64,10 +68,10 @@ public class ApplicationService {
     }
 
 
-    public void sendEmailApplications(){
+    public void sendEmailApplications(Integer callId){
         _log.debug("SCHEDULED TASK: Create Application Emails - STARTING");
         //in case of server failure also search for applications that weren't sent the email and that were created at least four hours ago
-        List<Application> applicationList = applicationRepository.findByCreateApplicationEmailNotSent(new Date().getTime());
+        List<Application> applicationList = applicationRepository.findByCreateApplicationEmailNotSent(new Date().getTime(), callRepository.findOne(callId).getStartDate());
         _log.info("SCHEDULED TASK: Create Application Emails - There is " + applicationList.size() + " municipalities to be sent the email in this " +
                 "last four hours.");
         for (Application app : applicationList) {
