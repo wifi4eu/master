@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import wifi4eu.wifi4eu.abac.service.AbacIntegrationService;
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 
 @Configuration
@@ -21,6 +22,9 @@ public class BatchScheduler {
 
     @Autowired
     LegalEntityService legalEntityService;
+
+    @Autowired
+    AbacIntegrationService abacIntegrationService;
 	
     @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
@@ -29,6 +33,6 @@ public class BatchScheduler {
 
     @Scheduled(cron = "${batch.legalentity.checkstatus.crontable}")
     public void checkLegalEntityCreationStatus() {
-        legalEntityService.checkLegalEntityCreationStatus(MAX_RECORDS_CHECK_CREATION_STATUS);
+        abacIntegrationService.checkAndUpdateLegalEntityCreationStatus();
     }
 }

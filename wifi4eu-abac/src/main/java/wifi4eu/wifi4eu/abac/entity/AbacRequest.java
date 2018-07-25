@@ -1,19 +1,10 @@
 package wifi4eu.wifi4eu.abac.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "WIF_ABAC_BATCH_STATUS")
-public class AbacBatchStatus {
+@Table(name = "WIF_ABAC_REQUEST_PROCESS")
+public class AbacRequest {
 
     @Id
     @Column(name = "ID", unique = true, nullable = false, precision = 18, scale = 0)
@@ -36,9 +27,6 @@ public class AbacBatchStatus {
 
     @Column(name = "L_QUE_ID", nullable = false, precision = 18, scale = 0)
     private Long lQueID;
-
-    @Column(name = "LEF_ABAC_STATUS")
-    private String lefAbacStatus;
 
     public Integer getId() {
         return id;
@@ -88,24 +76,15 @@ public class AbacBatchStatus {
         this.lQueID = lQueID;
     }
 
-    public String getLefAbacStatus() {
-        return lefAbacStatus;
-    }
-
-    public void setLefAbacStatus(String lefAbacStatus) {
-        this.lefAbacStatus = lefAbacStatus;
-    }
-
     @Override
     public String toString() {
-        return "AbacBatchStatus{" +
+        return "AbacRequest{" +
                 "id=" + id +
                 ", legalEntity=" + legalEntity +
                 ", lRunID=" + lRunID +
                 ", lLocSysCd='" + lLocSysCd + '\'' +
                 ", lLocObjFk='" + lLocObjFk + '\'' +
-                ", lQueID=" + lQueID +
-                ", lefAbacStatus='" + lefAbacStatus + '\'' +
+                ", lQueID=" + lQueID + '\'' +
                 '}';
     }
 }

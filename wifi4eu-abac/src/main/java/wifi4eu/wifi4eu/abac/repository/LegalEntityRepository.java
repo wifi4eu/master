@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.abac.entity.MonitoringRow;
 import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
 
 import java.util.List;
+import java.util.Set;
 
 public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integer> {
 
@@ -19,8 +20,6 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 
 	@Query(value = "SELECT le FROM LegalEntity le WHERE le.abacFelId is not null")
 	List<LegalEntity> findLegalEntitiesProcessedInAbac();
-
-	List<LegalEntity> findByWfStatusOrderByDateCreated(String status);
 
 	List<LegalEntity> findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum status, Pageable pageable);
 
