@@ -6,7 +6,6 @@
         <br>
         <h2 class="beneficiaryTitle">{{ 'benefPortal.voucher.noCall' | translate }}</h2>
         <br>
-        <success-component status="shared.submitregistration.success.title"></success-component>
     </div>
 </div>
 <!-- Timer & "Apply For Voucher" -->
@@ -21,7 +20,6 @@
     <h2 *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="beneficiaryTitle marginTop">
         {{ 'benefPortal.voucher.statusmessage4' | translate }}
     </h2>
-
     <p *ngIf="voucherCompetitionState == 0">
         {{ 'benefPortal.voucher.step2' | translate }}
     </p>
