@@ -1826,3 +1826,19 @@ input.email_profile::-ms-clear{
 .smallCharacters{
   font-size: 0.7em;
 }
+
+.voucherStatusAgreement{
+  vertical-align: middle;
+  font-size: 1.8em;
+}
+
+.voucherStatusAgreementBorder{
+  color: darkblue;
+  background: #fff;
+  margin-top: 2em;
+  border: solid 0.1em darkblue;
+}
+
+.voucherStatusBackButton{
+  margin-top: 3em;
+}

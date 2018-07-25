@@ -1,6 +1,24 @@
 <div class="clearfix"></div>
 <div class="container font">
     <div class="clearfix"></div>
+    <div class="row">
+        <div class="ui-g-4 ui-sm-4">
+            <div class="back-button voucherStatusBackButton">
+                <a (click)="goBack()"><i class="fa fa-arrow-left"></i>{{ 'shared.back.button' | translate}}</a>
+            </div>
+        </div>
+        <div class="ui-g-8 ui-sm-8 voucherStatusAgreementBorder">
+            <div class="row">
+                <div class="ui-g-1 voucherStatusAgreement">
+                    <i class="fa fa-info-circle"></i>
+                </div>
+                <div class="ui-g-11">
+                    <p>{{ 'benefPorta.voucher.signAgreement' | translate}}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <div class="row labelModal">
         <div class="col-sm-12">
             <p class="beneficiaryTitle">{{ 'benefPortal.grantAgreement.title' | translate }}</p>
@@ -125,7 +143,7 @@
             </div>
         </div> -->
     </div>  
-    <div class="col-sm-8">
+    <!-- <div class="col-sm-8">
         <div class="col-sm-12">
             <br><br>
             <select name="" id="">
@@ -136,7 +154,8 @@
             <button class="btn btn-primary whiteButton">{{ 'benefPortal.grantAgreement.languageButton' | translate}}</button>
             <br><br>
         </div>
-    </div>
+    </div> -->
+    <br><br><br>
     <div class="col-sm-12 whitePanel">
         <div class="row">
             <div class="col-sm-2">
@@ -158,18 +177,5 @@
 
 </div>
 
-<!-- Change language modal -->
-<p-dialog [(visible)]="displayLanguageModal" header="{{ 'shared.changeLanguage.modal.title' | translate }}" [modal]="true" [responsive]="true"
-          [resizable]="false" [draggable]="false" [closable]="true">
-    <div class="modal-body">
-        <div *ngFor="let row of languageRows" class="row">
-            <div *ngFor="let language of row" class="col-md-6">
-                <button class="btn language-modal" [class.btn-secondary]="language.code != selectedLanguage.code" [class.btn-primary]="language.code == selectedLanguage.code" (click)="selectLanguage(language.code)">
-                    <label class="text-adjust">{{language.label}} ({{language.code}})</label>
-                </button>
-            </div>
-        </div>
-    </div>
-</p-dialog>
 
 <helpdesk-form-component portal="beneficiary-profile"></helpdesk-form-component>

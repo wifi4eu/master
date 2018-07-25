@@ -38,32 +38,38 @@ export class SignGrantAgreementComponent {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         //TODO GET REGISTRATION ID FROM ROUTING
-        let registrationId =  22443;
+        let registrationId =  1026;
         if (this.user != null) {
-            this.callApi.getCallById(1).subscribe(
-                (call: CallDTOBase) =>{
-                    this.call = call;
-                    this.applicationApi.getApplicationByCallIdAndRegistrationId(this.call.id, registrationId).subscribe(
-                        (application: ApplicationDTOBase) => {
-                            this.application = application;
-                            this.applicationAuthorizedPersonApi.findByApplicationAndUserId(this.application.id, this.user.id).subscribe(
-                                (applicationAuthorized: ApplicationAuthorizedPersonDTOBase  ) =>{
-                                    if(applicationAuthorized != null){
-                                        this.userApi.getUserById(applicationAuthorized.authorizedPerson).subscribe(
-                                            (user: UserDTOBase) => {
-                                                this.authorizedUser = user;
-                                            }, error => {
-                                                console.log(error);
+            this.applicationApi.getApplicationByRegistrationId(registrationId).subscribe(
+                (application: ApplicationDTOBase) =>{
+                    this.callApi.getCallById(application.callId).subscribe(
+                        (call: CallDTOBase) =>{
+                            this.call = call;
+                            this.applicationApi.getApplicationByCallIdAndRegistrationId(this.call.id, registrationId).subscribe(
+                                (application: ApplicationDTOBase) => {
+                                    this.application = application;
+                                    this.applicationAuthorizedPersonApi.findByApplicationAndUserId(this.application.id, this.user.id).subscribe(
+                                        (applicationAuthorized: ApplicationAuthorizedPersonDTOBase  ) =>{
+                                            if(applicationAuthorized != null){
+                                                this.userApi.getUserById(applicationAuthorized.authorizedPerson).subscribe(
+                                                    (user: UserDTOBase) => {
+                                                        this.authorizedUser = user;
+                                                    }, error => {
+                                                        console.log(error);
+                                                    }
+                                                
+                                                );
                                             }
-                                        
-                                        );
-                                    }
-                                }, error =>{
+                                        }, error =>{
+                                            console.log(error);
+                                        }
+                                    );
+                                   
+                                }, error => {
                                     console.log(error);
                                 }
                             );
-                           
-                        }, error => {
+                        }, error =>{
                             console.log(error);
                         }
                     );
@@ -71,6 +77,7 @@ export class SignGrantAgreementComponent {
                     console.log(error);
                 }
             );
+           
            
             this.registrationApi.getRegistrationById(registrationId).subscribe(
                 (registration: RegistrationDTOBase) => {
