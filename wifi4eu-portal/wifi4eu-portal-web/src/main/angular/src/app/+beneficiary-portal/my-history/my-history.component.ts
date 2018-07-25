@@ -39,6 +39,7 @@ export class MyHistoryComponent {
     private currentIndex : number = 0;
     private historyItems = [];
     private fetchingData : boolean = false;
+    private changingCalls : boolean = false;
 
     constructor(private sharedService: SharedService, private applicationApi: ApplicationApi, private callApi: CallApi, private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi) {
         this.fetchingData = true;
@@ -92,6 +93,7 @@ export class MyHistoryComponent {
                                         this.registrations.push(registration);
                                         if (this.registrations.length == registrations.length) {
                                             this.fetchingData = false;
+                                            this.changingCalls = false;
                                         }
                                     }
                                 );
@@ -107,6 +109,7 @@ export class MyHistoryComponent {
         if (event['index'] != null) {
             let index = event['index'];
             if (this.calls[index]) {
+                this.changingCalls = true;
                 this.currentIndex = index;
                 this.historyItems = [];
                 this.municipalities = [];

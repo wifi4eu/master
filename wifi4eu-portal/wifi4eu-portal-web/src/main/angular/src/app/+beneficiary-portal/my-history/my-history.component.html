@@ -16,7 +16,7 @@
             </p-tabPanel>
         </p-tabView>
     </div>
-    <div *ngIf="!fetchingData" class="ui-g-12 center">
+    <div *ngIf="!fetchingData && !changingCalls" class="ui-g-12 center">
         <ux-accordion-boxes>
             <div *ngFor="let items of historyItems; let i = index">
                 <p class="beneficiaryMayor" style="text-align: left;">{{ municipalities[i].name }}</p>
@@ -29,7 +29,7 @@
                         </p-column>
                         <p-column field="date" [sortable]="true" header="{{ 'dgConn.dateandtime' | translate }}">
                             <ng-template let-row="rowData" pTemplate="body">
-                                 {{ row.date | date: 'dd/MM/yyyy HH:mm Z' }}
+                                 {{ row.date | date: 'short' }}
                             </ng-template>
                         </p-column>
                     </p-dataTable>
@@ -38,4 +38,5 @@
             </div>
         </ux-accordion-boxes>
     </div>
+    <i *ngIf="changingCalls" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
 </div>
