@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.service.registration.conditionsAgreement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.ConditionsAgreementDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.entity.registration.ConditionsAgreement;
 import wifi4eu.wifi4eu.mapper.registration.ConditionsAgreementMapper;
 import wifi4eu.wifi4eu.repository.registration.ConditionsAgreementRepository;
@@ -18,13 +19,10 @@ public class ConditionsAgreementService {
     @Autowired
     ConditionsAgreementRepository conditionsAgreementRepository;
 
-    public ConditionsAgreementDTO saveConditionsAgreementDTO(Integer userId, Integer registrationId, Integer status){
-        ConditionsAgreementDTO conditionsAgreementDTO = new ConditionsAgreementDTO();
-        conditionsAgreementDTO.setRegistrationId(registrationId);
-        conditionsAgreementDTO.setStatus(status);
-        conditionsAgreementDTO.setUserId(userId);
+    public ConditionsAgreementDTO saveConditionsAgreementDTO(UserDTO user, ConditionsAgreementDTO conditionsAgreementDTO){
+        // userConnected.getId(), conditionsAgreementDTO.getRegistrationId(), conditionsAgreementDTO.getStatus()
+        conditionsAgreementDTO.setUserId(user.getId());
         conditionsAgreementDTO.setChangeStatusDate(new Date());
-
         return conditionsAgreementMapper.toDTO(conditionsAgreementRepository.save(conditionsAgreementMapper.toEntity(conditionsAgreementDTO)));
     }
 
