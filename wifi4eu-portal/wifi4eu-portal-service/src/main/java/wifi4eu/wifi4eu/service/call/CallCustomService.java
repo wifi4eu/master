@@ -36,7 +36,9 @@ public class CallCustomService {
     public CallCustom getNearestCallCustomWithVoucherCompetitionState(){
         CallCustom callCustom = callCustomRepository.findNearestCall();
         int voucherCompetitionState = 1;
-        callCustom.setVoucherCompetitionState(voucherCompetitionState);
+        if(callCustom != null) {
+            callCustom.setVoucherCompetitionState(voucherCompetitionState);
+        }
         return callCustom;
     }
 

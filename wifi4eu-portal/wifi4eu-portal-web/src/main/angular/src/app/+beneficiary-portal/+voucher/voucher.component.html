@@ -27,7 +27,7 @@
         'benefPortal.voucher.counterSubtitle' | translate:{startDate:startDate,startHour:startHour, endDate:endDate, endHour:endHour}">
     </p>
     <timer-component *ngIf="voucherCompetitionState == 1" class="ui-g-12 center" (timerEvent)="openApplyForVoucher()"
-        [expirationTimestamp]="currentCall.startDate">
+        [expirationTimestamp]="currentCall.startDate" [baseURLApi] ="baseURI">
     </timer-component>
     <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
