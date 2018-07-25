@@ -14,9 +14,11 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -124,12 +126,18 @@ public class UserResource {
     public ResponseDTO ecasLogin(HttpServletResponse response) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
+
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging in with ECAS User");
+
+        // get registrationUsers relation pending to be approved for the user logging in
+        userService.saveInvitedUser(userConnected.getEmail(), userConnected);
+
         try {
             Cookie cookie = userService.getCSRFCookie();
             if (cookie != null) {
                 response.addCookie(cookie);
             }
+
             return new ResponseDTO(true, userConnected, null);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot be logged in", e);
@@ -137,7 +145,7 @@ public class UserResource {
         }
     }
 
-    @ApiOperation(value = "Service to do Login with a ECAS User")
+    @ApiOperation(value = "Service to do Logout with a ECAS User")
     @RequestMapping(value = "/ecaslogout", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO ecasLogout() {
