@@ -97,32 +97,4 @@ public class ApplicationResource {
         }
         return responseDTO;
     }
-
-    @ApiOperation(value = "Check if municipality has edit permissions")
-    @RequestMapping(value = "/registration/application/{callId}/{userId}/{registrationId}/{municipalityId}/{uploadDocTimestamp}/{queueTimestamp}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public ResponseDTO registerApplication(@PathVariable("callId") final Integer callId,
-                                           @PathVariable("userId") final Integer userId,
-                                           @PathVariable("registrationId") final Integer registrationId,
-                                           @PathVariable("municipalityId") final Integer municipalityId,
-                                           @PathVariable("uploadDocTimestamp") final Long uploadDocTimestamp,
-                                           @PathVariable("queueTimestamp") final Long queueTimestamp,
-                                           HttpServletRequest request,
-                                           HttpServletResponse response) throws IOException {
-
-        ResponseDTO responseDTO = new ResponseDTO();
-        try {
-            ApplicationDTO applicationDTO = applicationService.registerApplication(callId, userId, registrationId, municipalityId, uploadDocTimestamp, queueTimestamp, request);
-            responseDTO.setSuccess(true);
-            responseDTO.setData(applicationDTO);
-            responseDTO.setError(new ErrorDTO());
-        } catch (Exception e) {
-            responseDTO.setSuccess(false);
-            responseDTO.setData("Error on query");
-            responseDTO.setError(new ErrorDTO());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return responseDTO;
-    }
-
 }
