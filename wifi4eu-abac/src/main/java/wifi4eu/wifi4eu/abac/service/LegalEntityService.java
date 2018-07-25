@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.abac.service;
 
+import jdk.nashorn.internal.objects.NativeArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import wifi4eu.wifi4eu.abac.entity.AbacLefStatus;
+import wifi4eu.wifi4eu.abac.entity.AbacRequest;
 import wifi4eu.wifi4eu.abac.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.repository.AbacRequestRepository;
 import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
 import wifi4eu.wifi4eu.abac.utils.ParserCSV2Entity;
 
@@ -25,6 +29,9 @@ public class LegalEntityService {
 
 	@Autowired
 	private AbacIntegrationService abacIntegrationService;
+
+	@Autowired
+	AbacRequestRepository abacRequestRepository;
 
 	@Autowired
 	public LegalEntityService(LegalEntityRepository legalEntityrepository) {
@@ -148,6 +155,20 @@ public class LegalEntityService {
 	private void sendLegalEntityToABAC(LegalEntity legalEntity) {
 		//Requet the creation of the legal entity in ABAC
 		abacIntegrationService.createLegalEntityInAbac(legalEntity);
+	}
+
+	@Transactional(Transactional.TxType.REQUIRES_NEW)
+	public void updateLegalEntityCreationStatus(List<AbacLefStatus> abacLefStatuses) {
+
+		for (AbacLefStatus abacLefStatus: abacLefStatuses) {
+			AbacRequest abacRequest = abacRequestRepository.findByLLocObjFk(abacLefStatus.getLocObjForeignId());
+
+			if(!abacLefStatus.getStatus().equals(abacRequest.getLegalEntity().getWfStatus())) {
+				abacRequest.getLegalEntity().setWfStatus(abacLefStatus.getStatus());
+				abacRequest.getLegalEntity().setAbacFelId(abacLefStatus.getLegalEntityKey());
+				legalEntityrepository.save(abacRequest.getLegalEntity());
+			}
+		}
 	}
 
 	/**

@@ -6,8 +6,15 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import wifi4eu.wifi4eu.abac.entity.AbacLefStatus;
+import wifi4eu.wifi4eu.abac.repository.AbacRequestRepository;
 import wifi4eu.wifi4eu.abac.service.AbacIntegrationService;
+import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Configuration
 @EnableScheduling
@@ -25,6 +32,9 @@ public class BatchScheduler {
 
     @Autowired
     AbacIntegrationService abacIntegrationService;
+
+    @Autowired
+    AbacRequestRepository abacRequestRepository;
 	
     @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
@@ -33,6 +43,8 @@ public class BatchScheduler {
 
     @Scheduled(cron = "${batch.legalentity.checkstatus.crontable}")
     public void checkLegalEntityCreationStatus() {
-        abacIntegrationService.checkAndUpdateLegalEntityCreationStatus();
+
+        List<AbacLefStatus> abacLefStatuses = abacIntegrationService.getLegalEntityCreationStatus();
+		legalEntityService.updateLegalEntityCreationStatus(abacLefStatuses);
     }
 }

@@ -12,7 +12,7 @@ public class AbacRequest {
     @SequenceGenerator(name = "abacBatchIDGenerator", sequenceName = "SEQ_WIF_ABAC_STATUS", allocationSize = 1)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "LE_ID")
     private LegalEntity legalEntity;
 
