@@ -13,6 +13,7 @@ public class LegalFileDTO implements Serializable {
 	private Long fileSize;
 	private Long fileMime;
 	private Long fileName;
+    private Date removedTime;
 
 
 	public LegalFileDTO() {
@@ -20,7 +21,7 @@ public class LegalFileDTO implements Serializable {
 	}
 
 	public LegalFileDTO(int registration, String fileData, int fileType, Date uploadTime, Integer userId, Long fileSize, Long fileMime, Long
-			fileName) {
+			fileName, Date removedTime) {
 		this.registration = registration;
 		this.fileData = fileData;
 		this.fileType = fileType;
@@ -29,6 +30,7 @@ public class LegalFileDTO implements Serializable {
 		this.fileSize = fileSize;
 		this.fileMime = fileMime;
 		this.fileName = fileName;
+		this.removedTime = removedTime;
 	}
 
 	public int getId() {
@@ -102,4 +104,12 @@ public class LegalFileDTO implements Serializable {
 	public void setFileName(Long fileName) {
 		this.fileName = fileName;
 	}
+
+    public Date getRemovedTime() {
+        return removedTime;
+    }
+
+    public void setRemovedTime(Date removedTime) {
+        this.removedTime = removedTime;
+    }
 }

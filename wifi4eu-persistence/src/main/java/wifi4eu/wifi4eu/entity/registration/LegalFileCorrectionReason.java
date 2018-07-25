@@ -16,7 +16,7 @@ public class LegalFileCorrectionReason {
     @JoinColumn(name = "registration")
     private Registration registration;
 
-    @Column(name = "id_legalFile")
+    @Column(name = "id_legal_file")
     private Integer legalFile;
 
     @Column(name = "type")
