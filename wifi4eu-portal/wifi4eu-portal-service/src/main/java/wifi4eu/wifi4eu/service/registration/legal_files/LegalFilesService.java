@@ -19,7 +19,7 @@ public class LegalFilesService {
 	@Autowired
 	LegalFilesMapper legalFilesMapper;
 
-	public LegalFilesDTO getLegalFileByRegistrationIdFileType(Integer registrationId, Integer fileType) {
+	public LegalFileDTO getLegalFileByRegistrationIdFileType(Integer registrationId, Integer fileType) {
 		return legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationId, fileType));
 	}
 

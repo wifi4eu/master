@@ -259,7 +259,7 @@ public class RegistrationResource {
         UserDTO user = userConnected;
         RegistrationDTO registration = registrationService.getRegistrationById(registrationId);
         if (registration != null && (!registrationService.checkUserWithRegistration(registration.getId(), userConnected.getId()) || user.getType() == 5)) {
-            LegalFilesDTO registrationFile = legalFilesService.getLegalFileByRegistrationIdFileType(registration.getId(), fileType);
+            LegalFileDTO registrationFile = legalFilesService.getLegalFileByRegistrationIdFileType(registration.getId(), fileType);
             if (registrationFile != null) {
                 String fileName = "";
                 String fileMime = "";

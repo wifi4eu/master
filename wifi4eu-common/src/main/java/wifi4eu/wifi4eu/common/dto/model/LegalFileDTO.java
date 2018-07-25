@@ -1,44 +1,31 @@
-package wifi4eu.wifi4eu.entity.registration;
+package wifi4eu.wifi4eu.common.dto.model;
 
-import javax.persistence.*;
+import java.io.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "legal_files")
-public class LegalFiles {
-
-	@Column(name = "id")
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
-	@Column(name = "registration")
+public class LegalFileDTO implements Serializable {
+	private int id;
 	private int registration;
-
-	@Column(name = "data")
 	private String fileData;
-
-	@Column(name = "type")
 	private int fileType;
-
-	@Column(name = "upload_time")
 	private Date uploadTime;
 
-	public LegalFiles() {
+	public LegalFileDTO() {
+    this.uploadTime = new Date();
 	}
 
-	public LegalFiles(int registration, String fileData, int fileType, Date uploadTime) {
+	public LegalFileDTO(int registration, String fileData, int fileType, Date uploadTime) {
 		this.registration = registration;
 		this.fileData = fileData;
 		this.fileType = fileType;
 		this.uploadTime = uploadTime;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

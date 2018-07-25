@@ -20,7 +20,6 @@ import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.call.Call;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
@@ -232,15 +231,15 @@ public class RegistrationService {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
                     throw new Exception("File must have a valid extension.");
                 } else {
-                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE1.getValue()));
-                    if (legalFilesDTO == null) {
-                        legalFilesDTO = new LegalFilesDTO();
+                    LegalFileDTO legalFileDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE1.getValue()));
+                    if (legalFileDTO == null) {
+                        legalFileDTO = new LegalFileDTO();
                     }
-                    legalFilesDTO.setRegistration(registrationDBO.getId());
-                    legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
-                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf1));
-                    legalFilesDTO.setUploadTime(new Date());
-                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                    legalFileDTO.setRegistration(registrationDBO.getId());
+                    legalFileDTO.setFileType(FileTypes.LEGALFILE1.getValue());
+                    legalFileDTO.setFileData(LegalFilesService.getBase64Data(lf1));
+                    legalFileDTO.setUploadTime(new Date());
+                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFileDTO));
                     registrationDBO.setLegalFile1Mime(LegalFilesService.getMimeType(lf1));
                     registrationDBO.setLegalFile1Size(lf1ByteArray.length);
                     registrationDBO.setUploadTime(currentTime);
@@ -262,15 +261,15 @@ public class RegistrationService {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
                     throw new Exception("File must have a valid extension.");
                 } else {
-                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE2.getValue()));
-                    if (legalFilesDTO == null) {
-                        legalFilesDTO = new LegalFilesDTO();
+                    LegalFileDTO legalFileDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE2.getValue()));
+                    if (legalFileDTO == null) {
+                        legalFileDTO = new LegalFileDTO();
                     }
-                    legalFilesDTO.setRegistration(registrationDBO.getId());
-                    legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
-                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf2));
-                    legalFilesDTO.setUploadTime(new Date());
-                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                    legalFileDTO.setRegistration(registrationDBO.getId());
+                    legalFileDTO.setFileType(FileTypes.LEGALFILE2.getValue());
+                    legalFileDTO.setFileData(LegalFilesService.getBase64Data(lf2));
+                    legalFileDTO.setUploadTime(new Date());
+                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFileDTO));
                     registrationDBO.setLegalFile2Mime(LegalFilesService.getMimeType(lf2));
                     registrationDBO.setLegalFile2Size(lf2ByteArray.length);
                     registrationDBO.setUploadTime(currentTime);
@@ -292,15 +291,15 @@ public class RegistrationService {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
                     throw new Exception("File must have a valid extension.");
                 } else {
-                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE3.getValue()));
-                    if (legalFilesDTO == null) {
-                        legalFilesDTO = new LegalFilesDTO();
+                    LegalFileDTO legalFileDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE3.getValue()));
+                    if (legalFileDTO == null) {
+                        legalFileDTO = new LegalFileDTO();
                     }
-                    legalFilesDTO.setRegistration(registrationDBO.getId());
-                    legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
-                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf3));
-                    legalFilesDTO.setUploadTime(new Date());
-                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                    legalFileDTO.setRegistration(registrationDBO.getId());
+                    legalFileDTO.setFileType(FileTypes.LEGALFILE3.getValue());
+                    legalFileDTO.setFileData(LegalFilesService.getBase64Data(lf3));
+                    legalFileDTO.setUploadTime(new Date());
+                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFileDTO));
                     registrationDBO.setLegalFile3Mime(LegalFilesService.getMimeType(lf3));
                     registrationDBO.setLegalFile3Size(lf3ByteArray.length);
                     registrationDBO.setUploadTime(currentTime);
@@ -322,15 +321,15 @@ public class RegistrationService {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
                     throw new Exception("File must have a valid extension.");
                 } else {
-                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE4.getValue()));
-                    if (legalFilesDTO == null) {
-                        legalFilesDTO = new LegalFilesDTO();
+                    LegalFileDTO legalFileDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE4.getValue()));
+                    if (legalFileDTO == null) {
+                        legalFileDTO = new LegalFileDTO();
                     }
-                    legalFilesDTO.setRegistration(registrationDBO.getId());
-                    legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
-                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf4));
-                    legalFilesDTO.setUploadTime(new Date());
-                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                    legalFileDTO.setRegistration(registrationDBO.getId());
+                    legalFileDTO.setFileType(FileTypes.LEGALFILE4.getValue());
+                    legalFileDTO.setFileData(LegalFilesService.getBase64Data(lf4));
+                    legalFileDTO.setUploadTime(new Date());
+                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFileDTO));
                     registrationDBO.setLegalFile4Mime(LegalFilesService.getMimeType(lf4));
                     registrationDBO.setLegalFile4Size(lf4ByteArray.length);
                     registrationDBO.setUploadTime(currentTime);
