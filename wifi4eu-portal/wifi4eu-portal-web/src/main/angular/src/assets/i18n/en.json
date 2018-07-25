@@ -363,7 +363,7 @@
   "benefPortal.voucher.municipalitySuccessApply.title": "You have successfully applied for a voucher!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Stay tuned! WiFi4EU will communicate which applicants were selected for a voucher.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Note that the selection is conducted on a 'first-come first-served' basis (date and time of application) as well as criteria to ensure a geographical balance, as detailed in the CEF Telecom Work Programme.",
-  "benefPortal.voucher.applied": "Applied",
+  "benefPortal.voucher.applied": "Your application is being processed",
   "shared.name.required": "Name is required",
   "shared.surname.required": "Surname is required",
   "shared.phone.required": "Phone number is required",
@@ -907,5 +907,6 @@
   "dgConn.beneficiariesList.cancel.empty": "Please, complete the reason field to cancel the beneficiary",
   "dgconn.dashboard.card.beneficiaries.home": "Beneficiaries",
   "benefPortal.voucher.disclaimer": "Please note that this countdown is indicative, please click on apply below at the time of opening of the call",
-  "benefPortal.voucher.noCall" : "There is no call foreseen"
+  "benefPortal.voucher.noCall" : "There is no call foreseen",
+  "shared.registration.update.erroragreement" : "Please accept the conditions agreement and upload all the required documents to proceed with the apply for voucher"
 }

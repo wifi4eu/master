@@ -11,6 +11,7 @@ import { SharedService } from "../../shared/shared.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Http, RequestOptions, Headers } from "@angular/http";
 import { ApplyVoucherBase } from '../../shared/swagger/model/ApplyVoucher'
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -29,7 +30,6 @@ export class VoucherComponent {
     private user: UserDTOBase;
     private currentCall: CallCustomBase = new CallCustomBase();
     private applyVouchersData: ApplyVoucherBase[] = [];
-    //date and hour when call starts
     private startDate: string;
     private startHour: string;
     private endDate: string;
@@ -41,11 +41,10 @@ export class VoucherComponent {
     private displayError = false;
     private displayCallClosed = false;
     private errorMessage = null;
-    private rabbitmqURI: string = "/queue";
+    private rabbitmqURI: string = "pathServer/calls/";
     private openedCalls: string = "";
     private voucherApplied: string = "";
-
-    // this.voucherApplied = "greyImage"; WHEN voucherCompetitionState VALUE = 3
+    private nameCookieApply: string = "hasRequested";
 
     private httpOptions = {
         headers: new Headers({
@@ -53,7 +52,7 @@ export class VoucherComponent {
         })
     };
 
-    constructor(private callCustomApi: CallcustomApi, private router: Router, private route: ActivatedRoute, private applyVoucherApi: ApplyvoucherApi, private localStorage: LocalStorageService, private conditionsAgreementApi: ConditionsAgreementApi, private sharedService: SharedService, private http: Http) {
+    constructor(private cookieService: CookieService, private callCustomApi: CallcustomApi, private router: Router, private route: ActivatedRoute, private applyVoucherApi: ApplyvoucherApi, private localStorage: LocalStorageService, private conditionsAgreementApi: ConditionsAgreementApi, private sharedService: SharedService, private http: Http) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -75,6 +74,13 @@ export class VoucherComponent {
                 }
             );
         }
+    }
+
+    private isVoucherApplied(){
+        if (this.cookieService.check(this.nameCookieApply)){
+            return JSON.parse(this.cookieService.get(this.nameCookieApply));
+        }
+        return false;
     }
 
     private loadVoucherData(){
@@ -105,35 +111,49 @@ export class VoucherComponent {
     }
 
     private applyForVoucher(applyVoucher: ApplyVoucherBase) {
-        //we just need to check this variable
-        //voucherCompetitionState is 2 then call is open
-        //or when timer component emits that has finished
+        // we just need to check this variable
+        // voucherCompetitionState is 2 then call is open
+        // or when timer component emits that has finished
         if (this.voucherCompetitionState == 2) {
-            if (applyVoucher){
-                let urlQueue = this.rabbitmqURI;
-                urlQueue += "?idRegistration="+applyVoucher.idRegistration+"?idMunicipality="+applyVoucher.idMunicipality+"?idUser="+this.user.id;
-                console.log(urlQueue);
-                this.http.get(urlQueue).subscribe(
-                    data => {
-                        this.voucherApplied = "greyImage";
-                        this.voucherCompetitionState = 3;
-                        this.sharedService.growlTranslation(
-                            "Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.",
-                            "benefPortal.voucher.statusmessage5",
-                            "success"
-                        );;
-                    },
-                    error => {
-                        this.sharedService.growlTranslation(
-                            "An error occurred and your application could not be received.",
-                            "shared.registration.update.error",
-                            "error"
-                        );
-                    }
+            if (applyVoucher && applyVoucher.idRegistration && applyVoucher.idMunicipality && this.currentCall.id && this.user.id){
+                if (applyVoucher.conditionAgreement && applyVoucher.filesUploaded){
+                    let urlQueue = this.rabbitmqURI + this.currentCall.id+"/apply/"+applyVoucher.idRegistration+"/"+this.user.id+"/"+applyVoucher.idMunicipality;
+                    // put the following code to set the cookie and test the validation with true or false values
+                    // this.cookieService.set(this.nameCookieApply, 'true');
+                    this.http.get(urlQueue).subscribe(
+                        data => {
+                            this.voucherApplied = "greyImage";
+                            this.voucherCompetitionState = 3;
+                            this.sharedService.growlTranslation(
+                                "Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.",
+                                "benefPortal.voucher.statusmessage5",
+                                "success"
+                            );
+                        },
+                        error => {
+                            this.sharedService.growlTranslation(
+                                "An error occurred and your application could not be received.",
+                                "shared.registration.update.error",
+                                "error"
+                            );
+                        }
+                    );
+                } else {
+                    this.sharedService.growlTranslation(
+                        "Please accept the conditions agreement and upload all the required documents to proceed with the apply for voucher",
+                        "shared.registration.update.erroragreement",
+                        "error"
+                    ); 
+                }
+            } else {
+                this.sharedService.growlTranslation(
+                    "An error occurred and your application could not be received.",
+                    "shared.registration.update.error",
+                    "error"
                 );
             }
         } else if (this.voucherCompetitionState == 1) {
-            //trying to apply before the opening of the call
+            // trying to apply before the opening of the call
             this.displayCallClosed = true;
         }
     }
@@ -148,31 +168,27 @@ export class VoucherComponent {
         this.voucherCompetitionState = 2;
     }
 
-    private goToProfile() {
-        window.location.href = "/#/beneficiary-portal/profile";
-    }
-
     private changeConditionsAgreement(applyVoucherData: ApplyVoucherBase) {
         let conditionsAgreement = new ConditionsAgreementDTOBase();
         conditionsAgreement.registrationId = applyVoucherData.idRegistration;
         applyVoucherData.conditionAgreement == 0 ? conditionsAgreement.status = 1 : conditionsAgreement.status = 0;
         this.conditionsAgreementApi.changeConditionsAgreementStatus(conditionsAgreement).subscribe(
-                    (data : ResponseDTOBase) => {
-                        if (data.success) {
-                            this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+            (data : ResponseDTOBase) => {
+                if (data.success) {
                     for (let i = 0; i < this.applyVouchersData.length; i++){
                         if (applyVoucherData.idRegistration == this.applyVouchersData[i].idRegistration){
                             this.applyVouchersData[i].conditionAgreement = data.data;
                             break;
                         }
                     }
-                        } else {
+                    this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                } else {
                     this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
-                        }
-                    }, error => {
+                }
+            }, error => {
                 this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
-                    }
-                );
             }
+        );
+    }
 
 }
