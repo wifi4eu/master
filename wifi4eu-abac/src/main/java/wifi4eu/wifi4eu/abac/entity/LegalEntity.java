@@ -3,22 +3,7 @@ package wifi4eu.wifi4eu.abac.entity;
 import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
 import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedStoredProcedureQueries;
-import javax.persistence.NamedStoredProcedureQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.ParameterMode;
-import javax.persistence.PrePersist;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.StoredProcedureParameter;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -76,7 +61,7 @@ public class LegalEntity {
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
 	)
-	private List<AbacBatchStatus> abacBatchStatusList;
+	private List<AbacRequest> abacRequestList;
 
 	public LegalEntity() {
 	}
@@ -197,12 +182,12 @@ public class LegalEntity {
 		this.dateCreated = dateCreated;
 	}
 
-	public List<AbacBatchStatus> getAbacBatchStatusList() {
-		return abacBatchStatusList;
+	public List<AbacRequest> getAbacRequestList() {
+		return abacRequestList;
 	}
 
-	public void setAbacBatchStatusList(List<AbacBatchStatus> abacBatchStatusList) {
-		this.abacBatchStatusList = abacBatchStatusList;
+	public void setAbacRequestList(List<AbacRequest> abacRequestList) {
+		this.abacRequestList = abacRequestList;
 	}
 
 	@PrePersist

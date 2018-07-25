@@ -150,20 +150,6 @@ public class LegalEntityService {
 		abacIntegrationService.createLegalEntityInAbac(legalEntity);
 	}
 
-	public void checkLegalEntityCreationStatus(Integer maxRecords) {
-		Pageable pageable = PageRequest.of(FIRST_PAGE, maxRecords);
-		List<LegalEntity> legalEntities = legalEntityrepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum.WAITING_FOR_ABAC, pageable);
-
-		if (!legalEntities.isEmpty()) {
-			log.info(String.format("Found %s legal entities waiting for ABAC to create them", legalEntities.size()));
-		}
-
-		for(LegalEntity legalEntity : legalEntities) {
-			String status = abacIntegrationService.checkLegalEntityCreationStatus(legalEntity);
-			//legalEntity.setWfStatus(status);
-		}
-	}
-
 	/**
 	 * NOTE: temporal workaround, should be defined in a generic parser or a mapper
 	 */
