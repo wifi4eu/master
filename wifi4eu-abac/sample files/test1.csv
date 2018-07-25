@@ -1,3 +1,3 @@
-id|mid|officialName|languageCode|countryCode|region|officialAddress|officialAddressStrNo|postalCode|abacFelId|wfStatus|dateCreated
+id|mid|officialName|languageCode|countryCode|city|officialAddress|officialAddressStrNo|postalCode|abacFelId|wfStatus|dateCreated
 1|123|entity123|eng|GB|London|London Wall|34|EC2M 5QX|6000123456|IMPORTED|19-JUL-18
 2|234|entity234|spa|ES|Castellón|Plaza mayor|5|12540|6000234567|IMPORTED|19-JUL-18

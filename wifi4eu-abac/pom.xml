@@ -278,8 +278,8 @@
 			<id>deploy-local</id>
 
 			<properties>
-				<!-- <weblogic.local.autodeploy.folder>C:/Projects/EFP/ASD/PDM9LCH/autodeploy</weblogic.local.autodeploy.folder> -->
-				<weblogic.local.autodeploy.folder>c:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain2\autodeploy</weblogic.local.autodeploy.folder>
+				<weblogic.local.autodeploy.folder>C:/Projects/EFP/ASD/PDM9LCH/autodeploy</weblogic.local.autodeploy.folder>
+				<!--<weblogic.local.autodeploy.folder>c:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain2\autodeploy</weblogic.local.autodeploy.folder>-->
 			</properties>
 
 			<build>

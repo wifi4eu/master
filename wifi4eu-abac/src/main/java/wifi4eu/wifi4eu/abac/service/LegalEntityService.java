@@ -7,7 +7,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import wifi4eu.wifi4eu.abac.entity.AbacLefStatus;
+import wifi4eu.wifi4eu.abac.entity.AbacRequest;
 import wifi4eu.wifi4eu.abac.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.repository.AbacRequestRepository;
 import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
 import wifi4eu.wifi4eu.abac.utils.ParserCSV2Entity;
 
@@ -25,6 +28,9 @@ public class LegalEntityService {
 
 	@Autowired
 	private AbacIntegrationService abacIntegrationService;
+
+	@Autowired
+	AbacRequestRepository abacRequestRepository;
 
 	@Autowired
 	public LegalEntityService(LegalEntityRepository legalEntityrepository) {
@@ -98,11 +104,10 @@ public class LegalEntityService {
 			data.append("<td>").append(legalEntity.getId()).append("</td>");
 			data.append("<td>").append(legalEntity.getMid()).append("</td>");
 			data.append("<td>").append(legalEntity.getOfficialName()).append("</td>");
-			data.append("<td>").append(legalEntity.getRegion()).append("</td>");
+			data.append("<td>").append(legalEntity.getCity()).append("</td>");
 			data.append("<td>").append(legalEntity.getLanguageCode()).append("</td>");
 			data.append("<td>").append(legalEntity.getCountryCode()).append("</td>");
 			data.append("<td>").append(legalEntity.getOfficialAddress()).append("</td>");
-			data.append("<td>").append(legalEntity.getOfficialAddressStrNo()).append("</td>");
 			data.append("<td>").append(legalEntity.getPostalCode()).append("</td>");
 			data.append("<td>").append(legalEntity.getAbacFelId()).append("</td>");
 			data.append("<td>").append(legalEntity.getWfStatus()).append("</td>");
@@ -148,6 +153,20 @@ public class LegalEntityService {
 	private void sendLegalEntityToABAC(LegalEntity legalEntity) {
 		//Requet the creation of the legal entity in ABAC
 		abacIntegrationService.createLegalEntityInAbac(legalEntity);
+	}
+
+	@Transactional(Transactional.TxType.REQUIRES_NEW)
+	public void updateLegalEntityCreationStatus(List<AbacLefStatus> abacLefStatuses) {
+
+		for (AbacLefStatus abacLefStatus: abacLefStatuses) {
+			AbacRequest abacRequest = abacRequestRepository.findByLLocObjFk(abacLefStatus.getLocObjForeignId());
+
+			if(!abacLefStatus.getStatus().equals(abacRequest.getLegalEntity().getWfStatus())) {
+				abacRequest.getLegalEntity().setWfStatus(abacLefStatus.getStatus());
+				abacRequest.getLegalEntity().setAbacFelId(abacLefStatus.getLegalEntityKey());
+				legalEntityrepository.save(abacRequest.getLegalEntity());
+			}
+		}
 	}
 
 	/**

@@ -11,6 +11,8 @@ import wifi4eu.wifi4eu.abac.repository.AbacRequestRepository;
 import wifi4eu.wifi4eu.abac.repository.AbacStatusRepository;
 import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,34 +26,31 @@ public class AbacIntegrationService {
     LegalEntityRepository legalEntityRepository;
 
     @Autowired
-    AbacRequestRepository abacRequestRepository;
+    AbacStatusRepository abacStatusRepository;
 
     @Autowired
-    AbacStatusRepository abacStatusRepository;
+    AbacRequestRepository abacRequestRepository;
 
     public void createLegalEntityInAbac(LegalEntity legalEntity) {
         log.info(String.format("Insert legal entity %s into abac", legalEntity.getId()));
         legalEntityRepository.createFinancialLegalEntity(legalEntity.getId());
     }
 
-    public void checkAndUpdateLegalEntityCreationStatus() {
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public List<AbacLefStatus> getLegalEntityCreationStatus() {
 
         Set<AbacWorkflowStatusEnum> statusesWaitingAbac = new HashSet<>();
         statusesWaitingAbac.add(AbacWorkflowStatusEnum.WAITING_FOR_ABAC);
         statusesWaitingAbac.add(AbacWorkflowStatusEnum.ABAC_PROCESSED_WAITING_APPROVAL);
 
-        List<AbacRequest> abacRequests = abacRequestRepository.findByLegalEntityWfStatusIn(statusesWaitingAbac);
+        Set<String> abacRequestKeys = abacRequestRepository.findByLegalEntityWfStatusIn(statusesWaitingAbac);
 
-        if (!abacRequests.isEmpty()) {
-            log.info(String.format("Found %s requests waiting for ABAC to create them", abacRequests.size()));
+        List<AbacLefStatus> abacLefStatuses = new ArrayList<>();
+        if (!abacRequestKeys.isEmpty()) {
+            log.info(String.format("Found %s requests waiting for ABAC to create them", abacRequestKeys.toArray().length));
+            abacLefStatuses = abacStatusRepository.findByLocObjForeignIdIn(abacRequestKeys);
         }
-
-        for(AbacRequest abacRequest : abacRequests) {
-            AbacLefStatus abacStatus = abacStatusRepository.findByLocObjForeignId(abacRequest.getlLocObjFk());
-            log.info(String.format("status of legal entity %s in abac is %s", abacRequest.getLegalEntity().getId(), abacStatus.getStatus()));
-
-            abacRequest.getLegalEntity().setWfStatus(abacStatus.getStatus());
-            legalEntityRepository.save(abacRequest.getLegalEntity());
-        }
+        return abacLefStatuses;
     }
+
 }
