@@ -18,7 +18,6 @@ import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationInvalidateReason;
 import wifi4eu.wifi4eu.entity.application.CorrectionRequestEmail;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
-import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
 import wifi4eu.wifi4eu.entity.registration.LegalFiles;
 import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
