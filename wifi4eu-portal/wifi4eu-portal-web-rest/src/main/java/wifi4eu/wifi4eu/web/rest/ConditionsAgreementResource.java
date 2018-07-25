@@ -67,10 +67,10 @@ public class ConditionsAgreementResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
-            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
-            ConditionsAgreementDTO conditionsAgreementDTOReturned = conditionsAgreementService.saveConditionsAgreementDTO(userConnected.getId(), conditionsAgreementDTO.getRegistrationId(), conditionsAgreementDTO.getStatus());
-
-            return new ResponseDTO(true, conditionsAgreementDTOReturned, null);
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Condition agreement saved correctly");
+            ConditionsAgreementDTO conditionsAgreementDTOReturned = conditionsAgreementService.saveConditionsAgreementDTO(userConnected, conditionsAgreementDTO);
+            // return the value of the status of conditions agreement
+            return new ResponseDTO(true, conditionsAgreementDTOReturned.getStatus(), null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to save condition agreements ", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
