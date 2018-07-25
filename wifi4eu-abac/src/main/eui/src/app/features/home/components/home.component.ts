@@ -81,8 +81,10 @@ export class HomeComponent{
         alert('importBankAccount: Not implemented yet');
     }
     
-    showUpload(fieldClass: string){        
-        document.getElementById('abac-upload-' + fieldClass).click();
+    showUpload(fieldClass: string){
+        let element: HTMLElement = document.getElementById('abac-upload-' + fieldClass);
+        element.setAttribute('value', null);
+        element.click();
     }
   
     todo(event){

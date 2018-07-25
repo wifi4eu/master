@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LefStatusComponent } from './lefStatus.component';
+
+import { MonitoringTableComponent } from './components/monitoringTable.component';
 
 @NgModule({
     imports: [
         RouterModule.forChild([
-            { path: '', component: LefStatusComponent }
+            { path: '', component: MonitoringTableComponent }
         ])
     ],
     exports: [
         RouterModule
     ]
 })
-export class LefStatusRoutingModule {
+export class MonitoringRoutingModule {
 
 }

@@ -1,12 +1,13 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UxAllModule } from '@eui/ux-commons';
-import { ResponseDTO } from './model/ResponseDTO';
-import { ClassType } from './model/classType';
 import { Observable } from 'rxjs/Observable';
 import { deserialize, classToPlain } from 'class-transformer';
+import { ResponseDTO } from './model/ResponseDTO';
+import { ClassType } from './model/ClassType';
+import { MonitoringRowDTO } from './model/MonitoringRowDTO';
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import { deserialize, classToPlain } from 'class-transformer';
         TranslateModule,
     ]
 })
+@Injectable()
 export class ApiModule {
 
     protected basePath = '/';
@@ -39,6 +41,11 @@ export class ApiModule {
   
     importLegalCommitment(body?: string): Observable<ResponseDTO> {
       return this.importFile('legalCommitment/import', body);
+    }
+  
+    getMonitoringData(): Observable<MonitoringRowDTO[]> {
+        let path = this.basePath + 'monitor/data';      
+        return this.httpClient.get<MonitoringRowDTO[]>(path);
     }
   
     private importFile(endpoint?: string, body?: string): Observable<ResponseDTO> {

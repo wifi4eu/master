@@ -5,7 +5,7 @@ const routes: Routes = [
     { path: '', redirectTo: 'screen/home', pathMatch: 'full' },
     { path: 'index.jsp', redirectTo: 'screen/home' },
     { path: 'screen/home', loadChildren: './features/home/home.module#HomeModule' },
-    { path: 'screen/status/lef', loadChildren: './features/lefStatus/lefStatus.module#LefStatusModule' },
+    { path: 'screen/monitoring', loadChildren: './features/monitoring/monitoring.module#MonitoringModule' },
 ];
 
 @NgModule({
