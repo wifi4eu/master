@@ -82,7 +82,7 @@ export class MyHistoryComponent {
                                         }
                                         if (application.id != 0) {
                                             let historyItem = {
-                                                action: "benefPortal.myHistory.actionPerformedfco.applicationSubmitted",
+                                                action: "benefPortal.myHistory.actionPerformed.applicationSubmitted",
                                                 date: application.date
                                             }
                                             historyItems.push(historyItem);
@@ -104,8 +104,15 @@ export class MyHistoryComponent {
     }
 
     private changeCall(event) {
-//        this.historyItems = [];
-//        this.municipalities = [];
-//        this.registrations = [];
+        if (event['index'] != null) {
+            let index = event['index'];
+            if (this.calls[index]) {
+                this.currentIndex = index;
+                this.historyItems = [];
+                this.municipalities = [];
+                this.registrations = [];
+                this.fetchHistoryData();
+            }
+        }
     }
 }
