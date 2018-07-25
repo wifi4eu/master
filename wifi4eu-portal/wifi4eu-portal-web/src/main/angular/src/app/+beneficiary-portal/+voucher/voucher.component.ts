@@ -44,7 +44,7 @@ export class VoucherComponent {
     private rabbitmqURI: string = "pathServer/calls/";
     private openedCalls: string = "";
     private voucherApplied: string = "";
-    private nameCookieApply: string = "dummyTagApply";
+    private nameCookieApply: string = "hasRequested";
 
     private httpOptions = {
         headers: new Headers({
@@ -77,7 +77,10 @@ export class VoucherComponent {
     }
 
     private isVoucherApplied(){
-        return this.cookieService.check(this.nameCookieApply);
+        if (this.cookieService.check(this.nameCookieApply)){
+            return JSON.parse(this.cookieService.get(this.nameCookieApply));
+        }
+        return false;
     }
 
     private loadVoucherData(){
@@ -115,8 +118,8 @@ export class VoucherComponent {
             if (applyVoucher && applyVoucher.idRegistration && applyVoucher.idMunicipality && this.currentCall.id && this.user.id){
                 if (applyVoucher.conditionAgreement && applyVoucher.filesUploaded){
                     let urlQueue = this.rabbitmqURI + this.currentCall.id+"/apply/"+applyVoucher.idRegistration+"/"+this.user.id+"/"+applyVoucher.idMunicipality;
-                    // put the following code to set the cookie and test the validation 
-                    // this.cookieService.set(this.nameCookieApply, 'Applied!');
+                    // put the following code to set the cookie and test the validation with true or false values
+                    // this.cookieService.set(this.nameCookieApply, 'true');
                     this.http.get(urlQueue).subscribe(
                         data => {
                             this.voucherApplied = "greyImage";
