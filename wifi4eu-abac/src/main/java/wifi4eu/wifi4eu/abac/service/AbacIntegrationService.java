@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.abac.service;
 
+import org.hibernate.exception.SQLGrammarException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class AbacIntegrationService {
     @Autowired
     AbacRequestRepository abacRequestRepository;
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void createLegalEntityInAbac(LegalEntity legalEntity) {
         log.info(String.format("Insert legal entity %s into abac", legalEntity.getId()));
         legalEntityRepository.createFinancialLegalEntity(legalEntity.getId());
@@ -51,6 +53,15 @@ public class AbacIntegrationService {
             abacLefStatuses = abacStatusRepository.findByLocObjForeignIdIn(abacRequestKeys);
         }
         return abacLefStatuses;
+    }
+
+    @Transactional(dontRollbackOn = {SQLGrammarException.class, Exception.class})
+    public void killDBLink() {
+        try {
+            abacStatusRepository.killDBLink();
+        } catch (Exception e) {
+            //log.error(e.getMessage());
+        }
     }
 
 }

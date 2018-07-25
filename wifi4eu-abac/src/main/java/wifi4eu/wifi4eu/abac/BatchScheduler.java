@@ -24,27 +24,24 @@ public class BatchScheduler {
     @Value("${batch.legalentity.create.maxrecords}")
     private Integer MAX_RECORDS_CREATE_LEGAL_ENTITY;
 
-    @Value("${batch.legalentity.checkstatus.maxrecords}")
-    private Integer MAX_RECORDS_CHECK_CREATION_STATUS;
-
     @Autowired
     LegalEntityService legalEntityService;
 
     @Autowired
     AbacIntegrationService abacIntegrationService;
 
-    @Autowired
-    AbacRequestRepository abacRequestRepository;
-	
     @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
         legalEntityService.findAndSendLegalEntitiesReadyToABAC(MAX_RECORDS_CREATE_LEGAL_ENTITY);
+		abacIntegrationService.killDBLink();
     }
 
     @Scheduled(cron = "${batch.legalentity.checkstatus.crontable}")
     public void checkLegalEntityCreationStatus() {
 
         List<AbacLefStatus> abacLefStatuses = abacIntegrationService.getLegalEntityCreationStatus();
+		abacIntegrationService.killDBLink();
 		legalEntityService.updateLegalEntityCreationStatus(abacLefStatuses);
+
     }
 }

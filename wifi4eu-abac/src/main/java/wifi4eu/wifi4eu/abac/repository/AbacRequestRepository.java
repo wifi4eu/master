@@ -10,9 +10,9 @@ import java.util.Set;
 
 public interface AbacRequestRepository extends CrudRepository<AbacRequest, Integer> {
 
-	@Query("select request.lLocObjFk from AbacRequest request where request.legalEntity.wfStatus in ?1")
+	@Query("select request.locObjForeignId from AbacRequest request where request.legalEntity.wfStatus in ?1")
 	Set<String> findByLegalEntityWfStatusIn(Set<AbacWorkflowStatusEnum> statuses);
 
-	AbacRequest findByLLocObjFk(String lLocObjFk);
+	AbacRequest findByLocObjForeignId(String locObjForeignId);
 
 }

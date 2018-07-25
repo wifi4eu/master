@@ -11,6 +11,7 @@ import wifi4eu.wifi4eu.abac.entity.AbacLefStatus;
 import wifi4eu.wifi4eu.abac.entity.AbacRequest;
 import wifi4eu.wifi4eu.abac.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.repository.AbacRequestRepository;
+import wifi4eu.wifi4eu.abac.repository.AbacStatusRepository;
 import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
 import wifi4eu.wifi4eu.abac.utils.ParserCSV2Entity;
 
@@ -31,6 +32,9 @@ public class LegalEntityService {
 
 	@Autowired
 	AbacRequestRepository abacRequestRepository;
+
+	@Autowired
+	AbacStatusRepository abacStatusRepository;
 
 	@Autowired
 	public LegalEntityService(LegalEntityRepository legalEntityrepository) {
@@ -136,7 +140,6 @@ public class LegalEntityService {
 	 * Send the legal entities with status READY_FOR_ABAC, limited to a maximum of @maxRecords
 	 * @param maxRecords
 	 */
-	@Transactional
 	public void findAndSendLegalEntitiesReadyToABAC(Integer maxRecords) {
 		Pageable pageable = PageRequest.of(FIRST_PAGE, maxRecords);
 		List<LegalEntity> legalEntities = legalEntityrepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum.READY_FOR_ABAC, pageable);
@@ -159,7 +162,7 @@ public class LegalEntityService {
 	public void updateLegalEntityCreationStatus(List<AbacLefStatus> abacLefStatuses) {
 
 		for (AbacLefStatus abacLefStatus: abacLefStatuses) {
-			AbacRequest abacRequest = abacRequestRepository.findByLLocObjFk(abacLefStatus.getLocObjForeignId());
+			AbacRequest abacRequest = abacRequestRepository.findByLocObjForeignId(abacLefStatus.getLocObjForeignId());
 
 			if(!abacLefStatus.getStatus().equals(abacRequest.getLegalEntity().getWfStatus())) {
 				abacRequest.getLegalEntity().setWfStatus(abacLefStatus.getStatus());

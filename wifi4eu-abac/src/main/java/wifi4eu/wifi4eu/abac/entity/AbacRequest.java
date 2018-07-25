@@ -23,7 +23,7 @@ public class AbacRequest {
     private String lLocSysCd;
 
     @Column(name = "L_LOC_OBJ_FK")
-    private String lLocObjFk;
+    private String locObjForeignId;
 
     @Column(name = "L_QUE_ID", nullable = false, precision = 18, scale = 0)
     private Long lQueID;
@@ -60,12 +60,12 @@ public class AbacRequest {
         this.lLocSysCd = lLocSysCd;
     }
 
-    public String getlLocObjFk() {
-        return lLocObjFk;
+    public String getLocObjForeignId() {
+        return locObjForeignId;
     }
 
-    public void setlLocObjFk(String lLocObjFk) {
-        this.lLocObjFk = lLocObjFk;
+    public void setLocObjForeignId(String locObjForeignId) {
+        this.locObjForeignId = locObjForeignId;
     }
 
     public Long getlQueID() {
@@ -83,7 +83,7 @@ public class AbacRequest {
                 ", legalEntity=" + legalEntity +
                 ", lRunID=" + lRunID +
                 ", lLocSysCd='" + lLocSysCd + '\'' +
-                ", lLocObjFk='" + lLocObjFk + '\'' +
+                ", locObjForeignId='" + locObjForeignId + '\'' +
                 ", lQueID=" + lQueID + '\'' +
                 '}';
     }
