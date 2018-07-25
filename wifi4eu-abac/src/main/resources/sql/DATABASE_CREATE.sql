@@ -603,7 +603,7 @@ BEGIN
       pck_abac_batchint_client.p_submit_batch@ABACBUDT_SHARED(l_run_id, l_loc_sys_cd, 'BATCH_QUE1', l_que_id);
 
       -- INSERT in STATUS Table
-      Insert into WIF_ABAC_BATCH_STATUS (ID,LE_ID,L_RUN_ID,L_LOC_SYS_CD,L_LOC_OBJ_FK,L_QUE_ID,LEF_ABAC_STATUS) values (SEQ_WIF_ABAC_STATUS.NEXTVAL,l_LE_ID,l_run_id,l_loc_sys_cd,l_loc_obj_foreign_id,l_que_id,'PENDING');
+      Insert into WIF_ABAC_BATCH_STATUS (ID,LE_ID,L_RUN_ID,L_LOC_SYS_CD,L_LOC_OBJ_FK,L_QUE_ID) values (SEQ_WIF_ABAC_STATUS.NEXTVAL,l_LE_ID,l_run_id,l_loc_sys_cd,l_loc_obj_foreign_id,l_que_id);
 
       --UPDATE the LEGAL_ENTITY status
       update WIF_LEGAL_ENTITY set WF_STATUS='WAITING_FOR_ABAC' where ID=l_LE_ID;
