@@ -5,8 +5,8 @@ import java.util.Date;
 public class LegalFileCorrectionReasonDTO {
     private Integer id;
     private Integer registrationId;
+    private Integer legalFile;
     private Integer type;
-    private Long uploadTime;
     private Boolean requestCorrection;
     private Integer correctionReason;
     private Date requestCorrectionDate;
@@ -14,11 +14,11 @@ public class LegalFileCorrectionReasonDTO {
     public LegalFileCorrectionReasonDTO() {
     }
 
-    public LegalFileCorrectionReasonDTO(Integer id, Integer registrationId, Integer type, Long uploadTime, Boolean requestCorrection, Integer correctionReason, Date requestCorrectionDate) {
+    public LegalFileCorrectionReasonDTO(Integer id, Integer registrationId, Integer legalFile, Integer type, Boolean requestCorrection, Integer correctionReason, Date requestCorrectionDate) {
         this.id = id;
         this.registrationId = registrationId;
+        this.legalFile = legalFile;
         this.type = type;
-        this.uploadTime = uploadTime;
         this.requestCorrection = requestCorrection;
         this.correctionReason = correctionReason;
         this.requestCorrectionDate = requestCorrectionDate;
@@ -48,14 +48,6 @@ public class LegalFileCorrectionReasonDTO {
         this.type = type;
     }
 
-    public Long getUploadTime() {
-        return uploadTime;
-    }
-
-    public void setUploadTime(Long uploadTime) {
-        this.uploadTime = uploadTime;
-    }
-
     public Boolean getRequestCorrection() {
         return requestCorrection;
     }
@@ -78,5 +70,13 @@ public class LegalFileCorrectionReasonDTO {
 
     public void setRequestCorrectionDate(Date requestCorrectionDate) {
         this.requestCorrectionDate = requestCorrectionDate;
+    }
+
+    public Integer getLegalFile() {
+        return legalFile;
+    }
+
+    public void setLegalFile(Integer legalFile) {
+        this.legalFile = legalFile;
     }
 }

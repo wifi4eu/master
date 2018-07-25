@@ -24,17 +24,34 @@ public class LegalFile {
 	@Column(name = "upload_time")
 	private Date uploadTime;
 
+	@Column(name = "id_user")
+	private Integer userId;
+
+	@Column(name = "file_size")
+	private Long fileSize;
+
+	@Column(name = "file_mime")
+	private Long fileMime;
+
+	@Column(name = "file_name")
+	private Long fileName;
+
+
 	public LegalFile() {
 	}
 
-	public LegalFile(int registration, String fileData, int fileType, Date uploadTime) {
-		this.registration = registration;
-		this.fileData = fileData;
-		this.fileType = fileType;
-		this.uploadTime = uploadTime;
-	}
+    public LegalFile(int registration, String fileData, int fileType, Date uploadTime, Integer userId, Long fileSize, Long fileMime, Long fileName) {
+        this.registration = registration;
+        this.fileData = fileData;
+        this.fileType = fileType;
+        this.uploadTime = uploadTime;
+        this.userId = userId;
+        this.fileSize = fileSize;
+        this.fileMime = fileMime;
+        this.fileName = fileName;
+    }
 
-	public Integer getId() {
+    public Integer getId() {
 		return id;
 	}
 
@@ -73,4 +90,36 @@ public class LegalFile {
 	public void setUploadTime(Date uploadTime) {
 		this.uploadTime = uploadTime;
 	}
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(Long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public Long getFileMime() {
+        return fileMime;
+    }
+
+    public void setFileMime(Long fileMime) {
+        this.fileMime = fileMime;
+    }
+
+    public Long getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(Long fileName) {
+        this.fileName = fileName;
+    }
 }
