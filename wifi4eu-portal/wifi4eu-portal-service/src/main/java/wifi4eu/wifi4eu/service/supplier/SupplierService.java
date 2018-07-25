@@ -204,7 +204,7 @@ public class SupplierService {
         UserContext userContext = UserHolder.getUser();
         userDTO = userService.getUserByUserContext(userContext);
 
-        if (supplierDTO.getUsers().size() > 1 || userDTO == null) {
+        if (supplierDTO.getUsers() != null && supplierDTO.getUsers().size() > 1 || userDTO == null) {
             throw new Exception("Incorrect contact parameters: more users than expected");
         }
 
@@ -212,6 +212,7 @@ public class SupplierService {
             if (userSupplier.getId() == userDTO.getId()) {
                 userDTO.setName(userSupplier.getName());
                 userDTO.setSurname(userSupplier.getSurname());
+                userDTO.setEmail(userSupplier.getEmail());
                 userDTO.setPhone_number(userSupplier.getPhone_number());
                 userDTO.setPhone_prefix(userSupplier.getPhone_prefix());
                 userDTO.setCreateDate(new Date().getTime());
