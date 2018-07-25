@@ -5,17 +5,17 @@ import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
 public class MonitoringRow {
 	
 	private Long id;
-	private String region;
+	private String city;
 	private String countryCode;
 	private AbacWorkflowStatusEnum wfStatus;
 	
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(Long id, String region, String countryCode, AbacWorkflowStatusEnum wfStatus) {
+	public MonitoringRow(Long id, String city, String countryCode, AbacWorkflowStatusEnum wfStatus) {
 		super();
 		this.id = id;
-		this.region = region;
+		this.city = city;
 		this.countryCode = countryCode;
 		this.wfStatus = wfStatus;
 	}
@@ -28,12 +28,12 @@ public class MonitoringRow {
 		this.id = id;
 	}
 
-	public String getRegion() {
-		return region;
+	public String getCity() {
+		return city;
 	}
 
-	public void setRegion(String region) {
-		this.region = region;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getCountryCode() {

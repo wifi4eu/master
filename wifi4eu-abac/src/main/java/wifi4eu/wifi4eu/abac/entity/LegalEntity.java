@@ -1,9 +1,10 @@
 package wifi4eu.wifi4eu.abac.entity;
 
 import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
-import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
 import javax.persistence.*;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -28,8 +29,8 @@ public class LegalEntity {
 	@Column(name = "official_name", length = 400)
 	private String officialName;
 
-	@Column(name = "region", length = 400)
-	private String region;
+	@Column(name = "city", length = 400)
+	private String city;
 
 	@Column(name = "language_code", length = 3)
 	private String languageCode;
@@ -39,9 +40,6 @@ public class LegalEntity {
 
 	@Column(name = "official_address", length = 400)
 	private String officialAddress;
-
-	@Column(name = "official_address_str_no", length = 20)
-	private String officialAddressStrNo;
 
 	@Column(name = "postal_code", length = 50)
 	private String postalCode;
@@ -54,7 +52,7 @@ public class LegalEntity {
 	private AbacWorkflowStatusEnum wfStatus;
 
 	@Column(name = "date_created", length = 20)
-	private String dateCreated;
+	private Date dateCreated;
 
 	@OneToMany(
 			mappedBy = "legalEntity",
@@ -68,18 +66,17 @@ public class LegalEntity {
 
 
 
-	public LegalEntity(Long id, Integer mid, String officialName, String region, String languageCode,
-			String countryCode, String officialAddress, String officialAddressStrNo, String postalCode,
-			String abacFelId, AbacWorkflowStatusEnum wfStatus, String dateCreated) {
+	public LegalEntity(Long id, Integer mid, String officialName, String city, String languageCode,
+					   String countryCode, String officialAddress, String officialAddressStrNo, String postalCode,
+					   String abacFelId, AbacWorkflowStatusEnum wfStatus, Date dateCreated) {
 		super();
 		this.id = id;
 		this.mid = mid;
 		this.officialName = officialName;
-		this.region = region;
+		this.city = city;
 		this.languageCode = languageCode;
 		this.countryCode = countryCode;
 		this.officialAddress = officialAddress;
-		this.officialAddressStrNo = officialAddressStrNo;
 		this.postalCode = postalCode;
 		this.abacFelId = abacFelId;
 		this.wfStatus = wfStatus;
@@ -118,12 +115,12 @@ public class LegalEntity {
 		this.officialName = officialName;
 	}
 
-	public String getRegion() {
-		return region;
+	public String getCity() {
+		return city;
 	}
 
-	public void setRegion(String region) {
-		this.region = region;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getCountryCode() {
@@ -140,14 +137,6 @@ public class LegalEntity {
 
 	public void setOfficialAddress(String officialAddress) {
 		this.officialAddress = officialAddress;
-	}
-
-	public String getOfficialAddressStrNo() {
-		return officialAddressStrNo;
-	}
-
-	public void setOfficialAddressStrNo(String officialAddressStrNo) {
-		this.officialAddressStrNo = officialAddressStrNo;
 	}
 
 	public String getPostalCode() {
@@ -174,11 +163,11 @@ public class LegalEntity {
 		this.wfStatus = wfStatus;
 	}
 
-	public String getDateCreated() {
+	public Date getDateCreated() {
 		return dateCreated;
 	}
 
-	public void setDateCreated(String dateCreated) {
+	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
 	}
 
@@ -192,14 +181,14 @@ public class LegalEntity {
 
 	@PrePersist
 	protected void onCreate() {
-		this.dateCreated = DateTimeUtils.getCurrentDateTime();
+		this.dateCreated = Calendar.getInstance().getTime();
 	}
 
 	@Override
 	public String toString() {
-		return "LegalEntity [id=" + id + ", mid=" + mid + ", officialName=" + officialName + ", region=" + region
+		return "LegalEntity [id=" + id + ", mid=" + mid + ", officialName=" + officialName + ", city=" + city
 				+ ", languageCode=" + languageCode + ", countryCode=" + countryCode + ", officialAddress="
-				+ officialAddress + ", officialAddressStrNo=" + officialAddressStrNo + ", postalCode=" + postalCode
+				+ officialAddress + ", postalCode=" + postalCode
 				+ ", abacFelId=" + abacFelId + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated + "]";
 	}
 

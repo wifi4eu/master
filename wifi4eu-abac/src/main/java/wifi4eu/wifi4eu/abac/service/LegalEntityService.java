@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.abac.service;
 
-import jdk.nashorn.internal.objects.NativeArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,11 +104,10 @@ public class LegalEntityService {
 			data.append("<td>").append(legalEntity.getId()).append("</td>");
 			data.append("<td>").append(legalEntity.getMid()).append("</td>");
 			data.append("<td>").append(legalEntity.getOfficialName()).append("</td>");
-			data.append("<td>").append(legalEntity.getRegion()).append("</td>");
+			data.append("<td>").append(legalEntity.getCity()).append("</td>");
 			data.append("<td>").append(legalEntity.getLanguageCode()).append("</td>");
 			data.append("<td>").append(legalEntity.getCountryCode()).append("</td>");
 			data.append("<td>").append(legalEntity.getOfficialAddress()).append("</td>");
-			data.append("<td>").append(legalEntity.getOfficialAddressStrNo()).append("</td>");
 			data.append("<td>").append(legalEntity.getPostalCode()).append("</td>");
 			data.append("<td>").append(legalEntity.getAbacFelId()).append("</td>");
 			data.append("<td>").append(legalEntity.getWfStatus()).append("</td>");

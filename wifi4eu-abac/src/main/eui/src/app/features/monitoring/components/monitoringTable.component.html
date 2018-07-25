@@ -1,19 +1,19 @@
 <div class="page-title">
-    Monitoring 
+    Monitoring
 </div>
 
 <p-table [value]="rows">
     <ng-template pTemplate="header">
         <tr>
             <th [pSortableColumn]="countryCode">Country</th>
-            <th [pSortableColumn]="region">Municipality</th>
+            <th [pSortableColumn]="city">Municipality</th>
             <th [pSortableColumn]="wfStatus">Status</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-row>
         <tr>
             <td>{{row.countryCode}}</td>
-            <td>{{row.region}}</td>
+            <td>{{row.city}}</td>
             <td>{{row.wfStatus}}</td>
         </tr>
     </ng-template>
