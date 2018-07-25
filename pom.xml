@@ -11,20 +11,6 @@
     <description>J2EE, SpringMVC, eUI application</description>
 
 
-    <modules>
-        <!-- Common modules -->
-        <module>wifi4eu-common</module>
-        <module>wifi4eu-persistence</module>
-
-        <!-- Webapp modules -->
-        <module>wifi4eu-portal</module>
-        <module>wifi4eu-public-portal</module>
-        <module>wifi4eu-dgconn</module>
-        <module>wifi4eu-supplier</module>
-        <!--<module>wifi4eu-financial</module>-->
-    </modules>
-
-
     <scm>
         <connection>scm:svn:https://webgate.ec.europa.eu/CITnet/svn/wifi4eu</connection>
         <developerConnection>scm:svn:https://webgate.ec.europa.eu/CITnet/svn/wifi4eu
@@ -212,6 +198,87 @@
 
 
     <profiles>
+
+        <!-- By default, include all the modules -->
+        <profile>
+            <id>full-build</id>
+            <activation>
+                <property>
+                    <name>!skipFullBuild</name>
+                </property>
+            </activation>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+
+                <!-- Webapp modules -->
+                <module>wifi4eu-portal</module>
+                <module>wifi4eu-public-portal</module>
+                <module>wifi4eu-dgconn</module>
+                <module>wifi4eu-supplier</module>
+                <!--<module>wifi4eu-financial</module>-->
+            </modules>
+        </profile>
+
+		<!-- APP PROFILES -->
+
+        <profile>
+            <id>wifi4eu-portal</id>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+                <!-- Webapp modules -->
+                <module>wifi4eu-portal</module>
+            </modules>
+        </profile>
+
+		<profile>
+            <id>wifi4eu-public-portal</id>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+                <!-- Webapp modules -->
+                <module>wifi4eu-public-portal</module>
+            </modules>
+        </profile>
+
+		<profile>
+            <id>wifi4eu-dgconn</id>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+                <!-- Webapp modules -->
+                <module>wifi4eu-dgconn</module>
+            </modules>
+        </profile>
+
+		<profile>
+            <id>wifi4eu-supplier</id>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+                <!-- Webapp modules -->
+                <module>wifi4eu-supplier</module>
+            </modules>
+        </profile>
+
+		<profile>
+            <id>wifi4eu-financial</id>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+                <!-- Webapp modules -->
+                <module>wifi4eu-financial</module>
+            </modules>
+        </profile>
+
+        <!-- ENVIRONMENT PROFILES -->
         <profile>
             <id>TEST</id>
             <properties>
