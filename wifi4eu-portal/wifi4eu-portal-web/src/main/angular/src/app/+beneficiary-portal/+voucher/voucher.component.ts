@@ -115,7 +115,6 @@ export class VoucherComponent {
             if (applyVoucher){
                 if (applyVoucher.conditionAgreement && applyVoucher.filesUploaded){
                     let urlQueue = this.rabbitmqURI + this.currentCall.id+"/apply/"+applyVoucher.idRegistration+"/"+this.user.id+"/"+applyVoucher.idMunicipality;
-                    // console.log(urlQueue);
                     // put the following code to set the cookie and test the validation 
                     // this.cookieService.set(this.nameCookieApply, 'Applied!');
                     this.http.get(urlQueue).subscribe(
