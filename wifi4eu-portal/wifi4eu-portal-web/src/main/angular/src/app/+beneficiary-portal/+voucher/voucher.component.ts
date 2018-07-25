@@ -112,7 +112,7 @@ export class VoucherComponent {
         // voucherCompetitionState is 2 then call is open
         // or when timer component emits that has finished
         if (this.voucherCompetitionState == 2) {
-            if (applyVoucher){
+            if (applyVoucher && applyVoucher.idRegistration && applyVoucher.idMunicipality && this.currentCall.id && this.user.id){
                 if (applyVoucher.conditionAgreement && applyVoucher.filesUploaded){
                     let urlQueue = this.rabbitmqURI + this.currentCall.id+"/apply/"+applyVoucher.idRegistration+"/"+this.user.id+"/"+applyVoucher.idMunicipality;
                     // put the following code to set the cookie and test the validation 
