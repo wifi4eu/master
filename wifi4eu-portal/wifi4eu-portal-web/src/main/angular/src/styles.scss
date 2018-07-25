@@ -1806,3 +1806,24 @@ input.email_profile::-ms-clear{
   overflow: hidden;
   white-space: normal;
 }
+
+.hoja-ID-card {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+}
+
+.documents-info {
+
+    div.alert {
+        background-color: #ffffff !important;
+        border: solid 1px #004494 !important;
+        color: #4a4a4a;
+        font-weight: bold;
+    }
+}
+
+.attachment-label{
+  font-style:italic;
+  color:#727272
+}
