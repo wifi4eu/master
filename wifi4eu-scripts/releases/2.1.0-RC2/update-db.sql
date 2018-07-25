@@ -29,8 +29,7 @@ ALTER TABLE legal_files
 ALTER TABLE legal_files
 	ADD file_size BIGINT,
 	file_mime nvarchar(256),
-	file_name BIGINT ,
-	removed_time DATETIME;
+	file_name BIGINT;
 
 --DATA REASSIGN
 --add users to legal_file
