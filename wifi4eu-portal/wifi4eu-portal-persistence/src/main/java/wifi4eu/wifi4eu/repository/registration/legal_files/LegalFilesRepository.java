@@ -8,6 +8,8 @@ public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer>
 	void deleteByRegistration(Integer registrationId);
 	void deleteByRegistrationAndFileType(Integer registrationId, Integer fileType);
 
+	LegalFile findByIdAndUserId(Integer registrationId, Integer userId);
+
 /*	@Query(nativeQuery = true, value = "select * from legal_files where registration in (select top 30 r.id from registrations r \n" +
 			"inner join municipalities m on r.municipality = m.id \n" +
 			"inner join laus l on m.lau = l.id\n" +

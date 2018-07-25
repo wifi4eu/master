@@ -174,42 +174,6 @@ public class RegistrationService {
         return registrationCreated;
     }
 
-    @Transactional
-    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
-        if (registrationDBO.getAllFilesFlag() != 1) {
-            if (registrationDTO.getLegalFile1Mime() == null || registrationDTO.getLegalFile1Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 1);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
-                registrationDBO.setLegalFile1Mime(null);
-                registrationDBO.setLegalFile1Size(0);
-            }
-
-            if (registrationDTO.getLegalFile2Mime() == null || registrationDTO.getLegalFile2Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 2);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 3");
-                registrationDBO.setLegalFile2Mime(null);
-                registrationDBO.setLegalFile2Size(0);
-            }
-
-            if (registrationDTO.getLegalFile3Mime() == null || registrationDTO.getLegalFile3Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 3);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 2");
-                registrationDBO.setLegalFile3Mime(null);
-                registrationDBO.setLegalFile3Size(0);
-            }
-
-            if (registrationDTO.getLegalFile4Mime() == null || registrationDTO.getLegalFile4Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 4);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 4");
-                registrationDBO.setLegalFile4Mime(null);
-                registrationDBO.setLegalFile4Size(0);
-            }
-        }
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
-    }
 
     @Transactional
     public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) throws Exception {

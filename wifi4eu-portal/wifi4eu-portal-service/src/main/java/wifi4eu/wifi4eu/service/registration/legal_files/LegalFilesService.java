@@ -1,12 +1,26 @@
 package wifi4eu.wifi4eu.service.registration.legal_files;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.registration.LegalFile;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.*;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.*;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.user.UserService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @Service("legalFilesService")
 public class LegalFilesService {
@@ -19,8 +33,31 @@ public class LegalFilesService {
 	@Autowired
 	LegalFilesMapper legalFilesMapper;
 
+	@Autowired
+	RegistrationService registrationService;
+
+	@Autowired
+    UserService userService;
+
 	public LegalFileDTO getLegalFileByRegistrationIdFileType(Integer registrationId, Integer fileType) {
 		return legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationId, fileType));
+	}
+
+	/**
+	 * Checks if the user has permission to modify the legal file requested.
+	 *
+	 * @param registrationId
+	 * @param userId
+	 * @param legalFile
+	 * @return true if user has permission to access to the legal file
+	 */
+	public boolean hasUserPermissionForLegalFile (Integer registrationId, Integer userId, Integer legalFile){
+		if(registrationService.checkUserWithRegistration(registrationId, userId)){
+			if(legalFile != null && legalFilesRepository.findByIdAndUserId(legalFile, userId) != null){
+				return true;
+			}
+		}
+		return false;
 	}
 
     public static String getBase64Data(String base64String) {
@@ -64,4 +101,5 @@ public class LegalFilesService {
 		}
 		return fileExtension;
 	}
+
 }

@@ -130,32 +130,6 @@ public class RegistrationResource {
         return registrationService.confirmOrRejectInstallationAndSendCNS(map, request);
     }
 
-    @ApiOperation(value = "Delete legal documents")
-    @RequestMapping(value = "/deleteDocuments", method = RequestMethod.PUT)
-    @ResponseBody
-    public ResponseDTO deleteRegistrationDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Removing legal documents");
-        try {
-            UserDTO userDTO = userConnected;
-            if (!registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
-            RegistrationDTO resRegistration = registrationService.deleteRegistrationDocuments(registrationDTO, request);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Documents removed successfully");
-            return new ResponseDTO(true, resRegistration, null);
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to remove documents", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These documents cannot been created", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-        }
-    }
 
     @ApiOperation(value = "Update legal documents")
     @RequestMapping(value = "/updateDocuments", method = RequestMethod.PUT)
@@ -240,8 +214,6 @@ public class RegistrationResource {
             registration.setStatus(0);
             registration.setAssociationName(null);
             registration.setOrganisationId(0);
-            registration.setUploadTime(0);
-            registration.setAllFilesFlag(0);
             return registration;
         } else {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You don't have any thread registered with this id");
