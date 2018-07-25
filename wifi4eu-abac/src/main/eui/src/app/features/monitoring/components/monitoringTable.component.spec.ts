@@ -3,16 +3,16 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { CoreModule } from '../../core/core.module';
 import { RouterMock } from '../../shared/testing/router.mock';
-import { LefStatusComponent } from './lefStatus.component';
+import { MonitoringTableComponent } from './monitoringTable.component';
 
-describe('LefStatusComponent', () => {
-    let component: LefStatusComponent;
-    let fixture: ComponentFixture<LefStatusComponent>;
+describe('MonitoringTableComponent', () => {
+    let component: MonitoringTableComponent;
+    let fixture: ComponentFixture<MonitoringTableComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
-                LefStatusComponent
+                MonitoringTableComponent
             ],
             imports: [
                 CoreModule,
@@ -24,7 +24,7 @@ describe('LefStatusComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(LefStatusComponent);
+        fixture = TestBed.createComponent(MonitoringTableComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
