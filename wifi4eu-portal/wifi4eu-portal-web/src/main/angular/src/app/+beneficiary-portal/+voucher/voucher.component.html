@@ -70,7 +70,7 @@
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || !docsOpen[i]">
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || !docsOpen[i] || !this.conditionsAgreements[this.registrations[i].municipalityId]">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
                         <span *ngIf="applications[i]">
@@ -90,7 +90,8 @@
                             </div>
                         </div>
                         <div *ngIf="conditionsAgreements[municipality.id]">
-                            <button class="modal-content ui-g-1 ui-sm-1" (click)=changeConditionsAgreement(municipality)>
+                            <button class="modal-content ui-g-1 ui-sm-1" (click)="changeConditionsAgreement(municipality)">
+                                <!-- prevent user can make changes if already applied for a voucher: [disabled]="disableConditionsAgreements[municipality.id] -->
                                 <i class="fa fa-check-square-o" aria-hidden="true"></i>
                             </button>
                             <div class="ui-g-11 ui-sm-11">

@@ -46,6 +46,7 @@ export class SupplierProfileComponent {
     protected modalIsOpen: boolean = false;
     protected languageRows: UxLanguage [] [];
     protected languages: UxLanguage [];
+    private users: UserDTOBase[] = [];
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private userApi: UserApi) {
         let storedUser = this.localStorageService.get('user');
@@ -70,6 +71,7 @@ export class SupplierProfileComponent {
                                     });
                                 }
                                 this.regionsToRender = this.supportedRegions[this.selectedCountriesNames[0]];
+                                this.users = this.supplier.users;
                             }
                         );
                     }
@@ -243,7 +245,6 @@ export class SupplierProfileComponent {
         this.languageRows = this.prepareLanguageRows();
 
         const userLang = this.languages.find(language => language.code === this.user.lang);
-        console.log("User language (res) is ", userLang);
         this.selectedLanguage = userLang;
 
     }
