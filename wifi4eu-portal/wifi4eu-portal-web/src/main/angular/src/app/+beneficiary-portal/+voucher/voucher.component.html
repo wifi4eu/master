@@ -55,7 +55,7 @@
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement">
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
                         <span *ngIf="data.numberApplicant">
