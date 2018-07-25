@@ -24,7 +24,7 @@
                 <input class="form-control paddingInput" type="text" id="name" name="name"
                        [(ngModel)]="supplier.name" #name="ngModel" required>
                 <div class="alert alert-danger" [hidden]="name.valid || name.pristine">
-                    {{'suppRegistration.company.required'|translate}}
+                    {{'suppregistration.company.required'|translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -120,7 +120,7 @@
                     <img [src]="logoUrl.result" class="ui-g-3">
                     <div class="ui-g">
                         <span class="ui-g-1"></span>
-                        <span class="ui-g-4">{{logoFile.name}}<br>{{logoFile.size}} KB</span>
+                        <span class="ui-g-4">{{logoFile.name}}<br>{{logoFile.size/1000}} KB</span>
                         <span class="ui-g-1"></span>
                     </div>
                     <button type="button" class="ui-g-3 btn btn-primary" (click)="clearLogoFile()">

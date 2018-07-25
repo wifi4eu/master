@@ -4,7 +4,7 @@ public class ApplicationDTO {
     private int id;
     private int callId;
     private int registrationId;
-    private int supplierId;
+    private Integer supplierId;
     private boolean voucherAwarded;
     private long date;
     private long lefExport;
@@ -18,11 +18,15 @@ public class ApplicationDTO {
     private int lcStatus;
     private int status;
     private String invalidateReason;
+    private String cancelReason;
+    private Boolean preSelectedFlag;
+    private Boolean rejected;
+    private Integer authorizedPerson;
 
     public ApplicationDTO() {
     }
 
-    public ApplicationDTO(int id, int callId, int registrationId, int supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason) {
+    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -40,6 +44,10 @@ public class ApplicationDTO {
         this.lcStatus = lcStatus;
         this.status = status;
         this.invalidateReason = invalidateReason;
+        this.cancelReason = cancelReason;
+        this.preSelectedFlag = preSelectedFlag;
+        this.rejected = rejected;
+        this.authorizedPerson = authorizedPerson;
     }
 
     public int getId() {
@@ -66,11 +74,11 @@ public class ApplicationDTO {
         this.registrationId = registrationId;
     }
 
-    public int getSupplierId() {
+    public Integer getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(int supplierId) {
+    public void setSupplierId(Integer supplierId) {
         this.supplierId = supplierId;
     }
 
@@ -176,5 +184,33 @@ public class ApplicationDTO {
 
     public void setInvalidateReason(String invalidateReason) {
         this.invalidateReason = invalidateReason;
+    }
+
+    public Boolean getPreSelectedFlag() {
+        return preSelectedFlag;
+    }
+
+    public void setPreSelectedFlag(Boolean preSelectedFlag) {
+        this.preSelectedFlag = preSelectedFlag;
+    }
+
+    public Boolean getRejected() {
+        return rejected;
+    }
+
+    public void setRejected(Boolean rejected) {
+        this.rejected = rejected;
+    }
+
+    public Integer getAuthorizedPerson() { return authorizedPerson; }
+
+    public void setAuthorizedPerson(Integer authorizedPerson) { this.authorizedPerson = authorizedPerson; }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
     }
 }

@@ -2,15 +2,12 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @ResponseStatus(HttpStatus.OK)
 public class TestResource3 {
 
-    Logger _log = Logger.getLogger(TestResource3.class);
+    Logger _log = LogManager.getLogger(TestResource3.class);
 
     @ApiOperation(value = "Test resource for Swagger implementation")
     @RequestMapping(value = "/test3",
@@ -30,7 +27,6 @@ public class TestResource3 {
         _log.warn("org.apache.log4j.Logger warn is working");
         _log.info("org.apache.log4j.Logger info is working");
         _log.debug("org.apache.log4j.Logger debug is working");
-        _log.trace("org.apache.log4j.Logger trace is working");
 
         return "hello eUI";
     }

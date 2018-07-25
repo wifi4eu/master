@@ -11,6 +11,10 @@ import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
 import {environment} from '../environments/environment';
 import {Subject} from "rxjs/Subject";
+import {WebsockApi} from "./shared/swagger";
+import {Observable} from "rxjs/Observable";
+import {CookieService} from 'ngx-cookie-service';
+
 
 enableProdMode();
 
@@ -18,7 +22,7 @@ enableProdMode();
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    providers: [UserApi, RegistrationApi]
+    providers: [UserApi, RegistrationApi, WebsockApi]
 })
 
 export class AppComponent {
@@ -31,9 +35,21 @@ export class AppComponent {
     private menuTranslations: Map<String, String>;
     private stringsTranslated = new Subject<any>();
     private childrenInitialized = new Subject<any>();
+
+    sessionExpired: Boolean = false;
+
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
 
-    constructor(private translate: TranslateService, private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
+    constructor(private translate: TranslateService,
+                private router: Router,
+                private translateService: TranslateService,
+                private localStorageService: LocalStorageService,
+                private uxService: UxService,
+                private sharedService: SharedService,
+                private userApi: UserApi,
+                private registrationApi: RegistrationApi,
+                private websockApi: WebsockApi,
+                private cookieService: CookieService) {
         translateService.setDefaultLang('en');
         let language = this.localStorageService.get('lang');
         if (language) {
@@ -62,7 +78,16 @@ export class AppComponent {
         this.sharedService.logoutEmitter.subscribe(() => this.logout());
 
         this.updateFooterDate();
+
+        const sessionPolling = 61500;
+        Observable.interval(sessionPolling)
+            .takeWhile(() => !this.sessionExpired)
+            .subscribe(execution => {
+                // This will be called every 10 seconds until `stopCondition` flag is set to true
+                this.isSessionExpired();
+            })
     }
+
 
     private updateMenuTranslations() {
         let translatedItems = 0;
@@ -139,10 +164,10 @@ export class AppComponent {
             }
         );
     }
-
-    private initChildren() {
+	
+	private initChildren() {
         this.stringsTranslated.subscribe(() => {
-            /*this.children[0] = [
+            this.children[0] = [
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.appReg'),
                     url: '/beneficiary-registration'
@@ -160,7 +185,7 @@ export class AppComponent {
                 /* new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.suppPortal'),
                     url: '/supplier-portal/voucher'
-                }), *//*
+                }), */
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.myAccount'),
                     url: '/supplier-portal/profile'
@@ -203,12 +228,6 @@ export class AppComponent {
                     label: 'Member State Portal',
                     url: '#'
                 })
-            ];*/
-            this.children[5] = [
-                new UxLayoutLink({
-                    label: this.menuTranslations.get('itemMenu.dgPortal'),
-                    url: 'dgconn-portal'
-                })
             ];
             this.childrenInitialized.next();
         });
@@ -225,7 +244,7 @@ export class AppComponent {
                         this.router.navigateByUrl(String(publicRedirection));
                     }
                     this.sharedService.login(this.user);
-                    if (this.children.length == 6) {
+                    if (this.children.length == 5) {
                         this.updateHeader();
                     } else {
                         this.childrenInitialized.subscribe(() => this.updateHeader());
@@ -238,7 +257,7 @@ export class AppComponent {
     private updateHeader() {
         if (this.user) {
             switch (this.user.type) {
-                /*case 1:
+                case 1:
                     this.profileUrl = '/supplier-portal/profile';
                     this.menuLinks = this.children[1];
                     break;
@@ -246,10 +265,6 @@ export class AppComponent {
                 case 3:
                     this.profileUrl = '/beneficiary-portal/profile';
                     this.menuLinks = this.children[2];
-                    break;*/
-                case 5:
-                    this.profileUrl = '/dgconn-portal';
-                    this.menuLinks = this.children[5];
                     break;
                 default:
                     this.profileUrl = '/home';
@@ -269,6 +284,7 @@ export class AppComponent {
         this.initChildren();
         this.childrenInitialized.subscribe(() => this.updateHeader());
         this.updateFooterDate();
+        this.sharedService.emitLanguage.next();
     }
 
     private logout() {
@@ -290,6 +306,21 @@ export class AppComponent {
         );
     }
 
+    private reload() {
+        this.removeDataSession()
+        window.location.reload();
+    }
+
+    private removeDataSession() {
+        this.user = null;
+        this.localStorageService.remove('user');
+        this.localStorageService.remove('public-redirection');
+        this.cookieService.deleteAll();
+
+        this.menuLinks = this.children[0];
+        this.profileUrl = null;
+    }
+
     private goToTop() {
         window.scrollTo(0, 0);
     }
@@ -299,4 +330,14 @@ export class AppComponent {
         if (!lang) lang = 'en';
         this.actualDate = new Date(Date.now()).toLocaleDateString(lang.toString());
     }
+
+
+    isSessionExpired() {
+        this.websockApi.isInvalidatedSession().subscribe(
+            (sessionStatus: Boolean) => {
+                this.sessionExpired = (sessionStatus == null) || sessionStatus;
+            }
+        );
+    }
+
 }

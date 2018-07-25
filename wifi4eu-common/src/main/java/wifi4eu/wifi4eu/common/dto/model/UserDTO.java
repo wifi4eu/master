@@ -18,11 +18,14 @@ public class UserDTO {
     private long accessDate;
     private int type;
     private boolean verified;
+    private String csrfToken;
+    private String phone_prefix;
+    private String phone_number;
 
     public UserDTO() {
     }
 
-    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified) {
+    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified, String csrfToken, String phone_prefix, String phone_number) {
         this.id = id;
         this.ecasUsername = ecasUsername;
         this.ecasEmail = ecasEmail;
@@ -39,6 +42,9 @@ public class UserDTO {
         this.accessDate = accessDate;
         this.type = type;
         this.verified = verified;
+        this.csrfToken = csrfToken;
+        this.phone_prefix = phone_prefix;
+        this.phone_number = phone_number;
     }
 
     public int getId() {
@@ -47,6 +53,22 @@ public class UserDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getEcasUsername() {
+        return ecasUsername;
+    }
+
+    public void setEcasUsername(String ecasUsername) {
+        this.ecasUsername = ecasUsername;
+    }
+
+    public String getEcasEmail() {
+        return ecasEmail;
+    }
+
+    public void setEcasEmail(String ecasEmail) {
+        this.ecasEmail = ecasEmail;
     }
 
     public String getTreatment() {
@@ -113,6 +135,14 @@ public class UserDTO {
         this.password = password;
     }
 
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
     public long getCreateDate() {
         return createDate;
     }
@@ -129,14 +159,6 @@ public class UserDTO {
         this.accessDate = accessDate;
     }
 
-    public boolean isVerified() {
-        return verified;
-    }
-
-    public void setVerified(boolean verified) {
-        this.verified = verified;
-    }
-
     public int getType() {
         return type;
     }
@@ -145,27 +167,35 @@ public class UserDTO {
         this.type = type;
     }
 
-    public String getEcasUsername() {
-        return ecasUsername;
+    public boolean isVerified() {
+        return verified;
     }
 
-    public String getLang() {
-        return lang;
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
-    public void setLang(String lang) {
-        this.lang = lang;
+    public String getCsrfToken() {
+        return csrfToken;
     }
 
-    public void setEcasUsername(String ecasUsername) {
-        this.ecasUsername = ecasUsername;
+    public void setCsrfToken(String csrfToken) {
+        this.csrfToken = csrfToken;
     }
 
-    public String getEcasEmail() {
-        return ecasEmail;
+    public String getPhone_prefix() {
+        return phone_prefix;
     }
 
-    public void setEcasEmail(String ecasEmail) {
-        this.ecasEmail = ecasEmail;
+    public void setPhone_prefix(String phone_prefix) {
+        this.phone_prefix = phone_prefix;
+    }
+
+    public String getPhone_number() {
+        return phone_number;
+    }
+
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
     }
 }

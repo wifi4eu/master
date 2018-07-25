@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		                   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+    
+	<context:component-scan base-package="wifi4eu.wifi4eu"/>
+	<!--<context:property-placeholder location="classpath:mail.properties" />-->
+
+	<import resource="classpath:datasourceContext.xml" />        <!-- JNDI on ORACLE / WLS -->
+
+	<!--<import resource="classpath:datasourceContext-hsql.xml" /> -->  <!-- HSQL MEM DB WITHOUT TABLE GEN -->
+
+	<!-- <import resource="classpath:datasourceContext-hsql-db.xml"/> -->        <!-- HSQL MEM DB WITH SECURITY TABLES -->
+
+	<import resource="classpath:spring-security.xml" />
+<!--
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.smtp.host}" />
+		<property name="port" value="${mail.smtp.port}" />
+		<property name="username" value="${mail.smtp.username}" />
+		<property name="password" value="${mail.smtp.password}" />
+		<property name="defaultEncoding" value="${mail.smtp.defaultEncoding}" />
+
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">false</prop>
+				<prop key ="mail.smtp.from">no-reply@wifi4eu.eu</prop>
+			</props>
+		</property>
+	</bean>-->
+</beans>

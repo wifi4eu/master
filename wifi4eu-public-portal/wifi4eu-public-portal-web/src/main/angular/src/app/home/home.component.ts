@@ -29,7 +29,7 @@ export class HomeComponent {
         this.municipalityApi.getMunicipalitiesCountGroupedByLauId().subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
-                    this.municipalitiesCounter = response.data.length;
+                    this.municipalitiesCounter = response.data;
                 }
             }, error => {
                 console.log(error);

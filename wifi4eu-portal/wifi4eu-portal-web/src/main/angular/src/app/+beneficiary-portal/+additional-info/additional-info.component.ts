@@ -41,6 +41,9 @@ export class AdditionalInfoComponent {
     private doc2: boolean = false;
     private doc3: boolean = false;
     private doc4: boolean = false;
+    private displayConfirmClose: boolean = false;
+
+    private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
@@ -58,7 +61,8 @@ export class AdditionalInfoComponent {
                                 this.checkFirstDocuments();
 
                             }, error => {
-                            });
+                            }
+                        );
                     }, error => {
                     }
                 );
@@ -71,7 +75,7 @@ export class AdditionalInfoComponent {
                                     if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname) {
                                         this.isMayor = true;
                                     } else {
-                                        this.isMayor = false
+                                        this.isMayor = false;
                                     }
                                 }, error => {
                                     this.isMayor = false;
@@ -92,11 +96,12 @@ export class AdditionalInfoComponent {
     }
 
     private checkFirstDocuments() {
-        if (this.registration.legalFile1 == null || this.registration.legalFile3 == null) {
+        if (!this.registration.legalFile1Size || !this.registration.legalFile3Size) {
             this.deleteBlocker = true;
         } else {
             this.deleteBlocker = false;
         }
+		return true;
     }
 
     private uploadFile(event: any, index: number = 0) {
@@ -109,7 +114,6 @@ export class AdditionalInfoComponent {
                     return;
                 }
                 if (event.target.files[0].type == "application/pdf" || event.target.files[0].type == "image/png" || event.target.files[0].type == "image/jpg" || event.target.files[0].type == "image/jpeg") {
-
                     this.documentFiles[index] = event.target.files[0];
                     this.reader.readAsDataURL(this.documentFiles[index]);
                     let subscription = Observable.interval(200).subscribe(
@@ -126,7 +130,6 @@ export class AdditionalInfoComponent {
                                         break;
                                     case 2:
                                         this.doc3 = true;
-                                        ;
                                         break;
                                     case 3:
                                         this.doc4 = true;
@@ -172,53 +175,37 @@ export class AdditionalInfoComponent {
                 this.doc4 = false;
                 break;
         }
-
         if (this.doc1 || this.doc2 || this.doc3 || this.doc4) {
             this.filesUploaded = true;
         }
         this.checkFirstDocuments();
     }
 
-
-    private getLegalFileUrl(fileNumber: number) {
-        switch (fileNumber) {
-            case 1:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile1);
-            case 2:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile2);
-            case 3:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile3);
-            case 4:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile4);
-        }
-    }
-
     private onSubmit() {
         if (this.registration.allFilesFlag != 1) {
-
             if (this.documentUrls[0]) {
-                this.registration.legalFile1 = this.documentUrls[0];
+                this.registration.legalFile1Mime = this.documentUrls[0];
+                this.registration.legalFile1Size = this.documentFiles[0].size;
             }
             if (this.documentUrls[1]) {
-                this.registration.legalFile2 = this.documentUrls[1];
+                this.registration.legalFile2Mime = this.documentUrls[1];
+                this.registration.legalFile2Size = this.documentFiles[1].size;
             }
             if (this.documentUrls[2]) {
-                this.registration.legalFile3 = this.documentUrls[2];
+                this.registration.legalFile3Mime = this.documentUrls[2];
+                this.registration.legalFile3Size = this.documentFiles[2].size;
             }
             if (this.documentUrls[3]) {
-                this.registration.legalFile4 = this.documentUrls[3];
+                this.registration.legalFile4Mime = this.documentUrls[3];
+                this.registration.legalFile4Size = this.documentFiles[3].size;
             }
-
             this.displayConfirmingData = true;
-            this.updateMailings();
             this.registrationApi.updateRegistrationDocuments(this.registration).subscribe(
                 (response: ResponseDTOBase) => {
                     this.displayConfirmingData = false;
                     if (response.success) {
                         this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
                         this.registration = response.data;
-
-
                         this.router.navigateByUrl('/beneficiary-portal/voucher');
                     } else {
                         this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
@@ -231,57 +218,49 @@ export class AdditionalInfoComponent {
         } else {
             this.sharedService.growlTranslation('You cant upload documents right now', 'shared.cantUploadDocs', 'error');
             this.filesUploaded = false;
-
         }
         this.checkFirstDocuments();
     }
 
-    private updateMailings() {
-        if (!this.isMayor) {
-
-
-            if (this.registration.legalFile1 && this.registration.legalFile2 && this.registration.legalFile3 && this.registration.legalFile4) {
-                this.registration.allFilesFlag = 1;
-                this.registration.mailCounter = 0;
-            } else {
-                this.registration.allFilesFlag = 0;
-                this.registration.uploadTime = 0;
-                this.registration.mailCounter = 3;
-            }
-        } else {
-            if (this.registration.legalFile1 && this.registration.legalFile3) {
-                this.registration.allFilesFlag = 1;
-                this.registration.mailCounter = 0;
-            } else {
-                this.registration.allFilesFlag = 0;
-                this.registration.uploadTime = 0;
-                this.registration.mailCounter = 3;
-            }
-
-        }
-        let date = new Date();
-        this.date = date.getTime();
-        this.registration.uploadTime = this.date;
-    }
+    // private updateMailings() {
+    //     if (!this.isMayor) {
+    //         if (this.registration.legalFile1Size && this.registration.legalFile2Size && this.registration.legalFile3Size && this.registration.legalFile4Size) {
+    //             this.registration.allFilesFlag = 1;
+    //             this.registration.mailCounter = 0;
+    //         } else {
+    //             this.registration.allFilesFlag = 0;
+    //             this.registration.uploadTime = 0;
+    //             this.registration.mailCounter = 3;
+    //         }
+    //     } else {
+    //         if (this.registration.legalFile1Size && this.registration.legalFile3Size) {
+    //             this.registration.allFilesFlag = 1;
+    //             this.registration.mailCounter = 0;
+    //         } else {
+    //             this.registration.allFilesFlag = 0;
+    //             this.registration.uploadTime = 0;
+    //             this.registration.mailCounter = 3;
+    //         }
+    //     }
+    // }
 
     private deleteFromServer(index: number) {
         if (this.registration.allFilesFlag != 1) {
             this.filesUploaded = true;
             switch (index) {
                 case 0:
-                    this.registration.legalFile1 = null;
+                    this.registration.legalFile1Mime = null;
                     break;
                 case 1:
-                    this.registration.legalFile2 = null;
+                    this.registration.legalFile2Mime = null;
                     break;
                 case 2:
-                    this.registration.legalFile3 = null;
+                    this.registration.legalFile3Mime = null;
                     break;
                 case 3:
-                    this.registration.legalFile4 = null;
+                    this.registration.legalFile4Mime = null;
                     break;
             }
-            this.updateMailings();
             this.displayConfirmingData = true;
             this.registrationApi.deleteRegistrationDocuments(this.registration).subscribe(
                 (response: ResponseDTOBase) => {
@@ -303,4 +282,13 @@ export class AdditionalInfoComponent {
             this.filesUploaded = false;
         }
     }
+
+    confirmClose(){
+        this.displayConfirmClose = true;
+    }
+
+    cancelBack(){
+        this.displayConfirmClose = false;
+    }
+
 }

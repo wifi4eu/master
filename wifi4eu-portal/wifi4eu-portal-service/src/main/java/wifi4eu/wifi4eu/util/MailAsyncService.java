@@ -1,11 +1,16 @@
 package wifi4eu.wifi4eu.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
@@ -13,37 +18,41 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 
-/**
- * Created by rgarcita on 11/02/2017.
- */
-
 public class MailAsyncService implements Runnable {
 
-    public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
+    @Autowired
+    private UserService userService;
 
-    private final Logger _log = LoggerFactory.getLogger(MailAsyncService.class);
+    @Autowired
+    private LogEmailRepository logEmailRepository;
+
+    public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
+    public final static String NO_ACTION = "NO ACTION LOGGED";
+
+    private final Logger _log = LogManager.getLogger(MailAsyncService.class);
 
     private String toAddress = null;
     private String fromAddress = null;
     private String subject = null;
     private String msgBody = null;
     private JavaMailSender mailSender = null;
+    private Integer municipalityId = 0;
+    private String action = NO_ACTION;
 
-    public MailAsyncService(String toAddress, String fromAddress, String subject, String msgBody, JavaMailSender mailSender) {
+    public MailAsyncService(String toAddress, String fromAddress, String subject, String msgBody, JavaMailSender mailSender, int municipalityId, String action) {
         this.toAddress = toAddress;
         this.fromAddress = fromAddress;
         this.subject = subject;
         this.msgBody = msgBody;
         this.mailSender = mailSender;
+        this.municipalityId = municipalityId;
+        this.action = action;
     }
 
     @Override
     public void run() {
+        _log.debug("Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
         try {
-            if (_log.isDebugEnabled()) {
-                _log.debug("Sending async mail: " + fromAddress + " " + subject + " " + msgBody);
-            }
-
             MimeMessage message = mailSender.createMimeMessage();
             message.setSubject(subject, "UTF-8");
             MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -67,8 +76,24 @@ public class MailAsyncService implements Runnable {
             helper.setFrom(fromAddress);
 
             mailSender.send(message);
+
+            //-- Log email
+            logEmail();
+
+            _log.debug(" - Email sent to " + toAddress);
         } catch (Exception ex) {
-            _log.error(ex.getMessage());
+            _log.error(" - Cannot send the message", ex.getMessage());
+        }
+    }
+
+    private void logEmail() throws Exception {
+        if (this.toAddress != null && this.toAddress.length() > 0 && this.municipalityId > 0) {
+            String setAction = NO_ACTION;
+            if (this.action != null && this.action.length() > 0) {
+                setAction = this.action;
+            }
+            LogEmail logEmail = new LogEmail(this.toAddress, this.fromAddress, this.subject, this.msgBody, this.municipalityId, setAction);
+            logEmailRepository.save(logEmail);
         }
     }
 }

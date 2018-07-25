@@ -117,6 +117,11 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160212</version>
+        </dependency>
 
     </dependencies>
 
@@ -139,9 +144,10 @@
                     <apiSources>
                         <apiSource>
                             <springmvc>true</springmvc>
-                            <locations>wifi4eu.dgconn.web.rest</locations>
+                            <!--<locations>wifi4eu.dgconn.web.rest</locations>-->
+                            <locations>wifi4eu.wifi4eu.web.cnect.rest</locations>
                             <schemes>${schemes}</schemes>
-                            <host>${server.address}${app.context.root}</host>
+                            <host>${server.dgconn.address}${app.context.root}</host>
                             <basePath>/api</basePath>
                             <info>
                                 <title>API</title>

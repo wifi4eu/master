@@ -431,6 +431,32 @@ body {
   background-color: white;
 }
 
+.discussionWarningBox{
+  border: solid 1px rgba(0, 0, 0, 0.3);
+}
+
+.discussionWarning{
+  color: #c53b0c;
+  background-color: #ffc488;
+ 
+}
+
+.discussionWarning-icon{
+  background-color: #ff9933;
+  text-align: center;
+}
+
+.fa-exclamation-triangle{
+  font-size: 2.5em;
+  margin-top: 25%;
+  color: #fff;
+}
+
+.discussionWarnigButton{
+  margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 .discussion-content {
   border: solid 1px rgba(0, 0, 0, 0.3);
   padding-bottom: 0px;
@@ -586,6 +612,14 @@ body {
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
+}
+
+.removeMunicipalityBtn{
+  font-family: Verdana;
+  font-weight: bold;
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
 }
 
 .cancel-button.cancel-link {
@@ -828,6 +862,7 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 
 .progress-indicator {
   padding-top: 5.3em;
+  width: 100%;
 }
 
 #app-header .right-content {
@@ -1668,4 +1703,106 @@ p-tabview.white .ui-widget-content.ui-tabview {
 
 input.email_profile::-ms-clear{
   display:none;
+}
+
+.sessionOff {
+  background-color: rgba(1, 1, 1, 0.7);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 5000;
+  pointer-events: none;
+}
+
+.sessionOn{
+  height: 100%;
+}
+
+.topButtonSession {
+  width: 10%;
+  min-width: 100px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.topBarSession {
+  line-height:35px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 5px;
+}
+
+.disabledUserWork{
+  position:absolute;
+  top: 123px;
+  background-color: rgba(1, 1, 1, 0.7);;
+  width: 100%;
+  height: 100%;
+  z-index: 99999999;
+  margin-top: -100px;}
+  
+.voucher__assignment{
+  margin-top: 4rem;
+}
+
+.manageMunicipalities{
+  padding-top: 1.9em;
+  padding-bottom: 0.9em;
+}
+
+.installation {
+  width: 13em;
+  margin-top: 2em;
+  font-size: 1.2em;
+}
+
+.linkNoStyle {
+  color: #000 !important;
+}
+
+.paddingTable {
+  padding-right: 1em;
+}
+
+#nav-bar{
+  height:100%;
+  min-height: 55px;
+}
+
+#top-menu {
+  min-height: 55px;
+  display:flex;
+}
+
+#top-menu > ul > li{
+  max-width: 70vw;
+  float:none;
+  vertical-align:top;
+}
+
+@media only screen and (max-width: 1154px) {
+  #top-menu > ul > li{
+    max-width: 31vw;
+    height:100%;
+    min-height: 55px;
+ }
+}
+#top-menu > ul > li > a {
+  height: 100%;
+}
+
+#top-menu ul, #top-menu ul li, #top-menu ul li a{
+  display: inline-block;
+}
+
+.language-modal {
+  margin: 10px;
+  width: 100%;
+}
+
+.text-adjust {
+  overflow: hidden;
+  white-space: normal;
 }

@@ -17,6 +17,19 @@
   <dependencies>
 
       <dependency>
+          <groupId>wifi4eu.wifi4eu</groupId>
+          <artifactId>wifi4eu-persistence</artifactId>
+          <version>${project.version}</version>
+      </dependency>
+
+      <!-- Azure Queue -->
+      <dependency>
+          <groupId>com.microsoft.azure</groupId>
+          <artifactId>azure-storage</artifactId>
+          <version>7.0.0</version>
+      </dependency>
+
+      <dependency>
           <groupId>org.eclipse.persistence</groupId>
           <artifactId>eclipselink</artifactId>
       </dependency>
@@ -57,6 +70,12 @@
       <dependency>
           <groupId>jotm</groupId>
           <artifactId>jotm</artifactId>
+          <exclusions>
+              <exclusion>
+                  <artifactId>log4j</artifactId>
+                  <groupId>log4j</groupId>
+              </exclusion>
+          </exclusions>
       </dependency>
       <dependency>
 	  <groupId>javax.resource</groupId>

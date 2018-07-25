@@ -11,19 +11,17 @@ public class UserDTO implements Serializable {
     private String password;
     private Date createDate;
     private Date accessDate;
-    private List<RoleDTO> roles;
     private long userType;
     private long userTypeId;
 
     public UserDTO(){}
 
-    public UserDTO(long userId, String email, String password, Date createDate, Date accessDate, List<RoleDTO> roles, long userType, long userTypeId) {
+    public UserDTO(long userId, String email, String password, Date createDate, Date accessDate, long userType, long userTypeId) {
         this.userId = userId;
         this.email = email;
         this.password = password;
         this.createDate = createDate;
         this.accessDate = accessDate;
-        this.roles = roles;
         this.userType = userType;
         this.userTypeId = userTypeId;
     }
@@ -66,14 +64,6 @@ public class UserDTO implements Serializable {
 
     public void setAccessDate(Date accessDate) {
         this.accessDate = accessDate;
-    }
-
-    public List<RoleDTO> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<RoleDTO> roles) {
-        this.roles = roles;
     }
 
     public long getUserType() {

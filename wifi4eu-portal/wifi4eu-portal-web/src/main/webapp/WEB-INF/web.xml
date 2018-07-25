@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-    <display-name>eUI Angular2 application</display-name>
+    <display-name>WIFI4EU - portal - eUI - Angular2 application</display-name>
 
     <servlet>
         <servlet-name>spring-REST</servlet-name>

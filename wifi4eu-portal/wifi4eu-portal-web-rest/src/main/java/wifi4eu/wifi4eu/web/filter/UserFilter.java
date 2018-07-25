@@ -1,11 +1,10 @@
 package wifi4eu.wifi4eu.web.filter;
 
 import eu.cec.digit.ecas.client.jaas.DetailedUser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.filter.OncePerRequestFilter;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -16,11 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.LinkedList;
 
 public class UserFilter extends OncePerRequestFilter {
 
-    Logger _log = LoggerFactory.getLogger(UserFilter.class);
+    Logger _log = LogManager.getLogger(UserFilter.class);
 
     @Override
     protected String getAlreadyFilteredAttributeName() {
@@ -52,7 +50,6 @@ public class UserFilter extends OncePerRequestFilter {
                 user.setDetailedUser(ecasPrincipal);
                 user.setFirstName(ecasPrincipal.getFirstName());
                 user.setLastName(ecasPrincipal.getLastName());
-                user.setRoleList(new LinkedList<RoleDTO>());
 
                 session.setAttribute(Constant.USER, user);
             } else if (_log.isDebugEnabled()) {
