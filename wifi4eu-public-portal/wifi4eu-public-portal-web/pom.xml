@@ -139,7 +139,7 @@
 
 
     <build>
-        <finalName>wifi4eu-public</finalName>
+        <finalName>ROOT</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
