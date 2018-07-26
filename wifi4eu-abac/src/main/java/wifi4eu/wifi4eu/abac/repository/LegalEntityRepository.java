@@ -1,18 +1,18 @@
 package wifi4eu.wifi4eu.abac.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+
 import wifi4eu.wifi4eu.abac.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.entity.MonitoringRow;
 import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
 
-import java.util.List;
-import java.util.Set;
-
-public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integer> {
+public interface LegalEntityRepository extends CrudRepository<LegalEntity, Long> {
 
 	LegalEntity findByMid(Integer mid);
 

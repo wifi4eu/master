@@ -1,21 +1,36 @@
 package wifi4eu.wifi4eu.abac.entity;
 
-import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
-
-import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.ParameterMode;
+import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.StoredProcedureParameter;
+import javax.persistence.Table;
+
+import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
+
 @Entity
 @Table(name = "WIF_LEGAL_ENTITY")
 @NamedStoredProcedureQueries({
-		@NamedStoredProcedureQuery(name = "CREATE_LEF_IN_ABAC",
-				procedureName = "CREATE_LEF_IN_ABAC",
-				parameters = {
-						@StoredProcedureParameter(mode = ParameterMode.IN, name = "LEGALENTITYID", type = Long.class)
-				})
-})
+		@NamedStoredProcedureQuery(name = "CREATE_LEF_IN_ABAC", procedureName = "CREATE_LEF_IN_ABAC", parameters = {
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "LEGALENTITYID", type = Long.class) }) })
 public class LegalEntity {
 	@Id
 	@Column(name = "ID", unique = true, nullable = false, precision = 18, scale = 0)
@@ -24,13 +39,10 @@ public class LegalEntity {
 	private Long id;
 
 	@Column(name = "mid")
-	private Integer mid;
+	private Long mid;
 
 	@Column(name = "official_name", length = 400)
 	private String officialName;
-
-	@Column(name = "city", length = 400)
-	private String city;
 
 	@Column(name = "language_code", length = 3)
 	private String languageCode;
@@ -43,6 +55,12 @@ public class LegalEntity {
 
 	@Column(name = "postal_code", length = 50)
 	private String postalCode;
+
+	@Column(name = "city", length = 400)
+	private String city;
+
+	@Column(name = "registration_number")
+	private Long registrationNumber;
 
 	@Column(name = "abac_fel_id", length = 50)
 	private String abacFelId;
@@ -60,33 +78,43 @@ public class LegalEntity {
 	@Column(name = "signature_date", length = 20)
 	private Date signatureDate;
 
-	@OneToMany(
-			mappedBy = "legalEntity",
-			cascade = CascadeType.ALL,
-			orphanRemoval = true
-	)
+	@Column(name = "user_imported", length = 50)
+	private String userImported;
+
+	// TODO jlopezri should be mandatory to have a file
+	@OneToOne(fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name = "id_signature_file", nullable = true)
+	private Document signatureFile;
+
+	@OneToMany(mappedBy = "legalEntity", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<AbacRequest> abacRequestList;
 
 	public LegalEntity() {
+
 	}
 
-
-
-	public LegalEntity(Long id, Integer mid, String officialName, String city, String languageCode,
-					   String countryCode, String officialAddress, String officialAddressStrNo, String postalCode,
-					   String abacFelId, AbacWorkflowStatusEnum wfStatus, Date dateCreated) {
+	public LegalEntity(Long id, Long mid, String officialName, String languageCode, String countryCode,
+			String officialAddress, String postalCode, String city, Long registrationNumber, String abacFelId,
+			AbacWorkflowStatusEnum wfStatus, Date dateCreated, Date dateUpdated, Date signatureDate,
+			String userImported, Document signatureFile, List<AbacRequest> abacRequestList) {
 		super();
 		this.id = id;
 		this.mid = mid;
 		this.officialName = officialName;
-		this.city = city;
 		this.languageCode = languageCode;
 		this.countryCode = countryCode;
 		this.officialAddress = officialAddress;
 		this.postalCode = postalCode;
+		this.city = city;
+		this.registrationNumber = registrationNumber;
 		this.abacFelId = abacFelId;
 		this.wfStatus = wfStatus;
 		this.dateCreated = dateCreated;
+		this.dateUpdated = dateUpdated;
+		this.signatureDate = signatureDate;
+		this.userImported = userImported;
+		this.signatureFile = signatureFile;
+		this.abacRequestList = abacRequestList;
 	}
 
 	public Long getId() {
@@ -97,11 +125,11 @@ public class LegalEntity {
 		this.id = id;
 	}
 
-	public Integer getMid() {
+	public Long getMid() {
 		return mid;
 	}
 
-	public void setMid(Integer mid) {
+	public void setMid(Long mid) {
 		this.mid = mid;
 	}
 
@@ -185,6 +213,46 @@ public class LegalEntity {
 		this.abacRequestList = abacRequestList;
 	}
 
+	public Long getRegistrationNumber() {
+		return registrationNumber;
+	}
+
+	public void setRegistrationNumber(Long registrationNumber) {
+		this.registrationNumber = registrationNumber;
+	}
+
+	public Date getDateUpdated() {
+		return dateUpdated;
+	}
+
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
+	}
+
+	public Date getSignatureDate() {
+		return signatureDate;
+	}
+
+	public void setSignatureDate(Date signatureDate) {
+		this.signatureDate = signatureDate;
+	}
+
+	public String getUserImported() {
+		return userImported;
+	}
+
+	public void setUserImported(String userImported) {
+		this.userImported = userImported;
+	}
+
+	public Document getSignatureFile() {
+		return signatureFile;
+	}
+
+	public void setSignatureFile(Document signatureFile) {
+		this.signatureFile = signatureFile;
+	}
+
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
@@ -192,10 +260,12 @@ public class LegalEntity {
 
 	@Override
 	public String toString() {
-		return "LegalEntity [id=" + id + ", mid=" + mid + ", officialName=" + officialName + ", city=" + city
-				+ ", languageCode=" + languageCode + ", countryCode=" + countryCode + ", officialAddress="
-				+ officialAddress + ", postalCode=" + postalCode
-				+ ", abacFelId=" + abacFelId + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated + "]";
+		return "LegalEntity [id=" + id + ", mid=" + mid + ", officialName=" + officialName + ", languageCode="
+				+ languageCode + ", countryCode=" + countryCode + ", officialAddress=" + officialAddress
+				+ ", postalCode=" + postalCode + ", city=" + city + ", registrationNumber=" + registrationNumber
+				+ ", abacFelId=" + abacFelId + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated
+				+ ", dateUpdated=" + dateUpdated + ", signatureDate=" + signatureDate + ", userImported=" + userImported
+				+ ", signatureFile=" + signatureFile + ", abacRequestList=" + abacRequestList + "]";
 	}
 
 }

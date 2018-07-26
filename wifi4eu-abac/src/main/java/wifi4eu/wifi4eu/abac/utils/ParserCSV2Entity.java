@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,7 +29,8 @@ public final class ParserCSV2Entity<T> {
 	 * 
 	 * Example of CSV input content:
 	 * 
-	 * <pre> 
+	 * <pre>
+	 *  
 	 * id|mid|languageCode|countryCode|region|officialAddress|officialAddressStrNo|postalCode|
 	 * 1|123|eng|GB|London|London Wall|34|EC2M 5QX
 	 * 2|234|spa|ES|Castellón|Plaza mayor|5|12540
@@ -58,7 +61,9 @@ public final class ParserCSV2Entity<T> {
 					Field[] fields = t.getDeclaredFields();
 					for (Field field : fields) {
 						for (int i = 0; i < columnNames.length; i++) {
-							if (field.getName().equalsIgnoreCase(columnNames[i])) {
+							String readValue = attributes[i];
+							if (readValue != null && !readValue.isEmpty()
+									&& field.getName().equalsIgnoreCase(columnNames[i])) {
 								field.setAccessible(true);
 								Object value = getValue(field, attributes[i]);
 								field.set(newInstance, value);
@@ -86,6 +91,10 @@ public final class ParserCSV2Entity<T> {
 	 * @return
 	 */
 	private Object getValue(Field field, String value) {
+		if (value == null || value.isEmpty()) {
+			return null;
+		}
+
 		if (field.getClass().isArray()) {
 			log.warn("No support for arrays");
 			return null;
@@ -93,6 +102,11 @@ public final class ParserCSV2Entity<T> {
 			return value;
 		} else if (Integer.class.isAssignableFrom(field.getType())) {
 			return new Integer(value);
+		} else if (Long.class.isAssignableFrom(field.getType())) {
+			return new Long(value);
+		} else if (Date.class.isAssignableFrom(field.getType())) {
+			// TODO jlopezri assign the correct transformed Date value!
+			return Calendar.getInstance().getTime();
 		} else {
 			log.warn("Class not supported: " + field.getType());
 			return null;

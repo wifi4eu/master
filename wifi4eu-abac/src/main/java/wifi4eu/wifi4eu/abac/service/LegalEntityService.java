@@ -1,5 +1,10 @@
 package wifi4eu.wifi4eu.abac.service;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,17 +12,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import wifi4eu.wifi4eu.abac.entity.AbacLefStatus;
 import wifi4eu.wifi4eu.abac.entity.AbacRequest;
+import wifi4eu.wifi4eu.abac.entity.Document;
 import wifi4eu.wifi4eu.abac.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.repository.AbacRequestRepository;
 import wifi4eu.wifi4eu.abac.repository.AbacStatusRepository;
+import wifi4eu.wifi4eu.abac.repository.DocumentRepository;
 import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
 import wifi4eu.wifi4eu.abac.utils.ParserCSV2Entity;
-
-import javax.transaction.Transactional;
-import java.io.IOException;
-import java.util.List;
 
 @Service
 public class LegalEntityService {
@@ -25,7 +29,12 @@ public class LegalEntityService {
 	private static int FIRST_PAGE = 0;
 
 	private final Logger log = LoggerFactory.getLogger(LegalEntityService.class);
-	private LegalEntityRepository legalEntityrepository;
+
+	@Autowired
+	private LegalEntityRepository legalEntityRepository;
+
+	@Autowired
+	private DocumentRepository documentRepository;
 
 	@Autowired
 	private AbacIntegrationService abacIntegrationService;
@@ -36,9 +45,7 @@ public class LegalEntityService {
 	@Autowired
 	AbacStatusRepository abacStatusRepository;
 
-	@Autowired
-	public LegalEntityService(LegalEntityRepository legalEntityrepository) {
-		this.legalEntityrepository = legalEntityrepository;
+	public LegalEntityService() {
 	}
 
 	// @ Transactional
@@ -53,8 +60,14 @@ public class LegalEntityService {
 
 		log.info("printing list of items");
 		for (LegalEntity legalEntity : items) {
+			// TODO jlopezri temporal assigment of a sample file
+			//Document sampleDocument = documentRepository.findById(Long.valueOf(0)).get();
+			//legalEntity.setSignatureFile(sampleDocument);
+			//log.info("Using sample document: " + sampleDocument.getId() + ":" + sampleDocument.getName());
+			//documentRepository.save(sampleDocument);
+			legalEntity.getAbacRequestList().clear();			
 			log.info("Item recovered: " + legalEntity.toString());
-			legalEntityrepository.save(legalEntity);
+			legalEntityRepository.save(legalEntity);
 		}
 
 		log.info("storing list of items");
@@ -75,7 +88,7 @@ public class LegalEntityService {
 			log.info("Item recovered: " + legalEntity.toString());
 			// Override status
 			legalEntity.setWfStatus(AbacWorkflowStatusEnum.READY_FOR_ABAC);
-			legalEntityrepository.save(legalEntity);
+			legalEntityRepository.save(legalEntity);
 		}
 
 		log.info("storing list of items");
@@ -85,7 +98,7 @@ public class LegalEntityService {
 		log.info("showLegalEntityFile");
 
 		log.info("recovering list of items");
-		Iterable<LegalEntity> list = legalEntityrepository.findAll();
+		Iterable<LegalEntity> list = legalEntityRepository.findAll();
 
 		log.info("parsing list of items");
 		StringBuilder data = new StringBuilder();
@@ -127,7 +140,7 @@ public class LegalEntityService {
 		log.info("exportLegalEntityFile");
 
 		log.info("recovering list of items");
-		List<LegalEntity> list = legalEntityrepository.findLegalEntitiesProcessedInAbac();
+		List<LegalEntity> list = legalEntityRepository.findLegalEntitiesProcessedInAbac();
 
 		log.info("parsing list of items");
 		String data = parseLegalEntity2String(list);
@@ -137,37 +150,40 @@ public class LegalEntityService {
 	}
 
 	/**
-	 * Send the legal entities with status READY_FOR_ABAC, limited to a maximum of @maxRecords
+	 * Send the legal entities with status READY_FOR_ABAC, limited to a maximum
+	 * of @maxRecords
+	 * 
 	 * @param maxRecords
 	 */
 	public void findAndSendLegalEntitiesReadyToABAC(Integer maxRecords) {
 		Pageable pageable = PageRequest.of(FIRST_PAGE, maxRecords);
-		List<LegalEntity> legalEntities = legalEntityrepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum.READY_FOR_ABAC, pageable);
+		List<LegalEntity> legalEntities = legalEntityRepository
+				.findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum.READY_FOR_ABAC, pageable);
 
 		if (!legalEntities.isEmpty()) {
 			log.info(String.format("Found %s legal entities ready to be sent to ABAC...", legalEntities.size()));
 		}
 
-		for (LegalEntity legalEntity: legalEntities) {
+		for (LegalEntity legalEntity : legalEntities) {
 			sendLegalEntityToABAC(legalEntity);
 		}
 	}
 
 	private void sendLegalEntityToABAC(LegalEntity legalEntity) {
-		//Requet the creation of the legal entity in ABAC
+		// Requet the creation of the legal entity in ABAC
 		abacIntegrationService.createLegalEntityInAbac(legalEntity);
 	}
 
 	@Transactional(Transactional.TxType.REQUIRES_NEW)
 	public void updateLegalEntityCreationStatus(List<AbacLefStatus> abacLefStatuses) {
 
-		for (AbacLefStatus abacLefStatus: abacLefStatuses) {
+		for (AbacLefStatus abacLefStatus : abacLefStatuses) {
 			AbacRequest abacRequest = abacRequestRepository.findByLocObjForeignId(abacLefStatus.getLocObjForeignId());
 
-			if(!abacLefStatus.getStatus().equals(abacRequest.getLegalEntity().getWfStatus())) {
+			if (!abacLefStatus.getStatus().equals(abacRequest.getLegalEntity().getWfStatus())) {
 				abacRequest.getLegalEntity().setWfStatus(abacLefStatus.getStatus());
 				abacRequest.getLegalEntity().setAbacFelId(abacLefStatus.getLegalEntityKey());
-				legalEntityrepository.save(abacRequest.getLegalEntity());
+				legalEntityRepository.save(abacRequest.getLegalEntity());
 			}
 		}
 	}
@@ -206,6 +222,6 @@ public class LegalEntityService {
 	}
 
 	public void updateLegalEntitiesStatuses() {
-		legalEntityrepository.updateFinancialLegalEntitiesStatuses();
+		legalEntityRepository.updateFinancialLegalEntitiesStatuses();
 	}
 }
