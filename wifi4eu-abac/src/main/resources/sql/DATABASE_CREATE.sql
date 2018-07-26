@@ -476,8 +476,9 @@ COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_REPORTS"."LC_ID" IS 'ID of the related Leg
 --------------------------------------------------------
 set define off;
 
-  CREATE OR REPLACE PROCEDURE "WIFI4EU_ABAC"."CREATE_LEF_IN_ABAC"
+create or replace PROCEDURE                "CREATE_LEF_IN_ABAC"
 (LEGALENTITYID IN NUMBER ) AS
+  PRAGMA AUTONOMOUS_TRANSACTION;
 
   l_run_id				          NUMBER;
 	l_loc_sys_cd			        VARCHAR2(3);
@@ -603,18 +604,48 @@ BEGIN
       pck_abac_batchint_client.p_submit_batch@ABACBUDT_SHARED(l_run_id, l_loc_sys_cd, 'BATCH_QUE1', l_que_id);
 
       -- INSERT in STATUS Table
-      Insert into WIF_ABAC_BATCH_STATUS (ID,LE_ID,L_RUN_ID,L_LOC_SYS_CD,L_LOC_OBJ_FK,L_QUE_ID,LEF_ABAC_STATUS) values (SEQ_WIF_ABAC_STATUS.NEXTVAL,l_LE_ID,l_run_id,l_loc_sys_cd,l_loc_obj_foreign_id,l_que_id,'PENDING');
+      Insert into WIF_ABAC_REQUEST_PROCESS (ID,LE_ID,L_RUN_ID,L_LOC_SYS_CD,L_LOC_OBJ_FK,L_QUE_ID) values (SEQ_WIF_ABAC_STATUS.NEXTVAL,l_LE_ID,l_run_id,l_loc_sys_cd,l_loc_obj_foreign_id,l_que_id);
 
       --UPDATE the LEGAL_ENTITY status
       update WIF_LEGAL_ENTITY set WF_STATUS='WAITING_FOR_ABAC' where ID=l_LE_ID;
 
       -- commit operations
-      --commit;
+      commit;
  END LOOP;
-
 END CREATE_LEF_IN_ABAC;
 
 /
 
+--------------------------------------------------------
+--  DDL for Procedure UPDATE_LEF_STATUS_FROM_ABAC
+--------------------------------------------------------
 
+create or replace PROCEDURE  UPDATE_LEF_STATUS_FROM_ABAC AS
+  PRAGMA AUTONOMOUS_TRANSACTION;
+  WAITING_FOR_ABAC varchar2(30);
+  WAITING_APPROVAL varchar2(30);
+  rows_affected number;
+BEGIN
+  --init constants
+  WAITING_FOR_ABAC := 'WAITING_FOR_ABAC';
+  WAITING_APPROVAL := 'WAITING_APPROVAL';
 
+  rows_affected := 0;
+  for request in (
+                  select le_id, l_loc_obj_fk, le.WF_STATUS as legal_entity_status, status_vw.status as abac_status, status_vw.LE_KEY
+                  from wif_abac_request_process request
+                  inner join wif_legal_entity le on request.le_id = le.id and le.wf_status in (WAITING_FOR_ABAC, WAITING_APPROVAL)
+                  left join wif_abac_lef_status_view status_vw on request.l_loc_obj_fk = loc_obj_foreign_id
+                  order by le_id, l_loc_obj_fk)
+  loop
+      dbms_output.put_line('LEGAL_ENTITY_ID='||request.le_id);
+
+      update wif_legal_entity set WF_STATUS = request.abac_status, abac_fel_id = request.LE_KEY
+      where wif_legal_entity.id = request.le_id;
+
+      rows_affected := rows_affected + 1;
+  END LOOP;
+  commit;
+END UPDATE_LEF_STATUS_FROM_ABAC;
+
+/
