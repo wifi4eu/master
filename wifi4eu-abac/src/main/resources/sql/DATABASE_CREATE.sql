@@ -480,6 +480,12 @@ COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_REPORTS"."LC_ID" IS 'ID of the related Leg
  COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY"."ID_SIGNATURE_FILE" IS 'ID of the related file with the signature';
  ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" ADD CONSTRAINT "WIF_LE_DOC_FK" FOREIGN KEY ("ID_SIGNATURE_FILE") REFERENCES "WIFI4EU_ABAC"."WIF_DOCUMENTS"("ID")
 
+--------------------------------------------------------
+--  DDL for Sequence SEQ_DOCUMENTS
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_DOCUMENTS"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 NOCACHE  NOORDER  NOCYCLE ;
+
 
 --------------------------------------------------------
 --  DDL for Procedure CREATE_LEF_IN_ABAC
