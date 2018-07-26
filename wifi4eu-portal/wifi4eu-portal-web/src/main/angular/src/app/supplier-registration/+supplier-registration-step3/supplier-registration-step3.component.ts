@@ -61,36 +61,4 @@ export class SupplierRegistrationStep3Component {
     private preventPaste(event: any) {
         return false;
     }
-   /*  private checkButtonEnabled(event){
-        if(this.supplier.contactSurname != null && this.supplier.contactName != null 
-        && this.supplier.contactPhoneNumber != null && this.supplier.contactPhonePrefix != null
-             && this.supplier.contactSurname.trim() != "" && this.supplier.contactName.trim() != "" && this.supplier.contactPhoneNumber.trim() != "" && this.supplier.contactPhonePrefix.trim() != ""){
-                this.buttonEnabled = true;
-        }
-
-         //custom name validator
-        if(this.supplier.contactName != null && this.supplier.contactName.trim() != ""){
-            setTimeout(()=>{this.supplierForm.controls['contactName'].setErrors(null);} ,5);
-        }else {
-            setTimeout(()=>{this.supplierForm.controls['contactName'].setErrors({'invalid': true});} ,5);
-        }
-         //custom surname validator
-        if(this.supplier.contactSurname != null && this.supplier.contactSurname.trim() != ""){
-            setTimeout(()=>{this.supplierForm.controls['contactSurname'].setErrors(null);} ,5);
-        }else {
-            setTimeout(()=>{this.supplierForm.controls['contactSurname'].setErrors({'invalid': true});} ,5);
-        }
-         //custom surname validator
-        if(this.supplier.contactPhoneNumber != null && this.supplier.contactPhoneNumber.trim() != ""){
-            setTimeout(()=>{this.supplierForm.controls['contactPhoneNumber'].setErrors(null);} ,5);
-        }else {
-            setTimeout(()=>{this.supplierForm.controls['contactPhoneNumber'].setErrors({'invalid': true});} ,5);
-        }
-         //custom surname validator
-         if(this.supplier.contactPhonePrefix != null && this.supplier.contactPhonePrefix.trim() != ""){
-            setTimeout(()=>{this.supplierForm.controls['contactPhonePrefix'].setErrors(null);} ,5);
-        }else {
-            setTimeout(()=>{this.supplierForm.controls['contactPhonePrefix'].setErrors({'invalid': true});} ,5);
-        }
-    } */
 }
