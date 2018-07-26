@@ -42,7 +42,8 @@ export class VoucherComponent {
     private displayCallClosed = false;
     private errorMessage = null;
     //private baseURI: string = "http://104.214.237.205";
-    private rabbitmqURI: string = baseURI + "/calls/";
+    private baseURI: string = "";
+    private rabbitmqURI: string = this.baseURI + "/calls/";
     private openedCalls: string = "";
     private voucherApplied: string = "";
     private nameCookieApply: string = "hasRequested";

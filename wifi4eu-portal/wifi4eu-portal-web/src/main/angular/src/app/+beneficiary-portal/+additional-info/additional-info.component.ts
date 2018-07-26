@@ -12,7 +12,6 @@ import { SharedService } from "../../shared/shared.service";
 import { DomSanitizer } from "@angular/platform-browser";
 import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
-import { Location } from "@angular/common";
 
 
 @Component({
@@ -46,7 +45,7 @@ export class AdditionalInfoComponent {
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
-    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router, private location: Location) {
+    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -291,9 +290,4 @@ export class AdditionalInfoComponent {
     cancelBack() {
         this.displayConfirmClose = false;
     }
-
-    private goBack() {
-        this.location.back();
-    }
-
 }

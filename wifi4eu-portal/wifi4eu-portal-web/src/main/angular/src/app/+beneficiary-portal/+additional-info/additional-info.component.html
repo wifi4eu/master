@@ -1,16 +1,18 @@
 <div class="container" *ngIf="municipality">
     <div class="row" *ngIf="registration">
-        <div style="display: flex">
-            <div class="ui-g-12" style="margin-top: 3vw; font-size: 16px; width: none !important;">
-                <a class="link-label" (click)="goBack()">
+        <div style="display: flex; padding-top: 2em;">
+            <div class="ui-g-12" style="margin-top: 1em; font-size: 16px; width: none !important;">
+                <a class="link-label" (click)="confirmClose()">
                     <i class="fa fa-long-arrow-left fa-2" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
                 </a>
             </div>
             <div class="ui-g-12 center">
                 <div class="ui-md-12" style="float: right;">
-                    <ux-alert *ngIf="registration.allFilesFlag != 1" class="documents-info">{{ 'shared.statusLabel' | translate}} {{ 'shared.statusUploadDocs' | translate}}
+                    <ux-alert *ngIf="registration.allFilesFlag != 1" class="documents-info" iconClass="fa fa-exclamation-circle alert-icon">
+                        {{ 'shared.statusLabel' | translate}} {{ 'shared.statusUploadDocs' | translate}}
                     </ux-alert>
-                    <ux-alert *ngIf="registration.allFilesFlag == 1" class="documents-info">{{ 'shared.statusLabel' | translate}}{{ 'shared.statusDocsUploaded' | translate}}
+                    <ux-alert *ngIf="registration.allFilesFlag == 1" class="documents-info" iconClass="fa fa-exclamation-circle alert-icon">
+                        {{ 'shared.statusLabel' | translate}}{{ 'shared.statusDocsUploaded' | translate}}
                     </ux-alert>
                 </div>
             </div>
@@ -80,14 +82,17 @@
                         <span *ngIf="registration.legalFile1Size && !documentUrls[0]">
                             <img src="..\..\..\assets\images\hoja-id-card.png" srcset="..\..\..\assets\images\hoja-id-card@2x.png 2x, ..\..\..\assets\images\hoja-id-card@3x.png 3x"
                                 class="hoja-ID-card">
-                            <i class="fa fa-paperclip"></i>
-                            <span>fileName1</span>
-                            <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker" (click)="deleteFromServer(0)">
-                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" href="{{fileURL}}{{registration.id}}/1" target="_blank">
-                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                            </a>
-                            <span class="attachment-label">{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                            <div style="display: table-cell;">
+                                <i class="fa fa-paperclip"></i>
+                                <span>fileName1</span>
+                                <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
+                                    <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                                <a class="link-label" href="{{fileURL}}{{registration.id}}/1" target="_blank">
+                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                </a>
+                                <span class="attachment-label">
+                                    <br />{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                            </div>
                         </span>
 
 
@@ -95,9 +100,11 @@
                             <img src="..\..\..\assets\images\hoja-id-card.png" srcset="..\..\..\assets\images\hoja-id-card@2x.png 2x, ..\..\..\assets\images\hoja-id-card@3x.png 3x"
                                 class="hoja-ID-card"> {{ 'shared.supportingDocuments.attachment' | translate }}
                             <i class="fa fa-paperclip"></i>
-                            <span>fileName1</span>
+                            <span>{{documentFiles[0]?.name}}</span>
                             <a sclass="link-label" (click)="removeFile(0)">
                                 <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                            <a class="link-label" href="{{documentUrls[0]}}" target="_blank" download="{{documentFiles[0]?.name}}">
+                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                     </span>
                 </div>
@@ -128,20 +135,25 @@
                         </span>
                         <span *ngIf="registration.legalFile3Size && !documentUrls[2]">
                             <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
-                            <i class="fa fa-paperclip"></i>
-                            <span>fileName2</span>
-                            <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker" (click)="deleteFromServer(2)">
-                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" href="{{fileURL}}{{registration.id}}/3" target="_blank">
-                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
-                            <span class="attachment-label">{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                            <div style="display: table-cell;">
+                                <i class="fa fa-paperclip"></i>
+                                <span>fileName2</span>
+                                <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
+                                    <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                                <a class="link-label" href="{{fileURL}}{{registration.id}}/3" target="_blank">
+                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
+                                <span class="attachment-label">
+                                    <br />{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                            </div>
                         </span>
                         <span *ngIf="documentUrls[2]">
                             <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
                             <i class="fa fa-paperclip"></i>
-                            <span>fileName2</span>
+                            <span>{{documentFiles[2]?.name}}</span>
                             <a class="link-label" (click)="removeFile(2)">
                                 <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                            <a class="link-label" href="{{documentUrls[2]}}" target="_blank" download="{{documentFiles[2]?.name}}">
+                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                     </span>
                 </div>
@@ -178,20 +190,25 @@
                         </span>
                         <span *ngIf="registration.legalFile2Size && !documentUrls[1]">
                             <img src="..\..\..\assets\images\hoja-id-card.png" class="hoja-ID-card">
-                            <i class="fa fa-paperclip"></i>
-                            <span>fileName3</span>
-                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(1)">
-                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" href="{{fileURL}}{{registration.id}}/2" target="_blank">
-                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
-                            <span class="attachment-label">{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                            <div style="display: table-cell;">
+                                <i class="fa fa-paperclip"></i>
+                                <span>fileName3</span>
+                                <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
+                                    <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                                <a class="link-label" href="{{fileURL}}{{registration.id}}/2" target="_blank">
+                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
+                                <span class="attachment-label">
+                                    <br />{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                            </div>
                         </span>
                         <span *ngIf="documentUrls[1]">
                             <img src="..\..\..\assets\images\hoja-id-card.png" class="hoja-ID-card">
                             <i class="fa fa-paperclip"></i>
-                            <span>fileName3</span>
+                            <span>{{documentFiles[1]?.name}}</span>
                             <a class="link-label" (click)="removeFile(1)">
                                 <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                            <a class="link-label" href="{{documentUrls[1]}}" target="_blank" download="{{documentFiles[1]?.name}}">
+                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                     </span>
                 </div>
@@ -202,7 +219,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12 col-lg-12 col-md-12">
+                <div class="col-offset-12">
                     <label class="label" for="document4" [innerHTML]="'benefPortal.request.additionalInfo.doc4.label' | translate"></label>
                 </div>
                 <div class="col-offset-12">
@@ -220,20 +237,25 @@
                         </span>
                         <span *ngIf="registration.legalFile4Size && !documentUrls[3]">
                             <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
-                            <i class="fa fa-paperclip"></i>
-                            <span>fileName4</span>
-                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(3)">
-                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                            <a class="link-label" href="{{fileURL}}{{registration.id}}/4" target="_blank">
-                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
-                            <span class="attachment-label">{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                            <div style="display: table-cell;">
+                                <i class="fa fa-paperclip"></i>
+                                <span>fileName4</span>
+                                <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
+                                    <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                                <a class="link-label" href="{{fileURL}}{{registration.id}}/4" target="_blank">
+                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
+                                <span class="attachment-label">
+                                    <br />{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                            </div>
                         </span>
                         <span *ngIf="documentUrls[3]">
                             <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
                             <i class="fa fa-paperclip"></i>
-                            <span>fileName4</span>
+                            <span>{{documentFiles[3]?.name}}</span>
                             <a class="link-label" (click)="removeFile(3)">
                                 <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                            <a class="link-label" href="{{documentUrls[3]}}" target="_blank" download="{{documentFiles[3]?.name}}">
+                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                     </span>
                 </div>
@@ -253,7 +275,7 @@
         <div class="form-group ui-g">
             <div class="ui-lg-3"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button type="button" (click)="confirmClose()" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' | translate }}
+                <button type="button" (click)="confirmClose()" class="btn btn-primary cancel-button" [disabled]="!legalForm.form.valid || !filesUploaded">{{ 'shared.cancel.button' | translate }}
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
@@ -267,20 +289,24 @@
 
     <p-dialog [(visible)]="displayConfirmClose">
         <div class="form-group ui-g">
-            <div class="ui-lg-3"></div>
-            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button (click)="cancelBack()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' | translate }}
+            <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
+                <span>{{ 'shared.supportingDocuments.leavePage.title' | translate}}</span>
+            </div>
+            <span style="line-height: 1.25; padding-bottom: 3em; padding-left: 2em; padding-right: 2em; font-size: 16px;">{{ 'shared.supportingDocuments.leavePage.body' | translate}}</span>
+            <div class="ui-lg-2"></div>
+            <div class="ui-g-6 ui-md-6 ui-lg-4" style="text-align: center !important">
+                <button (click)="cancelBack()" class="btn btn-primary publish-button">{{ 'shared.no' | translate }}
                 </button>
             </div>
-            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+            <div class="ui-g-6 ui-md-6 ui-lg-4" style="text-align: center !important">
                 <a routerLink="../.." routerLinkActive="active">
                     <button type="button" class="btn btn-primary cancel-button">
-                        {{ 'shared.confirm.button' | translate }}
+                        {{ 'shared.yes' | translate }}
                     </button>
                 </a>
             </div>
 
-            <div class="ui-lg-3"></div>
+            <div class="ui-lg-2"></div>
         </div>
     </p-dialog>
 
