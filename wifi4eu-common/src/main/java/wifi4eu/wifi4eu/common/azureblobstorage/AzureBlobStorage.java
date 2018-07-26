@@ -7,6 +7,9 @@ import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.*;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.utils.EncrypterService;
+
+import javax.annotation.PostConstruct;
 
 @Component
 @Configurable
@@ -15,8 +18,15 @@ public class AzureBlobStorage {
     @Autowired
     AzureBlobStorageUtils azureBlobStorageUtils;
 
-    // private String storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=wifi4eutestconcopt;AccountKey=Y1e+yRz3nVpdIIOr/GZSaPxYg1jkl1TyGj5C64jMZaZq13S9TyuXLNt5dWe22/JR0cS8jTXEJ8nEWvn/Z1QI9A==;EndpointSuffix=core.windows.net";
-    private String storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=wifi4eustoredocuments;AccountKey=2yJwp40K+CZvtHbCS138T+Anm6gJMAgFQpTkJHkcL8eRyo7orzDx6xNSNr+Ba23er6kq+dNUltQ6dQZKa5djnw==;EndpointSuffix=core.windows.net";
+    @Autowired
+    EncrypterService encrypterService;
+
+    private String storageConnectionString;
+
+    @PostConstruct
+    public void init() throws Exception {
+        storageConnectionString = encrypterService.getAzureKeyStorage();
+    }
 
     public void checkContainersCreated(){
         CloudStorageAccount storageAccount;
@@ -25,7 +35,6 @@ public class AzureBlobStorage {
         try {
             storageAccount = CloudStorageAccount.parse(storageConnectionString);
             blobClient = storageAccount.createCloudBlobClient();
-            azureBlobStorageUtils.createContainerAsDateName(blobClient);
             System.out.println("****** LISTADO DE CONTAINERS POR CLIENTE ******");
             for (CloudBlobContainer container : blobClient.listContainers()){
                 System.out.println(container.getName()+" => "+container.getProperties().getLastModified());

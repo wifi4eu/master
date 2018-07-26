@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -25,6 +26,9 @@ public class EncrypterService {
 
     @Value("${secret.key.encryption}")
     private String secretKeyString;
+
+    @Value("${azure.blob.storage.key}")
+    private String azureCredentials;
 
     @PostConstruct
     public void init() throws Exception{
@@ -65,6 +69,16 @@ public class EncrypterService {
         _log.debug("Decoding secret key");
         byte[] decodedKey = Base64.decodeBase64(secretKeyString);
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+    }
+
+    public String getAzureKeyStorage(){
+        try{
+            _log.debug("Decrypting azure blob storage credentials");
+            byte[] b = azureCredentials.getBytes(StandardCharsets.UTF_8);
+            return decrypt(b);
+        } catch (Exception e){
+            return null;
+        }
     }
 
 }
