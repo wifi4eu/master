@@ -233,7 +233,7 @@ case
   then 'WAITING_FOR_ABAC'
 
   when le.PROCESSED = 'OK' and lekey.head_loc_obj_foreign_id is null
-  then 'ABAC_PROCESSED_WAITING_APPROVAL'
+  then 'WAITING_APPROVAL'
 
   when le.PROCESSED = 'OK' and lekey.head_loc_obj_foreign_id is not null
   then 'ABAC_FINISH'
