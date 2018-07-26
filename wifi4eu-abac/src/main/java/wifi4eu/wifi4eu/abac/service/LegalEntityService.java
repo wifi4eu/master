@@ -205,4 +205,7 @@ public class LegalEntityService {
 		return data.toString();
 	}
 
+	public void updateLegalEntitiesStatuses() {
+		legalEntityrepository.updateFinancialLegalEntitiesStatuses();
+	}
 }

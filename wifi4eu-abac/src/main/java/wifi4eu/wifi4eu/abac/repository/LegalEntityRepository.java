@@ -26,6 +26,9 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	@Procedure(name = "CREATE_LEF_IN_ABAC")
 	void createFinancialLegalEntity(@Param("LEGALENTITYID") Long legalEntityID);
 
+	@Procedure(name = "CREATE_LEF_IN_ABAC")
+	void updateFinancialLegalEntitiesStatuses();
+
 	@Query(value = "SELECT new wifi4eu.wifi4eu.abac.entity.MonitoringRow(le.id, le.city, le.countryCode, le.wfStatus) FROM LegalEntity le")
 	List<MonitoringRow> findMonitoringData();
 }

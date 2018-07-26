@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.abac.entity.AbacRequest;
 import wifi4eu.wifi4eu.abac.entity.AbacLefStatus;
 import wifi4eu.wifi4eu.abac.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.repository.AbacRequestRepository;
@@ -43,7 +42,7 @@ public class AbacIntegrationService {
 
         Set<AbacWorkflowStatusEnum> statusesWaitingAbac = new HashSet<>();
         statusesWaitingAbac.add(AbacWorkflowStatusEnum.WAITING_FOR_ABAC);
-        statusesWaitingAbac.add(AbacWorkflowStatusEnum.ABAC_PROCESSED_WAITING_APPROVAL);
+        statusesWaitingAbac.add(AbacWorkflowStatusEnum.WAITING_APPROVAL);
 
         Set<String> abacRequestKeys = abacRequestRepository.findByLegalEntityWfStatusIn(statusesWaitingAbac);
 
