@@ -54,6 +54,12 @@ public class LegalEntity {
 	@Column(name = "date_created", length = 20)
 	private Date dateCreated;
 
+	@Column(name = "date_updated", length = 20)
+	private Date dateUpdated;
+
+	@Column(name = "signature_date", length = 20)
+	private Date signatureDate;
+
 	@OneToMany(
 			mappedBy = "legalEntity",
 			cascade = CascadeType.ALL,
