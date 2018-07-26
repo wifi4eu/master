@@ -88,8 +88,6 @@ public class AzureBlobStorage {
                 System.out.println("Final URL => " + downloadUrl);
                 return downloadUrl;
             }
-        } else {
-
         }
         return downloadUrl;
     }

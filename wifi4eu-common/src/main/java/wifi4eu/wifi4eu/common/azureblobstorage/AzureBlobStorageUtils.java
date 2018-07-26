@@ -31,12 +31,14 @@ public class AzureBlobStorageUtils {
     }
 
     public SharedAccessBlobPolicy createSharedAccessPolicy(EnumSet<SharedAccessBlobPermissions> sap, int expireTimeInSeconds) {
-        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-        cal.setTime(new Date());
-        cal.add(Calendar.SECOND, expireTimeInSeconds);
         SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
         policy.setPermissions(sap);
-        policy.setSharedAccessExpiryTime(cal.getTime());
+        if(expireTimeInSeconds > 0){
+            Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+            cal.setTime(new Date());
+            cal.add(Calendar.SECOND, expireTimeInSeconds);
+            policy.setSharedAccessExpiryTime(cal.getTime());
+        }
         return policy;
     }
 

@@ -4,6 +4,8 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.microsoft.applicationinsights.core.dependencies.apachecommons.io.FileUtils;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
 import eu.cec.digit.ecas.client.constants.RequestConstant;
 import eu.cec.digit.ecas.client.signature.*;
 import org.apache.commons.codec.binary.Base64;
@@ -12,6 +14,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorage;
+import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorageUtils;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
@@ -22,6 +28,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.EnumSet;
 
 @Service
 public class EcasSignatureUtil {
@@ -30,6 +37,12 @@ public class EcasSignatureUtil {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    AzureBlobStorage azureBlobStorage;
+
+    @Autowired
+    AzureBlobStorageUtils azureBlobStorageUtils;
 
     @Autowired
     GrantAgreementService grantAgreementService;
@@ -204,7 +217,7 @@ public class EcasSignatureUtil {
 
     public ByteArrayOutputStream writeSignature(String signatureId, HttpServletRequest request, String downloadRequestId, String hdsDocumentId) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
+        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
         try{
             String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, downloadRequestId, hdsDocumentId);
 
@@ -223,18 +236,23 @@ public class EcasSignatureUtil {
             _log.info("signatureId" + signatureId);
             _log.info("XML" + signatureProof);
 
-            String signString = "Firstname Lastname signed as Legal Representative of the Beneficiary on " + new Date().toString() +  "  (transaction id " +
+            String signString = userDTO.getName() + " " + userDTO.getSurname() + " signed as Legal Representative of the Beneficiary on " + new Date().toString() +  "  (transaction id " +
                     ""+signatureId+")";
 
             GrantAgreement grantAgreement = grantAgreementService.getGrantAgreementById(Integer.parseInt(hdsDocumentId));
+            grantAgreement.setSignatureId(signatureId);
 
-            byte[] data = Base64.decodeBase64(grantAgreement.getDocument_location());
+            outputStream = grantAgreementService.generateGrantAgreementPdf(Integer.parseInt(hdsDocumentId), grantAgreement, signString);
 
-            FileUtils.writeByteArrayToFile(new File("./filename.pdf"), data);
+            byte[] data = outputStream.toByteArray();
 
-            PdfReader reader = new PdfReader("./filename.pdf");
+            SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicy(EnumSet.of(SharedAccessBlobPermissions.READ),0);
 
-            int pages = reader.getNumberOfPages();
+            String downloadURL = azureBlobStorage.getDocumentWithTokenAzureStorage("grant_agreement_"+hdsDocumentId+".pdf",data, policy);
+
+            grantAgreement.setDocument_location(downloadURL);
+            grantAgreement.setDateSignature(new Date());
+            grantAgreementService.createGrantAgreement(grantAgreement);
 
 //            PdfObject object = dict.getDirectObject(PdfName.CONTENTS);
 //            if (object instanceof PRStream) {
@@ -253,10 +271,6 @@ public class EcasSignatureUtil {
         }
 
         return outputStream;
-    }
-
-    public void manipulatePdf(String src, String dest) throws IOException, DocumentException {
-
     }
 
 }

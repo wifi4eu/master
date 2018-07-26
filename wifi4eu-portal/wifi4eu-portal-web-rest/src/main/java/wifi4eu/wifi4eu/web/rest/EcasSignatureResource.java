@@ -52,15 +52,15 @@ public class EcasSignatureResource {
     public ResponseEntity<byte[]>  signature2(@PathVariable("applicationId") Integer applicationId, HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType("application/pdf"));
-            String filename = "grantAgreementPdf.pdf";
+            headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
+            String filename = "grantAgreementPdf.docx";
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             GrantAgreement grantAgreement = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
             if(grantAgreement == null){
                 grantAgreement = grantAgreementService.initializeGrantAgreement(applicationId);
             }
-            return new ResponseEntity<>(grantAgreementService.generateGrantAgreementPdf(applicationId, grantAgreement).toByteArray(), headers, HttpStatus.OK);
+            return new ResponseEntity<>(grantAgreementService.generateGrantAgreementPdf(applicationId, grantAgreement, "").toByteArray(), headers, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,6 +93,7 @@ public class EcasSignatureResource {
         try {
 
             HttpHeaders headers = new HttpHeaders();
+            //headers.setContentType(MediaType.parseMediaType("application/pdf"));
             headers.setContentType(MediaType.parseMediaType("application/pdf"));
             String filename = "grantAgreementPdf.pdf";
             headers.setContentDispositionFormData(filename, filename);
@@ -108,61 +109,5 @@ public class EcasSignatureResource {
         return null;
     }
 
-//    /**
-//     * This is the callback handler called by the ECAS signature page if the user effectively signed the document.
-//     * <p>
-//     * <p>This method update the DocumentAccess entry in HDS database with the signature result and calls IAM to update the signing date on the corresponding Formal Notification.
-//     *
-//     * @param request
-//     * @param downloadRequestId
-//     * @param hdsDocumentId
-//     * @return
-//     */
-//    @RequestMapping(value = "/handleSignature/{downloadRequestId}/{documentId}", method = {RequestMethod.GET, RequestMethod.POST})
-//    public ModelAndView handleSignature(HttpServletRequest request, @PathVariable(value = "downloadRequestId") String downloadRequestId, @PathVariable(value = "documentId") String hdsDocumentId) {
-//        UserBean user = RequestExtractorUtil.getUser(request);
-//        String signatureId = request.getParameter("signatureId");
-//
-//        _log.info(String.format("Handle signature for request %s in document %s and user %s", downloadRequestId, hdsDocumentId, user.getEcasId()));
-//
-//        ModelAndView mav = null;
-//        ErrorMessageBean errorBean = null;
-//        DownloadRequestBean requestBean = null;
-//
-//        try {
-//            String callBackUrlToHds = RequestExtractorUtil.constructSignatureHDSCallbackUrl(request, downloadRequestId, hdsDocumentId);
-//
-//            requestBean = hdsDownloadRequestService.findDownloadRequestById(Long.valueOf(downloadRequestId));
-//            SignatureClient client = new SignatureClient();
-//            client.configure(request);
-//
-//            // get the signed message from ecas
-//            UserConfirmationMessage signature = client.getSignatureFactory().getUserConfirmationSignatureService().getSignedUserConfirmationMessage(callBackUrlToHds, signatureId);
-//
-//            // verify the signature (and parse)
-//            VerifiedUserConfirmationMessage verifiedUserConfirmationMessage = client.getSignatureVerifier().verifySignedUserConfirmationMessage(signature);
-//            SignatureInfo signatureInfo = verifiedUserConfirmationMessage.getUserConfirmationSignature().getSignatureInfo();
-//
-//            // store the signature returned from ecas and call IAM to update the signature date
-//            DocumentBean docBean = hdsDownloadRequestService.findDocumentById(Long.valueOf(hdsDocumentId));
-//            docBean.setSignatureId(signatureId);
-//            docBean.setSignatureProof(verifiedUserConfirmationMessage.getText());
-//            hdsDownloadRequestService.updateSignatureForDocumentInRequestId(docBean, user.getEcasId());
-//
-//            String url = RequestExtractorUtil.constructBaseUrl(request) + "/download/" + EncrypterUtils.EncrypteEncodeId(downloadRequestId);
-//            mav = new ModelAndView("redirect:" + url);
-//        } catch (Exception ex) {
-//            _log.error(String.format("Generic Error handling ecas signature. Reason %s", ex.getMessage()));
-//            errorBean = hdsDownloadRequestService.transformException(ex);
-//            mav = getErrorView(
-//                    "error",
-//                    null,
-//                    getViewObject("errorBean", errorBean),
-//                    getViewObject("documentIds", hdsDocumentId));
-//        } finally {
-//            updateRequestWithErrorCode(requestBean, errorBean);
-//        }
-//        return mav;
-//    }
 }
 
