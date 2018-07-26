@@ -30,19 +30,19 @@ import { BeneficiaryListComponent } from "./+beneficiary-list/beneficiary-list.c
         {
           path: 'beneficiaries',
           component: BeneficiaryListComponent
-        },
+        }, {
+        path: 'supplier-registrations',
+        component: DgConnSupplierRegistrationsComponent,
+         },
          /* {
             path: 'statistics',
             component: DgConnStatisticsComponent,
-        }, {
-            path: 'supplier-registrations',
-            component: DgConnSupplierRegistrationsComponent,
-        } ,
-       {
+         }, */
+        {
             path: 'supplier-registrations/:id',
             component: DgConnSupplierRegistrationsDetailsComponent
         }
-        ,*/ {
+        , {
             path: 'beneficiary-registrations',
             component: DgConnBeneficiaryRegistrationsComponent,
         }/*, {
