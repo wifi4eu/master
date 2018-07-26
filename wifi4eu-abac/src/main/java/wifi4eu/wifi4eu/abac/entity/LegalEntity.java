@@ -60,6 +60,12 @@ public class LegalEntity {
 	@Column(name = "date_created", length = 20)
 	private Date dateCreated;
 
+	@Column(name = "date_updated", length = 20)
+	private Date dateUpdated;
+
+	@Column(name = "signature_date", length = 20)
+	private Date signatureDate;
+
 	public LegalEntity() {
 	}
 
@@ -166,6 +172,22 @@ public class LegalEntity {
 
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+
+	public Date getDateUpdated() {
+		return dateUpdated;
+	}
+
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
+	}
+
+	public Date getSignatureDate() {
+		return signatureDate;
+	}
+
+	public void setSignatureDate(Date signatureDate) {
+		this.signatureDate = signatureDate;
 	}
 
 	@PrePersist
