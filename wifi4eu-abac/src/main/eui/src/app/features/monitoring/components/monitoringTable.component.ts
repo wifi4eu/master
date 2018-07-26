@@ -7,9 +7,18 @@ import { ApiModule } from '../../../shared/api.module';
 })
 export class MonitoringTableComponent implements OnInit{
   
+    private cols: any[];
     private rows: MonitoringRowDTO[];
   
     constructor(protected api: ApiModule){
+        this.cols = [
+            { field: 'countryCode', header: 'Country' },
+            { field: 'municipality', header: 'Municipality' },
+            { field: 'registrationNumber', header: 'Registration Number' },
+            { field: 'wfStatus', header: 'Status' },
+            { field: 'signatureDate', header: 'Date of signature' },
+            { field: 'counterSignatureDate', header: 'Date of counter signature' },
+        ];
     }
   
     ngOnInit() {

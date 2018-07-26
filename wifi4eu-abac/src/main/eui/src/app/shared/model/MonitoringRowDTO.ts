@@ -1,13 +1,9 @@
 export interface MonitoringRowDTO {
     id?: number;
     countryCode?: string;
-    city?: string;
+    municipality?: string;
+    registrationNumber?: number; 
     wfStatus?: string;
-}
-
-export class MonitoringRowDTOBase implements MonitoringRowDTO{
-    id?: number;
-    countryCode?: string;
-    city?: string;
-    wfStatus?: string;
+    signatureDate?: string;
+    counterSignatureDate?: string;
 }
