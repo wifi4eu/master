@@ -29,8 +29,18 @@ import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
 @Entity
 @Table(name = "WIF_LEGAL_ENTITY")
 @NamedStoredProcedureQueries({
-		@NamedStoredProcedureQuery(name = "CREATE_LEF_IN_ABAC", procedureName = "CREATE_LEF_IN_ABAC", parameters = {
-				@StoredProcedureParameter(mode = ParameterMode.IN, name = "LEGALENTITYID", type = Long.class) }) })
+		@NamedStoredProcedureQuery(name = "CREATE_LEF_IN_ABAC",
+				procedureName = "CREATE_LEF_IN_ABAC",
+				parameters = {
+						@StoredProcedureParameter(mode = ParameterMode.IN, name = "LEGALENTITYID", type = Long.class)
+				}),
+		@NamedStoredProcedureQuery(name = "UPDATE_LEF_STATUS_FROM_ABAC",
+				procedureName = "UPDATE_LEF_STATUS_FROM_ABAC",
+				parameters = {})
+				/*
+						@StoredProcedureParameter(mode = ParameterMode.OUT, name = "ROWS_AFFECTED", type = Long.class)
+				})*/
+})
 public class LegalEntity {
 	@Id
 	@Column(name = "ID", unique = true, nullable = false, precision = 18, scale = 0)
@@ -205,12 +215,20 @@ public class LegalEntity {
 		this.dateCreated = dateCreated;
 	}
 
-	public List<AbacRequest> getAbacRequestList() {
-		return abacRequestList;
+	public Date getDateUpdated() {
+		return dateUpdated;
 	}
 
-	public void setAbacRequestList(List<AbacRequest> abacRequestList) {
-		this.abacRequestList = abacRequestList;
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
+	}
+
+	public Date getSignatureDate() {
+		return signatureDate;
+	}
+
+	public void setSignatureDate(Date signatureDate) {
+		this.signatureDate = signatureDate;
 	}
 
 	public Long getRegistrationNumber() {

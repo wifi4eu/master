@@ -18,18 +18,15 @@ public class BatchScheduler {
     private Integer MAX_RECORDS_CREATE_LEGAL_ENTITY;
 
     @Autowired
-    LegalEntityService legalEntityService;
-
-    @Autowired
     AbacIntegrationService abacIntegrationService;
 
     @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
-        legalEntityService.findAndSendLegalEntitiesReadyToABAC(MAX_RECORDS_CREATE_LEGAL_ENTITY);
+		abacIntegrationService.findAndSendLegalEntitiesReadyToABAC(MAX_RECORDS_CREATE_LEGAL_ENTITY);
     }
 
     @Scheduled(cron = "${batch.legalentity.checkstatus.crontable}")
     public void checkLegalEntityCreationStatus() {
-		legalEntityService.updateLegalEntitiesStatuses();
+    	abacIntegrationService.updateLegalEntitiesStatuses();
     }
 }
