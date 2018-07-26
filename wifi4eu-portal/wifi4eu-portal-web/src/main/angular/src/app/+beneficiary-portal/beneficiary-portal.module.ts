@@ -14,6 +14,7 @@ import { BeneficiaryService } from "../core/services/beneficiary-service";
 import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-profile.component";
 import { GrantAgreementComponent } from "./+grant-agreement/grant-agreement.component";
 import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agreement/sign-grant-agreement.component";
+import { LegalFilesComponent } from "./+legal-files/legal-files.component";
 
 // import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
 
@@ -30,7 +31,8 @@ import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agre
         AccessPointDetailsComponent,
         BeneficiaryEditProfileComponent,
         GrantAgreementComponent, 
-        SignGrantAgreementComponent
+        SignGrantAgreementComponent,
+        LegalFilesComponent
         // SelectSupplierComponent
     ], providers: [
         BeneficiaryService
