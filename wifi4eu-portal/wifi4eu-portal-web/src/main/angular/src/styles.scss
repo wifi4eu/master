@@ -596,11 +596,18 @@ body {
 
 }
 
-.row.vertical-align {
-  display: flex;
-  align-items: center;
-  margin-top: 1em;
-
+.row {
+  .vertical-align {
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+  }
+  .row.conditions-agreement {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: $dark-grey;
+  }
 }
 
 .cancel-button {

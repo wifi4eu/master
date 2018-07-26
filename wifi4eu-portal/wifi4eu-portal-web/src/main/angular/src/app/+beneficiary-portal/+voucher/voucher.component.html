@@ -81,21 +81,26 @@
                 </p-column>
                 <template let-municipality pTemplate="rowexpansion" let-i="rowIndex">
                     <div class="ui-grid ui-grid-responsive ui-fluid">
-                        <div *ngIf="!conditionsAgreements[municipality.id]">
-                            <button class="modal-content ui-g-1 ui-sm-1" (click)=changeConditionsAgreement(municipality)>
+                        <div *ngIf="!conditionsAgreements[municipality.id]" class="row conditions-agreement">
+                            <!-- <button class="modal-content btton ui-g-1 ui-sm-1" (click)=changeConditionsAgreement(municipality)>
                                 <i class="fa fa-square-o" aria-hidden="true"></i>
-                            </button>
-                            <div class="ui-g-11 ui-sm-11">
-                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
+                            </button> -->
+                            <div class="col-sm-1 col-md-1 col-lg-1">
+                                <i class="fa fa-square-o" aria-hidden="true" (click)="changeConditionsAgreement(municipality)"></i>
+                            </div>
+                            <div class="col-sm-11 col-md-11 col-lg-11">
+                                <div [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></div>
                             </div>
                         </div>
-                        <div *ngIf="conditionsAgreements[municipality.id]">
-                            <button class="modal-content ui-g-1 ui-sm-1" (click)="changeConditionsAgreement(municipality)">
-                                <!-- prevent user can make changes if already applied for a voucher: [disabled]="disableConditionsAgreements[municipality.id] -->
-                                <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                            </button>
-                            <div class="ui-g-11 ui-sm-11">
-                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
+                        <div *ngIf="conditionsAgreements[municipality.id]" class="row conditions-agreement">
+                            <!-- prevent user can make changes if already applied for a voucher: [disabled]="disableConditionsAgreements[municipality.id] -->
+                            <!-- <button class="modal-content ui-g-1 ui-sm-1">
+                            </button> -->
+                            <div class="col-sm-1 col-md-1 col-lg-1">
+                                <i class="fa fa-check-square-o" aria-hidden="true" (click)="changeConditionsAgreement(municipality)"></i>
+                            </div>
+                            <div class="col-sm-11 col-md-11 col-lg-11">
+                                <div [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></div>
                             </div>
                         </div>
                     </div>
