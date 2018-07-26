@@ -18,13 +18,13 @@
     </div>
     <div *ngIf="!fetchingData && !changingCalls" class="ui-g-12 center">
         <ux-accordion-boxes>
-            <div *ngFor="let items of historyItems; let i = index">
-                <p class="beneficiaryMayor" style="text-align: left;">{{ municipalities[i].name }}</p>
+            <div *ngFor="let municipality of municipalities">
+                <p class="beneficiaryMayor" style="text-align: left;">{{ municipality }}</p>
                 <custom-accordion-box [isExpanded]="true" [rightSide]="true" style="text-align: left;">
-                    <p-dataTable [value]="items">
-                        <p-column field="action" [sortable]="false" header="{{ 'benefPortal.myHistory.actionPerformed' | translate }}">
+                    <p-dataTable [value]="historyItems[municipality]">
+                        <p-column field="actionPerformed" [sortable]="false" header="{{ 'benefPortal.myHistory.actionPerformed' | translate }}">
                             <ng-template let-row="rowData" pTemplate="body">
-                                {{ row.action | translate }}
+                                {{ row.actionPerformed | translate }}
                             </ng-template>
                         </p-column>
                         <p-column field="date" [sortable]="true" header="{{ 'dgConn.dateandtime' | translate }}">

@@ -9,6 +9,7 @@ import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.common.enums.UserHistoryActionList;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
@@ -26,6 +27,7 @@ import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
@@ -64,6 +66,9 @@ public class BeneficiaryService {
 
     @Autowired
     MayorService mayorService;
+
+    @Autowired
+    LegalFilesService legalFilesService;
 
     @Autowired
     LauService lauService;
@@ -624,5 +629,30 @@ public class BeneficiaryService {
 
     public boolean checkContactEmailWithMunicipality(String email, Integer municipalityId){
         return registrationUsersRepository.findByContactEmailAndMunicipality(email, municipalityId) != null;
+    }
+
+    public List<UserHistoryActionDTO> getUserHistoryActionsByUserIdAnCallId(Integer userId, Integer callId) {
+        List<UserHistoryActionDTO> actions = new ArrayList<>();
+        List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userId);
+        for (RegistrationDTO registration : registrations) {
+            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+            if (municipality != null) {
+                for (int i = 1; i < 5; i++) {
+                    LegalFilesDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(registration.getId(), i);
+                    if (legalFile != null) {
+                        if (legalFile.getUploadTime() != null) {
+                            UserHistoryActionDTO lfAction = new UserHistoryActionDTO(municipality.getName(), UserHistoryActionList.SUPPORTING_DOCUMENTS_UPLOADED.getActionPerformed(), legalFile.getUploadTime().getTime());
+                            actions.add(lfAction);
+                        }
+                    }
+                }
+                ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(callId, registration.getId());
+                if (application != null) {
+                    UserHistoryActionDTO appAction = new UserHistoryActionDTO(municipality.getName(), UserHistoryActionList.APPLICATION_SUBMITTED.getActionPerformed(), application.getDate());
+                    actions.add(appAction);
+                }
+            }
+        }
+        return actions;
     }
 }

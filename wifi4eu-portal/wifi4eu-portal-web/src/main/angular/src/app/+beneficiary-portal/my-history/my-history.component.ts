@@ -1,20 +1,17 @@
 import { Component } from '@angular/core';
 import { animate, style, transition, trigger } from "@angular/animations";
 import { SharedService } from "../../shared/shared.service";
-import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
 import { ApplicationDTOBase } from "../../shared/swagger/model/ApplicationDTO";
 import { CallApi } from "../../shared/swagger/api/CallApi";
 import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
-import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
-import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
-import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
 import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
-import { UserApi } from "../../shared/swagger/api/UserApi";
 import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
+import { UserHistoryActionDTOBase } from "../../shared/swagger/model/UserHistoryActionDTO";
 
 @Component({
     templateUrl: 'my-history.component.html',
-    providers: [ApplicationApi, CallApi, MunicipalityApi],
+    providers: [CallApi, BeneficiaryApi],
     animations: [
         trigger(
             'enterSpinner', [
@@ -34,14 +31,14 @@ import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
 export class MyHistoryComponent {
     private user : UserDTOBase = null;
     private registrations : RegistrationDTOBase[] = [];
-    private municipalities : MunicipalityDTOBase[] = [];
+    private municipalities : string[] = [];
     private calls : CallDTOBase[] = [];
     private currentIndex : number = 0;
-    private historyItems = [];
+    private historyItems : UserHistoryActionDTOBase[][] = [];
     private fetchingData : boolean = false;
     private changingCalls : boolean = false;
 
-    constructor(private sharedService: SharedService, private applicationApi: ApplicationApi, private callApi: CallApi, private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi) {
+    constructor(private sharedService: SharedService, private callApi: CallApi, private beneficiaryApi: BeneficiaryApi) {
         this.fetchingData = true;
         if (this.sharedService.user) {
             this.user = this.sharedService.user;
@@ -64,43 +61,17 @@ export class MyHistoryComponent {
     }
 
     private fetchHistoryData() {
-        this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
-            (registrations : RegistrationDTOBase[]) => {
-                if (registrations.length > 0) {
-                    for (let i = 0; i < registrations.length; i++) {
-                        let registration = registrations[i];
-                        this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
-                            (municipality : MunicipalityDTOBase) => {
-                                this.applicationApi.getApplicationByCallIdAndRegistrationId(this.calls[this.currentIndex].id, registration.id).subscribe(
-                                    (application : ApplicationDTOBase) => {
-                                        let historyItems = [];
-                                        if (registration.uploadTime) {
-                                            let historyItem = {
-                                                action: "benefPortal.myHistory.actionPerformed.supportingDocumentsUploaded",
-                                                date: registration.uploadTime
-                                            }
-                                            historyItems.push(historyItem);
-                                        }
-                                        if (application.id != 0) {
-                                            let historyItem = {
-                                                action: "benefPortal.myHistory.actionPerformed.applicationSubmitted",
-                                                date: application.date
-                                            }
-                                            historyItems.push(historyItem);
-                                        }
-                                        this.historyItems.push(historyItems);
-                                        this.municipalities.push(municipality);
-                                        this.registrations.push(registration);
-                                        if (this.registrations.length == registrations.length) {
-                                            this.fetchingData = false;
-                                            this.changingCalls = false;
-                                        }
-                                    }
-                                );
-                            }
-                        );
+        this.beneficiaryApi.getUserHistoryActionsByUserIdAnCallId(this.user.id, this.calls[this.currentIndex].id).subscribe(
+            (actions : UserHistoryActionDTOBase[]) => {
+                for (let action of actions) {
+                    if (this.municipalities.indexOf(action.municipality) == -1) {
+                        this.municipalities.push(action.municipality);
+                        this.historyItems[action.municipality] = [];
                     }
+                    this.historyItems[action.municipality].push(action);
                 }
+                this.fetchingData = false;
+                this.changingCalls = false;
             }
         );
     }
