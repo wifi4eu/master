@@ -5,6 +5,7 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.*;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
+import wifi4eu.wifi4eu.common.helper.Validator;
 
 
 import java.net.URISyntaxException;
@@ -23,6 +24,9 @@ public class AzureBlobStorageUtils {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     public String generateFileWithToken(CloudBlob blobDownload, SharedAccessBlobPolicy policy) throws StorageException, InvalidKeyException {
+        if (Validator.isNull(policy)){
+            return blobDownload.getUri().toString();
+        }
         String sas = blobDownload.generateSharedAccessSignature(policy, null);
         // IPRange ipRangeAccept = new IPRange("217.124.189.100");
         // String sas = blobDownload.generateSharedAccessSignature(policy,null,null,ipRangeAccept,null);
@@ -30,15 +34,16 @@ public class AzureBlobStorageUtils {
         return fullUrlDownload;
     }
 
-    public SharedAccessBlobPolicy createSharedAccessPolicy(EnumSet<SharedAccessBlobPermissions> sap, int expireTimeInSeconds) {
+    public SharedAccessBlobPolicy createSharedAccessPolicy(EnumSet<SharedAccessBlobPermissions> sap, int expireTimeYears) {
+        if (expireTimeYears == 0){
+            return null;
+        }
+        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        cal.setTime(new Date());
+        cal.add(Calendar.YEAR, expireTimeYears);
         SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
         policy.setPermissions(sap);
-        if(expireTimeInSeconds > 0){
-            Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-            cal.setTime(new Date());
-            cal.add(Calendar.SECOND, expireTimeInSeconds);
-            policy.setSharedAccessExpiryTime(cal.getTime());
-        }
+        policy.setSharedAccessExpiryTime(cal.getTime());
         return policy;
     }
 

@@ -246,7 +246,7 @@ public class EcasSignatureUtil {
 
             byte[] data = outputStream.toByteArray();
 
-            SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicy(EnumSet.of(SharedAccessBlobPermissions.READ),0);
+            SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicy(EnumSet.of(SharedAccessBlobPermissions.READ),20);
 
             String downloadURL = azureBlobStorage.getDocumentWithTokenAzureStorage("grant_agreement_"+hdsDocumentId+".pdf",data, policy);
 
