@@ -54,6 +54,7 @@ public class GrantAgreementService {
                     BaseFont.TIMES_ROMAN,
                     BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 
+
             int pages = pdfReader.getNumberOfPages();
 
             for(int i=1; i<=pages; i++) {
@@ -62,15 +63,12 @@ public class GrantAgreementService {
                     PdfContentByte pageContentByte =
                             pdfStamper.getOverContent(i);
 
-                    pageContentByte.beginText();
-                    //Set text font and size.
-                    pageContentByte.setFontAndSize(baseFont, 8);
-
-                    pageContentByte.setTextMatrix(PageSize.A4.getBorderWidthLeft(), PageSize.A4.getBorderWidthBottom());
-
-                    //Write text
-                    pageContentByte.showText(signString);
-                    pageContentByte.endText();
+                    BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, "Cp1252", BaseFont.EMBEDDED);
+                    Font f = new Font(bf, 8);
+                    ColumnText ct = new ColumnText(pageContentByte);
+                    ct.setSimpleColumn(74, 0, pdfReader.getPageSize(i).getWidth() / 2, 400f);
+                    ct.addElement(new Paragraph (signString, f));
+                    ct.go();
                 }
             }
 
