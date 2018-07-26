@@ -16,9 +16,11 @@ import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
+import wifi4eu.wifi4eu.mapper.history_action.UserHistoryActionMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
+import wifi4eu.wifi4eu.repository.history_action.UserHistoryActionRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -50,6 +52,12 @@ public class BeneficiaryService {
     BeneficiaryListItemRepository beneficiaryListItemRepository;
 
     @Autowired
+    UserHistoryActionMapper userHistoryActionMapper;
+
+    @Autowired
+    UserHistoryActionRepository userHistoryActionRepository;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -68,9 +76,6 @@ public class BeneficiaryService {
     MayorService mayorService;
 
     @Autowired
-    LegalFilesService legalFilesService;
-
-    @Autowired
     LauService lauService;
 
     @Autowired
@@ -87,9 +92,6 @@ public class BeneficiaryService {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    CallRepository callRepository;
 
     @Autowired
     ApplicationService applicationService;
@@ -633,25 +635,15 @@ public class BeneficiaryService {
 
     public List<UserHistoryActionDTO> getUserHistoryActionsByUserIdAnCallId(Integer userId, Integer callId) {
         List<UserHistoryActionDTO> actions = new ArrayList<>();
-        List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userId);
-        for (RegistrationDTO registration : registrations) {
-            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-            if (municipality != null) {
-                for (int i = 1; i < 5; i++) {
-                    LegalFilesDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(registration.getId(), i);
-                    if (legalFile != null) {
-                        if (legalFile.getUploadTime() != null) {
-                            UserHistoryActionDTO lfAction = new UserHistoryActionDTO(municipality.getName(), UserHistoryActionList.SUPPORTING_DOCUMENTS_UPLOADED.getActionPerformed(), legalFile.getUploadTime().getTime());
-                            actions.add(lfAction);
-                        }
-                    }
-                }
-                ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(callId, registration.getId());
-                if (application != null) {
-                    UserHistoryActionDTO appAction = new UserHistoryActionDTO(municipality.getName(), UserHistoryActionList.APPLICATION_SUBMITTED.getActionPerformed(), application.getDate());
-                    actions.add(appAction);
-                }
-            }
+        List<UserHistoryActionDTO> lfActions = userHistoryActionMapper.toDTOList(userHistoryActionRepository.findLegalFilesActionsHistoryByUserId(userId));
+        for (UserHistoryActionDTO lfAction : lfActions) {
+            lfAction.setActionPerformed(UserHistoryActionList.SUPPORTING_DOCUMENTS_UPLOADED.getActionPerformed());
+            actions.add(lfAction);
+        }
+        List<UserHistoryActionDTO> appActions = userHistoryActionMapper.toDTOList(userHistoryActionRepository.findApplicationActionsHistoryByUserIdAndCallId(userId, callId));
+        for (UserHistoryActionDTO appAction : appActions) {
+            appAction.setActionPerformed(UserHistoryActionList.APPLICATION_SUBMITTED.getActionPerformed());
+            actions.add(appAction);
         }
         return actions;
     }
