@@ -343,7 +343,7 @@
                         <div class="ui-g-12">
                             <div class="ui-g-3 backgroundMessage">
                                 <p class="authorMessage">
-                                    {{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{displayRegistrationByAuthor(currentMessage.authorId)}}
+                                    {{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{messagesAuthorRegistration[i]}}
                                 </p>
                                 <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
                                 <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>

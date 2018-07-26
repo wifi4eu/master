@@ -1,9 +1,15 @@
 package wifi4eu.wifi4eu.service.grantAgreement;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import org.springframework.stereotype.Service;
+
+import java.io.ByteArrayOutputStream;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;

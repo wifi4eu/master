@@ -60,34 +60,34 @@
             <hr class="genericHr" />
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
             <div *ngFor="let user of supplier.users; let i = index">
-                <div class="form-group ui-g-3 ui-lg-3 ui-md-8 ui-sm-12"> 
+
+                <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12"> 
                     <b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>
-                    <span class="btn redButton right" (click)="deactivateShowModal(i)">{{ 'shared.deactivate.button' | translate}}</span>
+                    <span class="btn redButton right" (click)="deactivateShowModal(i)" *ngIf="!(user.type == -1) && !(userConnected.id == user.id)">{{ 'shared.deactivate.button' | translate}}</span>
                 </div>  
-                <div class="form-group ui-g-3 ui-lg-3 ui-md-8 ui-sm-12">
+                <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                     <label>{{ 'shared.name.label' | translate }}</label><br>
                     <input [id]="'name-'+i" type="text" [name]="'name-'+i" class="form-control"
-                        [(ngModel)]="users[i].name" required>
+                        [(ngModel)]="users[i].name" required [disabled]="user.type == -1">
                 </div>
                 <br>
-                <div class="form-group ui-g-3 ui-lg-3 ui-md-8 ui-sm-12">
+                <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                     <label>{{ 'shared.surname.label' | translate }}</label><br>
                     <input [id]="'surname-'+i" type="text" [name]="'surname-'+i" class="form-control"
-                        [(ngModel)]="users[i].surname" required>
+                        [(ngModel)]="users[i].surname" required [disabled]="user.type == -1">
                 </div>
                 <br>
                 <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
                     <label>{{ 'suppRegistration.phone.number' | translate }}</label><br>
                     <input [id]="'phone-prefix-'+i" type="text" [name]="'phone-prefix-'+i" class="form-control ui-g-2 ui-sm-4"
-                        style="margin-right: 1em;" [(ngModel)]="users[i].phone_prefix" required>
+                        style="margin-right: 1em;" [(ngModel)]="users[i].phone_prefix" required [disabled]="user.type == -1">
                     <input [id]="'phone-number-'+i" type="text" [name]="'phone-number-'+i" class="form-control ui-g-3 ui-sm-7"
-                        [(ngModel)]="users[i].phone_number" required>
+                        [(ngModel)]="users[i].phone_number" required [disabled]="user.type == -1">
                     <br>
                     <label class="ui-g-2 ui-sm-4" style="font-size: 70%;color: #8f8f8f;">
                         {{ 'suppRegistration.prefix.number' | translate }}
                     </label>
                 </div>
-               
             </div>
             <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">   
                     <p (click)="sendMailToUser()">{{ "benefPortal.beneficary.addMunicipality" | translate}}</p>   
