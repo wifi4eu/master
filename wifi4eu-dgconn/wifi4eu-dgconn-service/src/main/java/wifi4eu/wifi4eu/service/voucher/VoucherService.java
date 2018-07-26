@@ -18,6 +18,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherSimulationMapper;
@@ -111,6 +112,9 @@ public class VoucherService {
 
     @Autowired
     NutsService nutsService;
+
+    @Autowired
+    UserMapper userMapper;
 
     public List<VoucherAssignmentDTO> getAllVoucherAssignment() {
         return voucherAssignmentMapper.toDTOList(Lists.newArrayList(voucherAssignmentRepository.findAll()));
@@ -811,6 +815,11 @@ public class VoucherService {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Call does not exist with id " + callId);
             throw new AppException("Call not found with id: " + callId);
         }
+        long currentTime = new Date().getTime();
+        if (!(callDTO.getStartDate() < currentTime && callDTO.getEndDate() < currentTime)) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiaries are only to be notified if the call has been closed. CallId:" + callId);
+            throw new AppException("Beneficiaries are only to be notified if the call has been closed. CallId:" + callId);
+        }
 
         List<ApplicationDTO> successfulApplicants;
         List<ApplicationDTO> reserveApplicants;
@@ -832,7 +841,7 @@ public class VoucherService {
 
         for (ApplicationDTO successfulApplicant : successfulApplicants) {
             RegistrationDTO registrationDTO = registrationService.getRegistrationById(successfulApplicant.getRegistrationId());
-            UserDTO userDTO = userService.getUserById(registrationDTO.getUserId());
+            UserDTO userDTO = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
             if (userDTO.getLang() != null) {
                 locale = new Locale(userDTO.getLang());
             }
@@ -852,7 +861,7 @@ public class VoucherService {
 
         for (ApplicationDTO reserveApplicant : reserveApplicants) {
             RegistrationDTO registrationDTO = registrationService.getRegistrationById(reserveApplicant.getRegistrationId());
-            UserDTO userDTO = userService.getUserById(registrationDTO.getUserId());
+            UserDTO userDTO = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
             if (userDTO.getLang() != null) {
                 locale = new Locale(userDTO.getLang());
             }
@@ -871,7 +880,7 @@ public class VoucherService {
 
         for (ApplicationDTO unsuccessfulApplicant : unsuccessfulApplicants) {
             RegistrationDTO registrationDTO = registrationService.getRegistrationById(unsuccessfulApplicant.getRegistrationId());
-            UserDTO userDTO = userService.getUserById(registrationDTO.getUserId());
+            UserDTO userDTO = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
             if (userDTO.getLang() != null) {
                 locale = new Locale(userDTO.getLang());
             }

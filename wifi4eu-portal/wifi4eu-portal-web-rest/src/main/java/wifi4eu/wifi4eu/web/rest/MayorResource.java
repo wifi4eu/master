@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -41,63 +42,10 @@ public class MayorResource {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RegistrationUsersRepository registrationUsersRepository;
+
     Logger _log = LogManager.getLogger(MayorResource.class);
-
-    /*
-    @ApiOperation(value = "Get all the mayors")
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<MayorDTO> allMayors(HttpServletResponse response) throws IOException {
-        _log.info("allMayors");
-        try{
-            if(userService.getUserByUserContext(UserHolder.getUser()).getType() != 5){
-                throw new AccessDeniedException("");
-            }
-            else{
-                return mayorService.getAllMayors();
-            }
-        } catch (Exception e){
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return null;
-    }
-    */
-
-    /*
-    @ApiOperation(value = "Get mayor by specific id")
-    @RequestMapping(value = "/{mayorId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public MayorDTO getMayorById(@PathVariable("mayorId") final Integer mayorId, HttpServletResponse response) throws IOException {
-        _log.info("getMayorById: " + mayorId);
-        try {
-            permissionChecker.check(RightConstants.MAYORS_TABLE+mayorId);
-        } catch (Exception e){
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return mayorService.getMayorById(mayorId);
-    }
-    */
-
-    /* @ApiOperation(value = "Create mayor")
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO createMayor(@RequestBody final MayorDTO mayorDTO,
-                                   HttpServletResponse response) throws IOException {
-      try {
-        return new ResponseDTO(true, mayorService.createMayor(mayorDTO), null);
-      } catch (AccessDeniedException ade) {
-        if (_log.isErrorEnabled()) {
-            _log.error("Error with permission on 'createMayor' operation.", ade);
-        }
-        response.sendError(HttpStatus.NOT_FOUND.value());
-      } catch (Exception e) {
-        if (_log.isErrorEnabled()) {
-            _log.error("Error on 'createMayor' operation.", e);
-        }
-        response.sendError(HttpStatus.NOT_FOUND.value());
-      }
-      return new ResponseDTO(false, null, null);
-    } */
 
     @ApiOperation(value = "Update mayor details")
     @RequestMapping(method = RequestMethod.PUT)
@@ -111,12 +59,12 @@ public class MayorResource {
             MayorDTO mayorDetails = mayorService.getMayorById(mayorDTO.getId());
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(mayorDetails.getMunicipalityId());
-            if (userDTO.getId() != registrationDTO.getUserId()) {
+            if (registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registrationDTO.getId()) == null) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userDTO, RightConstants.MAYORS_TABLE + mayorDTO.getId());
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Mayor information updated successfully");
-            return new ResponseDTO(true, mayorService.updateMayor(mayorDetails, mayorDTO.getName(), mayorDTO.getSurname()), null);
+            return new ResponseDTO(true, mayorService.updateMayor(mayorDetails, mayorDTO.getName(), mayorDTO.getSurname(), mayorDTO.getEmail()), null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the mayor information", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -126,28 +74,6 @@ public class MayorResource {
         }
         return new ResponseDTO(false, null, null);
     }
-
-    /* @ApiOperation(value = "Delete mayor by specific id")
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseDTO deleteMayor(@RequestBody final Integer mayorId, HttpServletResponse response) throws IOException {
-        try {
-            _log.info("deleteMayor: " + mayorId);
-            permissionChecker.check(RightConstants.MAYORS_TABLE+mayorId);
-            MayorDTO resMayor = mayorService.deleteMayor(mayorId);
-            return new ResponseDTO(true, resMayor, null);
-        }
-        catch (AccessDeniedException ade){
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteMayor' operation.", e);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return new ResponseDTO(false, null, null);
-    } */
 
     @ApiOperation(value = "Get mayor by specific municipality id")
     @RequestMapping(value = "/municipalityId/{municipalityId}", method = RequestMethod.GET, produces = "application/json")

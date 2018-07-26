@@ -102,14 +102,25 @@ export class DiscussionComponent {
                             this.userThreads = userThread;
                             this.supplierApi.getSupplierByUserId(this.userThreads[i].userId).subscribe(
                                 (suppliers: SupplierDTOBase) => {
-                                    if (this.user.id != suppliers.userId) {
-                                        this.otherSuppliers.push(suppliers);
-                                        console.log(this.otherSuppliers);
-                                        this.counter++;
-                                        if (this.counter >= this.userThreads.length) {
-                                            this.hasAuthor = true;
+                                    this.supplierApi.getUserIdFromSupplier(this.ownSupplier.id).subscribe(
+                                        (supplierId : number) =>{
+                                            for(let i = 0 ; i < suppliers; i++){
+                                                if(supplierId == suppliers[i].id){
+                                                    this.otherSuppliers.push(suppliers);
+                                                    console.log(this.otherSuppliers);
+                                                    this.counter++;
+                                                    if (this.counter >= this.userThreads.length) {
+                                                        this.hasAuthor = true;
+                                                    }
+                                                }
+                                            }
+                                        }, error=>{
+                                            console.log(error);
+                                            
                                         }
-                                    }
+
+
+                                    );
                                 }, error => {
                                     console.log(error);
                                 }

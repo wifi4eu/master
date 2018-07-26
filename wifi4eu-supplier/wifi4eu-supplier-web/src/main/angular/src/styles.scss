@@ -1,0 +1,379 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+    font-family: verdana;
+    background-color: whitesmoke;
+    color: #333333;
+  }
+
+.header {
+    margin: 20px 0 20px 0;
+    h1 {
+        color: #004494;
+        font-weight: bold;
+        font-size: 25px;
+    }
+    p {
+        font-size: 14px;
+    }
+}
+/*fix menu*/
+#top-menu ul li.icon-menu-item a svg{
+    font-size: 25px;
+}
+
+#top-menu>ul>li.selected>a{
+    line-height: 25px;
+}
+
+#app-header {
+    div.right-content, div.profile-wrapper {
+        height: 100%;
+        margin-top: 0;
+    }
+    .user-infos {
+        font-family: verdana;
+        font-size: 14px;
+        margin-top: 0;
+        margin-bottom: .3125rem;
+        .user-name {
+            color: #004494;
+            font-weight: bold;
+        }
+        .logout-button {
+            margin-left: 1rem;
+        }
+        .header-icons {
+            margin-left: 1rem;
+            font-size: 19px;
+        }
+        a:not([href]):not([tabindex]) {
+            color: black;
+        }
+    }
+    .ux-language-selector {
+        margin-top: .3125rem;
+    }
+}
+
+.back-button{
+    margin-bottom: 30px;
+}
+
+/*InstallationReport*/
+.instalReportBeneficiary {
+    padding-left: 0px;
+}
+
+.instalReportBeneficiary label {
+    padding-left: 0px;
+        font-family: Verdana;
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #333333;
+}
+
+.results {
+    border: 1px solid #777;
+    padding: 10px 10px 0 10px;
+    background-color: white;
+}
+
+.table-filters-header {
+    vertical-align: middle;
+    margin-bottom: 10px;
+}
+
+
+.btn-flat-link {
+    color: #004494 !important;
+    font-size: 16px;
+}
+
+.confirm-installation {
+    margin-top : 20px;
+    width: 243px;
+    line-height: 1.43;
+    text-align: left;
+    color: #333333;
+}
+
+.confirm-installation button{
+    font-family: Verdana;
+    font-size: 16px;
+    font-weight: bold;
+    width:  100%;
+    display: inline-block;
+}
+
+p-autocomplete {
+    padding: 0 !important;
+    border: 0 !important;
+    display: block;
+  }
+
+  .ui-autocomplete {
+    display:  inline-block;
+  }
+
+  .ui-autocomplete .ui-widget {
+    padding: 1rem 1rem;
+  }
+
+
+.autoComplete {
+    width: 13em;
+    display: inline-block;
+  }
+
+  /*table*/
+.ui-datatable-emptymessage{
+        font-family: Verdana;
+        text-align: center;
+        color: #888888;
+ }
+
+
+ .ui-datatable-emptymessage-row{
+    height: 400px;
+ }
+
+ .ui-datatable thead tr {
+    background: #fff;
+}
+
+.ui-widget-content{
+    border : 0px;
+}
+
+.accessPoints .ui-column-title {
+    width:70%;
+    display:inline-block;
+}
+
+.accessPoints .ui-widget-content{
+    word-wrap: break-word;
+}
+
+/*modal confirm installation*/
+.ui-chkbox-label{
+    display: initial;
+}
+
+p-checkbox{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.checkBoxContainer{
+    margin: 0 60px 0 60px;
+    text-align: left;
+}
+
+/*all modals*/
+.modal-header{
+    border-bottom:0px;
+    color: #004494;
+}
+
+.ux-modal__header{
+    min-height: 5rem;
+}
+
+.modal-title{
+    width:100%;
+    font-family: Verdana;
+    font-size: 22px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.23;
+    letter-spacing: normal;
+    text-align: center;
+}
+
+.modal-body{
+    padding-left: 38px;
+    padding-right: 38px;
+    padding-top: 10px;
+    padding-bottom:0px;
+}
+
+.ux-modal__footer{
+    background-color: #fff;
+    border-top: 0px;
+    display:inline-block;
+    text-align: center;
+    width: 100%;
+}
+
+.ux-modal__footer button{
+    font-family: Verdana;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.close{
+    position: absolute;
+    top:0px;
+    right:10px;
+}
+
+/*update installation site*/
+#updateInstallationSite{
+    font-size:16px;
+    font-family: Verdana;
+}
+
+.fa-question-circle, .fa-eye, .fa-list-ul{
+    color: #004494;
+}
+
+.ui-tooltip{
+    z-index: 1151 !important;
+}
+
+.ui-tooltip .ui-tooltip-text{
+    width: 360px;
+    height: 50px;
+    background-color: #ffffff;
+    border: solid 1px #d2d2d2;
+    font-family: Verdana;
+    font-size: 12px;
+    color: #333333;
+}
+
+#updateInstallationSite p{
+    display:inline;
+}
+
+.modal-subtitle{
+    font-family: Verdana;
+    font-size: 14px;
+    color: #333333;
+    text-align: center;
+    display: inline-block !important;
+    position: relative;
+    width: 100%;
+    top: -27px;
+}
+/*installation details buttons*/
+.ux-button__icon{
+    margin-right:10px;
+    font-size: 14px;
+}
+
+.detailsButtons button{
+    font-size: 14px;
+}
+
+.results-row{
+    padding-left: 35px;
+    padding-top: 5px;
+    padding-bottom: 22px;
+}
+
+/*success confirmation*/
+#success {
+    font-size: 30px;
+    color: #4caf50;
+    margin: 20px 0 40px 0;
+    display: none;
+    h1{
+        color: #004494;
+        font-weight: bold;
+        font-size: 20px;
+        margin-top: 10px;
+    }
+}
+
+.geoLocal{
+    // width: 33%;
+    width:49%;
+    display: inline-block;
+}
+
+#latitude{
+    margin-right: 6px;
+}
+
+p-dropdown {
+    padding-right: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.geoLocalDiv label{
+    width: 100%;
+}
+
+.geoLocalDiv button{
+    font-family: Verdana;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+}
+
+.sessionOff {
+  background-color: rgba(1, 1, 1, 0.7);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 5000;
+  pointer-events: none;
+}
+
+.sessionOn{
+  height: 100%;
+}
+
+.topButtonSession {
+  width: 10%;
+  min-width: 100px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.topBarSession {
+  line-height:35px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 5px;
+}
+
+.disabledUserWork{
+  position:absolute;
+  top: 123px;
+  background-color: rgba(1, 1, 1, 0.7);;
+  width: 100%;
+  height: 100%;
+  z-index: 99999999;
+  margin-top: -100px;
+}
+
+.changePassword {
+    margin-top: .5em;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 1.2em;
+    font-weight: 700;
+    overflow: hidden;
+    white-space: normal;
+}
+
+.alert.alert-info.ux-alert.info .ux-alert__content-container > div{
+    width:100%;
+}

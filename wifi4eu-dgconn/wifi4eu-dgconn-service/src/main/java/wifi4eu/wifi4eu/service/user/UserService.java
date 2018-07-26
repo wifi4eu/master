@@ -93,9 +93,6 @@ public class UserService {
     @Autowired
     UserThreadsService userThreadsService;
 
-    @Autowired
-    UserService userService;
-
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
     }
@@ -110,6 +107,16 @@ public class UserService {
 
     public UserDTO getUserByEcasEmail(String email) {
         return userMapper.toDTO(userRepository.findByEcasEmail(email));
+    }
+
+    public UserDTO getMainUserByIdFromRegistration(Integer registrationId) {
+        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationId));
+        return user;
+    }
+
+    public List<UserDTO> getUsersByIdFromRegistration(Integer registrationId) {
+        List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersFromRegistration(registrationId));
+        return users;
     }
 
     @Transactional
@@ -395,7 +402,7 @@ public class UserService {
     }
 
     private void removeSuppliedRegion(UserDTO userDTO) {
-        SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findByUserId(userDTO.getId()));
+        SupplierDTO supplierDTO = supplierService.getSupplierByUserId(userDTO.getId());
         List<SuppliedRegionDTO> suppliedRegionDTOList = supplierDTO.getSuppliedRegions();
         for (SuppliedRegionDTO anElementList : suppliedRegionDTOList) {
             suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(anElementList));

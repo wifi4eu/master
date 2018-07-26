@@ -553,6 +553,9 @@ CREATE TABLE dbo.legal_files_correction_reason
     ON UPDATE CASCADE
 );
 
+alter table [wifi4eudb].[dbo].[legal_files_correction_reason] ADD [request_correction_date] DATETIME NULL;
+alter table [wifi4eudb].[dbo].[APPLICANTLISTITEM] ADD [SUPPORTINGDOCUMENTS] BIT DEFAULT(0);
+
 -- -----------------------------------------------------
 -- Table `dbo`.`voucher_assignments`
 -- -----------------------------------------------------
@@ -596,3 +599,112 @@ CREATE TABLE dbo.voucher_simulations
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+
+-- -----------------------------------------------------
+-- Table `dbo`.`application_invalidate_reason`
+-- -----------------------------------------------------
+create table application_invalidate_reason(
+	[id] int identity NOT NULL,
+	[application_id] int NOT NULL,
+	[reason] int NOT NULL
+	PRIMARY KEY ([id]),
+	CONSTRAINT [fk_invalidate_reason_application]
+	FOREIGN KEY ([application_id])
+	REFERENCES dbo.applications ([id])
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
+
+-- -----------------------------------------------------
+-- Table `dbo`.`application_comment`
+-- -----------------------------------------------------
+create table application_comment(
+	[id] int identity NOT NULL,
+  [user_id] int NOT NULL,
+	[application_id] int NOT NULL,
+	[comment] NVARCHAR(256) NOT NULL,
+  [date_posted] bigint NOT NULL,
+	PRIMARY KEY ([id]),
+	CONSTRAINT [fk_application_comment_application]
+	FOREIGN KEY ([application_id])
+	REFERENCES dbo.applications ([id])
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+  CONSTRAINT [fk_application_comment_user]
+  FOREIGN KEY ([user_id])
+  REFERENCES dbo.users ([id])
+);
+
+-- -----------------------------------------------------
+-- Table `dbo`.`municipalities_abac`
+-- -----------------------------------------------------
+CREATE TABLE [dbo].[municipalities_abac](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[euRank] [int] NOT NULL,
+	[countryRank] [int] NULL,
+	[countryName] [varchar](255) NULL,
+	[municipalityName] [varchar](255) NULL,
+	[issue] [varchar](255) NULL,
+	[numberOfRegistrations] [int] NULL,
+	[abacReference] [varchar](255) NULL,
+	[abacStandarName] [varchar](255) NULL,
+	[municipality] [int] NOT NULL
+) ON [PRIMARY]
+
+ -----------------------------------------------------
+ --Table `dbo`.`global_commitment`
+ -----------------------------------------------------
+CREATE TABLE [dbo].[global_commitment](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[call] [int] NOT NULL,
+	[globalCommitment] [varchar](255) NULL,
+	[ammount] [varchar](255) NULL,
+	[priority] [int] NOT NULL
+) ON [PRIMARY]
+
+CREATE TABLE [dbo].[VALIDATED_LEF] (
+  [idLef] [int] NOT NULL,
+  [stat] [varchar](255) NULL
+) ON [PRIMARY]
+
+CREATE TABLE [dbo].[VALIDATED_BC] (
+  [idBc] [int] NOT NULL,
+  [stat] [varchar](255) NULL
+) ON [PRIMARY]
+
+INSERT INTO dbo.VALIDATED_LEF (idLef, dbo.VALIDATED_LEF.stat) VALUES (1, '(mod/0=0)');
+
+INSERT INTO dbo.VALIDATED_BC (idBc, dbo.VALIDATED_BC.stat) VALUES (1, '(mod/0=0)');
+
+-- -----------------------------------------------------
+-- Table `dbo`.`beneficiary_information`
+-- -----------------------------------------------------
+--CREATE TABLE [dbo].[beneficiary_information](
+--	[id] [int] IDENTITY(1,1) NOT NULL,
+--	[euRank] [int] NOT NULL,
+--	[countryRank] [int] NULL,
+--	[countryName] [varchar](255) NULL,
+--	[municipalityName] [varchar](255) NULL,
+--	[issue] [varchar](255) NULL,
+--	[numberOfRegistrations] [int] NULL,
+--	[abacReference] [varchar](255) NULL,
+--	[abacStandarName] [varchar](255) NULL,
+--	[municipality] [int] NOT NULL
+--) ON [PRIMARY]
+
+
+-- -----------------------------------------------------
+-- Table `dbo`.`budgetary_commitment`
+-- -----------------------------------------------------
+--CREATE TABLE [dbo].[budgetary_commitment](
+--	[id] [int] IDENTITY(1,1) NOT NULL,
+--	[euRank] [int] NOT NULL,
+--	[countryRank] [int] NULL,
+--	[countryName] [varchar](255) NULL,
+--	[municipalityName] [varchar](255) NULL,
+--	[issue] [varchar](255) NULL,
+--	[numberOfRegistrations] [int] NULL,
+--	[abacReference] [varchar](255) NULL,
+--	[abacStandarName] [varchar](255) NULL,
+--	[municipality] [int] NOT NULL
+--) ON [PRIMARY]

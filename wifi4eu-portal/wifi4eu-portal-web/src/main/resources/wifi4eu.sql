@@ -631,3 +631,34 @@ CREATE TABLE dbo.correction_requests_emails
   [button_pressed_counter]  INT NULL,
   PRIMARY KEY ([id])
 );
+
+-- -----------------------------------------------------
+-- Table `dbo`.`application_invalidate_reason`
+-- -----------------------------------------------------
+create table application_invalidate_reason(
+	[id] int identity NOT NULL,
+	[application_id] int NOT NULL,
+	[reason] int NOT NULL
+	PRIMARY KEY ([id]),
+	CONSTRAINT [fk_invalidate_reason_application]
+	FOREIGN KEY ([application_id])
+	REFERENCES dbo.applications ([id])
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+);
+
+-- -----------------------------------------------------
+-- Table `dbo`.`supplier_users`
+-- -----------------------------------------------------
+
+CREATE TABLE [wifi4eu].[dbo].[supplier_users] (
+  id             INTEGER       NOT NULL IDENTITY(1,1),
+  user_id        INTEGER       NOT NULL,
+  supplier_id    INTEGER       NOT NULL,
+  main           INTEGER       NOT NULL,
+  status         INTEGER       NOT NULL,
+  creation_date  TIMESTAMP     NOT NULL,
+  email          VARCHAR(100)  NOT NULL,
+
+  PRIMARY KEY ([id])
+);

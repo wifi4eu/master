@@ -23,6 +23,7 @@ import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierListItemRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -49,6 +50,9 @@ public class SupplierService {
     SuppliedRegionMapper suppliedRegionMapper;
 
     @Autowired
+    SupplierUserRepository supplierUserRepository;
+
+    @Autowired
     SuppliedRegionRepository suppliedRegionRepository;
 
     @Autowired
@@ -65,63 +69,6 @@ public class SupplierService {
 
     public SupplierDTO getSupplierById(int supplierId) {
         return supplierMapper.toDTO(supplierRepository.findOne(supplierId));
-    }
-
-
-    @Transactional
-    public SupplierDTO createSupplier(SupplierDTO supplierDTO) throws Exception {
-        SupplierDTO finalSupplier = new SupplierDTO();
-        finalSupplier.setUserId(supplierDTO.getUserId());
-        finalSupplier.setName(supplierDTO.getName());
-        finalSupplier.setAddress(supplierDTO.getAddress());
-        finalSupplier.setVat(supplierDTO.getVat());
-        finalSupplier.setBic(supplierDTO.getBic());
-        finalSupplier.setAccountNumber(supplierDTO.getAccountNumber());
-        if (supplierDTO.getWebsite() != null) {
-            if (!supplierDTO.getWebsite().trim().isEmpty()) {
-                finalSupplier.setWebsite(supplierDTO.getWebsite());
-            } else {
-                finalSupplier.setWebsite(null);
-            }
-        } else {
-            finalSupplier.setWebsite(null);
-        }
-        if (supplierDTO.getLogo() != null) {
-            byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(supplierDTO.getLogo()));
-            String logoMimeType = LegalFilesService.getMimeType(supplierDTO.getLogo());
-            if (logoByteArray.length > 2560000) {
-                throw new Exception("File size cannot bet greater than 2.5 MB.");
-            } else if (!logoMimeType.equals("image/png") && !logoMimeType.equals("image/jpg") && !logoMimeType.equals("image/jpeg")) {
-                throw new Exception("File must have a valid extension.");
-            } else {
-                finalSupplier.setLogo(supplierDTO.getLogo());
-            }
-        }
-        finalSupplier.setContactName(supplierDTO.getContactName());
-        finalSupplier.setContactSurname(supplierDTO.getContactSurname());
-        finalSupplier.setContactEmail(supplierDTO.getContactEmail());
-        finalSupplier.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
-        finalSupplier.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
-        List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
-        List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
-        finalSupplier.setSuppliedRegions(null);
-        finalSupplier = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(finalSupplier)));
-        for (SuppliedRegionDTO region : originalRegions) {
-            region.setSupplierId(finalSupplier.getId());
-            correctRegions.add(region);
-        }
-        finalSupplier.setSuppliedRegions(correctRegions);
-        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(finalSupplier)));
-    }
-
-
-    @Transactional
-    public SupplierDTO updateContactDetails(SupplierDTO supplierDTO, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber) {
-        supplierDTO.setContactName(contactName);
-        supplierDTO.setContactSurname(contactSurname);
-        supplierDTO.setContactPhonePrefix(contactPhonePrefix);
-        supplierDTO.setContactPhoneNumber(contactPhoneNumber);
-        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
     }
 
     @Transactional
@@ -151,7 +98,9 @@ public class SupplierService {
         //TODO: change to a soft delete
         SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
         if (supplierDTO != null) {
+            supplierUserRepository.deleteBySupplierId((long) supplierId);
             supplierRepository.delete(supplierMapper.toEntity(supplierDTO));
+
             return supplierDTO;
         } else {
             return null;
@@ -162,37 +111,8 @@ public class SupplierService {
         return suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findAll()));
     }
 
-    @Transactional
-    public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
-        UserDTO userDTO;
-        SupplierValidator.validateSupplier(supplierDTO);
-        UserContext userContext = UserHolder.getUser();
-        if (userContext != null) {
-            // with ECAS
-            userDTO = userService.getUserByUserContext(userContext);
-        } else {
-            // without ECAS (only testing purpose)
-            userDTO = new UserDTO();
-            String password = "12345678";
-            userDTO.setPassword(password);
-        }
-
-        userDTO.setName(supplierDTO.getContactName());
-        userDTO.setSurname(supplierDTO.getContactSurname());
-        userDTO.setEmail(supplierDTO.getContactEmail());
-        userDTO.setCreateDate(new Date().getTime());
-        userDTO.setType(1);
-        userDTO.setVerified(false);
-        userDTO.setLang(supplierDTO.getLang());
-        userDTO = userService.saveUserChanges(userDTO);
-        userService.sendActivateAccountMail(userDTO);
-        supplierDTO.setUserId(userDTO.getId());
-        supplierDTO = createSupplier(supplierDTO);
-        return supplierDTO;
-    }
-
     public SupplierDTO getSupplierByUserId(int userId) {
-        return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
+        return supplierMapper.toDTO(supplierRepository.getByUserId(userId));
     }
 
     public List<SupplierDTO> getSuppliersByVat(String vat) {
@@ -216,7 +136,7 @@ public class SupplierService {
     public boolean requestLegalDocuments(int supplierId) {
         SupplierDTO supplier = getSupplierById(supplierId);
         if (supplier != null) {
-            UserDTO user = userService.getUserById(supplier.getUserId());
+            UserDTO user = userService.getUserById(getUserIdFromSupplier(supplier.getId()));
             if (user != null) {
                 Locale locale = new Locale(UserConstants.DEFAULT_LANG);
                 if (user.getLang() != null) {
@@ -245,7 +165,7 @@ public class SupplierService {
     public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) {
         supplierDTO.setStatus(1);
         supplierDTO = updateSupplier(supplierDTO);
-        UserDTO user = userService.getUserById(supplierDTO.getUserId());
+        UserDTO user = userService.getUserById( getUserIdFromSupplier(supplierDTO.getId()));
         if (user != null) {
             Locale locale = new Locale(UserConstants.DEFAULT_LANG);
             if (user.getLang() != null) {
@@ -325,5 +245,13 @@ public class SupplierService {
             return supplierRepository.findSuppliersByCountryCode(countryCode, pageable);
         }
         return supplierRepository.findSuppliersByRegion(regionId, pageable);
+    }
+
+    public int getUserIdFromSupplier(int supplierId){
+        return supplierUserRepository.findUserIdBySupplierId(supplierId);
+    }
+
+    private boolean checkHasNoNotBeingRegisteredBefore(String userEmail, Integer supplierId){
+        return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
     }
 }

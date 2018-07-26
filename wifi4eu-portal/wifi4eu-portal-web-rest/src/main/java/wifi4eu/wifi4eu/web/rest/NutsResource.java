@@ -24,13 +24,11 @@ import java.util.List;
 @Api(value = "/nuts", description = "Nuts object REST API services")
 @RequestMapping("nuts")
 public class NutsResource {
+
     @Autowired
     NutsService nutsService;
 
     Logger _log = LogManager.getLogger(NutsResource.class);
-
-    @Autowired
-    UserService userService;
 
     @ApiOperation(value = "Get all nuts")
     @ApiImplicitParams({
@@ -39,10 +37,6 @@ public class NutsResource {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> allNuts() {
-        UserContext user = UserHolder.getUser();
-        if (user == null || userService.getUserByUserContext(user) == null) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
         return nutsService.getAllNuts();
     }
 
@@ -53,10 +47,6 @@ public class NutsResource {
     @RequestMapping(value = "/{nutsId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public NutsDTO getNutsById(@PathVariable("nutsId") final Integer nutsId) {
-        UserContext user = UserHolder.getUser();
-        if (user == null || userService.getUserByUserContext(user) == null) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
         return nutsService.getNutsById(nutsId);
     }
 
@@ -67,10 +57,6 @@ public class NutsResource {
     @RequestMapping(value = "/code/{code}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public NutsDTO getNutsByCode(@PathVariable("code") final String code) {
-        UserContext user = UserHolder.getUser();
-        if (user == null || userService.getUserByUserContext(user) == null) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
         return nutsService.getNutsByCode(code);
     }
 
@@ -81,10 +67,6 @@ public class NutsResource {
     @RequestMapping(value = "/level/{level}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> getNutsByLevel(@PathVariable("level") final Integer level) {
-        UserContext user = UserHolder.getUser();
-        if (user == null || userService.getUserByUserContext(user) == null) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
         return nutsService.getNutsByLevel(level);
     }
 
@@ -95,10 +77,6 @@ public class NutsResource {
     @RequestMapping(value = "/countryCode/{countryCode}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> getNutsByCountryCode(@PathVariable("countryCode") final String countryCode) {
-        UserContext user = UserHolder.getUser();
-        if (user == null || userService.getUserByUserContext(user) == null) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
         return nutsService.getNutsByCountryCode(countryCode);
     }
 
@@ -109,10 +87,6 @@ public class NutsResource {
     @RequestMapping(value = "/countryCode/{countryCode}/level/{level}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> getNutsByCountryCodeAndLevelOrderByLabelAsc(@PathVariable("countryCode") final String countryCode, @PathVariable("level") final Integer level) {
-        UserContext user = UserHolder.getUser();
-        if (user == null || userService.getUserByUserContext(user) == null) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
         return nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode, level);
     }
 }

@@ -1,0 +1,32 @@
+{
+  "name": "angular-app-root",
+  "version": "0.1.0",
+  "license": "EUPL-1.1",
+  "scripts": {
+    "ng": "ng",
+    "build": "ng build",
+    "clean": "rimraf out-tsc dist",
+    "start": "ng serve --open=true",
+    "start-proxy": "ng serve --proxy-config proxy.conf.json --open=true",
+    "start-mock-server": "json-server --watch ./src/mock/db.js --routes ./src/mock/routes.json",
+    "start-mock-proxy": "parallelshell \"ng serve --proxy-config proxy-mock.conf.json --open=true --preserve-symlinks=true\" \"npm run start-mock-server\"",
+    "test": "ng test --watch=false --single-run",
+    "lint": "npm run tslint && npm run stylelint \"src/**/*.scss\"",
+    "e2e": "ng e2e",
+    "prebuild": "npm run lint && npm test",
+    "stylelint": "stylelint",
+    "tslint": "tslint --exclude \"src/libs/**/*.*\" \"src/**/*.ts\""
+  },
+  "private": true,
+  "dependencies": {
+    "@eui/deps-base": "2.4.7",
+    "angular-2-local-storage": "1.0.1",
+    "ngx-cookie-service": "^1.0.10",
+    "primeng": "^4.3.0"
+  },
+  "devDependencies": {
+    "@angular/cli": "1.6.8",
+    "karma": "1.7.1",
+    "typescript": "2.3.4"
+  }
+}

@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import {LocalStorageService} from "angular-2-local-storage";
 
 @Component({
-    selector: 'supplier-landing', templateUrl: 'supplier-landing.component.html', 
+    selector: 'supplier-landing', templateUrl: 'supplier-landing.component.html',
     styles: [`
       @media (max-width: 768px) {
         button.cancel-button, button.publish-button{

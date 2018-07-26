@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import java.util.Date;
+
 public class LegalFileCorrectionReasonDTO {
     private Integer id;
     private Integer registrationId;
@@ -7,17 +9,19 @@ public class LegalFileCorrectionReasonDTO {
     private Long uploadTime;
     private Boolean requestCorrection;
     private Integer correctionReason;
+    private Date requestCorrectionDate;
 
     public LegalFileCorrectionReasonDTO() {
     }
 
-    public LegalFileCorrectionReasonDTO(Integer id, Integer registrationId, Integer type, Long uploadTime, Boolean requestCorrection, Integer correctionReason) {
+    public LegalFileCorrectionReasonDTO(Integer id, Integer registrationId, Integer type, Long uploadTime, Boolean requestCorrection, Integer correctionReason, Date requestCorrectionDate) {
         this.id = id;
         this.registrationId = registrationId;
         this.type = type;
         this.uploadTime = uploadTime;
         this.requestCorrection = requestCorrection;
         this.correctionReason = correctionReason;
+        this.requestCorrectionDate = requestCorrectionDate;
     }
 
     public Integer getId() {
@@ -66,5 +70,13 @@ public class LegalFileCorrectionReasonDTO {
 
     public void setCorrectionReason(Integer correctionReason) {
         this.correctionReason = correctionReason;
+    }
+
+    public Date getRequestCorrectionDate() {
+        return requestCorrectionDate;
+    }
+
+    public void setRequestCorrectionDate(Date requestCorrectionDate) {
+        this.requestCorrectionDate = requestCorrectionDate;
     }
 }

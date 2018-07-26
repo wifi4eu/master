@@ -1,29 +1,35 @@
-import {Component} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {UserApi} from "../../shared/swagger/api/UserApi";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {SharedService} from "../../shared/shared.service";
-import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
-import {UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
-import {MayorApi} from "../../shared/swagger/api/MayorApi";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
-import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
-import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
+import { Component } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { UserApi } from "../../shared/swagger/api/UserApi";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
+import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { LocalStorageService } from "angular-2-local-storage";
+import { SharedService } from "../../shared/shared.service";
+import { UserThreadsApi } from "../../shared/swagger/api/UserThreadsApi";
+import { UserThreadsDTOBase } from "../../shared/swagger/model/UserThreadsDTO";
+import { MayorApi } from "../../shared/swagger/api/MayorApi";
+import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
+import { ThreadApi } from "../../shared/swagger/api/ThreadApi";
+import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
+
+// Languages functionality
+import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import { UserDetailsService } from "../../core/services/user-details.service";
 
 @Component({
     selector: 'beneficiary-profile',
     templateUrl: 'profile.component.html',
-    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi]
+    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi, BeneficiaryApi]
 })
 
 export class BeneficiaryProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
+    private users: UserDTOBase[] = [];
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
     private editedUser: UserDTOBase = new UserDTOBase();
@@ -33,19 +39,28 @@ export class BeneficiaryProfileComponent {
     private displayUser: boolean = false;
     private displayMunicipality: boolean = false;
     private displayMayor: boolean = false;
+    private displayLanguageModal: boolean = false;
     private submittingData = false;
     private isRegisterHold: boolean = false;
     private withdrawingRegistration: boolean = false;
     private withdrawnSuccess: boolean = false;
     private threadId: number;
-    private hasDiscussion: boolean = false;
+    private hasDiscussion: boolean[] = [];
     private discussionThreads: ThreadDTOBase[] = [];
-    private allDocumentsUploaded: boolean [] = [];
+    private allDocumentsUploaded: boolean[] = [];
     private documentUploaded: boolean = false;
     private oneRegsitration: boolean = false;
     private oneRegistrationNumber: number = 0;
+    private userThreads: ThreadDTOBase [] = [];
+    private threadsByUser : UserThreadsDTOBase[] = [];
 
-    constructor(private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
+    private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
+    protected modalIsOpen: boolean = false;
+    protected languageRows: UxLanguage [] [];
+    protected languages: UxLanguage [];
+
+    constructor(private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -67,6 +82,9 @@ export class BeneficiaryProfileComponent {
                                         this.oneRegsitration = false;
                                     }
                                     for (let registration of registrations) {
+                                        if (registration.municipalityId == 0){
+                                            continue;
+                                        }
                                         this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                                         this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                                         this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
@@ -77,6 +95,11 @@ export class BeneficiaryProfileComponent {
                                                         this.mayors.push(mayor);
                                                     }
                                                 );
+                                            }
+                                        );
+                                        this.userApi.getUsersFromRegistration(registration.id).subscribe(
+                                            (users: UserDTOBase[]) => {
+                                                    this.users = users;
                                             }
                                         );
                                     }
@@ -98,14 +121,16 @@ export class BeneficiaryProfileComponent {
                         this.threadApi.getThreadById(utByUser.threadId).subscribe(
                             (thread: ThreadDTOBase) => {
                                 if (thread != null) {
+                                    this.userThreads.push(thread);
                                     this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
                                         (utsByThread: UserThreadsDTOBase[]) => {
                                             this.discussionThreads.push(thread);
                                             if (utsByThread.length > 1) {
-                                                for (let utByThread of utsByThread) {
-                                                    if (utByThread.userId != this.user.id && !this.hasDiscussion) {
-                                                        this.threadId = thread.id;
-                                                        this.hasDiscussion = true;
+                                                 for (let i = 0; i < utsByThread.length; ++i) {
+                                                    if (utsByThread[i].userId != this.user.id) {
+                                                        this.threadsByUser.push(utsByThread[i]);
+                                                        this.hasDiscussion[i] = true;
+                                                        
                                                     }
                                                 }
                                             }
@@ -123,6 +148,8 @@ export class BeneficiaryProfileComponent {
             this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
+
+        this.loadLanguages();
     }
 
     private displayModal(name: string, index?: number) {
@@ -211,6 +238,7 @@ export class BeneficiaryProfileComponent {
         this.displayUser = false;
         this.displayMunicipality = false;
         this.displayMayor = false;
+        this.displayLanguageModal = false;
     }
 
     private deleteRegistration() {
@@ -223,6 +251,10 @@ export class BeneficiaryProfileComponent {
                         this.sharedService.logout();
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
+                    } else {
+                        this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
+                        this.withdrawingRegistration = false;
+                        this.withdrawnSuccess = true;
                     }
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
@@ -233,16 +265,81 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-    private goToDiscussion() {
-        this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
+    private goToDiscussion(index) {
+
+        for(let i = 0; i < this.userThreads.length; i++){
+            if(this.userThreads[i].title == this.municipalities[index].name){
+                this.threadId = this.discussionThreads[i].id;
+                this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
+           }
+        }
     }
 
     private goToUploadDocuments() {
-        this.router.navigate(['../additional-info/', this.oneRegistrationNumber], {relativeTo: this.route});
+        this.router.navigate(['../additional-info/', this.oneRegistrationNumber], { relativeTo: this.route });
     }
 
     private goToapplyForVOucher() {
         this.router.navigateByUrl('/beneficiary-portal/voucher');
     }
 
+    /* Language functionalities */
+    private loadLanguages() {
+        if (this.newLanguageArray != null) {
+            let codes: string [] = this.newLanguageArray.split(/[ ,]+/g);
+            this.languages = UxEuLanguages.getLanguages(codes);
+        } else {
+            this.languages = UxEuLanguages.getLanguages();
+        }
+        this.languageRows = this.prepareLanguageRows();
+
+        const userLang = this.languages.find(language => language.code === this.user.lang);
+        this.selectedLanguage = userLang;
+    }
+
+    private prepareLanguageRows(): UxLanguage [] [] {
+        let rows: UxLanguage [] [] = [];
+        let row: UxLanguage [] = [];
+        for (let i = 0; i < this.languages.length; i++) {
+            if (i % 4 == 0) {
+                if (row.length > 0) {
+                    rows.push(row);
+                    row = [];
+                }
+            }
+            row.push(this.languages[i]);
+        }
+
+        if (row.length > 0) {
+            rows.push(row);
+        }
+
+        return rows;
+    }
+
+    /* Language modal */
+    private changeLanguage() {
+        this.displayLanguageModal = true;
+       }
+
+    private selectLanguage(lang) {
+        this.userApi.updateLanguage(lang).subscribe(
+            (data: ResponseDTOBase) => {
+                if (data.success) {
+                    this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                } else {
+                    this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                }
+            }, error => {
+                this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+            }
+        );
+        const newSelectedLang = this.languages.find(language => language.code === lang);
+        this.selectedLanguage = newSelectedLang;
+        this.displayLanguageModal = false;
+    }
+
+    private goToEditProfile() {
+            this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
+        }
 }

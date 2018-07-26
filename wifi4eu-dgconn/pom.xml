@@ -19,6 +19,7 @@
     
     <properties>
 		<app.context.root>${dgconn.context.name}</app.context.root>
+		<apache.poi.version>3.17</apache.poi.version>
     </properties>
     
 
@@ -28,7 +29,6 @@
         <module>wifi4eu-dgconn-web-rest-swagger</module>
         <module>wifi4eu-dgconn-web-rest</module>
         <module>wifi4eu-dgconn-web</module>
-        <module>wifi4eu-dgconn-ear</module>
     </modules>
 
 </project>

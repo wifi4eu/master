@@ -203,6 +203,12 @@ export class {{classname}} implements I{{classname}} {
         }
 {{/formParams}}
 
+		// WIFIFOREU-2498 JSON -> CSV - check the response type
+		let responseType = ResponseContentType.Json;
+		if (("{{path}}".indexOf('Excel') != -1) || ("{{path}}".indexOf('exportBeneficiary') != -1) || ("{{path}}".indexOf('exportBudgetary') != -1)) {
+			responseType = ResponseContentType.Blob;
+		}
+		
         let requestOptions: RequestOptionsArgs = new RequestOptions({
             method: {{httpMethod}},
             headers: headers,
@@ -213,7 +219,7 @@ export class {{classname}} implements I{{classname}} {
             body: formParams.toString(),
 {{/hasFormParams}}
             search: queryParameters,
-            responseType: "{{path}}".indexOf('Excel') == -1 ? ResponseContentType.Json : ResponseContentType.Blob
+            responseType: responseType
         });
 
         return this.http.request(path, requestOptions);

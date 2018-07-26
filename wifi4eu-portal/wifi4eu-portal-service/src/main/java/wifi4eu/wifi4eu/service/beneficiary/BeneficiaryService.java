@@ -12,9 +12,15 @@ import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
+import wifi4eu.wifi4eu.repository.call.CallRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -71,6 +77,21 @@ public class BeneficiaryService {
     @Autowired
     MailService mailService;
 
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    CallRepository callRepository;
+
+    @Autowired
+    ApplicationService applicationService;
+
+    @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
+
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
     private List<Integer> municipalitiesLauIdToHold = new ArrayList<>();
@@ -99,6 +120,7 @@ public class BeneficiaryService {
             user.setAddressNum(beneficiaryDTO.getUser().getAddressNum());
             user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
             user.setEmail(beneficiaryDTO.getUser().getEmail());
+            user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
             user.setType(3);
             isEcasUser = true;
         }
@@ -119,6 +141,56 @@ public class BeneficiaryService {
 
         /* send Activate Account Email*/
         userService.sendActivateAccountMail(resUser);
+
+        /*send request for documents email*/
+        registrationService.requestLegalDocuments(registrations.get(0).getId());
+
+        /* check Duplicates and crate Threads if apply */
+        checkDuplicates(resUser, resMunicipalities);
+
+        return registrations;
+    }
+
+    @Transactional
+    public List<RegistrationDTO> submitNewMunicipalities(BeneficiaryDTO beneficiaryDTO, String ip, HttpServletRequest request) throws Exception {
+        /* Validate municipalities */
+        for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
+            MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
+                    nutsService.getNutsByLevel(0));
+        }
+
+        /* Get user from ECAS */
+        UserDTO user = new UserDTO();
+        UserContext userContext = UserHolder.getUser();
+        boolean isEcasUser = false;
+
+        if (userContext != null) {
+            /* user from ECAS */
+            user = userService.getUserByUserContext(userContext);
+            user.setName(beneficiaryDTO.getUser().getName());
+            user.setSurname(beneficiaryDTO.getUser().getSurname());
+            user.setAddress(beneficiaryDTO.getUser().getAddress());
+            user.setAddressNum(beneficiaryDTO.getUser().getAddressNum());
+            user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
+            user.setEmail(beneficiaryDTO.getUser().getEmail());
+            user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
+            user.setType(3);
+            isEcasUser = true;
+        }
+
+        user.setCreateDate(new Date().getTime());
+        user.setLang(beneficiaryDTO.getLang());
+
+        UserDTO resUser = new UserDTO();
+        if (isEcasUser) {
+            resUser = userService.saveUserChanges(user);
+        }
+
+        /* create municipalities and check duplicates */
+        List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
+
+        /* create registrations between user and municipality */
+        List<RegistrationDTO> registrations = getRegistrationsList(resUser, beneficiaryDTO, resMunicipalities, ip, request);
 
         /*send request for documents email*/
         registrationService.requestLegalDocuments(registrations.get(0).getId());
@@ -175,7 +247,7 @@ public class BeneficiaryService {
                 String subject = bundle.getString("mail.discussionMunicipality.subject");
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userDTO.getEcasEmail());
                 }
 
@@ -186,8 +258,8 @@ public class BeneficiaryService {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
                         }
-                        UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
-                        if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                        UserDTO userRegistration = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
+                        if (userRegistration == null || userRegistration.getId() == userDTO.getId()) {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
                         }
@@ -196,7 +268,7 @@ public class BeneficiaryService {
                         subject = bundle.getString("mail.discussionMunicipality.subject");
                         msgBody = bundle.getString("mail.discussionMunicipality.body");
                         if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
                         }
                     }
@@ -209,8 +281,8 @@ public class BeneficiaryService {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
                         }
-                        UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
-                        if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                        UserDTO userRegistration = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
+                        if (userRegistration == null || userRegistration.getId() == userDTO.getId()) {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
                         }
@@ -219,7 +291,7 @@ public class BeneficiaryService {
                         subject = bundle.getString("mail.discussionMunicipality.subject");
                         msgBody = bundle.getString("mail.discussionMunicipality.body");
                         if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
                         }
                     }
@@ -242,7 +314,7 @@ public class BeneficiaryService {
                         RegistrationDTO conflictRegistrationDTO = registrationService.getRegistrationByMunicipalityId(conflictMunicipality.getId());
                         if (conflictRegistrationDTO != null) {
                             UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
-                            userThreadsDTO.setUserId(conflictRegistrationDTO.getUserId());
+                            userThreadsDTO.setUserId(userRepository.findMainUserFromRegistration(conflictRegistrationDTO.getId()).getId());
                             userThreadsDTO.setThreadId(threadDTO.getId());
                             userThreadsService.createUserThreads(userThreadsDTO);
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - User thread " + threadDTO.getId() + " added");
@@ -268,9 +340,10 @@ public class BeneficiaryService {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         RegistrationDTO registration = new RegistrationDTO();
+        RegistrationUsers registrationUsers = new RegistrationUsers();
         registration.setRole(role);
         registration.setMunicipalityId(municipality.getId());
-        registration.setUserId(userId);
+
         registration.setStatus(generateRegistrationStatus(municipality));
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - New registration generated");
         return registration;
@@ -303,14 +376,14 @@ public class BeneficiaryService {
      * The update registration status to hold
      */
     private void updateRegistrationStatusToHold(List<MunicipalityDTO> municipalitiesWithSameLau) {
-        final String LOG_STATUS_2_HOLD = "Registraion Id {0} updated to the status HOLD";
+        final String LOG_STATUS_2_HOLD = "Registration Id {0} updated to the status HOLD";
 
-        /* put all the registrations for a given municiaplity on Hold*/
+        /* put all the registrations for a given municipality on Hold*/
         for (MunicipalityDTO aMunicipality : municipalitiesWithSameLau) {
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(aMunicipality.getId());
             if (registration != null) {
                 registration.setStatus(RegistrationStatus.HOLD.getValue());
-                registrationService.createRegistration(registration);
+                registrationService.saveRegistration(registration);
                 _log.info(MessageFormat.format(LOG_STATUS_2_HOLD, registration.getId()));
             }
         }
@@ -526,5 +599,30 @@ public class BeneficiaryService {
         }
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - CSV generated");
         return sb.toString();
+    }
+
+    public UserRegistrationDTO sendEmailToContacts(UserRegistrationDTO userRegistrationDTO) {
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+
+        UserContext userContext = UserHolder.getUser();
+        UserDTO user = userService.getUserByUserContext(userContext);
+        String userName = user.getName() + ' ' + user.getSurname();
+
+        MunicipalityDTO municipality = municipalityService.getMunicipalityById(userRegistrationDTO.getMunicipalityId());
+        String municipalityName = municipality.getName();
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
+        String msgBody = bundle.getString("mail.sendUserEmail.beneficiary.body");
+        String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
+        msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, userRegistrationDTO.getEmail());
+        if (!userService.isLocalHost()) {
+            mailService.sendEmail(userRegistrationDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            userService.createNewRegistrationUser(userRegistrationDTO);
+        }
+        return userRegistrationDTO;
+    }
+
+    public boolean checkContactEmailWithMunicipality(String email, Integer municipalityId){
+        return registrationUsersRepository.findByContactEmailAndMunicipality(email, municipalityId) != null;
     }
 }
