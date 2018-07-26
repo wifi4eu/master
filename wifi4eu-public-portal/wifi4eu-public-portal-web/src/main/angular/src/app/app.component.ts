@@ -103,6 +103,7 @@ export class AppComponent {
         this.localStorage.set('lang', language.code);
         this.updateMenuTranslations();
         this.updateFooterDate();
+        this.sharedService.changeLanguage();
     }
 
     updateMenuLink() {

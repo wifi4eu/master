@@ -9,6 +9,8 @@ import {InstallationDetailsComponent} from "./details-installation/installation-
 import {AccessPointListComponent} from "./access-point-list/access-point-list.component";
 import {AccessPointDetailsComponent} from "./access-point-details/access-point-details.component";
 import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-profile.component";
+import { GrantAgreementComponent } from "./+grant-agreement/grant-agreement.component";
+import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agreement/sign-grant-agreement.component";
 
 
 @NgModule({
@@ -43,6 +45,12 @@ import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-pr
         }, {
             path: 'profile/edit-profile',
             component: BeneficiaryEditProfileComponent
+        }, {
+            path: 'my-voucher/grant-agreement',
+            component: GrantAgreementComponent,
+        }, {
+            path: 'my-voucher/grant-agreement/sign-grant-agreement',
+            component: SignGrantAgreementComponent,
         }
         
         

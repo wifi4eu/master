@@ -7,15 +7,23 @@ import wifi4eu.wifi4eu.entity.application.Application;
 
 import java.util.List;
 
-public interface ApplicationRepository extends CrudRepository<Application,Integer> {
+public interface ApplicationRepository extends CrudRepository<Application, Integer> {
     Iterable<Application> findBySupplierId(Integer supplierId);
+
     Application findByCallIdAndRegistrationId(Integer callId, Integer registrationId);
+
     Iterable<Application> findByRegistrationId(Integer registrationId);
+
+    Application findTopByRegistrationIdOrderByDateDesc(Integer registrationId);
+
     Application findTopByRegistrationIdAndCallId(Integer registrationId, Integer callId);
 
     Iterable<Application> findByCallId(Integer callId);
+
     Iterable<Application> findByCallIdOrderByIdAsc(Integer callId);
+
     List<Application> findByCallIdOrderByDateAsc(Integer callId);
+
     List<Application> findByCallIdAndStatus(Integer callId, Integer status);
 
     @Query(value = "SELECT ap.* FROM applications ap INNER JOIN registrations r ON ap.registration = r.id WHERE r._status != 1 AND ap.call_id = ?1", nativeQuery = true)
