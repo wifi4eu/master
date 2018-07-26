@@ -1,4 +1,88 @@
-<div class="container">
+<div class="container labelModal rowMarginBottom">
 
-    <button class="btn btn-primary" (click)="goToSignGrantAgreement()" >{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
+    <!-- Go back and info Status message -->
+    <div class="row">
+        <div class="col-sm-2 col-md-2 col-lg-2">
+            <a class="link-label" routerLink="/beneficiary-portal/my-voucher" routerLinkActive="active">
+                <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+            </a>
+        </div>
+        
+        <div class="col-sm-9 col-md-10 col-lg-9 offset-sm-1 offset-md-0 offset-lg-1">
+            <div class="alert alert-info text-uppercase voucherModal">
+                <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.grantAgreement.authorisation.status' | translate }}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Title and explanation text -->
+    <div class="row">
+        <h5 class="beneficiaryMayor counterText" >{{ 'benefPortal.grantAgreement.authorisation.title' | translate }}</h5>
+        <p>{{ 'benefPortal.grantAgreement.authorisation.text1' | translate }}</p>
+    </div>
+    
+    <p-dataTable [value]="monsterArray">
+        <p-column field="type" header="{{ 'benefPortal.grantAgreement.authorisation.datatable.type' | translate }}">
+            <ng-template let-monster="rowData" pTemplate="body">
+                <div *ngIf="monster.type == 0">
+                    {{ 'suppRegistration.contact.person' | translate }}
+                </div>
+                <div *ngIf="monster.type == 1">
+                    {{ 'benefRegistration.registration.legalRepresentative' | translate }}
+                </div>
+            </ng-template>
+        </p-column>
+        <p-column field="name" header="{{ 'shared.name.label' | translate }}"></p-column>
+        <p-column field="surname" header="{{ 'shared.surname.label' | translate }}"></p-column>
+        <p-column field="email" header="{{ 'shared.email.label' | translate }}"></p-column>
+        <p-column field="euLogin" header="{{ 'benefPortal.grantAgreement.authorisation.datatable.euLogin' | translate }}">
+            <ng-template let-monster="rowData" pTemplate="body">
+                <div *ngIf="monster.euLogin == 0">
+                    <a class="link-label" href="">
+                        <i class="fas fa-plus-circle"></i>
+                        <span> {{ 'benefPortal.grantAgreement.authorisation.datatable.addAccount' | translate }}</span>
+                    </a>
+                </div>
+                <div *ngIf="monster.euLogin == 1">
+                    {{ 'shared.yes' | translate }}
+                </div>
+            </ng-template>
+        </p-column>
+        <p-column field="documents" header="{{ 'shared.supportingDocuments' | translate }}">
+            <ng-template let-monster="rowData" pTemplate="body">
+                <div *ngIf="monster.documents == 0">
+                    {{ 'shared.no' | translate }}
+                </div>
+                <div *ngIf="monster.documents == 1">
+                    {{ 'shared.yes' | translate }}
+                </div>
+            </ng-template>
+        </p-column>
+        <p-column field="authorised" header="{{ 'benefPortal.grantAgreement.authorisation.datatable.authorised' | translate }}">
+            <ng-template let-monster="rowData" pTemplate="body">
+                <div *ngIf="monster.authorised == 0">
+                    {{ 'shared.no' | translate }}
+                </div>
+                <div *ngIf="monster.authorised == 1 && monster.documents == 1">
+                    {{ 'benefPortal.grantAgreement.authorisation.datatable.waiting' | translate }}
+                </div>
+            </ng-template>
+        </p-column>
+        <p-column header="{{ 'benefPortal.myVoucher.datatable.action' | translate }}">
+            <ng-template pTemplate="body">
+                <div>
+                    <span><i class="fa fa-eye" aria-hidden="true"></i></span>
+                    <span>{{ 'dgConn.voucherAssignment.applicationStatus.view' | translate }}</span>
+                </div>
+            </ng-template>
+        </p-column>
+
+    </p-dataTable>
+    
+
+    <button class="btn btn-primary" (click)="goToSignGrantAgreement()" >
+        {{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}
+    </button>
+
+
 </div>
