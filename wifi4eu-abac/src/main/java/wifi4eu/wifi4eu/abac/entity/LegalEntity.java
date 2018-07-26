@@ -14,7 +14,13 @@ import java.util.List;
 				procedureName = "CREATE_LEF_IN_ABAC",
 				parameters = {
 						@StoredProcedureParameter(mode = ParameterMode.IN, name = "LEGALENTITYID", type = Long.class)
-				})
+				}),
+		@NamedStoredProcedureQuery(name = "UPDATE_LEF_STATUS_FROM_ABAC",
+				procedureName = "UPDATE_LEF_STATUS_FROM_ABAC",
+				parameters = {})
+				/*
+						@StoredProcedureParameter(mode = ParameterMode.OUT, name = "ROWS_AFFECTED", type = Long.class)
+				})*/
 })
 public class LegalEntity {
 	@Id
@@ -60,17 +66,8 @@ public class LegalEntity {
 	@Column(name = "signature_date", length = 20)
 	private Date signatureDate;
 
-	@OneToMany(
-			mappedBy = "legalEntity",
-			cascade = CascadeType.ALL,
-			orphanRemoval = true
-	)
-	private List<AbacRequest> abacRequestList;
-
 	public LegalEntity() {
 	}
-
-
 
 	public LegalEntity(Long id, Integer mid, String officialName, String city, String languageCode,
 					   String countryCode, String officialAddress, String officialAddressStrNo, String postalCode,
@@ -177,12 +174,20 @@ public class LegalEntity {
 		this.dateCreated = dateCreated;
 	}
 
-	public List<AbacRequest> getAbacRequestList() {
-		return abacRequestList;
+	public Date getDateUpdated() {
+		return dateUpdated;
 	}
 
-	public void setAbacRequestList(List<AbacRequest> abacRequestList) {
-		this.abacRequestList = abacRequestList;
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
+	}
+
+	public Date getSignatureDate() {
+		return signatureDate;
+	}
+
+	public void setSignatureDate(Date signatureDate) {
+		this.signatureDate = signatureDate;
 	}
 
 	@PrePersist

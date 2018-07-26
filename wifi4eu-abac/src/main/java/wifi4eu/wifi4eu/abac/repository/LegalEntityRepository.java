@@ -25,7 +25,8 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	@Procedure(name = "CREATE_LEF_IN_ABAC")
 	void createFinancialLegalEntity(@Param("LEGALENTITYID") Long legalEntityID);
 
-	@Procedure(name = "CREATE_LEF_IN_ABAC")
+	@Procedure(name = "UPDATE_LEF_STATUS_FROM_ABAC")
+	//void updateFinancialLegalEntitiesStatuses(@Param("ROWS_AFFECTED") Long rowsAffected);
 	void updateFinancialLegalEntitiesStatuses();
 
 	@Query(

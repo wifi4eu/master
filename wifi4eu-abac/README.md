@@ -73,6 +73,6 @@ Access to Weblogic Console, then to deployments. Click "Install" and select the 
 Select the option "Install this deployment as an application" and "Finish".
 
 You should be able to access the application using the following URL (default values):
-http://localhost:7001/wifi4eu-financial/
+http://localhost:7001/wifi4eu/
 
 
