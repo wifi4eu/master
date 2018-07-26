@@ -3,57 +3,33 @@ package wifi4eu.wifi4eu.abac.service;
 import java.io.IOException;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import wifi4eu.wifi4eu.abac.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.repository.DocumentRepository;
 import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
 import wifi4eu.wifi4eu.abac.utils.ParserCSV2Entity;
-
-import java.io.IOException;
-import java.util.List;
+import wifi4eu.wifi4eu.abac.utils.ParserCSV2LegalEntityMock;
 
 @Service
 public class LegalEntityService {
 
 	private final Logger log = LoggerFactory.getLogger(LegalEntityService.class);
+
+	@Autowired
 	private LegalEntityRepository legalEntityRepository;
+
+	@Autowired
+	private DocumentRepository documentRepository;
 
 	@Autowired
 	private AbacIntegrationService abacIntegrationService;
 
-	@Autowired
-	public LegalEntityService(LegalEntityRepository legalEntityrepository) {
-		this.legalEntityRepository = legalEntityrepository;
-	}
-
-	// @ Transactional
-	public void importLegalEntityFile(MultipartFile file) throws IOException {
-		log.info("importLegalEntityFile");
-
-		byte[] contentBytes = file.getBytes();
-
-		log.info("recovering list of items");
-		ParserCSV2Entity<LegalEntity> parser = new ParserCSV2Entity();
-		List<LegalEntity> items = parser.parseCSV2Entity(contentBytes, LegalEntity.class);
-
-		log.info("printing list of items");
-		for (LegalEntity legalEntity : items) {
-			// TODO jlopezri temporal assigment of a sample file
-			//Document sampleDocument = documentRepository.findById(Long.valueOf(0)).get();
-			//legalEntity.setSignatureFile(sampleDocument);
-			//log.info("Using sample document: " + sampleDocument.getId() + ":" + sampleDocument.getName());
-			//documentRepository.save(sampleDocument);
-			legalEntity.getAbacRequestList().clear();			
-			log.info("Item recovered: " + legalEntity.toString());
-			legalEntityRepository.save(legalEntity);
-		}
-
-		log.info("storing list of items");
+	public LegalEntityService() {
 	}
 
 	// @ Transactional
@@ -63,8 +39,12 @@ public class LegalEntityService {
 		byte[] contentBytes = content.getBytes();
 
 		log.info("recovering list of items");
-		ParserCSV2Entity<LegalEntity> parser = new ParserCSV2Entity();
-		List<LegalEntity> items = parser.parseCSV2Entity(contentBytes, LegalEntity.class);
+		// TODO jlopezri dirty hack to mock
+		//ParserCSV2Entity<LegalEntity> parser = new ParserCSV2Entity();
+		//List<LegalEntity> items = parser.parseCSV2Entity(contentBytes, LegalEntity.class);
+		log.info("mocked!");
+		ParserCSV2LegalEntityMock parser = new ParserCSV2LegalEntityMock();
+		List<LegalEntity> items = parser.parseCSV2Entity(contentBytes);
 
 		log.info("printing list of items");
 		for (LegalEntity legalEntity : items) {

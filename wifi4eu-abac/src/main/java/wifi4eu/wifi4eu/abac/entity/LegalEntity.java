@@ -239,22 +239,6 @@ public class LegalEntity {
 		this.registrationNumber = registrationNumber;
 	}
 
-	public Date getDateUpdated() {
-		return dateUpdated;
-	}
-
-	public void setDateUpdated(Date dateUpdated) {
-		this.dateUpdated = dateUpdated;
-	}
-
-	public Date getSignatureDate() {
-		return signatureDate;
-	}
-
-	public void setSignatureDate(Date signatureDate) {
-		this.signatureDate = signatureDate;
-	}
-
 	public String getUserImported() {
 		return userImported;
 	}

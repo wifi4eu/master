@@ -52,25 +52,28 @@ public final class ParserCSV2Entity<T> {
 					new InputStreamReader(new ByteArrayInputStream(inputCSV), StandardCharsets.UTF_8));
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] attributes = line.split(CHAR_SEPARATOR);
-				if (isColumnNames) {
-					columnNames = attributes;
-					isColumnNames = false;
-				} else {
-					T newInstance = t.newInstance();
-					Field[] fields = t.getDeclaredFields();
-					for (Field field : fields) {
-						for (int i = 0; i < columnNames.length; i++) {
-							String readValue = attributes[i];
-							if (readValue != null && !readValue.isEmpty()
-									&& field.getName().equalsIgnoreCase(columnNames[i])) {
-								field.setAccessible(true);
-								Object value = getValue(field, attributes[i]);
-								field.set(newInstance, value);
+
+				if (!line.trim().isEmpty()) {
+					String[] attributes = line.split(CHAR_SEPARATOR);
+					if (isColumnNames) {
+						columnNames = attributes;
+						isColumnNames = false;
+					} else {
+						T newInstance = t.newInstance();
+						Field[] fields = t.getDeclaredFields();
+						for (Field field : fields) {
+							for (int i = 0; i < columnNames.length; i++) {
+								String readValue = attributes[i];
+								if (readValue != null && !readValue.isEmpty()
+										&& field.getName().equalsIgnoreCase(columnNames[i])) {
+									field.setAccessible(true);
+									Object value = getValue(field, attributes[i]);
+									field.set(newInstance, value);
+								}
 							}
 						}
+						result.add(newInstance);
 					}
-					result.add(newInstance);
 				}
 			}
 		} catch (InstantiationException ex) {
