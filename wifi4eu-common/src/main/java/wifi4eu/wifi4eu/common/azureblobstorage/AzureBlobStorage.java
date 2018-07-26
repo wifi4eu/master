@@ -10,6 +10,10 @@ import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.utils.EncrypterService;
 
 import javax.annotation.PostConstruct;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 @Component
 @Configurable
@@ -40,6 +44,23 @@ public class AzureBlobStorage {
                 System.out.println(container.getName()+" => "+container.getProperties().getLastModified());
             }
 
+        } catch (Exception e){
+            System.out.println("Exit exception => "+e.getMessage());
+        } finally {
+            System.out.println("Everything working OK");
+        }
+    }
+
+    public void deleteContainers(){
+        CloudStorageAccount storageAccount;
+        CloudBlobClient blobClient;
+        try {
+            storageAccount = CloudStorageAccount.parse(storageConnectionString);
+            blobClient = storageAccount.createCloudBlobClient();
+            DateFormat df = new SimpleDateFormat("YYYYMMDD", Locale.ENGLISH);
+            for (CloudBlobContainer container : blobClient.listContainers()){
+                container.deleteIfExists();
+            }
         } catch (Exception e){
             System.out.println("Exit exception => "+e.getMessage());
         } finally {
