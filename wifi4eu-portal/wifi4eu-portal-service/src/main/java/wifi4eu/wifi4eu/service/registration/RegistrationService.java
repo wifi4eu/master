@@ -178,12 +178,12 @@ public class RegistrationService {
 
 
     @Transactional
-    public ResponseDTO updateRegistrationDocuments(Integer registrationID, List<LegalFileDTO> legalFile, HttpServletRequest request) throws Exception {
+    public ResponseDTO uploadRegistrationDocuments(Integer registrationID, List<LegalFileDTO> legalFile, HttpServletRequest request) throws Exception {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         if(!legalFile.isEmpty() && legalFile.size() == 4){
             for( int i = 0 ; i < legalFile.size() ; i++){
-                uploadDocument(legalFile.get(i), userConnected, RequestIpRetriever.getIp(request));
+                uploadDocument(registrationID, legalFile.get(i), userConnected, RequestIpRetriever.getIp(request));
             }
         }
 
@@ -231,7 +231,7 @@ public class RegistrationService {
         return new ResponseDTO(true, "sucess", null);
     }
 
-    private void uploadDocument (LegalFileDTO legalFile, UserDTO userConnected, String ip) throws Exception {
+    private void uploadDocument (Integer registrationID, LegalFileDTO legalFile, UserDTO userConnected, String ip) throws Exception {
         String legalFileToUpload = legalFile.getFileMime();
         if (legalFileToUpload != null) {
             String base64 = LegalFilesService.getBase64Data(legalFileToUpload);
@@ -248,8 +248,8 @@ public class RegistrationService {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File doesn't have a name");
                     throw new Exception("File must have a valid extension.");
                 } else{
-                    //registration comes from Legal File front security check before this service
                     //file name also comes from front input
+                    legalFile.setRegistration(registrationID);
                     legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
                     legalFile.setUploadTime(new Date());
                     legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
