@@ -38,6 +38,9 @@ public class Registration {
     @Column(name = "organisation_id")
     private int organisationId;
 
+    @Column(name = "allFiles_flag")
+    private int allFilesFlag;
+
     @Column(name = "mail_counter")
     private int mailCounter;
 
@@ -97,6 +100,7 @@ public class Registration {
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
+        this.allFilesFlag = allFilesFlag;
         this.mailCounter = mailCounter;
         this.registrationWarningList = registrationWarningList;
         this.idStatusBeneficiary = idStatusBeneficiary;
@@ -168,6 +172,14 @@ public class Registration {
 
     public void setOrganisationId(int organisationId) {
         this.organisationId = organisationId;
+    }
+
+    public int getAllFilesFlag() {
+        return allFilesFlag;
+    }
+
+    public void setAllFilesFlag(int allFilesFlag) {
+        this.allFilesFlag = allFilesFlag;
     }
 
     public int getMailCounter() {

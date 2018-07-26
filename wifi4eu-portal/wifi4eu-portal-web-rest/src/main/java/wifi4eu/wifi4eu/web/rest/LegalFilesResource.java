@@ -9,12 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
@@ -24,6 +26,9 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -44,5 +49,14 @@ public class LegalFilesResource {
 
     @Autowired
     private LegalFilesService legalFilesService;
+
+
+    @ApiOperation(value = "Get Legal Files from registration")
+    @RequestMapping(value = "/getLegalFiles/{registrationId}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<LegalFileDTO> getLegalFilesFromRegistration(@RequestBody final Integer registrationId, HttpServletRequest request) {
+        return  new ArrayList<LegalFileDTO>();
+    }
 
 }

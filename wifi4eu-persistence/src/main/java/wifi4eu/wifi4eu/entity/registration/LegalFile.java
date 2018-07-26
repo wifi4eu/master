@@ -28,19 +28,19 @@ public class LegalFile {
 	private Integer userId;
 
 	@Column(name = "file_size")
-	private Long fileSize;
+	private int fileSize;
 
 	@Column(name = "file_mime")
-	private Long fileMime;
+	private String fileMime;
 
 	@Column(name = "file_name")
-	private Long fileName;
+	private String fileName;
 
 
 	public LegalFile() {
 	}
 
-    public LegalFile(int registration, String fileData, int fileType, Date uploadTime, Integer userId, Long fileSize, Long fileMime, Long fileName) {
+    public LegalFile(int registration, String fileData, int fileType, Date uploadTime, Integer userId, int fileSize, String fileMime, String fileName) {
         this.registration = registration;
         this.fileData = fileData;
         this.fileType = fileType;
@@ -99,27 +99,27 @@ public class LegalFile {
         this.userId = userId;
     }
 
-    public Long getFileSize() {
+    public int getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(Long fileSize) {
+    public void setFileSize(int fileSize) {
         this.fileSize = fileSize;
     }
 
-    public Long getFileMime() {
+    public String getFileMime() {
         return fileMime;
     }
 
-    public void setFileMime(Long fileMime) {
+    public void setFileMime(String fileMime) {
         this.fileMime = fileMime;
     }
 
-    public Long getFileName() {
+    public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(Long fileName) {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 }

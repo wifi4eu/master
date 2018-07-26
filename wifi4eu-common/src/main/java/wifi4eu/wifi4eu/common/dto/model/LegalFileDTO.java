@@ -10,15 +10,15 @@ public class LegalFileDTO implements Serializable {
 	private int fileType;
 	private Date uploadTime;
 	private Integer userId;
-	private Long fileSize;
-	private Long fileMime;
-	private Long fileName;
+	private int fileSize;
+	private String fileMime;
+	private String fileName;
 
 	public LegalFileDTO() {
     this.uploadTime = new Date();
 	}
 
-	public LegalFileDTO(int registration, String fileData, int fileType, Date uploadTime, Integer userId, Long fileSize, Long fileMime, Long
+	public LegalFileDTO(int registration, String fileData, int fileType, Date uploadTime, Integer userId, int fileSize, String fileMime, String
 			fileName) {
 		this.registration = registration;
 		this.fileData = fileData;
@@ -78,27 +78,27 @@ public class LegalFileDTO implements Serializable {
 		this.userId = userId;
 	}
 
-	public Long getFileSize() {
+	public int getFileSize() {
 		return fileSize;
 	}
 
-	public void setFileSize(Long fileSize) {
+	public void setFileSize(int fileSize) {
 		this.fileSize = fileSize;
 	}
 
-	public Long getFileMime() {
+	public String getFileMime() {
 		return fileMime;
 	}
 
-	public void setFileMime(Long fileMime) {
+	public void setFileMime(String fileMime) {
 		this.fileMime = fileMime;
 	}
 
-	public Long getFileName() {
+	public String getFileName() {
 		return fileName;
 	}
 
-	public void setFileName(Long fileName) {
+	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
 

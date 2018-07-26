@@ -29,7 +29,7 @@ ALTER TABLE legal_files
 ALTER TABLE legal_files
 	ADD file_size BIGINT,
 	file_mime nvarchar(256),
-	file_name BIGINT;
+	file_name nvarchar(256);
 
 --DATA REASSIGN
 --add users to legal_file
@@ -74,6 +74,6 @@ from [dbo].registrations r inner join
 [dbo].[legal_files] l on l.registration = r.id where l.type = 4
 
 --delete columns from registrations
-ALTER TABLE dbo.registrations DROP COLUMN upload_time, allFiles_flag, legal_file1_size, legal_file1_mime,
+ALTER TABLE dbo.registrations DROP COLUMN upload_time, legal_file1_size, legal_file1_mime,
 legal_file2_size, legal_file2_mime, legal_file3_size, legal_file3_mime, legal_file4_size, legal_file4_mime;
 

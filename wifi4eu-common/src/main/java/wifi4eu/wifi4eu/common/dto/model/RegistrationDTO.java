@@ -13,6 +13,7 @@ public class RegistrationDTO implements Serializable {
     private String ipRegistration;
     private String associationName;
     private int organisationId;
+    private int allFilesFlag;
     private int mailCounter;
     private List<RegistrationWarningDTO> registrationWarningDTOList;
     private int idUserPM;
@@ -32,7 +33,7 @@ public class RegistrationDTO implements Serializable {
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int municipalityId, String role, int status, String ipRegistration, String associationName, int organisationId, int
+    public RegistrationDTO(int municipalityId, String role, int status, String ipRegistration, String associationName, int organisationId, int allFilesFlag,int
             mailCounter, List<RegistrationWarningDTO> registrationWarningDTOList, int idUserPM, int idUserBPM, int idStatusBeneficiary, boolean
             compliance, int actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, Date
             installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, List<UserDTO> users) {
@@ -42,6 +43,7 @@ public class RegistrationDTO implements Serializable {
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
+        this.allFilesFlag = allFilesFlag;
         this.mailCounter = mailCounter;
         this.registrationWarningDTOList = registrationWarningDTOList;
         this.idUserPM = idUserPM;
@@ -137,6 +139,14 @@ public class RegistrationDTO implements Serializable {
 
     public void setOrganisationId(int organisationId) {
         this.organisationId = organisationId;
+    }
+
+    public int getAllFilesFlag() {
+        return allFilesFlag;
+    }
+
+    public void setAllFilesFlag(int allFilesFlag) {
+        this.allFilesFlag = allFilesFlag;
     }
 
     public int getMailCounter() {

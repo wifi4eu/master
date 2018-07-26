@@ -39,9 +39,6 @@ public class LegalFilesService {
 	@Autowired
     UserService userService;
 
-	public LegalFileDTO getLegalFileByRegistrationIdFileType(Integer registrationId, Integer fileType) {
-		return legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationId, fileType));
-	}
 
 	/**
 	 * Checks if the user has permission to modify the legal file requested.

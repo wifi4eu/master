@@ -1,14 +1,30 @@
 package wifi4eu.wifi4eu.repository.registration.legal_files;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.*;
 import wifi4eu.wifi4eu.entity.registration.*;
 
+import java.util.List;
+
 public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer> {
-	LegalFile findByRegistrationAndFileType(Integer registrationId, Integer fileType);
+	List<LegalFile> findByRegistrationAndFileType(Integer registrationId, Integer fileType);
 	void deleteByRegistration(Integer registrationId);
 	void deleteByRegistrationAndFileType(Integer registrationId, Integer fileType);
 
 	LegalFile findByIdAndUserId(Integer registrationId, Integer userId);
+
+    //independent of user (type 1 and 3)
+    @Query(value = "select l.* from legal_files l where registration = ?1 and upload_time =(select max(upload_time) from legal_files l2 where l2.registration = ?1 and l.type = l2.type  group by type) and (type =1 or type = 3) order by type desc", nativeQuery = true)
+    List<LegalFile> findLastRequiredLegalFilesByRegistration(Integer registrationId);
+
+    //independent of user
+    @Query(value = "select l.* from legal_files l where registration = ?1 and upload_time =(select max(upload_time) from legal_files l2 where l2.registration = ?1 and l.type = l2.type  group by type) order by type desc", nativeQuery = true)
+	List<LegalFile> findLastLegalFilesByRegistration(Integer registrationId);
+
+    //TODO user can see mayor files
+    @Query(value = "select l.* from legal_files l where registration = ?1 and upload_time =(select max(upload_time) from legal_files l2 where l2.registration = ?1 and id_user = ?2 and l.type = l2.type  group by type) order by type desc", nativeQuery = true)
+    List<LegalFile> findLastLegalFilesByRegistrationAndUser(Integer registrationId, Integer userId);
+
 
 /*	@Query(nativeQuery = true, value = "select * from legal_files where registration in (select top 30 r.id from registrations r \n" +
 			"inner join municipalities m on r.municipality = m.id \n" +
