@@ -17,16 +17,15 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(Long id, String countryCode, String municipality, Integer registrationNumber,
-			AbacWorkflowStatusEnum wfStatus, Date signatureDate, Date counterSignatureDate) {
+	public MonitoringRow(Long id, String countryCode, String municipality, AbacWorkflowStatusEnum wfStatus, Date signatureDate) {
 		super();
 		this.id = id;
 		this.countryCode = countryCode;
 		this.municipality = municipality;
-		this.registrationNumber = registrationNumber;
+		this.registrationNumber = null;
 		this.wfStatus = wfStatus;
 		this.signatureDate = signatureDate;
-		this.counterSignatureDate = counterSignatureDate;
+		this.counterSignatureDate = null;
 	}
 
 	public Long getId() {

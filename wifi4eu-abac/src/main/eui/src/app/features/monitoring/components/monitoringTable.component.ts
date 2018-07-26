@@ -12,7 +12,7 @@ export class MonitoringTableComponent implements OnInit{
   
     constructor(protected api: ApiModule){
         this.cols = [
-            { field: 'country', header: 'Country' },
+            { field: 'countryCode', header: 'Country' },
             { field: 'municipality', header: 'Municipality' },
             { field: 'registrationNumber', header: 'Registration Number' },
             { field: 'wfStatus', header: 'Status' },

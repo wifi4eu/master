@@ -33,7 +33,7 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 		value =
 			"SELECT new wifi4eu.wifi4eu.abac.entity.MonitoringRow(" +
 					//"le.id, le.countryCode, le.officialName, le.registrationNumer, le.wfStatus, le.signatureDate, null" +
-					"le.id, le.countryCode, le.officialName, null, le.wfStatus, le.signatureDate, null" +
+					"le.id, le.countryCode, le.officialName, le.wfStatus, le.signatureDate" +
 			") FROM LegalEntity le"
 	)
 	List<MonitoringRow> findMonitoringData();
