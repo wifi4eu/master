@@ -2,6 +2,8 @@ package wifi4eu.wifi4eu.abac.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
 
 public class MonitoringRow {
@@ -11,7 +13,11 @@ public class MonitoringRow {
 	private String municipality;
 	private Integer registrationNumber; 
 	private AbacWorkflowStatusEnum wfStatus;
+	
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date signatureDate;
+	
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date counterSignatureDate;
 	
 	public MonitoringRow() {
