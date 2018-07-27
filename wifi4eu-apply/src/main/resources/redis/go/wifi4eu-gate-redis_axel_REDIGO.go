@@ -48,8 +48,8 @@ func initUsersMap() map[int64]string {
 	fmt.Println("[I] Initializing users map")
 	start := time.Now()
 
-	const queryUsers = "SELECT u.id, u.csrf_token FROM users u INNER JOIN conditions_agreement ca ON u.id = ca.user_id WHERE u.csrf_token IS NOT NULL AND ca.status = 1"
-	//const queryUsers = "SELECT u.id, u.csrf_token FROM users u INNER JOIN conditions_agreement ca ON u.id = ca.user_id WHERE u.csrf_token IS NOT NULL AND ca.status = 1 ORDER BY u.id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY"
+	//const queryCountUsers = "SELECT count(*) FROM users u INNER JOIN conditions_agreement ca ON u.id = ca.user_id WHERE u.csrf_token IS NOT NULL AND ca.status = 1"
+	const queryUsers = "SELECT u.id, u.csrf_token FROM users u INNER JOIN conditions_agreement ca ON u.id = ca.user_id WHERE u.csrf_token IS NOT NULL AND ca.status = 1 ORDER BY u.id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY"
 	
 	var userMap = make(map[int64]string)
  
@@ -336,6 +336,8 @@ func getCallOpen() (int64, time.Time, time.Time) {
 		if(tupl.mId != mToken || tupl.uId != uToken) {
 			return c.String(http.StatusBadRequest, "Application does not meet the requirements")
 		}
+		
+		return c.String(http.StatusOK, "DEVELOPMENT MODE") // DEV MODE!!!!! DELETE
 
         //-- 4. SAVE TO REDIS
         retries := 0
