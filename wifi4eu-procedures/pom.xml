@@ -18,7 +18,7 @@
     <modules>
         <module>wifi4eu-procedures-persistence</module>
         <module>wifi4eu-procedures-service</module>
-        <module>wifi4eu-procedures-web-rest-swagger</module>
+        <!--<module>wifi4eu-procedures-web-rest-swagger</module>-->
         <module>wifi4eu-procedures-web-rest</module>
         <module>wifi4eu-procedures-web</module>
     </modules>
