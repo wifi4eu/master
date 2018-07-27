@@ -91,6 +91,9 @@ public final class ParserCSV2LegalEntityMock {
 						if (newInstance.getPostalCode() == null || newInstance.getPostalCode().isEmpty()) {
 							newInstance.setPostalCode("01010");
 						}
+						if (newInstance.getLanguageCode() == null || newInstance.getLanguageCode().isEmpty()) {
+							newInstance.setLanguageCode("eng");
+						}
 						result.add(newInstance);
 					}
 				}
