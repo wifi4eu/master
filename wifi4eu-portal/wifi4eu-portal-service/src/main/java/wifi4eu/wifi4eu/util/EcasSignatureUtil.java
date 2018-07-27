@@ -51,27 +51,26 @@ public class EcasSignatureUtil {
      * to validate the EU Login Signature to get the Signed Message.
      **/
 
-    public String constructSignatureHDSCallbackUrl(HttpServletRequest request, String downloadRequestId, String documentToBeSigned) {
-        return "http://localhost:8080/wifi4eu/api/signature/handleSignature/" + downloadRequestId + "/" + documentToBeSigned;
+    public String constructSignatureHDSCallbackUrl(HttpServletRequest request, String documentToBeSigned) {
+        return "http://localhost:8080/wifi4eu/api/signature/handleSignature/" + documentToBeSigned;
     }
 
     /**
      * Buld the url to redirect the user to the ECAS Signature page for the specific Document.
      *
      * @param request
-     * @param documentToBeSigned
-     * @param downloadRequestId
+     * @param grantAgreementID
      * @return String
      * //* @throws HdsException
      */
     //DocumentBean documentToBeSigned
-    public String doWhenSignatureRequired(HttpServletRequest request, String documentToBeSigned, String downloadRequestId) /*throws HdsException*/ {
+    public String doWhenSignatureRequired(HttpServletRequest request, String grantAgreementID) /*throws HdsException*/ {
 
         //UserBean userBean = RequestExtractorUtil.getUser(request);
         //_log.info(String.format("Document with HERMES ID %s needs to be signed. Download request ID: %s. Signing user is %s", documentToBeSigned.getHermesDocId(), downloadRequestId, userBean.getEcasId()));
 
 
-        String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, downloadRequestId, documentToBeSigned.toString());
+        String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, grantAgreementID.toString());
         String description = "test"; //String.format(FORM_NOTIF_TEMPLATE, documentToBeSigned.getAresRef(), documentToBeSigned.getCreationFormNotifDate());
 
         Message msg = new SimpleTextMessage(constructXmlToSign());
@@ -208,11 +207,11 @@ public class EcasSignatureUtil {
 
     }
 
-    public ByteArrayOutputStream writeSignature(String signatureId, HttpServletRequest request, String downloadRequestId, String hdsDocumentId) {
+    public ByteArrayOutputStream writeSignature(String signatureId, HttpServletRequest request, String hdsDocumentId) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
         try {
-            String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, downloadRequestId, hdsDocumentId);
+            String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, hdsDocumentId);
 
             SignatureClient client = new SignatureClient();
             client.configure(request);

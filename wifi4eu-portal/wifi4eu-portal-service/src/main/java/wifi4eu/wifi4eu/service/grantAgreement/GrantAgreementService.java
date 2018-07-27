@@ -51,10 +51,8 @@ public class GrantAgreementService {
         return grantAgreementMapper.toDTO(agreementRepository.findOne(id));
     }
 
-    public GrantAgreementDTO initializeGrantAgreement(Integer applicationId) {
-        GrantAgreement grantAgreement = new GrantAgreement();
-        grantAgreement.setApplicationId(applicationId);
-        return createGrantAgreement(grantAgreementMapper.toDTO(grantAgreement));
+    public GrantAgreementDTO initializeGrantAgreement(GrantAgreementDTO inputGrandAgreement) {
+        return createGrantAgreement(inputGrandAgreement);
     }
 
     public ByteArrayOutputStream generateGrantAgreementPdf(GrantAgreementDTO grantAgreement) throws IOException, DocumentException {
