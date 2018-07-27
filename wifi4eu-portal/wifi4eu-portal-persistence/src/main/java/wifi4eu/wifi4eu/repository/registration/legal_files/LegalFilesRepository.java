@@ -17,7 +17,8 @@ public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer>
     @Query(value = "select l.* from legal_files l where registration = ?1 and upload_time =(select max(upload_time) from legal_files l2 where l2.registration = ?1 and l.type = l2.type  group by type) and (type =1 or type = 3) order by type desc", nativeQuery = true)
     List<LegalFile> findLastRequiredLegalFilesByRegistration(Integer registrationId);
 
-    @Query(value = "select id, registration, type, upload_time, id_user, file_size, file_mime, file_name from legal_files where registration = ?1 and type = ?3 and id_user = ?2) order by type, upload_time desc", nativeQuery = true)
+    //doesnt return all files uploaded for mayor documents !!!!!
+    @Query(value = "select id, registration, type, upload_time, id_user, file_size, file_mime, file_name from legal_files where registration = ?1 and type = ?3 and id_user = ?2 order by type, upload_time desc", nativeQuery = true)
     List<LegalFile> findHistoryForType(Integer registrationId, Integer userId, Integer type);
 
     @Query(value = "select id, registration, type, upload_time, id_user, file_size, file_mime, file_name from legal_files where registration = ?1 and (type=1 or type = 3 or id_user = ?2 ) order by type, upload_time desc", nativeQuery = true)
