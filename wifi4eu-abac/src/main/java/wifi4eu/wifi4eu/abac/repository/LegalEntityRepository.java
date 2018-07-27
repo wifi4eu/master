@@ -12,8 +12,6 @@ import wifi4eu.wifi4eu.abac.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.entity.MonitoringRow;
 import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
 
-import java.util.List;
-
 public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integer> {
 
 	LegalEntity findByMid(Integer mid);
@@ -35,8 +33,7 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	@Query(
 		value =
 			"SELECT new wifi4eu.wifi4eu.abac.entity.MonitoringRow(" +
-					//"le.id, le.countryCode, le.officialName, le.registrationNumer, le.wfStatus, le.signatureDate, null" +
-					"le.id, le.countryCode, le.officialName, le.wfStatus, le.signatureDate" +
+					"le.id, le.countryCode, le.officialName, le.registrationNumber, le.wfStatus, le.signatureDate" +
 			") FROM LegalEntity le"
 	)
 	List<MonitoringRow> findMonitoringData();

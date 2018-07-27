@@ -11,7 +11,7 @@ public class MonitoringRow {
 	private Long id;
 	private String countryCode;
 	private String municipality;
-	private Integer registrationNumber; 
+	private Long registrationNumber; 
 	private AbacWorkflowStatusEnum wfStatus;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
@@ -23,12 +23,12 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(Long id, String countryCode, String municipality, AbacWorkflowStatusEnum wfStatus, Date signatureDate) {
+	public MonitoringRow(Long id, String countryCode, String municipality, Long registrationNumber, AbacWorkflowStatusEnum wfStatus, Date signatureDate) {
 		super();
 		this.id = id;
 		this.countryCode = countryCode;
 		this.municipality = municipality;
-		this.registrationNumber = null;
+		this.registrationNumber = registrationNumber;
 		this.wfStatus = wfStatus;
 		this.signatureDate = signatureDate;
 		this.counterSignatureDate = null;
@@ -58,11 +58,11 @@ public class MonitoringRow {
 		this.municipality = municipality;
 	}
 
-	public Integer getRegistrationNumber() {
+	public Long getRegistrationNumber() {
 		return registrationNumber;
 	}
 
-	public void setRegistrationNumber(Integer registrationNumber) {
+	public void setRegistrationNumber(Long registrationNumber) {
 		this.registrationNumber = registrationNumber;
 	}
 
