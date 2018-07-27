@@ -4,11 +4,14 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.FileTypes;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
@@ -45,14 +48,16 @@ public class LegalFilesService {
 	 *
 	 * @param registrationId
 	 * @param userId
-	 * @param legalFile
+	 * @param fileId
 	 * @return true if user has permission to access to the legal file
 	 */
-	public boolean hasUserPermissionForLegalFile (Integer registrationId, Integer userId, Integer legalFile){
+	public boolean hasUserPermissionForLegalFile (Integer registrationId, Integer userId, Integer fileId){
 		if(registrationService.checkUserWithRegistration(registrationId, userId)){
-			if(legalFile != null && legalFilesRepository.findByIdAndUserId(legalFile, userId) != null){
-				return true;
-			}
+            LegalFile legalFile = legalFilesRepository.findOne(fileId);
+            if (legalFile != null && (userId == legalFile.getUserId() || legalFile.getFileType() == FileTypes.LEGALFILE1.getValue() || legalFile
+                    .getFileType() == FileTypes.LEGALFILE3.getValue())) {
+                return true;
+            }
 		}
 		return false;
 	}
@@ -98,5 +103,18 @@ public class LegalFilesService {
 		}
 		return fileExtension;
 	}
+
+	public String getExtensionFromMime(String fileMime){
+        if (fileMime != null && fileMime.length() != 0) {
+            if (fileMime.contains("pdf")) {
+                return ".pdf";
+            } else if (fileMime.contains("png")) {
+                return ".png";
+            } else if (fileMime.contains("jpg") || fileMime.contains("jpeg")) {
+                return ".jpg";
+            }
+        }
+        return null;
+    }
 
 }
