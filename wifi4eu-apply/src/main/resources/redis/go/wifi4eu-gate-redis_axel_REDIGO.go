@@ -331,13 +331,11 @@ func getCallOpen() (int64, time.Time, time.Time) {
 
 		//-- 3. CHECK R,U,M TOKEN
 		var tupl UserMunicipalityTuple = regsMap[rToken];
-		fmt.Printf("-- Municipality Received: %d. Found: %d \n", mToken, tupl.mId)
-		fmt.Printf("-- User Received: %d. Found: %d \n", uToken, tupl.uId)
+			//-- fmt.Printf("-- Municipality Received: %d. Found: %d \n", mToken, tupl.mId)
+			//-- fmt.Printf("-- User Received: %d. Found: %d \n", uToken, tupl.uId)
 		if(tupl.mId != mToken || tupl.uId != uToken) {
 			return c.String(http.StatusBadRequest, "Application does not meet the requirements")
 		}
-		
-		return c.String(http.StatusOK, "DEVELOPMENT MODE") // DEV MODE!!!!! DELETE
 
         //-- 4. SAVE TO REDIS
         retries := 0
