@@ -656,8 +656,10 @@ BEGIN
   loop
       dbms_output.put_line('LEGAL_ENTITY_ID='||request.le_id);
 
-      update wif_legal_entity set WF_STATUS = request.abac_status, abac_fel_id = request.LE_KEY
-      where wif_legal_entity.id = request.le_id;
+      if (request.legal_entity_status <> request.abac_status) then
+        update wif_legal_entity set WF_STATUS = request.abac_status, abac_fel_id = request.LE_KEY
+        where wif_legal_entity.id = request.le_id;
+      end if;
 
       rows_affected := rows_affected + 1;
   END LOOP;
