@@ -1,6 +1,7 @@
 alter table [dbo].[applications] ADD date_signature datetime NULL;
 alter table [dbo].[applications] ADD date_counter_signature datetime NULL;
 alter table [dbo].[applications] ADD cancel_reason VARCHAR(255) NULL;
+CREATE TABLE authorized_person_application (id INT IDENTITY NOT NULL, authorized_person INT, application_id INT, PRIMARY KEY (id)) ;
 ALTER TABLE users ADD contact_phone_prefix NVARCHAR(255);
 ALTER TABLE users ADD contact_phone_number NVARCHAR(255);
 update users set users.contact_phone_number = (SELECT s.contact_phone_number from suppliers s inner join users u on s._user = u.id where users.id = u.id);

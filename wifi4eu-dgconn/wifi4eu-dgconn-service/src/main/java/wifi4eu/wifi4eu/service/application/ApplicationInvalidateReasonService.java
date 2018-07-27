@@ -4,34 +4,28 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
-import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationInvalidateReason;
-import wifi4eu.wifi4eu.entity.application.CorrectionRequestEmail;
-import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
+import wifi4eu.wifi4eu.mapper.application.ApplicantAuthorizedPersonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationAuthorizedPersonRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
-import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.service.voucher.VoucherService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -73,6 +67,14 @@ public class ApplicationInvalidateReasonService {
 
     @Autowired
     CorrectionRequestEmailRepository correctionRequestEmailRepository;
+
+
+
+    @Autowired
+    ApplicantAuthorizedPersonMapper applicant_authorizedPersonMapper;
+
+    @Autowired
+    ApplicationAuthorizedPersonRepository application_authorizedPersonRepository;
 
     public List<ApplicationInvalidateReasonDTO> getInvalidateReasonByApplicationId(Integer applicationId) {
         return applicationInvalidateReasonMapper.toDTOList(applicationInvalidateReasonRepository.findAllByApplicationIdOrderByReason(applicationId));
@@ -141,7 +143,11 @@ public class ApplicationInvalidateReasonService {
 
         applicationDBO.setStatus(ApplicationStatus.OK.getValue());
         deleteInvalidateReasonByApplicationId(applicationDBO.getId());
-        applicationDBO.setAuthorizedPerson(applicationDTO.getAuthorizedPerson());
+        ApplicationAuthorizedPersonDTO authorizedPersonDTO = new ApplicationAuthorizedPersonDTO();
+        authorizedPersonDTO.setAuthorized_person(applicationDTO.getAuthorizedPerson());
+        authorizedPersonDTO.setApplicationId(applicationDTO.getId());
+        ApplicationAuthorizedPersonDTO saveApplicationAuthorizedPerson = applicant_authorizedPersonMapper.toDTO(application_authorizedPersonRepository.save(applicant_authorizedPersonMapper.toEntity(authorizedPersonDTO)));
+//        applicationDBO.setAuthorizedPerson(applicationDTO.getAuthorizedPerson());
         legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDBO.getRegistrationId());
         ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
@@ -189,8 +195,7 @@ public class ApplicationInvalidateReasonService {
         if(email == null){
             checks.put("invalidate", true);
             checks.put("validate", true);
-        }
-        else{
+        } else {
             Date sentDate = new Date(email.getSentDate());
             Calendar deadline = Calendar.getInstance();
             deadline.setTime(sentDate);

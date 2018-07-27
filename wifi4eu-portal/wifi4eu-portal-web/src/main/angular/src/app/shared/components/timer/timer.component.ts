@@ -13,8 +13,7 @@ export class TimerComponent {
     private hours: number;
     private minutes: number;
     private seconds: number;
-
-    private baseURLApi: string = 'http://localhost:8080/wifi4eu/api/call';
+    @Input('baseURLApi') baseURLApi : string;
     private timeGate: string = "/time";
 
     constructor(private http: Http, private sharedService: SharedService, private callApi: CallApi) {
@@ -55,7 +54,7 @@ export class TimerComponent {
     }
 
     private getTime() {
-        /*let url = this.baseURLApi + this.timeGate;
+        let url = this.baseURLApi + this.timeGate;
         this.http.get(url).subscribe(
             response => {
                 if (response.status == 200 && !isNaN(parseInt(response.text()))) {
@@ -65,13 +64,13 @@ export class TimerComponent {
                 }
             }, error => {
                 this.handleTimeError();
-            });*/
+            });
         // temporary endpoint
-        this.callApi.getTime().subscribe(
+        /*this.callApi.getTime().subscribe(
             (date: any) => {
                 this.currentTimestamp = date;
             }
-        );
+        );*/
 
     }
 
