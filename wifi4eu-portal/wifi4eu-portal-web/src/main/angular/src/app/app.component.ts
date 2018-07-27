@@ -95,7 +95,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.appReg', translatedString);
                 translatedItems++;
-                if (translatedItems == 9) {
+                if (translatedItems == 10) {
                     this.stringsTranslated.next();
                 }
             }
@@ -104,7 +104,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.suppReg', translatedString);
                 translatedItems++;
-                if (translatedItems == 9) {
+                if (translatedItems == 10) {
                     this.stringsTranslated.next();
                 }
             }
@@ -113,7 +113,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.myAccount', translatedString);
                 translatedItems++;
-                if (translatedItems == 9) {
+                if (translatedItems == 10) {
                     this.stringsTranslated.next();
                 }
             }
@@ -122,7 +122,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.suppPortal', translatedString);
                 translatedItems++;
-                if (translatedItems == 9) {
+                if (translatedItems == 10) {
                     this.stringsTranslated.next();
                 }
             }
@@ -131,7 +131,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.dissForum', translatedString);
                 translatedItems++;
-                if (translatedItems == 9) {
+                if (translatedItems == 10) {
                     this.stringsTranslated.next();
                 }
             }
@@ -140,7 +140,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.appPortal', translatedString);
                 translatedItems++;
-                if (translatedItems == 9) {
+                if (translatedItems == 10) {
                     this.stringsTranslated.next();
                 }
             }
@@ -149,7 +149,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.dgPortal', translatedString);
                 translatedItems++;
-                if (translatedItems == 9) {
+                if (translatedItems == 10) {
                     this.stringsTranslated.next();
                 }
             }
@@ -158,7 +158,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.listSuppliers', translatedString);
                 translatedItems++;
-                if (translatedItems == 9) {
+                if (translatedItems == 10) {
                     this.stringsTranslated.next();
                 }
             }
@@ -167,7 +167,16 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('benefPortal.myVoucher.title.text', translatedString);
                 translatedItems++;
-                if (translatedItems == 9) {
+                if (translatedItems == 10) {
+                    this.stringsTranslated.next();
+                }
+            }
+        );
+        this.translateService.get('benefPortal.myHistory.title').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('benefPortal.myHistory.title', translatedString);
+                translatedItems++;
+                if (translatedItems == 10) {
                     this.stringsTranslated.next();
                 }
             }
@@ -220,6 +229,10 @@ export class AppComponent {
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.listSuppliers'),
                     url: 'list-suppliers'
+                }),
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('benefPortal.myHistory.title'),
+                    url: '/beneficiary-portal/my-history'
                 })
             ];
             this.children[3] = [
