@@ -292,4 +292,12 @@ public class ScheduledTasks {
         _log.debug("SCHEDULED TASK: Deadline for Requested Documents - finished");
     }
 
+    // @Scheduled(cron = "0 0 4 * * *", zone = "Europe/Madrid")
+    private void sendMessageNotSigned(){
+        // first look into voucher assignment table if some register is with notified_date. If there is, take the id and query into the voucher simulations table with a where
+        // of voucher_assignemnt = id of the last table and status = 3 (selected). If there are applicants, query into the grant_agreement table (where they sign).
+        // if no results, calculate how much time between the notified date of the voucher assignment table and the current day, then:
+        // email at 7 & 14 days.
+    }
+
 }
