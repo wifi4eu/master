@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -50,5 +51,20 @@ public class GrantAgreementResource {
         ByteArrayOutputStream file = grantAgreementService.downloadGrantAgreementPdf();
         return new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Create grant agreement")
+    @RequestMapping(value = "/createGrantAgreement", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public GrantAgreementDTO createGrantAgreement(@RequestBody GrantAgreementDTO inputGrantAgreement) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        if (userConnected == null || userConnected.getType() == 1 || userConnected.getType() == 5) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
+
+        return grantAgreementService.createGrantAgreement(inputGrantAgreement);
+    }
+
 
 }

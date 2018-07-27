@@ -7,11 +7,14 @@ import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
+import wifi4eu.wifi4eu.mapper.grantAgreement.GrantAgreementMapper;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 
@@ -27,25 +30,34 @@ public class GrantAgreementService {
     @Autowired
     GrantAgreementRepository agreementRepository;
 
-    public GrantAgreement createGrantAgreement(GrantAgreement inputGrantAgreement){
-        return agreementRepository.save(inputGrantAgreement);
+    @Autowired
+    GrantAgreementMapper grantAgreementMapper;
+
+    public GrantAgreementDTO createGrantAgreement(GrantAgreementDTO inputGrantAgreement) {
+        GrantAgreementDTO grantAgreementDTO = getGrantAgreementByApplicationId(inputGrantAgreement.getApplicationId());
+        if (grantAgreementDTO != null) {
+            grantAgreementDTO.setDocumentLanguage(inputGrantAgreement.getDocumentLanguage());
+            return grantAgreementMapper.toDTO(agreementRepository.save(grantAgreementMapper.toEntity(grantAgreementDTO)));
+        } else {
+            return grantAgreementMapper.toDTO(agreementRepository.save(grantAgreementMapper.toEntity(inputGrantAgreement)));
+        }
     }
 
-    public GrantAgreement getGrantAgreementByApplicationId(Integer applicationId){
-        return agreementRepository.findByApplicationId(applicationId);
+    public GrantAgreementDTO getGrantAgreementByApplicationId(Integer applicationId) {
+        return grantAgreementMapper.toDTO(agreementRepository.findByApplicationId(applicationId));
     }
 
-    public GrantAgreement getGrantAgreementById(Integer id){
-        return agreementRepository.findOne(id);
+    public GrantAgreementDTO getGrantAgreementById(Integer id) {
+        return grantAgreementMapper.toDTO(agreementRepository.findOne(id));
     }
 
-    public GrantAgreement initializeGrantAgreement(Integer applicationId){
+    public GrantAgreementDTO initializeGrantAgreement(Integer applicationId) {
         GrantAgreement grantAgreement = new GrantAgreement();
         grantAgreement.setApplicationId(applicationId);
-        return createGrantAgreement(grantAgreement);
+        return createGrantAgreement(grantAgreementMapper.toDTO(grantAgreement));
     }
 
-    public ByteArrayOutputStream generateGrantAgreementPdf(Integer applicationId, GrantAgreement grantAgreement, String signString) throws IOException, DocumentException {
+    public ByteArrayOutputStream generateGrantAgreementPdf(Integer applicationId, GrantAgreementDTO grantAgreement, String signString) throws IOException, DocumentException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfStamper pdfStamper = null;
         PdfReader pdfReader = null;
@@ -63,9 +75,9 @@ public class GrantAgreementService {
 
             int pages = pdfReader.getNumberOfPages();
 
-            for(int i=1; i<=pages; i++) {
+            for (int i = 1; i <= pages; i++) {
                 //Contain the pdf data.
-                if(i == pages){
+                if (i == pages) {
                     PdfContentByte pageContentByte =
                             pdfStamper.getOverContent(i);
 
@@ -73,7 +85,7 @@ public class GrantAgreementService {
                     Font f = new Font(bf, 8);
                     ColumnText ct = new ColumnText(pageContentByte);
                     ct.setSimpleColumn(74, 0, pdfReader.getPageSize(i).getWidth() / 2, 400f);
-                    ct.addElement(new Paragraph (signString, f));
+                    ct.addElement(new Paragraph(signString, f));
                     ct.go();
                 }
             }
@@ -82,11 +94,11 @@ public class GrantAgreementService {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        }  finally {
-            if(pdfStamper != null){
+        } finally {
+            if (pdfStamper != null) {
                 pdfStamper.close();
             }
-            if(pdfReader != null){
+            if (pdfReader != null) {
                 pdfReader.close();
             }
             outputStream.close();
@@ -95,7 +107,7 @@ public class GrantAgreementService {
 
 //        GrantAgreement grantAgreement = new GrantAgreement();
 //        grantAgreement.setApplicationId(applicationId);
-//        grantAgreement.setDocument_location(new String(base64));
+//        grantAgreement.setDocumentLocation(new String(base64));
 //        createGrantAgreement(grantAgreement);
 
     }
