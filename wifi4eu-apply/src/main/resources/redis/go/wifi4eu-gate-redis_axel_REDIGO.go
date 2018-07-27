@@ -28,7 +28,7 @@
 const MAX_POOL_RETRIES = 100
 const HAPROXY_URI = "127.0.0.1:8000"
 const APPLY_QUEUE = "wifi4eu-apply"
-const COOKIE_NAME = "SUCC_APP"
+const COOKIE_NAME = "hasRequested"
 
 //-- DEV ENVIRONMENT
 const (
@@ -38,6 +38,11 @@ const (
 	dbPort = 1433
 	dbName = "wifi4eudb-prod_01_2018-05-28T08-30Z"
 )
+
+type UserMunicipalityTuple struct {
+    uId int64
+    mId   int64
+}
 
 func initUsersMap() map[int64]string {
 	fmt.Println("[I] Initializing users map")
@@ -90,6 +95,60 @@ func initUsersMap() map[int64]string {
 	 fmt.Println("-- Loaded ", len(userMap), " items into usermap. Took: ", time.Now().Sub(start).String())
 	 fmt.Println("[F] Finished users map initialization")
 	 return userMap
+ }
+
+ func initRegistrationsMap() map[int64]UserMunicipalityTuple {
+	fmt.Println("[I] Fetching registrations")
+	start := time.Now()
+
+	const queryCall = "SELECT ru._user as user_id, ru.registration as reg_id, m.id as mun_id FROM registration_users ru INNER JOIN registrations r ON r.id = ru.registration INNER JOIN municipalities m ON m.id = r.municipality WHERE r.allFiles_flag = 1"
+	var regsMap = make(map[int64]UserMunicipalityTuple)
+	
+	u := &url.URL{
+		Scheme: "sqlserver",
+		User:   url.UserPassword(dbUserName, dbPassword),
+		Host:   fmt.Sprintf("%s:%d", dbHost, dbPort),
+   }
+	
+   db, err := sql.Open("sqlserver", u.String()+"?database="+dbName)
+
+   if err != nil {
+	   log.Fatal(err)
+	   panic(err)
+   }
+
+   defer db.Close()
+
+   rows, err := db.Query(queryCall)
+
+   if err != nil {
+	   log.Fatal(err)
+	   panic(err)
+   }
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var (
+			uId		int64
+			rId   	int64
+			mId  	int64
+		)
+
+		if err := rows.Scan(&uId, &rId, &mId); err != nil {
+			log.Fatal(err)
+			continue
+		}
+
+		tupl := UserMunicipalityTuple{uId: uId, mId: mId}
+		
+		fmt.Printf("Added registration: (%d,%d) of user %d\n", rId, mId, uId) //-- For testing purposes
+		regsMap[rId] = tupl
+	}
+
+	fmt.Println("-- Loaded ", len(regsMap), " items into registrationsMap. Took: ", time.Now().Sub(start).String())
+	fmt.Println("[F] Fetching registrations")
+	return regsMap
  }
 
 func getCallOpen() (int64, time.Time, time.Time) {
@@ -145,8 +204,9 @@ func getCallOpen() (int64, time.Time, time.Time) {
 	fmt.Println("[F] Fetching open call")
 	return cId, time.Unix(callOpen / 1000, 0), time.Unix(callClose / 1000, 0)
  }
- 
- func newPool(addr string) *redis.Pool {
+
+
+  func newPool(addr string) *redis.Pool {
 	 return &redis.Pool{
 		 MaxIdle:     500,
 		 MaxActive: 12000,
@@ -172,6 +232,7 @@ func getCallOpen() (int64, time.Time, time.Time) {
 	//-- Initialization
 	var usersMap map[int64]string = initUsersMap()
 	callId, callOpen, callClose := getCallOpen()
+	var regsMap map[int64]UserMunicipalityTuple = initRegistrationsMap()
 	//-- TODO Pending registrations
 
 	if (usersMap == nil || len(usersMap) == 0) {
@@ -180,6 +241,10 @@ func getCallOpen() (int64, time.Time, time.Time) {
 
 	if (callOpen.IsZero() || callClose.IsZero()) { //-- FIXME not working
 		log.Warn("No call is open")
+	}
+
+	if (regsMap == nil || len(regsMap) == 0) {
+		log.Warn("No registrations were pre-fetched on server startup")
 	}
 	 
 	//-- CONFIGURE GOLANG
@@ -229,45 +294,52 @@ func getCallOpen() (int64, time.Time, time.Time) {
 
     e.GET("/calls/:callId/apply/:r/:u/:m", func(c echo.Context) error {
 
-		//-- Read input parameters parameters
+		//-- 0. Read input parameters parameters
 		cToken, err := strconv.ParseInt(c.Param("callId"), 10, 64)
         if (err != nil || cToken != callId) {
-            return c.String(http.StatusBadRequest, "Invalid arguments")  //-- No need to give more information 
+            return c.String(http.StatusBadRequest, "[1] Invalid arguments")  //-- No need to give more information 
 		}
 		
 		rToken, err := strconv.ParseInt(c.Param("r"), 10, 64)
         if err != nil {
-            return c.String(http.StatusBadRequest, "Invalid arguments")
+            return c.String(http.StatusBadRequest, "[2] Invalid arguments")
         }
 
         uToken, err := strconv.ParseInt(c.Param("u"), 10, 64)
         if err != nil {
-            return c.String(http.StatusBadRequest, "Invalid arguments")
+            return c.String(http.StatusBadRequest, "[3] Invalid arguments")
         }
 
         mToken, err := strconv.ParseInt(c.Param("m"), 10, 64)
         if err != nil {
-			return c.String(http.StatusBadRequest, "Invalid arguments")
+			return c.String(http.StatusBadRequest, "[4] Invalid arguments")
 		}
 		
-		//-- Validate the userId, XSRF-Token and user agreement acceptance by finding the user on the in-memory userMap
+		//-- 1. CHECK CALL IS OPEN
+        now := time.Now()
+        if ( !(now.After(callOpen) && now.Before(callClose)) ) {
+            return c.String(http.StatusUnauthorized, "Call is not active")
+		}
+		
+		//-- 2. Validate the userId, XSRF-Token and user agreement acceptance by finding the user on the in-memory userMap
 		xsrfToken := c.Request().Header.Get("X-XSRF-TOKEN")
-		//-- fmt.Println("-- XSRF: ", xsrfToken)
-		//-- fmt.Println("-- MAP XSRF: ", usersMap[uToken])
+			//-- fmt.Println("-- XSRF: ", xsrfToken)
+			//-- fmt.Println("-- MAP XSRF: ", usersMap[uToken])
 		if (usersMap[uToken] != xsrfToken) {
 			return c.String(http.StatusUnauthorized, "Unauthorized")
 		}
 
-        //-- 1. CHECK CALL IS OPEN
-        now := time.Now()
-        if ( !(now.After(callOpen) && now.Before(callClose)) ) {
-            return c.String(http.StatusUnauthorized, "Call is not active")
-        }
-
-        //-- 2. CHECK R,U,M TOKEN
-        //-- TODO validate agains in-memory map
+		//-- 3. CHECK R,U,M TOKEN
+		var tupl UserMunicipalityTuple = regsMap[rToken];
+		fmt.Printf("-- Municipality Received: %d. Found: %d \n", mToken, tupl.mId)
+		fmt.Printf("-- User Received: %d. Found: %d \n", uToken, tupl.uId)
+		if(tupl.mId != mToken || tupl.uId != uToken) {
+			return c.String(http.StatusBadRequest, "Application does not meet the requirements")
+		}
 		
-        //-- 3. SAVE TO REDIS
+		return c.String(http.StatusOK, "DEVELOPMENT MODE") // DEV MODE!!!!! DELETE
+
+        //-- 4. SAVE TO REDIS
         retries := 0
 
         retry:
@@ -279,7 +351,7 @@ func getCallOpen() (int64, time.Time, time.Time) {
             "u", uToken,
             "m", mToken,
             "ip", realip.FromRequest(c.Request()),
-            "ecas", "foo")
+            "time", now.String())
 
         if err != nil {
             if err == io.EOF {
@@ -296,7 +368,7 @@ func getCallOpen() (int64, time.Time, time.Time) {
             return c.String(http.StatusInternalServerError, "Error processing request")
         }
 
-		//-- All good
+		//-- 4. All good. Set cookie and return OK
 		cookie := new(http.Cookie)
 		cookie.Name = COOKIE_NAME
 		cookie.Value = "true"
