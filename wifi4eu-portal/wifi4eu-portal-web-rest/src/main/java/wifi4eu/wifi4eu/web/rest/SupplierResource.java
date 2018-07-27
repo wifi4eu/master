@@ -107,15 +107,18 @@ public class SupplierResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating contact details");
         try {
-            int supplierUserId = supplierService.getUserIdFromSupplier(supplierDTO.getId());
-            if (supplierUserId != userConnected.getId()) {
+            SupplierDTO supplier = supplierService.getSupplierByUserId(userConnected.getId());
+            boolean access = false;
+            for (UserDTO user : supplier.getUsers()) {
+                if (user.getId() == userConnected.getId()) {
+                    access = true;
+                    break;
+                }
+            }
+            if (!access) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierUserId);
-            if (supplierUserId != sendSupplierDTO.getId()) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            SupplierDTO resSupplier = supplierService.updateContactDetails(sendSupplierDTO, supplierDTO.getContactName(), supplierDTO.getContactSurname(), supplierDTO.getContactPhonePrefix(), supplierDTO.getContactPhoneNumber());
+            List<UserDTO> resSupplier = supplierService.updateContactDetails(supplierDTO);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Contact details updated successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
@@ -131,7 +134,7 @@ public class SupplierResource {
     @ApiOperation(value = "update Supplier Details")
     @RequestMapping(value = "update/supplierDetails", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO updateSupplierDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO updateSupplierDetails(@RequestBody final SupplierDTO supplierDTO, @RequestBody final UserDTO userDTO, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier details");
@@ -342,7 +345,7 @@ public class SupplierResource {
 
             UserDTO newUser = userService.getUserByEmail(userConnected.getEmail());
 
-            if(newUser == null || newUser.getType() == 1) {
+            if (newUser == null || newUser.getType() == 1) {
                 int supplierId = supplierService.getSupplierByUserId(userConnected.getId()).getId();
 
                 boolean emailSent = supplierService.sendEmailToContacts(newUserEmail, supplierId);
@@ -359,6 +362,47 @@ public class SupplierResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
 
+    }
+
+    @ApiOperation(value = "Deactivate supplier contact")
+    @RequestMapping(value = "/deactivateContact", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO deactivateSupplierContact(@RequestBody final Integer userId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating supplier");
+        try {
+            SupplierDTO supplier = supplierService.getSupplierByUserId(userConnected.getId());
+            boolean access = false;
+            for (UserDTO user : supplier.getUsers()) {
+                if (user.getId() == userConnected.getId()) {
+                    access = true;
+                    break;
+                }
+            }
+            if (!access) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
+            if (userConnected.getId() == userId) {
+                response.sendError(HttpStatus.BAD_REQUEST.value());
+                return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+            }
+
+            SupplierUserDTO resSupplier = supplierService.deactivateSupplierContact(userId);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier contact deactivated successfully");
+            _log.info("Deactivated user: " + userId + "- Supplier contact deactivated successfully");
+            return new ResponseDTO(true, resSupplier, null);
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to deactivate this supplier contact", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier contact cannot been deactivated", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
     }
 
 }

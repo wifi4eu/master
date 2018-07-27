@@ -11,13 +11,9 @@ public class SupplierDTO implements Serializable {
     private String bic;
     private String accountNumber;
     private String website;
-    private String contactName;
-    private String contactSurname;
-    private String contactPhonePrefix;
-    private String contactPhoneNumber;
     private String contactEmail;
     private String logo;
-    private List<SupplierUserDTO> supplierUsers;
+    private List<UserDTO> users;
     private List<SuppliedRegionDTO> suppliedRegions;
     private boolean legalCheck1;
     private boolean legalCheck2;
@@ -29,7 +25,7 @@ public class SupplierDTO implements Serializable {
     public SupplierDTO() {
     }
 
-    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<SupplierUserDTO> supplierUsers, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status, String lang) {
+    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactEmail, String logo, List<UserDTO> users, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status, String lang) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -37,13 +33,9 @@ public class SupplierDTO implements Serializable {
         this.bic = bic;
         this.accountNumber = accountNumber;
         this.website = website;
-        this.contactName = contactName;
-        this.contactSurname = contactSurname;
-        this.contactPhonePrefix = contactPhonePrefix;
-        this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;
         this.logo = logo;
-        this.supplierUsers = supplierUsers;
+        this.users = users;
         this.suppliedRegions = suppliedRegions;
         this.legalCheck1 = legalCheck1;
         this.legalCheck2 = legalCheck2;
@@ -109,38 +101,6 @@ public class SupplierDTO implements Serializable {
         this.website = website;
     }
 
-    public String getContactName() {
-        return contactName;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-
-    public String getContactSurname() {
-        return contactSurname;
-    }
-
-    public void setContactSurname(String contactSurname) {
-        this.contactSurname = contactSurname;
-    }
-
-    public String getContactPhonePrefix() {
-        return contactPhonePrefix;
-    }
-
-    public void setContactPhonePrefix(String contactPhonePrefix) {
-        this.contactPhonePrefix = contactPhonePrefix;
-    }
-
-    public String getContactPhoneNumber() {
-        return contactPhoneNumber;
-    }
-
-    public void setContactPhoneNumber(String contactPhoneNumber) {
-        this.contactPhoneNumber = contactPhoneNumber;
-    }
-
     public String getContactEmail() {
         return contactEmail;
     }
@@ -157,12 +117,12 @@ public class SupplierDTO implements Serializable {
         this.logo = logo;
     }
 
-    public List<SupplierUserDTO> getSupplierUsers() {
-        return supplierUsers;
+    public List<UserDTO> getUsers() {
+        return users;
     }
 
-    public void setSupplierUsers(List<SupplierUserDTO> supplierUsers) {
-        this.supplierUsers = supplierUsers;
+    public void setUsers(List<UserDTO> users) {
+        this.users = users;
     }
 
     public List<SuppliedRegionDTO> getSuppliedRegions() {
@@ -231,10 +191,6 @@ public class SupplierDTO implements Serializable {
                 ", bic='" + bic + '\'' +
                 ", accountNumber='" + accountNumber + '\'' +
                 ", website='" + website + '\'' +
-                ", contactName='" + contactName + '\'' +
-                ", contactSurname='" + contactSurname + '\'' +
-                ", contactPhonePrefix='" + contactPhonePrefix + '\'' +
-                ", contactPhoneNumber='" + contactPhoneNumber + '\'' +
                 ", contactEmail='" + contactEmail + '\'' +
                 ", logo='" + logo + '\'' +
                 ", suppliedRegions=" + suppliedRegions +

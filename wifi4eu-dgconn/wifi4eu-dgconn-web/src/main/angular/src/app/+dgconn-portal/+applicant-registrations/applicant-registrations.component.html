@@ -88,7 +88,7 @@
                 </p-column>
                 <p-column field="supportingDocuments" [sortable]="true" header="{{ 'dgConn.manageApplications.table.supportingDocuments' | translate }}" styleClass="text-center">
                   <ng-template let-row="rowData" pTemplate="body">
-                    <span *ngIf="row.supportingDocuments > 1">{{ 'dgConn.manageApplications.newUpload' | translate }}</span>
+                    <span *ngIf="row.supportingDocuments >= 1">{{ 'dgConn.manageApplications.newUpload' | translate }}</span>
                     <span *ngIf="row.supportingDocuments == 0">-</span>
                   </ng-template>
               </p-column>

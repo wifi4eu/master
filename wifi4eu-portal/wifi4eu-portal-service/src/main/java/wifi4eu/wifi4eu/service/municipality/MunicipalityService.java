@@ -203,7 +203,10 @@ public class MunicipalityService {
         List<MunicipalityDTO> municipalities = new ArrayList<>();
         List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userId);
         for (RegistrationDTO registration : registrations) {
-            municipalities.add(getMunicipalityById(registration.getMunicipalityId()));
+            MunicipalityDTO mun = getMunicipalityById(registration.getMunicipalityId());
+            if(mun != null) {
+                municipalities.add(mun);
+            }
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality with id " + registration.getMunicipalityId() + " added to the list");
         }
         return municipalities;

@@ -13,6 +13,7 @@ import { SuppliedRegionDTOBase } from "../../../shared/swagger/model/SuppliedReg
 import { SupplierDTOBase } from "../../../shared/swagger/model/SupplierDTO";
 import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { ResponseDTO, ResponseDTOBase } from "../../../shared/swagger";
+import { LocalStorageService } from "angular-2-local-storage";
 
 @Component({
     selector: 'supplier-edit-profile',
@@ -37,6 +38,7 @@ import { ResponseDTO, ResponseDTOBase } from "../../../shared/swagger";
 
 export class SupplierEditProfileComponent {
     private user: UserDTOBase;
+    private userConnected: UserDTOBase;
     private supplier: SupplierDTOBase;
     private websitePattern: string = '(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)';
     private countryOptions: SelectItem[] = [];
@@ -55,9 +57,12 @@ export class SupplierEditProfileComponent {
     private addUser: boolean = false;
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private newUserEmail: string = '';
+    private users: UserDTOBase[] = [];
+    private contactIndex: number;
+    private displayAddContactModal: boolean = false;
+ 
 
-
-    constructor(private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
+    constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
         let allow = true;
         if (this.sharedService.user) {
             this.user = this.sharedService.user;
@@ -68,13 +73,17 @@ export class SupplierEditProfileComponent {
                 this.getSupplierData();
             });
         }
+        let storedUser = this.localStorageService.get('user');
+        this.userConnected = storedUser ? JSON.parse(storedUser.toString()) : null;
     }
 
     private getSupplierData() {
         this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
+                  
                     this.supplier = supplier;
+                    this.users = this.supplier.users;
                     if (this.supplier.logo != null)
                         this.isLogoUploaded = true;
                     this.nutsApi.getNutsByLevel(0).subscribe(
@@ -191,7 +200,10 @@ export class SupplierEditProfileComponent {
         this.router.navigate(['..'], {relativeTo: this.activatedRoute});
     }
 
-    private saveSupplierData() {
+    private saveSupplierData(i) {
+        let storedUser = this.localStorageService.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+
         this.savingData = true;
         var newRegions = [];
 
@@ -213,9 +225,18 @@ export class SupplierEditProfileComponent {
         this.savingDataSubscription = this.supplierApi.updateSupplier(this.supplier).subscribe(
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
-                    this.savingData = false;
-                    this.sharedService.growlTranslation('Your profile data was updated successfully.', 'suppPortal.editProfile.save.success', 'success');
-                    this.goBack();
+                        this.supplier.users = this.users;
+                        this.supplierApi.updateContactDetails(this.supplier).subscribe(
+                            (user: UserDTOBase) =>{
+                                this.savingData = false;
+                                this.sharedService.growlTranslation('Your profile data was updated successfully.', 'suppPortal.editProfile.save.success', 'success');
+                                this.goBack();
+                            }, error =>{
+                                this.savingData = false;
+                                this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'suppPortal.editProfile.save.error', 'error');
+                            }
+            
+                        )            
                 } else {
                     this.savingData = false;
                     this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'suppPortal.editProfile.save.error', 'error');
@@ -225,11 +246,13 @@ export class SupplierEditProfileComponent {
                 this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'suppPortal.editProfile.save.error', 'error');
             }
         );
+
     }
 
     private closeModal(){
         this.addContact = false;
-        this.addUser = false;        
+        this.addUser = false;      
+        this.displayAddContactModal = false;  
         }
     
         private addNewContact(){       
@@ -252,4 +275,25 @@ export class SupplierEditProfileComponent {
         this.newUserEmail = '';
         this.addUser = true;
         }
+
+        private deactivateContactModal(){
+            this.closeModal();
+            this.supplierApi.deactivateSupplierContact(this.users[this.contactIndex].id).subscribe(
+                (responseDTO: ResponseDTOBase) => {
+                    this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.email.sent', 'success');
+                    this.closeModal();
+                    this.goBack();
+                }, error => {
+                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.closeModal();
+                }
+            );
+
+        }
+
+        private deactivateShowModal(i){
+            this.contactIndex = i;
+            this.displayAddContactModal = true;
+        }
+        
 }

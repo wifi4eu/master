@@ -1806,3 +1806,59 @@ input.email_profile::-ms-clear{
   overflow: hidden;
   white-space: normal;
 }
+
+.whitePanel {
+  background-color: white;
+  border: 2px solid #d2d2d2;
+}
+
+
+.whiteButton {
+  font-size: 0.8em;
+}
+
+.grantAgreementImg{
+  width: 6.5em;
+  height: 6.5em;
+  margin-top: 0.6em;
+}
+
+.smallCharacters{
+  font-size: 0.7em;
+}
+
+.voucherStatusAgreement{
+  vertical-align: middle;
+  font-size: 1.8em;
+}
+
+.voucherStatusAgreementBorder{
+  color: darkblue;
+  background: #fff;
+  margin-top: 2em;
+  border: solid 0.1em darkblue;
+}
+
+.voucherStatusBackButton{
+  margin-top: 3em;
+}
+.hoja-ID-card {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+}
+
+.documents-info {
+
+    div.alert {
+        background-color: #ffffff !important;
+        border: solid 1px #004494 !important;
+        color: #4a4a4a;
+        font-weight: bold;
+    }
+}
+
+.attachment-label{
+  font-style:italic;
+  color:#727272
+}
