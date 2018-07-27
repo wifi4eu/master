@@ -1,21 +1,16 @@
 package wifi4eu.wifi4eu.util;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
-import com.itextpdf.text.pdf.parser.PdfTextExtractor;
-import com.microsoft.applicationinsights.core.dependencies.apachecommons.io.FileUtils;
 import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
 import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
 import eu.cec.digit.ecas.client.constants.RequestConstant;
 import eu.cec.digit.ecas.client.signature.*;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.http.util.TextUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorage;
 import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorageUtils;
+import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
@@ -25,8 +20,6 @@ import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.nio.file.Files;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.EnumSet;
 
@@ -47,17 +40,18 @@ public class EcasSignatureUtil {
     @Autowired
     GrantAgreementService grantAgreementService;
 
-    /**    Sample Snippets to interact with the EU Login Signature Service.
-
-     doWhenSignatureRequired -> Contains the configuration of a transaction request using the UserConfirmationSignatureRequest. Notice the callBackUrlToHds variable that is used to generate the signatureRequest
-     and to compose the final EU Login URL to which the user is redirected (it is added as value of the service query parameter). callBackUrlToHds will contain
-     the URL of the application callback URL that will be invoked automatically from EU Login Signature Page when the user sign effectively the transaction.
-
-     handleSignature -> Is the callback URL handler. EU Login will redirect to the corresponding URL appending an additional query parameter "signatureId" that needs to be used together with the url value
-     to validate the EU Login Signature to get the Signed Message.
+    /**
+     * Sample Snippets to interact with the EU Login Signature Service.
+     * <p>
+     * doWhenSignatureRequired -> Contains the configuration of a transaction request using the UserConfirmationSignatureRequest. Notice the callBackUrlToHds variable that is used to generate the signatureRequest
+     * and to compose the final EU Login URL to which the user is redirected (it is added as value of the service query parameter). callBackUrlToHds will contain
+     * the URL of the application callback URL that will be invoked automatically from EU Login Signature Page when the user sign effectively the transaction.
+     * <p>
+     * handleSignature -> Is the callback URL handler. EU Login will redirect to the corresponding URL appending an additional query parameter "signatureId" that needs to be used together with the url value
+     * to validate the EU Login Signature to get the Signed Message.
      **/
 
-    public String constructSignatureHDSCallbackUrl(HttpServletRequest request, String downloadRequestId, String documentToBeSigned){
+    public String constructSignatureHDSCallbackUrl(HttpServletRequest request, String downloadRequestId, String documentToBeSigned) {
         return "http://localhost:8080/wifi4eu/api/signature/handleSignature/" + downloadRequestId + "/" + documentToBeSigned;
     }
 
@@ -68,14 +62,13 @@ public class EcasSignatureUtil {
      * @param documentToBeSigned
      * @param downloadRequestId
      * @return String
-    //* @throws HdsException
+     * //* @throws HdsException
      */
     //DocumentBean documentToBeSigned
     public String doWhenSignatureRequired(HttpServletRequest request, String documentToBeSigned, String downloadRequestId) /*throws HdsException*/ {
 
         //UserBean userBean = RequestExtractorUtil.getUser(request);
         //_log.info(String.format("Document with HERMES ID %s needs to be signed. Download request ID: %s. Signing user is %s", documentToBeSigned.getHermesDocId(), downloadRequestId, userBean.getEcasId()));
-
 
 
         String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, downloadRequestId, documentToBeSigned.toString());
@@ -137,7 +130,7 @@ public class EcasSignatureUtil {
         return buff.toString();
     }
 
-    public void createDoc(){
+    public void createDoc() {
 //        Document document = new Document();
 //        outputStream = new ByteArrayOutputStream();
 //        PdfWriter writer = PdfWriter.getInstance(document, outputStream);
@@ -218,7 +211,7 @@ public class EcasSignatureUtil {
     public ByteArrayOutputStream writeSignature(String signatureId, HttpServletRequest request, String downloadRequestId, String hdsDocumentId) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-        try{
+        try {
             String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, downloadRequestId, hdsDocumentId);
 
             SignatureClient client = new SignatureClient();
@@ -236,21 +229,21 @@ public class EcasSignatureUtil {
             _log.info("signatureId" + signatureId);
             _log.info("XML" + signatureProof);
 
-            String signString = userDTO.getName() + " " + userDTO.getSurname() + " signed as Legal Representative of the Beneficiary on " + new Date().toString() +  "  (transaction id " +
-                    ""+signatureId+")";
+            String signString = userDTO.getName() + " " + userDTO.getSurname() + " signed as Legal Representative of the Beneficiary on " + new Date().toString() + "  (transaction id " +
+                    "" + signatureId + ")";
 
-            GrantAgreement grantAgreement = grantAgreementService.getGrantAgreementById(Integer.parseInt(hdsDocumentId));
+            GrantAgreementDTO grantAgreement = grantAgreementService.getGrantAgreementById(Integer.parseInt(hdsDocumentId));
             grantAgreement.setSignatureId(signatureId);
 
-            outputStream = grantAgreementService.generateGrantAgreementPdf(Integer.parseInt(hdsDocumentId), grantAgreement, signString);
+            outputStream = grantAgreementService.generateGrantAgreementPdfSigned(grantAgreement, signString);
 
             byte[] data = outputStream.toByteArray();
 
-            SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicy(EnumSet.of(SharedAccessBlobPermissions.READ),20);
+            SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicy(EnumSet.of(SharedAccessBlobPermissions.READ), 20);
 
-            String downloadURL = azureBlobStorage.getDocumentWithTokenAzureStorage("grant_agreement_"+hdsDocumentId+".pdf",data, policy);
+            String downloadURL = azureBlobStorage.getDocumentWithTokenAzureStorage("grant_agreement_" + hdsDocumentId + ".pdf", data, policy);
 
-            grantAgreement.setDocument_location(downloadURL);
+            grantAgreement.setDocumentLocation(downloadURL);
             grantAgreement.setDateSignature(new Date());
             grantAgreementService.createGrantAgreement(grantAgreement);
 
@@ -266,7 +259,7 @@ public class EcasSignatureUtil {
 //            stamper.close();
 //            reader.close();
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
 
         }
 

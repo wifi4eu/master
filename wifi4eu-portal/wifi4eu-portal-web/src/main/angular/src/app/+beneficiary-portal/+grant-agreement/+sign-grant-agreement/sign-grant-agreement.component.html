@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div class="row labelModal">
+  <!--   <div class="row labelModal">
         <div class="col-sm-12">
             <p class="beneficiaryTitle">{{ 'benefPortal.grantAgreement.title' | translate }}</p>
             <p [innerHTML]="'benefProtal.grantAgreement.description' | translate"></p>
@@ -117,7 +117,7 @@
             <div class="col-sm-8">
                 <p class="profileData">{{authorizedUser?.email}}</p>
             </div>
-        </div>
+        </div> -->
       <!--   <div class="row">
             <div class="col-sm-4">
                 <p>{{ 'benefPortal.granAgreement.addressLabel' | translate }}</p>
@@ -141,21 +141,18 @@
             <div class="col-sm-8">
                 <p class="profileData">{{authorizedUser?.postalCode}}</p>
             </div>
-        </div> -->
-    </div>  
-    <!-- <div class="col-sm-8">
-        <div class="col-sm-12">
-            <br><br>
-            <select name="" id="">
-                <option *ngFor="let lang of languagesArray" [ngValue]="lang.code">
-                    {{lang.label}}
-                </option>
-            </select>
-            <button class="btn btn-primary whiteButton">{{ 'benefPortal.grantAgreement.languageButton' | translate}}</button>
-            <br><br>
         </div>
-    </div> -->
-    <br><br><br>
+    </div>   -->
+    <div class="col-sm-12">
+        <br><br>
+        <select name="" (change)="updateLanguage($event.target.value)" id="">
+            <option *ngFor="let lang of languagesArray" value="{{lang.code}}" [ngValue]="lang.code">
+                {{lang.label}}
+            </option>
+        </select>
+        <br><br>
+    </div>
+    <br>
     <div class="col-sm-12 whitePanel">
         <div class="row">
             <div class="col-sm-2">
@@ -164,7 +161,7 @@
             <div class="col-sm-8">
                 <p class="profileData">{{ 'benefPortal.grantAgreement.document' | translate}}</p>
                 <p class="smallCharacters">{{ 'benefPortal.grantAgreement.documentDownload' | translate}}</p>
-                <a class="smallCharacters" (click)="downladPDF()"><i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate}}</a>
+                <a class="smallCharacters" (click)="downladPDF()"><i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download.grantAgreementPDF' | translate}} {{language}}</a> 
             </div>   
         </div>
     </div>
@@ -172,7 +169,7 @@
         <p class="smallCharacters">{{ 'benefPortal.grantAgreement.downloadText' | translate}}</p>
         <p class="smallCharacters"><input type="checkbox">{{ 'benefPortal.grantAgreement.confirmCheckbox' | translate}}</p>
         <br>
-        <button class="btn btn-primary smallCharacters" disabled>{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
+        <button class="btn btn-primary smallCharacters">{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
     </div>
 
 </div>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
@@ -49,18 +50,18 @@ public class EcasSignatureResource {
     UserService userService;
 
     @RequestMapping(value = "/v2/sign/{applicationId}", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity<byte[]>  signature2(@PathVariable("applicationId") Integer applicationId, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<byte[]> signature2(@PathVariable("applicationId") Integer applicationId, HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
             String filename = "grantAgreementPdf.docx";
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-            GrantAgreement grantAgreement = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
-            if(grantAgreement == null){
+            GrantAgreementDTO grantAgreement = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
+            if (grantAgreement == null) {
                 grantAgreement = grantAgreementService.initializeGrantAgreement(applicationId);
             }
-            return new ResponseEntity<>(grantAgreementService.generateGrantAgreementPdf(applicationId, grantAgreement, "").toByteArray(), headers, HttpStatus.OK);
+            return new ResponseEntity<>(grantAgreementService.generateGrantAgreementPdfSigned(grantAgreement, "").toByteArray(), headers, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,9 +73,9 @@ public class EcasSignatureResource {
         ModelAndView mav = null;
         try {
 
-            GrantAgreement grantAgreement = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
+            GrantAgreementDTO grantAgreement = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
 
-            if(grantAgreement == null){
+            if (grantAgreement == null) {
                 grantAgreement = grantAgreementService.initializeGrantAgreement(applicationId);
             }
 
@@ -101,8 +102,7 @@ public class EcasSignatureResource {
             return new ResponseEntity<>(ecasSignatureUtil.writeSignature(signatureId, request, downloadRequestId, hdsDocumentId).toByteArray(), headers, HttpStatus.OK);
 
             //mav = new ModelAndView("redirect:" + userService.getBaseUrl());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
 
         }
 

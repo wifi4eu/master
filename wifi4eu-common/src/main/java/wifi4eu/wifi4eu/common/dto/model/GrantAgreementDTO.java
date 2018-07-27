@@ -1,44 +1,24 @@
-package wifi4eu.wifi4eu.entity.grantAgreement;
+package wifi4eu.wifi4eu.common.dto.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import java.io.Serializable;
 import java.util.Date;
 
-@Entity(name = "grant_agreement")
-public class GrantAgreement {
-
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class GrantAgreementDTO implements Serializable {
     private Integer id;
-
-    @Column(name = "signature_id")
     private String signatureId;
-
-    @Column(name = "counter_signature_id")
     private String counterSignatureId;
-
-    @Column(name = "signature_proof")
     private String signatureProof;
-
-    @Column(name = "application_id")
     private Integer applicationId;
-
-    @Column(name = "date_signature")
     private Date dateSignature;
-
-    @Column(name = "date_counter_signature")
     private Date dateCounterSignature;
-
-    @Column(name = "document_location")
     private String documentLocation;
-
-    @Column(name = "document_language")
     private String documentLanguage;
 
-    public GrantAgreement() {
+    public GrantAgreementDTO() {
     }
 
-    public GrantAgreement(Integer id, String signatureId, String counterSignatureId, String signatureProof, Integer applicationId, Date dateSignature, Date dateCounterSignature, String document_location, String document_language) {
+    public GrantAgreementDTO(Integer id, String signatureId, String counterSignatureId, String signatureProof, Integer applicationId, Date dateSignature, Date dateCounterSignature, String documentLocation, String documentLanguage) {
         this.id = id;
         this.signatureId = signatureId;
         this.counterSignatureId = counterSignatureId;
@@ -46,10 +26,9 @@ public class GrantAgreement {
         this.applicationId = applicationId;
         this.dateSignature = dateSignature;
         this.dateCounterSignature = dateCounterSignature;
-        this.documentLocation = document_location;
-        this.documentLanguage = document_language;
+        this.documentLocation = documentLocation;
+        this.documentLanguage = documentLanguage;
     }
-
 
     public Integer getId() {
         return id;
