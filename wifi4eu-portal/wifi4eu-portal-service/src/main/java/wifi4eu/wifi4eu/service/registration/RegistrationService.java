@@ -579,5 +579,12 @@ public class RegistrationService {
         return true;
     }
 
+    public List<LegalFileDTO> getHistoryDocuments(Integer registrationId, Integer type, Integer userId, String ecasUsername) {
+        if (type == null || type == 0) {
+           return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId, userId));
+        }
+        return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
+    }
+
 
 }

@@ -233,14 +233,21 @@ public class RegistrationResource {
     @ApiOperation(value = "Get registration by specific userThread id")
     @RequestMapping(value = "/{registrationId}/getDocument/{fileId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO getLegalFilesByFileType(@PathVariable("registrationId") final Integer registrationId, @PathVariable("fileId") final Integer fileId, HttpServletResponse response, HttpServletRequest request) {
+    public ResponseDTO getLegalFilesByFileType(@PathVariable("registrationId") final Integer registrationId, @PathVariable("fileId") final Integer fileId, HttpServletResponse response, HttpServletRequest request) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId + " and file id " + fileId);
-        if (registrationId == null || (!legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId) && userConnected.getType() != 5)) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        try {
+            if (registrationId == null || (!legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId) && userConnected.getType() != 5)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
+
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         }
-        permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
 
         LegalFile legalFile = legalFilesRepository.findOne(fileId); //if file doesnt exist user doesnt have permission
         String fileName = legalFile.getFileName();
@@ -269,8 +276,60 @@ public class RegistrationResource {
         return new ResponseDTO(true, null, null);
     }
 
+    @ApiOperation(value = "Get past of documents for type")
+    @RequestMapping(value = "/{registrationId}/getHistory/{type}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO getHistoryForType(@PathVariable("registrationId") final Integer registrationId, @PathVariable("type") final Integer type,
+                                         HttpServletResponse response, HttpServletRequest request) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting History for document type " + type + " and registration id " +
+                registrationId);
+        try {
+            if (registrationId == null || (!registrationService.checkUserWithRegistration(registrationId, userConnected.getId())) && userConnected
+                    .getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
+            return new ResponseDTO(true, registrationService.getHistoryDocuments(registrationId, type, userConnected.getId(), userConnected
+                    .getEcasUsername()), null);
 
-    @ApiOperation(value = "getLegalFile")
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade
+                    .getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+    }
+
+    @ApiOperation(value = "Get past of documents")
+    @RequestMapping(value = "/{registrationId}/getHistory", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO getHistoryAll(@PathVariable("registrationId") final Integer registrationId,
+                                         HttpServletResponse response, HttpServletRequest request) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting History for documents" + " of registration id " +
+                registrationId);
+        try {
+            if (registrationId == null || (!registrationService.checkUserWithRegistration(registrationId, userConnected.getId())) && userConnected
+                    .getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
+            return new ResponseDTO(true, registrationService.getHistoryDocuments(registrationId, null, userConnected.getId(), userConnected
+                    .getEcasUsername()), null);
+
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade
+                    .getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+    }
+
+
+        @ApiOperation(value = "getLegalFile")
     @RequestMapping(value = "/getLegalFile", method = RequestMethod.GET)
     @ResponseBody
     public LegalFileCorrectionReasonDTO getLegalFile() {
