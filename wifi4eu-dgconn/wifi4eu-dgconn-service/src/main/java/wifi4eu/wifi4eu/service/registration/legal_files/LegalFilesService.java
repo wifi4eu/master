@@ -5,11 +5,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.entity.registration.LegalFiles;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.*;
 import wifi4eu.wifi4eu.repository.registration.legal_files.*;
-
-import java.util.List;
 
 @Service("legalFilesService")
 public class LegalFilesService {
@@ -22,7 +19,7 @@ public class LegalFilesService {
 	@Autowired
 	LegalFilesMapper legalFilesMapper;
 
-	public LegalFilesDTO getLegalFileByRegistrationIdFileType(Integer registrationId, Integer fileType) {
+	public LegalFileDTO getLegalFileByRegistrationIdFileType(Integer registrationId, Integer fileType) {
 		return legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationId, fileType));
 	}
 

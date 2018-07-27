@@ -399,35 +399,6 @@ public class ApplicationService {
         return applicantsList;
     }
 
-    public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application, HttpServletRequest request) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending legal documents for correction");
-        ApplicationDTO applicationDB = applicationMapper.toDTO(applicationRepository.findOne(application.getId()));
-        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(applicationDB.getRegistrationId());
-        boolean pendingFollowup = false;
-        for (LegalFileCorrectionReasonDTO legalFile : legalFiles) {
-            if (legalFile.getRequestCorrection() && legalFile.getCorrectionReason() != null) {
-                pendingFollowup = true;
-                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Legal file: " + legalFile.getCorrectionReason() + " from registration " + applicationDB.getRegistrationId() + " is pending for correction");
-                break;
-            }
-        }
-        RegistrationDTO registration = registrationService.getRegistrationById(applicationDB.getRegistrationId());
-        if (pendingFollowup) {
-            registration.setAllFilesFlag(0);
-            applicationDB.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
-        } else {
-            registration.setAllFilesFlag(1);
-            applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
-        }
-        applicationDB.setInvalidateReason(null);
-        registrationService.saveRegistration(registration);
-        ApplicationDTO applicationResponse = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
-        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
-        return applicationResponse;
-    }
-
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);

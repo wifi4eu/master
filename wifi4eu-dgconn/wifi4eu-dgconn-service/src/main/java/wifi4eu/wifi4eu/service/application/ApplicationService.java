@@ -26,7 +26,6 @@ import wifi4eu.wifi4eu.repository.application.*;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
-import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
@@ -648,7 +647,7 @@ public class ApplicationService {
                         //if this document in particular was requested before the the email was sent we check to invalidate it
                         if (legalFileCorrectionReason.getRequestCorrection() && (legalType == 1 || legalType == 3) && legalFileCorrectionReason
                                 .getRequestCorrectionDate().getTime() < dateRequest) {
-                            LegalFilesDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(applicationUtil.getRegistrationId(),
+                            LegalFileDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(applicationUtil.getRegistrationId(),
                                     legalType);
                             if (legalFile == null || (legalFile.getUploadTime().getTime() < dateRequest)) {
                                 // the file either hasn't been uploaded again or never was. We proceed to invalidate this application.

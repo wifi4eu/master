@@ -18,4 +18,6 @@ public interface RegistrationUsersRepository extends CrudRepository<Registration
     RegistrationUsers findByContactEmailAndMunicipality(String email, Integer municipalityId);
 
     List<RegistrationUsers> findByUserId(Integer userId);
+    List<RegistrationUsers> findByRegistrationId(Integer registration);
+
 }
