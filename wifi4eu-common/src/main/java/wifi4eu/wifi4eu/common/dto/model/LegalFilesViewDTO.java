@@ -7,6 +7,10 @@ public class LegalFilesViewDTO implements Serializable {
 
     private List<LegalFileDTO> arrayOfFiles;
 
+    public LegalFilesViewDTO(){
+
+    }
+
     public LegalFilesViewDTO(List<LegalFileDTO> arrayOfFiles) {
         this.arrayOfFiles = arrayOfFiles;
     }

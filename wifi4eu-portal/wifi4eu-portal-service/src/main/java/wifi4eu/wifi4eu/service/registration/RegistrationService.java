@@ -231,7 +231,7 @@ public class RegistrationService {
     }
 
     private void uploadDocument (Integer registrationID, LegalFileDTO legalFile, UserDTO userConnected, String ip) throws Exception {
-        String legalFileToUpload = legalFile.getFileMime();
+        String legalFileToUpload = legalFile.getFileData();
         if (legalFileToUpload != null) {
             String base64 = LegalFilesService.getBase64Data(legalFileToUpload);
             if(base64 != null && !base64.isEmpty()) {
@@ -248,6 +248,7 @@ public class RegistrationService {
                     throw new Exception("File must have a valid extension.");
                 } else{
                     //file name also comes from front input
+                    legalFile.setId(0);
                     legalFile.setRegistration(registrationID);
                     legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
                     legalFile.setUploadTime(new Date());
@@ -256,7 +257,7 @@ public class RegistrationService {
                     legalFile.setUserId(userConnected.getId());
                     legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
                     _log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
-                            "document number 1");
+                            "document number type:" + legalFile.getFileType());
 
                     LegalFileCorrectionReason legalFilesCorrectionReasons = legalFileCorrectionReasonRepository
                             .findLastCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(), userConnected.getId(), legalFile.getFileType());
