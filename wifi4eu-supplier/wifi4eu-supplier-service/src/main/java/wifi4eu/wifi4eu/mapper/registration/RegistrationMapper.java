@@ -15,10 +15,13 @@ public interface RegistrationMapper {
             @Mapping(source = "entity.municipality.id", target = "municipalityId")
     })
     RegistrationDTO toDTO(Registration entity);
+
     @Mappings({
             @Mapping(source = "vo.municipalityId", target = "municipality.id")
     })
     Registration toEntity(RegistrationDTO vo);
+
     List<RegistrationDTO> toDTOList(List<Registration> list);
+
     List<Registration> toEntityList(List<RegistrationDTO> list);
 }

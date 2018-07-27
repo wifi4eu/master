@@ -1,30 +1,24 @@
 package wifi4eu.supplier.web.rest;
 
 
-        import java.util.ArrayList;
-        import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
-        import javax.servlet.http.HttpServletResponse;
-
-        import org.apache.log4j.Logger;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.context.ApplicationEventPublisher;
-        import org.springframework.http.HttpStatus;
-        import org.springframework.stereotype.Controller;
-        import org.springframework.web.bind.annotation.PathVariable;
-        import org.springframework.web.bind.annotation.RequestBody;
-        import org.springframework.web.bind.annotation.RequestMapping;
-        import org.springframework.web.bind.annotation.RequestMethod;
-        import org.springframework.web.bind.annotation.RequestParam;
-        import org.springframework.web.bind.annotation.ResponseBody;
-        import org.springframework.web.bind.annotation.ResponseStatus;
-        import org.springframework.web.util.UriComponentsBuilder;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/foos")
 public class FooController {
 
-    Logger _log = Logger.getLogger(FooController.class);
+    Logger _log = LogManager.getLogger(FooController.class);
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;
@@ -58,7 +52,7 @@ public class FooController {
         return list;
     }
 
-    @RequestMapping(params = { "page", "size" }, method = RequestMethod.GET)
+    @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET)
     @ResponseBody
     public List<String> findPaginated(@RequestParam("page") final int page, @RequestParam("size") final int size,
                                       final UriComponentsBuilder uriBuilder, final HttpServletResponse response) {
