@@ -57,15 +57,56 @@ public class GrantAgreementService {
         return createGrantAgreement(grantAgreementMapper.toDTO(grantAgreement));
     }
 
-    public ByteArrayOutputStream generateGrantAgreementPdf(Integer applicationId, GrantAgreementDTO grantAgreement, String signString) throws IOException, DocumentException {
+    public ByteArrayOutputStream generateGrantAgreementPdf(GrantAgreementDTO grantAgreement) throws IOException, DocumentException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfStamper pdfStamper = null;
         PdfReader pdfReader = null;
         try {
+            pdfReader = new PdfReader("C:\\grant_agreement_template_" + grantAgreement.getDocumentLanguage() + ".pdf");
+            pdfStamper = new PdfStamper(pdfReader, outputStream);
 
-            ApplicationDTO applicationDTO = applicationService.getApplicationById(applicationId);
+            BaseFont baseFont = BaseFont.createFont(
+                    BaseFont.TIMES_ROMAN,
+                    BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 
-            pdfReader = new PdfReader("C:\\grant_agreement_template.pdf");
+
+            int pages = pdfReader.getNumberOfPages();
+
+            for (int i = 1; i <= pages; i++) {
+                if (i == 1) {
+                    PdfContentByte pageContentByte = pdfStamper.getOverContent(i);
+
+                    BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, "Cp1252", BaseFont.EMBEDDED);
+                    Font f = new Font(bf, 8);
+                    ColumnText ct = new ColumnText(pageContentByte);
+                    ct.setSimpleColumn(5, 0, pdfReader.getPageSize(i).getWidth() / 2, 400f);
+                    ct.addElement(new Paragraph(grantAgreement.getDocumentLanguage(), f));
+                    ct.go();
+                }
+            }
+
+            return outputStream;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (pdfStamper != null) {
+                pdfStamper.close();
+            }
+            if (pdfReader != null) {
+                pdfReader.close();
+            }
+            outputStream.close();
+        }
+    }
+
+
+    public ByteArrayOutputStream generateGrantAgreementPdfSigned(GrantAgreementDTO grantAgreement, String signString) throws IOException, DocumentException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfStamper pdfStamper = null;
+        PdfReader pdfReader = null;
+        try {
+            pdfReader = new PdfReader("C:\\grant_agreement_template_" + grantAgreement.getDocumentLanguage() + ".pdf");
             pdfStamper = new PdfStamper(pdfReader, outputStream);
 
             BaseFont baseFont = BaseFont.createFont(
@@ -88,6 +129,18 @@ public class GrantAgreementService {
                     ct.addElement(new Paragraph(signString, f));
                     ct.go();
                 }
+
+                if (i == 1) {
+                    PdfContentByte pageContentByte =
+                            pdfStamper.getOverContent(i);
+
+                    BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, "Cp1252", BaseFont.EMBEDDED);
+                    Font f = new Font(bf, 8);
+                    ColumnText ct = new ColumnText(pageContentByte);
+                    ct.setSimpleColumn(5, 0, pdfReader.getPageSize(i).getWidth() / 2, 400f);
+                    ct.addElement(new Paragraph(grantAgreement.getDocumentLanguage(), f));
+                    ct.go();
+                }
             }
 
             return outputStream;
@@ -103,12 +156,6 @@ public class GrantAgreementService {
             }
             outputStream.close();
         }
-//        byte[] base64 = Base64.encodeBase64(outputStream.toByteArray());
-
-//        GrantAgreement grantAgreement = new GrantAgreement();
-//        grantAgreement.setApplicationId(applicationId);
-//        grantAgreement.setDocumentLocation(new String(base64));
-//        createGrantAgreement(grantAgreement);
 
     }
 

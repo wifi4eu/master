@@ -235,7 +235,7 @@ public class EcasSignatureUtil {
             GrantAgreementDTO grantAgreement = grantAgreementService.getGrantAgreementById(Integer.parseInt(hdsDocumentId));
             grantAgreement.setSignatureId(signatureId);
 
-            outputStream = grantAgreementService.generateGrantAgreementPdf(Integer.parseInt(hdsDocumentId), grantAgreement, signString);
+            outputStream = grantAgreementService.generateGrantAgreementPdfSigned(grantAgreement, signString);
 
             byte[] data = outputStream.toByteArray();
 

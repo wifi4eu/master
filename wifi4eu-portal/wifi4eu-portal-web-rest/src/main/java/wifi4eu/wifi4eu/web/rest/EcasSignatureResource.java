@@ -61,7 +61,7 @@ public class EcasSignatureResource {
             if (grantAgreement == null) {
                 grantAgreement = grantAgreementService.initializeGrantAgreement(applicationId);
             }
-            return new ResponseEntity<>(grantAgreementService.generateGrantAgreementPdf(applicationId, grantAgreement, "").toByteArray(), headers, HttpStatus.OK);
+            return new ResponseEntity<>(grantAgreementService.generateGrantAgreementPdfSigned(grantAgreement, "").toByteArray(), headers, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
