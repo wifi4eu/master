@@ -10,7 +10,7 @@ public class LocalDB {
 
     private Connection db;
 
-    private final String insertSQL = "INSERT INTO applications (id, r, u, m, ip, ecas, data) VALUES (?,?,?,?,?,?,?)";
+    private final String insertSQL = "INSERT INTO applications (redis_id, r, u, m, ip, data) VALUES (?,?,?,?,?,?)";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -29,11 +29,33 @@ public class LocalDB {
     /// Initialise table(s) if they don't exist
     ///
     private void bootstrapSchema() throws Exception {
+        logger.info("[I] bootstrapSchema");
 
         String sql = Util.getResource("/static/dbschema.sql");
 
         Statement st = db.createStatement();
         st.executeUpdate(sql);
+
+        logger.info("[F] bootstrapSchema");
+    }
+
+    public int countApplications() throws Exception {
+        logger.info("[I] countApplications");
+        int count = 0;
+
+        String sql = "SELECT count(*) AS total FROM applications";
+        Statement st = db.createStatement();
+
+        ResultSet r = st.executeQuery(sql);
+
+        if (r != null) {
+            count = r.getInt("total");
+        } else {
+            logger.error("countApplications: Query error");
+        }
+
+        logger.info("[F] countApplications");
+        return count;
     }
 
     ///
@@ -43,13 +65,12 @@ public class LocalDB {
 
         PreparedStatement ps = db.prepareStatement(insertSQL);
 
-        ps.setString(1, app.id);
+        ps.setString(1, app.redis_id);
         ps.setString(2, app.r);
         ps.setString(3, app.u);
         ps.setString(4, app.m);
         ps.setString(5, app.ip);
-        ps.setString(6, app.ecas);
-        ps.setString(7, app.data);
+        ps.setString(6, app.data);
 
         ps.executeUpdate();
 

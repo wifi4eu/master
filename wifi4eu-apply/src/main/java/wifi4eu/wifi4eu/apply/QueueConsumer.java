@@ -2,8 +2,10 @@ package wifi4eu.wifi4eu.apply;
 
 import io.lettuce.core.Consumer;
 import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisURI;
 import io.lettuce.core.StreamMessage;
 import io.lettuce.core.XReadArgs;
+import io.lettuce.core.XReadArgs.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisStreamCommands;
 
@@ -45,6 +47,8 @@ import org.springframework.stereotype.Component;
 
 public class QueueConsumer implements Runnable {
 
+    private String lastReadMessageId;
+
     private RedisClient redis = null;
     private StatefulRedisConnection<String, String> connection = null;
     private RedisStreamCommands<String, String> streamCommands = null;
@@ -61,6 +65,8 @@ public class QueueConsumer implements Runnable {
 
     public QueueConsumer()  throws IOException {
 
+        lastReadMessageId = "0";
+
         cfgQueueName = Config.getEnvironment("wifi4eu.queue.name");
         cfgGroupName = Config.getEnvironment("wifi4eu.queue.cgroup");
         cfgConsumerId = Config.getEnvironment("wifi4eu.queue.consumerid");
@@ -68,34 +74,67 @@ public class QueueConsumer implements Runnable {
         cfgReadTimeout = Long.valueOf(Config.getEnvironment("wifi4eu.queue.readinterval"), 10);
         cfgBatchSize   = Long.valueOf(Config.getEnvironment("wifi4eu.queue.batchsize"), 10);
 
+        logger.info("cfgQueueName:" + cfgQueueName);
+        logger.info("cfgGroupName:" + cfgGroupName);
+        logger.info("cfgConsumerId:" + cfgConsumerId);
+
+        logger.info("cfgReadTimeout:" + cfgReadTimeout);
+        logger.info("cfgBatchSize:" + cfgBatchSize);
+
         if (redis == null) {
             connect();
         }
     }
 
-    private synchronized void connect() throws IOException {
+    /*private synchronized void connect() throws IOException {
 
         String cfgRedisUri = Config.getEnvironment("wifi4eu.queue.uri");
 
-        logger.info("Connecting to redis at " + cfgRedisUri);
+        logger.info("Connecting to redis at :" + cfgRedisUri);
 
-        redis = RedisClient.create(cfgRedisUri);
-
+        //redis = RedisClient.create(cfgRedisUri);
+        redis = RedisClient.create(RedisURI.create(cfgRedisUri, 9000));
         redis.setDefaultTimeout(Duration.ofMillis(cfgReadTimeout));
 
         connection = redis.connect();
         streamCommands = connection.sync();
+
+        logger.info("Connected: " + cfgRedisUri);
+    }*/
+
+    //-- Using a pool of sentinels
+    private synchronized void connect() throws IOException {
+        logger.info("Connecting to redis sentinel");
+
+        String sentinelUri1 = Config.getEnvironment("wifi4eu.queue.uri.1");
+        String sentinelUri2 = Config.getEnvironment("wifi4eu.queue.uri.2");
+        String sentinelUri3 = Config.getEnvironment("wifi4eu.queue.uri.3");
+
+        Integer sentinelPort = Integer.valueOf(Config.getEnvironment("wifi4eu.queue.sentinel.port"));
+
+        RedisURI redisUri = RedisURI.Builder.sentinel(sentinelUri1, sentinelPort, "master1")
+                .withSentinel(sentinelUri2, sentinelPort)
+                .withSentinel(sentinelUri3, sentinelPort)
+                .build();
+
+        redis = RedisClient.create(redisUri);
+        redis.setDefaultTimeout(Duration.ofMillis(cfgReadTimeout));
+
+        connection = redis.connect();
+        streamCommands = connection.sync();
+
+        logger.info("Connected to sentinel");
     }
 
-
+    /*
     private List<StreamMessage<String, String>> readQueue() throws Exception {
 
         //streamCommands.xgroupCreate(cfgQueueName, cfgGroupName, "$");
         //System.out.println("LAST CONSUMED: " + XReadArgs.StreamOffset.lastConsumed(cfgQueueName));
 
         // List<StreamMessage<String, String>> messages = streamCommands.xreadgroup(
-        //         Consumer.from(cfgGroupName, cfgConsumerId), XReadArgs.StreamOffset.from(cfgQueueName, "0")/*XReadArgs.StreamOffset.lastConsumed(cfgQueueName)*/);
-
+        //         Consumer.from(cfgGroupName, cfgConsumerId), XReadArgs.StreamOffset.from(cfgQueueName, "0")/*XReadArgs.StreamOffset.lastConsumed(cfgQueueName));*/
+/*
         logger.info("Attempting queue read (stream={}, group={}, consumer={}", cfgQueueName, cfgGroupName, cfgConsumerId);
 
         List<StreamMessage<String, String>> messages = streamCommands.xreadgroup(
@@ -109,15 +148,28 @@ public class QueueConsumer implements Runnable {
         }
 
         return messages;
+    }*/
+
+    private List<StreamMessage<String, String>> readQueue(String fromMessageId) throws Exception {
+        logger.info("[I] readQueueSince");
+
+        List<StreamMessage<String, String>> messages = streamCommands.xread(StreamOffset.from(cfgQueueName, fromMessageId));
+
+        if (messages.size() > 0) {
+            logger.info("READ " + messages.size() + " items from " + cfgQueueName);
+        }
+
+        logger.info("[F] readQueueSince");
+        return messages;
     }
 
     private Application getApplication(StreamMessage<String, String> msg) {
 
         Application app = new Application(msg.getId(), msg.getBody().get("r"),
                 msg.getBody().get("u"), msg.getBody().get("m"), msg.getBody().get("ip"),
-                msg.getBody().get("ecas"), null);
+                msg.getBody().get("time"));
 
-        logger.info("QUEUE ENTRY: <{}> r={} u={} m={} ip={}", app.id, app.r, app.u, app.m, app.ip, app.ecas);
+        logger.info("QUEUE ENTRY: <{}> r={} u={} m={} ip={}", app.redis_id, app.r, app.u, app.m, app.ip, app.data);
 
         return app;
     }
@@ -128,11 +180,15 @@ public class QueueConsumer implements Runnable {
 
         try {
 
+            logger.info("-- Initializing DB");
             LocalDB db = new LocalDB();
+            logger.info("-- DB Initialized");
 
             while (true) {
 
-                List<StreamMessage<String, String>> messages = readQueue();
+                logger.info("Checking for new messagess since: " + lastReadMessageId);
+
+                List<StreamMessage<String, String>> messages = readQueue(lastReadMessageId);
 
                 for (StreamMessage<String, String> msg : messages) {
 
@@ -140,16 +196,15 @@ public class QueueConsumer implements Runnable {
 
                     try {
 
-                        Application app = getApplication(msg);
+                        Monitor.addReceived();
 
-                        // TODO: validate entry and store in DB
+                        Application app = getApplication(msg);
 
                         db.saveMessage(app);
 
-                        Monitor.addReceived();
+                        lastReadMessageId = msg.getId(); //-- Incremental reads to redis
 
                         ok = true;
-
                     } catch (Exception ex) {
 
                         logger.warn("Error processing entry {}: {}", msg.getId(), ex.getMessage());
@@ -162,17 +217,20 @@ public class QueueConsumer implements Runnable {
 
                         if (ok == true && msg != null) {
 
-                            streamCommands.xack(cfgQueueName, cfgGroupName, msg.getId());
+                            //streamCommands.xack(cfgQueueName, cfgGroupName, msg.getId());
                             logger.info("Entry {} saved and acknowledged", msg.getId());
 
                             Monitor.addProcessed();
                         }
                     }
                 }
+
+                Thread.sleep(30000);
             }
         } catch (Exception ex) {
 
             logger.error("Error reading from queue", ex);
+            redis.shutdown();
 
             // TODO UNCAUGHT EXCEPTION IN MAIN LOOP
         }
