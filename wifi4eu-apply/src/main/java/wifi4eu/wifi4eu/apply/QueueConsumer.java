@@ -151,15 +151,17 @@ public class QueueConsumer implements Runnable {
     }*/
 
     private List<StreamMessage<String, String>> readQueue(String fromMessageId) throws Exception {
-        logger.info("[I] readQueueSince");
+        logger.debug("[I] readQueueSince");
 
         List<StreamMessage<String, String>> messages = streamCommands.xread(StreamOffset.from(cfgQueueName, fromMessageId));
 
         if (messages.size() > 0) {
             logger.info("READ " + messages.size() + " items from " + cfgQueueName);
+        } else {
+            logger.info("No new messages found.");
         }
 
-        logger.info("[F] readQueueSince");
+        logger.debug("[F] readQueueSince");
         return messages;
     }
 

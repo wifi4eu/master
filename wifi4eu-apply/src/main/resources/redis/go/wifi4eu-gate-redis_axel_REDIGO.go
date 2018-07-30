@@ -48,8 +48,8 @@ func initUsersMap() map[int64]string {
 	fmt.Println("[I] Initializing users map")
 	start := time.Now()
 
-	//const queryCountUsers = "SELECT count(*) FROM users u INNER JOIN conditions_agreement ca ON u.id = ca.user_id WHERE u.csrf_token IS NOT NULL AND ca.status = 1"
-	const queryUsers = "SELECT u.id, u.csrf_token FROM users u INNER JOIN conditions_agreement ca ON u.id = ca.user_id WHERE u.csrf_token IS NOT NULL AND ca.status = 1 ORDER BY u.id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY"
+	const queryUsers = "SELECT u.id, u.csrf_token FROM users u INNER JOIN conditions_agreement ca ON u.id = ca.user_id WHERE u.csrf_token IS NOT NULL AND ca.status = 1"
+	//const queryUsers = "SELECT u.id, u.csrf_token FROM users u INNER JOIN conditions_agreement ca ON u.id = ca.user_id WHERE u.csrf_token IS NOT NULL AND ca.status = 1 ORDER BY u.id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY"
 	
 	var userMap = make(map[int64]string)
  
@@ -136,13 +136,14 @@ func initUsersMap() map[int64]string {
 		)
 
 		if err := rows.Scan(&uId, &rId, &mId); err != nil {
-			log.Fatal(err)
+			fmt.Printf("Something went wrong: (%d,%d) of user %d\n", rId, mId, uId) //-- For testing purposes
+			//log.Fatal(err)
 			continue
 		}
 
 		tupl := UserMunicipalityTuple{uId: uId, mId: mId}
 		
-		fmt.Printf("Added registration: (%d,%d) of user %d\n", rId, mId, uId) //-- For testing purposes
+		//fmt.Printf("Added registration: (%d,%d) of user %d\n", rId, mId, uId) //-- For testing purposes
 		regsMap[rId] = tupl
 	}
 
@@ -264,7 +265,7 @@ func getCallOpen() (int64, time.Time, time.Time) {
  
     e.GET("/", func(c echo.Context) error {
 
-        return c.String(http.StatusOK, "Server UP") //TODO return machine name
+        return c.String(http.StatusOK, "Gate Controller is UP") //TODO return machine name
 
     })
  
@@ -337,7 +338,7 @@ func getCallOpen() (int64, time.Time, time.Time) {
 			return c.String(http.StatusBadRequest, "Application does not meet the requirements")
 		}
 		
-		return c.String(http.StatusOK, "DEVELOPMENT MODE") // DEV MODE!!!!! DELETE
+		//eturn c.String(http.StatusOK, "DEVELOPMENT MODE") // DEV MODE!!!!! DELETE
 
         //-- 4. SAVE TO REDIS
         retries := 0
@@ -369,9 +370,14 @@ func getCallOpen() (int64, time.Time, time.Time) {
         }
 
 		//-- 4. All good. Set cookie and return OK
+		var cookieName []string
+		cookieName = append(cookieName, COOKIE_NAME)
+		cookieName = append(cookieName, strconv.FormatInt(rToken, 10))
+
 		cookie := new(http.Cookie)
-		cookie.Name = COOKIE_NAME
+		cookie.Name = strings.Join(cookieName, "_")
 		cookie.Value = "true"
+		cookie.Domain = "everincloud.com" //-- TODO FIXME
 		cookie.Expires = time.Now().Add(31 * 24 * time.Hour)
 		c.SetCookie(cookie)	
 
