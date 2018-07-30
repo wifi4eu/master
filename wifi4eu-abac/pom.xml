@@ -208,39 +208,6 @@
 		</profile>
 
 		<profile>
-			<!-- This profile relies on legacy angular eUI -->
-			<id>ng-build</id>
-			<properties>
-				<ui.folder>src/main/angular</ui.folder>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.5.0</version>
-						<executions>
-							<execution>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-								<configuration>
-									<executable>cmd</executable>
-									<workingDirectory>${ui.folder}</workingDirectory>
-									<arguments>
-										<argument>/c</argument>
-										<argument>"ng build"</argument>
-									</arguments>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<profile>
 			<!-- This profile relies on latest angular eUI -->
 			<id>npm-build</id>
 			<properties>
