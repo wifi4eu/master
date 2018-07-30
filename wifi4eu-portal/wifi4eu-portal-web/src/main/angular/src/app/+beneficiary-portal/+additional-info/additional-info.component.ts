@@ -1,17 +1,18 @@
-import {Component, ViewChild} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {LocalStorageService} from "angular-2-local-storage";
-import {Observable} from "rxjs/Observable";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {SharedService} from "../../shared/shared.service";
-import {DomSanitizer} from "@angular/platform-browser";
-import {MayorApi} from "../../shared/swagger/api/MayorApi";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
+import { Component, ViewChild } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { LocalStorageService } from "angular-2-local-storage";
+import { Observable } from "rxjs/Observable";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { SharedService } from "../../shared/shared.service";
+import { DomSanitizer } from "@angular/platform-browser";
+import { MayorApi } from "../../shared/swagger/api/MayorApi";
+import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
+import { Location } from "@angular/common";
 
 
 @Component({
@@ -45,7 +46,7 @@ export class AdditionalInfoComponent {
 
     private fileURL: string = '/wifi4eu/api/registration/registrations/';
 
-    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
+    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router, private location: Location) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -101,7 +102,7 @@ export class AdditionalInfoComponent {
         } else {
             this.deleteBlocker = false;
         }
-		return true;
+        return true;
     }
 
     private uploadFile(event: any, index: number = 0) {
@@ -109,7 +110,7 @@ export class AdditionalInfoComponent {
             this.filesUploaded = true;
             if (event.target.files[0]) {
                 if (event.target.files[0].size > 1024000) {
-                    this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'benefPortal.file.toobig.maxsize', 'warn', {size: '1 MB'});
+                    this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'benefPortal.file.toobig.maxsize', 'warn', { size: '1 MB' });
                     this.removeFile(index);
                     return;
                 }
@@ -283,12 +284,16 @@ export class AdditionalInfoComponent {
         }
     }
 
-    confirmClose(){
+    confirmClose() {
         this.displayConfirmClose = true;
     }
 
-    cancelBack(){
+    cancelBack() {
         this.displayConfirmClose = false;
+    }
+
+    private goBack() {
+        this.location.back();
     }
 
 }
