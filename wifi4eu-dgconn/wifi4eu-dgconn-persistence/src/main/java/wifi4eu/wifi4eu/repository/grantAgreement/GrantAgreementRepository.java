@@ -5,5 +5,5 @@ import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 
 public interface GrantAgreementRepository extends CrudRepository<GrantAgreement, Integer>{
 
-    GrantAgreement findByApplicationId(int applicationId);
+    Integer countByApplicationId(int applicationId);
 }

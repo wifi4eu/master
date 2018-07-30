@@ -328,27 +328,28 @@ public class ScheduledTasks {
         ArrayList<VoucherAssignment.VoucherAssignmentGetIdAndNotificationDate> voucherAssignment = voucherAssignmentRepository.findByNotifiedDateNotNull();
         LocalDate localCurrentDate = getLocalTimeFromDate(new Date());
         LocalDate notifiedDate;
+        ResponseDTO responseDTO = new ResponseDTO();
         for(int i = 0; i < voucherAssignment.size(); i++){
             // check if the days between today and the notified date is equal to 7 or 14
             notifiedDate =  getLocalTimeFromDate(new Date(voucherAssignment.get(i).getNotifiedDate()));
             long days = ChronoUnit.DAYS.between(localCurrentDate, notifiedDate);
-            if ( days == 7 || days == 14){
+            if ( days == -7 || days == -14){
                 // 7 days or 14, let's check if everyone has filled the pdf. If not, send email
                 ArrayList<Integer> applicationIds = null;
                 applicationIds = voucherSimulationRepository.findApplicationIdsFromVoucherAssignmentAndSelectionStatus(voucherAssignment.get(i).getId());
                 if (applicationIds != null){
                     for (int j = 0; j < applicationIds.size(); j++){
-                        if (grantAgreementRepository.findByApplicationId(applicationIds.get(j)) == null){
+                        if (grantAgreementRepository.countByApplicationId(applicationIds.get(j)) <= 0){
                             // null, not signed yet. Send email
                             String emailUser = registrationUsersRepository.findContactEmailFromApplicationId(applicationIds.get(j));
-                            grantAgreementUtils.sendEmailSignPdfNotified(emailUser,days);
+                            Integer userId = registrationUsersRepository.findUserIdFromApplicationId(applicationIds.get(j));
+                            responseDTO.setData(grantAgreementUtils.sendEmailSignPdfNotified(userId,emailUser,days));
                         }
                     }
                 }
             }
         }
-        ResponseDTO responseDTO = new ResponseDTO();
-        responseDTO.setData(voucherAssignment);
+
         responseDTO.setSuccess(true);
         return responseDTO;
     }
