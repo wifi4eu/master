@@ -662,3 +662,19 @@ CREATE TABLE [wifi4eu].[dbo].[supplier_users] (
 
   PRIMARY KEY ([id])
 );
+
+-- -----------------------------------------------------
+-- Table `dbo`.`log_emails`
+-- -----------------------------------------------------
+
+CREATE TABLE [wifi4eu].[dbo].[log_emails] (
+    [id]                INT NOT NULL IDENTITY,
+    [action]            VARCHAR(255) NULL,
+    [body]              NTEXT NULL,
+    [fromAddress]       VARCHAR(255) NULL,
+    [municipalityId]    INT NULL,
+    [sent_date]         NUMERIC NULL,
+    [subject]           NTEXT NULL,
+    [toAddress]         VARCHAR(255) NULL,
+    PRIMARY KEY ([id])
+);
