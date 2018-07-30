@@ -33,17 +33,19 @@ export class SignGrantAgreementComponent {
     private languagesArray: UxEuLanguages[] =[];
     private inputGrantAgreement: GrantAgreementDTOBase = new GrantAgreementDTOBase();
     private language: String = '';
+    private enableButtonFront: boolean = false;
+    private displaySignAgreement: boolean = false;
 
     constructor(private applicationAuthorizedPersonApi: ApplicationauthorizedPersonApi, private uxEuLanguages: UxEuLanguages, private uxLanguage: UxLanguage, private grantAgreementApi: GrantAgreementApi, private callApi: CallApi, private applicationApi: ApplicationApi, private userApi: UserApi, private registrationApi: RegistrationApi, private mayorApi: MayorApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService, private router: Router, private route: ActivatedRoute, private localStorageService: LocalStorageService) {
-        
+        let id;
         this.languagesArray = UxEuLanguages.getLanguages(this.languageCodeArray);
-
+        this.route.params.subscribe(params => id = params['id']);
   
     
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         //TODO GET REGISTRATION ID FROM ROUTING
-        let registrationId =  23446;
+        let registrationId =  id;
         if (this.user != null) {
             this.applicationApi.getApplicationByRegistrationId(registrationId).subscribe(
                 (application: ApplicationDTOBase) =>{
@@ -159,6 +161,18 @@ export class SignGrantAgreementComponent {
                 console.log(error);
             }
         );
+    }
+    
+    private enableButton(){
+       this.enableButtonFront = !this.enableButtonFront;
+    }
+
+    private openModal(){
+        this.displaySignAgreement = true;
+    }
+
+    private closeModal() {
+        this.displaySignAgreement = false;
     }
 
 }
