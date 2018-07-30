@@ -87,9 +87,9 @@ public class SupplierResource {
             if (supplierService.getUserIdFromSupplier(supplierDTO.getId()) != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            SupplierValidator.validateSupplier(supplierDTO);
             SupplierDTO resSupplier = supplierService.updateSupplier(supplierDTO);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier updated successfully");
-            SupplierValidator.validateSupplier(supplierDTO);
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update this supplier", ade.getMessage());

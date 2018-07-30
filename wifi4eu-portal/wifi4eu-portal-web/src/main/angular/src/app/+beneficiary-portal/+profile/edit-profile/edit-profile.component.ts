@@ -154,6 +154,7 @@ export class BeneficiaryEditProfileComponent {
                                         if (registrations[0].allFilesFlag == 1) {
                                             this.documentUploaded = true;
                                         }
+                                        this.registration = registrations[0];
                                     } else {
                                         this.oneRegsitration = false;
                                     }
@@ -379,13 +380,16 @@ export class BeneficiaryEditProfileComponent {
                     this.successRegistration = true;
                     this.sharedService.growlTranslation('Your municipality has been added successfully.', 'benefPortal.beneficiary.addMunicipalities.Success', 'success');
                     this.loadDataEditProfile();
+                    this.checkFinishedCalls();
 
                 } else {
                     this.sharedService.growlTranslation('An error ocurred while trying to add the municipalities. Please try again latern', 'benefPortal.beneficiary.addMunicipalities.Error', 'error');
-                    this.successRegistration = false;
+                    this.successRegistration = true;
+                    this.checkFinishedCalls();
                 }
             }, error => {
-                this.successRegistration = false;
+                this.successRegistration = true;
+                this.checkFinishedCalls();
             }
         );
     }
@@ -404,7 +408,9 @@ export class BeneficiaryEditProfileComponent {
 
     private editProfile() {
         this.submittingData = true;
+  
         for(let i = 0; i < this.municipalities.length; i++){
+            //if(this.municipalities[i])
             if (!this.isOrganisation || this.isMunicipalityEditable[this.municipalities[i].id]){
                 this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
                     (response: ResponseDTOBase) => {
@@ -413,6 +419,8 @@ export class BeneficiaryEditProfileComponent {
                             this.checkFinishedCalls();
                             this.municipalities[this.currentEditIndex] = response.data;
                         }
+                        this.municipalityFinish = true;
+                        this.checkFinishedCalls();
                     }
                 );
             }
@@ -423,9 +431,14 @@ export class BeneficiaryEditProfileComponent {
                         this.checkFinishedCalls();
                         this.mayors[this.currentEditIndex] = response.data;
                     }
+                    this.municipalityFinish = true;
+                        this.checkFinishedCalls();                    
                 }
+             
             );
         }
+
+
         this.userApi.updateUserDetails(this.user).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
@@ -437,17 +450,23 @@ export class BeneficiaryEditProfileComponent {
         );
 
         if (this.newMunicipalities.length > 0){
+            alert(this.newMunicipalities.length);
             this.submitNewMunicipalities();
         }
-        if(this.registration.associationName){
+        if(this.registration.associationName != null && this.registration.associationName != ""){
             this.registrationApi.updateAssociationName(this.registration).subscribe(
             (response: ResponseDTOBase) =>{
                 this.registrationFinish = true;
                 this.checkFinishedCalls();
             },error =>{
                 console.log(error);
+                this.registrationFinish = true;
+                this.checkFinishedCalls();
             }
             );
+        } else {
+            this.registrationFinish = true;
+            this.checkFinishedCalls();
         }
      
       
@@ -468,32 +487,27 @@ export class BeneficiaryEditProfileComponent {
         if(this.municipalities[i].address != null && this.municipalities[i].addressNum != null && this.municipalities[i].postalCode != null && this.mayors[i].name != null  && this.mayors[i].surname != null  && this.mayors[i].email != null
          && this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != ""  && this.mayors[i].surname.trim() != ""  && this.mayors[i].email.trim() != ""){
             this.buttonEnabled = true;
-            if (this.newMunicipalities.length > 0){
-                for(let j = 0; j < this.newMunicipalities.length; j++){
-                    if (this.newMunicipalities[j].address != null && this.newMunicipalities[j].addressNum != null && this.newMunicipalities[j].postalCode != null && this.newMayors[j].name != null  && this.newMayors[j].surname != null && (this.newMunicipalities[j].address.trim() == "" || this.newMunicipalities[j].addressNum.trim() == "" || this.newMunicipalities[j].postalCode.trim() == "" || this.newMayors[j].name.trim() == "" || this.newMayors[j].surname.trim() == "")){
-                        this.buttonEnabled = false;
-                        break;
+            if(this.registration.associationName != null && this.registration.associationName.trim() != ""){
+                if (this.newMunicipalities.length > 0){
+                    for(let j = 0; j < this.newMunicipalities.length; j++){
+                        if (this.newMunicipalities[j].address != null && this.newMunicipalities[j].addressNum != null && this.newMunicipalities[j].postalCode != null && this.newMayors[j].name != null  && this.newMayors[j].surname != null && (this.newMunicipalities[j].address.trim() == "" || this.newMunicipalities[j].addressNum.trim() == "" || this.newMunicipalities[j].postalCode.trim() == "" || this.newMayors[j].name.trim() == "" || this.newMayors[j].surname.trim() == "")){
+                            this.buttonEnabled = false;
+                            break;
+                        }
                     }
+                } else {
+                    this.emailsMatch = true;
+                    this.municipalitiesSelected = true;
+
                 }
-            } else {
-                this.emailsMatch = true;
-                this.municipalitiesSelected = true;
             }
+           
         }
     }
 
     private checkButtonEnabledUser(event){
-      
         this.buttonEnabled = false;
         if(this.user.name != null && this.user.surname != null && this.user.email !=null && (this.user.name.trim() != "" && this.user.surname.trim() != "" && this.user.email.trim() != "")){
-            if(this.registration){
-                if(this.registration.associationName != null && this.registration.associationName.trim() != ""){
-                    this.buttonEnabled = true;
-                }
-            }else {
-                this.buttonEnabled = true;
-            }
-
             if (this.newMunicipalities.length > 0){
                 for(let j = 0; j < this.newMunicipalities.length; j++){
                     if (this.newMunicipalities[j].address != null && this.newMunicipalities[j].addressNum != null && this.newMunicipalities[j].postalCode != null && this.newMayors[j].name != null  && this.newMayors[j].surname != null && (this.newMunicipalities[j].address.trim() == "" || this.newMunicipalities[j].addressNum.trim() == "" || this.newMunicipalities[j].postalCode.trim() == "" || this.newMayors[j].name.trim() == "" || this.newMayors[j].surname.trim() == "")){
@@ -502,6 +516,7 @@ export class BeneficiaryEditProfileComponent {
                     }
                 }
             } else {
+                this.buttonEnabled = true;
                 this.emailsMatch = true;
                 this.municipalitiesSelected = true;
             }

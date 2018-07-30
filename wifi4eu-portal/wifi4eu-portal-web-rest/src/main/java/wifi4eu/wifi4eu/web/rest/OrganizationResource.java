@@ -34,6 +34,10 @@ public class OrganizationResource {
     @RequestMapping(value = "/{organizationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public OrganizationDTO getOrganizationById(@PathVariable("organizationId") final Integer organizationId) {
+        UserContext user = UserHolder.getUser();
+        if (user == null || userService.getUserByUserContext(user) == null) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
         return organizationService.getOrganizationById(organizationId);
     }
 

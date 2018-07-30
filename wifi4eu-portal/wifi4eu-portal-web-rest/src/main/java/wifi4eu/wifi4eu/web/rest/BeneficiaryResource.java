@@ -72,9 +72,9 @@ public class BeneficiaryResource {
             } else {
                 ip = request.getRemoteAddr();
             }
+            BeneficiaryValidator.validateBeneficiary(beneficiaryDTO);
             List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO, ip, request);
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiary submitted successfully");
-            BeneficiaryValidator.validateBeneficiary(beneficiaryDTO);
             return new ResponseDTO(true, resRegistrations, null);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary cannot been submitted", e);
@@ -287,10 +287,10 @@ public class BeneficiaryResource {
             if (userRegistrationDTO.getEmail().equals(userContext.getEmail())) {
                 throw new AppException("Incorrect email");
             }
-            if (!beneficiaryService.checkContactEmailWithMunicipality(userRegistrationDTO.getEmail(), userRegistrationDTO.getMunicipalityId()) ) {
+            if (!beneficiaryService.checkContactEmailWithMunicipality(userRegistrationDTO.getEmail(), userRegistrationDTO.getMunicipalityId())) {
                 UserDTO newUser = userService.getUserByEmail(userRegistrationDTO.getEmail());
 
-                if(newUser == null || newUser.getType() == 3) {
+                if (newUser == null || newUser.getType() == 3) {
                     beneficiaryService.sendEmailToContacts(userRegistrationDTO);
                     return new ResponseDTO(true, userRegistrationDTO, null);
                 } else {
