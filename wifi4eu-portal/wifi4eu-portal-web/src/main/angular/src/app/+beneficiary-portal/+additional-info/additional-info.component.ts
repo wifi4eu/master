@@ -117,7 +117,7 @@ export class AdditionalInfoComponent {
                 this.documentFiles[index] = event.target.files[0];
                 this.reader.readAsDataURL(this.documentFiles[index]);
                 let subscription = Observable.interval(200).subscribe(
-                        x => {
+                    x => {
                         if (this.reader.result != "") {
                             this.documentUrls[index] = this.reader.result;
                             this.filesUploaded = true;
