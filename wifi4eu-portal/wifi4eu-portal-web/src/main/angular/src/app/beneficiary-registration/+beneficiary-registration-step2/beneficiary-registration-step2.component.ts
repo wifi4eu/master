@@ -193,23 +193,20 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         return false;
     }
 
-    private checkButtonEnabled(event, count){
+    private checkButtonEnabled(event){
             this.buttonEnabled = true;
         for (let i = 0; i < this.municipalities.length; i++) {
-
             if(this.municipalities[i].address != null && this.municipalities[i].addressNum != null && this.municipalities[i].postalCode != null && this.mayors[i].name != null && this.mayors[i].surname != null 
                 && this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != "" && this.mayors[i].surname.trim() != ""){
                     continue;
             } else {
                 this.buttonEnabled = false;
-                this.municipalityForms.controls[`address-${i}`].setErrors(null);
-                break;
+                //this.municipalityForms.controls[`address-${i}`].setErrors(null);
+               
             }
-/* 
-            if(this.municipalities[i].address != null && this.municipalities[i].address.trim() != ""){
-                setTimeout(()=>{this.municipalityForms.controls[`address-${i}`].setErrors(null); console.log("hola");} ,5);
+           /*  if(this.municipalities[i].address != null && this.municipalities[i].address.trim() != ""){
+                setTimeout(()=>{this.municipalityForms.controls[`address-${i}`].setErrors(null);} ,5);
 
-                
             }else {
                 setTimeout(()=>{this.municipalityForms.controls[`address-${i}`].setErrors({'invalid': true});} ,5);
             }
@@ -236,7 +233,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
                 setTimeout(()=>{this.municipalityForms.controls[`surname-${i}`].setErrors(null);} ,5);
             }else {
                 setTimeout(()=>{this.municipalityForms.controls[`surname-${i}`].setErrors({'invalid': true});} ,5);
-            } */
+            }  */
         }
     }
 }
