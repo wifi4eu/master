@@ -87,7 +87,7 @@
                     </template>
                 </p-column>
 
-                <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 1" styleClass="text-center">
+                <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action1' | translate }}" styleClass="text-center">
                    <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <div class="beneficiarRegistrationCheck">
                             <button class="btn btn-primary text-adjust" (click)="agreementDetails(i)" >{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
@@ -96,7 +96,7 @@
                     </template> 
                 </p-column>
                 
-                <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 2" styleClass="text-center">
+                <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action2' | translate }}" styleClass="text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <div *ngIf="true" class="beneficiarRegistrationCheck">
                            <!--  <div *ngIf="applications[i].supplierId" class="align-self-center">
@@ -116,7 +116,7 @@
                     </template>
                 </p-column>
 
-                <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 3" styleClass="text-center">
+                <p-column field="" header="{{ 'benefPortal.myVoucher.datatable.action3' | translate }}" styleClass="text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <div *ngIf="true">
                             <button class="btn btn-primary text-adjust align-self-center confirm-network-button" id="voucherButton" (click)="confirmInstallation()" [disabled]="true">
