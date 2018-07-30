@@ -1,3 +1,184 @@
 <div>
     legal-files works!
+    
+            <div class="row">
+
+                <div class="col-offset-12">
+                    <div class="left">
+                        <div class="fileUpload btn btn-primary">
+                            <span>{{ 'benefDocs.copyMayorsID' | translate }}</span>
+                            <input #document1 id="document1" name="document1" (change)="uploadFile($event, 0)" type="file" class="upload" accept=".png, .jpg, .pdf"/>
+                        </div>
+                    </div>
+                    <span class="ui-g-12" *ngIf="registration && legalFile1">
+                        <span>
+                            <img src="..\..\..\assets\images\hoja-id-card.png" srcset="..\..\..\assets\images\hoja-id-card@2x.png 2x, ..\..\..\assets\images\hoja-id-card@3x.png 3x"
+                            class="hoja-ID-card">
+                        </span>
+                        
+                        <!-- *ngIf="!registration.legalFile1Size && !doc1" -->
+                        <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+
+                        <span *ngIf="legalFile1.fileSize && !documentUrls[0]">
+                            <i class="fa fa-paperclip"></i>
+                            <span>fileName1</span>
+                            <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker" (click)="deleteFromServer(0)">
+                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/1" target="_blank">
+                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                            </a>
+                            <span class="attachment-label">{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                        </span>
+
+
+                        <span *ngIf="documentUrls[0]">
+                            <img src="..\..\..\assets\images\hoja-id-card.png" srcset="..\..\..\assets\images\hoja-id-card@2x.png 2x, ..\..\..\assets\images\hoja-id-card@3x.png 3x"
+                                class="hoja-ID-card"> {{ 'shared.supportingDocuments.attachment' | translate }}
+                            <i class="fa fa-paperclip"></i>
+                            <span>fileName1</span>
+                            <a sclass="link-label" (click)="removeFile(0)">
+                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                        </span>
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- <div class="row">
+                <div class="col-offset-12">
+                    <label class="label" for="document3" [innerHTML]="'benefPortal.request.additionalInfo.doc2.label' | translate"></label>
+                </div>
+                <div class="col-offset-12">
+
+                    <div class="left">
+                        <div class="fileUpload btn btn-primary">
+                            <span>{{ 'benefDocs.proofNomination' | translate }}</span>
+                            <input #document2 id="document3" name="document2" (change)="uploadFile($event, 2)" type="file" class="upload" accept=".png, .jpg, .pdf"
+                            />
+                        </div>
+                    </div>
+                    <span class="ui-g-12" *ngIf="registration">
+                        <span *ngIf="!registration.legalFile3Size && !doc3">
+                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+                        </span>
+                        <span *ngIf="registration.legalFile3Size && !documentUrls[2]">
+                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <i class="fa fa-paperclip"></i>
+                            <span>fileName2</span>
+                            <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker" (click)="deleteFromServer(2)">
+                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/3" target="_blank">
+                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
+                            <span class="attachment-label">{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                        </span>
+                        <span *ngIf="documentUrls[2]">
+                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <i class="fa fa-paperclip"></i>
+                            <span>fileName2</span>
+                            <a class="link-label" (click)="removeFile(2)">
+                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                        </span>
+                    </span>
+                </div>
+            </div> -->
+
+            <!-- <div class="row" *ngIf="!isMayor">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <hr class="beneficiaryHr marginHr">
+                    </div>
+                </div>
+
+                <p class="labelModal profileData">
+                    {{ 'shared.supportingDocuments.provide.optional' | translate }}
+                </p>
+
+                <div class="col-offset-12">
+                    <label class="label" for="document2" [innerHTML]="'benefPortal.request.additionalInfo.doc3.label' | translate"></label>
+                </div>
+                <div class="col-offset-12">
+                    <div class="left">
+                        <div class="fileUpload btn btn-primary">
+                            <span>{{ 'benefDocs.copyYourID' | translate }}</span>
+                            <input #document3 id="document3" name="document3" (change)="uploadFile($event, 1)" type="file" class="upload" accept=".png, .jpg, .pdf"
+                            />
+                        </div>
+                    </div>
+                    <span class="ui-g-12" *ngIf="registration">
+                        <span *ngIf="!registration.legalFile2Size && !doc2">
+                            <img src="..\..\..\assets\images\hoja-id-card.png" srcset="..\..\..\assets\images\hoja-id-card@2x.png 2x, ..\..\..\assets\images\hoja-id-card@3x.png 3x"
+                                class="hoja-ID-card">
+                            <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+                        </span>
+                        <span *ngIf="registration.legalFile2Size && !documentUrls[1]">
+                            <img src="..\..\..\assets\images\hoja-id-card.png" class="hoja-ID-card">
+                            <i class="fa fa-paperclip"></i>
+                            <span>fileName3</span>
+                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(1)">
+                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/2" target="_blank">
+                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
+                            <span class="attachment-label">{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                        </span>
+                        <span *ngIf="documentUrls[1]">
+                            <img src="..\..\..\assets\images\hoja-id-card.png" class="hoja-ID-card">
+                            <i class="fa fa-paperclip"></i>
+                            <span>fileName3</span>
+                            <a class="link-label" (click)="removeFile(1)">
+                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                        </span>
+                    </span>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <hr class="beneficiaryHr marginHr">
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-lg-12 col-md-12">
+                    <label class="label" for="document4" [innerHTML]="'benefPortal.request.additionalInfo.doc4.label' | translate"></label>
+                </div>
+                <div class="col-offset-12">
+                    <div class="left">
+                        <div class="fileUpload btn btn-primary">
+                            <span>{{ 'benefDocs.authorisedSign' | translate }}</span>
+                            <input #document4 id="document4" name="document4" (change)="uploadFile($event, 3)" type="file" class="upload" accept=".png, .jpg, .pdf"
+                            />
+                        </div>
+                    </div>
+                    <span class="ui-g-12" *ngIf="registration">
+                        <span *ngIf="!registration.legalFile4Size && !doc4">
+                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+                        </span>
+                        <span *ngIf="registration.legalFile4Size && !documentUrls[3]">
+                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <i class="fa fa-paperclip"></i>
+                            <span>fileName4</span>
+                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(3)">
+                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" href="{{fileURL}}{{registration.id}}/4" target="_blank">
+                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
+                            <span class="attachment-label">{{ 'shared.supportingDocuments.attachment' | translate }}</span>
+                        </span>
+                        <span *ngIf="documentUrls[3]">
+                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <i class="fa fa-paperclip"></i>
+                            <span>fileName4</span>
+                            <a class="link-label" (click)="removeFile(3)">
+                                <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                        </span>
+                    </span>
+                </div>
+            </div> -->
+        
+
+        <div class="row">
+            <div class="col-sm-12">
+                <hr class="beneficiaryHr marginHr">
+            </div>
+        </div>
 </div>

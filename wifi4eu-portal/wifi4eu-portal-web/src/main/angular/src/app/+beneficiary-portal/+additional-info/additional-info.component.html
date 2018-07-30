@@ -50,9 +50,10 @@
     </div>
 
     <hr>
-    <div>
+    <div *ngIf="user && registration != null">
         Let's try a comment here
-        <legal-files-component></legal-files-component>
+        {{ user.id }}
+        <legal-files-component [user]="user" [registration]="registration" (registration)="onFileUpload($event)"></legal-files-component>
     </div>
     <hr>
 

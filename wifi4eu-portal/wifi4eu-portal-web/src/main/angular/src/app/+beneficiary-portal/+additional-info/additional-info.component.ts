@@ -59,7 +59,7 @@ export class AdditionalInfoComponent {
                         this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
-                                this.checkFirstDocuments();
+                                // this.checkFirstDocuments();
 
                             }, error => {
                             }
@@ -96,16 +96,16 @@ export class AdditionalInfoComponent {
         }
     }
 
-    private checkFirstDocuments() {
+    /* private checkFirstDocuments() {
         if (!this.registration.legalFile1Size || !this.registration.legalFile3Size) {
             this.deleteBlocker = true;
         } else {
             this.deleteBlocker = false;
         }
         return true;
-    }
+    } */
 
-    private uploadFile(event: any, index: number = 0) {
+    /* private uploadFile(event: any, index: number = 0) {
         if (this.registration.allFilesFlag != 1) {
             this.filesUploaded = true;
             if (event.target.files[0]) {
@@ -152,9 +152,9 @@ export class AdditionalInfoComponent {
             this.filesUploaded = false;
 
         }
-    }
+    } */
 
-    private removeFile(index: number) {
+    /* private removeFile(index: number) {
         this.documentFiles[index] = null;
         this.filesUploaded = false;
         this.documentUrls[index] = '';
@@ -180,9 +180,11 @@ export class AdditionalInfoComponent {
             this.filesUploaded = true;
         }
         this.checkFirstDocuments();
-    }
+    } */
 
-    private onSubmit() {
+
+    /* ON SUBMIT FORM */
+    /* private onSubmit() {
         if (this.registration.allFilesFlag != 1) {
             if (this.documentUrls[0]) {
                 this.registration.legalFile1Mime = this.documentUrls[0];
@@ -220,8 +222,8 @@ export class AdditionalInfoComponent {
             this.sharedService.growlTranslation('You cant upload documents right now', 'shared.cantUploadDocs', 'error');
             this.filesUploaded = false;
         }
-        this.checkFirstDocuments();
-    }
+        // this.checkFirstDocuments();
+    } */
 
     // private updateMailings() {
     //     if (!this.isMayor) {
@@ -245,7 +247,8 @@ export class AdditionalInfoComponent {
     //     }
     // }
 
-    private deleteFromServer(index: number) {
+    /* DELETE FROM SERVER */
+   /*  private deleteFromServer(index: number) {
         if (this.registration.allFilesFlag != 1) {
             this.filesUploaded = true;
             switch (index) {
@@ -282,7 +285,7 @@ export class AdditionalInfoComponent {
             this.sharedService.growlTranslation('You cant upload documents right now', 'shared.cantUploadDocs', 'error');
             this.filesUploaded = false;
         }
-    }
+    } */
 
     confirmClose() {
         this.displayConfirmClose = true;
