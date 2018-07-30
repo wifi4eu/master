@@ -13,12 +13,13 @@ public class GrantAgreementDTO implements Serializable {
     private Date dateSignature;
     private Date dateCounterSignature;
     private String documentLocation;
+    private String documentLocationCounterSigned;
     private String documentLanguage;
 
     public GrantAgreementDTO() {
     }
 
-    public GrantAgreementDTO(Integer id, String signatureId, String counterSignatureId, String signatureProof, Integer applicationId, Date dateSignature, Date dateCounterSignature, String documentLocation, String documentLanguage) {
+    public GrantAgreementDTO(Integer id, String signatureId, String counterSignatureId, String signatureProof, Integer applicationId, Date dateSignature, Date dateCounterSignature, String documentLocation, String documentLocationCounterSigned, String documentLanguage) {
         this.id = id;
         this.signatureId = signatureId;
         this.counterSignatureId = counterSignatureId;
@@ -27,6 +28,7 @@ public class GrantAgreementDTO implements Serializable {
         this.dateSignature = dateSignature;
         this.dateCounterSignature = dateCounterSignature;
         this.documentLocation = documentLocation;
+        this.documentLocationCounterSigned = documentLocationCounterSigned;
         this.documentLanguage = documentLanguage;
     }
 
@@ -100,5 +102,13 @@ public class GrantAgreementDTO implements Serializable {
 
     public void setDocumentLanguage(String documentLanguage) {
         this.documentLanguage = documentLanguage;
+    }
+
+    public String getDocumentLocationCounterSigned() {
+        return documentLocationCounterSigned;
+    }
+
+    public void setDocumentLocationCounterSigned(String documentLocationCounterSigned) {
+        this.documentLocationCounterSigned = documentLocationCounterSigned;
     }
 }

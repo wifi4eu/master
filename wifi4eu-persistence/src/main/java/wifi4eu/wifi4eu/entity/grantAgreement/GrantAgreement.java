@@ -32,13 +32,16 @@ public class GrantAgreement {
     @Column(name = "document_location")
     private String documentLocation;
 
+    @Column(name = "document_location_countersigned")
+    private String documentLocationCounterSigned;
+
     @Column(name = "document_language")
     private String documentLanguage;
 
     public GrantAgreement() {
     }
 
-    public GrantAgreement(Integer id, String signatureId, String counterSignatureId, String signatureProof, Integer applicationId, Date dateSignature, Date dateCounterSignature, String document_location, String document_language) {
+    public GrantAgreement(Integer id, String signatureId, String counterSignatureId, String signatureProof, Integer applicationId, Date dateSignature, Date dateCounterSignature, String documentLocation, String documentLocationCounterSigned, String documentLanguage) {
         this.id = id;
         this.signatureId = signatureId;
         this.counterSignatureId = counterSignatureId;
@@ -46,10 +49,10 @@ public class GrantAgreement {
         this.applicationId = applicationId;
         this.dateSignature = dateSignature;
         this.dateCounterSignature = dateCounterSignature;
-        this.documentLocation = document_location;
-        this.documentLanguage = document_language;
+        this.documentLocation = documentLocation;
+        this.documentLocationCounterSigned = documentLocationCounterSigned;
+        this.documentLanguage = documentLanguage;
     }
-
 
     public Integer getId() {
         return id;
@@ -121,5 +124,13 @@ public class GrantAgreement {
 
     public void setDocumentLanguage(String documentLanguage) {
         this.documentLanguage = documentLanguage;
+    }
+
+    public String getDocumentLocationCounterSigned() {
+        return documentLocationCounterSigned;
+    }
+
+    public void setDocumentLocationCounterSigned(String documentLocationCounterSigned) {
+        this.documentLocationCounterSigned = documentLocationCounterSigned;
     }
 }
