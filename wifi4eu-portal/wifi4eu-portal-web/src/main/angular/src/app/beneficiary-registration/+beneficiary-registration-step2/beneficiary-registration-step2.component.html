@@ -45,7 +45,7 @@
                             <label class="label floatLeft" for="address">{{ 'benefRegistration.townHall.address' |
                                 translate }}</label>
                             <input type="text" class="form-control paddingInput" min="1" 
-                                   id="addressStep2" name="address" [(ngModel)]="municipalities[0].address" required>
+                                   id="addressStep2" name="address" [(ngModel)]="municipalities[0].address"  (ngModelChange)="checkButtonEnabled($event)" required>
                         </div>
                     </div>
 
@@ -54,7 +54,7 @@
                             <label class="label floatLeft" for="address">{{ 'shared.number.label' | translate
                                 }}</label>
                             <input type="text" class="form-control paddingInput"
-                                   id="addressNumStep2" name="addressNum" [(ngModel)]="municipalities[0].addressNum"
+                                   id="addressNumStep2" name="addressNum"  [(ngModel)]="municipalities[0].addressNum"  (ngModelChange)="checkButtonEnabled($event)"
                                    required>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                             <label class="label floatLeft" for="postalCode">{{ 'shared.postal-code.label' | translate
                                 }}</label>
                             <input type="text" class="form-control paddingInput"
-                                   id="postalCodeStep2" name="postalCode" [(ngModel)]="municipalities[0].postalCode"
+                                   id="postalCodeStep2" name="postalCode" [(ngModel)]="municipalities[0].postalCode"  (ngModelChange)="checkButtonEnabled($event)"
                                    required>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.name.label' | translate }}</label>
                     <input class="form-control paddingInput" type="text" name="name" id="nameStep2"
-                           [(ngModel)]="mayors[0].name" required>
+                           [(ngModel)]="mayors[0].name"   (ngModelChange)="checkButtonEnabled($event)"required>
                 </div>
             </div>
             <!-- Mayor last name -->
@@ -96,7 +96,7 @@
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.surname.label' | translate }}</label>
                     <input class="form-control paddingInput" type="text" name="surname" id="surnameStep2" 
-                           [(ngModel)]="mayors[0].surname" required>
+                           [(ngModel)]="mayors[0].surname" (ngModelChange)="checkButtonEnabled($event)"  required>
                 </div>
             </div>
             <!-- Mayor email -->
