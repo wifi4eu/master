@@ -7,6 +7,7 @@ import eu.cec.digit.ecas.client.signature.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorage;
 import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorageUtils;
@@ -16,6 +17,7 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +42,9 @@ public class EcasSignatureUtil {
     @Autowired
     GrantAgreementService grantAgreementService;
 
+    @Autowired
+    PermissionChecker permissionChecker;
+
     /**
      * Sample Snippets to interact with the EU Login Signature Service.
      * <p>
@@ -52,26 +57,28 @@ public class EcasSignatureUtil {
      **/
 
     public String constructSignatureHDSCallbackUrl(HttpServletRequest request, String documentToBeSigned) {
-        return "http://localhost:8080/wifi4eu/api/signature/handleSignature/" + documentToBeSigned;
+        String url = userService.getBaseUrl().substring(0, userService.getBaseUrl().indexOf("#"));
+        url += "api/signature/handleSignature/" + documentToBeSigned;
+        return url;
     }
 
     /**
      * Buld the url to redirect the user to the ECAS Signature page for the specific Document.
      *
      * @param request
-     * @param grantAgreementID
+     * @param grantAgreementDTO
      * @return String
      * //* @throws HdsException
      */
     //DocumentBean documentToBeSigned
-    public String doWhenSignatureRequired(HttpServletRequest request, String grantAgreementID) /*throws HdsException*/ {
+    public String doWhenSignatureRequired(HttpServletRequest request, GrantAgreementDTO grantAgreementDTO) /*throws HdsException*/ {
 
         //UserBean userBean = RequestExtractorUtil.getUser(request);
         //_log.info(String.format("Document with HERMES ID %s needs to be signed. Download request ID: %s. Signing user is %s", documentToBeSigned.getHermesDocId(), downloadRequestId, userBean.getEcasId()));
 
 
-        String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, grantAgreementID.toString());
-        String description = "test"; //String.format(FORM_NOTIF_TEMPLATE, documentToBeSigned.getAresRef(), documentToBeSigned.getCreationFormNotifDate());
+        String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, grantAgreementDTO.getId().toString());
+        String description = "Signature of grant agreement"; //String.format(FORM_NOTIF_TEMPLATE, documentToBeSigned.getAresRef(), documentToBeSigned.getCreationFormNotifDate());
 
         Message msg = new SimpleTextMessage(constructXmlToSign());
 
@@ -79,7 +86,7 @@ public class EcasSignatureUtil {
         UserConfirmationSignatureRequest signatureRequest = new UserConfirmationSignatureRequestImpl.Builder()
                 .service(callBackUrlToHds)
                 .displayedDescription(description)
-                .reason("REASON")
+                .reason("Signature of grant agreement")
                 .message(msg)
                 .userCommentPresence(UserCommentPresence.NOT_ALLOWED)
                 .build();
@@ -129,88 +136,19 @@ public class EcasSignatureUtil {
         return buff.toString();
     }
 
-    public void createDoc() {
-//        Document document = new Document();
-//        outputStream = new ByteArrayOutputStream();
-//        PdfWriter writer = PdfWriter.getInstance(document, outputStream);
-//        document.open();
-//
-//        writer.setPageEmpty(false);
-//
-//        String docName = "This pdf will show the Grant Agreement of the registration";
-//        document.addTitle(docName);
-//        document.addSubject(docName);
-//
-//        document.add(new Paragraph(signString));
-
-//            cb.saveState();
-//            ColumnText ct = new ColumnText(writer.getDirectContent());
-//            Font font = new Font(BaseFont.createFont());
-//            int rectWidth = 80;
-//            float maxFontSize = getMaxFontSize(BaseFont.createFont(), "text", rectWidth, 80);
-//            font.setSize(maxFontSize);
-//            ct.setText(new Phrase(signString, font));
-//            ct.setSimpleColumn(10, 10, 10 + rectWidth, 10 + 70);
-//            ct.go();
-//
-//            // draw the rect
-//            cb.setColorStroke(BaseColor.BLUE);
-//            cb.rectangle(10, 10, rectWidth , 70);
-//            cb.stroke();
-//            cb.restoreState();
-
-//        document.close();
-
-//            PdfReader reader = new PdfReader("C:\\test_pdf.pdf");
-//            PdfDictionary dict = reader.getPageN(2);
-//            PdfObject object = dict.getDirectObject(PdfName.CONTENTS);
-//            if (object instanceof PRStream) {
-//                PRStream stream = (PRStream)object;
-//                byte[] data = PdfReader.getStreamBytes(stream);
-//                String dd = new String(data);
-//                dd = dd.replace("SIGNATURE", "HELLO WORLD");
-//                stream.setData(dd.getBytes());
-//            }
-//            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream("C:\\des.p"));
-//            stamper.close();
-//            reader.close();
-
-//            for (int i=1; i<=reader.getNumberOfPages(); i++){
-//
-//                // get object for writing over the existing content;
-//                // you can also use getUnderContent for writing in the bottom layer
-//                PdfContentByte over = stamper.getOverContent(i);
-//
-//                // write text
-//                over.beginText();
-//                over.setTextMatrix(107, 740);   // set x,y position (0,0 is at the bottom left)
-//                over.showText("I can write at page " + i);  // set text
-//                over.endText();
-//
-//                // draw a red circle
-//                over.setRGBColorStroke(0xFF, 0x00, 0x00);
-//                over.setLineWidth(5f);
-//                over.ellipse(250, 450, 350, 550);
-//                over.stroke();
-//            }
-
-//
-//            for (int i = 1; i <= pages; i++) {
-//
-//                String textFromPage = PdfTextExtractor.getTextFromPage(reader, i);
-//
-//                System.out.println(textFromPage);
-//            }
-
-//            stamper.close();
-//            reader.close();
-
-    }
-
     public ByteArrayOutputStream writeSignature(String signatureId, HttpServletRequest request, String hdsDocumentId) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+
+        GrantAgreementDTO grantAgreement = grantAgreementService.getGrantAgreementById(Integer.parseInt(hdsDocumentId));
+
+        if(!permissionChecker.checkIfAuthorizedGrantAgreement(grantAgreement.getApplicationId())){
+            throw new AccessDeniedException("The user is not authorized to sign grant agreement");
+        }
+
         try {
+            grantAgreement.setSignatureId(signatureId);
+
             String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, hdsDocumentId);
 
             SignatureClient client = new SignatureClient();
@@ -231,9 +169,6 @@ public class EcasSignatureUtil {
             String signString = userDTO.getName() + " " + userDTO.getSurname() + " signed as Legal Representative of the Beneficiary on " + new Date().toString() + "  (transaction id " +
                     "" + signatureId + ")";
 
-            GrantAgreementDTO grantAgreement = grantAgreementService.getGrantAgreementById(Integer.parseInt(hdsDocumentId));
-            grantAgreement.setSignatureId(signatureId);
-
             outputStream = grantAgreementService.generateGrantAgreementPdfSigned(grantAgreement, signString);
 
             byte[] data = outputStream.toByteArray();
@@ -244,19 +179,7 @@ public class EcasSignatureUtil {
 
             grantAgreement.setDocumentLocation(downloadURL);
             grantAgreement.setDateSignature(new Date());
-            grantAgreementService.createGrantAgreement(grantAgreement);
-
-//            PdfObject object = dict.getDirectObject(PdfName.CONTENTS);
-//            if (object instanceof PRStream) {
-//                PRStream stream = (PRStream)object;
-//                byte[] data = PdfReader.getStreamBytes(stream);
-//                String dd = new String(data);
-//                dd = dd.replace("SIGNATURE", "HELLO WORLD");
-//                stream.setData(dd.getBytes());
-//            }
-//            PdfStamper stamper = new PdfStamper(reader, new FileOutputStream("C:\\des.p"));
-//            stamper.close();
-//            reader.close();
+            grantAgreementService.saveGrantAgreementSignature(grantAgreement);
 
         } catch (Exception ex) {
 

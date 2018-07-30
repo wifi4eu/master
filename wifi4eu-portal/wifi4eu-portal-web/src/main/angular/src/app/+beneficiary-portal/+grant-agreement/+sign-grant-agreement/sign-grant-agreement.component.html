@@ -1,5 +1,5 @@
 <div class="clearfix"></div>
-<div class="container font">
+<div class="container font" *ngIf="contentVisible">
     <div class="clearfix"></div>
     <div class="row">
         <div class="ui-g-4 ui-sm-4">
@@ -187,8 +187,8 @@
             </button>
         </div>
         <div class="col-sm-6 col-lg-4" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button" (click)="closeModal()"
-                    [disabled]="">
+            <button type="submit" class="btn btn-primary publish-button" (click)="signGrantAgreement()"
+                    ><!-- [disabled]="" -->
                 {{ 'benefPortal.grantAgreement.sign.button' | translate }}
             </button>
         </div>
