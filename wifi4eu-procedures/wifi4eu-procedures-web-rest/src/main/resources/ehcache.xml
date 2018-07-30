@@ -1,0 +1,93 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="true"
+         monitoring="autodetect"
+         dynamicConfig="true">
+
+    <diskStore path="java.io.tmpdir" />
+
+    <!-- wifi4eu-portal >> wifi4eu-portal-service >> LauService -->
+    <cache name="portalGetLausByCountryCodeAndName1ContainingIgnoreCase"
+           maxEntriesLocalHeap="100000"
+           maxEntriesLocalDisk="1000000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
+    <!-- wifi4eu-portal >> wifi4eu-portal-service >> SupplierService -->
+    <cache name="portalGetSuppliedRegionsCountGroupedByRegionId"
+           maxEntriesLocalHeap="100000"
+           maxEntriesLocalDisk="1000000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
+    <!-- wifi4eu-portal >> wifi4eu-portal-service >> MunicipalityService -->
+    <cache name="portalGetMunicipalitiesCountGroupedByLauId"
+           maxEntriesLocalHeap="100000"
+           maxEntriesLocalDisk="1000000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
+    <!-- wifi4eu-portal >> wifi4eu-portal-service >> NutsService -->
+    <cache name="portalGetNutsByLevel"
+           maxEntriesLocalHeap="100000"
+           maxEntriesLocalDisk="1000000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
+    <!-- wifi4eu-portal >> wifi4eu-portal-service >> OrganizationService -->
+    <cache name="portalGetOrganizationsByCountry"
+           maxEntriesLocalHeap="100000"
+           maxEntriesLocalDisk="1000000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
+    <!-- wifi4eu-portal >> wifi4eu-portal-service >> NutsService -->
+    <cache name="portalGetNutsByCountryCodeAndLevelOrderByLabelAsc"
+           maxEntriesLocalHeap="100000"
+           maxEntriesLocalDisk="1000000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
+    <!-- wifi4eu-portal >> wifi4eu-portal-service >> NutsService -->
+    <cache name="portalGetNutsById"
+           maxEntriesLocalHeap="100000"
+           maxEntriesLocalDisk="1000000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
+</ehcache>
