@@ -75,12 +75,12 @@
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
                         <span *ngIf="!registration.legalFile1Size && !doc1">
-                            <img src="..\..\..\assets\images\hoja-id-card.png" srcset="..\..\..\assets\images\hoja-id-card@2x.png 2x, ..\..\..\assets\images\hoja-id-card@3x.png 3x"
+                            <img src="assets\images\hoja-id-card.png" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x"
                                 class="hoja-ID-card">
                             <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
                         </span>
                         <span *ngIf="registration.legalFile1Size && !documentUrls[0]">
-                            <img src="..\..\..\assets\images\hoja-id-card.png" srcset="..\..\..\assets\images\hoja-id-card@2x.png 2x, ..\..\..\assets\images\hoja-id-card@3x.png 3x"
+                            <img src="assets\images\hoja-id-card.png" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x"
                                 class="hoja-ID-card">
                             <div style="display: table-cell;">
                                 <i class="fa fa-paperclip"></i>
@@ -97,7 +97,7 @@
 
 
                         <span *ngIf="documentUrls[0]">
-                            <img src="..\..\..\assets\images\hoja-id-card.png" srcset="..\..\..\assets\images\hoja-id-card@2x.png 2x, ..\..\..\assets\images\hoja-id-card@3x.png 3x"
+                            <img src="assets\images\hoja-id-card.png" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x"
                                 class="hoja-ID-card"> {{ 'shared.supportingDocuments.attachment' | translate }}
                             <i class="fa fa-paperclip"></i>
                             <span>{{documentFiles[0]?.name}}</span>
@@ -130,11 +130,11 @@
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
                         <span *ngIf="!registration.legalFile3Size && !doc3">
-                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <img src="assets\images\hoja.svg" class="hoja-ID-card">
                             <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
                         </span>
                         <span *ngIf="registration.legalFile3Size && !documentUrls[2]">
-                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <img src="assets\images\hoja.svg" class="hoja-ID-card">
                             <div style="display: table-cell;">
                                 <i class="fa fa-paperclip"></i>
                                 <span>fileName2</span>
@@ -147,7 +147,7 @@
                             </div>
                         </span>
                         <span *ngIf="documentUrls[2]">
-                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <img src="assets\images\hoja.svg" class="hoja-ID-card">
                             <i class="fa fa-paperclip"></i>
                             <span>{{documentFiles[2]?.name}}</span>
                             <a class="link-label" (click)="removeFile(2)">
@@ -184,12 +184,12 @@
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
                         <span *ngIf="!registration.legalFile2Size && !doc2">
-                            <img src="..\..\..\assets\images\hoja-id-card.png" srcset="..\..\..\assets\images\hoja-id-card@2x.png 2x, ..\..\..\assets\images\hoja-id-card@3x.png 3x"
+                            <img src="assets\images\hoja-id-card.png" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x"
                                 class="hoja-ID-card">
                             <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
                         </span>
                         <span *ngIf="registration.legalFile2Size && !documentUrls[1]">
-                            <img src="..\..\..\assets\images\hoja-id-card.png" class="hoja-ID-card">
+                            <img src="assets\images\hoja-id-card.png" class="hoja-ID-card">
                             <div style="display: table-cell;">
                                 <i class="fa fa-paperclip"></i>
                                 <span>fileName3</span>
@@ -202,7 +202,7 @@
                             </div>
                         </span>
                         <span *ngIf="documentUrls[1]">
-                            <img src="..\..\..\assets\images\hoja-id-card.png" class="hoja-ID-card">
+                            <img src="assets\images\hoja-id-card.png" class="hoja-ID-card">
                             <i class="fa fa-paperclip"></i>
                             <span>{{documentFiles[1]?.name}}</span>
                             <a class="link-label" (click)="removeFile(1)">
@@ -232,11 +232,11 @@
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
                         <span *ngIf="!registration.legalFile4Size && !doc4">
-                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <img src="assets\images\hoja.svg" class="hoja-ID-card">
                             <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
                         </span>
                         <span *ngIf="registration.legalFile4Size && !documentUrls[3]">
-                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <img src="assets\images\hoja.svg" class="hoja-ID-card">
                             <div style="display: table-cell;">
                                 <i class="fa fa-paperclip"></i>
                                 <span>fileName4</span>
@@ -249,7 +249,7 @@
                             </div>
                         </span>
                         <span *ngIf="documentUrls[3]">
-                            <img src="..\..\..\assets\images\hoja.svg" class="hoja-ID-card">
+                            <img src="assets\images\hoja.svg" class="hoja-ID-card">
                             <i class="fa fa-paperclip"></i>
                             <span>{{documentFiles[3]?.name}}</span>
                             <a class="link-label" (click)="removeFile(3)">
