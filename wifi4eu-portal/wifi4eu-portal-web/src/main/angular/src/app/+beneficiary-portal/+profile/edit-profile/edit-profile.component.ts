@@ -410,8 +410,7 @@ export class BeneficiaryEditProfileComponent {
         this.submittingData = true;
   
         for(let i = 0; i < this.municipalities.length; i++){
-            //if(this.municipalities[i])
-            if (!this.isOrganisation || this.isMunicipalityEditable[this.municipalities[i].id]){
+            if (this.isMunicipalityEditable[this.municipalities[i].id]){
                 this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
                     (response: ResponseDTOBase) => {
                         if (response.success) {
