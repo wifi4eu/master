@@ -924,5 +924,9 @@
   "benefPortal.voucher.disclaimer": "Please note that this countdown is indicative, please click on apply below at the time of opening of the call",
   "benefPortal.voucher.noCall" : "There is no call foreseen",
   "benefPorta.voucher.signAgreement" : "STATUS: YOU GOT THE VOUCHER. PLEASE SIGN THE GRANT AGREEMENT.",
-  "shared.registration.update.erroragreement" : "Please accept the conditions agreement and upload all the required documents to proceed with the apply for voucher"
+  "shared.registration.update.erroragreement" : "Please accept the conditions agreement and upload all the required documents to proceed with the apply for voucher",
+  "shared.download.grantAgreementPDF" : "Download in ",
+  "benefPortal.grantAgreement.sign.title" : "Grant agreement signing confirmation",
+  "benefPortal.grantAgreement.sign.description" : "By pressing \"Sign\" you confirm you understand the conditions and confirm your agreement with terms and obligations of the Grant Agreement",
+  "benefPortal.grantAgreement.sign.button" : "Sign" 
 }
