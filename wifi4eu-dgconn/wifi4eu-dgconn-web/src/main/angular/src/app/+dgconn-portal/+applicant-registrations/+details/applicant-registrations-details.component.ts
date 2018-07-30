@@ -24,6 +24,7 @@ import { TranslateService } from "ng2-translate";
 import * as FileSaver from "file-saver";
 import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi, LogEmailDTO } from "../../../shared/swagger";
 import { NgForm, NgModel } from "@angular/forms";
+import {Observable} from "rxjs/Observable";
 
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
@@ -56,6 +57,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private users: UserDTOBase[] = [];
     private discussionThread: ThreadDTOBase = null;
     private displayedMessages: ThreadMessageDTOBase[] = [];
+    private messagesAuthorRegistration: number[] = [];
+    private allApplicationsCount: number = 0;
     private legalFiles: LegalFileCorrectionReasonDTOBase[][] = [];
     private selectedFilesTypes: number[][] = [];
     private selectedReasonTypes: number[][] = [];
@@ -136,6 +139,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             this.loadingData = true;
             this.applicationApi.getApplicationsByCallIdAndLauId(this.callId, this.lauId, new Date().getTime()).subscribe(
                 (applications: ApplicationDTOBase[]) => {
+                    this.allApplicationsCount = applications.length;
                     let failCount = 0;
                     let correctCount = 0;
                     for (let i = 0; i < applications.length; i++) {
@@ -261,16 +265,25 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         } else {
             this.loadingData = false;
         }
-    }
-
-    private displayRegistrationByAuthor(authorId) {
-        var registration = this.registrations[0];
-        //var registration = this.registrations.find(x => x.userId == authorId);
-        if(registration == null){
-            return 0;
-        } else {
-            return registration.id;
-        }
+        let timer = Observable.timer(500, 100);
+        let subscription = timer.subscribe(i => {
+            if(this.allApplicationsCount != 0 && this.registrations.length == this.allApplicationsCount){
+                this.displayedMessages.forEach( message => {
+                    this.registrations.forEach(registration => {
+                        for(var i = 0; i < registration.users.length; i++) {
+                            let user = registration.users[i];
+                            if(user.id == message.authorId){
+                                this.messagesAuthorRegistration.push(registration.id);
+                                break;
+                            }
+                        }
+                    });
+                });
+                if(this.messagesAuthorRegistration.length == this.displayedMessages.length){
+                    subscription.unsubscribe();
+                }
+            }
+        });
     }
 
     private getLegalFileUrl(index: number, fileNumber: number) {
