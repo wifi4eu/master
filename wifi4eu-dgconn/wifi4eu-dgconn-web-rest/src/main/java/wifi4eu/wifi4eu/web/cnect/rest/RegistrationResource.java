@@ -18,7 +18,6 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
-import wifi4eu.wifi4eu.entity.registration.LegalFiles;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
@@ -393,7 +392,7 @@ public class RegistrationResource {
         UserDTO user = userConnected;
         RegistrationDTO registration = registrationService.getRegistrationById(registrationId);
         if (registration != null && (!registrationService.checkUserWithRegistration(registration.getId(), userConnected.getId()) || user.getType() == 5)) {
-            LegalFilesDTO registrationFile = legalFilesService.getLegalFileByRegistrationIdFileType(registration.getId(), fileType);
+            LegalFileDTO registrationFile = legalFilesService.getLegalFileByRegistrationIdFileType(registration.getId(), fileType);
             if (registrationFile != null) {
                 String fileName = "";
                 String fileMime = "";
