@@ -10,6 +10,6 @@ import java.util.List;
 public interface LogEmailRepository extends JpaRepository<LogEmail, Integer> {
     Page<LogEmail> findAllByMunicipalityId(Integer municipalityId, Pageable pageable);
     List<LogEmail> findAllByMunicipalityIdAndActionEquals(Integer municipalityId, String action);
-    List<LogEmail> findAllByMunicipalityIdAndActionOrderBySentDateDesc(Integer municipalityId, String action);
     LogEmail findTopByMunicipalityIdAndActionOrderBySentDateDesc(Integer municipalityId, String action);
+    LogEmail findTopByMunicipalityIdAndActionAndToOrderBySentDateDesc(Integer municipalityId, String action, String to);
 }
