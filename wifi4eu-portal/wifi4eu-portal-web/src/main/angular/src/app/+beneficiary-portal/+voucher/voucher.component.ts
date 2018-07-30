@@ -127,6 +127,7 @@ export class VoucherComponent {
                     headers.append('X-XSRF-TOKEN', this.cookieService.get(this.csrfTokenCookieName)); 
                     this.http.get(urlQueue, {headers: headers}).subscribe(
                         data => {
+                            this.cookieService.set(this.nameCookieApply+"_"+applyVoucher.idRegistration,'true');
                             this.voucherApplied = "greyImage";
                             this.voucherCompetitionState = 3;
                             this.sharedService.growlTranslation(
@@ -136,6 +137,7 @@ export class VoucherComponent {
                             );
                         },
                         error => {
+                            this.cookieService.set(this.nameCookieApply+"_"+applyVoucher.idRegistration,'false');
                             this.sharedService.growlTranslation(
                                 "An error occurred and your application could not be received.",
                                 "shared.registration.update.error",
