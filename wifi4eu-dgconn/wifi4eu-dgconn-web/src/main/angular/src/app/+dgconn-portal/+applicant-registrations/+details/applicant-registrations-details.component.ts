@@ -103,7 +103,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private correspondenceDialogInfo: LogEmailDTO;
     private buttonStatusEnabled: any[][] = [];
 
-    private fileURL: string = '/dashboard/api/registration/getDocument/';
+    private fileURL: string = '/wifi4eu/api/registration/getDocument/';
 
     constructor(
         private applicationCommentApi: ApplicationcommentApi,
