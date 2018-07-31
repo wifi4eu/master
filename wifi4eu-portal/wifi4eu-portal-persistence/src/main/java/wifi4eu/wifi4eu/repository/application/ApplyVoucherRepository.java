@@ -12,7 +12,7 @@ public interface ApplyVoucherRepository extends CrudRepository<ApplyVoucher,Inte
             " m.id as mun_id," +
             " m.name as municipality," +
             " r.allFiles_flag as files_uploaded," +
-            " r.upload_time as upload_time," +
+            " (select top 1 upload_time from legal_files where registration = ru.registration order by upload_time desc ) as upload_time,"+
             " (SELECT count(a.id) FROM applications a WHERE a.registration = r.id AND a.call_id = ?1) as numberApplicant," +
             " (select TOP 1 ca.status FROM conditions_agreement ca WHERE ca.registration_id = r.id ORDER BY ca.id DESC) as conditionAgreement" +
             " FROM registration_users ru" +
