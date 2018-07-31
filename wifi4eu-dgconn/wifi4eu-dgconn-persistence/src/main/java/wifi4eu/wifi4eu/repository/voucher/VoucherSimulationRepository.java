@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface VoucherSimulationRepository extends CrudRepository<VoucherSimulation, Integer> {
@@ -45,4 +46,7 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
 
     @Query(value = "SELECT count(*) FROM voucher_simulations vs INNER JOIN applications a ON vs.application = a.id WHERE vs.voucher_assignment = ?1 AND (vs.num_applications > 1 OR a._status != 2)", nativeQuery = true)
     Integer checkIfSimulationIsValid(int voucherAssignmentId);
+
+    @Query(value = "SELECT application FROM voucher_simulations WHERE voucher_assignment = ?1 AND selection_status = 3", nativeQuery = true)
+    ArrayList<Integer> findApplicationIdsFromVoucherAssignmentAndSelectionStatus(int voucherAssignment);
 }

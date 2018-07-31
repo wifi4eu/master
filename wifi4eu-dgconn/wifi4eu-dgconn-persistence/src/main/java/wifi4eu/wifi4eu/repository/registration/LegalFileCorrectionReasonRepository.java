@@ -10,7 +10,6 @@ import java.util.List;
 
 public interface LegalFileCorrectionReasonRepository extends CrudRepository<LegalFileCorrectionReason, Integer> {
     List<LegalFileCorrectionReason> findByRegistrationIdOrderByTypeAsc(Integer registrationId);
-//    LegalFile findByRegistrationIdAndType(Integer registrationId, Integer type);
 
     @Modifying
     @Transactional
