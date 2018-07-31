@@ -3,7 +3,9 @@ export interface MonitoringRowDTO {
     countryCode?: string;
     municipality?: string;
     registrationNumber?: number; 
-    wfStatus?: string;
+    lefStatus?: string;
+    bcStatus?: string;
+    lcStatus?: string;
     signatureDate?: string;
     counterSignatureDate?: string;
 }
