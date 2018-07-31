@@ -64,7 +64,8 @@ public class EcasSignatureUtil {
      **/
 
     public String constructSignatureHDSCallbackUrl(HttpServletRequest request, String documentToBeSigned) {
-        String url = userService.getBaseUrl().substring(0, userService.getBaseUrl().indexOf("#"));
+        //String url = userService.getBaseUrl().substring(0, userService.getBaseUrl().indexOf("#"));
+        String url = "https://wifi4eu-dev.everincloud.com/wifi4eu/";
         url += "api/signature/handleSignature/" + documentToBeSigned;
         System.out.println("URL: "+  url);
         return url;
