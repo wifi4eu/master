@@ -55,10 +55,10 @@
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied() && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement">
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied(data.idRegistration) && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
-                        <span *ngIf="data.numberApplicant || isVoucherApplied()">
+                        <span *ngIf="data.numberApplicant || isVoucherApplied(data.idRegistration)">
                             <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
                             {{ 'benefPortal.voucher.applied' | translate }}
                         </span>

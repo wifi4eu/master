@@ -22,7 +22,7 @@
             <div class="form-group">
                 <label class="label" for="name">{{ 'suppRegistration.company.name' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="name" name="name"
-                       [(ngModel)]="supplier.name" #name="ngModel" required>
+                       [(ngModel)]="supplier.name" #name="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="name.valid || name.pristine">
                     {{'suppregistration.company.required'|translate}}
                 </div>
@@ -36,7 +36,7 @@
             <div class="form-group">
                 <label class="label" for="address">{{ 'suppRegistration.legal.address' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="address" name="address"
-                       [(ngModel)]="supplier.address" #address="ngModel" required>
+                       [(ngModel)]="supplier.address" #address="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="address.valid || address.pristine">
                     {{'suppRegistration.address.required' | translate}}
                 </div>
@@ -50,7 +50,7 @@
             <div class="form-group">
                 <label class="label" for="vat">{{ 'suppRegistration.vat.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="vat" name="vat"
-                       [(ngModel)]="supplier.vat" #vat="ngModel" required>
+                       [(ngModel)]="supplier.vat" #vat="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="vat.valid || vat.pristine">
                     {{'suppRegistration.vat.required' | translate}}
                 </div>
@@ -64,7 +64,7 @@
             <div class="form-group">
                 <label class="label" for="bic">{{ 'suppRegistration.bic.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="bic" name="bic"
-                       [(ngModel)]="supplier.bic" #bic="ngModel" required>
+                       [(ngModel)]="supplier.bic" #bic="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">{{'suppRegistration.bic.required'
                     | translate}}
                 </div>
@@ -78,7 +78,7 @@
             <div class="form-group">
                 <label class="label" for="accountNumber">{{ 'suppRegistration.bank.account' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="accountNumber" name="accountNumber"
-                       [(ngModel)]="supplier.accountNumber" #accountNumber="ngModel" required>
+                       [(ngModel)]="supplier.accountNumber" #accountNumber="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="accountNumber.valid || accountNumber.pristine">
                     {{'suppRegistration.bank.required' | translate}}
                 </div>
@@ -139,7 +139,7 @@
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button" [disabled]="!supplierForm.form.valid">
+            <button type="submit" class="btn btn-primary publish-button" [disabled]="!supplierForm.form.valid || !buttonEnabled">
                 {{ 'shared.confirm.button' | translate }}
             </button>
         </div>

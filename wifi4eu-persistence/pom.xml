@@ -2,13 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>wifi4eu</artifactId>
         <groupId>wifi4eu.wifi4eu</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <artifactId>wifi4eu</artifactId>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-
     <artifactId>wifi4eu-persistence</artifactId>
     <packaging>jar</packaging>
 

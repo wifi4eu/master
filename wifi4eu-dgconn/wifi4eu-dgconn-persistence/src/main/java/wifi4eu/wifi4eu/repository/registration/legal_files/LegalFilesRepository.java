@@ -10,8 +10,9 @@ public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer>
 	LegalFile findByRegistrationAndFileType(Integer registrationId, Integer fileType);
 	void deleteByRegistration(Integer registrationId);
 	void deleteByRegistrationAndFileType(Integer registrationId, Integer fileType);
-  List<LegalFile> findAllByRegistration(Integer registrationId);
-  
-	@Query(value = "SELECT registration, type, upload_time from legal_files where registration = ?1 order by type asc", nativeQuery = true)
-	Iterable<Object> findUploadedTimeByRegistrationId(Integer registrationId);
+ 	 List<LegalFile> findAllByRegistration(Integer registrationId);
+
+	@Query(value = "select id, registration, type, upload_time, id_user, file_size, file_mime, file_name from legal_files where registration = ?1 order by type, upload_time desc", nativeQuery = true)
+	List<LegalFile> findHistoryAll(Integer registrationId);
+
 }

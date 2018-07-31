@@ -15,6 +15,19 @@ UPDATE ru set creation_date  = dateadd(s, convert(bigint, u.create_date) / 1000,
 FROM dbo.[registration_users] as ru
 inner join users as u on ru._user = u.id;
 
+ALTER TABLE log_emails ALTER COLUMN body NTEXT;
+ALTER TABLE log_emails ALTER COLUMN subject NTEXT;
+
+-- 27/07/2018 -  populate table supplier_users with supplier table values. ONLY on db where supplier_users is empty and you have supplier's table with information.
+INSERT INTO [dbo].[supplier_users]
+         ([creation_date]
+          ,[email]
+         ,[main]
+         ,[status]
+          ,[supplier_id]
+         ,[user_id])
+  SELECT dateadd(s, convert(bigint, u.create_date) / 1000, convert(datetime2, '1970-1-1 00:00:00.0000000')), u.ecas_email, 1, 1, s.id, u.id from [dbo].[suppliers] s inner join [dbo].[users] u on s._user = u.id where u.ecas_email is not null;
+
 --WIFI4EU-2556 changes in legal files / registration / legal files correction reason
 --FOREIGN KEYS
 ALTER TABLE legal_files_correction_reason
@@ -77,4 +90,3 @@ from [dbo].registrations r inner join
 --delete columns from registrations
 ALTER TABLE dbo.registrations DROP COLUMN upload_time, legal_file1_size, legal_file1_mime,
 legal_file2_size, legal_file2_mime, legal_file3_size, legal_file3_mime, legal_file4_size, legal_file4_mime;
-

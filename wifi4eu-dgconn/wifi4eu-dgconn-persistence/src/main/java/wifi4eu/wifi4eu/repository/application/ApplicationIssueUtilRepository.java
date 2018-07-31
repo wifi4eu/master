@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ApplicationIssueUtilRepository extends CrudRepository<ApplicationIssueUtil, Integer> {
@@ -17,7 +18,8 @@ public interface ApplicationIssueUtilRepository extends CrudRepository<Applicati
             "inner join mayors may on may.municipality = m.id where l.id = ?#{[0]}", nativeQuery = true)
     List<ApplicationIssueUtil> findApplicationIssueUtilByLauId(Integer lauId);
 
-    @Query(value = "select a.id as applicationId, r.id as registrationId, l.country_code as countryCode, u.email as userEmail, u.ecas_email as userEcasEmail, " +
+
+    @Query(value = "select ru.id as regUserId, a.id as applicationId, r.id as registrationId, l.country_code as countryCode, u.email as userEmail, u.ecas_email as userEcasEmail, " +
             "u.lang as userLang, may.email as mayorEmail, a._status as status from laus l \n" +
             "inner join municipalities m on m.lau = l.id \n" +
             "inner join registrations r on r.municipality = m.id \n" +
