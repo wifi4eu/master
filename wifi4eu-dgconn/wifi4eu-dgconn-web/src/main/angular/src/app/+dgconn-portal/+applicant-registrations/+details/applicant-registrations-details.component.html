@@ -193,7 +193,7 @@
                                         <p-dataTable [value]="legalFiles[i]">
                                             <p-column field="type" [sortable]="false" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" [disabled]="row.requestCorrection" (ngModelChange)="orderList($event, i)"
+                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" (ngModelChange)="orderList($event, i)"
                                                         [(ngModel)]="selectedFilesTypes[i]"></p-checkbox>
                                                 </ng-template>
                                             </p-column>
@@ -343,7 +343,7 @@
                         <div class="ui-g-12">
                             <div class="ui-g-3 backgroundMessage">
                                 <p class="authorMessage">
-                                    {{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{displayRegistrationByAuthor(currentMessage.authorId)}}
+                                    {{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{messagesAuthorRegistration[i]}}
                                 </p>
                                 <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
                                 <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>

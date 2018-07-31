@@ -15,19 +15,22 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
+import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
-import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
-import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -109,6 +112,9 @@ public class ApplicationService {
     UserMapper userMapper;
 
     @Autowired
+    MunicipalityMapper municipalityMapper;
+
+    @Autowired
     RegistrationRepository registrationRepository;
 
     public ApplicationDTO getApplicationById(int applicationId) {
@@ -118,23 +124,22 @@ public class ApplicationService {
     /**
      * Service to register the applications coming from the Queue
      */
-    public ApplicationDTO registerApplication(int callId, int userId, int registrationId,
+    public ApplicationDTO registerApplication(int callId, int userId, int registrationId, int municipalityId,
                                               long uploadDocTimestamp, long queueTimestamp, HttpServletRequest request) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registering application");
+        _log.debug("Registering application");
         CallDTO callDTO = callService.getCallById(callId);
         UserDTO userDTO = userService.getUserById(userId);
         RegistrationDTO registrationDTO = registrationService.getRegistrationById(registrationId);
+        MunicipalityDTO municipalityDTO = municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
         // check all the information provided exists on DB
-        if (callDTO != null && userDTO != null && registrationDTO != null) {
-            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - All information provided exists");
+        if (callDTO != null && userDTO != null && registrationDTO != null && municipalityDTO != null) {
+            _log.debug("All information provided exists");
             // check the queue date is between start/end of the call
-            if (queueTimestamp / 1000000000 > callDTO.getStartDate() && queueTimestamp / 1000000000 < callDTO.getEndDate()) {
-                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue is from the specified call");
+            if (queueTimestamp >= callDTO.getStartDate() && queueTimestamp <= callDTO.getEndDate()) {
+                _log.debug("The queue is from the specified call");
                 //check information on the queue is right
-                if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationDTO.getId()) != null) {
-                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - All the information of this queue is right");
+                if (registrationDTO.getUploadTime() == uploadDocTimestamp) {
+                    _log.debug("All the information of this queue is right");
                     //check if this application was received previously
                     ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
                     if (applicationDTO == null || applicationDTO.getDate() > queueTimestamp) {
@@ -143,30 +148,30 @@ public class ApplicationService {
                             applicationDTO = new ApplicationDTO();
                             applicationDTO.setRegistrationId(registrationDTO.getId());
                             applicationDTO.setCallId(callDTO.getId());
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - New application created");
+                            _log.debug("New application created");
                         }
                         applicationDTO.setDate(queueTimestamp);
                         applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
+                        _log.info("Application " + applicationDTO.getId() + " created successfully");
                         return applicationDTO;
                     } else {
-                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application existent on the DB, callId: "
+                        _log.error("Trying to register an application existent on the DB, callId: "
                                 + callId + " userId: " + userId + " registrationId: " + registrationId +
                                 " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
                         return applicationDTO;
                     }
                 } else {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application with incorrect uploadDocTimestamp or userId not match, callId: "
+                    _log.error("Trying to register an application with incorrect uploadDocTimestamp, callId: "
                             + callId + " userId: " + userId + " registrationId: " + registrationId +
                             " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
                 }
             } else {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application out of the call period, callId: "
+                _log.error("Trying to register an application out of the call period, callId: "
                         + callId + " userId: " + userId + " registrationId: " + registrationId +
                         " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
             }
         } else {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The information provided is wrong, callId: "
+            _log.error("The information provided is wrong, callId: "
                     + callId + " userId: " + userId + " registrationId: " + registrationId +
                     " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
         }
@@ -187,34 +192,29 @@ public class ApplicationService {
             throw new DateTimeException("The call is not available at the moment");
         }
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
-        UserDTO user = null;
-        MunicipalityDTO municipality = null;
         if (registration.getAllFilesFlag() == 1) {
-            if (registration != null) {
-                user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registration.getId()));
-                municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-            }
-            if (user != null && municipality != null) {
-                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                if (user.getLang() != null) {
-                    locale = new Locale(user.getLang());
-                } else {
-                    _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - The user " + user.getEcasUsername() + " has not specified a language");
-                }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.voucherApply.subject");
-                String msgBody = bundle.getString("mail.voucherApply.body");
-                msgBody = MessageFormat.format(msgBody, municipality.getName());
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "createApplication");
-                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
-                }
-            }
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;
         }
         return null;
+    }
+
+
+    public void sendCreateApplicationEmail(User user, Municipality municipality, int applicationId) {
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        if (user.getLang() != null) {
+            locale = new Locale(user.getLang());
+        } else {
+            _log.warn("SCHEDULED TASK: Create Application Emails - The user " + user.getEcasUsername() + " has not specified a language");
+        }
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.voucherApply.subject");
+        String msgBody = bundle.getString("mail.voucherApply.body");
+        if (!userService.isLocalHost()) {
+            mailService.sendEmailAsync(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "createApplication");
+            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
+        }
     }
 
     @Transactional
@@ -246,6 +246,11 @@ public class ApplicationService {
 
     public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
+    }
+
+
+    public ApplicationDTO getApplicationByRegistrationId(int registrationId) {
+        return applicationMapper.toDTO(applicationRepository.findTopByRegistrationIdOrderByDateDesc(registrationId));
     }
 
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {
@@ -504,7 +509,7 @@ public class ApplicationService {
                 }
                 msgBody = MessageFormat.format(msgBody, documentTypes);
                 Registration registration = registrationRepository.findOne(application.getRegistrationId());
-                if(registration != null) {
+                if (registration != null) {
                     mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipality().getId(), "sendCorrectionEmails");
                 }
             }

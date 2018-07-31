@@ -38,6 +38,7 @@ import { LocalStorageService } from "angular-2-local-storage";
 
 export class SupplierEditProfileComponent {
     private user: UserDTOBase;
+    private userConnected: UserDTOBase;
     private supplier: SupplierDTOBase;
     private websitePattern: string = '(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)';
     private countryOptions: SelectItem[] = [];
@@ -72,12 +73,15 @@ export class SupplierEditProfileComponent {
                 this.getSupplierData();
             });
         }
+        let storedUser = this.localStorageService.get('user');
+        this.userConnected = storedUser ? JSON.parse(storedUser.toString()) : null;
     }
 
     private getSupplierData() {
         this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
+                  
                     this.supplier = supplier;
                     this.users = this.supplier.users;
                     if (this.supplier.logo != null)
@@ -258,7 +262,7 @@ export class SupplierEditProfileComponent {
                     this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
                     this.closeModal();
                 }, error => {
-                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.sharedService.growlTranslation('An error occurred. This contact has been added to this supplier before or has related registrations.', 'shared.email.error', 'error');
                     this.closeModal();
                 }
             );

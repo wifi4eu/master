@@ -204,7 +204,7 @@ public class SupplierService {
         UserContext userContext = UserHolder.getUser();
         userDTO = userService.getUserByUserContext(userContext);
 
-        if (supplierDTO.getUsers().size() > 1 || userDTO == null) {
+        if (supplierDTO.getUsers() != null && supplierDTO.getUsers().size() > 1 || userDTO == null) {
             throw new Exception("Incorrect contact parameters: more users than expected");
         }
 
@@ -212,6 +212,7 @@ public class SupplierService {
             if (userSupplier.getId() == userDTO.getId()) {
                 userDTO.setName(userSupplier.getName());
                 userDTO.setSurname(userSupplier.getSurname());
+                userDTO.setEmail(userSupplier.getEmail());
                 userDTO.setPhone_number(userSupplier.getPhone_number());
                 userDTO.setPhone_prefix(userSupplier.getPhone_prefix());
                 userDTO.setCreateDate(new Date().getTime());
@@ -505,7 +506,7 @@ public class SupplierService {
             throw new Exception("User data is not correct.");
 
         } else if (!checkHasNoRegistrations(newUserEmail)) {
-            throw new Exception("This email has registrations related to.");
+            throw new Exception("This email has related registrations.");
 
         } else if (!checkContactHasNotBeenAddedBefore(newUserEmail, supplierId)) {
             throw new Exception("This contact has been added to this supplier before.");
@@ -518,7 +519,7 @@ public class SupplierService {
             String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
             msgBody = MessageFormat.format(msgBody, urlSent);
             if (!userService.isLocalHost()) {
-                mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                mailService.sendEmail(newUserEmail.trim(), MailService.FROM_ADDRESS, subject, msgBody);
             }
             return true;
         }

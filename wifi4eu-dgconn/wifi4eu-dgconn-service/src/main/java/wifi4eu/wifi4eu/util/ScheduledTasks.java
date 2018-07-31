@@ -266,7 +266,8 @@ public class ScheduledTasks {
     }
 
     //every day at 4am
-    @Scheduled(cron = "0 0 4 * * *", zone = "Europe/Madrid")
+    //Now the application are NOT invalidated in spite of the have legalFileCorrection with more than 7 days
+    //@Scheduled(cron = "0 0 4 * * *", zone = "Europe/Madrid")
     public void deadlineSubmissionForRequestDocuments() {
         _log.debug("SCHEDULED TASK: Deadline for Requested Documents - starting to check deadline submission for request documents");
         List<CallDTO> callList = callService.getAllCalls();

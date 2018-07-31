@@ -5,14 +5,11 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -23,9 +20,9 @@ import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -93,12 +90,37 @@ public class ApplicationResource {
             responseDTO.setSuccess(true);
             responseDTO.setData(checkIfEditable);
             responseDTO.setError(new ErrorDTO());
-        } catch (Exception e){
+        } catch (Exception e) {
             responseDTO.setSuccess(false);
             responseDTO.setData("Error on query");
             responseDTO.setError(new ErrorDTO());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return responseDTO;
+    }
+
+    @ApiOperation(value = "Get application by  registration id")
+    @RequestMapping(value = "/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ApplicationDTO getApplicationByRegistrationId(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by registration id " + registrationId);
+        try {
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found", e.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        }
+
+        ApplicationDTO responseApp = applicationService.getApplicationByRegistrationId(registrationId);
+
+        if (responseApp == null) {
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
+            responseApp = new ApplicationDTO();
+        } else {
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application is retrieved correctly");
+        }
+        return responseApp;
     }
 }
