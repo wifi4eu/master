@@ -191,26 +191,32 @@
                                 <ux-accordion-boxes>
                                     <custom-accordion-box [isExpanded]="true" [rightSide]="true">
                                         <p-dataTable [value]="legalFiles[i]">
-                                            <p-column field="type" [sortable]="false" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
+                                            <p-column field="type" [sortable]="true" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
                                                     <p-checkbox [value]="row" [label]="typeFilesList[row.type - 1]" [disabled]="row.requestCorrection" (ngModelChange)="orderList($event, i)"
                                                         [(ngModel)]="selectedFiles[i]"></p-checkbox>
                                                 </ng-template>
                                             </p-column>
-                                            <p-column field="uploadTime" [sortable]="false" header="{{ 'dgConn.dateRecieved' | translate }}" styleClass="text-center">
+                                            <p-column field="uploadTime" [sortable]="true" header="{{ 'dgConn.dateRecieved' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
                                                     <span *ngIf="row.uploadTime">{{ row.uploadTime | date:'dd/MM/yyyy' }}</span>
                                                     <span *ngIf="!row.uploadTime">-</span>
                                                 </ng-template>
                                             </p-column>
-                                            <p-column field="correctionReason" [sortable]="false" header="{{ 'dgConn.correctionReason' | translate }}" styleClass="text-center">
+                                            <p-column field="correctionReason" [sortable]="true" header="{{ 'dgConn.correctionReason' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
                                                     <span *ngIf="row.correctionReason != null">{{invalidateReasonsList[row.correctionReason]}}</span>
                                                     <span *ngIf="row.correctionReason == null">-</span>
                                                 </ng-template>
-                                            </p-column>
-                                            <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
+                                             </p-column>
+                                            <p-column field="requestCorrectionDate" [sortable]="true" header="{{ 'dgConn.requestCorrectionDate' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
+                                                    <span *ngIf="row.requestCorrectionDate != null">{{ row.requestCorrectionDate | date:'dd/MM/yyyy' }}</span>
+                                                    <span *ngIf="row.requestCorrectionDate == null">-</span>
+                                                </ng-template>
+                                             </p-column>
+                                            <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
+                                                <ng-template let-row="rowData" pTemplate="body">                                                                                                    
                                                     <a class="link-label" href="{{fileURL}}{{registrations[i].id}}/{{row.legalFile}}" target="_blank">
                                                         <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                                     </a>
