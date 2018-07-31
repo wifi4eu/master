@@ -15,6 +15,7 @@ export class TimerComponent {
     private seconds: number;
     @Input('baseURLApi') baseURLApi : string;
     private timeGate: string = "/time";
+    private urlTime: string = "https://wifi4eu-dev-queue.everincloud.com";
 
     constructor(private http: Http, private sharedService: SharedService, private callApi: CallApi) {
     }
@@ -54,7 +55,8 @@ export class TimerComponent {
     }
 
     private getTime() {
-        let url = this.baseURLApi + this.timeGate;
+        // let url = this.baseURLApi + this.timeGate;
+        let url = this.urlTime + this.timeGate;
         this.http.get(url).subscribe(
             response => {
                 if (response.status == 200 && !isNaN(parseInt(response.text()))) {
