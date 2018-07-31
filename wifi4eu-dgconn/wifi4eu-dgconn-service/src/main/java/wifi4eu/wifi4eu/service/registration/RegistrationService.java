@@ -518,4 +518,19 @@ public class RegistrationService {
         return userMapper.toDTOList(userRepository.findUsersFromRegistration(registrationId));
     }
 
+    public void clearCorrectionReason(LegalFileCorrectionReasonDTO legalFileCorrectionReasonDTO, UserDTO userDTO){
+        if ((legalFileCorrectionReasonDTO.getType() == 1) || (legalFileCorrectionReasonDTO.getType() == 3)){
+            legalFileCorrectionReasonRepository.clearCorrectionReason(legalFileCorrectionReasonDTO.getRegistrationId(),legalFileCorrectionReasonDTO.getType());
+
+        }else  if ((legalFileCorrectionReasonDTO.getType() == 2) || (legalFileCorrectionReasonDTO.getType() == 4)){
+            List<LegalFileCorrectionReasonDTO> legalFileCorrectionReasonDTOList =  legalFileCorrectionReasonMapper.toDTOList(legalFileCorrectionReasonRepository.getByRegistrationIdAndTypeAndUserId(legalFileCorrectionReasonDTO.getRegistrationId(),legalFileCorrectionReasonDTO.getType(),userDTO.getId()));
+            for (LegalFileCorrectionReasonDTO lfcDTO: legalFileCorrectionReasonDTOList){
+                lfcDTO.setRequestCorrection(false);
+                lfcDTO.setCorrectionReason(null);
+            }
+
+            legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntityList(legalFileCorrectionReasonDTOList));
+        }
+    }
+
 }
