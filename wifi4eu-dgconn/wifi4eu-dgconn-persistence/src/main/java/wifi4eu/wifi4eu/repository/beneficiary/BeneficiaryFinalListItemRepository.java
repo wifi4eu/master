@@ -21,7 +21,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?1",
             nativeQuery = true)
@@ -40,7 +40,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -61,7 +61,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -82,7 +82,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -103,7 +103,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -124,7 +124,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -145,7 +145,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -166,7 +166,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -187,7 +187,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -208,7 +208,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -229,7 +229,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id  " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id  " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -250,7 +250,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -272,7 +272,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
-            "INNER JOIN grant_agreement ga ON ga.application_id = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -293,6 +293,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -314,6 +315,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
