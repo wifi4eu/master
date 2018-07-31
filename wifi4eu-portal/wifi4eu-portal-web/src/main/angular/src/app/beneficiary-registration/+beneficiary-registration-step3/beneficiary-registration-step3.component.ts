@@ -19,8 +19,9 @@ export class BeneficiaryRegistrationStep3Component {
     @Input('associationName') private associationName: string;
 
     private imMayor: boolean;
-    private repeatEmail: string = '';
-    private userEmailMatches: boolean = false;
+    private repeatEmail: string;
+    private userEmailMatches: boolean;
+    private buttonEnabled: boolean = false;
     private hasEcasEmail: boolean = false;
     private storedUser;
     private userEcas;
@@ -128,5 +129,14 @@ export class BeneficiaryRegistrationStep3Component {
 
     private preventPaste(event: any) {
         return false;
+    }
+
+    private checkButtonEnabled(event){
+        for (let i = 0; i < this.municipalities.length; i++) {
+            if(this.initialUser.surname != null && this.initialUser.name != null && this.initialUser.addressNum != null && this.initialUser.address != null  && this.initialUser.postalCode != null
+                 && this.initialUser.surname.trim() != "" && this.initialUser.name.trim() != "" && this.initialUser.addressNum.trim() != "" && this.initialUser.address.trim() != "" && this.initialUser.postalCode.trim() != ""){
+                    this.buttonEnabled = true;
+            }
+        }
     }
 }
