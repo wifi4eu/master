@@ -193,7 +193,7 @@
                                         <p-dataTable [value]="legalFiles[i]">
                                             <p-column field="type" [sortable]="true" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <p-checkbox [value]="row" [label]="typeFilesList[row.type - 1]" [disabled]="row.requestCorrection" (ngModelChange)="orderList($event, i)"
+                                                    <p-checkbox [value]="row" [label]="typeFilesList[row.type - 1]" (ngModelChange)="orderList($event, i)"
                                                         [(ngModel)]="selectedFiles[i]"></p-checkbox>
                                                 </ng-template>
                                             </p-column>
@@ -216,7 +216,7 @@
                                                 </ng-template>
                                              </p-column>
                                             <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
-                                                <ng-template let-row="rowData" pTemplate="body">                                                                                                    
+                                                <ng-template let-row="rowData" pTemplate="body">
                                                     <a class="link-label" href="{{fileURL}}{{registrations[i].id}}/{{row.legalFile}}" target="_blank">
                                                         <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                                     </a>
