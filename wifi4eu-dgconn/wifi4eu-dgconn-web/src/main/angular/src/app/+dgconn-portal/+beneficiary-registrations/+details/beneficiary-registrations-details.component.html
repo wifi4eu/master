@@ -104,38 +104,15 @@
                         <p class="applicantDetailsNoMargin" *ngIf="!registrations[i].legalFile1 || !registrations[i].legalFile2 || !registrations[i].legalFile3 || !registrations[i].legalFile4">
                             <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>
                         </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile1">
+                        <p class="applicantDetailsNoMargin" *ngFor="let file of legalFiles[i]">
                             <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 1)" download>
+                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} {{file.fileType}}<br>
+                                <a class="link-label" href="{{fileURL}}{{registrations[i].id}}/{{file.id}}" download>
                                     <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                 </a>
                             </span>
                         </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile2">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 2)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile3">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 3)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile4">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 4)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
+                       
                     </div>
                 </div>
                 <br>

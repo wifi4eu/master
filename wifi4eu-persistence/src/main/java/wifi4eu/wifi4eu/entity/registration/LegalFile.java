@@ -1,100 +1,125 @@
 package wifi4eu.wifi4eu.entity.registration;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "legal_files")
 public class LegalFile {
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "registration")
-    private Registration registration;
+	@Column(name = "id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column(name = "type")
-    private Integer type;
+	@Column(name = "registration")
+	private int registration;
 
-    @Column(name = "data")
-    private String data;
+	@Column(name = "data")
+	private String fileData;
 
-    @Column(name = "upload_time")
-    private Long uploadTime;
+	@Column(name = "type")
+	private int fileType;
 
-    @Column(name = "request_correction")
-    private Boolean requestCorrection;
+	@Column(name = "upload_time")
+	private Date uploadTime;
 
-    @Column(name = "correction_reason")
-    private Integer correctionReason;
+	@Column(name = "id_user")
+	private Integer userId;
 
-    public LegalFile() {
-    }
+	@Column(name = "file_size")
+	private int fileSize;
 
-    public LegalFile(Integer id, Registration registration, Integer type, String data, Long uploadTime, Boolean requestCorrection, Integer correctionReason) {
-        this.id = id;
+	@Column(name = "file_mime")
+	private String fileMime;
+
+	@Column(name = "file_name")
+	private String fileName;
+
+
+	public LegalFile() {
+	}
+
+    public LegalFile(int registration, String fileData, int fileType, Date uploadTime, Integer userId, int fileSize, String fileMime, String fileName) {
         this.registration = registration;
-        this.type = type;
-        this.data = data;
+        this.fileData = fileData;
+        this.fileType = fileType;
         this.uploadTime = uploadTime;
-        this.requestCorrection = requestCorrection;
-        this.correctionReason = correctionReason;
+        this.userId = userId;
+        this.fileSize = fileSize;
+        this.fileMime = fileMime;
+        this.fileName = fileName;
     }
 
     public Integer getId() {
-        return id;
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public int getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(int registration) {
+		this.registration = registration;
+	}
+
+	public String getFileData() {
+		return fileData;
+	}
+
+	public void setFileData(String fileData) {
+		this.fileData = fileData;
+	}
+
+	public int getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(int fileType) {
+		this.fileType = fileType;
+	}
+
+	public Date getUploadTime() {
+		return uploadTime;
+	}
+
+	public void setUploadTime(Date uploadTime) {
+		this.uploadTime = uploadTime;
+	}
+
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public Registration getRegistration() {
-        return registration;
+    public int getFileSize() {
+        return fileSize;
     }
 
-    public void setRegistration(Registration registration) {
-        this.registration = registration;
+    public void setFileSize(int fileSize) {
+        this.fileSize = fileSize;
     }
 
-    public Integer getType() {
-        return type;
+    public String getFileMime() {
+        return fileMime;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setFileMime(String fileMime) {
+        this.fileMime = fileMime;
     }
 
-    public String getData() {
-        return data;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public Long getUploadTime() {
-        return uploadTime;
-    }
-
-    public void setUploadTime(Long uploadTime) {
-        this.uploadTime = uploadTime;
-    }
-
-    public Boolean getRequestCorrection() {
-        return requestCorrection;
-    }
-
-    public void setRequestCorrection(Boolean requestCorrection) {
-        this.requestCorrection = requestCorrection;
-    }
-
-    public Integer getCorrectionReason() {
-        return correctionReason;
-    }
-
-    public void setCorrectionReason(Integer correctionReason) {
-        this.correctionReason = correctionReason;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

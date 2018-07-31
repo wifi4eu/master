@@ -80,7 +80,7 @@ public class ApplicationInvalidateReasonService {
         return applicationInvalidateReasonMapper.toDTOList(applicationInvalidateReasonRepository.findAllByApplicationIdOrderByReason(applicationId));
     }
 
-    public void deleteInvalidateReasonByApplicationId(Integer applicationId) {
+    public void deleteInvalidateReasonByApplicationId(Integer applicationId){
         applicationInvalidateReasonRepository.deleteInvalidateReasonsByApplicationId(applicationId);
     }
 
@@ -89,13 +89,13 @@ public class ApplicationInvalidateReasonService {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating application");
         ApplicationDTO applicationDTO = applicationService.getApplicationById(invalidReasonViewDTO.getApplicationId());
-        if (applicationDTO == null) {
+        if(applicationDTO == null){
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application does not exist");
             throw new AppException("Incorrect application id");
         }
 
         List<ApplicationInvalidateReasonDTO> applicationInvalidateReasonDTOS = new ArrayList<>();
-        for (Integer integer : invalidReasonViewDTO.getReasons()) {
+        for(Integer integer: invalidReasonViewDTO.getReasons()){
             applicationInvalidateReasonDTOS.add(new ApplicationInvalidateReasonDTO(applicationDTO.getId(), integer));
         }
         applicationDTO.setStatus(ApplicationStatus.KO.getValue());
@@ -172,7 +172,7 @@ public class ApplicationInvalidateReasonService {
         return validatedApplication;
     }
 
-    public Map<String, Boolean> changeStatusApplicationEnabled(Integer applicationId, HttpServletRequest request) {
+    public Map<String, Boolean> changeStatusApplicationEnabled(Integer applicationId, HttpServletRequest request){
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
@@ -183,7 +183,7 @@ public class ApplicationInvalidateReasonService {
 
         Map<String, Boolean> checks = new HashMap<>();
 
-        if (applicationDBO.getStatus() != ApplicationStatus.PENDING_FOLLOWUP.getValue()) {
+        if(applicationDBO.getStatus() != ApplicationStatus.PENDING_FOLLOWUP.getValue()){
             checks.put("invalidate", true);
             checks.put("validate", true);
             return checks;
@@ -192,7 +192,7 @@ public class ApplicationInvalidateReasonService {
         RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDBO.getRegistrationId());
         LogEmailDTO email = municipalityService.getCorrespondenceByMunicipalityIdAndAction(registrationDTO.getMunicipalityId(), "sendCorrectionEmails");
 
-        if (email == null) {
+        if(email == null){
             checks.put("invalidate", true);
             checks.put("validate", true);
         } else {
@@ -204,13 +204,13 @@ public class ApplicationInvalidateReasonService {
 
             boolean valid = true;
             List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDBO.getRegistrationId());
-            for (LegalFileCorrectionReason legalFileCorrectionReason : legalFileCorrectionReasons) {
-                if (legalFileCorrectionReason.getRequestCorrection()) {
-                    if (legalFileCorrectionReason.getRequestCorrectionDate().after(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)) {
+            for (LegalFileCorrectionReason legalFileCorrectionReason: legalFileCorrectionReasons) {
+                if(legalFileCorrectionReason.getRequestCorrection()){
+                    if(legalFileCorrectionReason.getRequestCorrectionDate().after(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)){
                         valid = true;
                         break;
                     }
-                    if (legalFileCorrectionReason.getRequestCorrectionDate().before(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)) {
+                    if(legalFileCorrectionReason.getRequestCorrectionDate().before(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)){
                         valid = false;
                     }
                 }
