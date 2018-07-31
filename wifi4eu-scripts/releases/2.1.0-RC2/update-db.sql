@@ -16,6 +16,12 @@ FROM dbo.[registration_users] as ru
 inner join users as u on ru._user = u.id;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+ALTER TABLE log_emails ALTER COLUMN body NTEXT;
+ALTER TABLE log_emails ALTER COLUMN subject NTEXT;
+
+>>>>>>> 63f83c60fd534742366a3bcedeffefbad737d2c2
 -- 27/07/2018 -  populate table supplier_users with supplier table values. ONLY on db where supplier_users is empty and you have supplier's table with information.
 INSERT INTO [dbo].[supplier_users]
          ([creation_date]
