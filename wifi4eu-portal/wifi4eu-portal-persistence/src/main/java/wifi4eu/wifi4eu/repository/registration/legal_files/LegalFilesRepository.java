@@ -28,6 +28,12 @@ public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer>
     List<LegalFile> findHistoryForType(Integer registrationId, Integer userId, Integer type);
 
     @Query(value = "select id, registration, type, upload_time, id_user, " +
+            "file_size, file_mime, file_name " +
+            "from legal_files where registration = ?1 " +
+            "and type = ?3 order by type, upload_time desc", nativeQuery = true)
+    List<LegalFile> findHistoryRequiredType(Integer registrationId, Integer userId, Integer type);
+
+    @Query(value = "select id, registration, type, upload_time, id_user, " +
             "file_size, file_mime, file_name from legal_files where registration = ?1 " +
             "and (type=1 or type = 3 or id_user = ?2 ) order by type, upload_time desc", nativeQuery = true)
     List<LegalFile> findHistoryAll(Integer registrationId, Integer userId);
