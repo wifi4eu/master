@@ -89,8 +89,6 @@
                                         <!-- new file -->
                                         <a sclass="link-label" (click)="removeFile(1)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
-                                        <a class="link-label" href="{{file.fileData}}" target="_blank" download="{{file?.fileName}}">
-                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
                                         <!-- history -->
@@ -145,8 +143,6 @@
                                         <!-- new file -->
                                         <a sclass="link-label" (click)="removeFile(3)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
-                                        <a class="link-label" href="{{file.fileData}}" target="_blank" download="{{file?.fileName}}">
-                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
                                         <!-- history -->
@@ -206,8 +202,6 @@
                                         <!-- new file -->
                                         <a sclass="link-label" (click)="removeFile(2)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
-                                        <a class="link-label" href="{{file.fileData}}" target="_blank" download="{{file?.fileName}}">
-                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
                                         <!-- history -->
@@ -260,8 +254,6 @@
                                         <!-- new file -->
                                         <a sclass="link-label" (click)="removeFile(4)">
                                             <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
-                                        <a class="link-label" href="{{file.fileData}}" target="_blank" download="{{file?.fileName}}">
-                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                                     </span>
                                     <span *ngIf="file?.uploadTime">
                                         <!-- history -->

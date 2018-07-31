@@ -129,8 +129,6 @@ export class AdditionalInfoComponent {
         if (!this.registration.allFilesFlag) {
             let type1: boolean = false;
             let type3: boolean = false;
-            console.log(this.legalFilesToUpload)
-            console.log(type3)
             for (var i = 0; i < this.legalFilesToUpload.length; i++) {
                 if (this.legalFilesToUpload[i].fileType == 1) {
                     type1 = true;
@@ -141,7 +139,6 @@ export class AdditionalInfoComponent {
             if (type1 && type3) {
                 this.filesUploaded = true;
             } else {
-                console.log("NOPE")
                 this.filesUploaded = false;
             }
         }
