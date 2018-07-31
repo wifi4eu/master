@@ -108,13 +108,13 @@ export class MyVoucherComponent {
                                                     this.applications.push(application);
                                                     this.grantAgreementApi.getGrantAgreementByApplicationId(application.id).subscribe(
                                                         (grantAgreement: GrantAgreementDTOBase)=>{
-                                                        if(grantAgreement.dateSignature != null){
-                                                           grantAgreement.dateSignature = new Date(grantAgreement.dateSignature);
-                                                            this.hasSigned.push(grantAgreement);
-                                                            this.date[i] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
-                                                        } else {
-                                                            this.hasSigned.push(null);
-                                                        }
+                                                          if(grantAgreement != null && grantAgreement.dateSignature != null){
+                                                              grantAgreement.dateSignature = new Date(grantAgreement.dateSignature);
+                                                              this.hasSigned.push(grantAgreement);
+                                                              this.date[i] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
+                                                          } else {
+                                                              this.hasSigned.push(null);
+                                                          }
                                                     }, error => {
                                                         console.log(error);                                                        
                                                     });

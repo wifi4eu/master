@@ -160,7 +160,7 @@ public class GrantAgreementService {
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        DateFormat df = new SimpleDateFormat("yy"); // Just the year, with 2 digits
+        DateFormat df = new SimpleDateFormat("yyyy"); // Just the year, with 2 digits
         String year = df.format(cal.getTime());
 
         Map<String,String> replacementsMap = new HashMap<String,String>();
@@ -169,16 +169,19 @@ public class GrantAgreementService {
         replacementsMap.put("[<unique identifying number>]", formattedRegistrationID.concat("-").concat(formattedUserID));
         replacementsMap.put("[function, forename and surname]", "Head of Department C, Andreas Boschen");
         replacementsMap.put("[function-2, forename and surname]", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
-        replacementsMap.put("[full official name]", "Aartselaar");
+        replacementsMap.put("[full official name]", lauDTO.getName1());
         replacementsMap.put("[official address in full]", municipalityDTO.getAddress().concat(", ").concat(municipalityDTO.getAddressNum()));
-        replacementsMap.put("[insert name of the municipality]", lauDTO.getName1());
-        replacementsMap.put("[insert number of the action in bold]", "Lorem ipsum dolor sit amet, consectetur adipiscing elit");
-        replacementsMap.put("[or in English]", "Lorem ipsum dolor sit amet");
+        replacementsMap.put("[insert name of the municipality]", lauDTO.getName2());
+        replacementsMap.put("[insert number of the action in bold]", "INEA/CEF/WiFi4EU/" + String.valueOf(applicationDTO.getCallId()).concat(year) + "/" +  formattedRegistrationID.concat("-").concat(formattedUserID));
+        if(grantAgreement.getDocumentLanguage().equalsIgnoreCase("en")){
+            replacementsMap.put("[or in English]", "");
+        }
         replacementsMap.put("[language]", languagesMap.get(grantAgreement.getDocumentLanguage()));
-        replacementsMap.put("[function/forename/surname]", "Lorem ipsum dolor sit amet, consectetur adipiscing elit");
+        replacementsMap.put("[function/forename/surname]", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
+        replacementsMap.put("INEA/CEF/ICT/", "INEA/CEF/WiFi4EU/");
+        replacementsMap.put("[<M or A><year>]", String.valueOf(applicationDTO.getCallId()).concat(year));
+        replacementsMap.put("[xxxx]", formattedRegistrationID.concat("-").concat(formattedUserID));
         replacementsMap.put("[e-signature]", "");
-        replacementsMap.put("[<M or A>", "M");
-        replacementsMap.put("[xxxx]", "Lorem ipsum");
         return fillGrantAgreementDocument(grantAgreement, replacementsMap);
     }
 
