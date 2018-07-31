@@ -113,7 +113,7 @@ public class EcasSignatureResource {
 
             GrantAgreementDTO grantAgreementDTO = ecasSignatureUtil.writeSignature(signatureId, request, hdsDocumentId);
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Grant agreement signed successfully");
-            response.sendRedirect(userService.getBaseUrl() + "beneficiary-portal/my-voucher/grant-agreement");
+            response.sendRedirect("https://wifi4eu-dev.everincloud.com/wifi4eu/#/beneficiary-portal/my-voucher/grant-agreement");
             return grantAgreementDTO;
         } catch (AccessDeniedException ade){
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to handle the callback for grant agreement", ade.getMessage());
