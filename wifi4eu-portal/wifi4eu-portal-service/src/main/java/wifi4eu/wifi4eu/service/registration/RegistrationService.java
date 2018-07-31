@@ -595,5 +595,4 @@ public class RegistrationService {
         }
         return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
     }
-
 }
