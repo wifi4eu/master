@@ -443,11 +443,8 @@ public class RegistrationService {
      * @param type
      * @return
      */
-    public List<LegalFileDTO> getHistoryDocuments(Integer registrationId, Integer type) {
-        if (type == null || type == 0) {
-            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId));
-        }
-        return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, type));
+    public List<LegalFileDTO> getHistoryDocuments(Integer registrationId) {
+        return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId));
     }
 
     private void sendEmailNotifyingCorrection(LegalFileCorrectionReasonDTO legalFileCorrectionReasonDTO) throws Exception {

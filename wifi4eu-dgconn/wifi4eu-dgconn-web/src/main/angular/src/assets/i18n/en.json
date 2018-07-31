@@ -614,6 +614,7 @@
   "dgConn.exportExcel": "Export to Excel",
   "suppRegistration.legal.legalAddress": "Legal address",
   "dgConn.correctionReason": "Correction Reason",
+  "dgConn.requestCorrectionDate": "Request date",
   "dgConn.applicantDetails.legalFile.reason.cause6": "6. The document is missing signature",
   "dgconn.voucherAssignment.runningSimulation": "Running simulation...",
   "dgconn.voucherAssignment.runningSimulation.cancel": "CANCEL",

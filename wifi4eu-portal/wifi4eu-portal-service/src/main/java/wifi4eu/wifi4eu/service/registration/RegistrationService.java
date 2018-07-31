@@ -180,7 +180,7 @@ public class RegistrationService {
     public ResponseDTO uploadRegistrationDocuments(Integer registrationID, List<LegalFileDTO> legalFile, HttpServletRequest request) throws Exception {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        if(!legalFile.isEmpty() && legalFile.size() == 4){
+        if(!legalFile.isEmpty()){
             for( int i = 0 ; i < legalFile.size() ; i++){
                 uploadDocument(registrationID, legalFile.get(i), userConnected, RequestIpRetriever.getIp(request));
             }

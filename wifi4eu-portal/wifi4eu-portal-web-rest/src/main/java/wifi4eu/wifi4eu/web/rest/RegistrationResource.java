@@ -230,7 +230,7 @@ public class RegistrationResource {
     }
 
     @ApiOperation(value = "Get registration by specific userThread id")
-    @RequestMapping(value = "/{registrationId}/getDocument/{fileId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getDocument/{registrationId}/{fileId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getLegalFilesById(@PathVariable("registrationId") final Integer registrationId, @PathVariable("fileId") final Integer fileId, HttpServletResponse response, HttpServletRequest request) throws IOException {
         UserContext userContext = UserHolder.getUser();
@@ -276,7 +276,7 @@ public class RegistrationResource {
     }
 
     @ApiOperation(value = "Get past of documents for type")
-    @RequestMapping(value = "/{registrationId}/getHistory/{type}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getHistory/{registrationId}/{type}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getHistoryForType(@PathVariable("registrationId") final Integer registrationId, @PathVariable("type") final Integer type,
                                          HttpServletResponse response, HttpServletRequest request) throws IOException {

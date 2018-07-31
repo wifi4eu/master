@@ -54,7 +54,7 @@ public class LegalFilesService {
 	public boolean hasUserPermissionForLegalFile (Integer registrationId, Integer userId, Integer fileId){
 		if(registrationService.checkUserWithRegistration(registrationId, userId)){
             LegalFile legalFile = legalFilesRepository.findOne(fileId);
-            if (legalFile != null && (userId == legalFile.getUserId() || legalFile.getFileType() == FileTypes.LEGALFILE1.getValue() || legalFile
+            if (legalFile != null && (userId == legalFile.getUserId().intValue() || legalFile.getFileType() == FileTypes.LEGALFILE1.getValue() || legalFile
                     .getFileType() == FileTypes.LEGALFILE3.getValue())) {
                 return true;
             }
