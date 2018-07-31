@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
@@ -16,12 +17,17 @@ import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
+import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
@@ -35,6 +41,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -79,6 +88,24 @@ public class ScheduledTasks {
 
     @Autowired
     private CorrectionRequestEmailMapper correctionRequestEmailMapper;
+
+    @Autowired
+    private VoucherAssignmentRepository voucherAssignmentRepository;
+
+    @Autowired
+    private VoucherSimulationRepository voucherSimulationRepository;
+
+    @Autowired
+    GrantAgreementRepository grantAgreementRepository;
+
+    @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    GrantAgreementUtils grantAgreementUtils;
+
+    @Autowired
+    DateUtils dateUtils;
 
     private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
@@ -266,4 +293,32 @@ public class ScheduledTasks {
             }
         }
     }
+
+    @Scheduled(cron = "0 0 4 * * *", zone = "Europe/Madrid")
+    public void sendMessageNotSigned() {
+        _log.debug("SCHEDULED TASK: Reminder email for users who haven't signed after 7 or 14 days before the notification date - START");
+        ArrayList<VoucherAssignment.VoucherAssignmentGetIdAndNotificationDate> voucherAssignment = voucherAssignmentRepository.findByNotifiedDateNotNull();
+        LocalDate localCurrentDate = dateUtils.getLocalTimeFromDate(new Date());
+        LocalDate notifiedDate;
+        for (int i = 0; i < voucherAssignment.size(); i++) {
+            notifiedDate = dateUtils.getLocalTimeFromDate(new Date(voucherAssignment.get(i).getNotifiedDate()));
+            long days = ChronoUnit.DAYS.between(localCurrentDate, notifiedDate);
+            if (days == -7 || days == -14) {
+                ArrayList<Integer> applicationIds = null;
+                applicationIds = voucherSimulationRepository.findApplicationIdsFromVoucherAssignmentAndSelectionStatus(voucherAssignment.get(i).getId());
+                if (applicationIds != null) {
+                    for (int j = 0; j < applicationIds.size(); j++) {
+                        if (grantAgreementRepository.countByApplicationId(applicationIds.get(j)) <= 0) {
+                            String emailUser = registrationUsersRepository.findContactEmailFromApplicationId(applicationIds.get(j));
+                            Integer userId = registrationUsersRepository.findUserIdFromApplicationId(applicationIds.get(j));
+                            grantAgreementUtils.sendEmailSignPdfNotified(userId, emailUser, days);
+                        }
+                    }
+                }
+            }
+        }
+
+        _log.debug("SCHEDULED TASK: Reminder email for users who haven't signed after 7 or 14 days before the notification date - FINISH");
+    }
+
 }
