@@ -26,7 +26,7 @@ export class TimerComponent {
 
         //every second we change the timer
         let subscription = Observable.interval(1000).map((x) => { }).subscribe((x) => {
-            this.currentTimestamp += 600;
+            this.currentTimestamp += 1000;
             this.toEpoch(this.expirationTimestamp - this.currentTimestamp);
             if (this.checkIfFinished(this.expirationTimestamp - this.currentTimestamp)) {
                 subscription.unsubscribe();
@@ -61,6 +61,7 @@ export class TimerComponent {
             response => {
                 if (response.status == 200 && !isNaN(parseInt(response.text()))) {
                     this.currentTimestamp = +response.text();
+                    alert(this.currentTimestamp);
                 } else {
                     this.handleTimeError();
                 }
