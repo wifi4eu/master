@@ -1875,8 +1875,7 @@ input.email_profile::-ms-clear{
     padding-left: 0.5rem;
 }
 
-.centerContent{
-  position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
+.margin-docs:first-child{ 
+    padding-top: 4em;
 }
+
