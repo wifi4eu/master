@@ -588,7 +588,10 @@ public class RegistrationService {
      */
     public List<LegalFileDTO> getHistoryDocuments(Integer registrationId, Integer type, Integer userId) {
         if (type == null || type == 0) {
-           return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId, userId));
+            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId, userId));
+        }
+        if (type == 1 || type == 3) {
+            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryRequiredType(registrationId, type));
         }
         return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
     }
