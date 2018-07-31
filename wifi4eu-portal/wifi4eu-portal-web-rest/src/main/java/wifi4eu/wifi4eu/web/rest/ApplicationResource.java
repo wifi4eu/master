@@ -22,6 +22,8 @@ import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -95,5 +97,30 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return responseDTO;
+    }
+
+    @ApiOperation(value = "Get application by  registration id")
+    @RequestMapping(value = "/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ApplicationDTO getApplicationByRegistrationId(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by registration id " + registrationId);
+        try {
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found", e.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        }
+
+        ApplicationDTO responseApp = applicationService.getApplicationByRegistrationId(registrationId);
+
+        if (responseApp == null) {
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
+            responseApp = new ApplicationDTO();
+        } else {
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application is retrieved correctly");
+        }
+        return responseApp;
     }
 }

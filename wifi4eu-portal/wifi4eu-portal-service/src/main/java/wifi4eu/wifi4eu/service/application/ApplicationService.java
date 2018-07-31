@@ -136,7 +136,7 @@ public class ApplicationService {
             if (queueTimestamp >= callDTO.getStartDate() && queueTimestamp <= callDTO.getEndDate()) {
                 _log.debug("The queue is from the specified call");
                 //check information on the queue is right
-                if (registrationDTO.getUploadTime() == uploadDocTimestamp) {
+                /*if (registrationDTO.getUploadTime() == uploadDocTimestamp) {*/
                     _log.debug("All the information of this queue is right");
                     //check if this application was received previously
                     ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
@@ -158,11 +158,11 @@ public class ApplicationService {
                                 " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
                         return applicationDTO;
                     }
-                } else {
+                /*} else {
                     _log.error("Trying to register an application with incorrect uploadDocTimestamp, callId: "
                             + callId + " userId: " + userId + " registrationId: " + registrationId +
                             " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
-                }
+                }*/
             } else {
                 _log.error("Trying to register an application out of the call period, callId: "
                         + callId + " userId: " + userId + " registrationId: " + registrationId +
@@ -249,6 +249,11 @@ public class ApplicationService {
 
     public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
+    }
+
+
+    public ApplicationDTO getApplicationByRegistrationId(int registrationId) {
+        return applicationMapper.toDTO(applicationRepository.findTopByRegistrationIdOrderByDateDesc(registrationId));
     }
 
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {
@@ -392,35 +397,6 @@ public class ApplicationService {
                 break;
         }
         return applicantsList;
-    }
-
-    public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application, HttpServletRequest request) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending legal documents for correction");
-        ApplicationDTO applicationDB = applicationMapper.toDTO(applicationRepository.findOne(application.getId()));
-        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(applicationDB.getRegistrationId());
-        boolean pendingFollowup = false;
-        for (LegalFileCorrectionReasonDTO legalFile : legalFiles) {
-            if (legalFile.getRequestCorrection() && legalFile.getCorrectionReason() != null) {
-                pendingFollowup = true;
-                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Legal file: " + legalFile.getCorrectionReason() + " from registration " + applicationDB.getRegistrationId() + " is pending for correction");
-                break;
-            }
-        }
-        RegistrationDTO registration = registrationService.getRegistrationById(applicationDB.getRegistrationId());
-        if (pendingFollowup) {
-            registration.setAllFilesFlag(0);
-            applicationDB.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
-        } else {
-            registration.setAllFilesFlag(1);
-            applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
-        }
-        applicationDB.setInvalidateReason(null);
-        registrationService.saveRegistration(registration);
-        ApplicationDTO applicationResponse = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
-        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
-        return applicationResponse;
     }
 
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {

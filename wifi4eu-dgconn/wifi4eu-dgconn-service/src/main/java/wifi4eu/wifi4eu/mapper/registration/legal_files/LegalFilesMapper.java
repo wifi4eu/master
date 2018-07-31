@@ -7,6 +7,6 @@ import wifi4eu.wifi4eu.entity.registration.*;
 @Mapper(componentModel = "spring")
 public interface LegalFilesMapper {
 
-	LegalFilesDTO toDTO(LegalFiles entity);
-	LegalFiles toEntity(LegalFilesDTO vo);
+	LegalFileDTO toDTO(LegalFile entity);
+	LegalFile toEntity(LegalFileDTO vo);
 }
