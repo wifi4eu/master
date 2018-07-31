@@ -136,7 +136,7 @@ public class ApplicationService {
             if (queueTimestamp >= callDTO.getStartDate() && queueTimestamp <= callDTO.getEndDate()) {
                 _log.debug("The queue is from the specified call");
                 //check information on the queue is right
-                if (registrationDTO.getUploadTime() == uploadDocTimestamp) {
+                //if (registrationDTO.getUploadTime() == uploadDocTimestamp) {
                     _log.debug("All the information of this queue is right");
                     //check if this application was received previously
                     ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
@@ -168,11 +168,11 @@ public class ApplicationService {
                         + callId + " userId: " + userId + " registrationId: " + registrationId +
                         " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
             }
-        } else {
-            _log.error("The information provided is wrong, callId: "
-                    + callId + " userId: " + userId + " registrationId: " + registrationId +
-                    " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
-        }
+//        } else {
+//            _log.error("The information provided is wrong, callId: "
+//                    + callId + " userId: " + userId + " registrationId: " + registrationId +
+//                    " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+//        }
         return null;
     }
 

@@ -291,8 +291,7 @@ public class RegistrationResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
-            return new ResponseDTO(true, registrationService.getHistoryDocuments(registrationId, type, userConnected.getId(), userConnected
-                    .getEcasUsername()), null);
+            return new ResponseDTO(true, registrationService.getHistoryDocuments(registrationId, type, userConnected.getId()), null);
 
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade
@@ -317,8 +316,7 @@ public class RegistrationResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
-            return new ResponseDTO(true, registrationService.getHistoryDocuments(registrationId, null, userConnected.getId(), userConnected
-                    .getEcasUsername()), null);
+            return new ResponseDTO(true, registrationService.getHistoryDocuments(registrationId, null, userConnected.getId()), null);
 
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade
@@ -383,5 +381,6 @@ public class RegistrationResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
+
 
 }

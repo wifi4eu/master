@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.entity.application;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -7,26 +8,38 @@ import javax.persistence.Id;
 public class ApplicationIssueUtil {
 
     @Id
+    @Column(name = "regUserId")
+    private Integer regUserId;
+
+    @Column(name = "applicationId")
     private Integer applicationId;
 
+    @Column(name = "registrationId")
     private Integer registrationId;
 
+    @Column(name = "countryCode")
     private String countryCode;
 
+    @Column(name = "userEmail")
     private String userEmail;
 
+    @Column(name = "userEcasEmail")
     private String userEcasEmail;
 
+    @Column(name = "userLang")
     private String userLang;
 
+    @Column(name = "mayorEmail")
     private String mayorEmail;
 
+    @Column(name = "status")
     private Integer status;
 
     public ApplicationIssueUtil() {
     }
 
-    public ApplicationIssueUtil(Integer applicationId, Integer registrationId, String countryCode, String userEmail, String userEcasEmail, String userLang, String mayorEmail, Integer status) {
+    public ApplicationIssueUtil(Integer regUserId, Integer applicationId, Integer registrationId, String countryCode, String userEmail, String userEcasEmail, String userLang, String mayorEmail, Integer status) {
+        this.regUserId = regUserId;
         this.applicationId = applicationId;
         this.registrationId = registrationId;
         this.countryCode = countryCode;
@@ -99,5 +112,13 @@ public class ApplicationIssueUtil {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getRegUserId() {
+        return regUserId;
+    }
+
+    public void setRegUserId(Integer regUserId) {
+        this.regUserId = regUserId;
     }
 }
