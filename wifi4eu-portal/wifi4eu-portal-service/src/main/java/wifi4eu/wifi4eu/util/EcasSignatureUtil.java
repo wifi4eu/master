@@ -66,6 +66,7 @@ public class EcasSignatureUtil {
     public String constructSignatureHDSCallbackUrl(HttpServletRequest request, String documentToBeSigned) {
         String url = userService.getBaseUrl().substring(0, userService.getBaseUrl().indexOf("#"));
         url += "api/signature/handleSignature/" + documentToBeSigned;
+        System.out.println("URL: "+  url);
         return url;
     }
 
@@ -84,6 +85,8 @@ public class EcasSignatureUtil {
 
         Message msg = new SimpleTextMessage(constructXmlToSign(grantAgreementDTO, applicationDTO.getRegistrationId()));
 
+        System.out.println("msg: "+  msg.toString());
+
         //construct signature for ecas
         UserConfirmationSignatureRequest signatureRequest = new UserConfirmationSignatureRequestImpl.Builder()
                 .service(callBackUrlToHds)
@@ -92,6 +95,8 @@ public class EcasSignatureUtil {
                 .message(msg)
                 .userCommentPresence(UserCommentPresence.NOT_ALLOWED)
                 .build();
+
+        System.out.println("signatureRequest: "+  signatureRequest.toString());
 
         StringBuffer signaturePageUrl = new StringBuffer("");
         try {
@@ -104,6 +109,8 @@ public class EcasSignatureUtil {
             signaturePageUrl.append("?");
             signaturePageUrl.append(RequestConstant.SIGNATURE_REQUEST_ID).append("=").append(signatureRequestId);
             signaturePageUrl.append("&").append(RequestConstant.SERVICE).append("=").append(callBackUrlToHds);
+
+            System.out.println("signatureRequest: "+  signaturePageUrl.toString());
 
         } catch (Exception signitureEx) {
             throw new AppException("Exception while creating ecas signature " + signitureEx.getMessage());
