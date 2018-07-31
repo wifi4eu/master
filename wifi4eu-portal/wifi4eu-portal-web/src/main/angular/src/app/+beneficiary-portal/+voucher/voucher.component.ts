@@ -11,7 +11,7 @@ import { SharedService } from "../../shared/shared.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Http, RequestOptions, Headers } from "@angular/http";
 import { ApplyVoucherBase } from '../../shared/swagger/model/ApplyVoucher'
-import {CookieService} from 'ngx-cookie-service';
+import { CookieService} from 'ngx-cookie-service';
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -42,10 +42,11 @@ export class VoucherComponent {
     private displayCallClosed = false;
     private errorMessage = null;
     //private baseURI: string = "http://104.214.237.205";
-    private baseURI: string = "";
+    private baseURI: string = "https://wifi4eu-dev-queue.everincloud.com";
     private rabbitmqURI: string = this.baseURI + "/calls/";
     private openedCalls: string = "";
     private voucherApplied: string = "";
+    private csrfTokenCookieName: string = "XSRF-TOKEN";
     private nameCookieApply: string = "hasRequested";
 
     private httpOptions = {
@@ -78,9 +79,9 @@ export class VoucherComponent {
         }
     }
 
-    private isVoucherApplied(){
-        if (this.cookieService.check(this.nameCookieApply)){
-            return JSON.parse(this.cookieService.get(this.nameCookieApply));
+    private isVoucherApplied(idRegistration:number){
+        if (this.cookieService.check(this.nameCookieApply+"_"+idRegistration)){
+            return JSON.parse(this.cookieService.get(this.nameCookieApply+"_"+idRegistration));
         }
         return false;
     }
@@ -122,8 +123,11 @@ export class VoucherComponent {
                     let urlQueue = this.rabbitmqURI + this.currentCall.id+"/apply/"+applyVoucher.idRegistration+"/"+this.user.id+"/"+applyVoucher.idMunicipality;
                     // put the following code to set the cookie and test the validation with true or false values
                     // this.cookieService.set(this.nameCookieApply, 'true');
-                    this.http.get(urlQueue).subscribe(
+                    let headers = new Headers();
+                    headers.append('X-XSRF-TOKEN', this.cookieService.get(this.csrfTokenCookieName)); 
+                    this.http.get(urlQueue, {headers: headers}).subscribe(
                         data => {
+                            this.cookieService.set(this.nameCookieApply+"_"+applyVoucher.idRegistration,'true');
                             this.voucherApplied = "greyImage";
                             this.voucherCompetitionState = 3;
                             this.sharedService.growlTranslation(
@@ -133,6 +137,7 @@ export class VoucherComponent {
                             );
                         },
                         error => {
+                            this.cookieService.set(this.nameCookieApply+"_"+applyVoucher.idRegistration,'false');
                             this.sharedService.growlTranslation(
                                 "An error occurred and your application could not be received.",
                                 "shared.registration.update.error",

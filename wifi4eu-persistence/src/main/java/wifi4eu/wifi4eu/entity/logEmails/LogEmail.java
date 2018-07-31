@@ -35,7 +35,7 @@ public class LogEmail {
 
     public LogEmail() {}
 
-    public LogEmail(String from, String to, String subject, String body, Integer municipalityId, String action) {
+    public LogEmail(String to, String from, String subject, String body, Integer municipalityId, String action) {
         this.from = from;
         this.to = to;
         this.subject = subject;

@@ -2,7 +2,8 @@ package wifi4eu.supplier.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @ResponseStatus(HttpStatus.OK)
 public class TestResource3 {
 
-    Logger _log = Logger.getLogger(TestResource3.class);
+    Logger _log = LogManager.getLogger(TestResource3.class);
 
     @ApiOperation(value = "Test resource for Swagger implementation")
     @RequestMapping(value = "/test3",

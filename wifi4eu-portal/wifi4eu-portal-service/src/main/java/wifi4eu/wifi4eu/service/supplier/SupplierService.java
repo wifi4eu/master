@@ -506,7 +506,7 @@ public class SupplierService {
             throw new Exception("User data is not correct.");
 
         } else if (!checkHasNoRegistrations(newUserEmail)) {
-            throw new Exception("This email has registrations related to.");
+            throw new Exception("This email has related registrations.");
 
         } else if (!checkContactHasNotBeenAddedBefore(newUserEmail, supplierId)) {
             throw new Exception("This contact has been added to this supplier before.");
@@ -519,7 +519,7 @@ public class SupplierService {
             String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
             msgBody = MessageFormat.format(msgBody, urlSent);
             if (!userService.isLocalHost()) {
-                mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                mailService.sendEmail(newUserEmail.trim(), MailService.FROM_ADDRESS, subject, msgBody);
             }
             return true;
         }

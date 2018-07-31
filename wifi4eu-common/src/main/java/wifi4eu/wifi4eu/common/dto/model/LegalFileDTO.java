@@ -1,80 +1,105 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-public class LegalFileDTO {
-    private Integer id;
-    private Integer registrationId;
-    private Integer type;
-    private String data;
-    private Long uploadTime;
-    private Boolean requestCorrection;
-    private Integer correctionReason;
+import java.io.Serializable;
+import java.util.Date;
 
-    public LegalFileDTO() {
-    }
+public class LegalFileDTO implements Serializable {
+	private int id;
+	private int registration;
+	private String fileData;
+	private int fileType;
+	private Date uploadTime;
+	private Integer userId;
+	private int fileSize;
+	private String fileMime;
+	private String fileName;
 
-    public LegalFileDTO(Integer id, Integer registrationId, Integer type, String data, Long uploadTime, Boolean requestCorrection, Integer correctionReason) {
-        this.id = id;
-        this.registrationId = registrationId;
-        this.type = type;
-        this.data = data;
-        this.uploadTime = uploadTime;
-        this.requestCorrection = requestCorrection;
-        this.correctionReason = correctionReason;
-    }
+	public LegalFileDTO() {
+    this.uploadTime = new Date();
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public LegalFileDTO(int registration, String fileData, int fileType, Date uploadTime, Integer userId, int fileSize, String fileMime, String
+			fileName) {
+		this.registration = registration;
+		this.fileData = fileData;
+		this.fileType = fileType;
+		this.uploadTime = uploadTime;
+		this.userId = userId;
+		this.fileSize = fileSize;
+		this.fileMime = fileMime;
+		this.fileName = fileName;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public Integer getRegistrationId() {
-        return registrationId;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setRegistrationId(Integer registrationId) {
-        this.registrationId = registrationId;
-    }
+	public int getRegistration() {
+		return registration;
+	}
 
-    public Integer getType() {
-        return type;
-    }
+	public void setRegistration(int registration) {
+		this.registration = registration;
+	}
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
+	public String getFileData() {
+		return fileData;
+	}
 
-    public String getData() {
-        return data;
-    }
+	public void setFileData(String fileData) {
+		this.fileData = fileData;
+	}
 
-    public void setData(String data) {
-        this.data = data;
-    }
+	public int getFileType() {
+		return fileType;
+	}
 
-    public Long getUploadTime() {
-        return uploadTime;
-    }
+	public void setFileType(int fileType) {
+		this.fileType = fileType;
+	}
 
-    public void setUploadTime(Long uploadTime) {
-        this.uploadTime = uploadTime;
-    }
+	public Date getUploadTime() {
+		return uploadTime;
+	}
 
-    public Boolean getRequestCorrection() {
-        return requestCorrection;
-    }
+	public void setUploadTime(Date uploadTime) {
+		this.uploadTime = uploadTime;
+	}
 
-    public void setRequestCorrection(Boolean requestCorrection) {
-        this.requestCorrection = requestCorrection;
-    }
+	public Integer getUserId() {
+		return userId;
+	}
 
-    public Integer getCorrectionReason() {
-        return correctionReason;
-    }
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
-    public void setCorrectionReason(Integer correctionReason) {
-        this.correctionReason = correctionReason;
-    }
+	public int getFileSize() {
+		return fileSize;
+	}
+
+	public void setFileSize(int fileSize) {
+		this.fileSize = fileSize;
+	}
+
+	public String getFileMime() {
+		return fileMime;
+	}
+
+	public void setFileMime(String fileMime) {
+		this.fileMime = fileMime;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 }

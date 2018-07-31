@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.Date;
 

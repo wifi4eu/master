@@ -55,10 +55,10 @@
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied() && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement">
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied(data.idRegistration) && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
-                        <span *ngIf="data.numberApplicant || isVoucherApplied()">
+                        <span *ngIf="data.numberApplicant || isVoucherApplied(data.idRegistration)">
                             <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
                             {{ 'benefPortal.voucher.applied' | translate }}
                         </span>
@@ -66,13 +66,13 @@
                 </p-column>
                 <template let-data pTemplate="rowexpansion" let-i="rowIndex">
                     <div class="ui-grid ui-grid-responsive ui-fluid">
-                        <div>
-                            <button class="modal-content ui-g-1 ui-sm-1" (click)=changeConditionsAgreement(data)>
-                                <i *ngIf="!data.conditionAgreement" class="fa fa-square-o" aria-hidden="true"></i>
-                                <i *ngIf="data.conditionAgreement" class="fa fa-check-square-o" aria-hidden="true"></i>
-                            </button>
-                            <div class="ui-g-11 ui-sm-11">
-                                <p [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></p>
+                        <div class="row conditions-agreement">
+                            <div class="col-sm-1 col-md-1 col-lg-1">
+                                <i *ngIf="!data.conditionAgreement" class="fa fa-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
+                                <i *ngIf="data.conditionAgreement" class="fa fa-check-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
+                            </div>
+                            <div class="col-sm-11 col-md-11 col-lg-11">
+                                <div [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></div>
                             </div>
                         </div>
                     </div>

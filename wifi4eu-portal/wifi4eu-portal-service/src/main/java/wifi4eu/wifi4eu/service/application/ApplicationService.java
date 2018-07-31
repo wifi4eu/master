@@ -15,7 +15,9 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
@@ -136,7 +138,7 @@ public class ApplicationService {
             if (queueTimestamp >= callDTO.getStartDate() && queueTimestamp <= callDTO.getEndDate()) {
                 _log.debug("The queue is from the specified call");
                 //check information on the queue is right
-                if (registrationDTO.getUploadTime() == uploadDocTimestamp) {
+                //if (registrationDTO.getUploadTime() == uploadDocTimestamp) {
                     _log.debug("All the information of this queue is right");
                     //check if this application was received previously
                     ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
@@ -168,11 +170,11 @@ public class ApplicationService {
                         + callId + " userId: " + userId + " registrationId: " + registrationId +
                         " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
             }
-        } else {
-            _log.error("The information provided is wrong, callId: "
-                    + callId + " userId: " + userId + " registrationId: " + registrationId +
-                    " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
-        }
+//        } else {
+//            _log.error("The information provided is wrong, callId: "
+//                    + callId + " userId: " + userId + " registrationId: " + registrationId +
+//                    " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+//        }
         return null;
     }
 
@@ -190,34 +192,29 @@ public class ApplicationService {
             throw new DateTimeException("The call is not available at the moment");
         }
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
-        UserDTO user = null;
-        MunicipalityDTO municipality = null;
         if (registration.getAllFilesFlag() == 1) {
-            if (registration != null) {
-                user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registration.getId()));
-                municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-            }
-            if (user != null && municipality != null) {
-                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                if (user.getLang() != null) {
-                    locale = new Locale(user.getLang());
-                } else {
-                    _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - The user " + user.getEcasUsername() + " has not specified a language");
-                }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.voucherApply.subject");
-                String msgBody = bundle.getString("mail.voucherApply.body");
-                msgBody = MessageFormat.format(msgBody, municipality.getName());
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "createApplication");
-                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
-                }
-            }
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;
         }
         return null;
+    }
+
+
+    public void sendCreateApplicationEmail(User user, Municipality municipality, int applicationId) {
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        if (user.getLang() != null) {
+            locale = new Locale(user.getLang());
+        } else {
+            _log.warn("SCHEDULED TASK: Create Application Emails - The user " + user.getEcasUsername() + " has not specified a language");
+        }
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.voucherApply.subject");
+        String msgBody = bundle.getString("mail.voucherApply.body");
+        if (!userService.isLocalHost()) {
+            mailService.sendEmailAsync(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "createApplication");
+            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
+        }
     }
 
     @Transactional
@@ -397,35 +394,6 @@ public class ApplicationService {
                 break;
         }
         return applicantsList;
-    }
-
-    public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application, HttpServletRequest request) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending legal documents for correction");
-        ApplicationDTO applicationDB = applicationMapper.toDTO(applicationRepository.findOne(application.getId()));
-        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(applicationDB.getRegistrationId());
-        boolean pendingFollowup = false;
-        for (LegalFileCorrectionReasonDTO legalFile : legalFiles) {
-            if (legalFile.getRequestCorrection() && legalFile.getCorrectionReason() != null) {
-                pendingFollowup = true;
-                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Legal file: " + legalFile.getCorrectionReason() + " from registration " + applicationDB.getRegistrationId() + " is pending for correction");
-                break;
-            }
-        }
-        RegistrationDTO registration = registrationService.getRegistrationById(applicationDB.getRegistrationId());
-        if (pendingFollowup) {
-            registration.setAllFilesFlag(0);
-            applicationDB.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
-        } else {
-            registration.setAllFilesFlag(1);
-            applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
-        }
-        applicationDB.setInvalidateReason(null);
-        registrationService.saveRegistration(registration);
-        ApplicationDTO applicationResponse = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
-        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
-        return applicationResponse;
     }
 
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {

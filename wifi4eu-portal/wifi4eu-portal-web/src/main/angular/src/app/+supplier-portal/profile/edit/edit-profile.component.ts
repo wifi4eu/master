@@ -262,7 +262,7 @@ export class SupplierEditProfileComponent {
                     this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
                     this.closeModal();
                 }, error => {
-                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.sharedService.growlTranslation('An error occurred. This contact has been added to this supplier before or has related registrations.', 'shared.email.error', 'error');
                     this.closeModal();
                 }
             );

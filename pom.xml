@@ -10,7 +10,6 @@
     <name>wifi4eu</name>
     <description>J2EE, SpringMVC, eUI application</description>
 
-
     <scm>
         <connection>scm:svn:https://webgate.ec.europa.eu/CITnet/svn/wifi4eu</connection>
         <developerConnection>scm:svn:https://webgate.ec.europa.eu/CITnet/svn/wifi4eu
@@ -150,6 +149,8 @@
 
         <dgconn.name>dashboard</dgconn.name>
         <dgconn.context.name>/dashboard</dgconn.context.name>
+        <procedures.name>procedures</procedures.name>
+        <procedures.context.name>/procedures</procedures.context.name>
         <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
         <server.azure.test2.address>wifi4eutest.eu</server.azure.test2.address>
         <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
@@ -218,6 +219,7 @@
                 <module>wifi4eu-public-portal</module>
                 <module>wifi4eu-dgconn</module>
                 <module>wifi4eu-supplier</module>
+                <module>wifi4eu-procedures</module>
                 <!--<module>wifi4eu-financial</module>-->
             </modules>
         </profile>
