@@ -170,7 +170,7 @@
         <p class="smallCharacters">{{ 'benefPortal.grantAgreement.downloadText' | translate}}</p>
         <p class="smallCharacters"><input type="checkbox" (click)="enableButton()">{{ 'benefPortal.grantAgreement.confirmCheckbox' | translate}}</p>
         <br>
-        <button class="btn btn-primary smallCharacters" (click)="openModal()" [disabled]="!enableButtonFront">{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
+        <button class="btn btn-primary smallCharacters" (click)="openModal()" [disabled]="!enableButtonFront || inputGrantAgreement.dateSignature">{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
     </div>
 
 </div>
@@ -190,6 +190,23 @@
             <button type="submit" class="btn btn-primary publish-button" (click)="signGrantAgreement()"
                     ><!-- [disabled]="" -->
                 {{ 'benefPortal.grantAgreement.sign.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</p-dialog>
+<p-dialog [(visible)]="showPermissionsModal" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalpConfirmation">{{'benefPortal.grantAgreement.permissionsWarning.description' | translate }}</p>
+    <p></p>
+    <div class="form-group row">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="submit" class="btn btn-primary publish-button" (click)="closeModal()"
+                    ><!-- [disabled]="" -->
+                {{ 'shared.confirm.button' | translate }}
             </button>
         </div>
         <div class="col-lg-2"></div>

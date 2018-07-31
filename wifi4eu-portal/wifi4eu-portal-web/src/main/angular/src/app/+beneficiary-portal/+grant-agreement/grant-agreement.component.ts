@@ -5,13 +5,14 @@ import { LocalStorageService } from "angular-2-local-storage";
 import { Router, ActivatedRoute } from '@angular/router';
 
 // DTO's & API imports
-import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi } from "../../shared/swagger";
+import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi, GrantAgreementApi, GrantAgreementDTOBase, GrantAgreementDTO } from "../../shared/swagger";
 import { HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
+import { SharedService } from "../../shared/shared.service";
 
 @Component ({
     selector: 'grant-agreement.component.ts',
     templateUrl: 'grant-agreement.component.html',
-    providers: [RegistrationApi, MayorApi, CallApi, MunicipalityApi, ApplicationApi] 
+    providers: [SharedService, GrantAgreementApi, RegistrationApi, MayorApi, CallApi, MunicipalityApi, ApplicationApi] 
 })
 
 export class MyVoucherComponent {
@@ -57,6 +58,7 @@ export class MyVoucherComponent {
     private supplierSelectedDates: Array<String> = [];
     private grantAgreementDates: Array<String> = [];
     private confirmButtonDisabled: boolean = false;
+    private startDate: string = '';
 
         /* -- voucherCompetitionState values --
     0 = There are no calls created
@@ -65,6 +67,9 @@ export class MyVoucherComponent {
     3 = Call created & started. You clicked 'Apply For Voucher' and are waiting for the approvement.
      */
     private voucherCompetitionState: number;
+    private showPermissionsModal: boolean;
+    private hasSigned: GrantAgreementDTO [] = [];
+    private date: String [] = [];
 
 
     constructor(
@@ -74,7 +79,10 @@ export class MyVoucherComponent {
         private callApi: CallApi,
         private municipalityApi: MunicipalityApi,
         private applicationApi: ApplicationApi,
-        private router: Router, private route: ActivatedRoute
+        private router: Router, private route: ActivatedRoute,
+        private grantAgreementApi: GrantAgreementApi,
+        private sharedService : SharedService
+
     ) {
         /* Authenticate user */
         let storedUser = this.localStorage.get('user');
@@ -86,10 +94,6 @@ export class MyVoucherComponent {
         if (this.user != null) {
             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                 (registrations: RegistrationDTOBase[]) => {
-                    // this.registrationsDocs = registrations;
-                    // this.registrations = registrations;
-                    // this.checkForCalls(registrations);
-
                     /* Get application for each municipality */ 
                     this.callApi.allCalls().subscribe(
                         (calls: CallDTOBase[]) => {
@@ -98,27 +102,31 @@ export class MyVoucherComponent {
                                 this.applicationApi.getApplicationByCallIdAndRegistrationId(this.calls[(this.calls.length)-1].id, registrations[i].id).subscribe(
                                     (application : ApplicationDTOBase) => {
                                         if (application.id != 0) {
+                                            
                                             this.municipalityApi.getMunicipalityById(registrations[i].municipalityId).subscribe(
                                                 (municipality : MunicipalityDTOBase) => {
                                                     this.applications.push(application);
+                                                    this.grantAgreementApi.getGrantAgreementByApplicationId(application.id).subscribe(
+                                                        (grantAgreement: GrantAgreementDTOBase)=>{
+                                                        if(grantAgreement.dateSignature != null){
+                                                           grantAgreement.dateSignature = new Date(grantAgreement.dateSignature);
+                                                            this.hasSigned.push(grantAgreement);
+                                                            this.date[i] = ('0' + grantAgreement.dateSignature.getUTCDate()).slice(-2) + "/" + ('0' + ( grantAgreement.dateSignature.getUTCMonth() + 1)).slice(-2) + "/" +  grantAgreement.dateSignature.getUTCFullYear();
+                                                        } else {
+                                                            this.hasSigned.push(null);
+                                                        }
+                                                    }, error => {
+                                                        console.log(error);                                                        
+                                                    });
                                                     this.registrations.push(registrations[i]);
                                                     this.municipalities.push(municipality);
                                                     if(i === 0) {this.grantAgreementDates.push(this.getStringDate(1529922797000));}  
-                                                    //!registrations[i].isSubmission ? this.confirmButtons.push(true) : this.confirmButtons.push(false);
-                                                    
-                                                    // application.selectSupplierDate != (0 || null) ? this.confirmButtonDisabled = false : this.confirmButtonDisabled = true;
-                                                    // console.log("Registrations are ", this.registrations);
-                                                    // console.log("First confirmation is ", this.registrations[0].isSubmission);
                                                 }
                                             );
                                         }
                                     }
                                 );
                             }
-                            // console.log("Dates are ", this.grantAgreementDates);
-                            // console.log("Applications are ", this.applications);
-                            // console.log("Confirm network buttons are ", this.confirmButtons);
-                            
                         }
                     );
                 }
@@ -161,7 +169,14 @@ export class MyVoucherComponent {
 
     /* TO BE COMPLETED */
     private agreementDetails(i) {
-        this.router.navigate(['../grant-agreement/sign-grant-agreement/' + this.municipalities[i].registrations[0].id], { relativeTo: this.route });
+        this.grantAgreementApi.isUserAuthorizedSignGrantAgreement(this.applications[i].id).subscribe((response: boolean) => {
+            if(!response){
+                this.showPermissionsModal = true;
+                return;
+            }
+            this.router.navigate(['../grant-agreement/sign-grant-agreement/' + this.municipalities[i].registrations[0].id], { relativeTo: this.route });
+          })
+        
     }
 
     private signGrantAgreement(index) {
@@ -171,41 +186,7 @@ export class MyVoucherComponent {
     /* TO BE COMPLETED */
     /* Method that returns when was grant agreement signed, fake for the moment */
 
-
-
-// End of class export    
+    private closeModal() {
+        this.showPermissionsModal = false;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-/* import {Component, ViewChild} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {LocalStorageService} from "angular-2-local-storage";
-import {Observable} from "rxjs/Observable";
-import {SharedService} from "../../shared/shared.service";
-
-
-
-@Component({
-    selector: 'grant-agreement.component',
-    templateUrl: 'grant-agreement.component.html'
-})
-
-export class GrantAgreementComponent {
-    constructor( private sharedService: SharedService, private router: Router, private route: ActivatedRoute,) {
-    }
-
-    private goToSignGrantAgreement(){
-        this.router.navigate(['../grant-agreement/sign-grant-agreement'], { relativeTo: this.route });
-    }
-    
-} */

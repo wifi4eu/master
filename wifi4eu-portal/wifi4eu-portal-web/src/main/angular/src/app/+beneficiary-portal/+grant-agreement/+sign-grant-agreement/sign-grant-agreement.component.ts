@@ -18,7 +18,7 @@ import { lang } from "moment";
 @Component({
     selector: 'sign-grant-agreement.component',
     templateUrl: 'sign-grant-agreement.component.html',
-    providers: [UxLanguage, UxEuLanguages, MunicipalityApi, MayorApi, RegistrationApi, UserApi, CallApi, ApplicationApi, GrantAgreementApi, ApplicationauthorizedPersonApi, SignatureApi]
+    providers: [SharedService, GrantAgreementApi, UxLanguage, UxEuLanguages, MunicipalityApi, MayorApi, RegistrationApi, UserApi, CallApi, ApplicationApi, GrantAgreementApi, ApplicationauthorizedPersonApi, SignatureApi]
 })
 
 export class SignGrantAgreementComponent {
@@ -36,6 +36,7 @@ export class SignGrantAgreementComponent {
     private enableButtonFront: boolean = false;
     private displaySignAgreement: boolean = false;
     private contentVisible: boolean = false;
+    private showPermissionsModal: boolean = false;
 
     constructor(private signApi: SignatureApi, private applicationAuthorizedPersonApi: ApplicationauthorizedPersonApi, private uxEuLanguages: UxEuLanguages, private uxLanguage: UxLanguage, private grantAgreementApi: GrantAgreementApi, private callApi: CallApi, private applicationApi: ApplicationApi, private userApi: UserApi, private registrationApi: RegistrationApi, private mayorApi: MayorApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService, private router: Router, private route: ActivatedRoute, private localStorageService: LocalStorageService) {
         let id;
@@ -148,15 +149,24 @@ export class SignGrantAgreementComponent {
     }
 
     private downladPDF(){
-        this.grantAgreementApi.downloadGrantAgreementPdf(this.inputGrantAgreement).subscribe(          
-            (response) => {
-                let blob = new Blob([response], {type: 'application/pdf'});
-                FileSaver.saveAs(blob, 'grantAgreementPdf_'+this.inputGrantAgreement.documentLanguage+'.pdf');
-                this.sharedService.growlTranslation("Your file have been downloaded correctly!", "dgconn.dashboard.card.messageDownload", "success");              
-            }, error => {
-                this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
+
+        this.grantAgreementApi.isUserAuthorizedSignGrantAgreement(this.application.id).subscribe((response: boolean) => {
+            if(!response){
+                this.showPermissionsModal = true;
+                return;
             }
-        );
+            this.grantAgreementApi.downloadGrantAgreementPdf(this.inputGrantAgreement).subscribe(          
+                (response) => {
+                    let blob = new Blob([response], {type: 'application/pdf'});
+                    FileSaver.saveAs(blob, 'grantAgreementPdf_'+this.inputGrantAgreement.documentLanguage+'.pdf');
+                    this.sharedService.growlTranslation("Your file have been downloaded correctly!", "dgconn.dashboard.card.messageDownload", "success");              
+                }, error => {
+                    this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
+                }
+            );
+          })
+
+       
     }
 
     private updateLanguage(event){
@@ -185,6 +195,7 @@ export class SignGrantAgreementComponent {
 
     private closeModal() {
         this.displaySignAgreement = false;
+        this.showPermissionsModal = false;
     }
 
     private signGrantAgreement(){

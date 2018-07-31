@@ -51,7 +51,7 @@ public class GrantAgreementResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
 
-        try{
+        try {
             if (userConnected == null || userConnected.getType() == 1) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
@@ -63,11 +63,11 @@ public class GrantAgreementResource {
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             ByteArrayOutputStream file = grantAgreementService.generateGrantAgreementDocument(inputGrantAgreement);
             return new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
-        }catch (AccessDeniedException ade){
+        } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to download the grant agreement", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
-        }catch (Exception e){
+        } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Error downloading grant agreement document", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return null;
@@ -78,7 +78,7 @@ public class GrantAgreementResource {
     @ApiOperation(value = "Check if user is authorized to sign grant agreement")
     @RequestMapping(value = "authorized/by/application/{applicationId}", method = RequestMethod.GET)
     @ResponseBody
-    public Boolean isUserAuthorizedSignGrantAgreement(@PathVariable("applicationId") Integer applicationId){
+    public Boolean isUserAuthorizedSignGrantAgreement(@PathVariable("applicationId") Integer applicationId) {
         return permissionChecker.checkIfAuthorizedGrantAgreement(applicationId);
     }
 
@@ -92,6 +92,19 @@ public class GrantAgreementResource {
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
         return grantAgreementService.createGrantAgreement(inputGrantAgreement);
+    }
+
+
+    @ApiOperation(value = "Get grant agreement by applicationId")
+    @RequestMapping(value = "/getGrantAgreementByApplicationId/{applicationId}", method = RequestMethod.GET)
+    @ResponseBody
+    public GrantAgreementDTO getGrantAgreementByApplicationId(@PathVariable("applicationId") Integer applicationId) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        if (userConnected == null || userConnected.getType() == 1 || userConnected.getType() == 5) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
+        return grantAgreementService.getGrantAgreementByApplicationId(applicationId);
     }
 
 }
