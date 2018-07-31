@@ -41,17 +41,30 @@ const (
 
 type UserMunicipalityTuple struct {
     uId int64
-    mId   int64
+	mId   int64
+	allFiles bool
 }
 
-func initUsersMap() map[int64]string {
+type UserInformationTuple struct {
+	CSRFToken string
+	acceptedAgreements bool
+}
+
+// {"UserId":43,"CSRFToken":"4565465sdfjdskfjdslkfjkerte34"}'
+type ReloadUserCSRFStruct struct {
+	UserId  int64 `json:"UserId" form:"UserId" query:"UserId"`
+	CSRFToken string `json:"CSRFToken" form:"CSRFToken" query:"CSRFToken"`
+	Agreements bool `json:"Agreements" form:"Agreements" query:"Agreements"`
+}
+
+func initUsersMap() map[int64]UserInformationTuple {
 	fmt.Println("[I] Initializing users map")
 	start := time.Now()
 
-	const queryUsers = "SELECT u.id, u.csrf_token FROM users u INNER JOIN conditions_agreement ca ON u.id = ca.user_id WHERE u.csrf_token IS NOT NULL AND ca.status = 1"
+	const queryUsers = "SELECT u.id, u.csrf_token, ca.status FROM users u INNER JOIN conditions_agreement ca ON u.id = ca.user_id WHERE u.csrf_token IS NOT NULL"
 	//const queryUsers = "SELECT u.id, u.csrf_token FROM users u INNER JOIN conditions_agreement ca ON u.id = ca.user_id WHERE u.csrf_token IS NOT NULL AND ca.status = 1 ORDER BY u.id OFFSET 0 ROWS FETCH NEXT 100 ROWS ONLY"
 	
-	var userMap = make(map[int64]string)
+	var userMap = make(map[int64]UserInformationTuple)
  
 	u := &url.URL{
 		 Scheme: "sqlserver",
@@ -81,15 +94,17 @@ func initUsersMap() map[int64]string {
 		var (
 			uID   int64
 			CSRFToken string
+			acceptedAgreements bool
 		)
 		
-		if err := rows.Scan(&uID, &CSRFToken); err != nil {
+		if err := rows.Scan(&uID, &CSRFToken, &acceptedAgreements); err != nil {
 			log.Fatal(err)
 			continue
 		}
 		
-		fmt.Printf("%d is %s\n", uID, CSRFToken) //-- For testing purposes
-		userMap[uID] = CSRFToken
+		fmt.Printf("%d token: %s, Agreement: %t\n", uID, CSRFToken, acceptedAgreements) //-- For testing purposes
+		tupl := UserInformationTuple{CSRFToken: CSRFToken, acceptedAgreements: acceptedAgreements}
+		userMap[uID] = tupl
 	 }
  
 	 fmt.Println("-- Loaded ", len(userMap), " items into usermap. Took: ", time.Now().Sub(start).String())
@@ -101,7 +116,7 @@ func initUsersMap() map[int64]string {
 	fmt.Println("[I] Fetching registrations")
 	start := time.Now()
 
-	const queryCall = "SELECT ru._user as user_id, ru.registration as reg_id, m.id as mun_id FROM registration_users ru INNER JOIN registrations r ON r.id = ru.registration INNER JOIN municipalities m ON m.id = r.municipality WHERE r.allFiles_flag = 1"
+	const queryCall = "SELECT ru._user as user_id, ru.registration as reg_id, m.id as mun_id, r.allFiles_flag as allFiles FROM registration_users ru INNER JOIN registrations r ON r.id = ru.registration INNER JOIN municipalities m ON m.id = r.municipality"
 	var regsMap = make(map[int64]UserMunicipalityTuple)
 	
 	u := &url.URL{
@@ -133,17 +148,18 @@ func initUsersMap() map[int64]string {
 			uId		int64
 			rId   	int64
 			mId  	int64
+			allFiles bool
 		)
 
-		if err := rows.Scan(&uId, &rId, &mId); err != nil {
+		if err := rows.Scan(&uId, &rId, &mId, &allFiles); err != nil {
 			fmt.Printf("Something went wrong: (%d,%d) of user %d\n", rId, mId, uId) //-- For testing purposes
 			//log.Fatal(err)
 			continue
 		}
 
-		tupl := UserMunicipalityTuple{uId: uId, mId: mId}
+		tupl := UserMunicipalityTuple{uId: uId, mId: mId, allFiles: allFiles}
 		
-		//fmt.Printf("Added registration: (%d,%d) of user %d\n", rId, mId, uId) //-- For testing purposes
+		//fmt.Printf("Added registration: (%d,%d) of user %d. Has all registrations: %t\n", rId, mId, uId, allFiles) //-- For testing purposes
 		regsMap[rId] = tupl
 	}
 
@@ -223,15 +239,16 @@ func getCallOpen() (int64, time.Time, time.Time) {
 		 },
 	 }
  }
- 
+
+
  func main() {
 	start := time.Now()
 
 	//-- GLobal vars
 	var totalRetries int = 0
 	
-	//-- Initialization
-	var usersMap map[int64]string = initUsersMap()
+	//-- Initialization of users and their CSRF token
+	var usersMap map[int64]UserInformationTuple = initUsersMap()
 	callId, callOpen, callClose := getCallOpen()
 	var regsMap map[int64]UserMunicipalityTuple = initRegistrationsMap()
 	//-- TODO Pending registrations
@@ -271,7 +288,7 @@ func getCallOpen() (int64, time.Time, time.Time) {
  
     e.GET("/time", func(c echo.Context) error {
 
-        return c.String(http.StatusOK, strconv.FormatInt(time.Now().UTC().Unix() * 1000, 10))
+        return c.String(http.StatusOK, strconv.FormatInt(time.Now().Unix(), 10))
 
 	})
  
@@ -291,7 +308,53 @@ func getCallOpen() (int64, time.Time, time.Time) {
 
         return c.String(http.StatusOK, strconv.FormatBool(time.Now().After(callOpen) && time.Now().Before(callClose)))
 
-    })
+	})
+	
+	e.POST("/update-user", func(c echo.Context) (err error) {
+
+		u := new(ReloadUserCSRFStruct)
+		if err = c.Bind(u); err != nil {
+			return
+		}
+
+		fmt.Println("Received update-user. Id: ", u.UserId)
+		fmt.Println("Received update-user. Token: ", u.CSRFToken)
+		fmt.Println("Received update-user. Token: ", u.Agreements)
+		
+		var currUser UserInformationTuple = usersMap[u.UserId]
+		if (currUser.CSRFToken == "") {
+			//-- Create
+			fmt.Println("Creating a new user entry")
+			currUser := UserInformationTuple{CSRFToken: u.CSRFToken, acceptedAgreements: u.Agreements}
+			usersMap[u.UserId] = currUser;
+
+			fmt.Printf("Created userMap entry for userId %d token: %s, Agreement: %t\n", u.UserId, usersMap[u.UserId].CSRFToken, usersMap[u.UserId].acceptedAgreements)
+
+			return c.String(http.StatusOK, "OK")
+		} else {
+			//-- Update
+			fmt.Println("Updating user information")
+			currUser.CSRFToken = u.CSRFToken;
+			currUser.acceptedAgreements = u.Agreements;
+			usersMap[u.UserId] = currUser;
+
+			fmt.Printf("Updated userMap entry for userId %d token: %s, Agreement: %t\n", u.UserId, usersMap[u.UserId].CSRFToken, usersMap[u.UserId].acceptedAgreements)
+			
+			return c.String(http.StatusOK, "OK")
+		}
+
+		return c.String(http.StatusInternalServerError, "KO")
+	})
+	
+	/*e.POST("/update-registration", func(c echo.Context) (err error) {
+
+		u := new(ReloadUserCSRFStruct)
+		if err = c.Bind(u); err != nil {
+			return
+		}
+
+		return c.String(http.StatusInternalServerError, "KO")
+    })*/
 
     e.GET("/calls/:callId/apply/:r/:u/:m", func(c echo.Context) error {
 
@@ -325,9 +388,14 @@ func getCallOpen() (int64, time.Time, time.Time) {
 		//-- 2. Validate the userId, XSRF-Token and user agreement acceptance by finding the user on the in-memory userMap
 		xsrfToken := c.Request().Header.Get("X-XSRF-TOKEN")
 			//-- fmt.Println("-- XSRF: ", xsrfToken)
-			//-- fmt.Println("-- MAP XSRF: ", usersMap[uToken])
-		if (usersMap[uToken] != xsrfToken) {
+			//-- fmt.Println("-- MAP XSRF: ", usersMap[uToken].CSRFToken)
+		if (usersMap[uToken].CSRFToken != xsrfToken) {
 			return c.String(http.StatusUnauthorized, "Unauthorized")
+		}
+
+		//--2.1 Validate user agreement acceptance
+		if (usersMap[uToken].acceptedAgreements != true) {
+			return c.String(http.StatusUnprocessableEntity, "You need to accept the agreements in order to be elegible for appliying")
 		}
 
 		//-- 3. CHECK R,U,M TOKEN
@@ -335,10 +403,14 @@ func getCallOpen() (int64, time.Time, time.Time) {
 			//-- fmt.Printf("-- Municipality Received: %d. Found: %d \n", mToken, tupl.mId)
 			//-- fmt.Printf("-- User Received: %d. Found: %d \n", uToken, tupl.uId)
 		if(tupl.mId != mToken || tupl.uId != uToken) {
-			return c.String(http.StatusBadRequest, "Application does not meet the requirements")
+			return c.String(http.StatusUnauthorized, "Unauthorized")
+		}
+
+		if (tupl.allFiles != true) {
+			return c.String(http.StatusUnprocessableEntity, "You need to upload all the required documents in order to be elegible for appliying")
 		}
 		
-		//eturn c.String(http.StatusOK, "DEVELOPMENT MODE") // DEV MODE!!!!! DELETE
+		//return c.String(http.StatusOK, "DEVELOPMENT MODE") // DEV MODE!!!!! DELETE
 
         //-- 4. SAVE TO REDIS
         retries := 0
