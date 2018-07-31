@@ -30,8 +30,8 @@ public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer>
     @Query(value = "select id, registration, type, upload_time, id_user, " +
             "file_size, file_mime, file_name " +
             "from legal_files where registration = ?1 " +
-            "and type = ?3 order by type, upload_time desc", nativeQuery = true)
-    List<LegalFile> findHistoryRequiredType(Integer registrationId, Integer userId, Integer type);
+            "and type = ?2 order by type, upload_time desc", nativeQuery = true)
+    List<LegalFile> findHistoryRequiredType(Integer registrationId, Integer type);
 
     @Query(value = "select id, registration, type, upload_time, id_user, " +
             "file_size, file_mime, file_name from legal_files where registration = ?1 " +

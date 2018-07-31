@@ -591,7 +591,7 @@ public class RegistrationService {
             return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId, userId));
         }
         if (type == 1 || type == 3) {
-            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryRequiredType(registrationId, userId, type));
+            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryRequiredType(registrationId, type));
         }
         return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
     }
