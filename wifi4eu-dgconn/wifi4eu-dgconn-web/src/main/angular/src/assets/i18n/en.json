@@ -529,7 +529,7 @@
   "benefPortal.myVoucher.datatable.text": "For each municipality you can do the following actions:",
   "shared.statusUploadDocs": "Please upload all supporting documents. This is required for application.",
   "benefPortal.myVoucher.datatable.grantAgreement": "Grant agreement signed on {{date}}.",
-  "shared.statusDocsUploaded": "We confirm receipt of your submitted documents as part of your application. Your application is now pending validation of the supporting documents.",
+  "shared.statusDocsUploaded": "We confirm receipt of your submitted documents as part of your application.",
   "benefPortal.selectSupplier.details.title": "Select Wi-Fi installation company",
   "benefPortal.selectSupplier.feedback.selected": "Wi-Fi installation company selected on {{date}}. #See details#",
   "benefPortal.myVoucher.datatable.confirmInstallation": "Confirm network installation",
@@ -943,5 +943,7 @@
   "benefPortal.myVoucher.signedByApplicant": "Grant Agreement signed by applicant on {{date}}",
   "dgConn.beneficiariesList.terminate": "Terminate",
   "dgConn.requestCorrectionDate": "Request date",
-  "benefPortal.grantAgreement.permissionsWarning.description ": "You are not authorized to sign the Grant Agreement because your documents are not yet validated"
+  "benefPortal.grantAgreement.permissionsWarning.description ": "You are not authorized to sign the Grant Agreement because your documents are not yet validated",
+  "shared.supportingDocuments.leavePage.title": "Are you sure you want to leave the page?",
+  "shared.supportingDocuments.leavePage.body": "You have confirmed. This will discard any document you uploaded. If you wish to save the documents you uploaded, please return to the page and press Confirm. Are you sure you want to discard your documents?"
 }
