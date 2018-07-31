@@ -104,4 +104,9 @@ public class VoucherAssignment {
         this.voucherSimulations = voucherSimulations;
     }
 
+    public interface VoucherAssignmentGetIdAndNotificationDate {
+        Integer getId();
+        Long getNotifiedDate();
+    }
+
 }
