@@ -917,6 +917,7 @@
   "dgConn.beneficiariesList.cancel.failure": "An error has ocurred during canceling the beneficiary. Please, try again later",
   "dgConn.beneficiariesList.cancel.empty": "Please, complete the reason field to cancel the beneficiary",
   "dgconn.dashboard.card.beneficiaries.home": "Beneficiaries",
+  
   "shared.supportingDocuments.provide.optional": "Optional supporting documents to provide:",
   "shared.supportingDocuments.confirmation.label": "Please confirm that the uploaded documents are correct",
   "shared.supportingDocuments.attachment": "Attached on {{uploadTime}}",
