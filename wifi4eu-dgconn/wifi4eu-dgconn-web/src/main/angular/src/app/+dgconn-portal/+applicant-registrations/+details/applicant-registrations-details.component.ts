@@ -496,11 +496,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
                 this.processingRequest = true;
                 for (let i = 0; i < savedFilesLimit; i++) {
-                    if (this.selectedFiles[this.selectedIndex][i].requestCorrection) {
-                        this.sharedService.growlTranslation('This file has already requested for correction.', 'dgConn.file.alreadyRequested', 'warn');
-                        this.closeModal();
-                        return;
-                    }
                     let updatedLegalFile = this.selectedFiles[this.selectedIndex][i];
                     updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
                     if (updatedLegalFile.correctionReason != -1) {
