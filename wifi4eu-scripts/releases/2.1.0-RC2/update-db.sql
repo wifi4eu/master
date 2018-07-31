@@ -31,12 +31,16 @@ INSERT INTO [dbo].[supplier_users]
 --WIFI4EU-2556 changes in legal files / registration / legal files correction reason
 --FOREIGN KEYS
 ALTER TABLE legal_files_correction_reason
-	ADD id_legal_file BIGINT,
-	FOREIGN KEY (id_legal_file) REFERENCES legal_files(id);
+    ADD id_legal_file BIGINT,
+    FOREIGN KEY (id_legal_file) REFERENCES legal_files(id)
+    ON DELETE CASCADE
+   ON UPDATE CASCADE;
 
 ALTER TABLE legal_files
-	ADD id_user INTEGER,
-	FOREIGN KEY (id_user) REFERENCES users(id);
+    ADD id_user INTEGER,
+    FOREIGN KEY (id_user) REFERENCES users(id)
+    ON DELETE CASCADE
+   ON UPDATE CASCADE;
 
 
 --NEW CAMPS
