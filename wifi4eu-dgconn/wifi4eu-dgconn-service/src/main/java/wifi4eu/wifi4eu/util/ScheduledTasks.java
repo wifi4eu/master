@@ -105,6 +105,9 @@ public class ScheduledTasks {
     @Autowired
     GrantAgreementUtils grantAgreementUtils;
 
+    @Autowired
+    DateUtils dateUtils;
+
     private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
     private final static String QUEUE_NAME = "wifi4eu_apply";
@@ -319,44 +322,31 @@ public class ScheduledTasks {
         _log.debug("SCHEDULED TASK: Deadline for Requested Documents - finished");
     }
 
-    // @Scheduled(cron = "0 0 4 * * *", zone = "Europe/Madrid")
-    public ResponseDTO sendMessageNotSigned(){
-        // first look into voucher assignment table if some register is with notified_date. If there is, take the id and query into the voucher simulations table with a where
-        // of voucher_assignemnt = id of the last table and status = 3 (selected). If there are applicants, query into the grant_agreement table (where they sign).
-        // if no results, calculate how much time between the notified date of the voucher assignment table and the current day, then:
-        // email at 7 & 14 days.
+    @Scheduled(cron = "0 0 4 * * *", zone = "Europe/Madrid")
+    public void sendMessageNotSigned(){
+        _log.debug("SCHEDULED TASK: Reminder email for users who haven't signed after 7 or 14 days before the notification date - START");
         ArrayList<VoucherAssignment.VoucherAssignmentGetIdAndNotificationDate> voucherAssignment = voucherAssignmentRepository.findByNotifiedDateNotNull();
-        LocalDate localCurrentDate = getLocalTimeFromDate(new Date());
+        LocalDate localCurrentDate = dateUtils.getLocalTimeFromDate(new Date());
         LocalDate notifiedDate;
-        ResponseDTO responseDTO = new ResponseDTO();
         for(int i = 0; i < voucherAssignment.size(); i++){
-            // check if the days between today and the notified date is equal to 7 or 14
-            notifiedDate =  getLocalTimeFromDate(new Date(voucherAssignment.get(i).getNotifiedDate()));
+            notifiedDate =  dateUtils.getLocalTimeFromDate(new Date(voucherAssignment.get(i).getNotifiedDate()));
             long days = ChronoUnit.DAYS.between(localCurrentDate, notifiedDate);
             if ( days == -7 || days == -14){
-                // 7 days or 14, let's check if everyone has filled the pdf. If not, send email
                 ArrayList<Integer> applicationIds = null;
                 applicationIds = voucherSimulationRepository.findApplicationIdsFromVoucherAssignmentAndSelectionStatus(voucherAssignment.get(i).getId());
                 if (applicationIds != null){
                     for (int j = 0; j < applicationIds.size(); j++){
                         if (grantAgreementRepository.countByApplicationId(applicationIds.get(j)) <= 0){
-                            // null, not signed yet. Send email
                             String emailUser = registrationUsersRepository.findContactEmailFromApplicationId(applicationIds.get(j));
                             Integer userId = registrationUsersRepository.findUserIdFromApplicationId(applicationIds.get(j));
-                            responseDTO.setData(grantAgreementUtils.sendEmailSignPdfNotified(userId,emailUser,days));
+                            grantAgreementUtils.sendEmailSignPdfNotified(userId,emailUser,days);
                         }
                     }
                 }
             }
         }
 
-        responseDTO.setSuccess(true);
-        return responseDTO;
-    }
-
-    private LocalDate getLocalTimeFromDate(Date datedef){
-        java.sql.Date sDate = new java.sql.Date(datedef.getTime());
-        return sDate.toLocalDate();
+        _log.debug("SCHEDULED TASK: Reminder email for users who haven't signed after 7 or 14 days before the notification date - FINISH");
     }
 
 }

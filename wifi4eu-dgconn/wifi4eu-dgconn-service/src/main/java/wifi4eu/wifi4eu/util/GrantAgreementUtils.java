@@ -29,13 +29,12 @@ public class GrantAgreementUtils {
                     locale = new Locale(user.getLang());
                 }
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                // missing set message
-                String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
-                String additionalInfoUrl = userService.getBaseUrl() + "supplier-portal/additional-info";
-                msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
+                String subject = bundle.getString("mail.dgConn.grantagreement.sign.reminder.subject");
+                String msgBody = bundle.getString("mail.dgConn.grantagreement.sign.reminder.body");
+                int daysMessage = Math.abs(Integer.parseInt(days.toString()));
+                msgBody = MessageFormat.format(msgBody, daysMessage);
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmail(email, MailService.FROM_ADDRESS, subject, msgBody);
                 }
                 return true;
             }
