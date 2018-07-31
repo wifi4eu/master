@@ -6,6 +6,7 @@ import eu.cec.digit.ecas.client.constants.RequestConstant;
 import eu.cec.digit.ecas.client.signature.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
@@ -84,7 +86,7 @@ public class EcasSignatureResource {
             }
 
             url = ecasSignatureUtil.doWhenSignatureRequired(request, grantAgreement);
-            //response.sendRedirect(ecasSignatureUtil.doWhenSignatureRequired(request, grantAgreement));
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Signature process started");
             return new ResponseDTO(true, url, null);
         }
         catch (AccessDeniedException ade){
@@ -102,31 +104,25 @@ public class EcasSignatureResource {
     @ApiOperation(value = "Handle callback signature grant agreement")
     @RequestMapping(value = "/handleSignature/{documentId}", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public ResponseEntity<byte[]> handleSignature(HttpServletRequest request, @PathVariable(value = "documentId") String hdsDocumentId, HttpServletResponse response) throws IOException {
+    public GrantAgreementDTO handleSignature(HttpServletRequest request, @PathVariable(value = "documentId") String hdsDocumentId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         String signatureId = request.getParameter("signatureId");
 
         try {
 
-            HttpHeaders headers = new HttpHeaders();
-            //headers.setContentType(MediaType.parseMediaType("application/pdf"));
-            headers.setContentType(MediaType.parseMediaType("application/pdf"));
-            String filename = "grantAgreementPdf.pdf";
-            headers.setContentDispositionFormData(filename, filename);
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-            ByteArrayOutputStream byteArrayOutputStream = ecasSignatureUtil.writeSignature(signatureId, request, hdsDocumentId);
-            return new ResponseEntity<>(byteArrayOutputStream.toByteArray(), headers, HttpStatus.OK);
+            GrantAgreementDTO grantAgreementDTO = ecasSignatureUtil.writeSignature(signatureId, request, hdsDocumentId);
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Grant agreement signed successfully");
+            response.sendRedirect(userService.getBaseUrl() + "beneficiary-portal/my-voucher/grant-agreement");
+            return grantAgreementDTO;
         } catch (AccessDeniedException ade){
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to handle the callback for grant agreement", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Error on grant agreement signature", e);
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Error on callback grant agreement signature", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return null;
-        } finally {
-            response.sendRedirect(userService.getBaseUrl() + "beneficiary-portal/my-voucher/grant-agreement");
         }
     }
 

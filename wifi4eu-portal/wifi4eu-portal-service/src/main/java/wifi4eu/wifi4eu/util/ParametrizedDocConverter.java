@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.List;
 import java.util.Map;
 
+import com.itextpdf.text.pdf.PdfWriter;
+import fr.opensagres.xdocreport.itext.extension.IPdfWriterConfiguration;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.converter.pdf.PdfConverter;
 import org.apache.poi.xwpf.converter.pdf.PdfOptions;
@@ -33,7 +35,6 @@ public class ParametrizedDocConverter {
         outputStream = convertDocToPDF(doc, outputStream);
         doc.close();
         outputStream.close();
-//		saveWord(outputPath, doc);
         return outputStream;
     }
 
@@ -112,9 +113,7 @@ public class ParametrizedDocConverter {
     private static ByteArrayOutputStream convertDocToPDF(XWPFDocument doc, ByteArrayOutputStream byteArrayOutputStream) throws IOException {
         try {
             PdfOptions options = PdfOptions.create();
-            //OutputStream out = new FileOutputStream(new File(pdfPath));
             PdfConverter.getInstance().convert(doc, byteArrayOutputStream, options);
-
             return byteArrayOutputStream;
         } catch (IOException ex) {
             System.out.println(ex.getMessage());

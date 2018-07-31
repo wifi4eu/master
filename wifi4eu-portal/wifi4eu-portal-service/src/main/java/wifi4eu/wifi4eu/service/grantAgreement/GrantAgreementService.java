@@ -5,6 +5,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.*;
+import org.apache.poi.util.IOUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -12,22 +13,30 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorage;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
+import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.grantAgreement.GrantAgreementMapper;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.location.LauService;
+import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.ParametrizedDocConverter;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
+import java.net.URL;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +57,53 @@ public class GrantAgreementService {
     UserService userService;
 
     @Autowired
+    AzureBlobStorage azureBlobStorage;
+
+    @Autowired
+    MunicipalityService municipalityService;
+
+    @Autowired
+    RegistrationService registrationService;
+
+    @Autowired
+    LauService lauService;
+
+    @Autowired
     ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
+
+    final static HashMap<String, String> languagesMap = new HashMap<>();
+
+    @PostConstruct
+    public void initIt() throws Exception {
+        languagesMap.put("bg", "български");
+        languagesMap.put("cs", "čeština");
+        languagesMap.put("da", "Dansk");
+        languagesMap.put("de", "Deutsch");
+        languagesMap.put("et", "eesti keel");
+        languagesMap.put("el", "ελληνικά");
+        languagesMap.put("en", "English");
+        languagesMap.put("es","español");
+        languagesMap.put("fr", "français");
+        languagesMap.put("ga","Gaeilge");
+        languagesMap.put("it", "italiano");
+        languagesMap.put("lv", "latviešu valoda");
+        languagesMap.put("lt",  "lietuvių kalba");
+        languagesMap.put("hu", "magyar");
+        languagesMap.put("mt", "Malti");
+        languagesMap.put("nl",  "Nederlands");
+        languagesMap.put("pl", "polski");
+        languagesMap.put("pt", "português");
+        languagesMap.put("ro","română");
+        languagesMap.put("sk", "slovenčina");
+        languagesMap.put("sl",  "slovenščina");
+        languagesMap.put("fi", "suomi");
+        languagesMap.put("sv", "svenska");
+        languagesMap.put("hr",  "hrvatski");
+        languagesMap.put("is", "íslenska");
+        languagesMap.put("mk", "македонски");
+        languagesMap.put("no", "norsk");
+        languagesMap.put("tr",  "türkçe");
+    }
 
     public GrantAgreementDTO saveGrantAgreementSignature(GrantAgreementDTO inputGrantAgreement){
         return grantAgreementMapper.toDTO(agreementRepository.save(grantAgreementMapper.toEntity(inputGrantAgreement)));
@@ -77,10 +132,8 @@ public class GrantAgreementService {
     }
 
     public ByteArrayOutputStream fillGrantAgreementDocument(GrantAgreementDTO grantAgreement, Map<String, String> mapProperties) throws Exception {
-        Resource resource = new ClassPathResource("grant_agreement_template_" + grantAgreement.getDocumentLanguage() + ".docx");
-        byte[] byteData = Files.readAllBytes(resource.getFile().toPath());
-
-        return ParametrizedDocConverter.convert(byteData, mapProperties);
+        byte[] fileData = azureBlobStorage.getFileFromContainer("docs", "grant_agreement_template_" + grantAgreement.getDocumentLanguage() + ".docx");
+        return ParametrizedDocConverter.convert(fileData, mapProperties);
     }
 
     public ByteArrayOutputStream generateGrantAgreementDocument(GrantAgreementDTO grantAgreement) throws Exception {
@@ -94,7 +147,9 @@ public class GrantAgreementService {
         }
 
         ApplicationDTO applicationDTO = applicationService.getApplicationById(grantAgreement.getApplicationId());
-
+        RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
+        MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(registrationDTO.getMunicipalityId());
+        LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
 
         String registrationID = String.valueOf(applicationDTO.getRegistrationId());
         String userId = String.valueOf(userDTO.getId());
@@ -102,62 +157,30 @@ public class GrantAgreementService {
         String formattedRegistrationID = ("000000" + registrationID).substring(registrationID.length());
         String formattedUserID = ("000000" + userId).substring(userId.length());
 
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        DateFormat df = new SimpleDateFormat("yy"); // Just the year, with 2 digits
+        String year = df.format(cal.getTime());
+
         Map<String,String> replacementsMap = new HashMap<String,String>();
         replacementsMap.put("[<call number>", String.valueOf(applicationDTO.getCallId()));
-        replacementsMap.put("<year>]", "18");
+        replacementsMap.put("<year>]", year);
         replacementsMap.put("[<unique identifying number>]", formattedRegistrationID.concat("-").concat(formattedUserID));
         replacementsMap.put("[function, forename and surname]", "Head of Department C, Andreas Boschen");
+        replacementsMap.put("[function-2, forename and surname]", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
         replacementsMap.put("[full official name]", "Aartselaar");
-        replacementsMap.put("[official address in full]", "Baron van Ertbornstraat, 1");
-        replacementsMap.put("[insert name of the municipality]", "Aartselaar");
+        replacementsMap.put("[official address in full]", municipalityDTO.getAddress().concat(", ").concat(municipalityDTO.getAddressNum()));
+        replacementsMap.put("[insert name of the municipality]", lauDTO.getName1());
         replacementsMap.put("[insert number of the action in bold]", "Lorem ipsum dolor sit amet, consectetur adipiscing elit");
         replacementsMap.put("[or in English]", "Lorem ipsum dolor sit amet");
-        replacementsMap.put("[language]", grantAgreement.getDocumentLanguage());
+        replacementsMap.put("[language]", languagesMap.get(grantAgreement.getDocumentLanguage()));
         replacementsMap.put("[function/forename/surname]", "Lorem ipsum dolor sit amet, consectetur adipiscing elit");
-        replacementsMap.put("[e-signature]", "consectetur adipiscing elit");
+        replacementsMap.put("[e-signature]", "");
         replacementsMap.put("[<M or A>", "M");
         replacementsMap.put("[xxxx]", "Lorem ipsum");
         return fillGrantAgreementDocument(grantAgreement, replacementsMap);
     }
-
-    /*public ByteArrayOutputStream generateGrantAgreementPdf(GrantAgreementDTO grantAgreement) throws IOException, DocumentException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfStamper pdfStamper = null;
-        PdfReader pdfReader = null;
-        try {
-            pdfReader = new PdfReader(generateGrantAgreementDocument(grantAgreement).toByteArray());
-            pdfStamper = new PdfStamper(pdfReader, outputStream);
-
-            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, "Cp1252", BaseFont.EMBEDDED);
-
-            int pages = pdfReader.getNumberOfPages();
-
-            for (int i = 1; i <= pages; i++) {
-                if (i == 1) {
-                    PdfContentByte pageContentByte = pdfStamper.getOverContent(i);
-                    Font f = new Font(bf, 8);
-                    ColumnText ct = new ColumnText(pageContentByte);
-                    ct.setSimpleColumn(5, 0, pdfReader.getPageSize(i).getWidth() / 2, 400f);
-                    ct.addElement(new Paragraph(grantAgreement.getDocumentLanguage(), f));
-                    ct.go();
-                }
-            }
-
-            return outputStream;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            if (pdfStamper != null) {
-                pdfStamper.close();
-            }
-            if (pdfReader != null) {
-                pdfReader.close();
-            }
-            outputStream.close();
-        }
-    }*/
-
 
     public ByteArrayOutputStream generateGrantAgreementPdfSigned(GrantAgreementDTO grantAgreement, String signString) throws IOException, DocumentException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.common.azureblobstorage;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
@@ -10,9 +11,13 @@ import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.utils.EncrypterService;
 
 import javax.annotation.PostConstruct;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @Component
@@ -47,6 +52,29 @@ public class AzureBlobStorage {
         } catch (Exception e){
             System.out.println("Exit exception => "+e.getMessage());
         } finally {
+            System.out.println("Everything working OK");
+        }
+    }
+
+    public byte[] getFileFromContainer(String containerName, String file) throws IOException {
+        CloudStorageAccount storageAccount;
+        CloudBlobClient blobClient;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        CloudBlobContainer cloudBlobContainer = null;
+
+        try {
+            storageAccount = CloudStorageAccount.parse(storageConnectionString);
+            blobClient = storageAccount.createCloudBlobClient();
+            cloudBlobContainer = blobClient.getContainerReference(containerName);
+            CloudBlockBlob blockBlob = cloudBlobContainer.getBlockBlobReference(file);
+            blockBlob.download(outputStream);
+            outputStream.close();
+            return outputStream.toByteArray();
+        } catch (Exception e){
+            System.out.println("Exit exception => "+e.getMessage());
+            return null;
+        } finally {
+            outputStream.close();
             System.out.println("Everything working OK");
         }
     }

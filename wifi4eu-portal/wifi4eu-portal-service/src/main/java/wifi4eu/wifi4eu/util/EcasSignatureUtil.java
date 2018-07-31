@@ -11,12 +11,16 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorage;
 import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorageUtils;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -45,6 +49,9 @@ public class EcasSignatureUtil {
     @Autowired
     PermissionChecker permissionChecker;
 
+    @Autowired
+    ApplicationService applicationService;
+
     /**
      * Sample Snippets to interact with the EU Login Signature Service.
      * <p>
@@ -68,25 +75,20 @@ public class EcasSignatureUtil {
      * @param request
      * @param grantAgreementDTO
      * @return String
-     * //* @throws HdsException
      */
-    //DocumentBean documentToBeSigned
-    public String doWhenSignatureRequired(HttpServletRequest request, GrantAgreementDTO grantAgreementDTO) /*throws HdsException*/ {
-
-        //UserBean userBean = RequestExtractorUtil.getUser(request);
-        //_log.info(String.format("Document with HERMES ID %s needs to be signed. Download request ID: %s. Signing user is %s", documentToBeSigned.getHermesDocId(), downloadRequestId, userBean.getEcasId()));
-
+    public String doWhenSignatureRequired(HttpServletRequest request, GrantAgreementDTO grantAgreementDTO) {
 
         String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, grantAgreementDTO.getId().toString());
-        String description = "Signature of grant agreement"; //String.format(FORM_NOTIF_TEMPLATE, documentToBeSigned.getAresRef(), documentToBeSigned.getCreationFormNotifDate());
 
-        Message msg = new SimpleTextMessage(constructXmlToSign());
+        ApplicationDTO applicationDTO = applicationService.getApplicationById(grantAgreementDTO.getApplicationId());
+
+        Message msg = new SimpleTextMessage(constructXmlToSign(grantAgreementDTO, applicationDTO.getRegistrationId()));
 
         //construct signature for ecas
         UserConfirmationSignatureRequest signatureRequest = new UserConfirmationSignatureRequestImpl.Builder()
                 .service(callBackUrlToHds)
-                .displayedDescription(description)
-                .reason("Signature of grant agreement")
+                .displayedDescription("Signature of grant agreement for application number " + applicationDTO.getId())
+                .reason("Signature of grant agreement for application number " + applicationDTO.getId())
                 .message(msg)
                 .userCommentPresence(UserCommentPresence.NOT_ALLOWED)
                 .build();
@@ -104,9 +106,7 @@ public class EcasSignatureUtil {
             signaturePageUrl.append("&").append(RequestConstant.SERVICE).append("=").append(callBackUrlToHds);
 
         } catch (Exception signitureEx) {
-            // _log.warn(String.format("Error when requesting ecas signature for downloadRequestId %s and user %s. Reason %s", downloadRequestId, userBean.getEcasId(), signitureEx.getMessage()));
             throw new AppException("Exception while creating ecas signature " + signitureEx.getMessage());
-            //throw new EcasSignatureException("Exception while creating ecas signature " + signitureEx.getMessage());
         }
 
         _log.info("Redirecting to ECAS signature : " + signaturePageUrl.toString());
@@ -116,31 +116,24 @@ public class EcasSignatureUtil {
     /**
      * Prepares the XML Payload to be signed in ECAS
      **/
-    public String constructXmlToSign() {
+    public String constructXmlToSign(GrantAgreementDTO grantAgreementDTO, Integer registrationID) {
         StringBuffer buff = new StringBuffer("<grant-agreements-sign-request>");
-        buff.append("<grant-agreement><number>123456789</number></grant-agreement>");
+        buff.append("<grant-agreement><number>"+grantAgreementDTO.getId()+"</number></grant-agreement>");
         buff.append("<registrationId>");
-        buff.append("");
+        buff.append(registrationID);
         buff.append("</registrationId>");
-        buff.append("<municipalityName>");
-        buff.append("");
-        buff.append("</municipalityName>");
-        buff.append("<documentRegistrationNumber>");
-        buff.append("");
-        buff.append("</documentRegistrationNumber>");
         buff.append("<creationDateTime>");
         buff.append(new Date().toString());
         buff.append("</creationDateTime>");
         buff.append("</grant-agreements-sign-request>");
-
         return buff.toString();
     }
 
-    public ByteArrayOutputStream writeSignature(String signatureId, HttpServletRequest request, String hdsDocumentId) {
+    public GrantAgreementDTO writeSignature(String signatureId, HttpServletRequest request, String grantAgreementID) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
 
-        GrantAgreementDTO grantAgreement = grantAgreementService.getGrantAgreementById(Integer.parseInt(hdsDocumentId));
+        GrantAgreementDTO grantAgreement = grantAgreementService.getGrantAgreementById(Integer.parseInt(grantAgreementID));
 
         if(!permissionChecker.checkIfAuthorizedGrantAgreement(grantAgreement.getApplicationId())){
             throw new AccessDeniedException("The user is not authorized to sign grant agreement");
@@ -149,7 +142,7 @@ public class EcasSignatureUtil {
         try {
             grantAgreement.setSignatureId(signatureId);
 
-            String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, hdsDocumentId);
+            String callBackUrlToHds = constructSignatureHDSCallbackUrl(request, grantAgreementID);
 
             SignatureClient client = new SignatureClient();
             client.configure(request);
@@ -163,9 +156,6 @@ public class EcasSignatureUtil {
 
             String signatureProof = verifiedUserConfirmationMessage.getText();
 
-            _log.info("signatureId" + signatureId);
-            _log.info("XML" + signatureProof);
-
             String signString = userDTO.getName() + " " + userDTO.getSurname() + " signed as Legal Representative of the Beneficiary on " + new Date().toString() + "  (transaction id " +
                     "" + signatureId + ")";
 
@@ -175,7 +165,7 @@ public class EcasSignatureUtil {
 
             SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicy(EnumSet.of(SharedAccessBlobPermissions.READ), 20);
 
-            String downloadURL = azureBlobStorage.getDocumentWithTokenAzureStorage("grant_agreement_" + hdsDocumentId + ".pdf", data, policy);
+            String downloadURL = azureBlobStorage.getDocumentWithTokenAzureStorage("grant_agreement_" + grantAgreementID + "_signed.pdf", data, policy);
 
             grantAgreement.setDocumentLocation(downloadURL);
             grantAgreement.setDateSignature(new Date());
@@ -185,7 +175,7 @@ public class EcasSignatureUtil {
 
         }
 
-        return outputStream;
+        return grantAgreement;
     }
 
 }

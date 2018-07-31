@@ -170,7 +170,7 @@
         <p class="smallCharacters">{{ 'benefPortal.grantAgreement.downloadText' | translate}}</p>
         <p class="smallCharacters"><input type="checkbox" (click)="enableButton()">{{ 'benefPortal.grantAgreement.confirmCheckbox' | translate}}</p>
         <br>
-        <button class="btn btn-primary smallCharacters" (click)="openModal()" [disabled]="!enableButtonFront || inputGrantAgreement.dateSignature">{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
+        <button class="btn btn-primary smallCharacters" (click)="openModal()" [disabled]="!enableButtonFront || inputGrantAgreement?.dateSignature">{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
     </div>
 
 </div>

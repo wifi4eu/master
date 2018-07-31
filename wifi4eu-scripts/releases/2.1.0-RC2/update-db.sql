@@ -31,3 +31,5 @@ create table grant_agreement(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+alter table grant_agreement ADD document_location_countersigned NVARCHAR(MAX) NULL;
