@@ -928,5 +928,8 @@
   "shared.download.grantAgreementPDF" : "Download in ",
   "benefPortal.grantAgreement.sign.title" : "Grant agreement signing confirmation",
   "benefPortal.grantAgreement.sign.description" : "By pressing \"Sign\" you confirm you understand the conditions and confirm your agreement with terms and obligations of the Grant Agreement",
-  "benefPortal.grantAgreement.sign.button" : "Sign" 
+  "benefPortal.grantAgreement.sign.button" : "Sign",
+  "benefPortal.myVoucher.signedByApplicant": "Grant Agreement signed by applicant on {{date}}",
+  "benefPortal.grantAgreement.permissionsWarning.description" : "You are not authorized to sign the Grant Agreement because your documents are not yet validated",
+  "benefPortal.myVoucher.waitingCommission" : "Waiting for European Commission CounterSignature"
 }
