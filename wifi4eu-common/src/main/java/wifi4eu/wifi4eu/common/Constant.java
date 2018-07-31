@@ -7,9 +7,9 @@ public abstract class Constant {
 	public static final String FORM = "FORM";
 
 	public static final long ROLE_SUPPLIER = 1;
-	public static final long ROLE_MAYOR = 2;
+	public static final long ROLE_SUPPLIER_CONTACT = 2;
 	public static final long ROLE_REPRESENTATIVE = 3;
-	public static final long ROLE_MEMBERSTATE = 4;
+	public static final long ROLE_REPRESENTATIVE_CONTACT = 4;
 	public static final long ROLE_DGCONN = 5;
 
 
