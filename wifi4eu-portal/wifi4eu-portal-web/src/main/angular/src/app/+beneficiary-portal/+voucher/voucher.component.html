@@ -64,11 +64,11 @@
                         </span>
                     </template>
                 </p-column>
-                <template let-data let-municipality pTemplate="rowexpansion" let-i="rowIndex">
+                <template let-data pTemplate="rowexpansion" let-i="rowIndex">
                     <div class="ui-grid ui-grid-responsive ui-fluid">
                         <div *ngIf="data.conditionAgreement" class="row conditions-agreement">
                             <div class="col-sm-1 col-md-1 col-lg-1">
-                                <i class="fa fa-square-o" aria-hidden="true" (click)="changeConditionsAgreement(municipality)"></i>
+                                <i class="fa fa-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
                             </div>
                             <div class="col-sm-11 col-md-11 col-lg-11">
                                 <div [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></div>
@@ -76,7 +76,7 @@
                         </div>
                         <div *ngIf="!data.conditionAgreement" class="row conditions-agreement">    
                             <div class="col-sm-1 col-md-1 col-lg-1">
-                                <i class="fa fa-check-square-o" aria-hidden="true" (click)="changeConditionsAgreement(municipality)"></i>
+                                <i class="fa fa-check-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
                             </div>
                             <div class="col-sm-11 col-md-11 col-lg-11">
                                 <div [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></div>
