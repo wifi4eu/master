@@ -20,7 +20,7 @@
  	 "github.com/labstack/echo"
  	 "github.com/labstack/echo/middleware"
  	 "github.com/labstack/gommon/log"
- 	 _"github.com/tomasen/realip"
+ 	 "github.com/tomasen/realip"
 
 	 _ "github.com/denisenkom/go-mssqldb"
  )
@@ -157,7 +157,6 @@ func getCallOpen() (int64, time.Time, time.Time) {
 	start := time.Now()
 
 	const queryCall = "SELECT id, start_date, end_date FROM calls WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date"
-	const nextCall = "SELECT TOP 1 id, start_date, end_date FROM calls WHERE start_date > cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 ORDER BY start_date ASC "
 	var (
 		cId			int64
 		callOpen   	int64
@@ -200,29 +199,6 @@ func getCallOpen() (int64, time.Time, time.Time) {
  
 	if (callOpen == 0 || callClose == 0) {
 		fmt.Println("-- No call open found. Took: ", time.Now().Sub(start).String())
-		fmt.Println("Get NEXT call")
-
-
-		rows, err := db.Query(nextCall)
-
-		if err != nil {
-			log.Fatal(err)
-			panic(err)
-		}
-
-		defer rows.Close()
-
-		for rows.Next() {
-
-			if err := rows.Scan(&cId, &callOpen, &callClose); err != nil {
-				log.Fatal(err)
-				continue
-			}
-			
-			fmt.Printf("-- Call: %d => [From: %s; To: %s]\n", cId, time.Unix(callOpen / 1000, 0).String(), time.Unix(callClose / 1000, 0).String())
-		}
-
-
 	} else {
 		fmt.Println("-- Loaded call. Took: ", time.Now().Sub(start).String())
 	}
@@ -295,7 +271,7 @@ func getCallOpen() (int64, time.Time, time.Time) {
  
     e.GET("/time", func(c echo.Context) error {
 
-        return c.String(http.StatusOK, strconv.FormatInt(time.Now().Local().Unix() * 1000, 10))
+        return c.String(http.StatusOK, strconv.FormatInt(time.Now().UTC().Unix() * 1000, 10))
 
 	})
  
@@ -351,7 +327,7 @@ func getCallOpen() (int64, time.Time, time.Time) {
 			//-- fmt.Println("-- XSRF: ", xsrfToken)
 			//-- fmt.Println("-- MAP XSRF: ", usersMap[uToken])
 		if (usersMap[uToken] != xsrfToken) {
-			//return c.String(http.StatusUnauthorized, "Unauthorized")
+			return c.String(http.StatusUnauthorized, "Unauthorized")
 		}
 
 		//-- 3. CHECK R,U,M TOKEN
@@ -375,7 +351,7 @@ func getCallOpen() (int64, time.Time, time.Time) {
             "r", rToken,
             "u", uToken,
             "m", mToken,
-            "ip", c.Request().Header.Get("X-FORWARDED-FOR"), //realip.FromRequest(c.Request()),
+            "ip", realip.FromRequest(c.Request()),
             "time", now.String())
 
         if err != nil {
@@ -394,16 +370,16 @@ func getCallOpen() (int64, time.Time, time.Time) {
         }
 
 		//-- 4. All good. Set cookie and return OK
-		var cookieName []string
+		/*var cookieName []string
 		cookieName = append(cookieName, COOKIE_NAME)
 		cookieName = append(cookieName, strconv.FormatInt(rToken, 10))
 
 		cookie := new(http.Cookie)
 		cookie.Name = strings.Join(cookieName, "_")
 		cookie.Value = "true"
-		//cookie.Domain = "wifi4eu-dev.everincloud.com" //-- TODO FIXME
+		cookie.Domain = "everincloud.com" //-- TODO FIXME
 		cookie.Expires = time.Now().Add(31 * 24 * time.Hour)
-		c.SetCookie(cookie)	
+		c.SetCookie(cookie)	*/
 
         return c.String(http.StatusOK, resp.(string))
 	})
