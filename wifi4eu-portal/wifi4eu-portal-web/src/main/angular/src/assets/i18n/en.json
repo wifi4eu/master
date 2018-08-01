@@ -408,8 +408,8 @@
   "suppPortal.request.additionalInfo.provideDocs2": "In addition, please provide the following documents for the LEAR mentioned above:",
   "benefPortal.request.additionalInfo.doc1.label": "1) Agreement to apply and copy of ID of mayor/head of municipality",
   "benefPortal.request.additionalInfo.doc2.label": "2) <a href=\\\"https://ec.europa.eu/digital-single-market/en/news/wifi4eu-proof-agreement-mayorhead-municipality\\\">Proof of nomination</a> of mayor/head of municipality",
-  "benefPortal.request.additionalInfo.doc3.label": "3) A copy of your ID card/passport.",
-  "benefPortal.request.additionalInfo.doc4.label": "4) The <a href=\\\"https://ec.europa.eu/digital-single-market/en/news/wifi4eu-authorised-person-form\\\">authorized person form</a>, signed both by the mayor/head of municipality and you as the appointed person.",
+  "benefPortal.request.additionalInfo.doc3.label": "3) The <a href=\\\"https://ec.europa.eu/digital-single-market/en/news/wifi4eu-authorised-person-form\\\">authorized person form</a>, signed both by the mayor/head of municipality and you as the appointed person.",
+  "benefPortal.request.additionalInfo.doc4.label": "4) A copy of your ID card/passport.",
   "suppPortal.button.addInstallationInfo": "Add installation information",
   "shared.registration.update.success": "Your registration was successfully updated.",
   "shared.registration.update.error": "An error occurred and your registration could not be updated.",
@@ -945,5 +945,6 @@
   "dgConn.requestCorrectionDate": "Request date",
   "benefPortal.grantAgreement.permissionsWarning.description ": "You are not authorized to sign the Grant Agreement because your documents are not yet validated",
   "shared.supportingDocuments.leavePage.title": "Are you sure you want to leave the page?",
-  "shared.supportingDocuments.leavePage.body": "You have confirmed. This will discard any document you uploaded. If you wish to save the documents you uploaded, please return to the page and press Confirm. Are you sure you want to discard your documents?"
+  "shared.supportingDocuments.leavePage.body": "You have confirmed. This will discard any document you uploaded. If you wish to save the documents you uploaded, please return to the page and press Confirm. Are you sure you want to discard your documents?",
+  "shared.supportingDocuments.provide.mandatory": "Mandatory supporting documents to provide:"
 }
