@@ -129,7 +129,6 @@ export class VoucherComponent {
                         data => {
                             this.cookieService.set(this.nameCookieApply+"_"+applyVoucher.idRegistration,'true');
                             this.voucherApplied = "greyImage";
-                            this.voucherCompetitionState = 3;
                             this.sharedService.growlTranslation(
                                 "Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.",
                                 "benefPortal.voucher.statusmessage5",
