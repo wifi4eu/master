@@ -54,9 +54,14 @@
     <form #legalForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="municipality && user" style="display: grid;">
         <div style="padding-left: 5em; padding-right:5em;">
 
-            <div class="row">
+            <div class="row" *ngIf="isMayor">
                 <p class="labelModal profileData">
                     {{ 'shared.supportingDocuments.provide' | translate }}
+                </p>
+            </div>
+            <div class="row" *ngIf="!isMayor">
+                <p class="labelModal profileData">
+                    {{ 'shared.supportingDocuments.provide.mandatory' | translate }}
                 </p>
             </div>
 
@@ -78,9 +83,11 @@
                             <img src="assets\images\hoja-id-card.png" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x">
                         </div>
                         <div class="ui-g-8">
-                            <span *ngIf="documentFilesType1.length == 0">
-                                <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
-                            </span>
+                            <div class="margin-docs">
+                                <span *ngIf="documentFilesType1.length == 0">
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+                                </span>
+                            </div>
                             <div *ngFor="let file of documentFilesType1; let i = index" class="pb-1 margin-docs">
                                 <span *ngIf="documentFilesType1[i].fileSize">
                                     <i class="fa fa-paperclip"></i>
@@ -132,9 +139,11 @@
                             <img src="assets\images\hoja.svg" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x">
                         </div>
                         <div class="ui-g-8">
-                            <span *ngIf="documentFilesType3.length == 0">
-                                <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
-                            </span>
+                            <div class="margin-docs">
+                                <span *ngIf="documentFilesType3.length == 0">
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+                                </span>
+                            </div>
                             <div *ngFor="let file of documentFilesType3; let i = index" class="pb-1 margin-docs">
                                 <span *ngIf="documentFilesType3[i].fileSize">
                                     <i class="fa fa-paperclip"></i>
@@ -171,64 +180,8 @@
                     </div>
                 </div>
 
-                <p class="labelModal profileData">
-                    {{ 'shared.supportingDocuments.provide.optional' | translate }}
-                </p>
-
                 <div class="col-offset-12">
-                    <label class="label" for="document2" [innerHTML]="'benefPortal.request.additionalInfo.doc3.label' | translate"></label>
-                </div>
-                <div class="col-offset-12">
-                    <div class="left">
-                        <div class="fileUpload btn btn-primary">
-                            <span>{{ 'benefDocs.copyYourID' | translate }}</span>
-                            <input #document2 id="document2" name="document2" (change)="uploadFile($event, 2)" type="file" class="upload" accept=".png, .jpg, .pdf"
-                            />
-                        </div>
-                    </div>
-                    <span class="ui-g-12 row" *ngIf="registration">
-                        <div class="ui-g-4 hoja-ID-card">
-                            <img src="assets\images\hoja-id-card.png" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x">
-                        </div>
-                        <div class="ui-g-8">
-                            <span *ngIf="documentFilesType2.length == 0">
-                                <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
-                            </span>
-                            <div *ngFor="let file of documentFilesType2; let i = index" class="pb-1 margin-docs">
-                                <span *ngIf="documentFilesType2[i].fileSize">
-                                    <i class="fa fa-paperclip"></i>
-                                    <span>{{documentFilesType2[i].fileName}}</span>
-                                    <span *ngIf="!file?.uploadTime">
-                                        <!-- new file -->
-                                        <a sclass="link-label" (click)="removeFile(2)">
-                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
-                                    </span>
-                                    <span *ngIf="file?.uploadTime">
-                                        <!-- history -->
-                                        <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
-                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
-                                        <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
-                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                        </a>
-                                        <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType2[i].uploadTime
-                                            | date : "h:mm a, d MMM y"} }}
-                                        </span>
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                    </span>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-12">
-                        <hr class="beneficiaryHr marginHr">
-                    </div>
-                </div>
-
-                <div class="col-offset-12">
-                    <label class="label" for="document4" [innerHTML]="'benefPortal.request.additionalInfo.doc4.label' | translate"></label>
+                    <label class="label" for="document4" [innerHTML]="'benefPortal.request.additionalInfo.doc3.label' | translate"></label>
                 </div>
                 <div class="col-offset-12">
                     <div class="left">
@@ -243,9 +196,11 @@
                             <img src="assets\images\hoja.svg" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x">
                         </div>
                         <div class="ui-g-8">
-                            <span *ngIf="documentFilesType4.length == 0">
-                                <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
-                            </span>
+                            <div class="margin-docs">
+                                <span *ngIf="documentFilesType4.length == 0">
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+                                </span>
+                            </div>
                             <div *ngFor="let file of documentFilesType4; let i = index" class="pb-1 margin-docs">
                                 <span *ngIf="documentFilesType4[i].fileSize">
                                     <i class="fa fa-paperclip"></i>
@@ -264,6 +219,63 @@
                                         </a>
                                         <span class="attachment-label">
                                             <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType4[i].uploadTime
+                                            | date : "h:mm a, d MMM y"} }}
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <hr class="beneficiaryHr marginHr">
+                    </div>
+                </div>
+
+                <p class="labelModal profileData">
+                    {{ 'shared.supportingDocuments.provide.optional' | translate }}
+                </p>
+
+                <div class="col-offset-12">
+                    <label class="label" for="document2" [innerHTML]="'benefPortal.request.additionalInfo.doc4.label' | translate"></label>
+                </div>
+                <div class="col-offset-12">
+                    <div class="left">
+                        <div class="fileUpload btn btn-primary">
+                            <span>{{ 'benefDocs.copyYourID' | translate }}</span>
+                            <input #document2 id="document2" name="document2" (change)="uploadFile($event, 2)" type="file" class="upload" accept=".png, .jpg, .pdf"
+                            />
+                        </div>
+                    </div>
+                    <span class="ui-g-12 row" *ngIf="registration">
+                        <div class="ui-g-4 hoja-ID-card">
+                            <img src="assets\images\hoja-id-card.png" srcset="assets\images\hoja-id-card@2x.png 2x, assets\images\hoja-id-card@3x.png 3x">
+                        </div>
+                        <div class="ui-g-8">
+                            <div class="margin-docs">
+                                <span *ngIf="documentFilesType2.length == 0">
+                                    <span class="attachment-label">{{ 'shared.supportingDocuments.noAttached' | translate }}</span>
+                                </span>
+                            </div>
+                            <div *ngFor="let file of documentFilesType2; let i = index" class="pb-1 margin-docs">
+                                <span *ngIf="documentFilesType2[i].fileSize">
+                                    <i class="fa fa-paperclip"></i>
+                                    <span>{{documentFilesType2[i].fileName}}</span>
+                                    <span *ngIf="!file?.uploadTime">
+                                        <!-- new file -->
+                                        <a sclass="link-label" (click)="removeFile(2)">
+                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                                    </span>
+                                    <span *ngIf="file?.uploadTime">
+                                        <!-- history -->
+                                        <a class="link-label" style="pointer-events:none; cursor: default; opacity: 0.6;">
+                                            <i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                                        <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
+                                            <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                        </a>
+                                        <span class="attachment-label">
+                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType2[i].uploadTime
                                             | date : "h:mm a, d MMM y"} }}
                                         </span>
                                     </span>
