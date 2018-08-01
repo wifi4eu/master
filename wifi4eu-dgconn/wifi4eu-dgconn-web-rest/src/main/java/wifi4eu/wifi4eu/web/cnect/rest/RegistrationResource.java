@@ -18,8 +18,9 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
-import wifi4eu.wifi4eu.entity.registration.LegalFiles;
+import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -53,6 +54,9 @@ public class RegistrationResource {
 
     @Autowired
     private UserThreadsService userThreadsService;
+
+    @Autowired
+    private LegalFilesRepository legalFilesRepository;
 
     Logger _log = LogManager.getLogger(RegistrationResource.class);
 
@@ -129,60 +133,6 @@ public class RegistrationResource {
     @ResponseBody
     public ResponseDTO confirmOrRejectInstallationReport(@RequestBody final Map<String, Object> map, HttpServletRequest request) {
         return registrationService.confirmOrRejectInstallationAndSendCNS(map, request);
-    }
-
-    @ApiOperation(value = "Delete legal documents")
-    @RequestMapping(value = "/deleteDocuments", method = RequestMethod.PUT)
-    @ResponseBody
-    public ResponseDTO deleteRegistrationDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Removing legal documents");
-        try {
-            UserDTO userDTO = userConnected;
-            if (!registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
-            RegistrationDTO resRegistration = registrationService.deleteRegistrationDocuments(registrationDTO, request);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Documents removed successfully");
-            return new ResponseDTO(true, resRegistration, null);
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to remove documents", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These documents cannot been created", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-        }
-    }
-
-    @ApiOperation(value = "Update legal documents")
-    @RequestMapping(value = "/updateDocuments", method = RequestMethod.PUT)
-    @ResponseBody
-    public ResponseDTO updateRegistrationDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating legal documents");
-        try {
-            UserDTO userDTO = userConnected;
-            if (!registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
-            RegistrationDTO resRegistration = registrationService.updateRegistrationDocuments(registrationDTO, request);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Documents updated successfully");
-            return new ResponseDTO(true, resRegistration, null);
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update documents", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These documents cannot been removed", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-        }
     }
 
     /*
@@ -373,8 +323,6 @@ public class RegistrationResource {
             registration.setRole(null);
             registration.setStatus(0);
             registration.setAssociationName(null);
-            registration.setOrganisationId(0);
-            registration.setUploadTime(0);
             registration.setAllFilesFlag(0);
             return registration;
         } else {
@@ -384,67 +332,48 @@ public class RegistrationResource {
     }
 
     @ApiOperation(value = "Get registration by specific userThread id")
-    @RequestMapping(value = "/registrations/{registrationId}/{fileType}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getDocument/{registrationId}/{fileId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO getLegalFilesByFileType(@PathVariable("registrationId") final Integer registrationId, @PathVariable("fileType") final Integer fileType, HttpServletResponse response, HttpServletRequest request) {
+    public ResponseDTO getLegalFilesById(@PathVariable("registrationId") final Integer registrationId, @PathVariable("fileId") final Integer fileId, HttpServletResponse response, HttpServletRequest request) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId + " and file type " + fileType);
-        UserDTO user = userConnected;
-        RegistrationDTO registration = registrationService.getRegistrationById(registrationId);
-        if (registration != null && (!registrationService.checkUserWithRegistration(registration.getId(), userConnected.getId()) || user.getType() == 5)) {
-            LegalFilesDTO registrationFile = legalFilesService.getLegalFileByRegistrationIdFileType(registration.getId(), fileType);
-            if (registrationFile != null) {
-                String fileName = "";
-                String fileMime = "";
-                String fileExtension = "";
-                switch (fileType) {
-                    case 1:
-                        fileName = "LegalFile1";
-                        fileMime = registration.getLegalFile1Mime();
-                        break;
-                    case 2:
-                        fileName = "LegalFile2";
-                        fileMime = registration.getLegalFile2Mime();
-                        break;
-                    case 3:
-                        fileName = "LegalFile3";
-                        fileMime = registration.getLegalFile3Mime();
-                        break;
-                    case 4:
-                        fileName = "LegalFile4";
-                        fileMime = registration.getLegalFile4Mime();
-                        break;
-                }
-
-                if (fileMime != null && fileMime.length() != 0) {
-                    if (fileMime.contains("pdf")) {
-                        fileExtension = "pdf";
-                    } else if (fileMime.contains("png")) {
-                        fileExtension = "png";
-                    } else if (fileMime.contains("jpg") || fileMime.contains("jpeg")) {
-                        fileExtension = "jpg";
-                    }
-                }
-
-                if (fileMime != null && fileMime.length() != 0 && fileName != null && fileName.length() != 0 && !registrationFile.getFileData().isEmpty()) {
-                    try {
-                        response.setContentType(fileMime);
-                        response.setHeader("Content-disposition", "inline; filename=\"" + fileName + "." + fileExtension + "\"");
-
-                        byte[] fileBytes = Base64Utils.decodeFromString(registrationFile.getFileData());
-                        response.getOutputStream().write(fileBytes);
-                        response.getOutputStream().flush();
-                        response.getOutputStream().close();
-                    } catch (Exception ex) {
-                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The registration cannot been retrieved", ex);
-                    }
-                }
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId + " and file id " + fileId);
+        try {
+            if (registrationId == null || (!legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId) && userConnected.getType() != 5)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-        } else {
+            permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
+
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+
+        LegalFile legalFile = legalFilesRepository.findOne(fileId); //if file doesnt exist user doesnt have permission
+        String fileName = legalFile.getFileName();
+        String fileMime = legalFile.getFileMime();
+        String fileExtension = legalFilesService.getExtensionFromMime(fileMime);
+        //if fileMime is null or has lenght 0 fileExtension is null
+        if (fileName != null && fileName.length() != 0 && !legalFile.getFileData().isEmpty() && fileExtension != null) {
+            try {
+                response.setContentType(fileMime);
+                response.setHeader("Content-disposition", "inline; filename=\"" + fileName + fileExtension + "\"");
+
+                byte[] fileBytes = Base64Utils.decodeFromString(legalFile.getFileData());
+                response.getOutputStream().write(fileBytes);
+                response.getOutputStream().close();
+                response.getOutputStream().flush();
+            } catch (Exception ex) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The registration cannot been retrieved", ex);
+                return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+            }
+        } else{
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The File cannot been retrieved, file id : " + fileId);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
-        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Legal files retrieved successfully");
+        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() +
+                "- Legal files retrieved successfully, id: "+ fileId);
         return new ResponseDTO(true, null, null);
     }
 
@@ -479,30 +408,7 @@ public class RegistrationResource {
         }
     }
 
-    @ApiOperation(value = "Get legal file uploadTime")
-    @RequestMapping(value = "/getLegalFilesUploadTime/{registrationId}", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseDTO getLegalFilesUploadTimeByRegistrationId(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting legal files by registration id "+registrationId);
-        try {
-            if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Legal files UploadTime retrieved successfully");
-            return new ResponseDTO(true, legalFilesService.getUploadTimesAllFiles(registrationId), null);
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve these legal files", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal files cannot been retrieved", e);
-            return null;
-        }
-    }
-
-        @ApiOperation(value = "Create/update a legal file")
+    @ApiOperation(value = "Create/update a legal file")
     @RequestMapping(value = "/saveLegalFile", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -514,6 +420,7 @@ public class RegistrationResource {
             if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + legalFileDTO.getRegistrationId())) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            registrationService.clearCorrectionReason(legalFileDTO,userConnected);
             LegalFileCorrectionReasonDTO resLegalFile = registrationService.saveLegalFile(legalFileDTO);
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Legal files saved successfully");
             return new ResponseDTO(true, resLegalFile, null);
@@ -525,5 +432,41 @@ public class RegistrationResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal file cannot been saved", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
+    }
+
+    @ApiOperation(value = "Get past of documents")
+    @RequestMapping(value = "/{registrationId}/getHistory", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO getHistoryAll(@PathVariable("registrationId") final Integer registrationId,
+                                     HttpServletResponse response, HttpServletRequest request) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting History for documents" + " of registration id " +
+                registrationId);
+        try {
+            if (registrationId == null || (!registrationService.checkUserWithRegistration(registrationId, userConnected.getId())) && userConnected
+                    .getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
+            return new ResponseDTO(true, registrationService.getHistoryDocuments(registrationId), null);
+
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade
+                    .getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+    }
+
+
+    @ApiOperation(value = "LegalFile not implemented")
+    @RequestMapping(value = "/LegalFileNotImplemented", method = RequestMethod.PUT, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO getDtoLegalFile(@RequestBody LegalFileDTO request) {
+        ResponseDTO response = new ResponseDTO();
+        response.setSuccess(false);
+        response.setData("Not implemented");
+        return response;
     }
 }

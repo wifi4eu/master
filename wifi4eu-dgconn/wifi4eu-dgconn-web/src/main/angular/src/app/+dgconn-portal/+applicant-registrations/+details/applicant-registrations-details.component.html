@@ -191,27 +191,33 @@
                                 <ux-accordion-boxes>
                                     <custom-accordion-box [isExpanded]="true" [rightSide]="true">
                                         <p-dataTable [value]="legalFiles[i]">
-                                            <p-column field="type" [sortable]="false" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
+                                            <p-column field="type" [sortable]="true" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" (ngModelChange)="orderList($event, i)"
-                                                        [(ngModel)]="selectedFilesTypes[i]"></p-checkbox>
+                                                    <p-checkbox [value]="row" [label]="typeFilesList[row.type - 1]" (ngModelChange)="orderList($event, i)"
+                                                        [(ngModel)]="selectedFiles[i]"></p-checkbox>
                                                 </ng-template>
                                             </p-column>
-                                            <p-column field="uploadTime" [sortable]="false" header="{{ 'dgConn.dateRecieved' | translate }}" styleClass="text-center">
+                                            <p-column field="uploadTime" [sortable]="true" header="{{ 'dgConn.dateRecieved' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
                                                     <span *ngIf="row.uploadTime">{{ row.uploadTime | date:'dd/MM/yyyy' }}</span>
                                                     <span *ngIf="!row.uploadTime">-</span>
                                                 </ng-template>
                                             </p-column>
-                                            <p-column field="correctionReason" [sortable]="false" header="{{ 'dgConn.correctionReason' | translate }}" styleClass="text-center">
+                                            <p-column field="correctionReason" [sortable]="true" header="{{ 'dgConn.correctionReason' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
                                                     <span *ngIf="row.correctionReason != null">{{invalidateReasonsList[row.correctionReason]}}</span>
                                                     <span *ngIf="row.correctionReason == null">-</span>
                                                 </ng-template>
-                                            </p-column>
+                                             </p-column>
+                                            <p-column field="requestCorrectionDate" [sortable]="true" header="{{ 'dgConn.requestCorrectionDate' | translate }}" styleClass="text-center">
+                                                <ng-template let-row="rowData" pTemplate="body">
+                                                    <span *ngIf="row.requestCorrectionDate != null">{{ row.requestCorrectionDate | date:'dd/MM/yyyy' }}</span>
+                                                    <span *ngIf="row.requestCorrectionDate == null">-</span>
+                                                </ng-template>
+                                             </p-column>
                                             <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <a class="link-label" href="{{fileURL}}{{registrations[i].id}}/{{row.type}}" target="_blank">
+                                                    <a class="link-label" href="{{fileURL}}{{registrations[i].id}}/{{row.legalFile}}" target="_blank">
                                                         <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                                     </a>
                                                 </ng-template>
@@ -221,7 +227,7 @@
                                 </ux-accordion-boxes>
                             </p>
                             <div class="ui-g-12 right">
-                                <button type="button" class="btn btn-primary" (click)="displayRequestCorrectionModal(i)" *ngIf="selectedFilesTypes[i]" [disabled]="selectedFilesTypes[i].length < 1">
+                                <button type="button" class="btn btn-primary" (click)="displayRequestCorrectionModal(i)" *ngIf="selectedFiles[i]" [disabled]="selectedFiles[i].length < 1">
                                     {{ 'dgConn.requestCorrection' | translate }}
                                 </button>
                             </div>
@@ -544,21 +550,21 @@
                     <h2 class="beneficiaryMayor">{{ 'dgConn.applicantDetails.requestLegalFilesCorrection.title' | translate }}</h2>
                     <p [innerHTML]="'dgConn.applicantDetails.requestLegalFilesCorrection.desc' | translate"></p>
                 </div>
-                <div *ngFor="let typeNumber of selectedFilesTypes[selectedIndex]; let typeIndex = index">
+                <div *ngFor="let file of selectedFiles[selectedIndex]; let index = index">
                     <hr *ngIf="i != 0" class="beneficiaryHr">
                     <p class="applicantDetailsNoMargin ui-g-12">
-                        <span class="profileData">{{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} {{typeIndex+1}}</span>
+                        <span class="profileData">{{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} {{index +1}}</span>
                         <br>
                         <span>-
-                            <span>{{typeFilesList[typeNumber - 1]}}</span>
+                            <span>{{typeFilesList[file.type - 1]}}</span>
                         </span>
                     </p>
                     <p class="applicantDetailsNoMargin">
                         <span class="ui-g-12">{{ 'dgConn.correctionReason' | translate }}:</span>
                         <span class="ui-g-12" style="margin-bottom: 1em;">
-                            <select [(ngModel)]="selectedReasonTypes[selectedIndex][typeIndex]" (ngModelChange)="selectCorrectionReason($event)" [id]="'invalidateReason'+typeIndex"
-                                [name]="'invalidateReason'+typeIndex" class="form-control">
-                                <option *ngIf="selectedReasonTypes[selectedIndex][typeIndex]  != null" [ngValue]="-1">
+                            <select [(ngModel)]="selectedReasonTypes[selectedIndex][index]" (ngModelChange)="selectCorrectionReason($event)" [id]="'invalidateReason'+index"
+                                [name]="'invalidateReason'+index" class="form-control">
+                                <option *ngIf="selectedReasonTypes[selectedIndex][index]  != null" [ngValue]="-1">
                                     -
                                 </option>
                                 <option *ngFor="let invalidateReason of invalidateReasonsList; let reasonIndex = index" [ngValue]="reasonIndex">

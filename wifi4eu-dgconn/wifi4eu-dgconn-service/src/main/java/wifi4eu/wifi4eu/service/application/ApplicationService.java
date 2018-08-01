@@ -26,7 +26,6 @@ import wifi4eu.wifi4eu.repository.application.*;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
-import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
@@ -143,7 +142,7 @@ public class ApplicationService {
             if (queueTimestamp / 1000000000 > callDTO.getStartDate() && queueTimestamp / 1000000000 < callDTO.getEndDate()) {
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue is from the specified call");
                 //check information on the queue is right
-                if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationDTO.getId()) != null) {
+//                if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationDTO.getId()) != null) {
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - All the information of this queue is right");
                     //check if this application was received previously
                     ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
@@ -175,11 +174,11 @@ public class ApplicationService {
                         + callId + " userId: " + userId + " registrationId: " + registrationId +
                         " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
             }
-        } else {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The information provided is wrong, callId: "
-                    + callId + " userId: " + userId + " registrationId: " + registrationId +
-                    " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
-        }
+//        } else {
+//            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The information provided is wrong, callId: "
+//                    + callId + " userId: " + userId + " registrationId: " + registrationId +
+//                    " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+//        }
         return null;
     }
 
@@ -517,10 +516,11 @@ public class ApplicationService {
                 String[] documentTypesBody2 = {"", ""};
                 String emailBody = "";
                 Registration registration = registrationRepository.findOne(application.getRegistrationId());
-                LogEmail lastEmailSent = logEmailRepository.findTopByMunicipalityIdAndActionOrderBySentDateDesc(registration.getMunicipality().getId(), "sendCorrectionEmails");
+                LogEmail lastEmailSent = logEmailRepository.findTopByMunicipalityIdAndActionAndToOrderBySentDateDesc(registration.getMunicipality().getId(), "sendCorrectionEmails", application.getUserEcasEmail());
                 List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
                 for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
-                    if (legalFileCorrectionReason.getRequestCorrection() && (lastEmailSent == null || legalFileCorrectionReason.getRequestCorrectionDate().getTime() > lastEmailSent.getSentDate())) {
+                    if (legalFileCorrectionReason.getRequestCorrection() && (lastEmailSent == null || legalFileCorrectionReason
+                            .getRequestCorrectionDate().getTime() > lastEmailSent.getSentDate())) {
                         String emailString = "";
                         switch (legalFileCorrectionReason.getType()) {
                             case 1:
@@ -622,71 +622,6 @@ public class ApplicationService {
 
         applicationDTO.setRejected(false);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-    }
-
-    /**
-     * This method is called by the cron ScheduledTasks.deadlineSubmissionForRequestDocuments().
-     * It gets all applicants that are on status follow up and check if they have files on requested correction, that were sent an email on this
-     * day and not afterwards. Also checks if the document was put as requested correction before the date. (This check is necessary because the user can
-     * send the email as many times as its want and we need to make sure that we don't invalidate beneficiaries that still have time to upload the
-     * requested documents.
-     * If any of those files that are requested, are type 1 or 3 and the beneficiary hasn't uploaded them, this method invalidates this beneficiary.
-     *
-     * @param callId
-     * @param dateRequest "deadline date". The date that is 7 days ago, its use to compare with the uploaded file and email log.
-     */
-    public void invalidateApplicationsPostRequestForDocumentsPastDeadline(Integer callId, long dateRequest) {
-        List<ApplicationIssueUtil> applications = applicationIssueUtilRepository.findApplicationIssueUtilByCallAndStatus(callId, ApplicationStatus
-                .PENDING_FOLLOWUP.getValue());
-        if (!applications.isEmpty()) {
-            for (ApplicationIssueUtil applicationUtil : applications) {
-                if (hasThisBeneficiaryBeenSentCorrectionEmailThisDay(applicationUtil.getRegistrationId(), dateRequest)) {
-                    List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(applicationUtil.getRegistrationId());
-                    for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
-                        int legalType = legalFileCorrectionReason.getType();
-                        //if document as requested correction and legal type is 1 or 3 we need to check the uploaded time of the file and compare it
-                        //if this document in particular was requested before the the email was sent we check to invalidate it
-                        if (legalFileCorrectionReason.getRequestCorrection() && (legalType == 1 || legalType == 3) && legalFileCorrectionReason
-                                .getRequestCorrectionDate().getTime() < dateRequest) {
-                            LegalFilesDTO legalFile = legalFilesService.getLegalFileByRegistrationIdFileType(applicationUtil.getRegistrationId(),
-                                    legalType);
-                            if (legalFile == null || (legalFile.getUploadTime().getTime() < dateRequest)) {
-                                // the file either hasn't been uploaded again or never was. We proceed to invalidate this application.
-                                ApplicationDTO applicationDTO = getApplicationById(applicationUtil.getApplicationId());
-                                _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Deadline for Requested Documents - INVALIDATING application with " + "" + "the id: " + applicationDTO.getId() + ". Legal file type: " + legalType);
-                                ApplicationInvalidateReasonDTO invalidReasonViewDTO = new ApplicationInvalidateReasonDTO(applicationDTO.getId(), 7);
-                                applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntity(invalidReasonViewDTO));
-                                applicationDTO.setStatus(ApplicationStatus.KO.getValue());
-                                applicationRepository.save(applicationMapper.toEntity(applicationDTO));
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    /**
-     * This method is called by the cron ScheduledTasks.deadlineSubmissionForRequestDocuments().
-     * We need to check that this registration was indeed sent an sendCorrectionEmail on this day or afterwards.
-     *
-     * @param registrationId
-     * @param deadlineDay the day that we want to know if this registration was sent an sendCorrectionEmails
-     * @return if this registration was sent an sendCorrectionEmail on deadlineDay
-     */
-    public boolean hasThisBeneficiaryBeenSentCorrectionEmailThisDay(Integer registrationId, long deadlineDay){
-        Integer municipalityId = registrationService.getRegistrationById(registrationId).getMunicipalityId();
-        List<LogEmail> logEmails = logEmailRepository.findAllByMunicipalityIdAndActionOrderBySentDateDesc(municipalityId, "sendCorrectionEmails");
-        for (LogEmail logEmail : logEmails){
-            //if there's a log of a sendCorrectionEmail sent on this day, this applicant's deadline is today
-            //otherwise we will not invalidate them
-            if((logEmail.getSentDate() - deadlineDay) / (24 * 60 * 60 * 1000) == 0){
-                return true;
-            }
-        }
-        return false;
     }
 
 }

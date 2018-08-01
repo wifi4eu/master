@@ -13,14 +13,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?1",
             nativeQuery = true)
@@ -31,14 +32,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -51,14 +53,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -71,14 +74,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -91,14 +95,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -111,14 +116,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -131,14 +137,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -151,14 +158,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -171,14 +179,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -191,14 +200,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -211,14 +221,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id  " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -231,14 +242,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -252,14 +264,15 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "l.country_code AS countryCode, " +
             "a.registration AS registrationId, " +
             "cast (CASE WHEN a.authorized_person IS NULL THEN 0 ELSE 1 END AS bit) AS verifiedToSign, " +
-            "a.date_signature AS dateSignature, " +
-            "a.date_counter_signature AS dateCounterSignature," +
+            "ga.date_signature AS dateSignature, " +
+            "ga.date_counter_signature AS dateCounterSignature," +
             "l.id as lauId, " +
             "a._status AS status " +
             "FROM voucher_simulations vs " +
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -280,6 +293,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +
@@ -301,6 +315,7 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
             "INNER JOIN municipalities m ON vs.municipality = m.id " +
             "INNER JOIN applications a ON vs.application = a.id " +
+            "LEFT JOIN grant_agreement ga ON ga.application_id = a.id " +
             "INNER JOIN laus l ON m.lau = l.id " +
             "WHERE va.status = 3 and va.call = ?#{[0]} AND " +
             "l.country_code LIKE ?#{[1]} AND LOWER(name) LIKE LOWER(CONCAT('%',?#{[2]},'%'))" +

@@ -5,11 +5,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.entity.registration.LegalFiles;
+import wifi4eu.wifi4eu.common.enums.FileTypes;
+import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.*;
 import wifi4eu.wifi4eu.repository.registration.legal_files.*;
-
-import java.util.List;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
 
 @Service("legalFilesService")
 public class LegalFilesService {
@@ -22,9 +22,9 @@ public class LegalFilesService {
 	@Autowired
 	LegalFilesMapper legalFilesMapper;
 
-	public LegalFilesDTO getLegalFileByRegistrationIdFileType(Integer registrationId, Integer fileType) {
-		return legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationId, fileType));
-	}
+	@Autowired
+	RegistrationService registrationService;
+
 
     public static String getBase64Data(String base64String) {
         String base64Data = null;
@@ -68,7 +68,35 @@ public class LegalFilesService {
 		return fileExtension;
 	}
 
-	public Iterable<Object> getUploadTimesAllFiles (Integer registrationId){
-		return legalFilesRepository.findUploadedTimeByRegistrationId(registrationId);
+	public String getExtensionFromMime(String fileMime){
+		if (fileMime != null && fileMime.length() != 0) {
+			if (fileMime.contains("pdf")) {
+				return ".pdf";
+			} else if (fileMime.contains("png")) {
+				return ".png";
+			} else if (fileMime.contains("jpg") || fileMime.contains("jpeg")) {
+				return ".jpg";
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Checks if the user has permission to modify the legal file requested.
+	 *
+	 * @param registrationId
+	 * @param userId
+	 * @param fileId
+	 * @return true if user has permission to access to the legal file
+	 */
+	public boolean hasUserPermissionForLegalFile (Integer registrationId, Integer userId, Integer fileId){
+		if(registrationService.checkUserWithRegistration(registrationId, userId)){
+			LegalFile legalFile = legalFilesRepository.findOne(fileId);
+			if (legalFile != null && (userId == legalFile.getUserId() || legalFile.getFileType() == FileTypes.LEGALFILE1.getValue() || legalFile
+					.getFileType() == FileTypes.LEGALFILE3.getValue())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

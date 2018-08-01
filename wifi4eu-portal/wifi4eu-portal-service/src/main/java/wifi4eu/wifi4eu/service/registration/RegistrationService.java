@@ -20,7 +20,8 @@ import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.registration.LegalFile;
+import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.entity.user.User;
@@ -174,182 +175,29 @@ public class RegistrationService {
         return registrationCreated;
     }
 
-    @Transactional
-    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
-        if (registrationDBO.getAllFilesFlag() != 1) {
-            if (registrationDTO.getLegalFile1Mime() == null || registrationDTO.getLegalFile1Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 1);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
-                registrationDBO.setLegalFile1Mime(null);
-                registrationDBO.setLegalFile1Size(0);
-            }
-
-            if (registrationDTO.getLegalFile2Mime() == null || registrationDTO.getLegalFile2Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 2);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 3");
-                registrationDBO.setLegalFile2Mime(null);
-                registrationDBO.setLegalFile2Size(0);
-            }
-
-            if (registrationDTO.getLegalFile3Mime() == null || registrationDTO.getLegalFile3Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 3);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 2");
-                registrationDBO.setLegalFile3Mime(null);
-                registrationDBO.setLegalFile3Size(0);
-            }
-
-            if (registrationDTO.getLegalFile4Mime() == null || registrationDTO.getLegalFile4Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 4);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 4");
-                registrationDBO.setLegalFile4Mime(null);
-                registrationDBO.setLegalFile4Size(0);
-            }
-        }
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
-    }
 
     @Transactional
-    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) throws Exception {
+    public ResponseDTO uploadRegistrationDocuments(Integer registrationID, List<LegalFileDTO> legalFile, HttpServletRequest request) throws Exception {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
-        Long currentTime = new Date().getTime();
-        String lf1 = registrationDTO.getLegalFile1Mime();
-        List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = getLegalFilesByRegistrationId(registrationDBO.getId());
-        if (lf1 != null) {
-            String base64 = LegalFilesService.getBase64Data(lf1);
-            if(base64 != null && !base64.isEmpty()) {
-                byte[] lf1ByteArray = Base64.getMimeDecoder().decode(base64);
-                String lf1Extension = LegalFilesService.getValidFileExtension(lf1);
-                if (lf1ByteArray.length > 1024000) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                    throw new Exception("File size cannot bet greater than 1 MB.");
-                } else if (lf1Extension == null) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                    throw new Exception("File must have a valid extension.");
-                } else {
-                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE1.getValue()));
-                    if (legalFilesDTO == null) {
-                        legalFilesDTO = new LegalFilesDTO();
-                    }
-                    legalFilesDTO.setRegistration(registrationDBO.getId());
-                    legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
-                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf1));
-                    legalFilesDTO.setUploadTime(new Date());
-                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                    registrationDBO.setLegalFile1Mime(LegalFilesService.getMimeType(lf1));
-                    registrationDBO.setLegalFile1Size(lf1ByteArray.length);
-                    registrationDBO.setUploadTime(currentTime);
-                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 1");
-                    setNotRequestedLegalFileIfSameType(legalFilesCorrectionReasons, FileTypes.LEGALFILE1.getValue());
-                }
+        if(!legalFile.isEmpty()){
+            for( int i = 0 ; i < legalFile.size() ; i++){
+                uploadDocument(registrationID, legalFile.get(i), userConnected, RequestIpRetriever.getIp(request));
             }
         }
-        String lf2 = registrationDTO.getLegalFile2Mime();
-        if (lf2 != null) {
-            String base64 = LegalFilesService.getBase64Data(lf2);
-            if(base64 != null && !base64.isEmpty()) {
-                byte[] lf2ByteArray = Base64.getMimeDecoder().decode(base64);
-                String lf2Extension = LegalFilesService.getValidFileExtension(lf2);
-                if (lf2ByteArray.length > 1024000) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                    throw new Exception("File size cannot bet greater than 1 MB.");
-                } else if (lf2Extension == null) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                    throw new Exception("File must have a valid extension.");
-                } else {
-                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE2.getValue()));
-                    if (legalFilesDTO == null) {
-                        legalFilesDTO = new LegalFilesDTO();
-                    }
-                    legalFilesDTO.setRegistration(registrationDBO.getId());
-                    legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
-                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf2));
-                    legalFilesDTO.setUploadTime(new Date());
-                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                    registrationDBO.setLegalFile2Mime(LegalFilesService.getMimeType(lf2));
-                    registrationDBO.setLegalFile2Size(lf2ByteArray.length);
-                    registrationDBO.setUploadTime(currentTime);
-                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 2");
-                    setNotRequestedLegalFileIfSameType(legalFilesCorrectionReasons, FileTypes.LEGALFILE2.getValue());
-                }
-            }
-        }
-        String lf3 = registrationDTO.getLegalFile3Mime();
-        if (lf3 != null) {
-            String base64 = LegalFilesService.getBase64Data(lf3);
-            if(base64 != null && !base64.isEmpty()) {
-                byte[] lf3ByteArray = Base64.getMimeDecoder().decode(base64);
-                String lf3Extension = LegalFilesService.getValidFileExtension(lf3);
-                if (lf3ByteArray.length > 1024000) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                    throw new Exception("File size cannot bet greater than 1 MB.");
-                } else if (lf3Extension == null) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                    throw new Exception("File must have a valid extension.");
-                } else {
-                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE3.getValue()));
-                    if (legalFilesDTO == null) {
-                        legalFilesDTO = new LegalFilesDTO();
-                    }
-                    legalFilesDTO.setRegistration(registrationDBO.getId());
-                    legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
-                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf3));
-                    legalFilesDTO.setUploadTime(new Date());
-                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                    registrationDBO.setLegalFile3Mime(LegalFilesService.getMimeType(lf3));
-                    registrationDBO.setLegalFile3Size(lf3ByteArray.length);
-                    registrationDBO.setUploadTime(currentTime);
-                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 3");
-                    setNotRequestedLegalFileIfSameType(legalFilesCorrectionReasons, FileTypes.LEGALFILE3.getValue());
-                }
-            }
-        }
-        String lf4 = registrationDTO.getLegalFile4Mime();
-        if (lf4 != null) {
-            String base64 = LegalFilesService.getBase64Data(lf4);
-            if(base64 != null && !base64.isEmpty()){
-                byte[] lf4ByteArray = Base64.getMimeDecoder().decode(base64);
-                String lf4Extension = LegalFilesService.getValidFileExtension(lf4);
-                if (lf4ByteArray.length > 1024000) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                    throw new Exception("File size cannot bet greater than 1 MB.");
-                } else if (lf4Extension == null) {
-                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                    throw new Exception("File must have a valid extension.");
-                } else {
-                    LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE4.getValue()));
-                    if (legalFilesDTO == null) {
-                        legalFilesDTO = new LegalFilesDTO();
-                    }
-                    legalFilesDTO.setRegistration(registrationDBO.getId());
-                    legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
-                    legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf4));
-                    legalFilesDTO.setUploadTime(new Date());
-                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                    registrationDBO.setLegalFile4Mime(LegalFilesService.getMimeType(lf4));
-                    registrationDBO.setLegalFile4Size(lf4ByteArray.length);
-                    registrationDBO.setUploadTime(currentTime);
-                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 4");
-                    setNotRequestedLegalFileIfSameType(legalFilesCorrectionReasons, FileTypes.LEGALFILE4.getValue());
-                }
-            }
-        }
-        boolean isAnyFileRequestedForCorrection = isAnyFileRequestedForCorrection(getLegalFilesByRegistrationId(registrationDBO.getId()));
 
-        if (checkAllFilesFlag(registrationDBO) && !isAnyFileRequestedForCorrection) {
-            registrationDBO.setAllFilesFlag(1);
-            registrationDBO.setMailCounter(0);
+        Registration registration = registrationRepository.findOne(registrationID);
+        if (hasRegistrationRequiredFiles(registrationID)) {
+            registration.setAllFilesFlag(1);
         } else {
-            registrationDBO.setAllFilesFlag(0);
-            registrationDBO.setMailCounter(3);
+            registration.setAllFilesFlag(0);
         }
+        registrationRepository.save(registration);
 
         //if user doesn't have any documents as requested for correction we put its status on HOLD
-        if (!isAnyFileRequestedForCorrection) {
+        //this is only relevant if the registration has applied to a call!
+        if (hasOneUserWithoutCorrectionRequest(registrationUsersRepository
+                .findByRegistrationId(registrationID), registrationID)) {
 
             //three cases
             //1. if last closed call exists it's in the revision period so the status is set automatically to HOLD
@@ -360,13 +208,13 @@ public class RegistrationService {
 
             CallDTO lastCall = callService.getLastCallClosed();
             if(lastCall != null) {
-                Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationDBO.getId(), lastCall.getId());
+                Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationID, lastCall.getId());
                 if (applicationDB != null && applicationDB.getStatus() == ApplicationStatus.PENDING_FOLLOWUP.getValue()) {
                     applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
                     applicationRepository.save(applicationDB);
                     _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected
                             .getEcasUsername() + " - Changing applicant status for HOLD, as it doesn't have any more documents as requested for " +
-                            "correction. Application id: " + applicationDB.getId() + ". Registration id: " + registrationDBO.getId());
+                            "correction. Application id: " + applicationDB.getId() + ". Registration id: " + registrationID);
                 }
             } else {
                 CallDTO currentCall = callService.getCurrentCall();
@@ -379,35 +227,66 @@ public class RegistrationService {
                 }
             }
         }
-        return saveRegistration(registrationDBO);
+        return new ResponseDTO(true, "sucess", null);
     }
 
-    /**
-     * If the user is reuploading a file and this file is marked as requested for correction we delete this request.
-     * @param legalFilesCorrectionReasons list of requested documents for correction
-     * @param fileType filetype to check if has a reason
-     */
-    private void setNotRequestedLegalFileIfSameType(List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons, Integer fileType) {
-        for (LegalFileCorrectionReasonDTO legalFilesCorrectionReason : legalFilesCorrectionReasons) {
-            if (legalFilesCorrectionReason.getType() == fileType) {
-                legalFilesCorrectionReason.setCorrectionReason(null);
-                legalFilesCorrectionReason.setRequestCorrection(false);
-                legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFilesCorrectionReason));
+    private void uploadDocument (Integer registrationID, LegalFileDTO legalFile, UserDTO userConnected, String ip) throws Exception {
+        String legalFileToUpload = legalFile.getFileData();
+        if (legalFileToUpload != null) {
+            String base64 = LegalFilesService.getBase64Data(legalFileToUpload);
+            if(base64 != null && !base64.isEmpty()) {
+                byte[] byteArray = Base64.getMimeDecoder().decode(base64);
+                String extension = LegalFilesService.getValidFileExtension(legalFileToUpload);
+                if (byteArray.length > 1024000) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
+                    throw new Exception("File size cannot bet greater than 1 MB.");
+                } else if (extension == null) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
+                    throw new Exception("File must have a valid extension.");
+                } else if (legalFile.getFileName().isEmpty()) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File doesn't have a name");
+                    throw new Exception("File must have a valid extension.");
+                } else{
+                    //file name also comes from front input
+                    legalFile.setId(0);
+                    legalFile.setRegistration(registrationID);
+                    legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
+                    legalFile.setUploadTime(new Date());
+                    legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
+                    legalFile.setFileSize(byteArray.length);
+                    legalFile.setUserId(userConnected.getId());
+                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
+                    _log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
+                            "document number type:" + legalFile.getFileType());
+
+                    LegalFileCorrectionReason legalFilesCorrectionReasons = legalFileCorrectionReasonRepository
+                            .findLastCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(), userConnected.getId(), legalFile.getFileType());
+                    if(legalFilesCorrectionReasons != null) {
+                        legalFilesCorrectionReasons.setCorrectionReason(null);
+                        legalFilesCorrectionReasons.setRequestCorrection(false);
+                        legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
+                    }
+                }
+            }else{
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file its data is in incorrect format");
+                throw new Exception("Data is in incorrect format");
             }
+        } else{
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file that is empty");
+            throw new Exception("File is empty");
         }
     }
 
     /**
-     * Verifies that there's at least one document markes as request for correction
-     * @param legalFilesCorrectionReasons
+     * True if there's at least one user associated with this registration has no file requested for correction
+     * @param users
+     * @param registrationId
      * @return
      */
-    private boolean isAnyFileRequestedForCorrection (List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons){
-        if(!legalFilesCorrectionReasons.isEmpty()){
-            for (LegalFileCorrectionReasonDTO legalFilesCorrectionReason: legalFilesCorrectionReasons) {
-                if(legalFilesCorrectionReason.getRequestCorrection()) {
-                    return true;
-                }
+    private boolean hasOneUserWithoutCorrectionRequest(List<RegistrationUsers> users, Integer registrationId) {
+        for (int i = 0; i < users.size(); i++) {
+            if (legalFileCorrectionReasonRepository.findLastLegalFilesByRegistrationAndUserCorrection(registrationId, users.get(i).getUserId()).isEmpty()) {
+                return true;
             }
         }
         return false;
@@ -668,36 +547,6 @@ public class RegistrationService {
         return false;
     }
 
-    public boolean checkAllFilesFlag(RegistrationDTO registrationDTO) {
-        boolean allFilesFlag = false;
-        boolean lf1Exists = false;
-        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE1.getValue()) != null) {
-            lf1Exists = true;
-        }
-        boolean lf2Exists = false;
-        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE2.getValue()) != null) {
-            lf2Exists = true;
-        }
-        boolean lf3Exists = false;
-        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE3.getValue()) != null) {
-            lf3Exists = true;
-        }
-        boolean lf4Exists = false;
-        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE4.getValue()) != null) {
-            lf4Exists = true;
-        }
-        if (checkIfMayor(registrationDTO)) {
-            if (lf1Exists && lf3Exists) {
-                allFilesFlag = true;
-            }
-        } else {
-            if (lf1Exists && lf2Exists && lf3Exists && lf4Exists) {
-                allFilesFlag = true;
-            }
-        }
-        return allFilesFlag;
-    }
-
     public boolean checkUserWithRegistration(Integer registrationId, Integer userId){
         if(registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId) != null){
             return true;
@@ -708,5 +557,42 @@ public class RegistrationService {
     public List<UserDTO> getUsersFromRegistration(Integer registrationId){
         List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersByRegistrationId(registrationId));
         return users;
+    }
+
+    /**
+     * Checks if registration has required files ( type 1 and 3 ) to be able to apply. Independent of user
+     *
+     * If it doesn't have the required file return false. if has required files and has correction request for that file return false too.
+     * If it has the required files and has no correction request for those files, returns true
+     * @param registrationID
+     * @return
+     */
+    public boolean hasRegistrationRequiredFiles(Integer registrationID) {
+        boolean hasFilesUploaded = !legalFilesRepository.findLastRequiredLegalFilesByRegistration(registrationID).isEmpty();
+        boolean hasCorrectionRequestedForRequiredFiles = !legalFileCorrectionReasonRepository.findLastRequiredLegalFilesCorrectionByRegistration
+                (registrationID).isEmpty();
+
+        if(!hasFilesUploaded || hasCorrectionRequestedForRequiredFiles){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Gets all documents that belong to that user and the mayor documents as well.
+     * If type is not null it returns all documents uploaded for that type.
+     * @param registrationId
+     * @param type
+     * @param userId
+     * @return
+     */
+    public List<LegalFileDTO> getHistoryDocuments(Integer registrationId, Integer type, Integer userId) {
+        if (type == null || type == 0) {
+            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId, userId));
+        }
+        if (type == 1 || type == 3) {
+            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryRequiredType(registrationId, type));
+        }
+        return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
     }
 }
