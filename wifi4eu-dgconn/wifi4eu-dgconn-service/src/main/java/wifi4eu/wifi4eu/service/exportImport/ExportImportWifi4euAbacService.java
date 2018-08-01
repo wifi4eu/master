@@ -28,7 +28,7 @@ import wifi4eu.wifi4eu.common.dto.model.ExportImportBeneficiaryInformationDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportBudgetaryCommitmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalFilesDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
@@ -315,13 +315,13 @@ public class ExportImportWifi4euAbacService {
 				RegistrationDTO registration = registrationService.getRegistrationById(regId);
 
 				// TODO jlopezri Recover legal file - assumption: we have to recover legal_file1
-				LegalFilesDTO legalFile = legalFileService.getLegalFileByRegistrationIdFileType(regId,
+				LegalFileDTO legalFile = legalFileService.getLegalFileByRegistrationIdFileType(regId,
 						Integer.valueOf(1));
 
 				if (legalFile != null) {
 					// Generate CSV entry
 					String name = "file" + legalFile.getId();
-					String mimetype = registration.getLegalFile1Mime();
+					String mimetype = legalFile.getFileMime();
 					String date = dateUtilities.convertDate2String(legalFile.getUploadTime());
 					String type = "GRANT AGREEMENT SIGNATURE";
 					csvData.append(munId).append(exportFileUtilities.SEPARATOR).append(legalFile.getId())
