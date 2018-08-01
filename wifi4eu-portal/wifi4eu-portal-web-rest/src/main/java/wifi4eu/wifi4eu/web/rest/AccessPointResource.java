@@ -9,6 +9,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.access_point.AccessPoint;
 import wifi4eu.wifi4eu.service.access_point.AccessPointService;
 
+import java.io.IOException;
 import java.util.Map;
 
 @CrossOrigin(origins = "*")
@@ -19,7 +20,7 @@ public class AccessPointResource {
 
     @Autowired
     AccessPointService accessPointService;
-
+    
     @ApiOperation(value = "Get all Access Points per installation site ID")
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody

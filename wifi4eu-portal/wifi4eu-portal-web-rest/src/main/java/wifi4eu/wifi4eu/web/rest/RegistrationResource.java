@@ -15,7 +15,6 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.enums.FileTypes;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
@@ -231,7 +230,7 @@ public class RegistrationResource {
     }
 
     @ApiOperation(value = "Get registration by specific userThread id")
-    @RequestMapping(value = "/{registrationId}/getDocument/{fileId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getDocument/{registrationId}/{fileId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getLegalFilesById(@PathVariable("registrationId") final Integer registrationId, @PathVariable("fileId") final Integer fileId, HttpServletResponse response, HttpServletRequest request) throws IOException {
         UserContext userContext = UserHolder.getUser();
@@ -277,7 +276,7 @@ public class RegistrationResource {
     }
 
     @ApiOperation(value = "Get past of documents for type")
-    @RequestMapping(value = "/{registrationId}/getHistory/{type}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getHistory/{registrationId}/{type}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getHistoryForType(@PathVariable("registrationId") final Integer registrationId, @PathVariable("type") final Integer type,
                                          HttpServletResponse response, HttpServletRequest request) throws IOException {
@@ -291,8 +290,7 @@ public class RegistrationResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
-            return new ResponseDTO(true, registrationService.getHistoryDocuments(registrationId, type, userConnected.getId(), userConnected
-                    .getEcasUsername()), null);
+            return new ResponseDTO(true, registrationService.getHistoryDocuments(registrationId, type, userConnected.getId()), null);
 
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade
@@ -317,8 +315,7 @@ public class RegistrationResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
-            return new ResponseDTO(true, registrationService.getHistoryDocuments(registrationId, null, userConnected.getId(), userConnected
-                    .getEcasUsername()), null);
+            return new ResponseDTO(true, registrationService.getHistoryDocuments(registrationId, null, userConnected.getId()), null);
 
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade
@@ -342,7 +339,7 @@ public class RegistrationResource {
     public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(@PathVariable("registrationId") final Integer registrationId, @RequestParam("date") final Long timestamp, HttpServletResponse response, HttpServletRequest request) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting legal files by registration id "+registrationId);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting legal files by registration id " + registrationId);
         try {
             if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -382,6 +379,31 @@ public class RegistrationResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal file cannot been saved", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
+    }
+
+    @ApiOperation(value = "Update association name")
+    @RequestMapping(value = "/updateAssociationName", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseDTO updateAssociationName(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating/updating a legal file");
+        try {
+            if (userConnected == null) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            RegistrationDTO associationNameUpdated = registrationService.saveRegistration(registrationDTO);
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Legal files saved successfully");
+            return new ResponseDTO(true, associationNameUpdated, null);
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update association name", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These association name cannot been saved", e);
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+
     }
 
 }

@@ -13,7 +13,7 @@ import {AccessPointDetailsComponent} from "./access-point-details/access-point-d
 import { BeneficiaryService } from "../core/services/beneficiary-service";
 import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-profile.component";
 import { MyHistoryComponent } from "./my-history/my-history.component";
-import { GrantAgreementComponent } from "./+grant-agreement/grant-agreement.component";
+import { MyVoucherComponent } from "./+grant-agreement/grant-agreement.component";
 import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agreement/sign-grant-agreement.component";
 
 // import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
@@ -31,7 +31,7 @@ import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agre
         AccessPointDetailsComponent,
         BeneficiaryEditProfileComponent,
         MyHistoryComponent,
-        GrantAgreementComponent,
+        MyVoucherComponent,
         SignGrantAgreementComponent
         // SelectSupplierComponent
     ], providers: [

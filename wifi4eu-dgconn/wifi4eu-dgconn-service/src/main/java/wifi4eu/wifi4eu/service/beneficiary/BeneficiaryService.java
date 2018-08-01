@@ -624,6 +624,14 @@ public class BeneficiaryService {
                 }
                 break;
 
+            case "status":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByStatusASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByStatusDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
             default:
                 beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalList(callId));
                 break;

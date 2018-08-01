@@ -10,7 +10,7 @@ import {AccessPointListComponent} from "./access-point-list/access-point-list.co
 import {AccessPointDetailsComponent} from "./access-point-details/access-point-details.component";
 import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-profile.component";
 import { MyHistoryComponent } from "./my-history/my-history.component";
-import { GrantAgreementComponent } from "./+grant-agreement/grant-agreement.component";
+import { MyVoucherComponent } from "./+grant-agreement/grant-agreement.component";
 import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agreement/sign-grant-agreement.component";
 
 @NgModule({
@@ -50,9 +50,9 @@ import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agre
             component: MyHistoryComponent
         }, {
             path: 'my-voucher/grant-agreement',
-            component: GrantAgreementComponent,
+            component: MyVoucherComponent,
         }, {
-            path: 'my-voucher/grant-agreement/sign-grant-agreement',
+            path: 'my-voucher/grant-agreement/sign-grant-agreement/:id',
             component: SignGrantAgreementComponent,
         }
     ])],

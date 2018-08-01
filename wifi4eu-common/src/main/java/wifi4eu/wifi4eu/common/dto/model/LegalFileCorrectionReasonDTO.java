@@ -7,6 +7,7 @@ public class LegalFileCorrectionReasonDTO {
     private Integer registrationId;
     private Integer legalFile;
     private Integer type;
+    private Long uploadTime;
     private Boolean requestCorrection;
     private Integer correctionReason;
     private Date requestCorrectionDate;
@@ -19,6 +20,7 @@ public class LegalFileCorrectionReasonDTO {
         this.registrationId = registrationId;
         this.legalFile = legalFile;
         this.type = type;
+        this.uploadTime = uploadTime;
         this.requestCorrection = requestCorrection;
         this.correctionReason = correctionReason;
         this.requestCorrectionDate = requestCorrectionDate;
@@ -46,6 +48,14 @@ public class LegalFileCorrectionReasonDTO {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Long getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime(Long uploadTime) {
+        this.uploadTime = uploadTime;
     }
 
     public Boolean getRequestCorrection() {

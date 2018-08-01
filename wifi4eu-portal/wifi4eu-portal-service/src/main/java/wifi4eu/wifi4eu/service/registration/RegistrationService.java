@@ -180,7 +180,7 @@ public class RegistrationService {
     public ResponseDTO uploadRegistrationDocuments(Integer registrationID, List<LegalFileDTO> legalFile, HttpServletRequest request) throws Exception {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        if(!legalFile.isEmpty() && legalFile.size() == 4){
+        if(!legalFile.isEmpty()){
             for( int i = 0 ; i < legalFile.size() ; i++){
                 uploadDocument(registrationID, legalFile.get(i), userConnected, RequestIpRetriever.getIp(request));
             }
@@ -564,7 +564,6 @@ public class RegistrationService {
      *
      * If it doesn't have the required file return false. if has required files and has correction request for that file return false too.
      * If it has the required files and has no correction request for those files, returns true
-     * (Before it was a variable called allFiles_flag
      * @param registrationID
      * @return
      */
@@ -579,12 +578,21 @@ public class RegistrationService {
         return true;
     }
 
-    public List<LegalFileDTO> getHistoryDocuments(Integer registrationId, Integer type, Integer userId, String ecasUsername) {
+    /**
+     * Gets all documents that belong to that user and the mayor documents as well.
+     * If type is not null it returns all documents uploaded for that type.
+     * @param registrationId
+     * @param type
+     * @param userId
+     * @return
+     */
+    public List<LegalFileDTO> getHistoryDocuments(Integer registrationId, Integer type, Integer userId) {
         if (type == null || type == 0) {
-           return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId, userId));
+            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId, userId));
+        }
+        if (type == 1 || type == 3) {
+            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryRequiredType(registrationId, type));
         }
         return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
     }
-
-
 }

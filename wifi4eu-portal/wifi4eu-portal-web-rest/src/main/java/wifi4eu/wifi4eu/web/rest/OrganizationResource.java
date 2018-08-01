@@ -31,10 +31,14 @@ public class OrganizationResource {
     UserService userService;
 
     @ApiOperation(value = "Get organization")
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{organizationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public OrganizationDTO getOrganizationById() {
-        return new OrganizationDTO();
+    public OrganizationDTO getOrganizationById(@PathVariable("organizationId") final Integer organizationId) {
+        UserContext user = UserHolder.getUser();
+        if (user == null || userService.getUserByUserContext(user) == null) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
+        return organizationService.getOrganizationById(organizationId);
     }
 
     @ApiOperation(value = "Get organizations by specific country")
@@ -42,7 +46,7 @@ public class OrganizationResource {
     @ResponseBody
     public List<OrganizationDTO> getOrganizationsByCountry(@PathVariable("country") final String country) {
         UserContext user = UserHolder.getUser();
-        if(user == null ||  userService.getUserByUserContext(user)==null) {
+        if (user == null || userService.getUserByUserContext(user) == null) {
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
         return organizationService.getOrganizationsByCountry(country);

@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>wifi4eu-supplier</artifactId>
         <groupId>wifi4eu.wifi4eu</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <artifactId>wifi4eu-supplier</artifactId>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wifi4eu-supplier-web</artifactId>
     <packaging>war</packaging>
@@ -106,7 +106,6 @@
                                     <arguments>
                                         <argument>/c</argument>
                                         <argument>"ng build --base-href /supplier/"</argument>
-                                        <!--<argument>&#45;&#45;env=dev</argument>-->
                                         <argument>--env=${ng.env}</argument>
                                         <argument>--prod</argument>
                                         <argument>--aot</argument>
@@ -135,11 +134,13 @@
                                 </goals>
                                 <configuration>
                                     <executable>
-                                        /var/quark/binaries/node/node-v6.11.5-linux-x64/lib/node_modules/@angular/cli/bin/ng
+                                        /var/quark/binaries/node/node-v8.9.3-linux-x64/lib/node_modules/@angular/cli/bin/ng
                                     </executable>
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>build</argument>
+                                        <argument>--base-href</argument>
+                                        <argument>/supplier/</argument>
                                         <argument>--env=${ng.env}</argument>
                                         <argument>--prod</argument>
                                         <argument>--aot</argument>
