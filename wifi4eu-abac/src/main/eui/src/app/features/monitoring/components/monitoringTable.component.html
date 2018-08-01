@@ -1,46 +1,70 @@
-<div class="page-title">Monitoring</div>
-<p>Here you can find an overview of the beneficiaries data, and check their status in ABAC</p>
-
-<ux-tabs>
-    <ux-tab label="Call 1"></ux-tab>
-    <ux-tab label="Call 2" [isDisabled]="true"></ux-tab>
-    <ux-tab label="Call 3" [isDisabled]="true"></ux-tab>
-    <ux-tab label="Call 4" [isDisabled]="true"></ux-tab>
-    <ux-tab label="Call 5" [isDisabled]="true"></ux-tab>
-</ux-tabs>
-
-<ux-panel [hasNoHeader]="true">
+<div class="content-wrapper">
+	<div class="page-title">Monitoring</div>
+	<p>Here you can find an overview of the beneficiaries data, and check their status in ABAC</p>
+	
+	<ux-tabs>
+	    <ux-tab label="Call 1"></ux-tab>
+	    <ux-tab label="Call 2" [isDisabled]="true"></ux-tab>
+	    <ux-tab label="Call 3" [isDisabled]="true"></ux-tab>
+	    <ux-tab label="Call 4" [isDisabled]="true"></ux-tab>
+	    <ux-tab label="Call 5" [isDisabled]="true"></ux-tab>
+	</ux-tabs>
+	
+	<ux-panel [hasNoHeader]="true">
+		<div class="row">
+		    <div class="form-group col-md-6">
+			    <label for="exampleSelect1">Filter by Country</label>
+			    <select class="form-control" id="filter-country">
+			    	<option></option>
+			    	<option>Not implemented yet...</option>
+			    </select>
+			</div>
+			<div class="form-group col-md-6">
+			    <label for="exampleSelect1">Search by municipality</label>
+			    <input class="form-control" type="search" id="filter-name">
+			</div>
+		</div>
+	</ux-panel>
+	
+	<ux-panel label="List of Beneficiaries of Call 1" [hasNoContentPadding]="true">
+	
+		<uxPanelHeaderRightContent>
+	        <div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" id="chkLef" value="1" [checked]="showLEF" (change)="showLEF = !showLEF">
+			  <label class="form-check-label" for="chkLef">Legal Entities</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" id="chkBC" value="1" [checked]="showBC" (change)="showBC = !showBC">
+			  <label class="form-check-label" for="chkBC">Budgetary Commitments</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" id="chkLC" value="1" [checked]="showLC" (change)="showLC = !showLC">
+			  <label class="form-check-label" for="chkLC">Legal Commitments</label>
+			</div>
+	    </uxPanelHeaderRightContent>
+	
+		<p-table [value]="rows" [paginator]="true" [rows]="20" sortMode="multiple">
+		    <ng-template pTemplate="header">
+		    	<tr>
+		    		<ng-container *ngFor="let col of cols">
+			     		<th  [pSortableColumn]="col.field" *ngIf="showColumn(col.isFor)">
+			     			<span [innerHTML]="col.header"></span>
+			     			<p-sortIcon [field]="col.field"></p-sortIcon>
+			     		</th>
+		     		</ng-container>
+		     	</tr>
+		    </ng-template>
+		    <ng-template pTemplate="body" let-row>
+		        <tr>
+		        	<ng-container *ngFor="let col of cols">
+		        		<td *ngIf="showColumn(col.isFor)">{{row[col.field]}}</td>
+		        	</ng-container>
+		        </tr>
+		    </ng-template>
+		</p-table>
+	</ux-panel>
+	
 	<div class="row">
-	    <div class="form-group col-md-6">
-		    <label for="exampleSelect1">Filter by Country</label>
-		    <select class="form-control" id="filter-country">
-		    	<option></option>
-		    	<option>Not implemented yet...</option>
-		    </select>
-		</div>
-		<div class="form-group col-md-6">
-		    <label for="exampleSelect1">Search by municipality</label>
-		    <input class="form-control" type="search" id="filter-name">
-		</div>
+		<div class="col-12"><button class="btn btn-primary pull-right">Counter-sign Grant Agreements</button></div>
 	</div>
-</ux-panel>
-
-<ux-panel label="List of Beneficiaries of Call 1" [hasNoContentPadding]="true">
-	<p-table [value]="rows">
-	    <ng-template pTemplate="header">
-	    	<tr>
-	     		<th *ngFor="let col of cols">{{col.header}}</th>
-	     	</tr>
-	    </ng-template>
-	    <ng-template pTemplate="body" let-row>
-	        <tr>
-	        	<td *ngFor="let col of cols">{{row[col.field]}}</td>
-	        </tr>
-	    </ng-template>
-	</p-table>
-</ux-panel>
-
-<div class="row justify-content-between">
-	<div class="col-4"><button class="btn btn-primary">Refresh Status</button></div>
-	<div class="col-4"><button class="btn btn-primary pull-right">Counter-sign Grant Agreements</button></div>
 </div>

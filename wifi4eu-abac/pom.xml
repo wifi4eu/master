@@ -26,12 +26,6 @@
 		<log4j.version>2.8.2</log4j.version>
 
 		<ui.folder>src/main/eui</ui.folder>
-		<!-- <spring.version>4.3.5.RELEASE</spring.version> <spring.security.version>3.2.9.RELEASE</spring.security.version> 
-			<spring.data.jpa.version>1.10.4.RELEASE</spring.data.jpa.version> <jndi.datasource.name>jdbc/Wifi4euAbacDataSource</jndi.datasource.name> 
-			<eclipselink.logging.level>WARNING</eclipselink.logging.level> <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql> 
-			<eclipselink.logging.parameters>true</eclipselink.logging.parameters> <abac.name>financial</abac.name> 
-			<abac.context.name>/financial</abac.context.name> -->
-		<!-- <context.name>/wifi4eu-financial/</context.name> <context.name>/</context.name> -->
 	</properties>
 
 	<dependencies>
@@ -50,20 +44,10 @@
 			</exclusions>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.hibernate.javax.persistence</groupId> <artifactId>hibernate-jpa-2.1-api</artifactId> 
-			<version>1.0.0.Final</version> </dependency> <dependency> <groupId>org.hibernate</groupId> 
-			<artifactId>hibernate-core</artifactId> <version>5.2.3.Final</version> </dependency> 
-			<dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-entitymanager</artifactId> 
-			<version>5.0.12.Final</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
 		<dependency>
