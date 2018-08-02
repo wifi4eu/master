@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/components/table/table';
 import { MonitoringRowDTO } from '../../../shared/model/MonitoringRowDTO';
+import { CountryDTO } from '../../../shared/model/CountryDTO';
 import { ApiModule } from '../../../shared/api.module';
 
 @Component({
@@ -9,14 +10,16 @@ import { ApiModule } from '../../../shared/api.module';
 export class MonitoringTableComponent implements OnInit{
   
     private cols: any[];
+    private countries: CountryDTO[];
     private rows: MonitoringRowDTO[];
     
     private showLEF: boolean = true;
     private showBC: boolean = false;
     private showLC: boolean = false;
   
-    private filterCountry: string = ''; 
-    private filterName: string = '';
+    private filterTimeout: any;
+    private filterCountry: string; 
+    private filterName: string;
   
     @ViewChild('monitoring') monitoringTable: Table;
   
@@ -38,8 +41,8 @@ export class MonitoringTableComponent implements OnInit{
             { field: 'countryCode', order: 1 },
             { field: 'municipality', order: 1 }
         ];
-        this.monitoringTable.globalFilterFields = ['municipality'];
         this.api.getMonitoringData().toPromise().then(rows => this.rows = rows);
+        this.api.getCountries().toPromise().then(countries => this.countries = countries);
     }
 
     loadData() {
@@ -57,14 +60,21 @@ export class MonitoringTableComponent implements OnInit{
     }
   
     clearFilters(){
-        this.filterName = '';
-        this.filterCountry = '';
+        this.filterCountry = undefined;
+        this.filterName = undefined;
         this.applyFilters();
     }
   
     applyFilters(){
-        console.log('Apply filters called: ' + this.filterName);
-        this.monitoringTable.filterGlobal(this.filterName, 'contains');
+        if (this.filterTimeout) {
+            clearTimeout(this.filterTimeout);
+        }
+        this.filterTimeout = setTimeout(() => {
+          this.monitoringTable.filters = {
+              'countryCode': { value: this.filterCountry, matchMode: 'equals' },
+              'municipality': { value: this.filterName, matchMode: 'contains' }
+          };
+          this.monitoringTable._filter();
+        }, 200);
     }
-  
 }

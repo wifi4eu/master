@@ -13,9 +13,9 @@
 	<ux-panel [hasNoHeader]="true">
 		<div class="row">
 		    <div class="col-md-5">
-			    <select class="form-control">
-			    	<option>Search by country...</option>
-			    	<option>(Not implemented yet)</option>
+			    <select class="form-control" [(ngModel)]="filterCountry" (change)="applyFilters()">
+			    	<option [value]="undefined" disabled selected>Search by country...</option>
+			    	<option *ngFor="let country of countries" [value]="country.cd">{{country.name}}</option>
 			    </select>
 			</div>
 			<div class="col-md-5">
@@ -48,7 +48,7 @@
 		    <ng-template pTemplate="header">
 		    	<tr>
 		    		<ng-container *ngFor="let col of cols">
-			     		<th  [pSortableColumn]="col.field" *ngIf="showColumn(col.isFor)">
+			     		<th [pSortableColumn]="col.field" *ngIf="showColumn(col.isFor)">
 			     			<span [innerHTML]="col.header"></span>
 			     			<p-sortIcon [field]="col.field"></p-sortIcon>
 			     		</th>

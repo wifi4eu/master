@@ -90,17 +90,17 @@
 			<artifactId>commons-csv</artifactId>
 			<version>${apache.commons.csv.version}</version>
 		</dependency>
-
-		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>javax.servlet-api</artifactId> 
-			<version>3.0.1</version> <scope>provided</scope> </dependency> <dependency> 
-			<groupId>org.springframework</groupId> <artifactId>spring-webmvc</artifactId> 
-			<version>${spring.version}</version> </dependency> <dependency> <groupId>org.springframework</groupId> 
-			<artifactId>spring-tx</artifactId> <version>${spring.version}</version> </dependency> 
-			<dependency> <groupId>org.springframework</groupId> <artifactId>spring-jdbc</artifactId> 
-			<version>${spring.version}</version> </dependency> <dependency> <groupId>org.springframework</groupId> 
-			<artifactId>spring-context-support</artifactId> <version>${spring.version}</version> 
-			</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-context</artifactId> 
-			<version>${spring.version}</version> </dependency> -->
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.5.13</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-compress</artifactId>
+		    <version>1.7</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -236,7 +236,7 @@
 
 			<properties>
 				<weblogic.local.autodeploy.folder>C:/Projects/EFP/ASD/PDM9LCH/autodeploy</weblogic.local.autodeploy.folder>
-				<!--<weblogic.local.autodeploy.folder>c:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain2\autodeploy</weblogic.local.autodeploy.folder>-->
+				<!--<weblogic.local.autodeploy.folder>c:\Oracle\Middleware\Oracle_Home\user_projects\domains\base_domain2\autodeploy</weblogic.local.autodeploy.folder> -->
 			</properties>
 
 			<build>

@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.abac.rest;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import wifi4eu.wifi4eu.abac.entity.ExportFile;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.LegalCommitmentService;
 
@@ -38,7 +38,7 @@ public class LegalCommitmentController {
 	public ResponseVO importLegalCommitment(@RequestBody String file) throws IOException {
 		log.info("importLegalCommitment");
 
-		legalCommitmentService.importLegalCommitmentyContent(file);
+		legalCommitmentService.importLegalCommitmentContent(file);
 
 		// write result and return
 		ResponseVO result = new ResponseVO();
@@ -47,25 +47,24 @@ public class LegalCommitmentController {
 		return result;
 	}
 
-	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
+	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "application/zip")
 	public ResponseEntity<byte[]> exportLegalCommitment(final HttpServletResponse response, Model model)
 			throws Exception {
 		log.info("exportLegalCommitment");
 
+		log.info("exportLegalCommitment - generating file content");
+		ExportFile responseFile = legalCommitmentService.exportLegalCommitmentContent("exportLegalCommitment");
+
+		log.info("exportLegalCommitment - serving response");
 		ResponseEntity<byte[]> responseReturn = null;
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.parseMediaType("text/csv"));
-		String filename = "exportLegalCommitment.csv";
-		headers.setContentDispositionFormData(filename, filename);
+		headers.setContentType(MediaType.parseMediaType(responseFile.getMimetype()));
+		headers.setContentDispositionFormData(responseFile.getFilename(), responseFile.getFilename());
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-		log.info("exportLegalCommitment - generating csv file content");
-		String responseData = legalCommitmentService.exportLegalCommitmentyContent();
-		// getBytes(Charset.forName("UTF-8"));
-		responseReturn = new ResponseEntity<byte[]>(responseData.getBytes(StandardCharsets.UTF_8), headers,
-				HttpStatus.OK);
+		responseReturn = new ResponseEntity<byte[]>(responseFile.getData(), headers, HttpStatus.OK);
 
-		log.info("exportLegalCommitment - csv file exported successfully");
+		log.info("exportLegalCommitment - file exported successfully");
 
 		return responseReturn;
 	}
