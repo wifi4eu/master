@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac.repository;
+package wifi4eu.wifi4eu.abac.data.repository;
 
 import java.util.List;
 
@@ -8,17 +8,17 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import wifi4eu.wifi4eu.abac.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.entity.MonitoringRow;
-import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.entity.MonitoringRow;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
 
 public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integer> {
 
-	LegalEntity findByMid(Integer mid);
+	LegalEntity findByMid(Long mid);
 
 	LegalEntity findByOfficialName(String officialName);
 
-	@Query(value = "SELECT le FROM LegalEntity le WHERE le.abacFelId is not null")
+	@Query(value = "FROM LegalEntity le WHERE le.abacFelId is not null order by le.officialName asc")
 	List<LegalEntity> findLegalEntitiesProcessedInAbac();
 
 	List<LegalEntity> findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum status, Pageable pageable);
@@ -32,7 +32,7 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 
 	@Query(
 		value =
-			"SELECT new wifi4eu.wifi4eu.abac.entity.MonitoringRow(" +
+			"SELECT new wifi4eu.wifi4eu.abac.data.entity.MonitoringRow(" +
 					"le.id, le.countryCode, le.officialName, le.registrationNumber, le.wfStatus, le.signatureDate" +
 			") FROM LegalEntity le"
 	)

@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.abac.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
+import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;

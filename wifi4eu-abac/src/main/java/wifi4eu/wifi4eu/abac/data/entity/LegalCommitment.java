@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac.entity;
+package wifi4eu.wifi4eu.abac.data.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,8 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "WIF_BUDGETARY_COMMITMENT")
-public class BudgetaryCommitment {
+@Table(name = "WIF_LEGAL_COMMITMENT")
+public class LegalCommitment {
 
 	@Id
 	private Integer id;
@@ -18,10 +18,10 @@ public class BudgetaryCommitment {
 	@Column(name = "date_created", length = 20)
 	private String dateCreated;
 
-	public BudgetaryCommitment() {
+	public LegalCommitment() {
 	}
 
-	public BudgetaryCommitment(Integer id, String wfStatus, String dateCreated) {
+	public LegalCommitment(Integer id, String wfStatus, String dateCreated) {
 		super();
 		this.id = id;
 		this.wfStatus = wfStatus;
@@ -54,7 +54,7 @@ public class BudgetaryCommitment {
 
 	@Override
 	public String toString() {
-		return "BudgetaryCommitment [id=" + id + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated + "]";
+		return "LegalCommitment [id=" + id + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated + "]";
 	}
 
 }

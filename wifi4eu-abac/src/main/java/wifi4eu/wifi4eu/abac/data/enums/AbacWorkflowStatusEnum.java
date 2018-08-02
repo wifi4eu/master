@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac.service;
+package wifi4eu.wifi4eu.abac.data.enums;
 
 public enum AbacWorkflowStatusEnum {
 	IMPORTED("IMPORTED"),

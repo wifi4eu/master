@@ -1,10 +1,10 @@
-package wifi4eu.wifi4eu.abac.entity;
+package wifi4eu.wifi4eu.abac.data.entity;
 
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
 
 public class MonitoringRow {
 	

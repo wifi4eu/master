@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import wifi4eu.wifi4eu.abac.repository.LegalCommitmentRepository;
+import wifi4eu.wifi4eu.abac.data.repository.LegalCommitmentRepository;
 
 @Service
 public class LegalCommitmentService {

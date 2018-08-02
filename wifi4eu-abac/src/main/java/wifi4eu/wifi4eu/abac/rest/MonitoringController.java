@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import wifi4eu.wifi4eu.abac.entity.MonitoringRow;
+import wifi4eu.wifi4eu.abac.data.entity.MonitoringRow;
 import wifi4eu.wifi4eu.abac.service.MonitoringService;
 
 @RestController

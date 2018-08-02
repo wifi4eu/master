@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac.entity;
+package wifi4eu.wifi4eu.abac.data.entity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -24,7 +24,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
-import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
 
 @Entity
 @Table(name = "WIF_LEGAL_ENTITY")
@@ -258,6 +258,7 @@ public class LegalEntity {
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
+		this.wfStatus = AbacWorkflowStatusEnum.READY_FOR_ABAC;
 	}
 
 	@Override

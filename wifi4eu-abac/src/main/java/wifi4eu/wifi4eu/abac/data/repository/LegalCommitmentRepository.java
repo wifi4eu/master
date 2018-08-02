@@ -1,11 +1,11 @@
-package wifi4eu.wifi4eu.abac.repository;
+package wifi4eu.wifi4eu.abac.data.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import wifi4eu.wifi4eu.abac.entity.LegalCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 
 public interface LegalCommitmentRepository extends CrudRepository<LegalCommitment, Integer> {
 

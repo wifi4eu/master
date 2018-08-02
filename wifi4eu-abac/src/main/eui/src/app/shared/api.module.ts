@@ -33,20 +33,20 @@ export class ApiModule {
     importLegalEntity(file?: File): Observable<HttpEvent<any>> {
         return this.importFile('legalEntity/import', file);
     }
-  
+
     importBudgetaryCommitment(file?: File): Observable<HttpEvent<any>> {
       return this.importFile('budgetaryCommitment/import', file);
     }
-  
+
     importLegalCommitment(file?: File): Observable<HttpEvent<any>> {
       return this.importFile('legalCommitment/import', file);
     }
-  
+
     getMonitoringData(): Observable<MonitoringRowDTO[]> {
-        let path = this.basePath + 'monitor/data';      
+        let path = this.basePath + 'monitor/data';
         return this.httpClient.get<MonitoringRowDTO[]>(path);
     }
-  
+
     private importFile(endpoint?: string, file?: File): Observable<HttpEvent<any>> {
         let formData = new FormData();
         formData.append('file', file);

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import wifi4eu.wifi4eu.abac.entity.MonitoringRow;
-import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
+import wifi4eu.wifi4eu.abac.data.entity.MonitoringRow;
+import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 
 @Service
 public class MonitoringService {

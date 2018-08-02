@@ -2,49 +2,54 @@ package wifi4eu.wifi4eu.abac.rest;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
+import wifi4eu.wifi4eu.abac.service.ImportDataService;
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 
-@RestController
+@Controller
 @RequestMapping(path = "legalEntity")
 public class LegalEntityController {
 
 	private final Logger log = LoggerFactory.getLogger(LegalEntityController.class);
 
+	@Autowired
 	private LegalEntityService legalEntityService;
 
 	@Autowired
-	public LegalEntityController(LegalEntityService legalEntityService) {
-		this.legalEntityService = legalEntityService;
-	}
+	private ImportDataService importDataService;
 
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
-	public ResponseVO importLegalEntity(@RequestBody String file) throws IOException {
-		log.info("importLegalEntity");
+	public ResponseVO importLegalEntity(@RequestParam("file") MultipartFile file) throws IOException {
 
-		legalEntityService.importLegalEntityContent(file);
+		importDataService.importLegalEntities(file.getBytes());
 
 		// write result and return
 		ResponseVO result = new ResponseVO();
 		result.setSuccess(true);
 		result.setData("Imported OK!");
-		return result;
+		//return result;
+		return null;
 	}
 
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
@@ -61,26 +66,11 @@ public class LegalEntityController {
 		log.info("exportLegalEntity - generating csv file content");
 		String responseData = legalEntityService.exportLegalEntityFile();
 		// getBytes(Charset.forName("UTF-8"));
-		responseReturn = new ResponseEntity<byte[]>(responseData.getBytes(StandardCharsets.UTF_8), headers,
-				HttpStatus.OK);
+		responseReturn = new ResponseEntity<byte[]>(responseData.getBytes(StandardCharsets.UTF_8), headers, HttpStatus.OK);
 
 		model.addAttribute("exportResult", "File exported successfully...");
 		log.info("exportLegalEntity - csv file exported successfully");
 
 		return responseReturn;
 	}
-
-	@RequestMapping(value = "show", method = RequestMethod.GET, produces = "application/json")
-	public ResponseVO showLegalEntity() throws IOException {
-		log.info("showLegalEntity");
-
-		String responseData = legalEntityService.showLegalEntityFile();
-
-		// write result and return
-		ResponseVO result = new ResponseVO();
-		result.setSuccess(true);
-		result.setData(responseData);
-		return result;
-	}
-
 }

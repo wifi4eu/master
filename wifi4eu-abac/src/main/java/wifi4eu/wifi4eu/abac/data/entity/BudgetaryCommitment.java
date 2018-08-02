@@ -1,17 +1,13 @@
-package wifi4eu.wifi4eu.abac.entity;
+package wifi4eu.wifi4eu.abac.data.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedStoredProcedureQueries;
-import javax.persistence.NamedStoredProcedureQuery;
-import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "WIF_LEGAL_COMMITMENT")
-public class LegalCommitment {
+@Table(name = "WIF_BUDGETARY_COMMITMENT")
+public class BudgetaryCommitment {
 
 	@Id
 	private Integer id;
@@ -22,10 +18,10 @@ public class LegalCommitment {
 	@Column(name = "date_created", length = 20)
 	private String dateCreated;
 
-	public LegalCommitment() {
+	public BudgetaryCommitment() {
 	}
 
-	public LegalCommitment(Integer id, String wfStatus, String dateCreated) {
+	public BudgetaryCommitment(Integer id, String wfStatus, String dateCreated) {
 		super();
 		this.id = id;
 		this.wfStatus = wfStatus;
@@ -58,7 +54,7 @@ public class LegalCommitment {
 
 	@Override
 	public String toString() {
-		return "LegalCommitment [id=" + id + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated + "]";
+		return "BudgetaryCommitment [id=" + id + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated + "]";
 	}
 
 }

@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac;
+package wifi4eu.wifi4eu.abac.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

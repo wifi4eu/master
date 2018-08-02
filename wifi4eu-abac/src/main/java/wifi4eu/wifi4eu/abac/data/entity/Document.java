@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac.entity;
+package wifi4eu.wifi4eu.abac.data.entity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -15,7 +15,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
 
 @Entity
 @Table(name = "WIF_DOCUMENTS")

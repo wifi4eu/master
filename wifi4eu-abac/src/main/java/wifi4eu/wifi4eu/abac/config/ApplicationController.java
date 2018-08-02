@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac;
+package wifi4eu.wifi4eu.abac.config;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
