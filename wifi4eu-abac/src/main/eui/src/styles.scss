@@ -1,3 +1,8 @@
+select,
+.btn-light {
+    height: 100%;
+}
+
 .content-wrapper {
     margin: 0 auto;
     max-width: 1200px;
@@ -30,4 +35,9 @@
 
 .ui-sortable-column-icon {
     vertical-align: bottom;
+}
+
+.ui-table .ui-sortable-column.ui-state-highlight {
+    background: transparent;
+    color: #1b1d1f;
 }

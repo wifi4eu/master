@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Table } from 'primeng/components/table/table';
 import { MonitoringRowDTO } from '../../../shared/model/MonitoringRowDTO';
 import { ApiModule } from '../../../shared/api.module';
 
@@ -9,9 +10,15 @@ export class MonitoringTableComponent implements OnInit{
   
     private cols: any[];
     private rows: MonitoringRowDTO[];
+    
     private showLEF: boolean = true;
     private showBC: boolean = false;
     private showLC: boolean = false;
+  
+    private filterCountry: string = ''; 
+    private filterName: string = '';
+  
+    @ViewChild('monitoring') monitoringTable: Table;
   
     constructor(protected api: ApiModule){
         this.cols = [
@@ -27,6 +34,11 @@ export class MonitoringTableComponent implements OnInit{
     }
   
     ngOnInit() {
+        this.monitoringTable.multiSortMeta = [
+            { field: 'countryCode', order: 1 },
+            { field: 'municipality', order: 1 }
+        ];
+        this.monitoringTable.globalFilterFields = ['municipality'];
         this.api.getMonitoringData().toPromise().then(rows => this.rows = rows);
     }
 
@@ -43,4 +55,16 @@ export class MonitoringTableComponent implements OnInit{
             (isFor === 'lc' && this.showLC)
         ;
     }
+  
+    clearFilters(){
+        this.filterName = '';
+        this.filterCountry = '';
+        this.applyFilters();
+    }
+  
+    applyFilters(){
+        console.log('Apply filters called: ' + this.filterName);
+        this.monitoringTable.filterGlobal(this.filterName, 'contains');
+    }
+  
 }

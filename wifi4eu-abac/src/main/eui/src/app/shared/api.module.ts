@@ -1,5 +1,5 @@
 import { NgModule, Injectable } from '@angular/core';
-import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpRequest, HttpEvent } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UxAllModule } from '@eui/ux-commons';
@@ -12,8 +12,7 @@ import { MonitoringRowDTO } from './model/MonitoringRowDTO';
 @NgModule({
     imports: [
         UxAllModule,
-        TranslateModule,
-        HttpClientModule
+        TranslateModule
     ],
     declarations: [
     ],
@@ -31,16 +30,16 @@ export class ApiModule {
         this.basePath = document.querySelector('html head base').getAttribute('href');
     }
 
-    importLegalEntity(body?: string): Observable<ResponseDTO> {
-        return this.importFile('legalEntity/import', body);
+    importLegalEntity(file?: File): Observable<HttpEvent<any>> {
+        return this.importFile('legalEntity/import', file);
     }
   
-    importBudgetaryCommitment(body?: string): Observable<ResponseDTO> {
-      return this.importFile('budgetaryCommitment/import', body);
+    importBudgetaryCommitment(file?: File): Observable<HttpEvent<any>> {
+      return this.importFile('budgetaryCommitment/import', file);
     }
   
-    importLegalCommitment(body?: string): Observable<ResponseDTO> {
-      return this.importFile('legalCommitment/import', body);
+    importLegalCommitment(file?: File): Observable<HttpEvent<any>> {
+      return this.importFile('legalCommitment/import', file);
     }
   
     getMonitoringData(): Observable<MonitoringRowDTO[]> {
@@ -48,12 +47,15 @@ export class ApiModule {
         return this.httpClient.get<MonitoringRowDTO[]>(path);
     }
   
-    private importFile(endpoint?: string, body?: string): Observable<ResponseDTO> {
-        let path = this.basePath + endpoint;
-        let headers = new HttpHeaders();
-        headers.set('Content-Type', 'text/plain');
-        return this.httpClient.post<ResponseDTO>(path, body, {
-            headers: headers
-        });
+    private importFile(endpoint?: string, file?: File): Observable<HttpEvent<any>> {
+        let formData = new FormData();
+        formData.append('file', file);
+        let params = new HttpParams();
+        const options = {
+          params: params,
+          reportProgress: true,
+        };
+        const req = new HttpRequest('POST', this.basePath + endpoint, formData, options);
+        return this.httpClient.request(req);
     }
 }
