@@ -28,20 +28,16 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
     @Query("SELECT vs FROM VoucherSimulation vs JOIN vs.voucherAssignment a WHERE a.id =:idVoucherAssignment")
     List<VoucherSimulation> findAllByVoucherAssignmentOrderByEuRank(@Param("idVoucherAssignment") int idVoucherAssignment);
 
-    @Query("select vs, " +
-            "(SELECT COUNT(*) FROM Application a INNER JOIN Registration r ON a.registrationId = r.id JOIN r.municipality m WHERE a.callId = va.call.id AND m.lau.id = m1.lau.id) AS numApplications " +
-            "FROM VoucherSimulation vs " +
-            "JOIN vs.voucherAssignment va " +
-            "INNER JOIN Municipality m1 ON m1.id = vs.municipality")
+    @Query("SELECT vs FROM VoucherSimulation vs JOIN vs.voucherAssignment a INNER JOIN Municipality m ON m.id = vs.municipality WHERE LOWER(m.name) LIKE LOWER(CONCAT('%',:municipalityName,'%')) AND a.id =:idVoucherAssignment AND LOWER(vs.country) LIKE LOWER(CONCAT('%',:country,'%'))")
     Page<VoucherSimulation> findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByEuRank(@Param("idVoucherAssignment") int idVoucherAssignment, @Param("country") String country, @Param("municipalityName") String municipalityName, Pageable pageable);
-
-//    @Query("SELECT vs, m.id as municipality FROM VoucherSimulation vs JOIN vs.voucherAssignment a INNER JOIN Municipality m ON m.id = vs.municipality WHERE LOWER(m.name) LIKE LOWER(CONCAT('%',:municipalityName,'%')) AND a.id =:idVoucherAssignment AND LOWER(vs.country) LIKE LOWER(CONCAT('%',:country,'%'))")
-//    Page<VoucherSimulation> findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByEuRank(@Param("idVoucherAssignment") int idVoucherAssignment, @Param("country") String country, @Param("municipalityName") String municipalityName, Pageable pageable);
 
     @Modifying
     @Transactional
     @Query(value = "UPDATE applications SET pre_selected_flag = ?1 WHERE id IN (SELECT application FROM voucher_simulations WHERE voucher_assignment = ?2)", nativeQuery = true)
     void updateApplicationsInVoucherSimulationByVoucherAssignment(int status, int idVoucherAssignment);
+
+    @Query("SELECT vs FROM VoucherSimulation vs WHERE vs.application.id IN :applications")
+    VoucherSimulation findVoucherSimulationByApplicationId(@Param("applications") List<Integer> applicationID);
 
     /** Methods for sorting by municipalityName */
 
