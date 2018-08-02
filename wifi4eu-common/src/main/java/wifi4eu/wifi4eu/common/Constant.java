@@ -29,4 +29,7 @@ public abstract class Constant {
 	public static final String NATIONALITY_DEFAULT = "BE";
 	public static final String ECOM_CATEG_DEFAULT = "Government (local, regional, national, European)";
 	public static final String PREF_LANG_DEFAULT = "en";
+
+	//EMAIL LOG
+	public static final String LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS = "sendCorrectionEmails";
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
@@ -495,7 +496,7 @@ public class ApplicationService {
             buttonPressedCounter = 1;
         }
 
-        LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc("sendCorrectionEmails");
+        LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
         int countCorrecionsToSend = legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(new Date(lastEmailSent.getSentDate()));
 
         if (countCorrecionsToSend  > 0) {
@@ -566,7 +567,7 @@ public class ApplicationService {
                 }
 
                 if (!emailBody.isEmpty()) {
-                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration.getMunicipality().getId(), "sendCorrectionEmails");
+                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
                 }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
@@ -586,7 +587,7 @@ public class ApplicationService {
 
     public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
         if (callService.isCallClosed(callId)) {
-            LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc("sendCorrectionEmails");
+            LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
             return legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(new Date(lastEmailSent.getSentDate())) > 0;
         }
         return false;
