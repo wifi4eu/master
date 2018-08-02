@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import wifi4eu.wifi4eu.abac.entity.Country;
 import wifi4eu.wifi4eu.abac.entity.MonitoringRow;
 import wifi4eu.wifi4eu.abac.repository.LegalEntityRepository;
 
@@ -20,5 +21,9 @@ public class MonitoringService {
 	
 	public List<MonitoringRow> getMonitoringData(){
 		return legalEntityRepository.findMonitoringData();
+	}
+	
+	public List<Country> getCountries(){
+		return legalEntityRepository.findCountries();
 	}
 }
