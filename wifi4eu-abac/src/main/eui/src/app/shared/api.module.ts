@@ -42,16 +42,12 @@ export class ApiModule {
     importLegalCommitment(file?: File): Observable<HttpEvent<any>> {
       return this.importFile('legalCommitment/import', file);
     }
-<<<<<<< HEAD
 
-=======
-  
     getCountries(): Observable<CountryDTO[]> {
-        let path = this.basePath + 'monitor/countries';      
+        let path = this.basePath + 'monitor/countries';
         return this.httpClient.get<CountryDTO[]>(path);
     }
-  
->>>>>>> f8c472e1e02e5c98f830ee424fe7c81be06aeb2d
+
     getMonitoringData(): Observable<MonitoringRowDTO[]> {
         let path = this.basePath + 'monitor/data';
         return this.httpClient.get<MonitoringRowDTO[]>(path);
