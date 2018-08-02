@@ -61,7 +61,6 @@ export class TimerComponent {
             response => {
                 if (response.status == 200 && !isNaN(parseInt(response.text()))) {
                     this.currentTimestamp = +response.text();
-                    alert(this.currentTimestamp);
                 } else {
                     this.handleTimeError();
                 }

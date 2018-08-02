@@ -70,8 +70,9 @@ ALTER TABLE legal_files
 --add users to legal_file
 update [dbo].[legal_files]
 set id_user = r._user
-from [dbo].registration_users r inner join
-[dbo].[legal_files] l on l.registration = r.registration
+from [dbo].registration_users r
+inner join [dbo].[legal_files] l on l.registration = r.registration
+inner join users u on u.id = r._user
 where main = 1
 
 --add legal file to correction
