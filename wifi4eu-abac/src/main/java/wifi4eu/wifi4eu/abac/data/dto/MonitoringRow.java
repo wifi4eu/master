@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac.data.entity;
+package wifi4eu.wifi4eu.abac.data.dto;
 
 import java.util.Date;
 

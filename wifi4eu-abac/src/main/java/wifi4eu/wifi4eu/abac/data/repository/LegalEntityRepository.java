@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.data.entity.MonitoringRow;
+import wifi4eu.wifi4eu.abac.data.dto.MonitoringRow;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
 import wifi4eu.wifi4eu.abac.data.entity.Country;
 
@@ -33,7 +33,7 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 
 	@Query(
 		value =
-			"SELECT new wifi4eu.wifi4eu.abac.data.entity.MonitoringRow(" +
+			"SELECT new wifi4eu.wifi4eu.abac.data.dto.MonitoringRow(" +
 					"le.id, le.countryCode, le.officialName, le.registrationNumber, le.wfStatus, le.signatureDate" +
 			") FROM LegalEntity le"
 	)
