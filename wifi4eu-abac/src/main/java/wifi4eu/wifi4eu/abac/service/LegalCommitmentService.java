@@ -16,7 +16,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import wifi4eu.wifi4eu.abac.entity.ExportFile;
+import wifi4eu.wifi4eu.abac.data.entity.ExportFile;
 
 @Service
 public class LegalCommitmentService {

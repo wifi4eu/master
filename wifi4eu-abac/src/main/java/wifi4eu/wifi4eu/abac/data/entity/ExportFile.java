@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac.entity;
+package wifi4eu.wifi4eu.abac.data.entity;
 
 public class ExportFile {
 	private String mimetype;

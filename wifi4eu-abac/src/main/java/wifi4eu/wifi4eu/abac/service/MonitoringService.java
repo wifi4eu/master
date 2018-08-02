@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.abac.data.entity.MonitoringRow;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
-import wifi4eu.wifi4eu.abac.entity.Country;
+import wifi4eu.wifi4eu.abac.data.entity.Country;
 
 
 @Service
