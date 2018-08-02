@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
@@ -24,6 +25,7 @@ import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.*;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
+import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
@@ -119,6 +121,9 @@ public class ApplicationService {
 
     @Autowired
     LogEmailRepository logEmailRepository;
+
+    @Autowired
+    LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
 
     public ApplicationDTO getApplicationById(int applicationId) {
         return applicationMapper.toDTO(applicationRepository.findOne(applicationId));
@@ -490,12 +495,14 @@ public class ApplicationService {
         } else {
             buttonPressedCounter = 1;
         }
-        if (!applications.isEmpty()) {
+
+        LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
+        int countCorrecionsToSend = legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(new Date(lastEmailSent.getSentDate()));
+
+        if (countCorrecionsToSend  > 0) {
             for (ApplicationIssueUtil application : applications) {
-                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                if (application.getUserLang() != null) {
-                    locale = new Locale(application.getUserLang());
-                }
+                Locale locale = application.getUserLang() == null ? new Locale(UserConstants.DEFAULT_LANG) : new Locale(application.getUserLang());
+
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.correctionRequestEmail.subject");
                 String header = bundle.getString("mail.correctionRequestEmail.header");
@@ -516,7 +523,6 @@ public class ApplicationService {
                 String[] documentTypesBody2 = {"", ""};
                 String emailBody = "";
                 Registration registration = registrationRepository.findOne(application.getRegistrationId());
-                LogEmail lastEmailSent = logEmailRepository.findTopByMunicipalityIdAndActionAndToOrderBySentDateDesc(registration.getMunicipality().getId(), "sendCorrectionEmails", application.getUserEcasEmail());
                 List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
                 for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
                     if (legalFileCorrectionReason.getRequestCorrection() && (lastEmailSent == null || legalFileCorrectionReason
@@ -561,7 +567,7 @@ public class ApplicationService {
                 }
 
                 if (!emailBody.isEmpty()) {
-                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration.getMunicipality().getId(), "sendCorrectionEmails");
+                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
                 }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
@@ -581,11 +587,8 @@ public class ApplicationService {
 
     public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
         if (callService.isCallClosed(callId)) {
-            List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(callId,
-                    ApplicationStatus.PENDING_FOLLOWUP.getValue()));
-            if (!pendingFollowupApps.isEmpty()) {
-                return true;
-            }
+            LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
+            return legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(new Date(lastEmailSent.getSentDate())) > 0;
         }
         return false;
     }

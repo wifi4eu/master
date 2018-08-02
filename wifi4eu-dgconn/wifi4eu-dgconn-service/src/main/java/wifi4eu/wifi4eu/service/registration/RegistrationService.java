@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.cns.CNSManager;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
@@ -507,7 +508,7 @@ public class RegistrationService {
         String  emailBody = header + emailBodyMiddle + signOff;
 
         if (!emailBody.isEmpty()) {
-            mailService.sendEmail(userEmail, MailService.FROM_ADDRESS, subject, emailBody, municipalityId, "sendCorrectionEmails");
+            mailService.sendEmail(userEmail, MailService.FROM_ADDRESS, subject, emailBody, municipalityId, Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
         }
 
         return true;
