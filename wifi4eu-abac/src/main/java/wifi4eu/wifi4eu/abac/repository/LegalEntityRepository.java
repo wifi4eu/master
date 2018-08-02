@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import wifi4eu.wifi4eu.abac.entity.Country;
 import wifi4eu.wifi4eu.abac.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.entity.MonitoringRow;
 import wifi4eu.wifi4eu.abac.service.AbacWorkflowStatusEnum;
@@ -37,4 +38,7 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 			") FROM LegalEntity le"
 	)
 	List<MonitoringRow> findMonitoringData();
+	
+	@Query(value = "SELECT c FROM Country c ORDER BY c.name")
+	List<Country> findCountries();
 }

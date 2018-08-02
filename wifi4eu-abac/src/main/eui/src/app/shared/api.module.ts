@@ -8,6 +8,7 @@ import { deserialize, classToPlain } from 'class-transformer';
 import { ResponseDTO } from './model/ResponseDTO';
 import { ClassType } from './model/ClassType';
 import { MonitoringRowDTO } from './model/MonitoringRowDTO';
+import { CountryDTO } from './model/CountryDTO';
 
 @NgModule({
     imports: [
@@ -40,6 +41,11 @@ export class ApiModule {
   
     importLegalCommitment(file?: File): Observable<HttpEvent<any>> {
       return this.importFile('legalCommitment/import', file);
+    }
+  
+    getCountries(): Observable<CountryDTO[]> {
+        let path = this.basePath + 'monitor/countries';      
+        return this.httpClient.get<CountryDTO[]>(path);
     }
   
     getMonitoringData(): Observable<MonitoringRowDTO[]> {
