@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -95,7 +96,7 @@ public class ApplicationInvalidateReasonService {
         applicationInvalidateReasonRepository.deleteInvalidateReasonsByApplicationId(applicationId);
     }
 
-    public void updateVoucherSimulationNumDuplicates(ApplicationDTO applicationDTO, String validate){
+    public void updateVoucherSimulationNumDuplicates(ApplicationDTO applicationDTO){
         Integer lauId = simpleMunicipalityRepository.findLauFromApplication(applicationDTO.getId());
 
         List<Application> applicationDTOS = applicationRepository.findByCallIdAndLauIdAndStatus(applicationDTO.getCallId(), lauId, ApplicationStatus.OK.getValue());
@@ -105,13 +106,14 @@ public class ApplicationInvalidateReasonService {
             applicationIDS.add(appDTO.getId());
         }
 
-        VoucherSimulation vs = voucherSimulationRepository.findVoucherSimulationByApplicationId(applicationIDS);
+        if(!applicationDTOS.isEmpty()){
+            VoucherSimulation vs = voucherSimulationRepository.findVoucherSimulationByApplicationId(applicationIDS, applicationDTO.getCallId(), VoucherAssignmentStatus.SIMULATION.getValue());
 
-        if(Validator.isNotNull(vs)){
-            vs.setNumApplications(applicationDTOS.size());
-            voucherSimulationRepository.save(vs);
+            if(Validator.isNotNull(vs)){
+                vs.setNumApplications(applicationDTOS.size());
+                voucherSimulationRepository.save(vs);
+            }
         }
-
     }
 
     public List<ApplicationInvalidateReasonDTO> invalidateApplication(InvalidReasonViewDTO invalidReasonViewDTO, HttpServletRequest request) {
@@ -132,7 +134,7 @@ public class ApplicationInvalidateReasonService {
         legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDTO.getRegistrationId());
         applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
 
-        updateVoucherSimulationNumDuplicates(applicationDTO, "invalidate");
+        updateVoucherSimulationNumDuplicates(applicationDTO);
 
         List<ApplicationInvalidateReason> invalidateReason = applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntityList(applicationInvalidateReasonDTOS));
 
@@ -185,7 +187,7 @@ public class ApplicationInvalidateReasonService {
         legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDBO.getRegistrationId());
         ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
 
-        updateVoucherSimulationNumDuplicates(applicationDTO, "validate");
+        updateVoucherSimulationNumDuplicates(applicationDTO);
 
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
