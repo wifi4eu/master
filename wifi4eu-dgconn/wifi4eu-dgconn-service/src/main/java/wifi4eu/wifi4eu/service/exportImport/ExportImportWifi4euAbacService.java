@@ -187,9 +187,8 @@ public class ExportImportWifi4euAbacService {
 
 		List<ExportFile> exportFiles = new ArrayList<ExportFile>();
 
-		List<BeneficiaryInformation> applicationsBeneficiaryInformation = Lists.newArrayList(
-				beneficiaryInformationRepository.getBeneficiariesInformationSignedAndNotCounterSigned());
-		//		exportImportBeneficiaryInformationRepository.getBeneficiariesInformationSignedAndNotCounterSigned());
+		List<BeneficiaryInformation> applicationsBeneficiaryInformation = Lists
+				.newArrayList(beneficiaryInformationRepository.getBeneficiariesInformationSignedAndNotCounterSigned());
 
 		// Preparation for the Beneficiary CSV file
 		StringBuilder csvBeneficiaryData = new StringBuilder();
@@ -233,6 +232,11 @@ public class ExportImportWifi4euAbacService {
 		} else {
 			_log.warn("No language was specified for register: " + beneficiaryInformation.getMun_registrationNumber());
 		}
+
+		// Address include the address street and number, and must be between quotes to
+		// escape the comma ","
+		beneficiaryInformation.setMun_address(
+				ExportFileUtilities.QUOTE + beneficiaryInformation.getMun_address() + ExportFileUtilities.QUOTE);
 
 		csvBeneficiaryData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtilities.SEPARATOR)
 				.append(beneficiaryInformation.getMun_name()).append(ExportFileUtilities.SEPARATOR)
@@ -288,6 +292,7 @@ public class ExportImportWifi4euAbacService {
 		csvDocumentData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtilities.SEPARATOR)
 				.append(beneficiaryInformation.getDoc_portalId()).append(ExportFileUtilities.SEPARATOR)
 				.append(beneficiaryInformation.getDoc_name()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_fileName()).append(ExportFileUtilities.SEPARATOR)
 				.append(beneficiaryInformation.getDoc_mimeType()).append(ExportFileUtilities.SEPARATOR)
 				.append(beneficiaryInformation.getDoc_date()).append(ExportFileUtilities.SEPARATOR)
 				.append(beneficiaryInformation.getDoc_type());

@@ -22,7 +22,8 @@ import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euAbacService;
 @Service
 public class ExportFileUtilities {
 
-	public final static String SEPARATOR = ",";
+	public static final String SEPARATOR = ",";
+	public static final String QUOTE = "\"";
 
 	private final Logger log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
 
