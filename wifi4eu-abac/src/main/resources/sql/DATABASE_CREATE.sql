@@ -555,7 +555,10 @@ BEGIN
  FOR legatEntity in (SELECT * FROM WIF_LEGAL_ENTITY WHERE ID=l_LE_ID) LOOP
     dbms_output.put_line('OFFICIAL_NAME='||legatEntity.OFFICIAL_NAME);
 
-    select LANGUAGE_CD into l_language_cd from V_O_GEN_LANGUAGES@ABACBUDT_SHARED where LANGUAGE_SIC_CD=UPPER(legatEntity.LANGUAGE_CODE) and valid_flg ='Y';
+    select LANGUAGE_CD into l_language_cd from V_O_GEN_LANGUAGES@ABACBUDT_SHARED
+    where (UPPER(legatEntity.LANGUAGE_CODE) = UPPER(LANGUAGE_SIC_CD)
+       or UPPER(legatEntity.LANGUAGE_CODE) = UPPER(LNG_ISO3_CD))
+    and valid_flg ='Y';
 
     -- Logon into ABAC: activate security
     Insert into V_ABAC_BATCHINT_LOGIN@ABACBUDT_SHARED  Values ('X');
@@ -665,5 +668,21 @@ BEGIN
   END LOOP;
   commit;
 END UPDATE_LEF_STATUS_FROM_ABAC;
+
+/
+
+--------------------------------------------------------
+--  ADDED COLUMNS AND CONSTRAINTS FOR TABLE "WIFI4EU_ABAC"."WIF_DOCUMENTS"
+--------------------------------------------------------
+
+alter table wif_documents add(
+  portal_id number,
+  legal_entity_id number,
+  document_type varchar2(50),
+  filename varchar2(255),
+  portal_date date
+);
+
+alter table wif_documents add constraint WIF_DOC_LE_FK foreign key(legal_entity_id) references WIFI4EU_ABAC.WIF_LEGAL_ENTITY(ID);
 
 /

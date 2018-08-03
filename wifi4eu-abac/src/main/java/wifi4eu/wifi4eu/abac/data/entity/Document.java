@@ -3,19 +3,10 @@ package wifi4eu.wifi4eu.abac.data.entity;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.PrePersist;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 
 @Entity
 @Table(name = "WIF_DOCUMENTS")
@@ -25,6 +16,19 @@ public class Document {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "docIDGenerator")
 	@SequenceGenerator(name = "docIDGenerator", sequenceName = "SEQ_DOCUMENTS", allocationSize = 1)
 	private Long id;
+
+	@Column(name = "portal_id")
+	private Long portalId;
+
+	@Column(name="filename")
+	private String filename;
+
+	@Column(name="portal_date")
+	private Date portalDate;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="LEGAL_ENTITY_ID")
+	private LegalEntity legalEntity;
 
 	@Column(name = "name", length = 400)
 	private String name;
@@ -55,24 +59,9 @@ public class Document {
 	@Column(name = "date_updated", length = 20)
 	private Date dateUpdated;
 
-	public Document() {
-
-	}
-
-	public Document(Long id, String name, byte[] data, String aresReference, Date aresDate, Long size, String mimetype,
-			AbacWorkflowStatusEnum wfStatus, Date dateCreated, Date dateUpdated) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.data = data;
-		this.aresReference = aresReference;
-		this.aresDate = aresDate;
-		this.size = size;
-		this.mimetype = mimetype;
-		this.wfStatus = wfStatus;
-		this.dateCreated = dateCreated;
-		this.dateUpdated = dateUpdated;
-	}
+	@Column(name = "type")
+	@Enumerated
+	private DocumentType type;
 
 	@PrePersist
 	protected void onCreate() {
@@ -159,4 +148,43 @@ public class Document {
 		this.dateUpdated = dateUpdated;
 	}
 
+	public DocumentType getType() {
+		return type;
+	}
+
+	public void setType(DocumentType type) {
+		this.type = type;
+	}
+
+	public Long getPortalId() {
+		return portalId;
+	}
+
+	public void setPortalId(Long portalId) {
+		this.portalId = portalId;
+	}
+
+	public LegalEntity getLegalEntity() {
+		return legalEntity;
+	}
+
+	public void setLegalEntity(LegalEntity legalEntity) {
+		this.legalEntity = legalEntity;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public Date getPortalDate() {
+		return portalDate;
+	}
+
+	public void setPortalDate(Date portalDate) {
+		this.portalDate = portalDate;
+	}
 }

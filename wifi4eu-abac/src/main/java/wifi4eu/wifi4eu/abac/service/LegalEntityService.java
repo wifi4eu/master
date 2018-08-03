@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
-import wifi4eu.wifi4eu.abac.utils.CSVFileParser;
+import wifi4eu.wifi4eu.abac.utils.csvparser.AbstractCSVFileParser;
+import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
 import java.util.List;
 
@@ -17,6 +18,9 @@ public class LegalEntityService {
 
 	@Autowired
 	private LegalEntityRepository legalEntityRepository;
+
+	@Autowired
+	private LegalEntityCSVFileParser legalEntityCSVFileParser;
 
 	public LegalEntityService() {
 	}
@@ -36,8 +40,7 @@ public class LegalEntityService {
 		List<LegalEntity> legalEntities = legalEntityRepository.findLegalEntitiesProcessedInAbac();
 
 		log.info("parsing list of items");
-		CSVFileParser csvFileParser = new CSVFileParser();
-		String csvFile = csvFileParser.exportLegalEntitiesToCSV(legalEntities);
+		String csvFile = legalEntityCSVFileParser.exportLegalEntitiesToCSV(legalEntities);
 		return csvFile;
 	}
 }

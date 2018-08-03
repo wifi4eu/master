@@ -8,4 +8,5 @@ public interface DocumentRepository extends CrudRepository<Document, Long> {
 
 	Document findByAresReference(String aresReference);
 
+	Document findByPortalId(Long portalId);
 }

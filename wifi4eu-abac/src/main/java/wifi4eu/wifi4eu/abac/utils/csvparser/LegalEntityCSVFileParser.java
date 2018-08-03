@@ -1,61 +1,44 @@
-package wifi4eu.wifi4eu.abac.utils;
+package wifi4eu.wifi4eu.abac.utils.csvparser;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
-import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.LegalEntityImportCSVColumn;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CSVFileParser {
+public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 
-	public List<LegalEntity> parseLegalEntityInformationFile(FileDTO fileDTO) {
+	@Override
+	protected List<LegalEntity> mapRowsToEntities(CSVParser csvParser) {
 
 		List<LegalEntity> legalEntities = new ArrayList<>();
 
-		Reader reader = new StringReader(new String(fileDTO.getContent()));
+		for (CSVRecord csvRecord : csvParser) {
 
-		try (CSVParser csvParser = new org.apache.commons.csv.CSVParser(reader, CSVFormat.DEFAULT
-				.withFirstRecordAsHeader()
-				.withIgnoreHeaderCase()
-				.withTrim())) {
+			LegalEntity legalEntity = new LegalEntity();
 
-			for (CSVRecord csvRecord : csvParser) {
-				LegalEntity legalEntity = mapLegalEntity(csvRecord);
-				legalEntities.add(legalEntity);
-			}
+			legalEntity.setMid(Long.parseLong(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_PORTAL_ID)));
+			legalEntity.setOfficialName(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_NAME));
+			legalEntity.setOfficialAddress(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_ADDRESS));
+			legalEntity.setPostalCode(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_POSTAL_CODE));
+			legalEntity.setCity(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_CITY));
+			legalEntity.setCountryCode(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_COUNTRY_CODE));
+			legalEntity.setLanguageCode(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_LANGUAGE_CODE));
+			legalEntity.setRegistrationNumber(Long.parseLong(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER)));
 
-		} catch (IOException exception) {
-			exception.printStackTrace();
+			legalEntities.add(legalEntity);
 		}
-
 		return legalEntities;
-	}
-
-	private LegalEntity mapLegalEntity(CSVRecord csvRecord) {
-		LegalEntity legalEntity = new LegalEntity();
-
-		legalEntity.setMid(Long.parseLong(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_PORTAL_ID)));
-		legalEntity.setOfficialName(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_NAME));
-		legalEntity.setOfficialAddress(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_ADDRESS));
-		legalEntity.setPostalCode(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_POSTAL_CODE));
-		legalEntity.setCity(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_CITY));
-		legalEntity.setCountryCode(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_COUNTRY_CODE));
-		legalEntity.setLanguageCode(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_LANGUAGE_CODE));
-		legalEntity.setRegistrationNumber(Long.parseLong(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER)));
-
-		return legalEntity;
-	}
-
-	public List<LegalEntity> parseLegalEntityDocumentsFile(FileDTO fileDTO) {
-		return new ArrayList<LegalEntity>();
 	}
 
 	public String exportLegalEntitiesToCSV(List<LegalEntity> legalEntities) {

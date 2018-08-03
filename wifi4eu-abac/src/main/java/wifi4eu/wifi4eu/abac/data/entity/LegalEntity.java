@@ -96,9 +96,6 @@ public class LegalEntity {
 	@JoinColumn(name = "id_signature_file", nullable = true)
 	private Document signatureFile;
 
-	@OneToMany(mappedBy = "legalEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<AbacRequest> abacRequestList;
-
 	public LegalEntity() {
 
 	}
@@ -106,7 +103,7 @@ public class LegalEntity {
 	public LegalEntity(Long id, Long mid, String officialName, String languageCode, String countryCode,
 			String officialAddress, String postalCode, String city, Long registrationNumber, String abacFelId,
 			AbacWorkflowStatusEnum wfStatus, Date dateCreated, Date dateUpdated, Date signatureDate,
-			String userImported, Document signatureFile, List<AbacRequest> abacRequestList) {
+			String userImported, Document signatureFile) {
 		super();
 		this.id = id;
 		this.mid = mid;
@@ -124,7 +121,6 @@ public class LegalEntity {
 		this.signatureDate = signatureDate;
 		this.userImported = userImported;
 		this.signatureFile = signatureFile;
-		this.abacRequestList = abacRequestList;
 	}
 
 	public Long getId() {
@@ -268,7 +264,7 @@ public class LegalEntity {
 				+ ", postalCode=" + postalCode + ", city=" + city + ", registrationNumber=" + registrationNumber
 				+ ", abacFelId=" + abacFelId + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated
 				+ ", dateUpdated=" + dateUpdated + ", signatureDate=" + signatureDate + ", userImported=" + userImported
-				+ ", signatureFile=" + signatureFile + ", abacRequestList=" + abacRequestList + "]";
+				+ ", signatureFile=" + signatureFile + "]";
 	}
 
 }

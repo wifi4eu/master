@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
+import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
+import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.ZipFileReader;
-import wifi4eu.wifi4eu.abac.utils.CSVFileParser;
 
 import java.util.List;
 
@@ -15,10 +17,16 @@ import java.util.List;
 public class ImportDataService {
 
 	@Autowired
-	private CSVFileParser CSVFileParser;
+	private LegalEntityCSVFileParser legalEntityCSVFileParser;
+
+	@Autowired
+	private DocumentCSVFileParser documentCSVFileParser;
 
 	@Autowired
 	private LegalEntityService legalEntityService;
+
+	@Autowired
+	private DocumentService documentService;
 
 	static final String LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "portal_exportBeneficiaryInformation.csv";
 	static final String LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME = "portal_exportBeneficiaryDocuments.csv";
@@ -51,7 +59,7 @@ public class ImportDataService {
 	}
 
 	private void processLegalEntityInformationFile(FileDTO fileDTO) {
-		List<LegalEntity> legalEntities = CSVFileParser.parseLegalEntityInformationFile(fileDTO);
+		List<LegalEntity> legalEntities = (List<LegalEntity>) legalEntityCSVFileParser.parseFile(fileDTO);
 
 		for (LegalEntity legalEntity : legalEntities) {
 
@@ -71,7 +79,20 @@ public class ImportDataService {
 	}
 
 	private void processLegalEntityDocumentsFile(FileDTO fileDTO) {
-		CSVFileParser.parseLegalEntityDocumentsFile(fileDTO);
-	}
 
+		List<Document> documents = (List<Document>) documentCSVFileParser.parseFile(fileDTO);
+
+		for (Document document : documents) {
+
+			Document documentFromDB = documentService.getDocumentByPortalId(document.getPortalId());
+
+			if (documentFromDB == null) {
+				documentService.saveDocument(document);
+
+			} else {
+				//TODO update or ignore?
+				log.info(String.format("Document with doc_portalId %s already exists in the DB. Ignoring it for now", document.getPortalId()));
+			}
+		}
+	}
 }
