@@ -48,6 +48,10 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     @Query(value = "SELECT a.* from applications a INNER JOIN registrations r ON a.registration = r.id WHERE a.call_id = ?1 AND a.date >= ?2 ORDER BY a.date ASC", nativeQuery = true)
     List<Application> findByCallIdOrderByDateBAsc(Integer callId, Long startDate);
 
+    @Query(value = "SELECT app.* FROM applications app INNER JOIN registrations reg ON reg.id = app.registration INNER JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]} AND app._status = ?#{[2]}", nativeQuery = true)
+    List<Application> findByCallIdAndLauIdAndStatus(Integer callId, Integer lauId, Integer status);
+
+
     @Query(value = "SELECT app.* FROM applications app INNER JOIN registrations reg ON reg.id = app.registration INNER JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]}", nativeQuery = true)
     List<Application> findByCallIdAndLauId(Integer callId, Integer lauId);
 
