@@ -22,7 +22,7 @@
                 <p class="beneficiaryMayor" style="text-align: left;">{{ municipality }}</p>
                 <custom-accordion-box [isExpanded]="true" [rightSide]="true" style="text-align: left;">
                     <p-dataTable [value]="historyItems[municipality]">
-                        <p-column field="actionPerformed" [sortable]="false" header="{{ 'benefPortal.myHistory.actionPerformed' | translate }}">
+                        <p-column field="actionPerformed" [sortable]="true" header="{{ 'benefPortal.myHistory.actionPerformed' | translate }}">
                             <ng-template let-row="rowData" pTemplate="body">
                                 {{ row.actionPerformed | translate }}
                             </ng-template>
