@@ -27,9 +27,9 @@ public interface BeneficiaryFinalListItemRepository extends JpaRepository<Benefi
             nativeQuery = true)
     List<BeneficiaryFinalListItem> findBeneficiariesFromFinalList(Integer callId);
 
-    @Query(value = " SELECT count(*) FROM voucher_simulations vs \n" +
-            "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id \n"
-            + "WHERE va.status = 3 and va.call = 1",
+    @Query(value = " SELECT count(*) FROM voucher_simulations vs " +
+            "INNER JOIN voucher_assignments va ON vs.voucher_assignment = va.id " +
+            "WHERE va.status = 3 and va.call = 1",
             nativeQuery = true)
     Integer countBeneficiariesFromFinalList(Integer callId);
 
