@@ -37,6 +37,7 @@ export class MyHistoryComponent {
     private historyItems : UserHistoryActionDTOBase[][] = [];
     private fetchingData : boolean = false;
     private changingCalls : boolean = false;
+    private historyDate : string[][] = [];
 
     constructor(private sharedService: SharedService, private callApi: CallApi, private beneficiaryApi: BeneficiaryApi) {
         this.fetchingData = true;
@@ -67,8 +68,15 @@ export class MyHistoryComponent {
                     if (this.municipalities.indexOf(action.municipality) == -1) {
                         this.municipalities.push(action.municipality);
                         this.historyItems[action.municipality] = [];
+                        this.historyDate[action.municipality] = [];
                     }
                     this.historyItems[action.municipality].push(action);
+                    // Apply European date format
+                    let appliedTime = new Date(action.date);
+                    let appliedDateTime = ('0' + appliedTime.getUTCDate()).toString().slice(-2) + "/" + ('0' + (appliedTime.getMonth() + 1)).slice(-2) + "/" + appliedTime.getFullYear();
+                    let appliedHourTime = ('0' + appliedTime.getHours()).toString().slice(-2) + ":" + ('0' + appliedTime.getMinutes()).slice(-2);
+                    let displayDate = appliedDateTime + "  " + appliedHourTime + "  CET";
+                    this.historyDate[action.municipality].push(displayDate);
                 }
                 this.fetchingData = false;
                 this.changingCalls = false;
@@ -83,6 +91,7 @@ export class MyHistoryComponent {
                 this.changingCalls = true;
                 this.currentIndex = index;
                 this.historyItems = [];
+                this.historyDate = [];
                 this.municipalities = [];
                 this.registrations = [];
                 this.fetchHistoryData();

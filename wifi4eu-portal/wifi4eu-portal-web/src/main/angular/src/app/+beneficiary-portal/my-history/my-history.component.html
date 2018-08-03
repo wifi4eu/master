@@ -28,9 +28,9 @@
                             </ng-template>
                         </p-column>
                         <p-column field="date" [sortable]="true" header="{{ 'dgConn.dateandtime' | translate }}">
-                            <ng-template let-row="rowData" pTemplate="body">
-                                 {{ row.date | date: 'short' }}
-                            </ng-template>
+                            <ng-template let-row="rowData" pTemplate="body" let-i="rowIndex">
+                                {{ historyDate[row.municipality][i] }}
+                           </ng-template>
                         </p-column>
                     </p-dataTable>
                 </custom-accordion-box>
