@@ -36,6 +36,9 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
     @Query(value = "UPDATE applications SET pre_selected_flag = ?1 WHERE id IN (SELECT application FROM voucher_simulations WHERE voucher_assignment = ?2)", nativeQuery = true)
     void updateApplicationsInVoucherSimulationByVoucherAssignment(int status, int idVoucherAssignment);
 
+    @Query("SELECT vs FROM VoucherSimulation vs INNER JOIN vs.voucherAssignment va WHERE vs.application.id IN :applications AND va.call.id =:callId AND va.status =:status")
+    VoucherSimulation findVoucherSimulationByApplicationId(@Param("applications") List<Integer> applicationID,@Param("callId")  Integer callId,@Param("status")  Integer status);
+
     /** Methods for sorting by municipalityName */
 
     @Query(value = "SELECT vs.* FROM voucher_simulations vs INNER JOIN municipalities m ON vs.municipality = m.id WHERE vs.voucher_assignment = ?#{[0]} AND LOWER(m.name) LIKE LOWER(CONCAT('%',?#{[1]},'%')) AND LOWER(vs.country) LIKE LOWER(CONCAT('%',?#{[2]},'%')) ORDER BY CASE WHEN ?#{[5]} = 'DESC' THEN m.name END DESC, CASE WHEN ?#{[5]} = 'ASC' THEN m.name END ASC OFFSET ?#{[3]} ROWS FETCH NEXT ?#{[4]} ROWS ONLY", nativeQuery = true)
