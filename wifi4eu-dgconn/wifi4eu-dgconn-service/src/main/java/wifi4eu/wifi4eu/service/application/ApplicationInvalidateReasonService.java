@@ -17,9 +17,9 @@ import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
 import wifi4eu.wifi4eu.mapper.application.ApplicantAuthorizedPersonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicationAuthorizedPersonRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationAuthorizedPersonRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
@@ -68,8 +68,6 @@ public class ApplicationInvalidateReasonService {
     @Autowired
     CorrectionRequestEmailRepository correctionRequestEmailRepository;
 
-
-
     @Autowired
     ApplicantAuthorizedPersonMapper applicant_authorizedPersonMapper;
 
@@ -103,6 +101,7 @@ public class ApplicationInvalidateReasonService {
         applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
         List<ApplicationInvalidateReason> invalidateReason = applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntityList(applicationInvalidateReasonDTOS));
 
+
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
         if (registration != null) {
@@ -131,10 +130,6 @@ public class ApplicationInvalidateReasonService {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Validating application");
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
-        if (registration.getAllFilesFlag() != 1) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application can not be validated due to missing files");
-            throw new AppException();
-        }
         ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
         if (applicationDBO == null) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application does not exist");
@@ -196,21 +191,22 @@ public class ApplicationInvalidateReasonService {
             checks.put("invalidate", true);
             checks.put("validate", true);
         } else {
-            Date sentDate = new Date(email.getSentDate());
+            Date emailSentDate = new Date(email.getSentDate());
             Calendar deadline = Calendar.getInstance();
-            deadline.setTime(sentDate);
+            deadline.setTime(emailSentDate);
             // Date plus 7 days (deadline)
             deadline.add(Calendar.DATE, 7);
+            Date currentTime = new Date();
 
             boolean valid = true;
             List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDBO.getRegistrationId());
             for (LegalFileCorrectionReason legalFileCorrectionReason: legalFileCorrectionReasons) {
                 if(legalFileCorrectionReason.getRequestCorrection()){
-                    if(legalFileCorrectionReason.getRequestCorrectionDate().after(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)){
+                    if(currentTime.after(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().before(emailSentDate)){
                         valid = true;
                         break;
                     }
-                    if(legalFileCorrectionReason.getRequestCorrectionDate().before(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)){
+                    if(currentTime.before(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().before(emailSentDate)){
                         valid = false;
                     }
                 }

@@ -435,7 +435,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private validateApplication() {
         if (!this.processingRequest) {
             if (this.selectedIndex != null) {
-                if (this.registrations[this.selectedIndex].allFilesFlag == 1) {
                     this.processingRequest = true;
                     this.applicationInvalidateReasonApi.validateApplication(this.applications[this.selectedIndex]).subscribe(
                         (response: ResponseDTOBase) => {
@@ -460,7 +459,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     );
                 }
             }
-        }
     }
 
     private invalidateApplication() {
