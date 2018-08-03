@@ -61,4 +61,46 @@ export class SupplierRegistrationStep3Component {
     private preventPaste(event: any) {
         return false;
     }
+
+
+    //HOW TO SOLVE THE ERROR OF THE DISABLED BUTTON
+    //CAUSE: buttonEnabled variable isnt used
+    //SOLUTION: adapt this method to the new model and it should solve it and work.
+    //this method was created to verify that no input is empty
+    //
+    // the changes in the model are like : this.supplier.contactName  ----> this.supplier['contactName'] 
+    // please make sure that the info arrives correctly to the server and supplier is created with the correct data from the inputs!
+    //
+    // private checkButtonEnabled(event){
+    //     if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
+    //     && this.supplier['contactPhoneNumber'] != null && this.supplier['contactPhonePrefix'] != null
+    //          && this.supplier['contactSurname'].trim() != "" && this.supplier.contactName.trim() != "" && this.supplier.contactPhoneNumber.trim() != "" && this.supplier.contactPhonePrefix.trim() != ""){
+    //             this.buttonEnabled = true;
+    //     }
+
+    //      //custom name validator
+    //     if(this.supplier.contactName != null && this.supplier.contactName.trim() != ""){
+    //         setTimeout(()=>{this.supplierForm.controls['contactName'].setErrors(null);} ,5);
+    //     }else {
+    //         setTimeout(()=>{this.supplierForm.controls['contactName'].setErrors({'invalid': true});} ,5);
+    //     }
+    //      //custom surname validator
+    //     if(this.supplier.contactSurname != null && this.supplier.contactSurname.trim() != ""){
+    //         setTimeout(()=>{this.supplierForm.controls['contactSurname'].setErrors(null);} ,5);
+    //     }else {
+    //         setTimeout(()=>{this.supplierForm.controls['contactSurname'].setErrors({'invalid': true});} ,5);
+    //     }
+    //      //custom surname validator
+    //     if(this.supplier.contactPhoneNumber != null && this.supplier.contactPhoneNumber.trim() != ""){
+    //         setTimeout(()=>{this.supplierForm.controls['contactPhoneNumber'].setErrors(null);} ,5);
+    //     }else {
+    //         setTimeout(()=>{this.supplierForm.controls['contactPhoneNumber'].setErrors({'invalid': true});} ,5);
+    //     }
+    //      //custom surname validator
+    //      if(this.supplier.contactPhonePrefix != null && this.supplier.contactPhonePrefix.trim() != ""){
+    //         setTimeout(()=>{this.supplierForm.controls['contactPhonePrefix'].setErrors(null);} ,5);
+    //     }else {
+    //         setTimeout(()=>{this.supplierForm.controls['contactPhonePrefix'].setErrors({'invalid': true});} ,5);
+    //     }
+    // }
 }
