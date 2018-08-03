@@ -1,20 +1,72 @@
-<div class="page-title">
-    Monitoring 
+<div class="content-wrapper">
+	<div class="page-title">Monitoring</div>
+	<p>Here you can find an overview of the beneficiaries data, and check their status in ABAC</p>
+	
+	<ux-tabs>
+	    <ux-tab label="Call 1"></ux-tab>
+	    <ux-tab label="Call 2" [isDisabled]="true"></ux-tab>
+	    <ux-tab label="Call 3" [isDisabled]="true"></ux-tab>
+	    <ux-tab label="Call 4" [isDisabled]="true"></ux-tab>
+	    <ux-tab label="Call 5" [isDisabled]="true"></ux-tab>
+	</ux-tabs>
+	
+	<ux-panel [hasNoHeader]="true">
+		<div class="row">
+		    <div class="col-md-5">
+			    <select class="form-control" [(ngModel)]="filterCountry" (change)="applyFilters()">
+			    	<option [value]="undefined" disabled selected>Search by country...</option>
+			    	<option *ngFor="let country of countries" [value]="country.cd">{{country.name}}</option>
+			    </select>
+			</div>
+			<div class="col-md-5">
+			    <input class="form-control" placeholder="Search by name..." type="text" [(ngModel)]="filterName" (input)="applyFilters()">
+			</div>
+			<div class="col-md-2">
+				<button type='button' (click)="clearFilters()" class="btn btn-light btn-block">Clear filters</button>
+			</div>
+		</div>
+	</ux-panel>
+	
+	<ux-panel label="List of Beneficiaries of Call 1" [hasNoContentPadding]="true">
+	
+		<uxPanelHeaderRightContent>
+	        <div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" id="chkLef" value="1" [checked]="showLEF" (change)="showLEF = !showLEF">
+			  <label class="form-check-label" for="chkLef">Legal Entities</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" id="chkBC" value="1" [checked]="showBC" (change)="showBC = !showBC">
+			  <label class="form-check-label" for="chkBC">Budgetary Commitments</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="checkbox" id="chkLC" value="1" [checked]="showLC" (change)="showLC = !showLC">
+			  <label class="form-check-label" for="chkLC">Legal Commitments</label>
+			</div>
+	    </uxPanelHeaderRightContent>
+	
+		<p-table #monitoring [value]="rows" [paginator]="true" [rows]="20" sortMode="multiple" autoLayout="true">
+		    <ng-template pTemplate="header">
+		    	<tr>
+		    		<ng-container *ngFor="let col of cols">
+			     		<th [pSortableColumn]="col.field" *ngIf="showColumn(col.isFor)">
+			     			<span [innerHTML]="col.header"></span>
+			     			<p-sortIcon [field]="col.field"></p-sortIcon>
+			     		</th>
+		     		</ng-container>
+		     	</tr>
+		    </ng-template>
+		    <ng-template pTemplate="body" let-row>
+		        <tr>
+		        	<ng-container *ngFor="let col of cols">
+		        		<td *ngIf="showColumn(col.isFor)">{{row[col.field]}}</td>
+		        	</ng-container>
+		        </tr>
+		    </ng-template>
+		</p-table>
+		
+	</ux-panel>
+	
+	<div class="row">
+		<div class="col-12"><button class="btn btn-primary pull-right">Counter-sign Grant Agreements</button></div>
+	</div>
 </div>
-
-<p-table [value]="rows">
-    <ng-template pTemplate="header">
-        <tr>
-            <th [pSortableColumn]="countryCode">Country</th>
-            <th [pSortableColumn]="region">Municipality</th>
-            <th [pSortableColumn]="wfStatus">Status</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-row>
-        <tr>
-            <td>{{row.countryCode}}</td>
-            <td>{{row.region}}</td>
-            <td>{{row.wfStatus}}</td>
-        </tr>
-    </ng-template>
-</p-table>

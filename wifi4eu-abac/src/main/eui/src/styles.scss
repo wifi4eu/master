@@ -1,3 +1,13 @@
+select,
+.btn-light {
+    height: 100%;
+}
+
+.content-wrapper {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
 .abac-upload {
     display: none;
 }
@@ -12,4 +22,22 @@
 
 .ux-layout-page-header-wrapper {
     margin: 2rem 0 0 0;
+}
+
+.ui-table-wrapper th {
+    white-space: nowrap;
+}
+
+.ui-table-wrapper th span {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.ui-sortable-column-icon {
+    vertical-align: bottom;
+}
+
+.ui-table .ui-sortable-column.ui-state-highlight {
+    background: transparent;
+    color: #1b1d1f;
 }

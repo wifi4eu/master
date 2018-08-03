@@ -1,117 +1,86 @@
-<div id="page-title"><h2>WiFi4EU - ABAC Interface</h2></div>
-<div class="abac-interface-wrapper">
-	<ux-layout-page-header pageSubtitle="Legal Entity (LE)"></ux-layout-page-header>
-	<div class="row">
-		<div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Create LEs in ABAC from WIFI4EU portal file"
-	    		subLabel="Based on the file given by Wifi4eu portal, this button will import all parameters necessary for the WIFI4EU Interface to create the data. Wifi4eu will launch request in ABAC."
-	    		[isClickable]="true"
-	    		(click)="showUpload('lef')"
-	    	></ux-dashboard-card>
-	    	<input type="file" class="abac-upload" id="abac-upload-lef" (change)="importLegalEntity($event)"/>
-	    </div>
-	    <div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Check Status of LEs in ABAC"
-	    		subLabel="This button will display a table with information about the status of the LEs in ABAC."
-	    		[isClickable]="true"
-	    		url="/screen/status/lef"
-	    	></ux-dashboard-card>
-	    </div>
-	    <div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Export LEs data"
-	    		subLabel="This button will export a .csv file with data from ABAC (including the status) for importing into the portal."
-	    		[isClickable]="true"
-	    		urlExternal="legalEntity/export"
-	    	></ux-dashboard-card>
-	    </div>
+<div class="content-wrapper">
+	<div id="page-title"><h2>WiFi4EU - ABAC Interface</h2></div>
+	<div class="abac-interface-wrapper">
+		<ux-layout-page-header pageSubtitle="Legal Entity (LE)"></ux-layout-page-header>
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+		    	<ux-dashboard-card
+		    		label="Create LEs in ABAC from WIFI4EU portal file"
+		    		subLabel="Based on the file given by Wifi4eu portal, this button will import all parameters necessary for the WIFI4EU Interface to create the data. Wifi4eu will launch request in ABAC."
+		    		[isClickable]="true"
+		    		(click)="showUpload('lef')"
+		    	></ux-dashboard-card>
+		    	<input type="file" class="abac-upload" id="abac-upload-lef" (change)="importLegalEntity($event)"/>
+		    </div>
+		    <div class="col-md-6">
+		    	<ux-dashboard-card
+		    		label="Export LEs data"
+		    		subLabel="This button will export a .csv file with data from ABAC (including the status) for importing into the portal."
+		    		[isClickable]="true"
+		    		urlExternal="legalEntity/export"
+		    	></ux-dashboard-card>
+		    </div>
+		</div>
+		<ux-layout-page-header pageSubtitle="Budgetary Commitment (BC)"></ux-layout-page-header>
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+		    	<ux-dashboard-card
+		    		label="Create BCs in ABAC from WIFI4EU portal file"
+		    		subLabel="This button will import all parameters necessary for the Wifi4eu Interface to create the data and it will create the BCs in ABAC."
+		    		[isClickable]="true"
+		    		(click)="showUpload('bc')"
+		    	></ux-dashboard-card>
+		    	<input type="file" class="abac-upload" id="abac-upload-bc" (change)="importBudgetaryCommitment($event)"/>
+		    </div>
+		    <div class="col-md-6">
+		    	<ux-dashboard-card
+		    		label="Export BC Data"
+		    		subLabel="This button will export a .csv file with data from ABAC for importing into the portal."
+		    		[isClickable]="true"
+		    		urlExternal="budgetaryCommitment/export"
+		    	></ux-dashboard-card>
+		    </div>
+		</div>
+		<ux-layout-page-header pageSubtitle="Legal Commitment (LC)"></ux-layout-page-header>
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+		    	<ux-dashboard-card
+		    		label="Create LCs in ABAC from WIFI4EU portal file"
+		    		subLabel="This button will import all parameters necessary for the WIFI4EU Interface to create the data and it will create the LCs in ABAC."
+		    		[isClickable]="true"
+		    		(click)="showUpload('lc')"
+		    	></ux-dashboard-card>
+		    	<input type="file" class="abac-upload" id="abac-upload-lc" (change)="importLegalCommitment($event)"/>
+		    </div>
+		    <div class="col-md-6">
+		    	<ux-dashboard-card
+		    		label="Export LCs data"
+		    		subLabel="This button will export a .csv file with data from ABAC for importing into the portal."
+		    		[isClickable]="true"
+		    		urlExternal="legalCommitment/export"
+		    	></ux-dashboard-card>
+		    </div>
+		</div>
+		<ux-layout-page-header pageSubtitle="Bank Account (BA)"></ux-layout-page-header>
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+		    	<ux-dashboard-card
+		    		label="Export BAs to Portal"
+		    		subLabel="This button will export all parameters necessary for the WIFI4EU interface to create the data."
+		    		[isClickable]="true"
+		    		(click)="todo($event)"
+		    	></ux-dashboard-card>
+		    </div>
+		    <div class="col-md-6">
+		    	<ux-dashboard-card
+		    		label="Import BAF from ABAC interface"
+		    		subLabel="This button will import the ABAC reference numbers into the portal."
+		    		[isClickable]="true"
+		    		(click)="todo($event)"
+		    	></ux-dashboard-card>
+		    </div>
+		</div>
 	</div>
-	<ux-layout-page-header pageSubtitle="Budgetary Commitment (BC)"></ux-layout-page-header>
-	<div class="row">
-		<div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Create BCs in ABAC from WIFI4EU portal file"
-	    		subLabel="This button will import all parameters necessary for the Wifi4eu Interface to create the data and it will create the BCs in ABAC."
-	    		[isClickable]="true"
-	    		(click)="showUpload('bc')"
-	    	></ux-dashboard-card>
-	    	<input type="file" class="abac-upload" id="abac-upload-bc" (change)="importBudgetaryCommitment($event)"/>
-	    </div>
-	    <div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Check Status of BCs in ABAC"
-	    		subLabel="This button will display a table with information about the status of the BCs in ABAC."
-	    		[isClickable]="true"
-	    		(click)="todo($event)"
-	    	></ux-dashboard-card>
-	    </div>
-	    <div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Export BC Data"
-	    		subLabel="This button will export a .csv file with data from ABAC for importing into the portal."
-	    		[isClickable]="true"
-	    		urlExternal="budgetaryCommitment/export"
-	    	></ux-dashboard-card>
-	    </div>
-	</div>
-	<ux-layout-page-header pageSubtitle="Legal Commitment (LC)"></ux-layout-page-header>
-	<div class="row">
-		<div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Create LCs in ABAC from WIFI4EU portal file"
-	    		subLabel="This button will import all parameters necessary for the WIFI4EU Interface to create the data and it will create the LCs in ABAC."
-	    		[isClickable]="true"
-	    		(click)="showUpload('lc')"
-	    	></ux-dashboard-card>
-	    	<input type="file" class="abac-upload" id="abac-upload-lc" (change)="importLegalCommitment($event)"/>
-	    </div>
-	    <div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Check Status of LCs in ABAC"
-	    		subLabel="This button will display a table with information about the status of the LCs in ABAC."
-	    		[isClickable]="true"
-	    		(click)="todo($event)"
-	    	></ux-dashboard-card>
-	    </div>
-	    <div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Export LCs data"
-	    		subLabel="This button will export a .csv file with data from ABAC for importing into the portal."
-	    		[isClickable]="true"
-	    		urlExternal="legalCommitment/export"
-	    	></ux-dashboard-card>
-	    </div>
-	</div>
-	<ux-layout-page-header pageSubtitle="Bank Account (BA)"></ux-layout-page-header>
-	<div class="row">
-		<div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Export BAs to Portal"
-	    		subLabel="This button will export all parameters necessary for the WIFI4EU interface to create the data."
-	    		[isClickable]="true"
-	    		(click)="todo($event)"
-	    	></ux-dashboard-card>
-	    </div>
-	    <div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Check Status of BAs"
-	    		subLabel="This button will display a table with information about the status of the BAs in ABAC."
-	    		[isClickable]="true"
-	    		(click)="todo($event)"
-	    	></ux-dashboard-card>
-	    </div>
-	    <div class="col-md-4">
-	    	<ux-dashboard-card
-	    		label="Import BAF from ABAC interface"
-	    		subLabel="This button will import the ABAC reference numbers into the portal."
-	    		[isClickable]="true"
-	    		(click)="todo($event)"
-	    	></ux-dashboard-card>
-	    </div>
-	</div>
+	<ux-message-box id="messagebox_file_import_success" titleLabel="SUCCESS" typeClass="success" messageBoxType="ok"><p>File was successfully imported!</p></ux-message-box>
+	<ux-message-box id="messagebox_file_import_fail" titleLabel="ERROR" typeClass="danger" messageBoxType="ok"><p>An error has occurred! The file was not imported!</p></ux-message-box>
 </div>
-<ux-message-box id="messagebox_file_import_success" titleLabel="SUCCESS" typeClass="success" messageBoxType="ok"><p>File was successfully imported!</p></ux-message-box>
-<ux-message-box id="messagebox_file_import_fail" titleLabel="ERROR" typeClass="danger" messageBoxType="ok"><p>An error has occurred! The file was not imported!</p></ux-message-box>
-

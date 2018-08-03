@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ApiModule } from '../../../shared/api.module';
 import { ResponseDTO } from '../../../shared/model/ResponseDTO';
 import { UxMessageBoxComponent } from '@eui/ux-commons';
@@ -9,71 +10,66 @@ import { UxService } from '@eui/ux-core';
 })
 export class HomeComponent{
   
-    private importFile: File;
-
+    private lefUploadProgress: number;
+    private bcUploadProgress: number;
+    private lcUploadProgress: number;
+  
     constructor(protected api: ApiModule, protected uxService: UxService){
     }
   
     importLegalEntity(event){
         if (event && event.target && event.target.files && event.target.files.length === 1) {
-            this.importFile = event.target.files['0'];
-            let reader = new FileReader();
-            reader.onload = (e) => {
-                this.api.importLegalEntity(reader.result).subscribe(
-                    (response: ResponseDTO) => {
-                        if (response.success) {
-                            this.uxService.openMessageBox('messagebox_file_import_success');
-                        } else {
-                            this.uxService.openMessageBox('messagebox_file_import_fail');
-                        }
-                    }, error => {
-                        this.uxService.openMessageBox('messagebox_file_import_fail');
+            let file: File = event.target.files['0'];
+            this.api.importLegalEntity(file).subscribe(
+                uploadEvent => {
+                    if (uploadEvent.type === HttpEventType.UploadProgress) {
+                        this.lefUploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
+                    } else if (uploadEvent instanceof HttpResponse) {
+                        this.uxService.openMessageBox('messagebox_file_import_success');
                     }
-                );
-            };
-            reader.readAsText(this.importFile);
+                },
+                (err) => {
+                    this.uxService.openMessageBox('messagebox_file_import_fail');
+                }
+            );
+            
         }
     }
   
     importBudgetaryCommitment(event){
         if (event && event.target && event.target.files && event.target.files.length === 1) {
-            this.importFile = event.target.files['0'];
-            let reader = new FileReader();
-            reader.onload = (e) => {
-                this.api.importBudgetaryCommitment(reader.result).subscribe(
-                    (response: ResponseDTO) => {
-                        if (response.success) {
-                            this.uxService.openMessageBox('messagebox_file_import_success');
-                        } else {
-                            this.uxService.openMessageBox('messagebox_file_import_fail');
-                        }
-                    }, error => {
-                        this.uxService.openMessageBox('messagebox_file_import_fail');
+            let file: File = event.target.files['0'];
+            this.api.importBudgetaryCommitment(file).subscribe(
+                uploadEvent => {
+                    if (uploadEvent.type === HttpEventType.UploadProgress) {
+                        this.bcUploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
+                    } else if (uploadEvent instanceof HttpResponse) {
+                        this.uxService.openMessageBox('messagebox_file_import_success');
                     }
-                );
-            };
-            reader.readAsText(this.importFile);
+                },
+                (err) => {
+                    this.uxService.openMessageBox('messagebox_file_import_fail');
+                }
+            );
+            
         }
     }
   
     importLegalCommitment(event){
         if (event && event.target && event.target.files && event.target.files.length === 1) {
-            this.importFile = event.target.files['0'];
-            let reader = new FileReader();
-            reader.onload = (e) => {
-                this.api.importLegalCommitment(reader.result).subscribe(
-                    (response: ResponseDTO) => {
-                        if (response.success) {
-                            this.uxService.openMessageBox('messagebox_file_import_success');
-                        } else {
-                            this.uxService.openMessageBox('messagebox_file_import_fail');
-                        }
-                    }, error => {
-                        this.uxService.openMessageBox('messagebox_file_import_fail');
+            let file: File = event.target.files['0'];
+            this.api.importLegalCommitment(file).subscribe(
+                uploadEvent => {
+                    if (uploadEvent.type === HttpEventType.UploadProgress) {
+                        this.lcUploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
+                    } else if (uploadEvent instanceof HttpResponse) {
+                        this.uxService.openMessageBox('messagebox_file_import_success');
                     }
-                );
-            };
-            reader.readAsText(this.importFile);
+                },
+                (err) => {
+                    this.uxService.openMessageBox('messagebox_file_import_fail');
+                }
+            );
         }
     }
   
