@@ -639,7 +639,7 @@ public class BeneficiaryService {
 
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(true);
-        response.setXTotalCount(beneficiaryFinalListItemDTOList.size());
+        response.setXTotalCount(beneficiaryFinalListItemRepository.countBeneficiariesFromFinalList(callId));
         response.setData(beneficiaryFinalListItemDTOList);
         return response;
     }
