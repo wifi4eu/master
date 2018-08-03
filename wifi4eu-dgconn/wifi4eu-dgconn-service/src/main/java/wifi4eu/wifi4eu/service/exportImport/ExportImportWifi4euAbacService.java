@@ -62,7 +62,7 @@ import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.ExportFileUtilities;
+import wifi4eu.wifi4eu.util.ExportFileUtils;
 
 /**
  * @author jlopezri
@@ -113,14 +113,14 @@ public class ExportImportWifi4euAbacService {
 	RegistrationService registrationService;
 
 	@Autowired
-	ExportFileUtilities exportFileUtilities;
+	ExportFileUtils exportFileUtilities;
 
 	@Autowired
 	HttpServletRequest httpServletRequest;
 
-	private static final String FILENAME_EXPORT_DOCUMENTS_DATA = "exportBeneficiaryDocuments.csv";
+	private static final String FILENAME_EXPORT_DOCUMENTS_DATA = "portal_exportBeneficiaryDocuments.csv";
 
-	private static final String FILENAME_EXPORT_BENEFICIARIES_DATA = "exportBeneficiaryInformation.csv";
+	private static final String FILENAME_EXPORT_BENEFICIARIES_DATA = "portal_exportBeneficiaryInformation.csv";
 
 	private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
 
@@ -236,15 +236,15 @@ public class ExportImportWifi4euAbacService {
 		// Address include the address street and number, and must be between quotes to
 		// escape the comma ","
 		beneficiaryInformation.setMun_address(
-				ExportFileUtilities.QUOTE + beneficiaryInformation.getMun_address() + ExportFileUtilities.QUOTE);
+				ExportFileUtils.QUOTE + beneficiaryInformation.getMun_address() + ExportFileUtils.QUOTE);
 
-		csvBeneficiaryData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtilities.SEPARATOR)
-				.append(beneficiaryInformation.getMun_name()).append(ExportFileUtilities.SEPARATOR)
-				.append(beneficiaryInformation.getMun_address()).append(ExportFileUtilities.SEPARATOR)
-				.append(beneficiaryInformation.getMun_postalCode()).append(ExportFileUtilities.SEPARATOR)
-				.append(beneficiaryInformation.getMun_city()).append(ExportFileUtilities.SEPARATOR)
-				.append(beneficiaryInformation.getMun_countryCodeISO()).append(ExportFileUtilities.SEPARATOR)
-				.append(beneficiaryInformation.getMun_languageCodeISO()).append(ExportFileUtilities.SEPARATOR)
+		csvBeneficiaryData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_name()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_address()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_postalCode()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_city()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_countryCodeISO()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_languageCodeISO()).append(ExportFileUtils.SEPARATOR)
 				.append(beneficiaryInformation.getMun_registrationNumber());
 		csvBeneficiaryData.append("\r\n");
 	}
@@ -289,12 +289,12 @@ public class ExportImportWifi4euAbacService {
 			_log.warn("No document was specified for register: " + beneficiaryInformation.getMun_registrationNumber());
 		}
 
-		csvDocumentData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtilities.SEPARATOR)
-				.append(beneficiaryInformation.getDoc_portalId()).append(ExportFileUtilities.SEPARATOR)
-				.append(beneficiaryInformation.getDoc_name()).append(ExportFileUtilities.SEPARATOR)
-				.append(beneficiaryInformation.getDoc_fileName()).append(ExportFileUtilities.SEPARATOR)
-				.append(beneficiaryInformation.getDoc_mimeType()).append(ExportFileUtilities.SEPARATOR)
-				.append(beneficiaryInformation.getDoc_date()).append(ExportFileUtilities.SEPARATOR)
+		csvDocumentData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_portalId()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_name()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_fileName()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_mimeType()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_date()).append(ExportFileUtils.SEPARATOR)
 				.append(beneficiaryInformation.getDoc_type());
 		csvDocumentData.append("\r\n");
 

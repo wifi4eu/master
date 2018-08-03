@@ -20,7 +20,7 @@ import wifi4eu.wifi4eu.entity.exportImport.ExportFile;
 import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euAbacService;
 
 @Service
-public class ExportFileUtilities {
+public class ExportFileUtils {
 
 	public static final String SEPARATOR = ",";
 	public static final String QUOTE = "\"";
