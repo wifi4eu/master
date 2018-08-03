@@ -523,6 +523,7 @@
   "shared.remove.label": "Remove",
   "shared.uploadDocuments": "Upload documents",
   "shared.documentsUploaded": "Documents added on {{date}} at {{time}}",
+  "shared.documentsSubmitted": "Documents submitted on {{date}} at {{time}}",
   "shared.link.seeDetails": "See details",
   "benefPortal.myVoucher.title.text": "My voucher",
   "benefPortal.myVoucher.title.subtext": "As a beneficiary, you can first sign the grant agreement, then select a Wi-Fi installation company and finally confirm the installation of the WiFi4EU network.",
