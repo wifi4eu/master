@@ -2,15 +2,22 @@ package wifi4eu.wifi4eu.service.exportImport;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +35,6 @@ import wifi4eu.wifi4eu.common.dto.model.ExportImportBeneficiaryInformationDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportBudgetaryCommitmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
@@ -36,12 +42,14 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.helper.ParserCSV2JSON;
 import wifi4eu.wifi4eu.common.helper.ParserJSON2CSV;
+import wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation;
 import wifi4eu.wifi4eu.entity.exportImport.ExportFile;
 import wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBeneficiaryInformationMapper;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBudgetaryCommitmentMapper;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
+import wifi4eu.wifi4eu.repository.exportImport.BeneficiaryInformationRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportBeneficiaryInformationRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportBudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
@@ -53,9 +61,7 @@ import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.DateUtilities;
 import wifi4eu.wifi4eu.util.ExportFileUtilities;
 
 /**
@@ -83,6 +89,9 @@ public class ExportImportWifi4euAbacService {
 	ExportImportBudgetaryCommitmentRepository exportImportBudgetaryCommitmentRepository;
 
 	@Autowired
+	BeneficiaryInformationRepository beneficiaryInformationRepository;
+
+	@Autowired
 	ValidatedLefRepository validatedLefRepository;
 
 	@Autowired
@@ -104,12 +113,6 @@ public class ExportImportWifi4euAbacService {
 	RegistrationService registrationService;
 
 	@Autowired
-	LegalFilesService legalFileService;
-
-	@Autowired
-	DateUtilities dateUtilities;
-
-	@Autowired
 	ExportFileUtilities exportFileUtilities;
 
 	@Autowired
@@ -122,7 +125,7 @@ public class ExportImportWifi4euAbacService {
 	private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
 
 	@Transactional
-	public boolean importLegalEntityFBCValidate() throws Exception {
+	public boolean importLegalEntityFBCValidate() throws IOException {
 		_log.info("importLegalEntityFBCValidate");
 		JFileChooser fc = new JFileChooser();
 		fc.setAcceptAllFileFilterUsed(false);
@@ -179,38 +182,117 @@ public class ExportImportWifi4euAbacService {
 		return false;
 	}
 
-	public ByteArrayOutputStream exportBeneficiaryInformation() throws Exception {
+	public ByteArrayOutputStream exportBeneficiaryInformation() {
 		_log.info("exportBeneficiaryInformation");
 
 		List<ExportFile> exportFiles = new ArrayList<ExportFile>();
 
-		List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation = exportImportBeneficiaryInformationMapper
-				.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findExportImportBI()));
+		List<BeneficiaryInformation> applicationsBeneficiaryInformation = Lists.newArrayList(
+				beneficiaryInformationRepository.getBeneficiariesInformationSignedAndNotCounterSigned());
+		//		exportImportBeneficiaryInformationRepository.getBeneficiariesInformationSignedAndNotCounterSigned());
 
-		/**
-		 * Commented because the JSON approach doesn't provide the values for all the
-		 * required fields.
-		 */
-		// if (applicationsBeneficiaryInformation != null &&
-		// !applicationsBeneficiaryInformation.isEmpty()) {
-		// // Generate JSON from the list of beneficiaries (original code)
-		// JsonArray result =
-		// generateJsonWithMunicipalitiesToExport(applicationsBeneficiaryInformation);
-		// String beneficiaryDataJSON = result.toString();
-		//
-		// // Generate CSV from JSON (parser)
-		// String csvData = ParserJSON2CSV.parseJSON2CSV(beneficiaryDataJSON,
-		// "beneficiaryInformation",
-		// new String[] { "id", "mun_OfficialName", "mun_OfficialAddress", "org_Name",
-		// "org_TypeCode",
-		// "sup_Name", "sup_BankAccount", "reg_RegistartionNumber" });
-		// }
+		// Preparation for the Beneficiary CSV file
+		StringBuilder csvBeneficiaryData = new StringBuilder();
+		csvBeneficiaryData.append(exportFileUtilities.generateCSVHeaders(exportFileUtilities.csvMunicipalitiesHeaders))
+				.append("\r\n");
 
-		includeBeneficiariesDataToExport(exportFiles, applicationsBeneficiaryInformation);
+		// Preparation for the Documents CSV file
+		StringBuilder csvDocumentData = new StringBuilder();
+		csvDocumentData.append(exportFileUtilities.generateCSVHeaders(exportFileUtilities.csvDocumentHeaders))
+				.append("\r\n");
 
-		includeDocumentsDataToExport(exportFiles, applicationsBeneficiaryInformation);
+		if (applicationsBeneficiaryInformation != null && !applicationsBeneficiaryInformation.isEmpty()) {
+
+			for (BeneficiaryInformation beneficiaryInformation : applicationsBeneficiaryInformation) {
+				processBeneficiaryInformation(beneficiaryInformation, csvBeneficiaryData);
+				processDocumentInformation(beneficiaryInformation, csvDocumentData, exportFiles);
+			}
+		}
+
+		// Add the Beneficiary CSV file
+		ExportFile csvBeneficiariesFile = new ExportFile(FILENAME_EXPORT_BENEFICIARIES_DATA,
+				csvBeneficiaryData.toString().getBytes());
+		exportFiles.add(csvBeneficiariesFile);
+
+		// Add the Document CSV file
+		ExportFile csvDocumentsFile = new ExportFile(FILENAME_EXPORT_DOCUMENTS_DATA,
+				csvDocumentData.toString().getBytes());
+		exportFiles.add(csvDocumentsFile);
 
 		return exportFileUtilities.generateZipFileStream(exportFiles);
+
+	}
+
+	private void processBeneficiaryInformation(BeneficiaryInformation beneficiaryInformation,
+			StringBuilder csvBeneficiaryData) {
+		// Language code is stored as ISO 2 and should be ISO 3
+		String langCode = beneficiaryInformation.getMun_languageCodeISO();
+		if (langCode != null && !langCode.isEmpty()) {
+			Locale locale = new Locale(langCode);
+			beneficiaryInformation.setMun_languageCodeISO(locale.getISO3Language());
+		} else {
+			_log.warn("No language was specified for register: " + beneficiaryInformation.getMun_registrationNumber());
+		}
+
+		csvBeneficiaryData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getMun_name()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getMun_address()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getMun_postalCode()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getMun_city()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getMun_countryCodeISO()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getMun_languageCodeISO()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getMun_registrationNumber());
+		csvBeneficiaryData.append("\r\n");
+	}
+
+	private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation,
+			StringBuilder csvDocumentData, List<ExportFile> exportFiles) {
+		// Those values are not in database, hardcoded
+		String prefix = "doc" + beneficiaryInformation.getMun_id();
+		beneficiaryInformation.setDoc_name(prefix);
+		beneficiaryInformation.setDoc_type("GRANT AGREEMENT SIGNATURE");
+
+		// Recover file from the URL
+		String docURL = beneficiaryInformation.getDoc_location();
+		if (docURL != null && !docURL.isEmpty()) {
+			URL urlObject = null;
+			try {
+				urlObject = new URL(docURL);
+			} catch (MalformedURLException e) {
+				_log.error("Error with the assigned URL: " + docURL, e);
+			}
+			if (urlObject != null) {
+				// Get file name
+				String urlPath = urlObject.getPath();
+				String fileName = urlPath.substring(urlPath.lastIndexOf('/') + 1);
+				beneficiaryInformation.setDoc_fileName(fileName);
+				// Get mimetype based on file name
+				String mimetype = URLConnection.guessContentTypeFromName(fileName);
+				beneficiaryInformation.setDoc_mimeType(mimetype);
+				try (InputStream in = urlObject.openStream()) {
+					// Get file bytes
+					byte[] docBytes = IOUtils.toByteArray(in);
+					// Add file to export
+					ExportFile doc = new ExportFile(prefix + beneficiaryInformation.getDoc_fileName(), docBytes);
+					exportFiles.add(doc);
+				} catch (IOException e) {
+					_log.error("Error recovering file contents from: " + docURL, e);
+				}
+			} else {
+				_log.warn("The URL for the document was not valid: " + docURL);
+			}
+		} else {
+			_log.warn("No document was specified for register: " + beneficiaryInformation.getMun_registrationNumber());
+		}
+
+		csvDocumentData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_portalId()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_name()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_mimeType()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_date()).append(ExportFileUtilities.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_type());
+		csvDocumentData.append("\r\n");
+
 	}
 
 	/**
@@ -237,109 +319,6 @@ public class ExportImportWifi4euAbacService {
 		result.add(rootElement);
 
 		return result;
-	}
-
-	/**
-	 * Generates a CSV file which includes the beneficiaries data to export.
-	 * 
-	 * @param exportFiles
-	 * @param applicationsBeneficiaryInformation
-	 * @return
-	 */
-	private void includeBeneficiariesDataToExport(List<ExportFile> exportFiles,
-			List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation) {
-		StringBuilder csvData = new StringBuilder();
-
-		// Generate headers of the CSV file
-		csvData.append(exportFileUtilities.generateCSVHeaders(exportFileUtilities.csvMunicipalitiesHeaders))
-				.append("\r\n");
-
-		if (applicationsBeneficiaryInformation != null && !applicationsBeneficiaryInformation.isEmpty()) {
-
-			// Gather data of the CSV file
-			for (ExportImportBeneficiaryInformationDTO exportImportBeneficiaryInformationDTO : applicationsBeneficiaryInformation) {
-				String name = exportImportBeneficiaryInformationDTO.getMun_OfficialName();
-				String address = exportImportBeneficiaryInformationDTO.getMun_OfficialAddress();
-				Integer munId = exportImportBeneficiaryInformationDTO.getId();
-				MunicipalityDTO municipality = municipalityService.getMunicipalityById(munId);
-				String postalCode = municipality.getPostalCode();
-				Integer lauId = municipality.getLauId();
-				LauDTO lau = lauService.getLauById(lauId);
-				String city = lau.getName2();
-				String countryCode = lau.getCountryCode();
-				Integer regId = exportImportBeneficiaryInformationDTO.getReg_RegistartionNumber();
-				RegistrationDTO registration = registrationService.getRegistrationById(regId);
-
-				// TODO jlopezri Recover language code - only found a 2 char code language in
-				// the users table, but not sure which user we should check. Hardcoded language
-				// code to test.
-				String langCode = "en";
-
-				csvData.append(munId).append(exportFileUtilities.SEPARATOR).append(name)
-						.append(exportFileUtilities.SEPARATOR).append(address).append(exportFileUtilities.SEPARATOR)
-						.append(postalCode).append(exportFileUtilities.SEPARATOR).append(city)
-						.append(exportFileUtilities.SEPARATOR).append(countryCode).append(exportFileUtilities.SEPARATOR)
-						.append(langCode).append(exportFileUtilities.SEPARATOR).append(regId);
-				csvData.append("\r\n");
-			}
-		}
-
-		// Add CSV with the documents list
-		ExportFile csvBeneficiariesData = new ExportFile(FILENAME_EXPORT_BENEFICIARIES_DATA,
-				csvData.toString().getBytes());
-		exportFiles.add(csvBeneficiariesData);
-	}
-
-	/**
-	 * Generates a CSV file and includes it in the list of files to export, also it
-	 * includes the related documents (grant signed) to the municipalities to
-	 * export).
-	 * 
-	 * @param exportFiles
-	 * @param applicationsBeneficiaryInformation
-	 * @return
-	 */
-	private void includeDocumentsDataToExport(List<ExportFile> exportFiles,
-			List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation) {
-		StringBuilder csvData = new StringBuilder();
-
-		// Generate headers of the CSV file
-		csvData.append(exportFileUtilities.generateCSVHeaders(exportFileUtilities.csvDocumentHeaders)).append("\r\n");
-
-		if (applicationsBeneficiaryInformation != null && !applicationsBeneficiaryInformation.isEmpty()) {
-
-			// Gather data of the CSV file and include the files into the list
-			for (ExportImportBeneficiaryInformationDTO exportImportBeneficiaryInformationDTO : applicationsBeneficiaryInformation) {
-				Integer munId = exportImportBeneficiaryInformationDTO.getId();
-				Integer regId = exportImportBeneficiaryInformationDTO.getReg_RegistartionNumber();
-				RegistrationDTO registration = registrationService.getRegistrationById(regId);
-
-				// TODO jlopezri Recover legal file - assumption: we have to recover legal_file1
-				LegalFileDTO legalFile = legalFileService.getLegalFileByRegistrationIdFileType(regId,
-						Integer.valueOf(1));
-
-				if (legalFile != null) {
-					// Generate CSV entry
-					String name = "file" + legalFile.getId();
-					String mimetype = legalFile.getFileMime();
-					String date = dateUtilities.convertDate2String(legalFile.getUploadTime());
-					String type = "GRANT AGREEMENT SIGNATURE";
-					csvData.append(munId).append(exportFileUtilities.SEPARATOR).append(legalFile.getId())
-							.append(exportFileUtilities.SEPARATOR).append(name).append(exportFileUtilities.SEPARATOR)
-							.append(mimetype).append(exportFileUtilities.SEPARATOR).append(date)
-							.append(exportFileUtilities.SEPARATOR).append(type);
-					csvData.append("\r\n");
-
-					// Add file to export
-					ExportFile exportFile = new ExportFile(name, legalFile.getFileData().getBytes());
-					exportFiles.add(exportFile);
-				}
-			}
-		}
-
-		// Add CSV with the documents list
-		ExportFile csvDocumentsData = new ExportFile(FILENAME_EXPORT_DOCUMENTS_DATA, csvData.toString().getBytes());
-		exportFiles.add(csvDocumentsData);
 	}
 
 	public void exportRegistrationData() throws Exception {
