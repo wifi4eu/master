@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
 
+import java.util.Date;
 import java.util.List;
 
 public interface LegalFileCorrectionReasonRepository extends CrudRepository<LegalFileCorrectionReason, Integer> {
@@ -28,4 +29,7 @@ public interface LegalFileCorrectionReasonRepository extends CrudRepository<Lega
     @Transactional
     @Query(value = "UPDATE legal_files_correction_reason SET request_correction = 0, correction_reason = NULL WHERE registration =  ?#{[0]} AND type =  ?#{[1]}", nativeQuery = true)
     void clearCorrectionReason(int registrationId, int type);
+
+    @Query(value = "SELECT COUNT(0) FROM legal_files_correction_reason WHERE request_correction IS NOT NULL AND correction_reason IS NOT NULL AND (request_correction_date IS NOT NULL AND request_correction_date > ?#{[0]})", nativeQuery = true)
+    int countLegalFileCorrectionsAfterDate(Date date);
 }

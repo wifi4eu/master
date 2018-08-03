@@ -2,11 +2,9 @@ package wifi4eu.wifi4eu.common.dto.model;
 
 
 public class ApplicationAuthorizedPersonDTO {
-
-
-    int id;
-    int applicationId;
-    int authorized_person;
+    Integer id;
+    Integer applicationId;
+    Integer authorized_person;
 
     public ApplicationAuthorizedPersonDTO() {
     }
