@@ -176,11 +176,12 @@ public class ApplicationInvalidateReasonService {
 
         applicationDBO.setStatus(ApplicationStatus.OK.getValue());
         deleteInvalidateReasonByApplicationId(applicationDBO.getId());
-        ApplicationAuthorizedPersonDTO authorizedPersonDTO = new ApplicationAuthorizedPersonDTO();
-        authorizedPersonDTO.setAuthorized_person(applicationDTO.getAuthorizedPerson());
-        authorizedPersonDTO.setApplicationId(applicationDTO.getId());
-        ApplicationAuthorizedPersonDTO saveApplicationAuthorizedPerson = applicant_authorizedPersonMapper.toDTO(application_authorizedPersonRepository.save(applicant_authorizedPersonMapper.toEntity(authorizedPersonDTO)));
-//        applicationDBO.setAuthorizedPerson(applicationDTO.getAuthorizedPerson());
+        if(applicationDTO.getAuthorizedPerson() != null){
+            ApplicationAuthorizedPersonDTO authorizedPersonDTO = new ApplicationAuthorizedPersonDTO();
+            authorizedPersonDTO.setAuthorized_person(applicationDTO.getAuthorizedPerson());
+            authorizedPersonDTO.setApplicationId(applicationDTO.getId());
+            applicant_authorizedPersonMapper.toDTO(application_authorizedPersonRepository.save(applicant_authorizedPersonMapper.toEntity(authorizedPersonDTO)));
+        }
         legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDBO.getRegistrationId());
         ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
 
