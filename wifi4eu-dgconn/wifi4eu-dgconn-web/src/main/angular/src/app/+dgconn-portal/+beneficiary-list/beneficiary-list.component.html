@@ -138,7 +138,7 @@
               <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>
             </span>
           </div>
-          <p-paginator class="paginator-panel" #paginator (onPageChange)="paginateData($event)" [rows]="itemsPerPage" [first]="currentPage * sizePage"
+          <p-paginator class="paginator-panel" #paginator (onPageChange)="paginateData($event)" [rows]="sizePage" [first]="currentPage * sizePage"
             [rowsPerPageOptions]="sizePageOptions" [totalRecords]="totalItems">
           </p-paginator>
         </footer>
