@@ -189,7 +189,7 @@
                           <span pTooltip="{{row.municipalityName}}" tooltipPosition="bottom">{{row.municipalityName}}</span>
                         </ng-template>
                       </p-column>
-                      <p-column field="issues" header="{{'dgConn.voucherAssignment.table.issues' | translate}}"
+                      <p-column field="issues" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.issues' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <div *ngIf="row.registrationWarningDTO.length > 0">
@@ -219,7 +219,7 @@
                       </p-column>
                       <p-column header="{{'dgConn.voucherAssignment.table.action' | translate}}" styleClass="text-center not-hide-overflow">
                         <ng-template let-rowData="rowData" pTemplate="body">
-                          <div style="position:relative;" (click)="op.show($event)" *ngIf="!callVoucherAssignment?.hasFreezeListSaved">
+                          <div style="position:relative; cursor: pointer;" (click)="op.show($event)" *ngIf="!callVoucherAssignment?.hasFreezeListSaved">
                             <p-overlayPanel #op>
                               <div class="row">
                                 <a (click)="goToMunicipality(rowData.lau)">
