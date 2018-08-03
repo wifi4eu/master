@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
@@ -185,7 +186,7 @@ public class ApplicationInvalidateReasonService {
         }
 
         RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDBO.getRegistrationId());
-        LogEmailDTO email = municipalityService.getCorrespondenceByMunicipalityIdAndAction(registrationDTO.getMunicipalityId(), "sendCorrectionEmails");
+        LogEmailDTO email = municipalityService.getCorrespondenceByMunicipalityIdAndAction(registrationDTO.getMunicipalityId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
 
         if(email == null){
             checks.put("invalidate", true);

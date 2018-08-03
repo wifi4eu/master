@@ -11,6 +11,7 @@ import { MunicipalityApi } from "../../../shared/swagger/api/MunicipalityApi";
 import { RegistrationApi } from "../../../shared/swagger/api/RegistrationApi";
 import { ThreadApi } from "../../../shared/swagger/api/ThreadApi";
 import { UserApi } from "../../../shared/swagger/api/UserApi";
+import { VoucherApi } from "../../../shared/swagger/api/VoucherApi";
 import { ApplicationDTOBase } from "../../../shared/swagger/model/ApplicationDTO";
 import { MayorDTOBase } from "../../../shared/swagger/model/MayorDTO";
 import { MunicipalityDTOBase } from "../../../shared/swagger/model/MunicipalityDTO";
@@ -20,6 +21,7 @@ import { ThreadMessageDTOBase } from "../../../shared/swagger/model/ThreadMessag
 import { ResponseDTOBase, ResponseDTO } from "../../../shared/swagger/model/ResponseDTO";
 import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { LegalFileCorrectionReasonDTOBase } from "../../../shared/swagger/model/LegalFileCorrectionReasonDTO";
+import { VoucherAssignmentAuxiliarDTOBase } from "../../../shared/swagger/model/VoucherAssignmentAuxiliarDTO";
 import { TranslateService } from "ng2-translate";
 import * as FileSaver from "file-saver";
 import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi, LogEmailDTO, LegalFileDTOBase } from "../../../shared/swagger";
@@ -28,7 +30,7 @@ import { Observable } from "rxjs/Observable";
 
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
-    providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi, InvalidateReasonApi, ApplicationcommentApi],
+    providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi, InvalidateReasonApi, ApplicationcommentApi, VoucherApi],
     styleUrls: ['./applicant-registrations-details.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
@@ -74,9 +76,11 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private displayInvalidate = false;
     private displayRequestCorrection = false;
     private displayCorrespondenceDetail = false;
+    private displayCommentModal = false;
+    private displaySimulation = false;
     private loadingData = false;
     private processingRequest = false;
-    private displayCommentModal = false;
+    private simulationExists = false;
     private contactUsers: UserDTOBase[][] = [];
 
     private correctionRequested: LegalFileCorrectionReasonDTOBase[] = [];
@@ -119,6 +123,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         private userApi: UserApi,
         private municipalityApi: MunicipalityApi,
         private mayorApi: MayorApi,
+        private voucherApi: VoucherApi,
         private translateService: TranslateService,
         private location: Location
     ) {
@@ -258,6 +263,15 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     if (thread) {
                         this.discussionThread = thread;
                         this.displayedMessages = thread.messages;
+                    }
+                }
+            );
+            this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callId).subscribe(
+                (data: VoucherAssignmentAuxiliarDTOBase) => {
+                    if (data != null) {
+                        if (!data.hasFreezeListSaved) {
+                            this.simulationExists = true;
+                        }
                     }
                 }
             );
@@ -416,6 +430,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.applicationComment = '';
         this.displayCommentModal = false;
         this.displayCorrespondenceDetail = false;
+        this.displaySimulation = false;
     }
 
     private selectCorrectionReason() {
@@ -477,6 +492,9 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
                     this.closeModal();
                     this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
+                    if (this.simulationExists) {
+                        this.displaySimulation = true;
+                    }
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
                     this.closeModal();
@@ -654,5 +672,15 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 return 0;
             }
         });
+    }
+
+    private rerunVoucherSimulation() {
+        this.processingRequest = true;
+        this.voucherApi.simulateVoucherAssignment(this.callId).subscribe(
+            (resp: ResponseDTO) => {
+                this.displaySimulation = false;
+                this.processingRequest = false;
+            }
+        );
     }
 }
