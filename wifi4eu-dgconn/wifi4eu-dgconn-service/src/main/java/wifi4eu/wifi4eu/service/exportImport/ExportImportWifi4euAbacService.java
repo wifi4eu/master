@@ -62,6 +62,7 @@ import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.DateUtils;
 import wifi4eu.wifi4eu.util.ExportFileUtils;
 
 /**
@@ -114,6 +115,9 @@ public class ExportImportWifi4euAbacService {
 
 	@Autowired
 	ExportFileUtils exportFileUtilities;
+
+	@Autowired
+	DateUtils dateUtilities;
 
 	@Autowired
 	HttpServletRequest httpServletRequest;
@@ -255,7 +259,7 @@ public class ExportImportWifi4euAbacService {
 		String prefix = "doc" + beneficiaryInformation.getMun_id();
 		beneficiaryInformation.setDoc_name(prefix);
 		beneficiaryInformation.setDoc_type("GRANT AGREEMENT SIGNATURE");
-
+		
 		// Recover file from the URL
 		String docURL = beneficiaryInformation.getDoc_location();
 		if (docURL != null && !docURL.isEmpty()) {
@@ -294,7 +298,7 @@ public class ExportImportWifi4euAbacService {
 				.append(beneficiaryInformation.getDoc_name()).append(ExportFileUtils.SEPARATOR)
 				.append(beneficiaryInformation.getDoc_fileName()).append(ExportFileUtils.SEPARATOR)
 				.append(beneficiaryInformation.getDoc_mimeType()).append(ExportFileUtils.SEPARATOR)
-				.append(beneficiaryInformation.getDoc_date()).append(ExportFileUtils.SEPARATOR)
+				.append(dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date())).append(ExportFileUtils.SEPARATOR)
 				.append(beneficiaryInformation.getDoc_type());
 		csvDocumentData.append("\r\n");
 
