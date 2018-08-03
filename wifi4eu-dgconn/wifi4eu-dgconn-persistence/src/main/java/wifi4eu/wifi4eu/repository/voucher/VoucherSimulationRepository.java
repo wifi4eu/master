@@ -36,8 +36,8 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
     @Query(value = "UPDATE applications SET pre_selected_flag = ?1 WHERE id IN (SELECT application FROM voucher_simulations WHERE voucher_assignment = ?2)", nativeQuery = true)
     void updateApplicationsInVoucherSimulationByVoucherAssignment(int status, int idVoucherAssignment);
 
-    @Query("SELECT vs FROM VoucherSimulation vs WHERE vs.application.id IN :applications")
-    VoucherSimulation findVoucherSimulationByApplicationId(@Param("applications") List<Integer> applicationID);
+    @Query("SELECT vs FROM VoucherSimulation vs INNER JOIN vs.voucherAssignment va WHERE vs.application.id IN :applications AND va.call.id =:callId AND va.status =:status")
+    VoucherSimulation findVoucherSimulationByApplicationId(@Param("applications") List<Integer> applicationID,@Param("callId")  Integer callId,@Param("status")  Integer status);
 
     /** Methods for sorting by municipalityName */
 
