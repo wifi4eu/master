@@ -161,6 +161,14 @@
                     <br>
                 </div>
             </div>
+            <div class="ui-g-12">
+              <div class="paginator" style="position: relative;">
+                <p-paginator class="paginator-panel" [first]="page * pageSize" [rows]="pageSize" totalRecords="{{totalRecords}}" #paginator (onPageChange)="paginateSimilarSuppliers($event)" [rowsPerPageOptions]="itemsPerPageSelector"></p-paginator>
+                <div class="totalRecords" style="position: absolute; top: 50%; transform: translateY(-50%)">
+                    <span style="color: #929292;">{{ 'dgConn.totalRecords' | translate }}: {{totalRecords}} </span>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
     <br><br>

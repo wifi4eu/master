@@ -233,6 +233,24 @@ public class SupplierResource {
         return supplierService.findSimilarSuppliers(supplierId);
     }
 
+    @ApiOperation(value = "Get suppliers that have the same VAT and/or Account Number as the specific supplier paged")
+    @RequestMapping(value = "/similarSuppliers/paged/{supplierId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO findSimilarSuppliersPaged(@PathVariable("supplierId") final Integer supplierId, @RequestParam("offset") Integer offset, @RequestParam("size") Integer size ,HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to find similar suppliers", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+        return supplierService.findSimilarSuppliersPaged(supplierId, offset,  size);
+    }
+
     @ApiOperation(value = "Request legal documents")
     @RequestMapping(value = "/requestLegalDocuments/{supplierId}", method = RequestMethod.POST)
     @ResponseBody
