@@ -35,8 +35,8 @@ export class SupplierRegistrationStep3Component {
         this.user.email = this.supplier.contactEmail;
         this.user.name = this.supplier['contactName'];
         this.user.surname = this.supplier['contactSurname'];
-        this.user.phonePrefix = this.supplier['contactPhonePrefix'];
-        this.user.phoneNumber = this.supplier['contactPhoneNumber'];
+        this.supplier.contactPrefix = this.supplier['contactPhonePrefix'];
+        this.supplier.contactNumber = this.supplier['contactPhoneNumber'];
         this.supplier['users'] = []
         this.supplier.users.push(this.user);
         this.supplierChange.emit(this.supplier);
