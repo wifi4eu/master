@@ -3347,7 +3347,7 @@ cacache@^10.0.1, cacache@^10.0.4:
     promise-inflight "^1.0.1"
     rimraf "^2.6.2"
     ssri "^5.2.4"
-    unique-filename "^1.1.0"
+    unique-fileName "^1.1.0"
     y18n "^4.0.0"
 
 cache-base@^1.0.1:
@@ -5838,19 +5838,19 @@ file-type@^4.1.0:
   version "4.4.0"
   resolved "https://ecdevops.eu/repository/npm-all/file-type/-/file-type-4.4.0.tgz#1b600e5fca1fbdc6e80c0a70c71c8dba5f7906c5"
 
-filename-regex@^2.0.0:
+fileName-regex@^2.0.0:
   version "2.0.1"
-  resolved "https://ecdevops.eu/repository/npm-all/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
+  resolved "https://ecdevops.eu/repository/npm-all/fileName-regex/-/fileName-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
 
-filename-reserved-regex@^1.0.0:
+fileName-reserved-regex@^1.0.0:
   version "1.0.0"
-  resolved "https://ecdevops.eu/repository/npm-all/filename-reserved-regex/-/filename-reserved-regex-1.0.0.tgz#e61cf805f0de1c984567d0386dc5df50ee5af7e4"
+  resolved "https://ecdevops.eu/repository/npm-all/fileName-reserved-regex/-/fileName-reserved-regex-1.0.0.tgz#e61cf805f0de1c984567d0386dc5df50ee5af7e4"
 
 filenamify@^1.0.1:
   version "1.2.1"
   resolved "https://ecdevops.eu/repository/npm-all/filenamify/-/filenamify-1.2.1.tgz#a9f2ffd11c503bed300015029272378f1f1365a5"
   dependencies:
-    filename-reserved-regex "^1.0.0"
+    fileName-reserved-regex "^1.0.0"
     strip-outer "^1.0.0"
     trim-repeated "^1.0.0"
 
@@ -8762,7 +8762,7 @@ micromatch@^2.1.5, micromatch@^2.3.11, micromatch@^2.3.7:
     braces "^1.8.2"
     expand-brackets "^0.1.4"
     extglob "^0.3.1"
-    filename-regex "^2.0.0"
+    fileName-regex "^2.0.0"
     is-extglob "^1.0.0"
     is-glob "^2.0.1"
     kind-of "^3.0.2"
@@ -11024,9 +11024,9 @@ require-from-string@^2.0.1:
   version "2.0.2"
   resolved "https://ecdevops.eu/repository/npm-all/require-from-string/-/require-from-string-2.0.2.tgz#89a7fdd938261267318eafe14f9c32e598c36909"
 
-require-main-filename@^1.0.1:
+require-main-fileName@^1.0.1:
   version "1.0.1"
-  resolved "https://ecdevops.eu/repository/npm-all/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
+  resolved "https://ecdevops.eu/repository/npm-all/require-main-fileName/-/require-main-fileName-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
 
 requires-port@^1.0.0:
   version "1.0.0"
@@ -12897,9 +12897,9 @@ uniqs@^2.0.0:
   version "2.0.0"
   resolved "https://ecdevops.eu/repository/npm-all/uniqs/-/uniqs-2.0.0.tgz#ffede4b36b25290696e6e165d4a59edb998e6b02"
 
-unique-filename@^1.1.0:
+unique-fileName@^1.1.0:
   version "1.1.0"
-  resolved "https://ecdevops.eu/repository/npm-all/unique-filename/-/unique-filename-1.1.0.tgz#d05f2fe4032560871f30e93cbe735eea201514f3"
+  resolved "https://ecdevops.eu/repository/npm-all/unique-fileName/-/unique-fileName-1.1.0.tgz#d05f2fe4032560871f30e93cbe735eea201514f3"
   dependencies:
     unique-slug "^2.0.0"
 
@@ -13677,7 +13677,7 @@ yargs@11.0.0:
     get-caller-file "^1.0.1"
     os-locale "^2.0.0"
     require-directory "^2.1.1"
-    require-main-filename "^1.0.1"
+    require-main-fileName "^1.0.1"
     set-blocking "^2.0.0"
     string-width "^2.0.0"
     which-module "^2.0.0"
@@ -13695,7 +13695,7 @@ yargs@6.6.0:
     os-locale "^1.4.0"
     read-pkg-up "^1.0.1"
     require-directory "^2.1.1"
-    require-main-filename "^1.0.1"
+    require-main-fileName "^1.0.1"
     set-blocking "^2.0.0"
     string-width "^1.0.2"
     which-module "^1.0.0"
@@ -13712,7 +13712,7 @@ yargs@^10.0.3, yargs@^10.1.2:
     get-caller-file "^1.0.1"
     os-locale "^2.0.0"
     require-directory "^2.1.1"
-    require-main-filename "^1.0.1"
+    require-main-fileName "^1.0.1"
     set-blocking "^2.0.0"
     string-width "^2.0.0"
     which-module "^2.0.0"
@@ -13736,7 +13736,7 @@ yargs@^7.0.0:
     os-locale "^1.4.0"
     read-pkg-up "^1.0.1"
     require-directory "^2.1.1"
-    require-main-filename "^1.0.1"
+    require-main-fileName "^1.0.1"
     set-blocking "^2.0.0"
     string-width "^1.0.2"
     which-module "^1.0.0"
@@ -13754,7 +13754,7 @@ yargs@^8.0.1, yargs@^8.0.2:
     os-locale "^2.0.0"
     read-pkg-up "^2.0.0"
     require-directory "^2.1.1"
-    require-main-filename "^1.0.1"
+    require-main-fileName "^1.0.1"
     set-blocking "^2.0.0"
     string-width "^2.0.0"
     which-module "^2.0.0"

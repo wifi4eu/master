@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.enums.LegalEntityImportCSVColumn;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 import wifi4eu.wifi4eu.abac.utils.csvparser.AbstractCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
@@ -42,5 +44,20 @@ public class LegalEntityService {
 		log.info("parsing list of items");
 		String csvFile = legalEntityCSVFileParser.exportLegalEntitiesToCSV(legalEntities);
 		return csvFile;
+	}
+
+	public LegalEntity mapLegalEntityCSVToEntity(LegalEntityInformationCSVRow legalEntityInformationCSVRow) {
+		LegalEntity legalEntity = new LegalEntity();
+
+		legalEntityInformationCSVRow.setMid(legalEntityInformationCSVRow.getMid());
+		legalEntityInformationCSVRow.setOfficialName(legalEntityInformationCSVRow.getOfficialName());
+		legalEntityInformationCSVRow.setOfficialAddress(legalEntityInformationCSVRow.getOfficialAddress());
+		legalEntityInformationCSVRow.setPostalCode(legalEntityInformationCSVRow.getPostalCode());
+		legalEntityInformationCSVRow.setCity(legalEntityInformationCSVRow.getCity());
+		legalEntityInformationCSVRow.setCountryCode(legalEntityInformationCSVRow.getCountryCode());
+		legalEntityInformationCSVRow.setLanguageCode(legalEntityInformationCSVRow.getLanguageCode());
+		legalEntityInformationCSVRow.setRegistrationNumber(legalEntityInformationCSVRow.getRegistrationNumber());
+
+		return legalEntity;
 	}
 }

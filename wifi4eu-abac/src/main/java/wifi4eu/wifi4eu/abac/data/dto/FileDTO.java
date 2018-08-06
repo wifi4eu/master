@@ -6,6 +6,10 @@ public class FileDTO {
 	private Long size;
 	byte[] content;
 
+	public FileDTO() {
+
+	}
+
 	public FileDTO(String fileName, Long size, byte[] content) {
 		this.fileName = fileName;
 		this.size = size;

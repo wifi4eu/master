@@ -2,16 +2,10 @@ package wifi4eu.wifi4eu.abac.utils.csvparser;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
-import wifi4eu.wifi4eu.abac.data.entity.Document;
-import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.data.enums.LegalEntityImportCSVColumn;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

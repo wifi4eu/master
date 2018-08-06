@@ -14,14 +14,14 @@ public class Document {
 	@Id
 	@Column(name = "ID", unique = true, nullable = false, precision = 18, scale = 0)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "docIDGenerator")
-	@SequenceGenerator(name = "docIDGenerator", sequenceName = "SEQ_DOCUMENTS", allocationSize = 1)
+	@SequenceGenerator(name = "docIDGenerator", sequenceName = "SEQ_DOCUMENT", allocationSize = 1)
 	private Long id;
 
 	@Column(name = "portal_id")
 	private Long portalId;
 
-	@Column(name="filename")
-	private String filename;
+	@Column(name="file_name")
+	private String fileName;
 
 	@Column(name="portal_date")
 	private Date portalDate;
@@ -43,10 +43,10 @@ public class Document {
 	@Column(name = "ares_date")
 	private Date aresDate;
 
-	@Column(name = "size")
+	@Column(name = "file_size")
 	private Long size;
 
-	@Column(name = "mimetypecity", length = 50)
+	@Column(name = "mimetype", length = 50)
 	private String mimetype;
 
 	@Column(name = "wf_status", length = 20)
@@ -59,13 +59,14 @@ public class Document {
 	@Column(name = "date_updated", length = 20)
 	private Date dateUpdated;
 
-	@Column(name = "type")
+	@Column(name = "document_type")
 	@Enumerated
 	private DocumentType type;
 
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
+		this.wfStatus = AbacWorkflowStatusEnum.READY_FOR_ABAC;
 	}
 
 	public Long getId() {
@@ -172,12 +173,12 @@ public class Document {
 		this.legalEntity = legalEntity;
 	}
 
-	public String getFilename() {
-		return filename;
+	public String getFileName() {
+		return fileName;
 	}
 
-	public void setFilename(String filename) {
-		this.filename = filename;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	public Date getPortalDate() {
