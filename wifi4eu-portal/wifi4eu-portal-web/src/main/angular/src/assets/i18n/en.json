@@ -953,5 +953,6 @@
   "benefPortal.grantAgreement.permissionsWarning.description ": "You are not authorized to sign the Grant Agreement because your documents are not yet validated",
   "shared.supportingDocuments.leavePage.title": "Are you sure you want to leave the page?",
   "shared.supportingDocuments.leavePage.body": "You have confirmed. This will discard any document you uploaded. If you wish to save the documents you uploaded, please return to the page and press Confirm. Are you sure you want to discard your documents?",
-  "shared.supportingDocuments.provide.mandatory": "Mandatory supporting documents to provide:"
+  "shared.supportingDocuments.provide.mandatory": "Mandatory supporting documents to provide:",
+  "benefPortal.profile.addNewContact.empty": "Please, complete the email field to add a new contact"
 }

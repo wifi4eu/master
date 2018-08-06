@@ -301,7 +301,7 @@ public class BeneficiaryResource {
                 throw new AppException("Already sent to this email");
             }
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Incorrect request when adding contacts for suppliers", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Incorrect request when adding contacts for beneficiaries", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }

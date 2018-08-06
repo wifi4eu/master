@@ -16,6 +16,7 @@ import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 import { ThreadApi } from "../../shared/swagger/api/ThreadApi";
 import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
+import {UserRegistrationDTOBase} from "../../shared/swagger/model/UserRegistrationDTO";
 
 // Languages functionality
 import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
@@ -29,9 +30,14 @@ import { UserDetailsService } from "../../core/services/user-details.service";
 
 export class BeneficiaryProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
-    private users: UserDTOBase[] = [];
+    // private users: UserDTOBase[] = [];
+    private users = {};
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
+    private addUser: boolean = false;
+    private addContact: boolean = false;
+    private newUserEmail: string = '';
+    private idMunicipalityNewContactUser: number = 0;
     private editedUser: UserDTOBase = new UserDTOBase();
     private editedMunicipality: MunicipalityDTOBase = new MunicipalityDTOBase();
     private editedMayor: MayorDTOBase = new MayorDTOBase();
@@ -99,7 +105,7 @@ export class BeneficiaryProfileComponent {
                                         );
                                         this.userApi.getUsersFromRegistration(registration.id).subscribe(
                                             (users: UserDTOBase[]) => {
-                                                    this.users = users;
+                                                this.users[registration.municipalityId] = users;
                                             }
                                         );
                                     }
@@ -340,6 +346,41 @@ export class BeneficiaryProfileComponent {
     }
 
     private goToEditProfile() {
-            this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
+        this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
+    }
+
+
+    private addNewContactToMunicipality(municipalityId: number){
+        alert(municipalityId);
+        this.idMunicipalityNewContactUser = municipalityId;
+        this.addUser = true;
+    }
+
+    private closeAddNewContactModal(){
+        this.newUserEmail = '';
+        this.addUser = false;
+    }
+
+    private addNewContact(){
+        if (this.newUserEmail.trim() != ''){
+            this.addContact = true;
+            let userRegistrationDTO: UserRegistrationDTOBase = new UserRegistrationDTOBase();
+            userRegistrationDTO.email = this.newUserEmail;
+            userRegistrationDTO.municipalityId = this.idMunicipalityNewContactUser;
+            this.beneficiaryApi.sendEmailToNewContact(userRegistrationDTO).subscribe(
+                (userRegistration: UserRegistrationDTOBase) => {
+                    this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
+                    this.closeModal();
+                }, error => {
+                    this.addContact = false;
+                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.closeModal();
+                }
+            );
+            this.newUserEmail = '';
+        } else {
+            this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
         }
+    }
+
 }
