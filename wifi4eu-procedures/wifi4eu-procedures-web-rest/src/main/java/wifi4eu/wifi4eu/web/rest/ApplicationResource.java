@@ -32,7 +32,7 @@ public class ApplicationResource {
 
     Logger _log = LogManager.getLogger(ApplicationResource.class);
 
-    @ApiOperation(value = "Get application by call and registration id")
+    @ApiOperation(value = "Send email to notify the applicandts for a given call id")
     @RequestMapping(value = "/sendApplicationEmails/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO sendApplicationEmails (@PathVariable("callId") final Integer callId) throws IOException {
@@ -45,7 +45,7 @@ public class ApplicationResource {
                 throw new AccessDeniedException("This user is not authorized to use this functionality.");
             Integer sentEmails = applicationService.sendEmailApplications(callId);
             if (sentEmails != null)
-                return new ResponseDTO(true, "SUCCESS - Create Application Emails", applicationService.sendEmailApplications(callId).longValue(), null);
+                return new ResponseDTO(true, "SUCCESS - Create Application Emails", sentEmails.longValue(), null);
             else
                 throw new Exception("ERROR - Could not create application emails");
         } catch (AccessDeniedException ade) {

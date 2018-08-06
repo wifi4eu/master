@@ -51,7 +51,7 @@ public class ApplicationService {
     @Autowired
     private CallRepository callRepository;
 
-    public void sendCreateApplicationEmail(User user, Municipality municipality, int applicationId) throws Exception {
+    public void sendCreateApplicationEmail(User user, Integer municipalityId, int applicationId) throws Exception {
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
         if (user.getLang() != null) {
             locale = new Locale(user.getLang());
@@ -62,9 +62,9 @@ public class ApplicationService {
         String subject = bundle.getString("mail.voucherApply.subject");
         String msgBody = bundle.getString("mail.voucherApply.body");
         if (!userService.isLocalHost()) {
-            mailService.sendEmailAsync(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "createApplication");
-            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
         }
+        mailService.sendEmailAsync(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityId, "createApplication");
+        _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
     }
 
 
@@ -72,14 +72,15 @@ public class ApplicationService {
         Integer sentEmails = 0;
         _log.debug("SCHEDULED TASK: Create Application Emails - STARTING");
         //in case of server failure also search for applications that weren't sent the email and that were created at least four hours ago
-        List<Application> applicationList = applicationRepository.findByCreateApplicationEmailNotSent(new Date().getTime(), callRepository.findOne(callId).getStartDate());
+        List<Application> applicationList = applicationRepository.findByCreateApplicationEmailNotSent(callId, new Date().getTime(), callRepository.findOne(callId).getStartDate());
         _log.info("SCHEDULED TASK: Create Application Emails - There is " + applicationList.size() + " municipalities to be sent the email in this " +
                 "last four hours.");
         for (Application app : applicationList) {
-            Municipality municipality = municipalityRepository.findByRegistrationId(app.getRegistrationId());
+            // Municipality municipality = municipalityRepository.findByRegistrationId(app.getRegistrationId());
+            Integer municipalityId = municipalityRepository.findByRegistrationId(app.getRegistrationId()).getId();
             User user = userRepository.findMainUserByRegistrationId(app.getRegistrationId());
-            if (municipality != null && user != null) {
-                applicationService.sendCreateApplicationEmail(user, municipality, app.getId());
+            if (municipalityId != null && user != null) {
+                applicationService.sendCreateApplicationEmail(user, municipalityId, app.getId());
                 sentEmails++;
             } else {
                 _log.error("SCHEDULED TASK: Create Application Emails - inconsistency in data. User or municipality is null. Application id: " +
