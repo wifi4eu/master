@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.common.utils;
 
 import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.helper.Validator;
 
 public class SupplierValidator {
 
@@ -9,8 +10,11 @@ public class SupplierValidator {
         if (supplierDTO.getStatus() != 0) {
             throw new Exception("Incorrect supplier status");
         }
-        if (supplierDTO.getAccountNumber() != null && supplierDTO.getAddress() != null && supplierDTO.getBic() != null && supplierDTO.getContactEmail() != null && supplierDTO.getName() != null && supplierDTO.getVat() != null
-                && supplierDTO.getAccountNumber().trim().isEmpty() || supplierDTO.getAddress().trim().isEmpty() || supplierDTO.getBic().trim().isEmpty() || supplierDTO.getContactEmail().trim().isEmpty() || supplierDTO.getName().trim().isEmpty() || supplierDTO.getVat().trim().isEmpty()) {
+
+        if ((Validator.isNull(supplierDTO.getAccountNumber()) || supplierDTO.getAccountNumber().trim().isEmpty()) || (Validator.isNull(supplierDTO.getAddress()) || supplierDTO.getAddress().trim().isEmpty())
+                || (Validator.isNull(supplierDTO.getBic()) || supplierDTO.getBic().trim().isEmpty()) || (Validator.isNull(supplierDTO.getBic()) || supplierDTO.getBic().trim().isEmpty())
+                || (Validator.isNull(supplierDTO.getContactEmail()) || supplierDTO.getContactEmail().trim().isEmpty()) || (Validator.isNull(supplierDTO.getName()) || supplierDTO.getName().trim().isEmpty())
+                || (Validator.isNull(supplierDTO.getVat()) || supplierDTO.getVat().trim().isEmpty())) {
             throw new Exception("Some field is empty!");
         }
     }
