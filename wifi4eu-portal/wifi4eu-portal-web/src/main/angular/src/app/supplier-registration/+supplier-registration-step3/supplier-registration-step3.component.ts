@@ -71,14 +71,15 @@ export class SupplierRegistrationStep3Component {
     // the changes in the model are like : this.supplier.contactName  ----> this.supplier['contactName'] 
     // please make sure that the info arrives correctly to the server and supplier is created with the correct data from the inputs!
     //
-    // private checkButtonEnabled(event){
-    //     if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
-    //     && this.supplier['contactPhoneNumber'] != null && this.supplier['contactPhonePrefix'] != null
-    //          && this.supplier['contactSurname'].trim() != "" && this.supplier.contactName.trim() != "" && this.supplier.contactPhoneNumber.trim() != "" && this.supplier.contactPhonePrefix.trim() != ""){
-    //             this.buttonEnabled = true;
-    //     }
-
-    //      //custom name validator
+     private checkButtonEnabled(event){
+         this.buttonEnabled = false;
+         if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
+          && this.supplier['contactPhoneNumber'] != null && this.supplier['contactPhonePrefix'] != null
+              && this.supplier['contactSurname'].trim() != "" && this.supplier['contactName'].trim() != "" && this.supplier['contactPhoneNumber'].trim() != "" && this.supplier['contactPhonePrefix'].trim() != ""){
+                 this.buttonEnabled = true;
+        }
+    }
+    //      //¡custom name validator
     //     if(this.supplier.contactName != null && this.supplier.contactName.trim() != ""){
     //         setTimeout(()=>{this.supplierForm.controls['contactName'].setErrors(null);} ,5);
     //     }else {
@@ -103,4 +104,5 @@ export class SupplierRegistrationStep3Component {
     //         setTimeout(()=>{this.supplierForm.controls['contactPhonePrefix'].setErrors({'invalid': true});} ,5);
     //     }
     // }
+
 }
