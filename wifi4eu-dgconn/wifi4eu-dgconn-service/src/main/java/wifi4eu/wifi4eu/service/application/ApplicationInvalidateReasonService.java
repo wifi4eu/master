@@ -10,20 +10,27 @@ import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.application.ApplicationInvalidateReason;
 import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
+import wifi4eu.wifi4eu.entity.voucher.SimpleMunicipality;
+import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicantAuthorizedPersonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicationAuthorizedPersonRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.application.ApplicationAuthorizedPersonRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
+import wifi4eu.wifi4eu.repository.voucher.SimpleMunicipalityRepository;
+import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -69,7 +76,11 @@ public class ApplicationInvalidateReasonService {
     @Autowired
     CorrectionRequestEmailRepository correctionRequestEmailRepository;
 
+    @Autowired
+    SimpleMunicipalityRepository simpleMunicipalityRepository;
 
+    @Autowired
+    VoucherSimulationRepository voucherSimulationRepository;
 
     @Autowired
     ApplicantAuthorizedPersonMapper applicant_authorizedPersonMapper;
@@ -83,6 +94,26 @@ public class ApplicationInvalidateReasonService {
 
     public void deleteInvalidateReasonByApplicationId(Integer applicationId){
         applicationInvalidateReasonRepository.deleteInvalidateReasonsByApplicationId(applicationId);
+    }
+
+    public void updateVoucherSimulationNumDuplicates(ApplicationDTO applicationDTO){
+        Integer lauId = simpleMunicipalityRepository.findLauFromApplication(applicationDTO.getId());
+
+        List<Application> applicationDTOS = applicationRepository.findByCallIdAndLauIdAndStatus(applicationDTO.getCallId(), lauId, ApplicationStatus.OK.getValue());
+
+        List<Integer> applicationIDS = new ArrayList<>();
+        for (Application appDTO: applicationDTOS) {
+            applicationIDS.add(appDTO.getId());
+        }
+
+        if(!applicationDTOS.isEmpty()){
+            VoucherSimulation vs = voucherSimulationRepository.findVoucherSimulationByApplicationId(applicationIDS, applicationDTO.getCallId(), VoucherAssignmentStatus.SIMULATION.getValue());
+
+            if(Validator.isNotNull(vs)){
+                vs.setNumApplications(applicationDTOS.size());
+                voucherSimulationRepository.save(vs);
+            }
+        }
     }
 
     public List<ApplicationInvalidateReasonDTO> invalidateApplication(InvalidReasonViewDTO invalidReasonViewDTO, HttpServletRequest request) {
@@ -102,7 +133,11 @@ public class ApplicationInvalidateReasonService {
         applicationDTO.setStatus(ApplicationStatus.KO.getValue());
         legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDTO.getRegistrationId());
         applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+
+        updateVoucherSimulationNumDuplicates(applicationDTO);
+
         List<ApplicationInvalidateReason> invalidateReason = applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntityList(applicationInvalidateReasonDTOS));
+
 
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
@@ -132,10 +167,6 @@ public class ApplicationInvalidateReasonService {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Validating application");
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
-        if (registration.getAllFilesFlag() != 1) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application can not be validated due to missing files");
-            throw new AppException();
-        }
         ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
         if (applicationDBO == null) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application does not exist");
@@ -144,14 +175,17 @@ public class ApplicationInvalidateReasonService {
 
         applicationDBO.setStatus(ApplicationStatus.OK.getValue());
         deleteInvalidateReasonByApplicationId(applicationDBO.getId());
-        ApplicationAuthorizedPersonDTO authorizedPersonDTO = new ApplicationAuthorizedPersonDTO();
-        authorizedPersonDTO.setAuthorized_person(applicationDTO.getAuthorizedPerson());
-        authorizedPersonDTO.setApplicationId(applicationDTO.getId());
-        ApplicationAuthorizedPersonDTO saveApplicationAuthorizedPerson = applicant_authorizedPersonMapper.toDTO(application_authorizedPersonRepository.save(applicant_authorizedPersonMapper.toEntity(authorizedPersonDTO)));
-//        applicationDBO.setAuthorizedPerson(applicationDTO.getAuthorizedPerson());
+        if (applicationDTO.getAuthorizedPerson() != null) {
+            ApplicationAuthorizedPersonDTO authorizedPersonDTO = new ApplicationAuthorizedPersonDTO();
+            authorizedPersonDTO.setAuthorized_person(applicationDTO.getAuthorizedPerson());
+            authorizedPersonDTO.setApplicationId(applicationDTO.getId());
+            applicant_authorizedPersonMapper.toDTO(application_authorizedPersonRepository.save(applicant_authorizedPersonMapper.toEntity
+                    (authorizedPersonDTO)));
+        }
         legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDBO.getRegistrationId());
         ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
+        updateVoucherSimulationNumDuplicates(applicationDTO);
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
         if (registration != null) {
             UserDTO user = userService.getUserById(registration.getUserId());
@@ -197,21 +231,22 @@ public class ApplicationInvalidateReasonService {
             checks.put("invalidate", true);
             checks.put("validate", true);
         } else {
-            Date sentDate = new Date(email.getSentDate());
+            Date emailSentDate = new Date(email.getSentDate());
             Calendar deadline = Calendar.getInstance();
-            deadline.setTime(sentDate);
+            deadline.setTime(emailSentDate);
             // Date plus 7 days (deadline)
             deadline.add(Calendar.DATE, 7);
+            Date currentTime = new Date();
 
             boolean valid = true;
             List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDBO.getRegistrationId());
             for (LegalFileCorrectionReason legalFileCorrectionReason: legalFileCorrectionReasons) {
                 if(legalFileCorrectionReason.getRequestCorrection()){
-                    if(legalFileCorrectionReason.getRequestCorrectionDate().after(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)){
+                    if(currentTime.after(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().before(emailSentDate)){
                         valid = true;
                         break;
                     }
-                    if(legalFileCorrectionReason.getRequestCorrectionDate().before(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().after(sentDate)){
+                    if(currentTime.before(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().before(emailSentDate)){
                         valid = false;
                     }
                 }

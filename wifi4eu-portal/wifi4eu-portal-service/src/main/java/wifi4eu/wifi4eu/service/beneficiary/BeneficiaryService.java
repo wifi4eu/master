@@ -9,15 +9,18 @@ import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.common.enums.UserHistoryActionList;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
+import wifi4eu.wifi4eu.mapper.history_action.UserHistoryActionMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
+import wifi4eu.wifi4eu.repository.history_action.UserHistoryActionRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -26,6 +29,7 @@ import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
@@ -46,6 +50,12 @@ public class BeneficiaryService {
 
     @Autowired
     BeneficiaryListItemRepository beneficiaryListItemRepository;
+
+    @Autowired
+    UserHistoryActionMapper userHistoryActionMapper;
+
+    @Autowired
+    UserHistoryActionRepository userHistoryActionRepository;
 
     @Autowired
     UserService userService;
@@ -82,9 +92,6 @@ public class BeneficiaryService {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    CallRepository callRepository;
 
     @Autowired
     ApplicationService applicationService;
@@ -624,5 +631,20 @@ public class BeneficiaryService {
 
     public boolean checkContactEmailWithMunicipality(String email, Integer municipalityId){
         return registrationUsersRepository.findByContactEmailAndMunicipality(email, municipalityId) != null;
+    }
+
+    public List<UserHistoryActionDTO> getUserHistoryActionsByUserIdAnCallId(Integer userId, Integer callId) {
+        List<UserHistoryActionDTO> actions = new ArrayList<>();
+        List<UserHistoryActionDTO> lfActions = userHistoryActionMapper.toDTOList(userHistoryActionRepository.findLegalFilesActionsHistoryByUserId(userId));
+        for (UserHistoryActionDTO lfAction : lfActions) {
+            lfAction.setActionPerformed(UserHistoryActionList.SUPPORTING_DOCUMENTS_UPLOADED.getActionPerformed());
+            actions.add(lfAction);
+        }
+        List<UserHistoryActionDTO> appActions = userHistoryActionMapper.toDTOList(userHistoryActionRepository.findApplicationActionsHistoryByUserIdAndCallId(userId, callId));
+        for (UserHistoryActionDTO appAction : appActions) {
+            appAction.setActionPerformed(UserHistoryActionList.APPLICATION_SUBMITTED.getActionPerformed());
+            actions.add(appAction);
+        }
+        return actions;
     }
 }
