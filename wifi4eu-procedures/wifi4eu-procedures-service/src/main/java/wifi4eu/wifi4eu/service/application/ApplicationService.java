@@ -67,7 +67,6 @@ public class ApplicationService {
         _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
     }
 
-
     public Integer sendEmailApplications(Integer callId) throws Exception {
         Integer sentEmails = 0;
         _log.debug("SCHEDULED TASK: Create Application Emails - STARTING");
@@ -78,13 +77,19 @@ public class ApplicationService {
         for (Application app : applicationList) {
             // Municipality municipality = municipalityRepository.findByRegistrationId(app.getRegistrationId());
             Integer municipalityId = municipalityRepository.findByRegistrationId(app.getRegistrationId()).getId();
-            User user = userRepository.findMainUserByRegistrationId(app.getRegistrationId());
-            if (municipalityId != null && user != null) {
-                applicationService.sendCreateApplicationEmail(user, municipalityId, app.getId());
-                sentEmails++;
+            // User user = userRepository.findMainUserByRegistrationId(app.getRegistrationId());
+            List<User> users = userRepository.findUsersByRegistrationId(app.getRegistrationId());
+            if(users) {
+                for (User user : users) {
+                    if (municipalityId != null && user != null) {
+                        applicationService.sendCreateApplicationEmail(user, municipalityId, app.getId());
+                        sentEmails++;
+                    } else {
+                        _log.error("SCHEDULED TASK: Create Application Emails - inconsistency in data. User or municipality is null. Application id: " + app.getId());
+                    }
+                }
             } else {
-                _log.error("SCHEDULED TASK: Create Application Emails - inconsistency in data. User or municipality is null. Application id: " +
-                        app.getId());
+                _log.error("SCHEDULED TASK: Create Application Emails - No users are related to the municipality. Application id: " + app.getId());
             }
         }
         _log.debug("SCHEDULED TASK: Create Application Emails - FINISHED");
