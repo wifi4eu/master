@@ -219,6 +219,9 @@ public class SupplierService {
                 userDTO.setType(1);
                 userDTO.setVerified(false);
                 userDTO.setLang(supplierDTO.getLang());
+                userDTO.setPhone_number(supplierDTO.getContactNumber());
+                userDTO.setPhone_prefix(supplierDTO.getContactPrefix());
+
 
                 userDTO.setEmail(supplierDTO.getContactEmail());
                 if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()) {
@@ -426,6 +429,7 @@ public class SupplierService {
         supplierUserDTO.setEmail(userEmail);
         supplierUserDTO.setCreationDate(new Date());
         supplierUserDTO.setSupplierId(supplierId);
+
 
         if (isMain) {
             supplierUserDTO.setStatus(SupplierUserStatus.ALREADY_REGISTERED.getStatus());

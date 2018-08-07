@@ -4,9 +4,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationWarningDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
+import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
+import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
@@ -19,10 +22,12 @@ public class VoucherSimulationExportGenerator<T> {
     private Class dataClass;
     private ArrayList<String> fieldNames;
     private ArrayList<String> displayedFieldNames;
+    private T parent;
 
-    public VoucherSimulationExportGenerator(List<T> data, Class dataClass) {
+    public VoucherSimulationExportGenerator(List<T> data, T parent, Class dataClass) {
         this.data = data;
         this.dataClass = dataClass;
+        this.parent = parent;
         generateFields();
     }
 
@@ -132,8 +137,10 @@ public class VoucherSimulationExportGenerator<T> {
             fieldNames.add("countryRank");
             displayedFieldNames.add("Country Rank");
 
-            displayedFieldNames.add("changes");
-            fieldNames.add("Changes");
+            if(((VoucherAssignmentDTO) parent).getStatus() != VoucherAssignmentStatus.FREEZE_LIST.getValue()){
+                displayedFieldNames.add("changes");
+                fieldNames.add("Changes");
+            }
 
             fieldNames.add("selectionStatus");
             displayedFieldNames.add("Selection Status");
