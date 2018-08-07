@@ -413,6 +413,7 @@ public class RegistrationService {
             legalFileDTO.setRequestCorrection(false);
         }
 
+        sendEmailNotifyingCorrection(legalFileDTO);
         return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
     }
 
