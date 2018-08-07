@@ -39,11 +39,10 @@ public class ApplicationResource {
     @ResponseBody
     public ResponseDTO sendApplicationEmails (@PathVariable("callId") final Integer callId) throws IOException {
         // more security?
-        // should the email be sent to all the users related to a registration? Not specified in BR?
+        // what if the call id does not exist?
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
-            // if(callId != null) {
                 if (userConnected.getType() != 5) {
                     throw new AccessDeniedException("This user is not authorized to use this functionality.");
                 }
@@ -56,17 +55,11 @@ public class ApplicationResource {
                 } else {
                     throw new Exception("ERROR - Could not create application emails");
                 }
-            /* } else {
-                return new ResponseDTO(false, "ERROR - There is not a call with id " + callId, null); 
-            } */
         } catch (AccessDeniedException ade) {
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
-
-
-    
 
 }

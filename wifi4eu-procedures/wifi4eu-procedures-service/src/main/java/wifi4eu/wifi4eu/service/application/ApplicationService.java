@@ -76,9 +76,7 @@ public class ApplicationService {
         _log.info("SCHEDULED TASK: Create Application Emails - There is " + applicationList.size() + " municipalities to be sent the email in this " +
                 "last four hours.");
         for (Application app : applicationList) {
-            // Municipality municipality = municipalityRepository.findByRegistrationId(app.getRegistrationId());
             Integer municipalityId = municipalityRepository.findByRegistrationId(app.getRegistrationId()).getId();
-            // User user = userRepository.findMainUserByRegistrationId(app.getRegistrationId());
             List<User> users = userRepository.findUsersByRegistrationId(app.getRegistrationId());
             if(users != null && !users.isEmpty()) {
                 for (User user : users) {
