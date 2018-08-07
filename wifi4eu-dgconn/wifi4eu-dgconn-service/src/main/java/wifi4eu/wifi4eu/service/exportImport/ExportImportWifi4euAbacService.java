@@ -126,6 +126,8 @@ public class ExportImportWifi4euAbacService {
 
 	private static final String FILENAME_EXPORT_BENEFICIARIES_DATA = "portal_exportBeneficiaryInformation.csv";
 
+	private static final String DOC_TYPE_GRANT_AGREEMENT_SIGNATURE = "GRANT_AGREEMENT_SIGNATURE";
+
 	private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
 
 	@Transactional
@@ -258,8 +260,8 @@ public class ExportImportWifi4euAbacService {
 		// Those values are not in database, hardcoded
 		String prefix = "doc" + beneficiaryInformation.getMun_id();
 		beneficiaryInformation.setDoc_name(prefix);
-		beneficiaryInformation.setDoc_type("GRANT AGREEMENT SIGNATURE");
-		
+		beneficiaryInformation.setDoc_type(DOC_TYPE_GRANT_AGREEMENT_SIGNATURE);
+
 		// Recover file from the URL
 		String docURL = beneficiaryInformation.getDoc_location();
 		if (docURL != null && !docURL.isEmpty()) {
@@ -273,7 +275,7 @@ public class ExportImportWifi4euAbacService {
 				// Get file name
 				String urlPath = urlObject.getPath();
 				String fileName = urlPath.substring(urlPath.lastIndexOf('/') + 1);
-				beneficiaryInformation.setDoc_fileName(fileName);
+				beneficiaryInformation.setDoc_fileName(prefix + fileName);
 				// Get mimetype based on file name
 				String mimetype = URLConnection.guessContentTypeFromName(fileName);
 				beneficiaryInformation.setDoc_mimeType(mimetype);
@@ -281,7 +283,7 @@ public class ExportImportWifi4euAbacService {
 					// Get file bytes
 					byte[] docBytes = IOUtils.toByteArray(in);
 					// Add file to export
-					ExportFile doc = new ExportFile(prefix + beneficiaryInformation.getDoc_fileName(), docBytes);
+					ExportFile doc = new ExportFile(beneficiaryInformation.getDoc_fileName(), docBytes);
 					exportFiles.add(doc);
 				} catch (IOException e) {
 					_log.error("Error recovering file contents from: " + docURL, e);
@@ -298,8 +300,8 @@ public class ExportImportWifi4euAbacService {
 				.append(beneficiaryInformation.getDoc_name()).append(ExportFileUtils.SEPARATOR)
 				.append(beneficiaryInformation.getDoc_fileName()).append(ExportFileUtils.SEPARATOR)
 				.append(beneficiaryInformation.getDoc_mimeType()).append(ExportFileUtils.SEPARATOR)
-				.append(dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date())).append(ExportFileUtils.SEPARATOR)
-				.append(beneficiaryInformation.getDoc_type());
+				.append(dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date()))
+				.append(ExportFileUtils.SEPARATOR).append(beneficiaryInformation.getDoc_type());
 		csvDocumentData.append("\r\n");
 
 	}
