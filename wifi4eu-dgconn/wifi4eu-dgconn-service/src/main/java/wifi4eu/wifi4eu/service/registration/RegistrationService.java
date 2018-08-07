@@ -536,4 +536,5 @@ public class RegistrationService {
             legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntityList(legalFileCorrectionReasonDTOList));
         }
     }
+
 }
