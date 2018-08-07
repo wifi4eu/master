@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { ApiModule } from '../../../shared/api.module';
-import { ResponseDTO } from '../../../shared/model/ResponseDTO';
+import { ResponseDTO } from '../../../shared/model/DTOs';
 import { UxMessageBoxComponent } from '@eui/ux-commons';
 import { UxService } from '@eui/ux-core';
  
@@ -10,26 +10,26 @@ import { UxService } from '@eui/ux-core';
 })
 export class HomeComponent{
   
-    private lefUploadProgress: number;
-    private bcUploadProgress: number;
-    private lcUploadProgress: number;
+    private errorMessage: string;
+    private uploadProgress: number;
   
     constructor(protected api: ApiModule, protected uxService: UxService){
     }
   
     importLegalEntity(event){
+        this.errorMessage = undefined;
         if (event && event.target && event.target.files && event.target.files.length === 1) {
             let file: File = event.target.files['0'];
             this.api.importLegalEntity(file).subscribe(
                 uploadEvent => {
                     if (uploadEvent.type === HttpEventType.UploadProgress) {
-                        this.lefUploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
+                        this.uploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
                     } else if (uploadEvent instanceof HttpResponse) {
-                        this.uxService.openMessageBox('messagebox_file_import_success');
+                        this.handleResponse(uploadEvent.body);
                     }
                 },
                 (err) => {
-                    this.uxService.openMessageBox('messagebox_file_import_fail');
+                    this.showError(undefined);
                 }
             );
             
@@ -37,18 +37,19 @@ export class HomeComponent{
     }
   
     importBudgetaryCommitment(event){
+        this.errorMessage = undefined;
         if (event && event.target && event.target.files && event.target.files.length === 1) {
             let file: File = event.target.files['0'];
             this.api.importBudgetaryCommitment(file).subscribe(
                 uploadEvent => {
                     if (uploadEvent.type === HttpEventType.UploadProgress) {
-                        this.bcUploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
+                        this.uploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
                     } else if (uploadEvent instanceof HttpResponse) {
-                        this.uxService.openMessageBox('messagebox_file_import_success');
+                        this.handleResponse(uploadEvent.body);
                     }
                 },
                 (err) => {
-                    this.uxService.openMessageBox('messagebox_file_import_fail');
+                    this.showError(undefined);
                 }
             );
             
@@ -56,18 +57,19 @@ export class HomeComponent{
     }
   
     importLegalCommitment(event){
+        this.errorMessage = undefined;
         if (event && event.target && event.target.files && event.target.files.length === 1) {
             let file: File = event.target.files['0'];
             this.api.importLegalCommitment(file).subscribe(
                 uploadEvent => {
                     if (uploadEvent.type === HttpEventType.UploadProgress) {
-                        this.lcUploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
+                        this.uploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
                     } else if (uploadEvent instanceof HttpResponse) {
-                        this.uxService.openMessageBox('messagebox_file_import_success');
+                        this.handleResponse(uploadEvent.body);
                     }
                 },
                 (err) => {
-                    this.uxService.openMessageBox('messagebox_file_import_fail');
+                    this.showError(undefined);
                 }
             );
         }
@@ -75,6 +77,24 @@ export class HomeComponent{
   
     importBankAccount(event){
         alert('importBankAccount: Not implemented yet');
+    }
+  
+    handleResponse(response: ResponseDTO){
+        this.errorMessage = undefined;
+        if (response.success) {
+            this.showSuccess();
+        } else {
+            this.showError(response.message);
+        }
+    }
+    
+    showError(message: string){
+        this.errorMessage = message;
+        this.uxService.openMessageBox('messagebox_file_import_fail');
+    }
+  
+    showSuccess(){
+        this.uxService.openMessageBox('messagebox_file_import_success');
     }
     
     showUpload(fieldClass: string){

@@ -81,6 +81,12 @@
 		    </div>
 		</div>
 	</div>
-	<ux-message-box id="messagebox_file_import_success" titleLabel="SUCCESS" typeClass="success" messageBoxType="ok"><p>File was successfully imported!</p></ux-message-box>
-	<ux-message-box id="messagebox_file_import_fail" titleLabel="ERROR" typeClass="danger" messageBoxType="ok"><p>An error has occurred! The file was not imported!</p></ux-message-box>
+	<ux-message-box id="messagebox_file_import_success" titleLabel="SUCCESS" typeClass="success" messageBoxType="ok">
+		<p>File was successfully imported!</p>
+	</ux-message-box>
+	<ux-message-box id="messagebox_file_import_fail" titleLabel="ERROR" typeClass="danger" messageBoxType="ok">
+		<p>An error has occurred!</p>
+		<p>{{errorMessage}}</p>
+		<p>The file was not imported!</p>
+	</ux-message-box>
 </div>
