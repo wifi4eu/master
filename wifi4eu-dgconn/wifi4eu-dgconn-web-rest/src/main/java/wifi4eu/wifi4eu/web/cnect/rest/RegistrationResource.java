@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
@@ -339,9 +340,12 @@ public class RegistrationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId + " and file id " + fileId);
         try {
-            if (registrationId == null || (!legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId) && userConnected.getType() != 5)) {
+
+            if (Validator.isNull(userConnected) || Validator.isNull(registrationId) || userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            boolean checkPermissions = legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId);
+
             permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
 
         } catch (AccessDeniedException ade) {
