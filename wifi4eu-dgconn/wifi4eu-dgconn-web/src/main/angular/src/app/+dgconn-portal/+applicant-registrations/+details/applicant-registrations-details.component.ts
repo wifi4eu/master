@@ -288,7 +288,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     }
                 }
             );
-
         } else {
             this.loadingData = false;
         }
