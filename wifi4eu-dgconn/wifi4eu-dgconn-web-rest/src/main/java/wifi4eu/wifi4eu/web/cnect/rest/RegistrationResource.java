@@ -491,7 +491,7 @@ public class RegistrationResource {
             return null;
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal files types with correction request cannot been retrieved", e);
-            return null;
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
 
