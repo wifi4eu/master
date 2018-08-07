@@ -67,8 +67,9 @@ public class ApplicationService {
         _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
     }
 
-    public Integer sendEmailApplications(Integer callId) throws Exception {
-        Integer sentEmails = 0;
+    public Integer[] sendEmailApplications(Integer callId) throws Exception {
+        Integer sentEmailsUsers = 0;
+        Integer sentEmailsMunicipalities = 0;
         _log.debug("SCHEDULED TASK: Create Application Emails - STARTING");
         //in case of server failure also search for applications that weren't sent the email and that were created at least four hours ago
         List<Application> applicationList = applicationRepository.findByCreateApplicationEmailNotSent(callId, new Date().getTime(), callRepository.findOne(callId).getStartDate());
@@ -79,11 +80,11 @@ public class ApplicationService {
             Integer municipalityId = municipalityRepository.findByRegistrationId(app.getRegistrationId()).getId();
             // User user = userRepository.findMainUserByRegistrationId(app.getRegistrationId());
             List<User> users = userRepository.findUsersByRegistrationId(app.getRegistrationId());
-            if(users) {
+            if(users != null && !users.isEmpty()) {
                 for (User user : users) {
                     if (municipalityId != null && user != null) {
                         applicationService.sendCreateApplicationEmail(user, municipalityId, app.getId());
-                        sentEmails++;
+                        sentEmailsUsers++;
                     } else {
                         _log.error("SCHEDULED TASK: Create Application Emails - inconsistency in data. User or municipality is null. Application id: " + app.getId());
                     }
@@ -91,9 +92,10 @@ public class ApplicationService {
             } else {
                 _log.error("SCHEDULED TASK: Create Application Emails - No users are related to the municipality. Application id: " + app.getId());
             }
+            sentEmailsMunicipalities++;
         }
         _log.debug("SCHEDULED TASK: Create Application Emails - FINISHED");
-        return sentEmails;
+        return new Integer[] {sentEmailsUsers, sentEmailsMunicipalities};
     }
 
 }
