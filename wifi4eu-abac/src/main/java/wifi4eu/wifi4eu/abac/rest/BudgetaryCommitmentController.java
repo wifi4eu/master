@@ -35,15 +35,15 @@ public class BudgetaryCommitmentController {
 	}
 
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
-	public ResponseVO importBudgetaryCommitment(@RequestBody String file) throws IOException {
+	public ResponseVO importBudgetaryCommitment(@RequestBody String file) {
 		log.info("importBudgetaryCommitment");
-
-		budgetaryCommitmentService.importBudgetaryCommitmentyContent(file);
-
-		// write result and return
 		ResponseVO result = new ResponseVO();
-		result.setSuccess(true);
-		result.setData("Imported OK!");
+		try {
+			budgetaryCommitmentService.importBudgetaryCommitmentyContent(file);
+			result.success("Imported OK!");
+		}catch(Exception e) {
+			result.error(e.getMessage());
+		}
 		return result;
 	}
 

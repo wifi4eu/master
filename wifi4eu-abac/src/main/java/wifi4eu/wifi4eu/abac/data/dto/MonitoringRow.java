@@ -12,9 +12,9 @@ public class MonitoringRow {
 	private String countryCode;
 	private String municipality;
 	private Long registrationNumber; 
-	private AbacWorkflowStatusEnum lefStatus;
-	private AbacWorkflowStatusEnum bcStatus;
-	private AbacWorkflowStatusEnum lcStatus;
+	private String lefStatus;
+	private String bcStatus;
+	private String lcStatus;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date signatureDate;
@@ -31,7 +31,7 @@ public class MonitoringRow {
 		this.countryCode = countryCode;
 		this.municipality = municipality;
 		this.registrationNumber = registrationNumber;
-		this.lefStatus = lefStatus;
+		this.lefStatus = lefStatus.getTitle();
 		this.bcStatus = null;
 		this.lcStatus = null;
 		this.signatureDate = signatureDate;
@@ -70,28 +70,40 @@ public class MonitoringRow {
 		this.registrationNumber = registrationNumber;
 	}
 
-	public AbacWorkflowStatusEnum getLefStatus() {
+	public String getLefStatus() {
 		return lefStatus;
 	}
 
-	public void setLefStatus(AbacWorkflowStatusEnum lefStatus) {
+	public void setLefStatus(String lefStatus) {
 		this.lefStatus = lefStatus;
 	}
+	
+	public void setLefStatus(AbacWorkflowStatusEnum lefStatus) {
+		this.lefStatus = lefStatus.getTitle();
+	}
 
-	public AbacWorkflowStatusEnum getBcStatus() {
+	public String getBcStatus() {
 		return bcStatus;
 	}
 
-	public void setBcStatus(AbacWorkflowStatusEnum bcStatus) {
+	public void setBcStatus(String bcStatus) {
 		this.bcStatus = bcStatus;
 	}
+	
+	public void setBcStatus(AbacWorkflowStatusEnum bcStatus) {
+		this.bcStatus = bcStatus.getTitle();
+	}
 
-	public AbacWorkflowStatusEnum getLcStatus() {
+	public String getLcStatus() {
 		return lcStatus;
 	}
 
-	public void setLcStatus(AbacWorkflowStatusEnum lcStatus) {
+	public void setLcStatus(String lcStatus) {
 		this.lcStatus = lcStatus;
+	}
+	
+	public void setLcStatus(AbacWorkflowStatusEnum lcStatus) {
+		this.lcStatus = lcStatus.getTitle();
 	}
 
 	public Date getSignatureDate() {
