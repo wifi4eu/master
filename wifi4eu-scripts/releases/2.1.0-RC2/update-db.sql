@@ -112,3 +112,13 @@ from [dbo].registrations r inner join
 --delete columns from registrations
 ALTER TABLE dbo.registrations DROP COLUMN upload_time, legal_file1_size, legal_file1_mime,
 legal_file2_size, legal_file2_mime, legal_file3_size, legal_file3_mime, legal_file4_size, legal_file4_mime, legal_file1, legal_file2, legal_file3, legal_file4;
+
+-- DB INDEXES CREATION - feature/WIFIFOREU-2884
+-- The following sql lines are used to create indexes to optimize the use of queries to the database
+CREATE NONCLUSTERED INDEX IX_municipality_name ON municipalities (name)
+CREATE NONCLUSTERED INDEX IX_users_ecasName_token ON users (ecas_username,csrf_token)
+CREATE NONCLUSTERED INDEX IX_calls_dates ON calls (start_date,end_date)
+CREATE NONCLUSTERED INDEX IX_registration_files_status ON registrations (allFiles_flag,_status)
+CREATE NONCLUSTERED INDEX IX_registrationusers_date_main ON registration_users (creation_date,main)
+CREATE NONCLUSTERED INDEX IX_rights_rightdesc ON rights (rightdesc)
+CREATE NONCLUSTERED INDEX IX_applications_status ON applications (_status)

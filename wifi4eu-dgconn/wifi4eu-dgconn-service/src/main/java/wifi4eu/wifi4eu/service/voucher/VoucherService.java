@@ -195,8 +195,9 @@ public class VoucherService {
     public byte[] exportVoucherSimulation(int voucherAssignmentId, String country, String municipalityName, Pageable pageable) {
         _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Downloading excel voucher simulation with parameters - voucherAssignment: " + voucherAssignmentId + "municipality: " + municipalityName + ", country: " + country);
         List<VoucherSimulationDTO> simulationDTOS = (List<VoucherSimulationDTO>) getVoucherSimulationByVoucherAssignment(voucherAssignmentId, country, municipalityName, pageable).getData();
+        VoucherAssignmentDTO voucherAssignmentDTO = getVoucherAssignmentById(voucherAssignmentId);
 
-        VoucherSimulationExportGenerator excelExportGenerator = new VoucherSimulationExportGenerator(simulationDTOS, VoucherSimulationDTO.class);
+        VoucherSimulationExportGenerator excelExportGenerator = new VoucherSimulationExportGenerator(simulationDTOS, voucherAssignmentDTO, VoucherSimulationDTO.class);
         return excelExportGenerator.exportExcelFile("voucher_simulation").toByteArray();
     }
 

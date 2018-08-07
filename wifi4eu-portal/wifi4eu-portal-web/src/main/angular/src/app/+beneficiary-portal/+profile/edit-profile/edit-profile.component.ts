@@ -449,7 +449,6 @@ export class BeneficiaryEditProfileComponent {
         );
 
         if (this.newMunicipalities.length > 0){
-            alert(this.newMunicipalities.length);
             this.submitNewMunicipalities();
         }
         if(this.registration.associationName != null && this.registration.associationName != ""){

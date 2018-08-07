@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
@@ -130,6 +131,15 @@ public class SupplierService {
 
     public List<SupplierDTO> findSimilarSuppliers(int supplierId) {
         return supplierMapper.toDTOList(supplierRepository.findSimilarSuppliers(supplierId));
+    }
+
+    public ResponseDTO findSimilarSuppliersPaged(int supplierId, int offset, int size){
+        List<SupplierDTO> suppliers = supplierMapper.toDTOList(supplierRepository.findSimilarSuppliersPaged(supplierId, offset , size));
+        Integer countQuery = supplierRepository.countSimilarSuppliersPaged(supplierId);
+        ResponseDTO response = new ResponseDTO();
+        response.setXTotalCount(countQuery);
+        response.setData(suppliers);
+        return response;
     }
 
     @Transactional

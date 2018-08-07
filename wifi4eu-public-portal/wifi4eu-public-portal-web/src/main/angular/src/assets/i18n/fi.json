@@ -829,7 +829,7 @@
   "dgConn.beneficiariesList.title": "View beneficiaries",
   "dgConn.beneficiariesList.table.registration": "Registration number",
   "dgConn.beneficiariesList.table.verifiedSign": "Verified to sign",
-  "dgConn.beneficiariesList.table.dateSignature": "\"Date of signature",
+  "dgConn.beneficiariesList.table.dateSignature": "Date of signature",
   "dgConn.beneficiariesList.table.dateCounterSignature": "Date of counter signature",
   "dgConn.beneficiariesList.status.selected": "Selected",
   "dgConn.beneficiariesList.status.signed": "Signed",
@@ -842,6 +842,5 @@
   "dgConn.beneficiariesList.cancel.failure": "An error has ocurred during terminate the beneficiary. Please, try again later\",",
   "dgConn.beneficiariesList.cancel.empty": "Please, complete the reason field to terminate the beneficiary",
   "dgconn.dashboard.card.beneficiaries.home": "Beneficiaries",
-  "dgConn.beneficiariesList.terminate": "Terminate",
-  "dgConn.requestCorrectionDate": "Request date"
+  "dgConn.beneficiariesList.terminate": "Terminate"
 }
