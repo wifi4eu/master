@@ -22,8 +22,10 @@ fi
 if [[ $2 = "" || $2 = *"wifi4eu-financial"* ]]; then
 npm install --prefix ./wifi4eu-financial/wifi4eu-financial-web/src/main/angular/
 fi
-echo "Install ECAS dependency"
-mvn install:install-file -Dfile=wifi4eu-dependencies/ecas-tomcat-8.0-4.22.0.jar  -DgroupId=eu.europa.ec.digit.iam.ecas.client -DartifactId=ecas-tomcat-8.0 -Dversion=4.22.0 -Dpackaging=jar
+echo "Install ecas-tomcat-8.0 dependency"
+mvn install:install-file -Dfile=wifi4eu-dependencies/ecas-tomcat-8.0-4.24.0-20180320.004350-3.jar  -DgroupId=eu.europa.ec.digit.iam.ecas.client -DartifactId=ecas-tomcat-8.0 -Dversion=4.24.0 -Dpackaging=jar
+echo "Install cns-client dependency"
+mvn install:install-file -Dfile=wifi4eu-dependencies/cns-client-1.1.jar  -DgroupId=eu.europa.ec.digit.cns -DartifactId=cns-client -Dversion=1.1 -Dpackaging=jar
 echo "Compile project"
 echo "Environment: $1"
 echo "Modules: $2"
