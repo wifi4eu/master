@@ -3,19 +3,10 @@ package wifi4eu.wifi4eu.abac.data.entity;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.PrePersist;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 
 @Entity
 @Table(name = "WIF_DOCUMENTS")
@@ -23,8 +14,21 @@ public class Document {
 	@Id
 	@Column(name = "ID", unique = true, nullable = false, precision = 18, scale = 0)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "docIDGenerator")
-	@SequenceGenerator(name = "docIDGenerator", sequenceName = "SEQ_DOCUMENTS", allocationSize = 1)
+	@SequenceGenerator(name = "docIDGenerator", sequenceName = "SEQ_DOCUMENT", allocationSize = 1)
 	private Long id;
+
+	@Column(name = "portal_id")
+	private Long portalId;
+
+	@Column(name="file_name")
+	private String fileName;
+
+	@Column(name="portal_date")
+	private Date portalDate;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="LEGAL_ENTITY_ID")
+	private LegalEntity legalEntity;
 
 	@Column(name = "name", length = 400)
 	private String name;
@@ -39,10 +43,10 @@ public class Document {
 	@Column(name = "ares_date")
 	private Date aresDate;
 
-	@Column(name = "size")
+	@Column(name = "file_size")
 	private Long size;
 
-	@Column(name = "mimetypecity", length = 50)
+	@Column(name = "mimetype", length = 50)
 	private String mimetype;
 
 	@Column(name = "wf_status", length = 20)
@@ -55,28 +59,14 @@ public class Document {
 	@Column(name = "date_updated", length = 20)
 	private Date dateUpdated;
 
-	public Document() {
-
-	}
-
-	public Document(Long id, String name, byte[] data, String aresReference, Date aresDate, Long size, String mimetype,
-			AbacWorkflowStatusEnum wfStatus, Date dateCreated, Date dateUpdated) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.data = data;
-		this.aresReference = aresReference;
-		this.aresDate = aresDate;
-		this.size = size;
-		this.mimetype = mimetype;
-		this.wfStatus = wfStatus;
-		this.dateCreated = dateCreated;
-		this.dateUpdated = dateUpdated;
-	}
+	@Column(name = "document_type")
+	@Enumerated
+	private DocumentType type;
 
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
+		this.wfStatus = AbacWorkflowStatusEnum.READY_FOR_ABAC;
 	}
 
 	public Long getId() {
@@ -159,4 +149,43 @@ public class Document {
 		this.dateUpdated = dateUpdated;
 	}
 
+	public DocumentType getType() {
+		return type;
+	}
+
+	public void setType(DocumentType type) {
+		this.type = type;
+	}
+
+	public Long getPortalId() {
+		return portalId;
+	}
+
+	public void setPortalId(Long portalId) {
+		this.portalId = portalId;
+	}
+
+	public LegalEntity getLegalEntity() {
+		return legalEntity;
+	}
+
+	public void setLegalEntity(LegalEntity legalEntity) {
+		this.legalEntity = legalEntity;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public Date getPortalDate() {
+		return portalDate;
+	}
+
+	public void setPortalDate(Date portalDate) {
+		this.portalDate = portalDate;
+	}
 }

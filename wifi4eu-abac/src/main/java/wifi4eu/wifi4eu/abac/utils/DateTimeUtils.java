@@ -23,4 +23,8 @@ public class DateTimeUtils {
 		return dateFormat.format(new Date());
 	}
 
+	public static Date parseDate(String date, String format) {
+		DateFormat dateFormat = new SimpleDateFormat(format);
+		return null;
+	}
 }

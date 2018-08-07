@@ -40,7 +40,7 @@ public class LegalEntityController {
 	private ImportDataService importDataService;
 
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
-	public ResponseVO importLegalEntity(@RequestParam("file") MultipartFile file) throws IOException {
+	public void importLegalEntity(@RequestParam("file") MultipartFile file) throws IOException {
 
 		importDataService.importLegalEntities(file.getBytes());
 
@@ -49,7 +49,7 @@ public class LegalEntityController {
 		result.setSuccess(true);
 		result.setData("Imported OK!");
 		//return result;
-		return null;
+		//return null;
 	}
 
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")

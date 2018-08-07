@@ -54,13 +54,13 @@
 CREATE TABLE "WIFI4EU_ABAC"."WIF_DOCUMENTS" (
 	"ID" NUMBER(18,0) NOT NULL ENABLE,
 	"NAME" VARCHAR2(50 BYTE) NOT NULL ENABLE,
-	"DATA" BFILE,
+	"DATA" BLOB,
 	"ARES_REFERENCE" VARCHAR2(50 BYTE),
-	"ARES_DATE" VARCHAR2(20 BYTE),
-	"SIZE" NUMBER(18,0) NOT NULL ENABLE,
+	"ARES_DATE" DATE,
+	"FILE_SIZE" NUMBER(18,0) NOT NULL ENABLE,
 	"MIMETYPE" VARCHAR2(50 BYTE) NOT NULL ENABLE,
-	"DATE_CREATED" VARCHAR2(20 BYTE) DEFAULT TO_CHAR(sysdate, 'MM/DD/YYYY HH:MM:SS') NOT NULL ENABLE,
-	"DATE_UPDATED" VARCHAR2(20 BYTE),
+	"DATE_CREATED" DATE NOT NULL ENABLE,
+	"DATE_UPDATED" DATE,
 	"WF_STATUS" VARCHAR2(20 BYTE) DEFAULT 'READY_FOR_ABAC' NOT NULL ENABLE,
 	CONSTRAINT "WIF_DOCUMENTS_PK" PRIMARY KEY ("ID")
 	USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255
@@ -555,7 +555,10 @@ BEGIN
  FOR legatEntity in (SELECT * FROM WIF_LEGAL_ENTITY WHERE ID=l_LE_ID) LOOP
     dbms_output.put_line('OFFICIAL_NAME='||legatEntity.OFFICIAL_NAME);
 
-    select LANGUAGE_CD into l_language_cd from V_O_GEN_LANGUAGES@ABACBUDT_SHARED where LANGUAGE_SIC_CD=UPPER(legatEntity.LANGUAGE_CODE) and valid_flg ='Y';
+    select LANGUAGE_CD into l_language_cd from V_O_GEN_LANGUAGES@ABACBUDT_SHARED
+    where (UPPER(legatEntity.LANGUAGE_CODE) = UPPER(LANGUAGE_SIC_CD)
+       or UPPER(legatEntity.LANGUAGE_CODE) = UPPER(LNG_ISO3_CD))
+    and valid_flg ='Y';
 
     -- Logon into ABAC: activate security
     Insert into V_ABAC_BATCHINT_LOGIN@ABACBUDT_SHARED  Values ('X');
@@ -665,5 +668,25 @@ BEGIN
   END LOOP;
   commit;
 END UPDATE_LEF_STATUS_FROM_ABAC;
+
+/
+
+--------------------------------------------------------
+--  ADDED COLUMNS AND CONSTRAINTS FOR TABLE "WIFI4EU_ABAC"."WIF_DOCUMENTS"
+--------------------------------------------------------
+
+alter table wif_documents add(
+  portal_id number,
+  legal_entity_id number,
+  document_type varchar2(50),
+  file_name varchar2(255),
+  portal_date date
+);
+
+alter table wif_documents add constraint WIF_DOC_LE_FK foreign key(legal_entity_id) references WIFI4EU_ABAC.WIF_LEGAL_ENTITY(ID);
+
+/
+
+create sequence SEQ_DOCUMENT start with 1;
 
 /
