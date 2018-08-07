@@ -469,8 +469,4 @@ public class RegistrationService {
             legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntityList(legalFileCorrectionReasonDTOList));
         }
     }
-
-    public List<Integer> findTypeFilesWaitingUploadByRegistration(Integer registrationId){
-        return registrationRepository.findTypeFilesWaitingUploadByRegistration(registrationId);
-    }
 }
