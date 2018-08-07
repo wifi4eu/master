@@ -86,7 +86,7 @@
 	</ux-message-box>
 	<ux-message-box id="messagebox_file_import_fail" titleLabel="ERROR" typeClass="danger" messageBoxType="ok">
 		<p>An error has occurred!</p>
-		<p>{{errorMessage}}</p>
+		<p *ngIf='errorMessage !== undefined'>{{errorMessage}}</p>
 		<p>The file was not imported!</p>
 	</ux-message-box>
 </div>
