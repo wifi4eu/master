@@ -2,9 +2,7 @@ package wifi4eu.wifi4eu.abac.data.entity;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.ParameterMode;
 import javax.persistence.PrePersist;
@@ -24,7 +21,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
-import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
 @Entity
 @Table(name = "WIF_LEGAL_ENTITY")
@@ -77,7 +74,7 @@ public class LegalEntity {
 
 	@Column(name = "wf_status", length = 20)
 	@Enumerated(EnumType.STRING)
-	private AbacWorkflowStatusEnum wfStatus;
+	private AbacWorkflowStatus wfStatus;
 
 	@Column(name = "date_created", length = 20)
 	private Date dateCreated;
@@ -101,9 +98,9 @@ public class LegalEntity {
 	}
 
 	public LegalEntity(Long id, Long mid, String officialName, String languageCode, String countryCode,
-			String officialAddress, String postalCode, String city, Long registrationNumber, String abacFelId,
-			AbacWorkflowStatusEnum wfStatus, Date dateCreated, Date dateUpdated, Date signatureDate,
-			String userImported, Document signatureFile) {
+					   String officialAddress, String postalCode, String city, Long registrationNumber, String abacFelId,
+					   AbacWorkflowStatus wfStatus, Date dateCreated, Date dateUpdated, Date signatureDate,
+					   String userImported, Document signatureFile) {
 		super();
 		this.id = id;
 		this.mid = mid;
@@ -195,11 +192,11 @@ public class LegalEntity {
 		this.abacFelId = abacFelId;
 	}
 
-	public AbacWorkflowStatusEnum getWfStatus() {
+	public AbacWorkflowStatus getWfStatus() {
 		return wfStatus;
 	}
 
-	public void setWfStatus(AbacWorkflowStatusEnum wfStatus) {
+	public void setWfStatus(AbacWorkflowStatus wfStatus) {
 		this.wfStatus = wfStatus;
 	}
 
@@ -254,7 +251,7 @@ public class LegalEntity {
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
-		this.wfStatus = AbacWorkflowStatusEnum.READY_FOR_ABAC;
+		this.wfStatus = AbacWorkflowStatus.READY_FOR_ABAC;
 	}
 
 	@Override

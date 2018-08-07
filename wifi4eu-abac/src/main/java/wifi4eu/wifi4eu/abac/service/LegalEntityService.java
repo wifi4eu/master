@@ -37,11 +37,7 @@ public class LegalEntityService {
 
 	public String exportLegalEntityFile() {
 		log.info("exportLegalEntityFile");
-
-		log.info("recovering list of items");
 		List<LegalEntity> legalEntities = legalEntityRepository.findLegalEntitiesProcessedInAbac();
-
-		log.info("parsing list of items");
 		String csvFile = legalEntityCSVFileParser.exportLegalEntitiesToCSV(legalEntities);
 		return csvFile;
 	}

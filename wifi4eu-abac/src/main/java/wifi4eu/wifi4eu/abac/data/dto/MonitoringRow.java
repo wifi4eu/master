@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
 public class MonitoringRow {
 	
@@ -12,9 +12,9 @@ public class MonitoringRow {
 	private String countryCode;
 	private String municipality;
 	private Long registrationNumber; 
-	private AbacWorkflowStatusEnum lefStatus;
-	private AbacWorkflowStatusEnum bcStatus;
-	private AbacWorkflowStatusEnum lcStatus;
+	private AbacWorkflowStatus lefStatus;
+	private AbacWorkflowStatus bcStatus;
+	private AbacWorkflowStatus lcStatus;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date signatureDate;
@@ -25,7 +25,7 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(Long id, String countryCode, String municipality, Long registrationNumber, AbacWorkflowStatusEnum lefStatus, Date signatureDate) {
+	public MonitoringRow(Long id, String countryCode, String municipality, Long registrationNumber, AbacWorkflowStatus lefStatus, Date signatureDate) {
 		super();
 		this.id = id;
 		this.countryCode = countryCode;
@@ -70,27 +70,27 @@ public class MonitoringRow {
 		this.registrationNumber = registrationNumber;
 	}
 
-	public AbacWorkflowStatusEnum getLefStatus() {
+	public AbacWorkflowStatus getLefStatus() {
 		return lefStatus;
 	}
 
-	public void setLefStatus(AbacWorkflowStatusEnum lefStatus) {
+	public void setLefStatus(AbacWorkflowStatus lefStatus) {
 		this.lefStatus = lefStatus;
 	}
 
-	public AbacWorkflowStatusEnum getBcStatus() {
+	public AbacWorkflowStatus getBcStatus() {
 		return bcStatus;
 	}
 
-	public void setBcStatus(AbacWorkflowStatusEnum bcStatus) {
+	public void setBcStatus(AbacWorkflowStatus bcStatus) {
 		this.bcStatus = bcStatus;
 	}
 
-	public AbacWorkflowStatusEnum getLcStatus() {
+	public AbacWorkflowStatus getLcStatus() {
 		return lcStatus;
 	}
 
-	public void setLcStatus(AbacWorkflowStatusEnum lcStatus) {
+	public void setLcStatus(AbacWorkflowStatus lcStatus) {
 		this.lcStatus = lcStatus;
 	}
 
