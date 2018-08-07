@@ -62,9 +62,9 @@ public class ApplicationService {
         String subject = bundle.getString("mail.voucherApply.subject");
         String msgBody = bundle.getString("mail.voucherApply.body");
         if (!userService.isLocalHost()) {
+            mailService.sendEmailAsync(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityId, "createApplication");
+            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
         }
-        mailService.sendEmailAsync(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityId, "createApplication");
-        _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
     }
 
     public Integer[] sendEmailApplications(Integer callId) throws Exception {
