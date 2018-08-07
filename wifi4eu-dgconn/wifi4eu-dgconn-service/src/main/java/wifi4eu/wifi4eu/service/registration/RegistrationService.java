@@ -491,19 +491,19 @@ public class RegistrationService {
 
         switch (legalFileCorrectionReasonDTO.getType()) {
             case 1:
-                emailBodyMiddle = MessageFormat.format(msgBody, MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type1"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]));
+                emailBodyMiddle = MessageFormat.format(msgBody, MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type1"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]),"");
                 break;
             case 2:
                 correctionReasons[4] = reason5Case1;
-                emailBodyMiddle = MessageFormat.format(msgBody2,MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type3"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]));
+                emailBodyMiddle = MessageFormat.format(msgBody2,MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type3"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]),"");
                 break;
             case 3:
                 correctionReasons[4] = reason5Case2;
-                emailBodyMiddle =  MessageFormat.format(msgBody,MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type2"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]));
+                emailBodyMiddle =  MessageFormat.format(msgBody,MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type2"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]),"");
                 break;
             case 4:
                 correctionReasons[4] = reason5Case3;
-                emailBodyMiddle = MessageFormat.format(msgBody2,MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type4"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]));
+                emailBodyMiddle = MessageFormat.format(msgBody2,MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type4"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]),"");
                 break;
         }
 
@@ -511,7 +511,7 @@ public class RegistrationService {
         String  emailBody = header + emailBodyMiddle + signOff;
 
         if (!emailBody.isEmpty()) {
-            mailService.sendEmail(userEmail, MailService.FROM_ADDRESS, subject, emailBody, municipalityId, "sendCorrectionEmails");
+            mailService.sendEmail(userEmail, MailService.FROM_ADDRESS, subject, emailBody, municipalityId, Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
         }
 
         return true;
