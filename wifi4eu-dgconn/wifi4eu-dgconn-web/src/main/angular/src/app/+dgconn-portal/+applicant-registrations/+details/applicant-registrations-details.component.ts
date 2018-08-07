@@ -177,7 +177,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                             }
                                         }
                                     );
-
                                     this.userApi.getUserByIdFromRegistration(registration.id).subscribe(
                                         (user: UserDTOBase) => {
                                             if (user) {
