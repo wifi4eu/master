@@ -487,8 +487,7 @@ public class RegistrationResource {
             return new ResponseDTO(true, typesWithCorrectionDisabledList, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve these legal files types with correction request", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal files types with correction request cannot been retrieved", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
