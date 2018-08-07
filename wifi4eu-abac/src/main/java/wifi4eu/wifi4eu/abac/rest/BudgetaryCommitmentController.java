@@ -33,15 +33,16 @@ public class BudgetaryCommitmentController {
 	private BudgetaryCommitmentService budgetaryCommitmentService;
 
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
-	public ResponseVO importBudgetaryCommitment(@RequestParam("file") MultipartFile file) throws IOException {
+	public ResponseVO importBudgetaryCommitment(@RequestBody String file) {
 		log.info("importBudgetaryCommitment");
 
-		importDataService.importBudgetaryCommitments(file.getBytes());
-
-		// write result and return
 		ResponseVO result = new ResponseVO();
-		result.setSuccess(true);
-		result.setData("Imported OK!");
+		try {
+			budgetaryCommitmentService.importBudgetaryCommitmentyContent(file);
+			result.success("Imported OK!");
+		}catch(Exception e) {
+			result.error(e.getMessage());
+		}
 		return result;
 	}
 

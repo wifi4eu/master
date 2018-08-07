@@ -5,10 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UxAllModule } from '@eui/ux-commons';
 import { Observable } from 'rxjs/Observable';
 import { deserialize, classToPlain } from 'class-transformer';
-import { ResponseDTO } from './model/ResponseDTO';
-import { ClassType } from './model/ClassType';
-import { MonitoringRowDTO } from './model/MonitoringRowDTO';
-import { CountryDTO } from './model/CountryDTO';
+import { ResponseDTO, MonitoringRowDTO, CountryDTO } from './model/DTOs';
 
 @NgModule({
     imports: [
@@ -31,15 +28,15 @@ export class ApiModule {
         this.basePath = document.querySelector('html head base').getAttribute('href');
     }
 
-    importLegalEntity(file?: File): Observable<HttpEvent<any>> {
+    importLegalEntity(file?: File): Observable<HttpEvent<ResponseDTO>> {
         return this.importFile('legalEntity/import', file);
     }
 
-    importBudgetaryCommitment(file?: File): Observable<HttpEvent<any>> {
+    importBudgetaryCommitment(file?: File): Observable<HttpEvent<ResponseDTO>> {
       return this.importFile('budgetaryCommitment/import', file);
     }
 
-    importLegalCommitment(file?: File): Observable<HttpEvent<any>> {
+    importLegalCommitment(file?: File): Observable<HttpEvent<ResponseDTO>> {
       return this.importFile('legalCommitment/import', file);
     }
 
@@ -53,7 +50,7 @@ export class ApiModule {
         return this.httpClient.get<MonitoringRowDTO[]>(path);
     }
 
-    private importFile(endpoint?: string, file?: File): Observable<HttpEvent<any>> {
+    private importFile(endpoint?: string, file?: File): Observable<HttpEvent<ResponseDTO>> {
         let formData = new FormData();
         formData.append('file', file);
         let params = new HttpParams();

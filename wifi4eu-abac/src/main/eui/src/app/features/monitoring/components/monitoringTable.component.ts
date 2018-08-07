@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/components/table/table';
-import { MonitoringRowDTO } from '../../../shared/model/MonitoringRowDTO';
-import { CountryDTO } from '../../../shared/model/CountryDTO';
+import { MonitoringRowDTO, CountryDTO } from '../../../shared/model/DTOs';
 import { ApiModule } from '../../../shared/api.module';
 
 @Component({

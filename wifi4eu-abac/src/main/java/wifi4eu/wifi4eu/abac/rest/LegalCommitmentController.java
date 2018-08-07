@@ -1,7 +1,5 @@
 package wifi4eu.wifi4eu.abac.rest;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -35,21 +33,20 @@ public class LegalCommitmentController {
 	}
 
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
-	public ResponseVO importLegalCommitment(@RequestBody String file) throws IOException {
+	public ResponseVO importLegalCommitment(@RequestBody String file) {
 		log.info("importLegalCommitment");
-
-		legalCommitmentService.importLegalCommitmentContent(file);
-
-		// write result and return
 		ResponseVO result = new ResponseVO();
-		result.setSuccess(true);
-		result.setData("Imported OK!");
+		try {
+			legalCommitmentService.importLegalCommitmentContent(file);
+			result.success("Imported OK!");
+		}catch(Exception e) {
+			result.error(e.getMessage());
+		}
 		return result;
 	}
 
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "application/zip")
-	public ResponseEntity<byte[]> exportLegalCommitment(final HttpServletResponse response, Model model)
-			throws Exception {
+	public ResponseEntity<byte[]> exportLegalCommitment(final HttpServletResponse response, Model model) throws Exception {
 		log.info("exportLegalCommitment");
 
 		log.info("exportLegalCommitment - generating file content");

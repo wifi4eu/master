@@ -39,6 +39,6 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	)
 	List<MonitoringRow> findMonitoringData();
 	
-	@Query(value = "SELECT c FROM Country c ORDER BY c.name")
+	@Query(value = "SELECT c FROM Country c WHERE c.euMember = 'Y' ORDER BY c.name")
 	List<Country> findCountries();
 }

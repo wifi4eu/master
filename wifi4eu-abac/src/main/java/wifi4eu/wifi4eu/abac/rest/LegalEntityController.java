@@ -1,33 +1,28 @@
 package wifi4eu.wifi4eu.abac.rest;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartResolver;
+
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.ImportDataService;
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 
-@Controller
+@RestController
 @RequestMapping(path = "legalEntity")
 public class LegalEntityController {
 
@@ -40,16 +35,15 @@ public class LegalEntityController {
 	private ImportDataService importDataService;
 
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
-	public void importLegalEntity(@RequestParam("file") MultipartFile file) throws IOException {
-
-		importDataService.importLegalEntities(file.getBytes());
-
-		// write result and return
+	public ResponseVO importLegalEntity(@RequestParam("file") MultipartFile file) {
 		ResponseVO result = new ResponseVO();
-		result.setSuccess(true);
-		result.setData("Imported OK!");
-		//return result;
-		//return null;
+		try {
+			importDataService.importLegalEntities(file.getBytes());
+			result.success("Imported OK!");
+		}catch(Exception e) {
+			result.error(e.getMessage());
+		}
+		return result;
 	}
 
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")

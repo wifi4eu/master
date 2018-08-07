@@ -225,14 +225,21 @@ COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_DOCUMENTS"."WF_STATUS" IS 'Workflow status
 --  DDL for View WIF_ABAC_LEF_STATUS_VIEW
 --------------------------------------------------------
 
-  CREATE OR REPLACE FORCE VIEW "WIFI4EU_ABAC"."WIF_ABAC_LEF_STATUS_VIEW" ("LOC_OBJ_FOREIGN_ID", "STATUS", "LE_KEY", "ERROR_MESSAGE") AS
-  select
+CREATE OR REPLACE FORCE VIEW "WIFI4EU_ABAC"."WIF_ABAC_LEF_STATUS_VIEW" ("LOC_OBJ_FOREIGN_ID", "STATUS", "LE_KEY", "ERROR_MSG", "REJECTION_MSG") AS
+select
 le.LOC_OBJ_FOREIGN_ID,
 case
+
+  when lelinks.PROCESSED is not null and lelinks.OBJ_STATUS_CD = 'VALID'
+  then 'ABAC_VALID'
+
+   when lelinks.PROCESSED is not null and lelinks.OBJ_STATUS_CD = 'REJECTED'
+  then 'ABAC_REJECTED'
+
   when le.PROCESSED = 'N'
   then 'WAITING_FOR_ABAC'
 
-  when le.PROCESSED = 'OK' and lekey.head_loc_obj_foreign_id is null
+  when le.PROCESSED in ('OK','OK_W') and lekey.head_loc_obj_foreign_id is null
   then 'WAITING_APPROVAL'
 
   when le.PROCESSED = 'OK' and lekey.head_loc_obj_foreign_id is not null
@@ -240,12 +247,15 @@ case
 
   when le.PROCESSED = 'NOK'
   then 'ABAC_ERROR'
+  else 'UNMAPPED_STATUS'
 end  as status,
 lekey.head_loc_obj_foreign_id as LE_KEY,
-err.msg_txt as ERROR_MESSAGE
+err.msg_txt as ERROR_MSG,
+lelinks.REJECTION_REASON as REJECTION_MSG
 FROM V_LOC_THP_LEGAL_ENTITIES@ABACBUDT_SHARED le
 LEFT JOIN V_O_LOG_ERRORS@ABACBUDT_SHARED err ON err.batch_id = le.run_id and err.loc_sys_cd = le.loc_sys_cd and err.msg_tp_cd <> 'I'
 LEFT JOIN V_O_THP_COMMON_LOCAL_LINKS@ABACBUDT_SHARED lekey ON lekey.loc_obj_foreign_id = le.loc_obj_foreign_id
+LEFT JOIN V_LOC_THP_COMMON_LOCAL_LINKS@ABACBUDT_SHARED lelinks ON lelinks.loc_obj_foreign_id = le.loc_obj_foreign_id
 where le.LOC_OBJ_FOREIGN_ID like 'WIF%';
 
 
@@ -651,7 +661,7 @@ BEGIN
 
   rows_affected := 0;
   for request in (
-                  select le_id, l_loc_obj_fk, le.WF_STATUS as legal_entity_status, status_vw.status as abac_status, status_vw.LE_KEY
+                  select le_id, l_loc_obj_fk, le.WF_STATUS as legal_entity_status, status_vw.status as abac_status, status_vw.LE_KEY, status_vw.ERROR_MSG, status_vw.REJECTION_MSG
                   from wif_abac_request_process request
                   inner join wif_legal_entity le on request.le_id = le.id and le.wf_status in (WAITING_FOR_ABAC, WAITING_APPROVAL)
                   left join wif_abac_lef_status_view status_vw on request.l_loc_obj_fk = loc_obj_foreign_id
@@ -662,6 +672,9 @@ BEGIN
       if (request.legal_entity_status <> request.abac_status) then
         update wif_legal_entity set WF_STATUS = request.abac_status, abac_fel_id = request.LE_KEY
         where wif_legal_entity.id = request.le_id;
+
+        update WIF_ABAC_REQUEST_PROCESS set ERROR_MSG=request.ERROR_MSG, REJECTION_MSG=request.REJECTION_MSG where l_loc_obj_fk=request.l_loc_obj_fk;
+
       end if;
 
       rows_affected := rows_affected + 1;
