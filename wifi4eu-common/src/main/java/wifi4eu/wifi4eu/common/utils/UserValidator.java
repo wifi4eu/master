@@ -10,8 +10,12 @@ public class UserValidator {
         if (userDTO == null) {
             throw new Exception("Empty user");
         }
+
+        if ((Validator.isNull(userDTO.getName()) || userDTO.getName().trim() == null) || (Validator.isNull(userDTO.getSurname()) || userDTO.getSurname().trim() == null) || (Validator.isNull(userDTO.getEmail()) || userDTO.getEmail().trim() == null)) {
+            throw new Exception("Some field is empty!");
+        }
         if (userDTO.getName().length() > 255 || userDTO.getSurname().length() > 255 ||
-                userDTO.getEmail().length() > 255 || userDTO.getEcasUsername().length() > 255) {
+                userDTO.getEmail().length() > 255) {
             throw new Exception("Too many characters in some field!");
         }
     }
