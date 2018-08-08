@@ -496,10 +496,11 @@ export class BeneficiaryEditProfileComponent {
                 } else {
                     this.emailsMatch = true;
                     this.municipalitiesSelected = true;
-
                 }
+            } else {
+                this.emailsMatch = true;
+                this.municipalitiesSelected = true;
             }
-           
         }
     }
 
