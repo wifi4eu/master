@@ -217,37 +217,22 @@ public class ApplicationInvalidateReasonService {
         }
 
         Map<String, Boolean> checks = new HashMap<>();
-
-        if(applicationDBO.getStatus() != ApplicationStatus.PENDING_FOLLOWUP.getValue()){
-            checks.put("invalidate", true);
-            checks.put("validate", true);
-            return checks;
-        }
-
-        RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDBO.getRegistrationId());
-        LogEmailDTO email = municipalityService.getCorrespondenceByMunicipalityIdAndAction(registrationDTO.getMunicipalityId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
-
-        if(email == null){
-            checks.put("invalidate", true);
-            checks.put("validate", true);
+        boolean valid = false;
+        List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDBO.getRegistrationId());
+        if(Validator.isNull(legalFileCorrectionReasons) || legalFileCorrectionReasons.isEmpty()) {
+            checks.put("invalidate", valid);
+            checks.put("validate", valid);
         } else {
-            Date emailSentDate = new Date(email.getSentDate());
-            Calendar deadline = Calendar.getInstance();
-            deadline.setTime(emailSentDate);
-            // Date plus 7 days (deadline)
-            deadline.add(Calendar.DATE, 7);
-            Date currentTime = new Date();
-
-            boolean valid = true;
-            List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDBO.getRegistrationId());
             for (LegalFileCorrectionReason legalFileCorrectionReason: legalFileCorrectionReasons) {
                 if(legalFileCorrectionReason.getRequestCorrection()){
-                    if(currentTime.after(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().before(emailSentDate)){
+                    Calendar deadline = Calendar.getInstance();
+                    deadline.setTime(legalFileCorrectionReason.getRequestCorrectionDate());
+                    // Date plus 7 days (deadline)
+                    deadline.add(Calendar.DATE, 7);
+                    Date currentTime = Calendar.getInstance().getTime();
+                    if(currentTime.before(deadline.getTime())){
                         valid = true;
                         break;
-                    }
-                    if(currentTime.before(deadline.getTime()) && legalFileCorrectionReason.getRequestCorrectionDate().before(emailSentDate)){
-                        valid = false;
                     }
                 }
             }
