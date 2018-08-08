@@ -42,8 +42,7 @@ export class VoucherComponent {
     private displayError = false;
     private displayCallClosed = false;
     private errorMessage = null;
-    private baseURI: string = environment['applyVoucherUrl'];
-    private rabbitmqURI: string = this.baseURI + "/calls/";
+    private rabbitmqURI: string = `${environment.applyVoucherUrl}/calls/`;
     private openedCalls: string = "";
     private voucherApplied: string = "";
     private csrfTokenCookieName: string = "XSRF-TOKEN";

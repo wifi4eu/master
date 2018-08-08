@@ -108,7 +108,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private correspondenceDialogInfo: LogEmailDTO;
     private buttonStatusEnabled: any[][] = [];
 
-    private fileURL: string = '/'+environment['contextDgConn']+'/api/registration/getDocument/';
+    private fileURL: string = `/${environment.context}/api/registration/getDocument/`;
 
     constructor(
         private applicationCommentApi: ApplicationcommentApi,
