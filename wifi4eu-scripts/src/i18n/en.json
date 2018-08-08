@@ -359,7 +359,7 @@
   "benefPortal.voucher.call.label1": "The call for applications is open, you can apply for a voucher",
   "benefPortal.voucher.call.label2": "Once the call for applications is open, you will be able to apply.",
   "benefPortal.voucher.competition.timeleft.title": "The call for application will be open in ",
-  "benefPortal.voucher.counterSubtitle": "The call for applications has opened on <b>{{startDate}}</b> at <b>{{startHour}}</b> (Central European Summer Time). You can apply till the <b>{{endDate}}</b> at <b>{{endHour}}</b> (Central European Summer Time).”",
+  "benefPortal.voucher.counterSubtitle": "The call for applications has opened on <b>{{startDate}}</b> at <b>{{startHour}}</b> (Central European Summer Time). You can apply till the <b>{{endDate}}</b> at <b>{{endHour}}</b> (Central European Summer Time).",
   "benefPortal.voucher.municipalitySuccessApply.title": "You have successfully applied for a voucher!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Stay tuned! WiFi4EU will communicate which applicants were selected for a voucher.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Note that the selection is conducted on a 'first-come first-served' basis (date and time of application) as well as criteria to ensure a geographical balance, as detailed in the CEF Telecom Work Programme.",
