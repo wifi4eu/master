@@ -413,7 +413,6 @@ public class RegistrationService {
             legalFileDTO.setRequestCorrection(false);
         }
 
-        sendEmailNotifyingCorrection(legalFileDTO);
         return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
     }
 
@@ -452,73 +451,6 @@ public class RegistrationService {
         return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId));
     }
 
-    private void sendEmailNotifyingCorrection(LegalFileCorrectionReasonDTO legalFileCorrectionReasonDTO) throws Exception {
-        RegistrationDTO registrationDTO = registrationMapper.toDTO(registrationRepository.findOne(legalFileCorrectionReasonDTO.getRegistrationId()));
-
-        if (legalFileCorrectionReasonDTO.getType() == 1 || legalFileCorrectionReasonDTO.getType() == 2){
-            MayorDTO mayor = mayorService.getMayorByMunicipalityId(registrationDTO.getMunicipalityId());
-            sendEmailToContacts(mayor.getEmail(), legalFileCorrectionReasonDTO, registrationDTO.getMunicipalityId());
-
-        }else if (legalFileCorrectionReasonDTO.getType() == 3 || legalFileCorrectionReasonDTO.getType() == 4){
-            List<UserDTO> userDTOList = findUsersFromRegistration(legalFileCorrectionReasonDTO.getRegistrationId());
-            for(UserDTO userDTO: userDTOList){
-                sendEmailToContacts(userDTO.getEmail(), legalFileCorrectionReasonDTO, registrationDTO.getMunicipalityId());
-            }
-        }
-    }
-
-    private boolean sendEmailToContacts(String userEmail, LegalFileCorrectionReasonDTO legalFileCorrectionReasonDTO, int municipalityId) throws Exception {
-        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.correctionRequestEmail.subject");
-        String header = bundle.getString("mail.correctionRequestEmail.header");
-        String msgBody = bundle.getString("mail.correctionRequestEmail.body1");
-        String msgBody2 = bundle.getString("mail.correctionRequestEmail.body2");
-        String signOff = bundle.getString("mail.correctionRequestEmail.signOff");
-
-        String[] correctionReasons = new String[6];
-        correctionReasons[0] = bundle.getString("mail.correctionRequestEmail.reason1");
-        correctionReasons[1] = bundle.getString("mail.correctionRequestEmail.reason2");
-        correctionReasons[2] = bundle.getString("mail.correctionRequestEmail.reason3");
-        correctionReasons[3] = bundle.getString("mail.correctionRequestEmail.reason4");
-        correctionReasons[4] = "";
-        correctionReasons[5] = bundle.getString("mail.correctionRequestEmail.reason6");
-        String reason5Case1 = bundle.getString("mail.correctionRequestEmail.reason5-1");
-        String reason5Case2 = bundle.getString("mail.correctionRequestEmail.reason5-2");
-        String reason5Case3 = bundle.getString("mail.correctionRequestEmail.reason5-3");
-
-        String emailBodyMiddle = "";
-
-        switch (legalFileCorrectionReasonDTO.getType()) {
-            case 1:
-                emailBodyMiddle = MessageFormat.format(msgBody, MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type1"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]),"");
-                break;
-            case 2:
-                correctionReasons[4] = reason5Case1;
-                emailBodyMiddle = MessageFormat.format(msgBody2,MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type3"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]),"");
-                break;
-            case 3:
-                correctionReasons[4] = reason5Case2;
-                emailBodyMiddle =  MessageFormat.format(msgBody,MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type2"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]),"");
-                break;
-            case 4:
-                correctionReasons[4] = reason5Case3;
-                emailBodyMiddle = MessageFormat.format(msgBody2,MessageFormat.format(bundle.getString("mail.correctionRequestEmail.type4"), correctionReasons[legalFileCorrectionReasonDTO.getCorrectionReason()]),"");
-                break;
-        }
-
-
-        String  emailBody = header + emailBodyMiddle + signOff;
-
-        if (!emailBody.isEmpty()) {
-            mailService.sendEmail(userEmail, MailService.FROM_ADDRESS, subject, emailBody, municipalityId, Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
-        }
-
-        return true;
-    }
-
-
     private List<UserDTO> findUsersFromRegistration(Integer registrationId){
         return userMapper.toDTOList(userRepository.findUsersFromRegistration(registrationId));
     }
@@ -538,4 +470,7 @@ public class RegistrationService {
         }
     }
 
+    public List<Integer> findTypeFilesWaitingUploadByRegistration(Integer registrationId){
+        return registrationRepository.findTypeFilesWaitingUploadByRegistration(registrationId);
+    }
 }

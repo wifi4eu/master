@@ -194,7 +194,7 @@
                                             <p-column field="type" [sortable]="true" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
                                                     <p-checkbox [value]="row" [label]="typeFilesList[row.type - 1]" (ngModelChange)="orderList($event, i)"
-                                                        [(ngModel)]="selectedFiles[i]" [disabled]="row.requestCorrectionDate != null"></p-checkbox>
+                                                        [(ngModel)]="selectedFiles[i]" [disabled]="this.listDisabled[i][row.type] == 1"></p-checkbox>
                                                 </ng-template>
                                             </p-column>
                                             <p-column field="uploadTime" [sortable]="true" header="{{ 'dgConn.dateRecieved' | translate }}" styleClass="text-center">
