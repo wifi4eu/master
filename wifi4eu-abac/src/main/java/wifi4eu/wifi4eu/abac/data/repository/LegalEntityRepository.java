@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.data.dto.MonitoringRow;
+import wifi4eu.wifi4eu.abac.data.dto.IMonitoringRowProjection;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.entity.Country;
 
@@ -32,12 +32,16 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	void updateFinancialLegalEntitiesStatuses();
 
 	@Query(
-		value =
-			"SELECT new wifi4eu.wifi4eu.abac.data.dto.MonitoringRow(" +
-					"le.id, le.countryCode, le.officialName, le.registrationNumber, le.wfStatus, le.signatureDate" +
-			") FROM LegalEntity le"
+		value=
+			"SELECT " +
+			"le.id, le.country_code AS countryCode, le.official_name AS municipality, le.registration_number AS registrationNumber, " +
+			"le.signature_date AS signatureDate, le.wf_status AS lefStatus, bc.wf_status AS bcStatus, lc.wf_status AS lcStatus " +
+			"FROM WIF_LEGAL_ENTITY le " +
+			"LEFT JOIN wif_budgetary_commitment bc ON (le.id = bc.id_le) " +
+			"LEFT JOIN wif_legal_commitment lc ON (le.id = lc.id_le)",
+		nativeQuery = true
 	)
-	List<MonitoringRow> findMonitoringData();
+	List<IMonitoringRowProjection> findMonitoringData();
 	
 	@Query(value = "SELECT c FROM Country c WHERE c.euMember = 'Y' ORDER BY c.name")
 	List<Country> findCountries();
