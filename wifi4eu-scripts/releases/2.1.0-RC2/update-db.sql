@@ -15,22 +15,23 @@ UPDATE ru set creation_date  = dateadd(s, convert(bigint, u.create_date) / 1000,
 FROM dbo.[registration_users] as ru
 inner join users as u on ru._user = u.id;
 create table grant_agreement(
-    [id]    INT    NOT NULL IDENTITY,
-    [application_id] INT NOT NULL,
-    [signature_id] nvarchar(MAX),
-    [counter_signature_id] nvarchar(MAX),
-    [signature_proof] nvarchar(MAX),
-    [document_location] nvarchar(MAX),
-    [document_location_countersigned] nvarchar(MAX),
-    [date_signature] datetime,
-    [date_counter_signature] datetime,
-    PRIMARY KEY ([id]),
-    CONSTRAINT [fk_grant_agreement_application]
-    FOREIGN KEY ([application_id])
-    REFERENCES dbo.applications ([id])
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
+   [id]    INT    NOT NULL IDENTITY,
+   [application_id] INT NOT NULL,
+   [signature_id] nvarchar(MAX),
+   [counter_signature_id] nvarchar(MAX),
+   [document_location_countersigned] nvarchar(MAX),
+   [signature_proof] nvarchar(MAX),
+   [document_location] nvarchar(MAX),
+   [date_signature] datetime,
+   [date_counter_signature] datetime,
+   [document_language] nvarchar(2) DEFAULT ('en'),
+   PRIMARY KEY ([id]),
+   CONSTRAINT [fk_grant_agreement_application]
+   FOREIGN KEY ([application_id])
+   REFERENCES dbo.applications ([id])
+       ON DELETE CASCADE
+       ON UPDATE CASCADE
+); 
 
 ALTER TABLE log_emails ALTER COLUMN body NTEXT;
 ALTER TABLE log_emails ALTER COLUMN subject NTEXT;
