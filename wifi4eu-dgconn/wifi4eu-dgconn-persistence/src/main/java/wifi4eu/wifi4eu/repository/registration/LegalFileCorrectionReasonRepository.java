@@ -32,4 +32,7 @@ public interface LegalFileCorrectionReasonRepository extends CrudRepository<Lega
 
     @Query(value = "SELECT COUNT(0) FROM legal_files_correction_reason WHERE request_correction IS NOT NULL AND request_correction = 1 AND correction_reason IS NOT NULL AND request_correction_date IS NOT NULL AND request_correction_date > ?#{[0]}", nativeQuery = true)
     int countLegalFileCorrectionsAfterDate(Date date);
+
+    @Query(value = "SELECT * FROM legal_files_correction_reason WHERE request_correction IS NOT NULL AND request_correction = 1 AND correction_reason IS NOT NULL AND request_correction_date IS NOT NULL AND request_correction_date > ?#{[0]} AND registration = ?#{[1]}", nativeQuery = true)
+    List<LegalFileCorrectionReason> findLegalFileCorrectionsAfterDateByRegistrationId(Date date, int registrationId);
 }

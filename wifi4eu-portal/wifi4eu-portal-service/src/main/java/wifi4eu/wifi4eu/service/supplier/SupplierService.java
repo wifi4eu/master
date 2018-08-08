@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserType;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
+import wifi4eu.wifi4eu.common.utils.UserValidator;
 import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
@@ -227,10 +228,11 @@ public class SupplierService {
                 if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()) {
                     userDTO.setEcasEmail(supplierDTO.getContactEmail());
                 }
+
                 break;
             }
         }
-
+        UserValidator.validateUser(userDTO);
         userDTO = userService.saveUserChanges(userDTO);
         userService.sendActivateAccountMail(userDTO);
         supplierDTO = createSupplier(supplierDTO);
