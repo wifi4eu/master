@@ -43,9 +43,6 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	)
 	List<IMonitoringRowProjection> findMonitoringData();
 	
-	@Query(value = "SELECT c FROM Country c WHERE c.euMember = 'Y' ORDER BY c.name")
-	List<Country> findCountries();
-
 	@Query("select distinct bc.legalEntity from BudgetaryCommitment bc where bc.wfStatus = 'READY_FOR_ABAC'")
 	List<LegalEntity> findAvailableLegalEntitiesForBudgetaryCommitmentCreation();
 }
