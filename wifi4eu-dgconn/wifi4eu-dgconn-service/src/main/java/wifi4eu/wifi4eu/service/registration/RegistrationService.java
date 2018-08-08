@@ -402,10 +402,6 @@ public class RegistrationService {
         return legalFileCorrectionReasonMapper.toDTOList(legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(registrationId));
     }
 
-    public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(Date date, Integer registrationId) {
-        return legalFileCorrectionReasonMapper.toDTOList(legalFileCorrectionReasonRepository.findLegalFileCorrectionsAfterDateByRegistrationId(date, registrationId));
-    }
-
     @Transactional
     public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) throws Exception {
         legalFileDTO.setRequestCorrectionDate(new Date());
