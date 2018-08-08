@@ -4,12 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.utils.ZipFileReader;
+import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
@@ -25,6 +27,9 @@ public class ImportDataService {
 
 	@Autowired
 	private DocumentCSVFileParser documentCSVFileParser;
+
+	@Autowired
+	private BudgetaryCommitmentCSVFileParser budgetaryCommitmentCSVFileParser;
 
 	@Autowired
 	private LegalEntityService legalEntityService;
@@ -116,6 +121,10 @@ public class ImportDataService {
 		fileDTO.setContent(file);
 		fileDTO.setSize(new Long(file.length));
 
-		// TODO finish implementation
+		List<BudgetaryCommitmentCSVRow> budgetaryCommitmentCSVRows = (List<BudgetaryCommitmentCSVRow>) budgetaryCommitmentCSVFileParser.parseFile(fileDTO);
+
+		for (BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow : budgetaryCommitmentCSVRows) {
+			log.info(String.format("TODO import BC %s for mid %s", budgetaryCommitmentCSVRow.getAbac_globalCommitmentKey(), budgetaryCommitmentCSVRow.getMunicipalityPortalId()));
+		}
 	}
 }

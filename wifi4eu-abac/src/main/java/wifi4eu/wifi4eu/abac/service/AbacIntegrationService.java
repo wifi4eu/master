@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 
 import javax.transaction.Transactional;
@@ -29,7 +29,7 @@ public class AbacIntegrationService {
      */
     public void findAndSendLegalEntitiesReadyToABAC(Integer maxRecords) {
         Pageable pageable = PageRequest.of(FIRST_PAGE, maxRecords);
-        List<LegalEntity> legalEntities = legalEntityRepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatusEnum.READY_FOR_ABAC, pageable);
+        List<LegalEntity> legalEntities = legalEntityRepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatus.READY_FOR_ABAC, pageable);
 
         if (!legalEntities.isEmpty()) {
             log.info(String.format("Found %s legal entities ready to be sent to ABAC...", legalEntities.size()));

@@ -1,6 +1,6 @@
 package wifi4eu.wifi4eu.abac.data.enums;
 
-public enum AbacWorkflowStatusEnum {
+public enum AbacWorkflowStatus {
 	
 	IMPORTED("IMPORTED", "Imported"),
 	READY_FOR_ABAC("READY_FOR_ABAC", "Ready for ABAC"),
@@ -15,7 +15,7 @@ public enum AbacWorkflowStatusEnum {
 	private String value;
 	private String title;
 
-	private AbacWorkflowStatusEnum(String value, String title) {
+	private AbacWorkflowStatus(String value, String title) {
 		this.value = value;
 		this.title = title;
 	}

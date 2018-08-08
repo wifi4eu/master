@@ -36,11 +36,7 @@ public class LegalEntityService {
 
 	public String exportLegalEntityFile() {
 		log.info("exportLegalEntityFile");
-
-		log.info("recovering list of items");
 		List<LegalEntity> legalEntities = legalEntityRepository.findLegalEntitiesProcessedInAbac();
-
-		log.info("parsing list of items");
 		String csvFile = legalEntityCSVFileParser.exportLegalEntitiesToCSV(legalEntities);
 		return csvFile;
 	}
@@ -48,14 +44,14 @@ public class LegalEntityService {
 	public LegalEntity mapLegalEntityCSVToEntity(LegalEntityInformationCSVRow legalEntityInformationCSVRow) {
 		LegalEntity legalEntity = new LegalEntity();
 
-		legalEntityInformationCSVRow.setMid(legalEntityInformationCSVRow.getMid());
-		legalEntityInformationCSVRow.setOfficialName(legalEntityInformationCSVRow.getOfficialName());
-		legalEntityInformationCSVRow.setOfficialAddress(legalEntityInformationCSVRow.getOfficialAddress());
-		legalEntityInformationCSVRow.setPostalCode(legalEntityInformationCSVRow.getPostalCode());
-		legalEntityInformationCSVRow.setCity(legalEntityInformationCSVRow.getCity());
-		legalEntityInformationCSVRow.setCountryCode(legalEntityInformationCSVRow.getCountryCode());
-		legalEntityInformationCSVRow.setLanguageCode(legalEntityInformationCSVRow.getLanguageCode());
-		legalEntityInformationCSVRow.setRegistrationNumber(legalEntityInformationCSVRow.getRegistrationNumber());
+		legalEntity.setMid(legalEntityInformationCSVRow.getMid());
+		legalEntity.setOfficialName(legalEntityInformationCSVRow.getOfficialName());
+		legalEntity.setOfficialAddress(legalEntityInformationCSVRow.getOfficialAddress());
+		legalEntity.setPostalCode(legalEntityInformationCSVRow.getPostalCode());
+		legalEntity.setCity(legalEntityInformationCSVRow.getCity());
+		legalEntity.setCountryCode(legalEntityInformationCSVRow.getCountryCode());
+		legalEntity.setLanguageCode(legalEntityInformationCSVRow.getLanguageCode());
+		legalEntity.setRegistrationNumber(legalEntityInformationCSVRow.getRegistrationNumber());
 
 		return legalEntity;
 	}

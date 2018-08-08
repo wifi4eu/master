@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
 public class MonitoringRow {
 	
@@ -34,24 +34,24 @@ public class MonitoringRow {
 			this.setSignatureDate(data.getSignatureDate());
 			try {
 				if(data.getLEFStatus() != null) {
-					this.setLefStatus(AbacWorkflowStatusEnum.valueOf(data.getLEFStatus()).getTitle());
+					this.setLefStatus(AbacWorkflowStatus.valueOf(data.getLEFStatus()).getTitle());
 				}
 			}catch(IllegalArgumentException e) {
-				this.setLefStatus(AbacWorkflowStatusEnum.UNMAPPED_STATUS.getTitle());
+				this.setLefStatus(AbacWorkflowStatus.UNMAPPED_STATUS.getTitle());
 			}
 			try {
 				if(data.getBCStatus() != null) {
-					this.setBcStatus(AbacWorkflowStatusEnum.valueOf(data.getBCStatus()).getTitle());
+					this.setBcStatus(AbacWorkflowStatus.valueOf(data.getBCStatus()).getTitle());
 				}
 			}catch(IllegalArgumentException e) {
-				this.setBcStatus(AbacWorkflowStatusEnum.UNMAPPED_STATUS.getTitle());
+				this.setBcStatus(AbacWorkflowStatus.UNMAPPED_STATUS.getTitle());
 			}
 			try {
 				if(data.getLCStatus() != null) {
-					this.setLcStatus(AbacWorkflowStatusEnum.valueOf(data.getLCStatus()).getTitle());
+					this.setLcStatus(AbacWorkflowStatus.valueOf(data.getLCStatus()).getTitle());
 				}
 			}catch(IllegalArgumentException e) {
-				this.setLcStatus(AbacWorkflowStatusEnum.UNMAPPED_STATUS.getTitle());
+				this.setLcStatus(AbacWorkflowStatus.UNMAPPED_STATUS.getTitle());
 			}
 		}
 	}
@@ -96,7 +96,7 @@ public class MonitoringRow {
 		this.lefStatus = lefStatus;
 	}
 	
-	public void setLefStatus(AbacWorkflowStatusEnum lefStatus) {
+	public void setLefStatus(AbacWorkflowStatus lefStatus) {
 		this.lefStatus = lefStatus.getTitle();
 	}
 
@@ -108,7 +108,7 @@ public class MonitoringRow {
 		this.bcStatus = bcStatus;
 	}
 	
-	public void setBcStatus(AbacWorkflowStatusEnum bcStatus) {
+	public void setBcStatus(AbacWorkflowStatus bcStatus) {
 		this.bcStatus = bcStatus.getTitle();
 	}
 
@@ -120,7 +120,7 @@ public class MonitoringRow {
 		this.lcStatus = lcStatus;
 	}
 	
-	public void setLcStatus(AbacWorkflowStatusEnum lcStatus) {
+	public void setLcStatus(AbacWorkflowStatus lcStatus) {
 		this.lcStatus = lcStatus.getTitle();
 	}
 

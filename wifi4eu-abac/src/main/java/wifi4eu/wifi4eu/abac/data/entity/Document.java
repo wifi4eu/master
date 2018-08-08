@@ -5,7 +5,7 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatusEnum;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 
 @Entity
@@ -51,7 +51,7 @@ public class Document {
 
 	@Column(name = "wf_status", length = 20)
 	@Enumerated(EnumType.STRING)
-	private AbacWorkflowStatusEnum wfStatus;
+	private AbacWorkflowStatus wfStatus;
 
 	@Column(name = "date_created", length = 20)
 	private Date dateCreated;
@@ -66,7 +66,7 @@ public class Document {
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
-		this.wfStatus = AbacWorkflowStatusEnum.READY_FOR_ABAC;
+		this.wfStatus = AbacWorkflowStatus.READY_FOR_ABAC;
 	}
 
 	public Long getId() {
@@ -125,11 +125,11 @@ public class Document {
 		this.mimetype = mimetype;
 	}
 
-	public AbacWorkflowStatusEnum getWfStatus() {
+	public AbacWorkflowStatus getWfStatus() {
 		return wfStatus;
 	}
 
-	public void setWfStatus(AbacWorkflowStatusEnum wfStatus) {
+	public void setWfStatus(AbacWorkflowStatus wfStatus) {
 		this.wfStatus = wfStatus;
 	}
 

@@ -13,13 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.multipart.MultipartFile;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.BudgetaryCommitmentService;
+import wifi4eu.wifi4eu.abac.service.ImportDataService;
 
 @RestController
 @RequestMapping(path = "budgetaryCommitment")
@@ -27,16 +26,16 @@ public class BudgetaryCommitmentController {
 
 	private final Logger log = LoggerFactory.getLogger(BudgetaryCommitmentController.class);
 
-	private BudgetaryCommitmentService budgetaryCommitmentService;
+	@Autowired
+	private ImportDataService importDataService;
 
 	@Autowired
-	public BudgetaryCommitmentController(BudgetaryCommitmentService budgetaryCommitmentService) {
-		this.budgetaryCommitmentService = budgetaryCommitmentService;
-	}
+	private BudgetaryCommitmentService budgetaryCommitmentService;
 
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO importBudgetaryCommitment(@RequestBody String file) {
 		log.info("importBudgetaryCommitment");
+
 		ResponseVO result = new ResponseVO();
 		try {
 			budgetaryCommitmentService.importBudgetaryCommitmentyContent(file);
@@ -60,7 +59,7 @@ public class BudgetaryCommitmentController {
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
 		log.info("exportBudgetaryCommitment - generating csv file content");
-		String responseData = budgetaryCommitmentService.exportBudgetaryCommitmentyContent();
+		String responseData = budgetaryCommitmentService.exportBudgetaryCommitments();
 		// getBytes(Charset.forName("UTF-8"));
 		responseReturn = new ResponseEntity<byte[]>(responseData.getBytes(StandardCharsets.UTF_8), headers,
 				HttpStatus.OK);
