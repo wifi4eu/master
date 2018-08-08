@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationInvalidateReasonMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
+import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.*;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
@@ -124,6 +125,9 @@ public class ApplicationService {
 
     @Autowired
     LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
+
+    @Autowired
+    LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
 
     public ApplicationDTO getApplicationById(int applicationId) {
         return applicationMapper.toDTO(applicationRepository.findOne(applicationId));
@@ -501,7 +505,7 @@ public class ApplicationService {
         }
 
         LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
-        int countCorrecionsToSend = legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(new Date(lastEmailSent.getSentDate()));
+        int countCorrecionsToSend = legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(getDateOfLogEmail(lastEmailSent));
 
         if (countCorrecionsToSend  > 0) {
             for (ApplicationIssueUtil application : applications) {
@@ -527,10 +531,9 @@ public class ApplicationService {
                 String[] documentTypesBody2 = {"", ""};
                 String emailBody = "";
                 Registration registration = registrationRepository.findOne(application.getRegistrationId());
-                List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
+                List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = legalFileCorrectionReasonMapper.toDTOList(legalFileCorrectionReasonRepository.findLegalFileCorrectionsAfterDateByRegistrationId(getDateOfLogEmail(lastEmailSent), registration.getId()));
+
                 for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
-                    if (legalFileCorrectionReason.getRequestCorrection() && (lastEmailSent == null || legalFileCorrectionReason
-                            .getRequestCorrectionDate().getTime() > lastEmailSent.getSentDate())) {
                         String emailString = "";
                         switch (legalFileCorrectionReason.getType()) {
                             case 1:
@@ -554,7 +557,6 @@ public class ApplicationService {
                                 documentTypesBody2[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
                                 break;
                         }
-                    }
                 }
                 //if document is type 1 or 3 then we need to show body 1
                 boolean isBody1 = !documentTypesBody1[0].isEmpty() || !documentTypesBody1[1].isEmpty();
@@ -592,7 +594,7 @@ public class ApplicationService {
     public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
         if (callService.isCallClosed(callId)) {
             LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
-            return legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(new Date(lastEmailSent.getSentDate())) > 0;
+            return legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(getDateOfLogEmail(lastEmailSent)) > 0;
         }
         return false;
     }
@@ -631,4 +633,9 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
 
+    //In case we don't have log mails!
+    private Date getDateOfLogEmail(LogEmail logEmail){
+        long timeInMilis = logEmail == null ? 0 : logEmail.getSentDate();
+        return new Date(timeInMilis);
+    }
 }
