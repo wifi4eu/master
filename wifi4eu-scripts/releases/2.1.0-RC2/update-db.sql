@@ -124,5 +124,5 @@ CREATE NONCLUSTERED INDEX IX_rights_rightdesc ON rights (rightdesc)
 CREATE NONCLUSTERED INDEX IX_applications_status ON applications (_status)
 
 -- feature/WIFIFOREU-2568 log_emails registered when sending a message to all applicants of a call
-ALTER TABLE log_emails DROP COLUMN body;
-ALTER TABLE log_emails ADD body ntext;
+ALTER TABLE applications ADD sent_email smallint DEFAULT 0;
+UPDATE applications SET sent_email = 0 WHERE sent_email is null;

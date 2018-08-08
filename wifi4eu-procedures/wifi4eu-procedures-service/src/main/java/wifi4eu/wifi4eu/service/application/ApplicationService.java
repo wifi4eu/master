@@ -6,8 +6,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
@@ -17,7 +15,9 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
-import java.time.temporal.ChronoUnit;
+import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -51,7 +51,10 @@ public class ApplicationService {
     @Autowired
     private CallRepository callRepository;
 
-    public void sendCreateApplicationEmail(User user, MunicipalityDTO municipality, int applicationId) throws Exception {
+    @Autowired
+    ApplicationMapper applicationMapper;
+
+    public void sendCreateApplicationEmail(User user, Integer municipalityId, ApplicationDTO application) throws Exception {
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
         if (user.getLang() != null) {
             locale = new Locale(user.getLang());
@@ -65,9 +68,9 @@ public class ApplicationService {
 
         }
             mailService.sendEmailAsync(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityId, "createApplication");
-            applicationService.
-            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + applicationId);
-
+            application.setSentEmail(true);
+            applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
+            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + application.getId());
     }
 
     public Integer[] sendEmailApplications(Integer callId) throws Exception {
@@ -75,16 +78,16 @@ public class ApplicationService {
         Integer sentEmailsMunicipalities = 0;
         _log.debug("SCHEDULED TASK: Create Application Emails - STARTING");
         //in case of server failure also search for applications that weren't sent the email and that were created at least four hours ago
-        List<Application> applicationList = applicationRepository.findByCreateApplicationEmailNotSent(callId, new Date().getTime(), callRepository.findOne(callId).getStartDate());
+        List<ApplicationDTO> applicationList = applicationMapper.toDTOList(applicationRepository.findByCreateApplicationEmailNotSent(callId, new Date().getTime()));
         _log.info("SCHEDULED TASK: Create Application Emails - There is " + applicationList.size() + " municipalities to be sent the email in this " +
                 "last four hours.");
-        for (Application app : applicationList) {
-            MunicipalityDTO municipality = municipalityRepository.findByRegistrationId(app.getRegistrationId());
+        for (ApplicationDTO app : applicationList) {
+            Integer municipalityId = municipalityRepository.findByRegistrationId(app.getRegistrationId()).getId();
             List<User> users = userRepository.findUsersByRegistrationId(app.getRegistrationId());
             if(users != null && !users.isEmpty()) {
                 for (User user : users) {
-                    if (municipality.getId() != null && user != null) {
-                        applicationService.sendCreateApplicationEmail(user, municipality, app.getId());
+                    if (municipalityId != null && user != null) {
+                        applicationService.sendCreateApplicationEmail(user, municipalityId, app);
                         sentEmailsUsers++;
                     } else {
                         _log.error("SCHEDULED TASK: Create Application Emails - inconsistency in data. User or municipality is null. Application id: " + app.getId());
