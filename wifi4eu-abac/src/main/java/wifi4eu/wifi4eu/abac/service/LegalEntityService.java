@@ -1,17 +1,16 @@
 package wifi4eu.wifi4eu.abac.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.data.enums.LegalEntityImportCSVColumn;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
-import wifi4eu.wifi4eu.abac.utils.csvparser.AbstractCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
-
-import java.util.List;
 
 @Service
 public class LegalEntityService {
