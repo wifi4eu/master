@@ -341,17 +341,18 @@ public class RegistrationResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId + " and file id " + fileId);
         try {
 
+            // Commented checkPermissions - doubt into validation in DgConn
+            // boolean checkPermissions = legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId);
             if (Validator.isNull(userConnected) || Validator.isNull(registrationId) || userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            boolean checkPermissions = legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId);
 
             permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
 
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
+            return new ResponseDTO(false,null,new ErrorDTO(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
 
         LegalFile legalFile = legalFilesRepository.findOne(fileId); //if file doesnt exist user doesnt have permission

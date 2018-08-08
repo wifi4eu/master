@@ -285,7 +285,7 @@
         <profile>
             <id>TEST</id>
             <properties>
-                <ng.env>int</ng.env>
+                <ng.env>test</ng.env>
                 <server.address>${server.test.address}:${server.test.port}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
@@ -306,7 +306,7 @@
         <profile>
             <id>AZUREDEV</id>
             <properties>
-                <ng.env>dev</ng.env>
+                <ng.env>dev-old</ng.env>
                 <schemes>https</schemes>
                 <server.address>${server.azure.dev.address}</server.address>
                 <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>

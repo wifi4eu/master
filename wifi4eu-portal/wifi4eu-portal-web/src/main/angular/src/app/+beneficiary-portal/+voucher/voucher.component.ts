@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Http, RequestOptions, Headers } from "@angular/http";
 import { ApplyVoucherBase } from '../../shared/swagger/model/ApplyVoucher'
 import { CookieService} from 'ngx-cookie-service';
+import { environment } from '../../../environments/environment';
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -41,8 +42,7 @@ export class VoucherComponent {
     private displayError = false;
     private displayCallClosed = false;
     private errorMessage = null;
-    //private baseURI: string = "http://104.214.237.205";
-    private baseURI: string = "https://wifi4eu-dev-queue.everincloud.com";
+    private baseURI: string = environment['applyVoucherUrl'];
     private rabbitmqURI: string = this.baseURI + "/calls/";
     private openedCalls: string = "";
     private voucherApplied: string = "";
@@ -81,7 +81,9 @@ export class VoucherComponent {
 
     private isVoucherApplied(idRegistration:number){
         if (this.cookieService.check(this.nameCookieApply+"_"+idRegistration)){
-            return JSON.parse(this.cookieService.get(this.nameCookieApply+"_"+idRegistration));
+            if (this.cookieService.get(this.nameCookieApply+"_"+idRegistration) == "true"){
+                return true;
+            }
         }
         return false;
     }

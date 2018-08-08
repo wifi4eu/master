@@ -27,6 +27,7 @@ import * as FileSaver from "file-saver";
 import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi, LogEmailDTO, LegalFileDTOBase } from "../../../shared/swagger";
 import { NgForm, NgModel } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
+import {environment} from '../../../../environments/environment';
 
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
@@ -107,7 +108,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private correspondenceDialogInfo: LogEmailDTO;
     private buttonStatusEnabled: any[][] = [];
 
-    private fileURL: string = '/wifi4eu/api/registration/getDocument/';
+    private fileURL: string = '/'+environment['contextDgConn']+'/api/registration/getDocument/';
 
     constructor(
         private applicationCommentApi: ApplicationcommentApi,
