@@ -30,6 +30,10 @@ public class UserThreadsService {
     }
 
     public UserThreadsDTO createUserThreads(UserThreadsDTO userThreadsDTO) {
+    	if (userThreadsDTO.getId() != 0) {
+    		_log.warn("Call to a create method with id set, the value has been removed ({})", userThreadsDTO.getId());
+    		userThreadsDTO.setId(0);	
+    	}    	
         return userThreadsMapper.toDTO(userThreadsRepository.save(userThreadsMapper.toEntity(userThreadsDTO)));
     }
 

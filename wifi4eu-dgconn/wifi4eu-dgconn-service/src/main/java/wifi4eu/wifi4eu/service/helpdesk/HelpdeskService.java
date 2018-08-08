@@ -1,6 +1,9 @@
 package wifi4eu.wifi4eu.service.helpdesk;
 
 import com.google.common.collect.Lists;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskCommentDTO;
@@ -9,11 +12,14 @@ import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskCommentMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskCommentRepository;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskIssueRepository;
+import wifi4eu.wifi4eu.service.thread.ThreadMessageService;
 
 import java.util.List;
 
 @Service
 public class HelpdeskService {
+    Logger _log = LogManager.getLogger(HelpdeskService.class);
+
     @Autowired
     HelpdeskIssueMapper helpdeskIssueMapper;
 
@@ -39,6 +45,10 @@ public class HelpdeskService {
     }
 
     public HelpdeskIssueDTO createHelpdeskIssue(HelpdeskIssueDTO helpdeskIssueDTO) {
+    	if (helpdeskIssueDTO.getId() != 0) {
+    		_log.warn("Call to a create method with id set, the value has been removed ({})", helpdeskIssueDTO.getId());
+    		helpdeskIssueDTO.setId(0);	
+    	}
         return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
 
 /*        if (helpdeskIssueDTO.getComments() != null && helpdeskIssueDTO.getComments().isEmpty()) {
@@ -79,6 +89,10 @@ public class HelpdeskService {
     }
 
     public HelpdeskCommentDTO createHelpdeskComment(HelpdeskCommentDTO helpdeskCommentDTO) {
+    	if (helpdeskCommentDTO.getId() != 0) {
+    		_log.warn("Call to a create method with id set, the value has been removed ({})", helpdeskCommentDTO.getId());
+    		helpdeskCommentDTO.setId(0);	
+    	}    	
         return helpdeskCommentMapper.toDTO(helpdeskCommentRepository.save(helpdeskCommentMapper.toEntity(helpdeskCommentDTO)));
     }
 

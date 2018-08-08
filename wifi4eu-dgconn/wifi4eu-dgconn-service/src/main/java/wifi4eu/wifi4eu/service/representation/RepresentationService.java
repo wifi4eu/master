@@ -1,6 +1,9 @@
 package wifi4eu.wifi4eu.service.representation;
 
 import com.google.common.collect.Lists;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.RepresentationDTO;
@@ -11,6 +14,8 @@ import java.util.List;
 
 @Service
 public class RepresentationService {
+    private Logger _log = LogManager.getLogger(RepresentationService.class);
+
     @Autowired
     RepresentationMapper representationMapper;
 
@@ -24,8 +29,16 @@ public class RepresentationService {
     public RepresentationDTO getRepresentationById(int representationId) {
         return representationMapper.toDTO(representationRepository.findOne(representationId));
     }
-
+    
     public RepresentationDTO createRepresentation(RepresentationDTO representationDTO) {
+		if (representationDTO.getId() != 0) {
+			_log.warn("Call to a create method with id set, the value has been removed ({})", representationDTO.getId());
+			representationDTO.setId(0);	
+		}
+	    return representationMapper.toDTO(representationRepository.save(representationMapper.toEntity(representationDTO)));
+	}
+
+    public RepresentationDTO saveRepresentation(RepresentationDTO representationDTO) {
         return representationMapper.toDTO(representationRepository.save(representationMapper.toEntity(representationDTO)));
     }
 

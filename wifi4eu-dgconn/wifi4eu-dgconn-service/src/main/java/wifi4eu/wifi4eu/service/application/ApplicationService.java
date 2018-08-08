@@ -224,6 +224,10 @@ public class ApplicationService {
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
                 }
             }
+            if (applicationDTO.getId() != 0) {
+                _log.warn("Call to a create method with id set, the value has been removed ({})", applicationDTO.getId());
+                applicationDTO.setId(0);    
+            }            
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;
