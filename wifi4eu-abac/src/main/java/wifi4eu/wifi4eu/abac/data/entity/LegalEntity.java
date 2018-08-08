@@ -2,7 +2,9 @@ package wifi4eu.wifi4eu.abac.data.entity;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,7 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.ParameterMode;
 import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
@@ -88,10 +92,13 @@ public class LegalEntity {
 	@Column(name = "user_imported", length = 50)
 	private String userImported;
 
-	// TODO jlopezri should be mandatory to have a file
-	@OneToOne(fetch = FetchType.LAZY, optional = true)
-	@JoinColumn(name = "id_signature_file", nullable = true)
-	private Document signatureFile;
+
+	@OneToMany(mappedBy = "legalEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Document> documents;
+
+	@OneToMany(mappedBy = "legalEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OrderBy("submitDate DESC")
+	private List<LegalEntityAbacRequest> legalEntityAbacRequests;
 
 	public LegalEntity() {
 
@@ -100,7 +107,7 @@ public class LegalEntity {
 	public LegalEntity(Long id, Long mid, String officialName, String languageCode, String countryCode,
 					   String officialAddress, String postalCode, String city, Long registrationNumber, String abacFelId,
 					   AbacWorkflowStatus wfStatus, Date dateCreated, Date dateUpdated, Date signatureDate,
-					   String userImported, Document signatureFile) {
+					   String userImported) {
 		super();
 		this.id = id;
 		this.mid = mid;
@@ -117,7 +124,6 @@ public class LegalEntity {
 		this.dateUpdated = dateUpdated;
 		this.signatureDate = signatureDate;
 		this.userImported = userImported;
-		this.signatureFile = signatureFile;
 	}
 
 	public Long getId() {
@@ -240,18 +246,25 @@ public class LegalEntity {
 		this.userImported = userImported;
 	}
 
-	public Document getSignatureFile() {
-		return signatureFile;
+	public List<Document> getDocuments() {
+		return documents;
 	}
 
-	public void setSignatureFile(Document signatureFile) {
-		this.signatureFile = signatureFile;
+	public void setDocuments(List<Document> documents) {
+		this.documents = documents;
+	}
+
+	public List<LegalEntityAbacRequest> getLegalEntityAbacRequests() {
+		return legalEntityAbacRequests;
+	}
+
+	public void setLegalEntityAbacRequests(List<LegalEntityAbacRequest> legalEntityAbacRequests) {
+		this.legalEntityAbacRequests = legalEntityAbacRequests;
 	}
 
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
-		this.wfStatus = AbacWorkflowStatus.READY_FOR_ABAC;
 	}
 
 	@Override
@@ -261,7 +274,7 @@ public class LegalEntity {
 				+ ", postalCode=" + postalCode + ", city=" + city + ", registrationNumber=" + registrationNumber
 				+ ", abacFelId=" + abacFelId + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated
 				+ ", dateUpdated=" + dateUpdated + ", signatureDate=" + signatureDate + ", userImported=" + userImported
-				+ ", signatureFile=" + signatureFile + "]";
+				+ "]";
 	}
 
 }

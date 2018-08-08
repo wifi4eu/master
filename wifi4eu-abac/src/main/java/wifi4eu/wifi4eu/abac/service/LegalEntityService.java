@@ -53,6 +53,7 @@ public class LegalEntityService {
 		legalEntity.setCountryCode(legalEntityInformationCSVRow.getCountryCode());
 		legalEntity.setLanguageCode(legalEntityInformationCSVRow.getLanguageCode());
 		legalEntity.setRegistrationNumber(legalEntityInformationCSVRow.getRegistrationNumber());
+		legalEntity.setAbacFelId(legalEntityInformationCSVRow.getAbacReference());
 
 		return legalEntity;
 	}

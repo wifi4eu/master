@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.utils.ZipFileReader;
 import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
@@ -80,11 +81,19 @@ public class ImportDataService {
 			LegalEntity legalEntity = legalEntityService.getLegalEntityByMunicipalityPortalId(legalEntityInformationCSVRow.getMid());
 
 			if (legalEntity == null) {
+				//map the csv row to the LegalEntity object
 				legalEntity = legalEntityService.mapLegalEntityCSVToEntity(legalEntityInformationCSVRow);
+				//if the LEF is already created in ABAC ignore the creation phase
+				if(legalEntity.getAbacFelId() != null){
+					legalEntity.setWfStatus(AbacWorkflowStatus.ABAC_VALID);
+				}else{
+					legalEntity.setWfStatus(AbacWorkflowStatus.READY_FOR_ABAC);
+				}
+				//persist the LegalEntity in the database
 				legalEntityService.saveLegalEntity(legalEntity);
 			} else {
 				//TODO update or ignore?
-				log.info(String.format("Legal entity with MID %s already exists in the DB. Ignoring it for now", legalEntity.getMid()));
+				log.warn("Legal entity already exists in the DB. Ignoring it for now : {}", legalEntity);
 			}
 		}
 	}

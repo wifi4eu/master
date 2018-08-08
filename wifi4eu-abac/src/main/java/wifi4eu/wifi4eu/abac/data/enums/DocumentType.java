@@ -1,7 +1,8 @@
 package wifi4eu.wifi4eu.abac.data.enums;
 
 public enum DocumentType {
-	GRANT_AGREEMENT_SIGNATURE("GRANT_AGREEMENT_SIGNATURE");
+	GRANT_AGREEMENT_SIGNATURE("GRANT_AGREEMENT_SIGNATURE"),
+	IDENTIFICATION_FORM("IDENTIFICATION_FORM");
 
 	private String value;
 
