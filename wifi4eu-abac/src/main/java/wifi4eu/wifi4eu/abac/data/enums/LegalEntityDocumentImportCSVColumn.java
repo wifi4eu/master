@@ -7,7 +7,7 @@ public enum LegalEntityDocumentImportCSVColumn {
 	DOCUMENT_NAME("doc_Name"),
    	DOCUMENT_FILENAME("doc_fileName"),
 	DOCUMENT_MIMETYPE("doc_mimeType"),
-	DOCUMENT_DATE("doc_Date"),
+	DOCUMENT_DATE("doc_date"),
 	DOCUMENT_TYPE("doc_type");
 
 	private String value;

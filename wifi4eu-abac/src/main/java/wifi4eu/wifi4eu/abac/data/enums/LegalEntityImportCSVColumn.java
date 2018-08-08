@@ -11,7 +11,8 @@ public enum LegalEntityImportCSVColumn {
 	MUNICIPALITY_LANGUAGE_CODE("mun_languageCodeISO"),
 	MUNICIPALITY_REGISTRATION_NUMBER("mun_registrationNumber"),
 	MUNICIPALITY_ABAC_REFERENCE("mun_ABACReference"),
-	MUNICIPALITY_ABAC_STATUS("mun_abacStatus");
+	MUNICIPALITY_ABAC_STATUS("mun_abacStatus"),
+	MUNICIPALITY_ABAC_REJECTION_REASON("mun_abacRejectionReason");
 
 
 	private String value;

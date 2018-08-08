@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.abac.data.entity;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,9 @@ public class LegalEntityAbacRequest extends AbacRequest {
     @JoinColumn(name = "LE_ID")
     private LegalEntity legalEntity;
 
+    @Column(name = "REJECTION_MSG")
+    private String rejectionReason;
+
 
     public LegalEntity getLegalEntity() {
         return legalEntity;
@@ -21,5 +25,13 @@ public class LegalEntityAbacRequest extends AbacRequest {
 
     public void setLegalEntity(LegalEntity legalEntity) {
         this.legalEntity = legalEntity;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
     }
 }

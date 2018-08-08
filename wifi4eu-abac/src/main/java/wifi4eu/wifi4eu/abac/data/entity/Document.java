@@ -61,7 +61,7 @@ public class Document {
 	private Date dateUpdated;
 
 	@Column(name = "document_type")
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private DocumentType type;
 
 	@PrePersist

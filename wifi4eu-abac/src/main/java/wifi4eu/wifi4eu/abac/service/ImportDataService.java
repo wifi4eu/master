@@ -64,10 +64,10 @@ public class ImportDataService {
 					processLegalEntityInformationFile(fileDTO);
 					break;
 				case LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME:
-					keepDocumentsCSVToBeProcessedLater(fileDTO);
+					addDocumentsCSVIndexFile(fileDTO);
 					break;
 				default:
-					keepDocumentToBeProcessedLater(fileDTO);
+					addDocumentToBeImported(fileDTO);
 					break;
 			}
 			fileDTO = zipFileReader.nextFile();
@@ -101,11 +101,11 @@ public class ImportDataService {
 		}
 	}
 
-	private void keepDocumentsCSVToBeProcessedLater(final FileDTO fileDTO) {
+	private void addDocumentsCSVIndexFile(final FileDTO fileDTO) {
 		documentsCSVFile = fileDTO;
 	}
 
-	private void keepDocumentToBeProcessedLater(final FileDTO fileDTO) {
+	private void addDocumentToBeImported(final FileDTO fileDTO) {
 		documentsToBeImported.put(fileDTO.getFileName(), fileDTO);
 	}
 

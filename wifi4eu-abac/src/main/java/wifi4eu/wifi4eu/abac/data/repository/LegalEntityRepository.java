@@ -19,7 +19,7 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 
 	LegalEntity findByOfficialName(String officialName);
 
-	@Query(value = "FROM LegalEntity le WHERE le.abacFelId is not null order by le.officialName asc")
+	@Query(value = "FROM LegalEntity le WHERE le.wfStatus in ('ABAC_VALID','ABAC_REJECTED') order by le.officialName asc")
 	List<LegalEntity> findLegalEntitiesProcessedInAbac();
 
 	List<LegalEntity> findByWfStatusOrderByDateCreated(AbacWorkflowStatus status, Pageable pageable);

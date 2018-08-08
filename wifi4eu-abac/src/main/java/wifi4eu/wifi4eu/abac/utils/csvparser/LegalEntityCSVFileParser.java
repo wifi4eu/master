@@ -62,7 +62,8 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 							LegalEntityImportCSVColumn.MUNICIPALITY_LANGUAGE_CODE.toString(),
 							LegalEntityImportCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER.toString(),
 							LegalEntityImportCSVColumn.MUNICIPALITY_ABAC_REFERENCE.toString(),
-							LegalEntityImportCSVColumn.MUNICIPALITY_ABAC_STATUS.toString()
+							LegalEntityImportCSVColumn.MUNICIPALITY_ABAC_STATUS.toString(),
+							LegalEntityImportCSVColumn.MUNICIPALITY_ABAC_REJECTION_REASON.toString()
 					));
 
 			for (LegalEntity legalEntity : legalEntities) {
@@ -76,7 +77,8 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 						legalEntity.getLanguageCode(),
 						legalEntity.getRegistrationNumber(),
 						legalEntity.getAbacFelId(),
-						legalEntity.getWfStatus()
+						legalEntity.getWfStatus(),
+						legalEntity.getRejectionReason()
 				);
 			}
 

@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.abac.data.entity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -94,7 +95,7 @@ public class LegalEntity {
 
 	@OneToMany(mappedBy = "legalEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@OrderBy("submitDate DESC")
-	private List<LegalEntityAbacRequest> legalEntityAbacRequests;
+	private List<LegalEntityAbacRequest> legalEntityAbacRequests = new ArrayList<LegalEntityAbacRequest>();
 
 	public LegalEntity() {
 
@@ -256,6 +257,10 @@ public class LegalEntity {
 
 	public void setLegalEntityAbacRequests(List<LegalEntityAbacRequest> legalEntityAbacRequests) {
 		this.legalEntityAbacRequests = legalEntityAbacRequests;
+	}
+
+	public String getRejectionReason(){
+		return !legalEntityAbacRequests.isEmpty() ? legalEntityAbacRequests.get(0).getRejectionReason() : null;
 	}
 
 	@PrePersist
