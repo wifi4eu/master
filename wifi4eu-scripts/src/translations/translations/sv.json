@@ -784,7 +784,7 @@
   "dgConn.applicantDetails.invalidate.reason8": "8. The application included a merged municipality.",
   "dgConn.applicantDetails.invalidate.reason9": "9. Due to irregularities found in the application, it was invalidated.",
   "dgConn.applicationDetails.auth.tooltip": "By validating this application, {{name}} {{surname}} will be authorized.",
-  "shared.changeLanguage.text1": "WiFi4EU-portalens språk för mejl är för närvarande: {{language}}",
+  "shared.changeLanguage.text1": "WiFi4EU-portalens språk för mejl är för närvarande: ",
   "shared.changeLanguage.text2": "Klicka på knappen nedan om du vill få mejl på ett annat språk.",
   "shared.changeLanguage.modal.title": "Välj språk",
   "dgConn.applicantDetails.newComment.button": "New comment",

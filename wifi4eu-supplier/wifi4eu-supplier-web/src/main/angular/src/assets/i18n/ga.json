@@ -784,7 +784,7 @@
   "dgConn.applicantDetails.invalidate.reason8": "8. The application included a merged municipality.",
   "dgConn.applicantDetails.invalidate.reason9": "9. Due to irregularities found in the application, it was invalidated.",
   "dgConn.applicationDetails.auth.tooltip": "By validating this application, {{name}} {{surname}} will be authorized.",
-  "shared.changeLanguage.text1": "Is sa teanga seo a leanas a dhéantar an comhfhreagras ríomhphoist tríd an tairseach WiFi4EU faoi láthair: {{language}}.",
+  "shared.changeLanguage.text1": "Is sa teanga seo a leanas a dhéantar an comhfhreagras ríomhphoist tríd an tairseach WiFi4EU faoi láthair: ",
   "shared.changeLanguage.text2": "Cliceáil ar an gcnaipe thíos más mian leat comhfhreagras a fháil i dteanga eile.",
   "shared.changeLanguage.modal.title": "Roghnaigh teanga",
   "dgConn.applicantDetails.newComment.button": "New comment",
