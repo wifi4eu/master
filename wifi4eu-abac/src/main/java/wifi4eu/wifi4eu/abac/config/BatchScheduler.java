@@ -14,19 +14,29 @@ import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 @ConditionalOnProperty(prefix = "batch.scheduler", name="enabled", havingValue="true", matchIfMissing = false)
 public class BatchScheduler {
 
-    @Value("${batch.legalentity.create.maxrecords}")
-    private Integer MAX_RECORDS_CREATE_LEGAL_ENTITY;
+    @Value("${batch.scheduler.maxrecords}")
+    private Integer MAX_RECORDS_CREATE;
 
     @Autowired
     AbacIntegrationService abacIntegrationService;
 
     @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
-		abacIntegrationService.findAndSendLegalEntitiesReadyToABAC(MAX_RECORDS_CREATE_LEGAL_ENTITY);
+		abacIntegrationService.findAndSendLegalEntitiesReadyToABAC(MAX_RECORDS_CREATE);
+    }
+
+    @Scheduled(cron = "${batch.budgetarycommitment.create.crontable}")
+    public void createBudgetaryCommitmentsInABAC() {
+        abacIntegrationService.findAndSendBudgetaryCommitmentsReadyToABAC(MAX_RECORDS_CREATE);
     }
 
     @Scheduled(cron = "${batch.legalentity.checkstatus.crontable}")
     public void checkLegalEntityCreationStatus() {
     	abacIntegrationService.updateLegalEntitiesStatuses();
+    }
+
+    @Scheduled(cron = "${batch.legalentity.checkstatus.crontable}")
+    public void checkBudgetaryCommitmentStatus() {
+        abacIntegrationService.updateBudgetaryCommitmentStatuses();
     }
 }

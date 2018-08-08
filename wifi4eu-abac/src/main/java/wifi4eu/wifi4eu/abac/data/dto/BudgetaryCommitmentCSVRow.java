@@ -1,17 +1,13 @@
 package wifi4eu.wifi4eu.abac.data.dto;
 
-import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
-
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class BudgetaryCommitmentCSVRow {
 
 	private Long municipalityPortalId;
-	private String abac_globalCommitmentKey;
-	private Integer abacGlobalCommitmentPosition;
-	private BigDecimal abacGlobalCommitmentPositionAmount;
-	private BigDecimal abacBugetaryCommitmentAmount;
+	private String abacGlobalCommitmentLevel1PositionKey;
+	private Integer abacCommitmentLevel2Position;
+	private BigDecimal abacCommitmentLevel2PositionAmount;
 
 	public Long getMunicipalityPortalId() {
 		return municipalityPortalId;
@@ -21,35 +17,27 @@ public class BudgetaryCommitmentCSVRow {
 		this.municipalityPortalId = municipalityPortalId;
 	}
 
-	public String getAbac_globalCommitmentKey() {
-		return abac_globalCommitmentKey;
+	public String getAbacGlobalCommitmentLevel1PositionKey() {
+		return abacGlobalCommitmentLevel1PositionKey;
 	}
 
-	public void setAbac_globalCommitmentKey(String abac_globalCommitmentKey) {
-		this.abac_globalCommitmentKey = abac_globalCommitmentKey;
+	public void setAbacGlobalCommitmentLevel1PositionKey(String abacGlobalCommitmentLevel1PositionKey) {
+		this.abacGlobalCommitmentLevel1PositionKey = abacGlobalCommitmentLevel1PositionKey;
 	}
 
-	public Integer getAbacGlobalCommitmentPosition() {
-		return abacGlobalCommitmentPosition;
+	public Integer getAbacCommitmentLevel2Position() {
+		return abacCommitmentLevel2Position;
 	}
 
-	public void setAbacGlobalCommitmentPosition(Integer abacGlobalCommitmentPosition) {
-		this.abacGlobalCommitmentPosition = abacGlobalCommitmentPosition;
+	public void setAbacCommitmentLevel2Position(Integer abacCommitmentLevel2Position) {
+		this.abacCommitmentLevel2Position = abacCommitmentLevel2Position;
 	}
 
 	public BigDecimal getAbacGlobalCommitmentPositionAmmount() {
-		return abacGlobalCommitmentPositionAmount;
+		return abacCommitmentLevel2PositionAmount;
 	}
 
-	public void setAbacGlobalCommitmentPositionAmount(BigDecimal abacGlobalCommitmentPositionAmount) {
-		this.abacGlobalCommitmentPositionAmount = abacGlobalCommitmentPositionAmount;
-	}
-
-	public BigDecimal getAbacBugetaryCommitmentAmount() {
-		return abacBugetaryCommitmentAmount;
-	}
-
-	public void setAbacBugetaryCommitmentAmount(BigDecimal abacBugetaryCommitmentAmount) {
-		this.abacBugetaryCommitmentAmount = abacBugetaryCommitmentAmount;
+	public void setAbacCommitmentLevel2PositionAmount(BigDecimal abacCommitmentLevel2PositionAmount) {
+		this.abacCommitmentLevel2PositionAmount = abacCommitmentLevel2PositionAmount;
 	}
 }

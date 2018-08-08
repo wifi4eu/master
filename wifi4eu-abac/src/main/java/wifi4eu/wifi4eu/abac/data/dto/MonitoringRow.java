@@ -11,7 +11,7 @@ public class MonitoringRow {
 	private Long id;
 	private String countryCode;
 	private String municipality;
-	private Long registrationNumber; 
+	private Long registrationNumber;
 	private String lefStatus;
 	private String bcStatus;
 	private String lcStatus;
@@ -25,17 +25,35 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(Long id, String countryCode, String municipality, Long registrationNumber, AbacWorkflowStatus lefStatus, Date signatureDate) {
-		super();
-		this.id = id;
-		this.countryCode = countryCode;
-		this.municipality = municipality;
-		this.registrationNumber = registrationNumber;
-		this.lefStatus = lefStatus.getTitle();
-		this.bcStatus = null;
-		this.lcStatus = null;
-		this.signatureDate = signatureDate;
-		this.counterSignatureDate = null;
+	public MonitoringRow(IMonitoringRowProjection data) {
+		if(data != null) {
+			this.setId(data.getId());
+			this.setCountryCode(data.getCountryCode());
+			this.setMunicipality(data.getMunicipality());
+			this.setRegistrationNumber(data.getRegistrationNumber());
+			this.setSignatureDate(data.getSignatureDate());
+			try {
+				if(data.getLEFStatus() != null) {
+					this.setLefStatus(AbacWorkflowStatus.valueOf(data.getLEFStatus()).getTitle());
+				}
+			}catch(IllegalArgumentException e) {
+				this.setLefStatus(AbacWorkflowStatus.UNMAPPED_STATUS.getTitle());
+			}
+			try {
+				if(data.getBCStatus() != null) {
+					this.setBcStatus(AbacWorkflowStatus.valueOf(data.getBCStatus()).getTitle());
+				}
+			}catch(IllegalArgumentException e) {
+				this.setBcStatus(AbacWorkflowStatus.UNMAPPED_STATUS.getTitle());
+			}
+			try {
+				if(data.getLCStatus() != null) {
+					this.setLcStatus(AbacWorkflowStatus.valueOf(data.getLCStatus()).getTitle());
+				}
+			}catch(IllegalArgumentException e) {
+				this.setLcStatus(AbacWorkflowStatus.UNMAPPED_STATUS.getTitle());
+			}
+		}
 	}
 
 	public Long getId() {

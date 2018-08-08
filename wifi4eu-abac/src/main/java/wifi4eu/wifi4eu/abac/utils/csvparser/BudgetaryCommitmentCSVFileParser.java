@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.abac.utils.csvparser;
 
-import javafx.util.converter.BigDecimalStringConverter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
@@ -8,9 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
-import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.BudgetaryCommitmentImportCSVColumn;
-import wifi4eu.wifi4eu.abac.data.enums.LegalEntityImportCSVColumn;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -33,10 +30,9 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 			BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow = new BudgetaryCommitmentCSVRow();
 
 			budgetaryCommitmentCSVRow.setMunicipalityPortalId(Long.parseLong(csvRecord.get(BudgetaryCommitmentImportCSVColumn.MUNICIPALITY_PORTAL_ID)));
-			budgetaryCommitmentCSVRow.setAbac_globalCommitmentKey(csvRecord.get(BudgetaryCommitmentImportCSVColumn.ABAC_GLOBAL_COMMITMENT_KEY));
-			budgetaryCommitmentCSVRow.setAbacGlobalCommitmentPosition(Integer.parseInt(csvRecord.get(BudgetaryCommitmentImportCSVColumn.ABAC_GLOBAL_COMMITMENT_POSITION)));
-			budgetaryCommitmentCSVRow.setAbacGlobalCommitmentPositionAmount(new BigDecimal(csvRecord.get(BudgetaryCommitmentImportCSVColumn.ABAC_GLOBAL_COMMITMENT_POSITION_AMOUNT)));
-			budgetaryCommitmentCSVRow.setAbacBugetaryCommitmentAmount(new BigDecimal(csvRecord.get(BudgetaryCommitmentImportCSVColumn.ABAC_BUDGETARY_COMMITMENT_AMOUNT)));
+			budgetaryCommitmentCSVRow.setAbacGlobalCommitmentLevel1PositionKey(csvRecord.get(BudgetaryCommitmentImportCSVColumn.ABAC_GLOBAL_COMMITMENT_LEVEL1_POSITION_KEY));
+			budgetaryCommitmentCSVRow.setAbacCommitmentLevel2Position(Integer.parseInt(csvRecord.get(BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION)));
+			budgetaryCommitmentCSVRow.setAbacCommitmentLevel2PositionAmount(new BigDecimal(csvRecord.get(BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT)));
 
 			budgetaryCommitmentCSVRows.add(budgetaryCommitmentCSVRow);
 		}
@@ -54,10 +50,9 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
 					.withHeader(
 							BudgetaryCommitmentImportCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
-							BudgetaryCommitmentImportCSVColumn.ABAC_GLOBAL_COMMITMENT_KEY.toString(),
-							BudgetaryCommitmentImportCSVColumn.ABAC_GLOBAL_COMMITMENT_POSITION.toString(),
-							BudgetaryCommitmentImportCSVColumn.ABAC_GLOBAL_COMMITMENT_POSITION_AMOUNT.toString(),
-							BudgetaryCommitmentImportCSVColumn.ABAC_BUDGETARY_COMMITMENT_AMOUNT.toString()
+							BudgetaryCommitmentImportCSVColumn.ABAC_GLOBAL_COMMITMENT_LEVEL1_POSITION_KEY.toString(),
+							BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION.toString(),
+							BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT.toString()
 					));
 
 			// TODO Finish export
