@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.repository.BudgetaryCommitmentRepository;
@@ -24,19 +25,31 @@ public class BudgetaryCommitmentService {
 	@Autowired
 	private BudgetaryCommitmentCSVFileParser budgetaryCommitmentCSVFileParser;
 
-	// @ Transactional
-	public void importBudgetaryCommitmentyContent(String content) throws IOException {
-		log.info("importBudgetaryCommitmentyContent");
-
-		// TODO jlopezri pending implementation
-
-		log.info("importBudgetaryCommitmentyContent - finished");
-	}
+	@Autowired
+	private LegalEntityService legalEntityService;
 
 	public String exportBudgetaryCommitments() {
 		log.info("exportBudgetaryCommitmentyContent");
 		List<BudgetaryCommitment> budgetaryCommitments = (List<BudgetaryCommitment>) budgetaryCommitmentyRepository.findAll();
 		String csvFile = budgetaryCommitmentCSVFileParser.exportBudgetaryCommitmentToCSV(budgetaryCommitments);
 		return csvFile;
+	}
+
+	public BudgetaryCommitment save(BudgetaryCommitment budgetaryCommitment) {
+		return budgetaryCommitmentyRepository.save(budgetaryCommitment);
+	}
+
+	public BudgetaryCommitment mapBudgetaryCommitmentCSVToEntity(BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow) {
+
+		BudgetaryCommitment budgetaryCommitment = new BudgetaryCommitment();
+
+		budgetaryCommitment.setGlobalCommitmentLevel1PositionKey(budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey());
+		budgetaryCommitment.setCommitmentLevel2Position(budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
+		budgetaryCommitment.setCommitmentLevel2Amount(budgetaryCommitmentCSVRow.getAbacGlobalCommitmentPositionAmmount());
+
+		LegalEntity legalEntity = legalEntityService.getLegalEntityByMunicipalityPortalId(budgetaryCommitmentCSVRow.getMunicipalityPortalId());
+		budgetaryCommitment.setLegalEntity(legalEntity);
+
+		return budgetaryCommitment;
 	}
 }

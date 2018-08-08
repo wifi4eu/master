@@ -8,6 +8,7 @@ import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
+import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.utils.ZipFileReader;
@@ -36,6 +37,8 @@ public class ImportDataService {
 
 	@Autowired
 	private DocumentService documentService;
+
+	@Autowired BudgetaryCommitmentService budgetaryCommitmentService;
 
 	static final String LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "portal_exportBeneficiaryInformation.csv";
 	static final String LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME = "portal_exportBeneficiaryDocuments.csv";
@@ -124,7 +127,10 @@ public class ImportDataService {
 		List<BudgetaryCommitmentCSVRow> budgetaryCommitmentCSVRows = (List<BudgetaryCommitmentCSVRow>) budgetaryCommitmentCSVFileParser.parseFile(fileDTO);
 
 		for (BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow : budgetaryCommitmentCSVRows) {
-			log.info(String.format("TODO import BC %s for mid %s", budgetaryCommitmentCSVRow.getAbac_globalCommitmentKey(), budgetaryCommitmentCSVRow.getMunicipalityPortalId()));
+			log.info(String.format("importing BC %s for mid %s", budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey(), budgetaryCommitmentCSVRow.getMunicipalityPortalId()));
+
+			BudgetaryCommitment budgetaryCommitment = budgetaryCommitmentService.mapBudgetaryCommitmentCSVToEntity(budgetaryCommitmentCSVRow);
+			budgetaryCommitmentService.save(budgetaryCommitment);
 		}
 	}
 }

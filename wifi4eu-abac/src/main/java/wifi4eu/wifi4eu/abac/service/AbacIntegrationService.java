@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
+import wifi4eu.wifi4eu.abac.data.repository.BudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 
 import javax.transaction.Transactional;
@@ -22,6 +23,9 @@ public class AbacIntegrationService {
 
     @Autowired
     LegalEntityRepository legalEntityRepository;
+
+    @Autowired
+    BudgetaryCommitmentRepository budgetaryCommitmentRepository;
 
     /**
      * Send the legal entities with status READY_FOR_ABAC, limited to a maximum of @maxRecords
@@ -41,12 +45,29 @@ public class AbacIntegrationService {
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    public void createLegalEntityInAbac(LegalEntity legalEntity) {
+    private void createLegalEntityInAbac(LegalEntity legalEntity) {
         log.info(String.format("Insert legal entity %s into abac", legalEntity.getId()));
         legalEntityRepository.createFinancialLegalEntity(legalEntity.getId());
     }
 
     public void updateLegalEntitiesStatuses() {
         legalEntityRepository.updateFinancialLegalEntitiesStatuses();
+    }
+
+    public void findAndSendBudgetaryCommitmentsReadyToABAC(Integer max_records_create_legal_entity) {
+        List<LegalEntity> legalEntities = legalEntityRepository.findAvailableLegalEntitiesForBudgetaryCommitmentCreation();
+
+        if (!legalEntities.isEmpty()) {
+            log.info(String.format("Found %s legal entities with budgetary commitments to be created in ABAC...", legalEntities.size()));
+        }
+
+        for (LegalEntity legalEntity : legalEntities) {
+            log.info(String.format("Insert BC for legal entity id %s in ABAC", legalEntity.getId()));
+            budgetaryCommitmentRepository.createBudgetaryCommitmentInAbac(legalEntity.getId());
+        }
+    }
+
+    public void updateBudgetaryCommitmentStatuses() {
+        budgetaryCommitmentRepository.updateBudgetaryCommitmentStatuses();
     }
 }

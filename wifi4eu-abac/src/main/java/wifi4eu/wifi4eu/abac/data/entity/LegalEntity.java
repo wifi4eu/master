@@ -29,14 +29,10 @@ import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 		@NamedStoredProcedureQuery(name = "CREATE_LEF_IN_ABAC",
 				procedureName = "CREATE_LEF_IN_ABAC",
 				parameters = {
-						@StoredProcedureParameter(mode = ParameterMode.IN, name = "LEGALENTITYID", type = Long.class)
+					@StoredProcedureParameter(mode = ParameterMode.IN, name = "LEGALENTITYID", type = Long.class)
 				}),
 		@NamedStoredProcedureQuery(name = "UPDATE_LEF_STATUS_FROM_ABAC",
-				procedureName = "UPDATE_LEF_STATUS_FROM_ABAC",
-				parameters = {})
-				/*
-						@StoredProcedureParameter(mode = ParameterMode.OUT, name = "ROWS_AFFECTED", type = Long.class)
-				})*/
+				procedureName = "UPDATE_LEF_STATUS_FROM_ABAC")
 })
 public class LegalEntity {
 	@Id
