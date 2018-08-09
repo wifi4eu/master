@@ -319,13 +319,13 @@ func getCallOpen() (int64, time.Time, time.Time) {
 
     e.GET("/calls/:callId/apply/:r/:u/:m", func(c echo.Context) error {
 
-		//-- 0. Read input parameters parameters
-		cToken, err := strconv.ParseInt(c.Param("callId"), 10, 64)
+	//-- 0. Read input parameters parameters
+	cToken, err := strconv.ParseInt(c.Param("callId"), 10, 64)
         if (err != nil || cToken != callId) {
             return c.String(http.StatusBadRequest, "[1] Invalid arguments")  //-- No need to give more information 
-		}
+	}
 		
-		rToken, err := strconv.ParseInt(c.Param("r"), 10, 64)
+	rToken, err := strconv.ParseInt(c.Param("r"), 10, 64)
         if err != nil {
             return c.String(http.StatusBadRequest, "[2] Invalid arguments")
         }
@@ -337,32 +337,32 @@ func getCallOpen() (int64, time.Time, time.Time) {
 
         mToken, err := strconv.ParseInt(c.Param("m"), 10, 64)
         if err != nil {
-			return c.String(http.StatusBadRequest, "[4] Invalid arguments")
-		}
+		return c.String(http.StatusBadRequest, "[4] Invalid arguments")
+	}
 		
-		//-- 1. CHECK CALL IS OPEN
+	//-- 1. CHECK CALL IS OPEN
         now := time.Now()
         if ( !(now.After(callOpen) && now.Before(callClose)) ) {
-            return c.String(http.StatusUnauthorized, "Call is not active")
-		}
+            //return c.String(http.StatusUnauthorized, "Call is not active")
+	}
 		
-		//-- 2. Validate the userId, XSRF-Token and user agreement acceptance by finding the user on the in-memory userMap
-		xsrfToken := c.Request().Header.Get("X-XSRF-TOKEN")
-			//-- fmt.Println("-- XSRF: ", xsrfToken)
-			//-- fmt.Println("-- MAP XSRF: ", usersMap[uToken])
-		if (usersMap[uToken] != xsrfToken) {
-			//return c.String(http.StatusUnauthorized, "Unauthorized")
-		}
+	//-- 2. Validate the userId, XSRF-Token and user agreement acceptance by finding the user on the in-memory userMap
+	xsrfToken := c.Request().Header.Get("X-XSRF-TOKEN")
+		//-- fmt.Println("-- XSRF: ", xsrfToken)
+		//-- fmt.Println("-- MAP XSRF: ", usersMap[uToken])
+	if (usersMap[uToken] != xsrfToken) {
+		//return c.String(http.StatusUnauthorized, "Unauthorized")
+	}
 
-		//-- 3. CHECK R,U,M TOKEN
-		var tupl UserMunicipalityTuple = regsMap[rToken];
-			//-- fmt.Printf("-- Municipality Received: %d. Found: %d \n", mToken, tupl.mId)
-			//-- fmt.Printf("-- User Received: %d. Found: %d \n", uToken, tupl.uId)
-		if(tupl.mId != mToken || tupl.uId != uToken) {
-			return c.String(http.StatusBadRequest, "Application does not meet the requirements")
-		}
-		
-		//eturn c.String(http.StatusOK, "DEVELOPMENT MODE") // DEV MODE!!!!! DELETE
+	//-- 3. CHECK R,U,M TOKEN
+	var tupl UserMunicipalityTuple = regsMap[rToken];
+		//-- fmt.Printf("-- Municipality Received: %d. Found: %d \n", mToken, tupl.mId)
+		//-- fmt.Printf("-- User Received: %d. Found: %d \n", uToken, tupl.uId)
+	if(tupl.mId != mToken || tupl.uId != uToken) {
+		//return c.String(http.StatusBadRequest, "Application does not meet the requirements")
+	}
+	
+	//return c.String(http.StatusOK, "DEVELOPMENT MODE") // DEV MODE!!!!! DELETE
 
         //-- 4. SAVE TO REDIS
         retries := 0
@@ -393,20 +393,19 @@ func getCallOpen() (int64, time.Time, time.Time) {
             return c.String(http.StatusInternalServerError, "Error processing request")
         }
 
-		//-- 4. All good. Set cookie and return OK
-		var cookieName []string
-		cookieName = append(cookieName, COOKIE_NAME)
-		cookieName = append(cookieName, strconv.FormatInt(rToken, 10))
-
-		cookie := new(http.Cookie)
-		cookie.Name = strings.Join(cookieName, "_")
-		cookie.Value = "true"
-		//cookie.Domain = "wifi4eu-dev.everincloud.com" //-- TODO FIXME
-		cookie.Expires = time.Now().Add(31 * 24 * time.Hour)
-		c.SetCookie(cookie)	
+	//-- 4. All good. Set cookie and return OK
+	var cookieName []string
+	cookieName = append(cookieName, COOKIE_NAME)
+	cookieName = append(cookieName, strconv.FormatInt(rToken, 10))
+	cookie := new(http.Cookie)
+	cookie.Name = strings.Join(cookieName, "_")
+	cookie.Value = "true"
+	//cookie.Domain = "wifi4eu-dev.everincloud.com" //-- TODO FIXME
+	cookie.Expires = time.Now().Add(31 * 24 * time.Hour)
+	c.SetCookie(cookie)	
 
         return c.String(http.StatusOK, resp.(string))
-	})
+   })
 	
 	fmt.Println("\n\n-- Server startup time: ", time.Now().Sub(start).String())
 	
