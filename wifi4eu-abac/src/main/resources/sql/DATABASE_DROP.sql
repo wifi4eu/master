@@ -1,53 +1,21 @@
--- -----------------------------------------------------
--- Table "WIFI4EU_ABAC"."WIF_REPORTS"
--- -----------------------------------------------------
-DROP TABLE "WIFI4EU_ABAC"."WIF_REPORTS";
-
--- -----------------------------------------------------
--- Table "WIFI4EU_ABAC"."WIF_USER_ROLES"
--- -----------------------------------------------------
-DROP TABLE "WIFI4EU_ABAC"."WIF_USER_ROLES";
-
--- -----------------------------------------------------
--- Table "WIFI4EU_ABAC"."WIF_USERS"
--- -----------------------------------------------------
-DROP TABLE "WIFI4EU_ABAC"."WIF_USERS";
-
--- -----------------------------------------------------
--- Table "WIFI4EU_ABAC"."WIF_ROLES"
--- -----------------------------------------------------
-DROP TABLE "WIFI4EU_ABAC"."WIF_ROLES";
-
--- -----------------------------------------------------
--- Table "WIFI4EU_ABAC"."WIF_CALLS"
--- -----------------------------------------------------
-DROP TABLE "WIFI4EU_ABAC"."WIF_CALLS";
-
--- -----------------------------------------------------
--- Table "WIFI4EU_ABAC"."WIF_BANK_ACCOUNTS"
--- -----------------------------------------------------
-DROP TABLE "WIFI4EU_ABAC"."WIF_BANK_ACCOUNTS";
-
--- -----------------------------------------------------
--- Table "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT"
--- -----------------------------------------------------
-DROP TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT";
-
--- -----------------------------------------------------
--- Table "WIFI4EU_ABAC"."WIF_LEGAL_COMMITMENT"
--- -----------------------------------------------------
-DROP TABLE "WIFI4EU_ABAC"."WIF_LEGAL_COMMITMENT";
-
--- -----------------------------------------------------
--- Table "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY"
--- -----------------------------------------------------
-DROP TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY";
-
--- -----------------------------------------------------
--- Table "WIFI4EU_ABAC"."WIF_DOCUMENTS"
--- -----------------------------------------------------
-DROP TABLE "WIFI4EU_ABAC"."WIF_DOCUMENTS";
-
-
-DROP TABLE  "WIFI4EU_ABAC"."WIF_CONSTANTS"
-
+DROP VIEW "WIF_ABAC_BC_STATUS_VIEW";
+DROP VIEW "WIF_ABAC_LEF_STATUS_VIEW";
+DROP TABLE "WIF_ABAC_REQUEST_PROCESS";
+DROP TABLE "WIF_BUDGETARY_COMMITMENT";
+DROP TABLE "WIF_CONSTANTS";
+DROP TABLE "WIF_COUNTRY";
+DROP TABLE "WIF_DOCUMENTS";
+DROP TABLE "WIF_LANGUAGE";
+DROP TABLE "WIF_LEGAL_COMMITMENT";
+DROP TABLE "WIF_LEGAL_ENTITY";
+DROP SEQUENCE "SEQ_ABAC_RUN_ID";
+DROP SEQUENCE "SEQ_BANK_ACCOUNT";
+DROP SEQUENCE "SEQ_BUDGETARY_COMMITMENT";
+DROP SEQUENCE "SEQ_DOCUMENT";
+DROP SEQUENCE "SEQ_LEGAL_ENTITY";
+DROP SEQUENCE "SEQ_WIF_ABAC_STATUS";
+DROP PROCEDURE "CREATE_BC_IN_ABAC";
+DROP PROCEDURE "CREATE_LEF_IN_ABAC";
+DROP PROCEDURE "UPDATE_BC_STATUS_FROM_ABAC";
+DROP PROCEDURE "UPDATE_LEF_STATUS_FROM_ABAC";
+DROP PACKAGE "ABAC_FN";
