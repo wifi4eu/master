@@ -37,7 +37,7 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 			"le.id, le.country_code AS countryCode, le.official_name AS municipality, le.registration_number AS registrationNumber, " +
 			"le.signature_date AS signatureDate, le.wf_status AS lefStatus, bc.wf_status AS bcStatus, lc.wf_status AS lcStatus " +
 			"FROM WIF_LEGAL_ENTITY le " +
-			"LEFT JOIN wif_budgetary_commitment bc ON (le.id = bc.id_le) " +
+			"LEFT JOIN wif_budgetary_commitment bc ON (le.id = bc.legal_entity_id) " +
 			"LEFT JOIN wif_legal_commitment lc ON (le.id = lc.id_le)",
 		nativeQuery = true
 	)
