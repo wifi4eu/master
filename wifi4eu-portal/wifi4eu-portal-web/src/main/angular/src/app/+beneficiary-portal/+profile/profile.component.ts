@@ -49,7 +49,6 @@ export class BeneficiaryProfileComponent {
     private discussionThreads: ThreadDTOBase[] = [];
     private allDocumentsUploaded: boolean[] = [];
     private documentUploaded: boolean = false;
-    private oneRegsitration: boolean = false;
     private oneRegistrationNumber: number = 0;
     private userThreads: ThreadDTOBase [] = [];
     private threadsByUser : UserThreadsDTOBase[] = [];
@@ -72,15 +71,6 @@ export class BeneficiaryProfileComponent {
                             Object.assign(this.editedUser, this.user);
                             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                                 (registrations: RegistrationDTOBase[]) => {
-                                    if (registrations.length == 1) {
-                                        this.oneRegsitration = true;
-                                        this.oneRegistrationNumber = registrations[0].municipalityId;
-                                        if (registrations[0].allFilesFlag == 1) {
-                                            this.documentUploaded = true;
-                                        }
-                                    } else {
-                                        this.oneRegsitration = false;
-                                    }
                                     for (let registration of registrations) {
                                         if (registration.municipalityId == 0){
                                             continue;
@@ -266,7 +256,6 @@ export class BeneficiaryProfileComponent {
     }
 
     private goToDiscussion(index) {
-
         for(let i = 0; i < this.userThreads.length; i++){
             if(this.userThreads[i].title == this.municipalities[index].name){
                 this.threadId = this.discussionThreads[i].id;
@@ -275,8 +264,8 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-    private goToUploadDocuments() {
-        this.router.navigate(['../additional-info/', this.oneRegistrationNumber], { relativeTo: this.route });
+    private goToUploadDocuments(idMunicipality) {
+        this.router.navigate(['../additional-info/', idMunicipality], { relativeTo: this.route });
     }
 
     private goToapplyForVOucher() {
@@ -340,6 +329,6 @@ export class BeneficiaryProfileComponent {
     }
 
     private goToEditProfile() {
-            this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
-        }
+        this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
+    }
 }
