@@ -632,9 +632,7 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
 
-    //In case we don't have log mails!
-    private Date getDateOfLogEmail(LogEmail logEmail){
-        long timeInMilis = logEmail == null ? 0 : logEmail.getSentDate();
-        return new Date(timeInMilis);
+    private Long getDateOfLogEmail(LogEmail logEmail){
+        return logEmail == null ? 0 : logEmail.getSentDate();
     }
 }
