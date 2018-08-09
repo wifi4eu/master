@@ -62,11 +62,12 @@
                             | date:'shortTime'}}
                         </span>
                     </span>
+                    <!-- Validate & Invalidate application buttons -->
                     <span class="right">
-                      <button type="button" class="btn greenButton" #validateBtn (click)="displayValidateModal(i)" [disabled]="!buttonStatusEnabled[i]?.validate || applications[i].status == 2">
+                      <button type="button" class="btn greenButton" #validateBtn (click)="displayValidateModal(i)" [disabled]="buttonStatusEnabled[i]?.validate || applications[i].status == 2">
                         {{ 'dgConn.applicantDetails.validateApplication.title' | translate }}
                       </button>
-                      <button type="button" class="btn redButton" #invalidateBtn (click)="displayInvalidateModal(i)" [disabled]="!buttonStatusEnabled[i]?.invalidate || applications[i].status == 1">
+                      <button type="button" class="btn redButton" #invalidateBtn (click)="displayInvalidateModal(i)" [disabled]="buttonStatusEnabled[i]?.invalidate || applications[i].status == 1">
                           {{ 'dgConn.applicantDetails.invalidateApplication.title' | translate }}
                       </button>
                     </span>
@@ -194,7 +195,7 @@
                                             <p-column field="type" [sortable]="true" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
                                                     <p-checkbox [value]="row" [label]="typeFilesList[row.type - 1]" (ngModelChange)="orderList($event, i)"
-                                                        [(ngModel)]="selectedFiles[i]" [disabled]="row.requestCorrectionDate != null"></p-checkbox>
+                                                        [(ngModel)]="selectedFiles[i]" [disabled]="this.listDisabled[i][row.type] == 1"></p-checkbox>
                                                 </ng-template>
                                             </p-column>
                                             <p-column field="uploadTime" [sortable]="true" header="{{ 'dgConn.dateRecieved' | translate }}" styleClass="text-center">
@@ -542,6 +543,7 @@
             </div>
         </form>
     </p-dialog>
+    <!-- Modal request correction of legal files -->
     <p-dialog [(visible)]="displayRequestCorrection" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
         [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <form (ngSubmit)="requestLegalFilesCorrection()" #requestLegalFilesCorrectionForm="ngForm">

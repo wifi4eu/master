@@ -93,6 +93,15 @@
                         </div>
                     </div>
                     <div class="row">
+                        <br>
+                        <div class="col-sm-4">
+                            <button type="button" (click)="goToUploadDocuments(municipality.id)" class="btn btn-primary">
+                                    {{'shared.uploadDocuments' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-8"></div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-12">
                             <hr class="beneficiaryHr">
                         </div>
@@ -191,7 +200,7 @@
             </div>
         </div>
         <div class="col-sm-4">
-
+        <!--
             <div class="col-sm-12 margin-top  button-content" *ngIf="!documentUploaded || !allDocumentsUploaded">
                 <p>{{ 'shared.statusUploadDocs' | translate }}</p>
                 <div style="text-align: center !important">
@@ -203,6 +212,7 @@
                     </button>
                 </div>
             </div>
+        -->
             <!--<div class="col-sm-12 margin-top  button-content" *ngIf="hasDiscussion">
                 <p>{{ 'benefPortal.beneficiary.goDiscussionText' | translate }}</p>
                 <div style="text-align: center !important">

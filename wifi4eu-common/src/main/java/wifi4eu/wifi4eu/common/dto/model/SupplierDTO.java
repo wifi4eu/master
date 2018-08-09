@@ -21,11 +21,13 @@ public class SupplierDTO implements Serializable {
     private String legalFile2;
     private int status;
     private String lang;
+    private String contactPrefix;
+    private String contactNumber;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactEmail, String logo, List<UserDTO> users, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status, String lang) {
+    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactEmail, String logo, List<UserDTO> users, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status, String lang, String contactPrefix, String contactNumber) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -43,6 +45,8 @@ public class SupplierDTO implements Serializable {
         this.legalFile2 = legalFile2;
         this.status = status;
         this.lang = lang;
+        this.contactPrefix = contactPrefix;
+        this.contactNumber = contactNumber;
     }
 
     public int getId() {
@@ -179,6 +183,22 @@ public class SupplierDTO implements Serializable {
 
     public void setLang(String lang) {
         this.lang = lang;
+    }
+
+    public String getContactPrefix() {
+        return contactPrefix;
+    }
+
+    public void setContactPrefix(String contactPrefix) {
+        this.contactPrefix = contactPrefix;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
 
     @Override

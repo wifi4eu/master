@@ -15,22 +15,23 @@ UPDATE ru set creation_date  = dateadd(s, convert(bigint, u.create_date) / 1000,
 FROM dbo.[registration_users] as ru
 inner join users as u on ru._user = u.id;
 create table grant_agreement(
-    [id]    INT    NOT NULL IDENTITY,
-    [application_id] INT NOT NULL,
-    [signature_id] nvarchar(MAX),
-    [counter_signature_id] nvarchar(MAX),
-    [signature_proof] nvarchar(MAX),
-    [document_location] nvarchar(MAX),
-    [document_location_countersigned] nvarchar(MAX),
-    [date_signature] datetime,
-    [date_counter_signature] datetime,
-    PRIMARY KEY ([id]),
-    CONSTRAINT [fk_grant_agreement_application]
-    FOREIGN KEY ([application_id])
-    REFERENCES dbo.applications ([id])
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
+   [id]    INT    NOT NULL IDENTITY,
+   [application_id] INT NOT NULL,
+   [signature_id] nvarchar(MAX),
+   [counter_signature_id] nvarchar(MAX),
+   [document_location_countersigned] nvarchar(MAX),
+   [signature_proof] nvarchar(MAX),
+   [document_location] nvarchar(MAX),
+   [date_signature] datetime,
+   [date_counter_signature] datetime,
+   [document_language] nvarchar(2) DEFAULT ('en'),
+   PRIMARY KEY ([id]),
+   CONSTRAINT [fk_grant_agreement_application]
+   FOREIGN KEY ([application_id])
+   REFERENCES dbo.applications ([id])
+       ON DELETE CASCADE
+       ON UPDATE CASCADE
+); 
 
 ALTER TABLE log_emails ALTER COLUMN body NTEXT;
 ALTER TABLE log_emails ALTER COLUMN subject NTEXT;
@@ -112,3 +113,17 @@ from [dbo].registrations r inner join
 --delete columns from registrations
 ALTER TABLE dbo.registrations DROP COLUMN upload_time, legal_file1_size, legal_file1_mime,
 legal_file2_size, legal_file2_mime, legal_file3_size, legal_file3_mime, legal_file4_size, legal_file4_mime, legal_file1, legal_file2, legal_file3, legal_file4;
+
+-- DB INDEXES CREATION - feature/WIFIFOREU-2884
+-- The following sql lines are used to create indexes to optimize the use of queries to the database
+CREATE NONCLUSTERED INDEX IX_municipality_name ON municipalities (name)
+CREATE NONCLUSTERED INDEX IX_users_ecasName_token ON users (ecas_username,csrf_token)
+CREATE NONCLUSTERED INDEX IX_calls_dates ON calls (start_date,end_date)
+CREATE NONCLUSTERED INDEX IX_registration_files_status ON registrations (allFiles_flag,_status)
+CREATE NONCLUSTERED INDEX IX_registrationusers_date_main ON registration_users (creation_date,main)
+CREATE NONCLUSTERED INDEX IX_rights_rightdesc ON rights (rightdesc)
+CREATE NONCLUSTERED INDEX IX_applications_status ON applications (_status)
+
+-- feature/WIFIFOREU-2568 log_emails registered when sending a message to all applicants of a call
+ALTER TABLE applications ADD sent_email smallint DEFAULT 0;
+UPDATE applications SET sent_email = 0 WHERE sent_email is null;
