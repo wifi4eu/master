@@ -2,6 +2,8 @@ package wifi4eu.wifi4eu.abac.utils.csvparser;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Component
 public abstract class AbstractCSVFileParser {
+
+	private final Logger log = LoggerFactory.getLogger(AbstractCSVFileParser.class);
 
 	public List<?> parseFile(FileDTO fileDTO) throws RuntimeException {
 
@@ -51,7 +55,10 @@ public abstract class AbstractCSVFileParser {
 			isValid = isValid ? isColumnFound : isValid;
 		}
 
-		if (!isValid) throw new RuntimeException(String.format("Invalid file format. Missing columns %s", columnsNotFound));
+		if (!isValid) {
+			log.error(String.format("Invalid file format. Missing columns %s", columnsNotFound));
+			throw new RuntimeException(String.format("Invalid file format. Missing columns %s", columnsNotFound));
+		}
 
 		return isValid;
 	}
