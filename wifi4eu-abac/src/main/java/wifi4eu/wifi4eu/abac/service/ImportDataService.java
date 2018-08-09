@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
@@ -87,7 +88,7 @@ public class ImportDataService {
 				//map the csv row to the LegalEntity object
 				legalEntity = legalEntityService.mapLegalEntityCSVToEntity(legalEntityInformationCSVRow);
 				//if the LEF is already created in ABAC ignore the creation phase
-				if(legalEntity.getAbacFelId() != null){
+				if(!StringUtils.isEmpty(legalEntity.getAbacFelId())){
 					legalEntity.setWfStatus(AbacWorkflowStatus.ABAC_VALID);
 				}else{
 					legalEntity.setWfStatus(AbacWorkflowStatus.READY_FOR_ABAC);
