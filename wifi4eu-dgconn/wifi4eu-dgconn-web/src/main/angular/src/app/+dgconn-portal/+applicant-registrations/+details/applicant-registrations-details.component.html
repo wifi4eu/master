@@ -602,10 +602,9 @@
                 </div>
                 <div style="padding: 2em; padding-top: 0em;">
                     <div class="row center">
-                        <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary publish-button" [disabled]="processingRequest">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary publish-button">
                                 {{ 'shared.close.label' | translate }}
-                                <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
                     </div>

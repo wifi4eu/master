@@ -146,7 +146,7 @@ public class VoucherService {
 
     public int checkIfApplicationInSimulation(Integer applicationId){
         ApplicationDTO applicationDTO = applicationService.getApplicationById(applicationId);
-        return voucherSimulationRepository.checkIfSimulationExistByCallId(applicationDTO.getCallId(), VoucherAssignmentStatus.SIMULATION.getValue());
+        return voucherSimulationRepository.checkIfSimulationExistByCallId(applicationDTO.getCallId(), VoucherAssignmentStatus.SIMULATION.getValue(), VoucherAssignmentStatus.PRE_LIST.getValue());
     }
 
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(int callId) {

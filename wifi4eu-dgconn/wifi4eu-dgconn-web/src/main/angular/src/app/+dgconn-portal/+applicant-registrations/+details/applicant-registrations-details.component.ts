@@ -517,15 +517,14 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     this.applicationInvalidateReason[this.selectedIndex] = response;
                     this.applications[this.selectedIndex].status = 1;
                     this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
-                    this.closeModal();
                     this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
-                    if (this.simulationExists) {
-                      this.voucherApi.checkIfApplicationInSimulation(this.applications[this.selectedIndex].id).subscribe((res: ResponseDTO) => {
-                        if(<number>res.data >= 1){
-                          this.displaySimulation = true;
-                        }
-                      })                        
-                    }
+                    this.voucherApi.checkIfApplicationInSimulation(this.applications[this.selectedIndex].id).subscribe((res: ResponseDTO) => {
+                      console.log(res);
+                      if(<number>res.data >= 1){
+                        this.closeModal();
+                        this.displaySimulation = true;
+                      }
+                    }) 
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
                     this.closeModal();
