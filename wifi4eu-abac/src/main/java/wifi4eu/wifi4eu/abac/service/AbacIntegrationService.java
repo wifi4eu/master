@@ -12,6 +12,7 @@ import wifi4eu.wifi4eu.abac.data.repository.BudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
