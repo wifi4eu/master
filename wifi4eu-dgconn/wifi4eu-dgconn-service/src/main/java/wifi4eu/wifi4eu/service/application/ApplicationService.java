@@ -41,6 +41,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.common.helper.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
@@ -590,7 +591,9 @@ public class ApplicationService {
     public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
         if (callService.isCallClosed(callId)) {
             LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
-            return legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(getDateOfLogEmail(lastEmailSent)) > 0;
+            if (Validator.isNotNull(lastEmailSent)) {
+                return legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(getDateOfLogEmail(lastEmailSent)) > 0;
+            }
         }
         return false;
     }
