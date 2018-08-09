@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.BeneficiaryValidator;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -313,4 +314,37 @@ public class BeneficiaryResource {
         return null;
     }
 
+    @ApiOperation(value = "getUserHistoryAction")
+    @RequestMapping(value = "/getUserHistoryAction", method = RequestMethod.GET)
+    @ResponseBody
+    public UserHistoryActionDTO getUserHistoryAction() {
+        return null;
+    }
+
+    @ApiOperation(value = "Get application by call and registration id")
+    @RequestMapping(value = "/history/{userId}/call/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<UserHistoryActionDTO> getUserHistoryActionsByUserIdAnCallId(@PathVariable("userId") final Integer userId, @PathVariable("callId") final Integer callId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting beneficiary actions history by call id " + callId + " and user id " + userId);
+        try {
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
+            List<UserHistoryActionDTO> actions = beneficiaryService.getUserHistoryActionsByUserIdAnCallId(userId, callId);
+            if (actions == null) {
+                _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - No history found");
+            } else {
+                _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiary action history is retrieved correctly");
+            }
+            return actions;
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to retrieve this beneficiary action history", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiary action history cannot be retrieved", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
+        }
+    }
 }

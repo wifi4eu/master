@@ -11,9 +11,14 @@
     color: #004494;
     position: relative;
     min-width: 59px; 
-    display: inline-block;
 }
 
+.time.dots, .time{
+  display: block;
+}
+.time.dots~span{
+  display: block;
+}
 
 .dots::after{
     content: ":";

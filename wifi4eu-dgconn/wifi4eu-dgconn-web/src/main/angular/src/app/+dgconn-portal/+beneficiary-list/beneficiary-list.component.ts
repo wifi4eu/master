@@ -85,6 +85,14 @@ export class BeneficiaryListComponent implements OnInit {
         this.finalBeneficiaries = response.data;
         this.totalItems = response.xtotalCount == null ? 0 : response.xtotalCount;
         this.loading = false;
+        for(let i = 0; this.finalBeneficiaries.length > i ; i++){
+          if(this.finalBeneficiaries[i].dateSignature != null){
+            let dateFront;
+            let date = new Date(this.finalBeneficiaries[i].dateSignature);
+            dateFront = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+            this.finalBeneficiaries[i].dateSignature = dateFront;
+          }
+        }
       }
     )
   }

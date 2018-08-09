@@ -22,11 +22,12 @@ public class ApplicationDTO {
     private Boolean preSelectedFlag;
     private Boolean rejected;
     private Integer authorizedPerson;
+    private boolean sentEmail;
 
     public ApplicationDTO() {
     }
 
-    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson) {
+    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, boolean sentEmail) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -48,6 +49,7 @@ public class ApplicationDTO {
         this.preSelectedFlag = preSelectedFlag;
         this.rejected = rejected;
         this.authorizedPerson = authorizedPerson;
+        this.sentEmail = sentEmail;
     }
 
     public int getId() {
@@ -212,5 +214,13 @@ public class ApplicationDTO {
 
     public void setCancelReason(String cancelReason) {
         this.cancelReason = cancelReason;
+    }
+
+    public boolean isSentEmail() {
+        return sentEmail;
+    }
+
+    public void setSentEmail(boolean sentEmail) {
+        this.sentEmail = sentEmail;
     }
 }

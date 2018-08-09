@@ -47,7 +47,10 @@ export class SharedService {
         this.emitClean.next();
     }
 
-    growlTranslation(translatedString: string, keyToTranslate: string, type: string, params?: any) {
+    growlTranslation(translatedString: string, keyToTranslate: string, type: string, params?: any, life?: number) {
+        if (life === undefined || !life) {
+            life = 10000;
+        }
         this.translateService.get(keyToTranslate, params).subscribe(
             (translation: string) => {
                 if (translation) {
@@ -59,28 +62,28 @@ export class SharedService {
                             severity: 'success',
                             summary: 'SUCCESS',
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'error':
                         this.uxService.growl({
                             severity: 'error',
                             summary: 'ERROR',
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'warn':
                         this.uxService.growl({
                             severity: 'warn',
                             summary: 'WARNING',
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'info':
                         this.uxService.growl({
                             severity: 'info',
                             summary: 'INFO',
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                 }
             }, error => {
@@ -90,28 +93,28 @@ export class SharedService {
                             severity: 'success',
                             summary: 'SUCCESS',
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'error':
                         this.uxService.growl({
                             severity: 'error',
                             summary: 'ERROR',
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'warn':
                         this.uxService.growl({
                             severity: 'warn',
                             summary: 'WARNING',
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'info':
                         this.uxService.growl({
                             severity: 'info',
                             summary: 'INFO',
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                 }
             }

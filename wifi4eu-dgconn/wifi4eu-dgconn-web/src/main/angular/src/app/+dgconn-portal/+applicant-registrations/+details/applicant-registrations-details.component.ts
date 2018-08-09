@@ -87,6 +87,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private invalidateChecks = [false, false, false, false, false, false, false, false, false];
     private applicationInvalidateReason: ApplicationInvalidateReasonDTO[][] = [];
     private legalFilesCorrection: LegalFileCorrectionReasonDTOBase[][] = [];
+    private listDisabled: number[][] = [];
 
     private applicationComments: ApplicationCommentDTO[][] = [];
     private page: number[] = [];
@@ -165,6 +166,17 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                             this.contactUsers[i] = users;
                                         }
                                     )
+                                    this.registrationApi.getTypesDisabled(registration.id).subscribe(
+                                        (response: ResponseDTO) => {
+                                            this.listDisabled[i] = [0,0,0,0];
+
+                                            var typesDisabled :number[] = response.data;
+                                            for (var j = 0; j < typesDisabled.length; j++) {
+                                                let type = typesDisabled[j];
+                                                this.listDisabled[i][type] = 1;
+                                            }
+                                        }
+                                    );
                                     this.userApi.getUserByIdFromRegistration(registration.id).subscribe(
                                         (user: UserDTOBase) => {
                                             if (user) {
@@ -450,7 +462,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private validateApplication() {
         if (!this.processingRequest) {
             if (this.selectedIndex != null) {
-                if (this.registrations[this.selectedIndex].allFilesFlag == 1) {
                     this.processingRequest = true;
                     this.applicationInvalidateReasonApi.validateApplication(this.applications[this.selectedIndex]).subscribe(
                         (response: ResponseDTOBase) => {
@@ -475,7 +486,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     );
                 }
             }
-        }
     }
 
     private invalidateApplication() {
