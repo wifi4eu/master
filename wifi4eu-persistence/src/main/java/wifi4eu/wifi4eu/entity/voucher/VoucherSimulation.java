@@ -43,10 +43,13 @@ public class VoucherSimulation {
     @JoinColumn(name = "voucher_assignment")
     private VoucherAssignment voucherAssignment;
 
+    @Column(name = "issues")
+    private Integer issues;
+
     public VoucherSimulation() {
     }
 
-    public VoucherSimulation(Integer id, Integer euRank, Integer countryRank, String country, Integer municipality, Integer numApplications, Integer rejected, Integer selectionStatus, Application application, VoucherAssignment voucherAssignment) {
+    public VoucherSimulation(Integer id, Integer euRank, Integer countryRank, String country, Integer municipality, Integer numApplications, Integer rejected, Integer selectionStatus, Application application, VoucherAssignment voucherAssignment, Integer issues) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
@@ -57,6 +60,7 @@ public class VoucherSimulation {
         this.selectionStatus = selectionStatus;
         this.application = application;
         this.voucherAssignment = voucherAssignment;
+        this.issues = issues;
     }
 
     public Integer getId() {
@@ -137,5 +141,13 @@ public class VoucherSimulation {
 
     public void setApplication(Application application) {
         this.application = application;
+    }
+
+    public Integer getIssues() {
+        return issues;
+    }
+
+    public void setIssues(Integer issues) {
+        this.issues = issues;
     }
 }

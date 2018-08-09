@@ -180,9 +180,16 @@ public class VoucherService {
         }
         if (pageable.getSort().getOrderFor("municipalityName") != null) {
             listSimulation = voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(voucherAssignmentId, municipality, country, pageable.getOffset(), pageable.getPageSize(), sortDirection));
-            totalElements = voucherSimulationRepository.countAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(voucherAssignmentId, municipality, country);
+            totalElements = voucherSimulationRepository.countAllByVoucherAssignmentAndMunicipalityInCountry(voucherAssignmentId, municipality, country);
+        } else if (pageable.getSort().getOrderFor("issues") != null) {
+            sortDirection = pageable.getSort().getOrderFor("issues").getDirection().name();
+            if (sortDirection == "ASC") {
+                listSimulation = voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByIssuesAsc(voucherAssignmentId, municipality, country, pageable.getOffset(), pageable.getPageSize(), sortDirection));
+            } else {
+                listSimulation = voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByIssuesDesc(voucherAssignmentId, municipality, country, pageable.getOffset(), pageable.getPageSize(), sortDirection));
+            }
+            totalElements = voucherSimulationRepository.countAllByVoucherAssignmentAndMunicipalityInCountry(voucherAssignmentId, municipality, country);
         } else {
-
             simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByEuRank(voucherAssignmentId, country, municipality, pageable);
             listSimulation = voucherSimulationMapper.toDTOList(Lists.newArrayList(simulationPaged.getContent()));
         }
@@ -193,7 +200,7 @@ public class VoucherService {
             voucherSimulation.setLau(simpleMunicipalityDTO.getLau());
             voucherSimulation.setRegistrationWarningDTO(warningList);
         }
-        if (pageable.getSort().getOrderFor("municipalityName") != null) {
+        if (pageable.getSort().getOrderFor("municipalityName") != null || pageable.getSort().getOrderFor("issues") != null) {
             return new ResponseDTO(true, listSimulation, (long) totalElements, null);
         }
         return new ResponseDTO(true, listSimulation, simulationPaged.getTotalElements(), null);
