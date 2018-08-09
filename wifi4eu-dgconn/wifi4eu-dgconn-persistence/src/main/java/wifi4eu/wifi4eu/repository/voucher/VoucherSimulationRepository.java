@@ -58,4 +58,10 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
 
     @Query(value = "SELECT application FROM voucher_simulations WHERE voucher_assignment = ?1 AND selection_status = 3", nativeQuery = true)
     ArrayList<Integer> findApplicationIdsFromVoucherAssignmentAndSelectionStatus(int voucherAssignment);
+
+    @Query(value = "SELECT count(vs) FROM VoucherSimulation vs INNER JOIN vs.voucherAssignment va WHERE vs.application.id =:applicationId AND va.call.id =:callId AND va.status =:status")
+    Integer checkIfApplicationIsFreeze(@Param("applicationId") Integer applicationId, @Param("callId") Integer callId, @Param("status") Integer status);
+
+    @Query(value = "SELECT count(va) FROM VoucherAssignment va WHERE va.call.id =:callId AND va.status =:status or va.status =: secondStatus")
+    Integer checkIfSimulationExistByCallId(@Param("callId") Integer callId, @Param("status") Integer status, @Param("secondStatus") Integer secondStatus);
 }
