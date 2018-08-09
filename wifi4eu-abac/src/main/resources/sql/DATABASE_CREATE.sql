@@ -216,7 +216,7 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --  DDL for Sequence SEQ_ABAC_RUN_ID
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_ABAC_RUN_ID"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1620 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_ABAC_RUN_ID"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1660 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_BANK_ACCOUNT
 --------------------------------------------------------
@@ -236,7 +236,7 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --  DDL for Sequence SEQ_LEGAL_ENTITY
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_ENTITY"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 137 NOCACHE  NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_ENTITY"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 140 NOCACHE  NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_WIF_ABAC_STATUS
 --------------------------------------------------------
@@ -323,7 +323,6 @@ set define off;
   l_que_id 				          NUMBER;
   ABAC_FEL_ID               number;
   header_title              varchar2(200);
-  amount                    number;
   global_commitment_position varchar2(50);
   CONTR_REF_LOC_OBJ_FOREIGN_ID varchar2(100);
   request_type              varchar2(20);
@@ -374,8 +373,8 @@ BEGIN
         COMMIT_HED_LOC_OBJ_FOREIGN_ID, PRECOM_POS_LOC_OBJ_FOREIGN_ID, EXPENS_TP_CD, DG_CD, POLICY_AREA_CD, PROGRAM_CD)
       Values
         (l_run_id, 20, l_loc_sys_cd, 'ABACBUDT', 'COM', 'COM', 'CREATE', 'COMMITMENT POSITION',l_loc_obj_foreign_id,
-        'N', 'P', amount, 'Y', 'N', 'N', 'N', bugetaryCommitment.COMMITMENT_L2_POSITION,
-        l_loc_obj_foreign_id, bugetaryCommitment.GLOBAL_COMMITMENT_L1_POS_KEY, 'SUP', '84', 'INEA', 'CEF');
+        'N', 'P', bugetaryCommitment.COMMITMENT_L2_AMOUNT, 'Y', 'N', 'N', 'N', bugetaryCommitment.COMMITMENT_L2_POSITION,
+        l_loc_obj_foreign_id, bugetaryCommitment.GLOBAL_COMMITMENT_L1_POS_KEY, 'SUP', '84', 'CNECT', 'CEF');
 
       --STEP 2.1 - The creation of the Commitment position CRITERIA
       Insert into V_LOC_GEN_ORE_CRT@ABACBUDT_SHARED
@@ -424,7 +423,7 @@ BEGIN
    ACTION_CD, SIGNATURE, COMMENT_TXT, AGENT_ID, WRKFLW_CENTER_CD, WRKFLW_ORG_NAME, SIGN_AS_AGENT_TYPE, SUPPLIED_AGENT_NAME)
   Values
     (l_run_id, 80, l_loc_sys_cd, 'ABACBUDT', 'COM', 'COM', 'CREATE', 'VISA', l_loc_obj_foreign_id, 'N',
-    'AC', 'VANDERHAEGEN Johan', 'VISA GIVEN BY WIFI4EU','vandejn', 'WIFI4EU', 'INEA', 'FA', 'vandejn');
+    'AC', 'VANDERHAEGEN Johan', 'VISA GIVEN BY WIFI4EU','vandejn', 'WIFI4EU', 'CNECT', 'FA', 'vandejn');
 
   --STEP 7 - Call the stored procedure to process the data
   pck_abac_batchint_client.p_submit_batch@ABACBUDT_SHARED(l_run_id, l_loc_sys_cd, 'BATCH_QUE1', l_que_id);
@@ -463,6 +462,7 @@ set define off;
   l_resp_org_struct_key_cd  VARCHAR2(200);
   l_resp_org_struct_tp_cd   VARCHAR2(200);
   l_doc_table_alias         VARCHAR2(200);
+  l_doc_scan_table_alias    VARCHAR2(200);
   l_visa_table_alias        VARCHAR2(200);
   l_visa_action_cd          VARCHAR2(200);
   l_visa_signature          VARCHAR2(200);
@@ -472,9 +472,11 @@ set define off;
   l_visa_wlkflw_orgname     VARCHAR2(200);
   l_visa_agent_type         VARCHAR2(200);
   l_visa_agent_name         VARCHAR2(200);
-  l_LE_ID NUMBER := LEGALENTITYID;
+  l_LE_ID                   NUMBER := LEGALENTITYID;
   l_language_cd             VARCHAR2(1);
-  request_type              varchar2(20);
+  request_type              VARCHAR2(20);
+  supporting_doc            WIF_DOCUMENTS%ROWTYPE;
+  default_doc_type          VARCHAR2(20) := 'PDF';
 
 BEGIN
  --init constants
@@ -492,6 +494,7 @@ BEGIN
  SELECT VALUE INTO l_resp_org_struct_tp_cd from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_RESP_ORG_STRUCT_TP_CD';
 
  SELECT VALUE INTO l_doc_table_alias from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_DOC_TABLE_ALIAS';
+ SELECT VALUE INTO l_doc_scan_table_alias from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_DOC_SCAN_TABLE_ALIAS';
 
  SELECT VALUE INTO l_visa_table_alias from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_TABLE_ALIAS';
  SELECT VALUE INTO l_visa_action_cd from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_ACTION_CD';
@@ -503,6 +506,7 @@ BEGIN
  SELECT VALUE INTO l_visa_agent_type from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_SIGN_AS_AGENT_TYPE';
  SELECT VALUE INTO l_visa_agent_name from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_SUPPLIED_AGENT_NAME';
 
+ SELECT * INTO supporting_doc FROM WIF_DOCUMENTS WHERE LEGAL_ENTITY_ID=l_LE_ID AND DOCUMENT_TYPE='IDENTIFICATION_FORM' AND ROWNUM=1 ORDER BY DATE_CREATED desc;
 
  l_loc_obj_foreign_id:= l_loc_sys_cd || '.' || to_char(l_run_id);
 
@@ -550,15 +554,29 @@ BEGIN
       NULL, NULL, NULL, NULL, NULL,
       NULL, NULL);
 
-      -- insert document rerefences
-      Insert into V_LOC_GEN_DOCS_REFERENCES@ABACBUDT_SHARED
-       (RUN_ID, ROW_ID, LOC_SYS_CD, DESTINATION, TRANS_AREA_CD,
-        TRANS_TP_CD, TRANS_ACTION_CD, TABLE_ALIAS, LOC_OBJ_FOREIGN_ID, PROCESSED,
-        DOC_REFERENCE, DOC_DESCRIPTION, OFFICIAL_DOC_FLG)
-     Values
-       (l_run_id, 20, l_loc_sys_cd, l_destination, l_trans_area_cd,
-        l_trans_tp_cd, l_trans_action_cd, l_doc_table_alias, l_loc_obj_foreign_id, 'N',
-        'Ares(2017)4800601', 'NO COMMENTS', 'Y');
+      --if we have an ARES reference then use the ares ref, otherwhise load the binary
+      IF(supporting_doc.ARES_REFERENCE IS NOT NULL) THEN
+          -- insert document rerefences
+          Insert into V_LOC_GEN_DOCS_REFERENCES@ABACBUDT_SHARED
+           (RUN_ID, ROW_ID, LOC_SYS_CD, DESTINATION, TRANS_AREA_CD,
+            TRANS_TP_CD, TRANS_ACTION_CD, TABLE_ALIAS, LOC_OBJ_FOREIGN_ID, PROCESSED,
+            DOC_REFERENCE, DOC_DESCRIPTION, OFFICIAL_DOC_FLG)
+         Values
+           (l_run_id, 20, l_loc_sys_cd, l_destination, l_trans_area_cd,
+            l_trans_tp_cd, l_trans_action_cd, l_doc_table_alias, l_loc_obj_foreign_id, 'N',
+            supporting_doc.ARES_REFERENCE, 'NO COMMENTS', 'Y');
+      ELSE
+          -- insert document in abac database
+          Insert into V_LOC_GEN_SCAN_DOC@ABACBUDT_SHARED
+             (RUN_ID, ROW_ID, LOC_SYS_CD, DESTINATION, TRANS_AREA_CD,
+              TRANS_TP_CD, TRANS_ACTION_CD, TABLE_ALIAS, LOC_OBJ_FOREIGN_ID, PROCESSED,
+              SCANNED_DOC_LINE_NR, SCANNED_DOC_LIST_TP_CD, SCANNED_DOC_DESC, SCANNED_DOC_FORMAT_TYPE, OFFICIAL_DOC_FLG, SCANNED_DOC_BLOB)
+          ---Values
+          select
+             l_run_id, 50, l_loc_sys_cd, l_destination, l_trans_area_cd,
+              l_trans_tp_cd, l_trans_action_cd, l_doc_scan_table_alias, l_loc_obj_foreign_id, 'N',
+              '1', 'AUT', supporting_doc.NAME, default_doc_type, 'Y', (select supporting_doc.DATA from dual) from dual;
+      END IF;
 
       -- insert VISA details
       Insert into V_LOC_VISA@ABACBUDT_SHARED
