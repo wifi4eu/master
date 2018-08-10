@@ -32,11 +32,11 @@ public class EncrypterService {
 	private String azureCredentials;
 
 	public byte[] encrypt(String textValue) throws GeneralSecurityException {
-		return encryptAESCBC(textValue);
+		return encryptAES(textValue);
 	}
 
 	public String decrypt(byte[] bytes) throws GeneralSecurityException {
-		return decryptAESCBC(bytes);
+		return decryptAES(bytes);
 	}
 
 	@Deprecated

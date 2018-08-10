@@ -177,10 +177,10 @@
         <cns.notification.group.code>WiFi4EU_OP</cns.notification.group.code>
 
         <!-- SMTP -->
-        <encrypted.azure.smtp.password>2MHfIgJrA7WpAoyELHNfCFIzWUPpK/oqyCNyvnfFxRCP1zN5leaVTiZQDe4mR9gfSCJrwDlY1v9s7DAq/LpTPw==</encrypted.azure.smtp.password>
-        <encrypted.smtp.password>R5ioq2ErcNd6DS+DB6aVH9UEyE7pZTV/v1HwfhMniIE=</encrypted.smtp.password>
-        <secret.key.encryption>SBzvv73vv73vv70ZS++/vUDvv70I77+9GmoR77+9</secret.key.encryption>
-        <azure.blob.storage.key>jtMMLzg075zF7vHVuOnu1K/vnA4jcBm6iDNMERgWnl/DrAgs2+7PFqZfi5+LjzKPhbvA8Xr69/9rX84EinuZqg1jiyYfApJ8AM/JitoO75WbQXLnJBQn1a0NgjZkRT2GhAI8wfGkpslsRvHDLEnOJ9MluozCQ9/uN38b1laLZokgpXgihbN/RCZClpb1XtY1+ULSwk46eGv9nD+hwCccFTd7Ay3G5G8Jqp5QAzN96A4c+eyoL+vA5lINNNrSzrkSO8wNjkhYgDrgVzIZ7PXeD2Sbw8iRr5BocQ2Zn8jZBQ4=</azure.blob.storage.key>
+        <encrypted.azure.smtp.password>EXdNJgAGhKHJNcH3M9F2XuFcjyY0vx4dsvGcOkv8Bkt5HjXq5uvc6fvMP1/jqDo2</encrypted.azure.smtp.password>
+        <encrypted.smtp.password>rAVMaF9Tq672wijgk9LxfA==</encrypted.smtp.password>
+        <secret.key.encryption>SBy2hecZS9lA7wiIGmoRiA==</secret.key.encryption>
+        <azure.blob.storage.key>Ft7btrRtNTXc/iX6dwyKkyBHoN4uyJ4yXQ64j59aIzpvB6BbGe2BtyGzmS3ZKKR9aRBGKLI7JXDW0FmD6E8pcvm4CHfaytxyMS4mSm2y3Px12xJIm0FUtREIVSXhNPS4wtiUGREBZY+0FB0ct+6JC935sJnsiL24CupynJotg6YpLv0sP2FzJMrVdujdISYJ1aWjFKwhr05OWytGptGL3fNJV7CElrgV6I5vId7Og2qaQ72vVns6TN9KhtCfiBi3pWRjkMaOz4MH0KLCyag6ng==</azure.blob.storage.key>
 
         <mail.smtp.host>localhost</mail.smtp.host>
         <mail.smtp.port>25</mail.smtp.port>
