@@ -153,6 +153,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                             this.applicationInvalidateReasonApi.getInvalidateReasonsByApplication(applications[i].id).subscribe((res: ApplicationInvalidateReasonDTO[]) => {
                                 this.applicationInvalidateReason[i] = res;
                             })
+                        } else {
+                            this.applicationInvalidateReason[i] = [];
                         }
                         let application = applications[i];
                         this.applicationInvalidateReasonApi.changeStatusApplicationEnabled(application.id).subscribe((response: ResponseDTO) => {
@@ -468,7 +470,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                             if (response.success) {
                                 if (response.data != null) {
                                     this.applications[this.selectedIndex].status = 2;
-
                                     this.getApplicationDetailsInfo();
                                     this.applicationInvalidateReason[this.selectedIndex] = null;
                                     this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
@@ -507,6 +508,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     if (this.simulationExists) {
                         this.displaySimulation = true;
                     }
+                    this.getApplicationDetailsInfo();
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
                     this.closeModal();
@@ -543,6 +545,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                             this.selectedFiles[this.selectedIndex] = [];
                                             this.getApplicationDetailsInfo();
                                             this.closeModal();
+
+
                                         }, error => {
                                             this.selectedFiles[this.selectedIndex] = [];
                                             this.getApplicationDetailsInfo();
