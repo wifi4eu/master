@@ -19,6 +19,7 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.*;
 
+import javax.enterprise.inject.spi.Bean;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -49,6 +50,8 @@ public class SendNotificationsAsync implements Runnable {
 
     private UserMapper userMapper;
 
+    private MailService mailService;
+
     public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
     public final static String NO_ACTION = "NO ACTION LOGGED";
 
@@ -68,6 +71,7 @@ public class SendNotificationsAsync implements Runnable {
         this.userRepository = BeanUtil.getBean(UserRepository.class);
         this.registrationService = BeanUtil.getBean(RegistrationService.class);
         this.userMapper = BeanUtil.getBean(UserMapper.class);
+        this.mailService = BeanUtil.getBean(MailService.class);
     }
 
     @Override
@@ -116,7 +120,7 @@ public class SendNotificationsAsync implements Runnable {
                 msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
                 // TODO: Change it to work with CNS
                 if (!userService.isLocalHost()) {
-                    //mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                 }
             }
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + successfulApplicants.size() + " successful applicants");
@@ -135,7 +139,7 @@ public class SendNotificationsAsync implements Runnable {
                 msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
                 // TODO: Change it to work with CNS
                 if (!userService.isLocalHost()) {
-                    // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                 }
             }
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + reserveApplicants.size() + " reserve applicants");
@@ -161,7 +165,7 @@ public class SendNotificationsAsync implements Runnable {
                 subject = MessageFormat.format(subject, callDTO.getEvent());
                 // TODO: Change it to work with CNS
                 if (!userService.isLocalHost()) {
-                    // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                 }
             }
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + unsuccessfulApplicants.size() + " unsuccessful applicants");

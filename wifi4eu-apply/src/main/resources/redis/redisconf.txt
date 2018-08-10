@@ -1,0 +1,40 @@
+
+#INSTALL JDK8
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt update; sudo apt install oracle-java8-installer
+
+
+INSTALL REDIS 5
+https://github.com/antirez/redis/archive/5.0-rc3.tar.gz
+apt-get install build-essential tcl
+
+make install
+
+apt-get update
+
+
+
+# GO PACKAGES:
+sudo add-apt-repository ppa:gophers/archive
+sudo apt-get update
+sudo apt-get install golang-1.10-go
+sudo ln -s /usr/lib/go-1.10/bin/go /usr/bin/go
+
+
+
+go get github.com/tomasen/realip
+go get github.com/denisenkom/go-mssqldb
+go get github.com/labstack/echo
+go get github.com/labstack/echo/middleware
+go get github.com/mediocregopher/radix.v2/pool
+
+
+# MODIFY /etc/sysctl.conf:
+fs.file-max = 200000
+net.core.somaxconn = 40000
+vm.overcommit_memory = 1
+
+# DISABLE THP -- https://stackoverflow.com/questions/43032406/gke-cant-disable-transparent-huge-pages-permission-denied/43081893
+edit /etc/default/grub:
+    GRUB_CMDLINE_LINUX="... transparent_hugepage=never"
+

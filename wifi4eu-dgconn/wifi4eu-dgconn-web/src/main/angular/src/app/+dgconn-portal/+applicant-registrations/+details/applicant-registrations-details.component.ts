@@ -107,6 +107,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private correspondenceSortDirection: number[] = [];
     private correspondenceDialogInfo: LogEmailDTO;
     private buttonStatusEnabled: any[][] = [];
+    private isInFreezeList: any = [];
 
     private fileURL: string = '/wifi4eu/api/registration/getDocument/';
 
@@ -139,6 +140,16 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.translatePageStrings();
     }
 
+    private isApplicationInFreeze(applicationId, i){
+      this.voucherApi.checkIfApplicationInFreeze(applicationId).subscribe((response: ResponseDTO) => {
+        if(<number> response.data >= 1){
+          this.isInFreezeList[i] = true;
+        }else{
+          this.isInFreezeList[i] = false;
+        }
+      })
+    }
+
     private getApplicationDetailsInfo() {
         if (this.lauId && this.callId) {
             this.clearPageInfo();
@@ -156,6 +167,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                         } else {
                             this.applicationInvalidateReason[i] = [];
                         }
+                        this.isApplicationInFreeze(applications[i].id, i);
                         let application = applications[i];
                         this.applicationInvalidateReasonApi.changeStatusApplicationEnabled(application.id).subscribe((response: ResponseDTO) => {
                             this.buttonStatusEnabled[i] = response.data;
@@ -328,6 +340,9 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     }
 
     private displayInvalidateModal(index: number) {
+        if(this.isInFreezeList[index]){
+          return;
+        }
         if (index != null) {
             if (this.applications[index].status != 1) {
                 this.selectedIndex = index;
@@ -503,11 +518,13 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     this.applicationInvalidateReason[this.selectedIndex] = response;
                     this.applications[this.selectedIndex].status = 1;
                     this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
-                    this.closeModal();
                     this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
-                    if (this.simulationExists) {
+                    this.voucherApi.checkIfApplicationInSimulation(this.applications[this.selectedIndex].id).subscribe((res: ResponseDTO) => {
+                      if(<number>res.data >= 1){
+                        this.closeModal();
                         this.displaySimulation = true;
-                    }
+                      }
+                    })
                     this.getApplicationDetailsInfo();
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
@@ -545,8 +562,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                             this.selectedFiles[this.selectedIndex] = [];
                                             this.getApplicationDetailsInfo();
                                             this.closeModal();
-
-
                                         }, error => {
                                             this.selectedFiles[this.selectedIndex] = [];
                                             this.getApplicationDetailsInfo();
@@ -691,12 +706,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     }
 
     private rerunVoucherSimulation() {
-        this.processingRequest = true;
-        this.voucherApi.simulateVoucherAssignment(this.callId).subscribe(
-            (resp: ResponseDTO) => {
-                this.displaySimulation = false;
-                this.processingRequest = false;
-            }
-        );
+      this.displaySimulation = false;
     }
 }
