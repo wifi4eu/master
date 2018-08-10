@@ -1,10 +1,10 @@
-package wifi4eu.wifi4eu.abac.config;
+package wifi4eu.wifi4eu.abac.rest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class ApplicationController {
+public class HomeController {
 	
 	@RequestMapping(value = "/")
 	public String home() {

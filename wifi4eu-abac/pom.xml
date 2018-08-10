@@ -26,6 +26,8 @@
 		<log4j.version>2.8.2</log4j.version>
 		<apache.commons.csv.version>1.5</apache.commons.csv.version>
 		<ui.folder>src/main/eui</ui.folder>
+		<eris-ext-client.version>5.7</eris-ext-client.version>
+		<weblogic.version>12.1.3-0-0</weblogic.version>
 	</properties>
 
 	<dependencies>
@@ -101,7 +103,42 @@
 		    <artifactId>commons-compress</artifactId>
 		    <version>1.7</version>
 		</dependency>
+
+		<dependency>
+			<groupId>eu.europa.ec.rdg.eris</groupId>
+			<artifactId>eris-ext-client</artifactId>
+			<version>${eris-ext-client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.2.8</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.weblogic</groupId>
+			<artifactId>wls-api</artifactId>
+			<version>${weblogic.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.adf</groupId>
+			<artifactId>jaxws-wlswss-client</artifactId>
+			<version>${weblogic.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>xalan</groupId>
+			<artifactId>serializer</artifactId>
+			<version>2.7.1</version>
+		</dependency>
 	</dependencies>
+
 
 	<build>
 

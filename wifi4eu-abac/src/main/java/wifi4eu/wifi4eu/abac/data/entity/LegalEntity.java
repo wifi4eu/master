@@ -89,6 +89,8 @@ public class LegalEntity {
 	@Column(name = "user_imported", length = 50)
 	private String userImported;
 
+	@Column(name = "HERMES_FILE_ID", unique = true, nullable = true, length = 200)
+	private String hermesFileId;
 
 	@OneToMany(mappedBy = "legalEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Document> documents;
@@ -241,6 +243,14 @@ public class LegalEntity {
 
 	public void setUserImported(String userImported) {
 		this.userImported = userImported;
+	}
+
+	public String getHermesFileId() {
+		return hermesFileId;
+	}
+
+	public void setHermesFileId(String hermesFileId) {
+		this.hermesFileId = hermesFileId;
 	}
 
 	public List<Document> getDocuments() {

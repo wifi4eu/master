@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
+import wifi4eu.wifi4eu.abac.service.DocumentService;
 import wifi4eu.wifi4eu.abac.service.ImportDataService;
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 
@@ -33,6 +34,7 @@ public class LegalEntityController {
 
 	@Autowired
 	private ImportDataService importDataService;
+
 
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO importLegalEntity(@RequestParam("file") MultipartFile file) {

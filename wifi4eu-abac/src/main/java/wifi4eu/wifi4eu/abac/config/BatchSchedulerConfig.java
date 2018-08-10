@@ -12,7 +12,7 @@ import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 @Configuration
 @EnableScheduling
 @ConditionalOnProperty(prefix = "batch.scheduler", name="enabled", havingValue="true", matchIfMissing = false)
-public class BatchScheduler {
+public class BatchSchedulerConfig {
 
     @Value("${batch.scheduler.maxrecords}")
     private Integer MAX_RECORDS_CREATE;

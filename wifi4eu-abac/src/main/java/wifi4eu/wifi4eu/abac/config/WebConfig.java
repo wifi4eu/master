@@ -11,7 +11,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @ComponentScan
-public class ApplicationViewResolver implements WebMvcConfigurer{
+public class WebConfig implements WebMvcConfigurer{
 	
 	
 	

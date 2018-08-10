@@ -64,6 +64,21 @@ public class Document {
 	@Enumerated(EnumType.STRING)
 	private DocumentType type;
 
+	@Column(name = "HERMES_REF")
+	private String hermesRef;
+
+	@Column(name = "HERMES_ATT_ID")
+	private String hermesAttachmentId;
+
+	@Column(name = "HERMES_SAVE_NUMBER")
+	private String saveNumber;
+
+	@Column(name = "HERMES_REG_NUMBER")
+	private String registrationNumber;
+
+	@Column(name = "DOCUMENTTYPE_CCM2CODE")
+	private String docTypeCCM2Id;
+
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
@@ -188,5 +203,45 @@ public class Document {
 
 	public void setPortalDate(Date portalDate) {
 		this.portalDate = portalDate;
+	}
+
+	public String getHermesRef() {
+		return hermesRef;
+	}
+
+	public void setHermesRef(String hermesRef) {
+		this.hermesRef = hermesRef;
+	}
+
+	public String getHermesAttachmentId() {
+		return hermesAttachmentId;
+	}
+
+	public void setHermesAttachmentId(String hermesAttachmentId) {
+		this.hermesAttachmentId = hermesAttachmentId;
+	}
+
+	public String getSaveNumber() {
+		return saveNumber;
+	}
+
+	public void setSaveNumber(String saveNumber) {
+		this.saveNumber = saveNumber;
+	}
+
+	public String getRegistrationNumber() {
+		return registrationNumber;
+	}
+
+	public void setRegistrationNumber(String registrationNumber) {
+		this.registrationNumber = registrationNumber;
+	}
+
+	public String getDocTypeCCM2Id() {
+		return docTypeCCM2Id;
+	}
+
+	public void setDocTypeCCM2Id(String docTypeCCM2Id) {
+		this.docTypeCCM2Id = docTypeCCM2Id;
 	}
 }
