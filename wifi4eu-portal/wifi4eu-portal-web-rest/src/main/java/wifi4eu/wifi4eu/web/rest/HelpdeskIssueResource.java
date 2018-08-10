@@ -58,7 +58,6 @@ public class HelpdeskIssueResource {
             }
             List<NutsDTO> nuts = nutsService.getNutsByLevel(0);
             HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO, nuts);
-
             helpdeskIssueDTO.setCreateDate(new Date().getTime());
             helpdeskIssueDTO.setStatus(0);
             HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.createHelpdeskIssue(helpdeskIssueDTO);

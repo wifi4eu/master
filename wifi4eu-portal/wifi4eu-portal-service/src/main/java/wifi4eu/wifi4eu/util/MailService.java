@@ -64,7 +64,7 @@ public class MailService {
     @PostConstruct
     public void init() throws Exception{
         if(mailSender != null){
-            String dPassword = encrypterService.decrypt(passwordEncrypted.getBytes(StandardCharsets.UTF_8));
+        	String dPassword = encrypterService.getDecodedValue(passwordEncrypted);
             ((JavaMailSenderImpl) mailSender).setPassword(dPassword);
         }
     }
