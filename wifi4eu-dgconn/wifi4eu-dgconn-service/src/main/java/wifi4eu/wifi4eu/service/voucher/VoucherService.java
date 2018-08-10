@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
@@ -402,7 +403,9 @@ public class VoucherService {
 
             if (voucherAssignment != null) {
                 for (VoucherSimulationDTO simulationDTO : voucherAssignment.getVoucherSimulations()) {
-                    voucherSimulationDTOHashMap.put(simulationDTO.getApplication().getId(), simulationDTO);
+                    if(Validator.isNotNull(simulationDTO.getApplication())){
+                        voucherSimulationDTOHashMap.put(simulationDTO.getApplication().getId(), simulationDTO);
+                    }
                 }
             }
 

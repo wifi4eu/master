@@ -62,6 +62,6 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
     @Query(value = "SELECT count(vs) FROM VoucherSimulation vs INNER JOIN vs.voucherAssignment va WHERE vs.application.id =:applicationId AND va.call.id =:callId AND va.status =:status")
     Integer checkIfApplicationIsFreeze(@Param("applicationId") Integer applicationId, @Param("callId") Integer callId, @Param("status") Integer status);
 
-    @Query(value = "SELECT count(va) FROM VoucherAssignment va WHERE va.call.id =:callId AND va.status =:status or va.status =: secondStatus")
+    @Query(value = "SELECT count(va) FROM VoucherAssignment va WHERE va.call.id =:callId AND (va.status =:status OR va.status =:secondStatus)")
     Integer checkIfSimulationExistByCallId(@Param("callId") Integer callId, @Param("status") Integer status, @Param("secondStatus") Integer secondStatus);
 }
