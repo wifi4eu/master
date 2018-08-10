@@ -520,10 +520,11 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
                     this.voucherApi.checkIfApplicationInSimulation(this.applications[this.selectedIndex].id).subscribe((res: ResponseDTO) => {
                       if(<number>res.data >= 1){
-                        this.closeModal();
+                        
                         this.displaySimulation = true;
                       }
-                    }) 
+                      this.closeModal();
+                    });
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
                     this.closeModal();

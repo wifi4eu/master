@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.helper.BeanUtil;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
@@ -24,10 +25,8 @@ import javax.mail.internet.MimeMultipart;
 
 public class MailAsyncService implements Runnable {
 
-    @Autowired
     private UserService userService;
 
-    @Autowired
     private LogEmailRepository logEmailRepository;
 
     public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
@@ -51,6 +50,8 @@ public class MailAsyncService implements Runnable {
         this.mailSender = mailSender;
         this.municipalityId = municipalityId;
         this.action = action;
+        this.logEmailRepository = BeanUtil.getBean(LogEmailRepository.class);
+        this.userService = BeanUtil.getBean(UserService.class);
     }
 
     @Override
