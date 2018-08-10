@@ -201,7 +201,7 @@ public class SupplierService {
     @Transactional
     public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
         UserDTO userDTO;
-        SupplierValidator.validateSupplier(supplierDTO);
+        SupplierValidator.validateSupplierNoBicAccount(supplierDTO);
         UserContext userContext = UserHolder.getUser();
         userDTO = userService.getUserByUserContext(userContext);
 

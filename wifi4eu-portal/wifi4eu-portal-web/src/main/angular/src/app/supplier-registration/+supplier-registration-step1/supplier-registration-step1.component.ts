@@ -94,10 +94,11 @@ export class SupplierRegistrationStep1Component {
     }
 
     private checkButtonEnabled(event){
+      /*  && this.supplier.accountNumber != null && this.supplier.bic != null &&
+      this.supplier.accountNumber.trim() != "" && this.supplier.bic.trim() != "" */
             if(this.supplier.name != null && this.supplier.address != null 
-            && this.supplier.accountNumber != null && this.supplier.bic != null
             && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != "" 
-                && this.supplier.accountNumber.trim() != "" && this.supplier.bic.trim() != "" && this.supplier.vat.trim() != ""){
+                &&  this.supplier.vat.trim() != ""){
                     this.buttonEnabled = true;
             }
             //custom name validator
@@ -113,7 +114,7 @@ export class SupplierRegistrationStep1Component {
                 setTimeout(()=>{this.supplierForm.controls['address'].setErrors({'invalid': true});} ,5);
             }
              //custom accountNumber validator
-             if(this.supplier.accountNumber != null && this.supplier.accountNumber.trim() != ""){
+             /* if(this.supplier.accountNumber != null && this.supplier.accountNumber.trim() != ""){
                 setTimeout(()=>{this.supplierForm.controls['accountNumber'].setErrors(null);} ,5);
             }else {
                 setTimeout(()=>{this.supplierForm.controls['accountNumber'].setErrors({'invalid': true});} ,5);
@@ -123,7 +124,7 @@ export class SupplierRegistrationStep1Component {
                 setTimeout(()=>{this.supplierForm.controls['bic'].setErrors(null);} ,5);
             }else {
                 setTimeout(()=>{this.supplierForm.controls['bic'].setErrors({'invalid': true});} ,5);
-            }
+            } */
               //custom vat validator
               if(this.supplier.vat != null && this.supplier.vat.trim() != ""){
                 setTimeout(()=>{this.supplierForm.controls['vat'].setErrors(null);} ,5);
