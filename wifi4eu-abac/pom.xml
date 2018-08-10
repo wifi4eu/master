@@ -111,6 +111,10 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+				<!-- the properties files need to be placed directly in Weblogic\classes folder according-->
+				<excludes>
+					<exclude>**/*.properties</exclude>
+				</excludes>
 			</resource>
 		</resources>
 
