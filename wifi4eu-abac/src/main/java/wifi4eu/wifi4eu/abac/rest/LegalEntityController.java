@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import wifi4eu.wifi4eu.abac.data.entity.Document;
+import wifi4eu.wifi4eu.abac.integration.essi.EssiService;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.DocumentService;
 import wifi4eu.wifi4eu.abac.service.ImportDataService;
@@ -34,6 +36,12 @@ public class LegalEntityController {
 
 	@Autowired
 	private ImportDataService importDataService;
+
+	@Autowired
+	private DocumentService documentService;
+
+	@Autowired
+	private EssiService essiService;
 
 
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
@@ -52,6 +60,16 @@ public class LegalEntityController {
 	public ResponseEntity<byte[]> exportLegalEntity(final HttpServletResponse response, Model model) throws Exception {
 		log.info("exportLegalEntity");
 
+		Document document = documentService.getDocumentByPortalId(1131L);
+		try {
+			essiService.signDocument(document);
+		}catch (Exception e){
+			e.printStackTrace();
+		}catch (Error ex){
+			ex.printStackTrace();
+		}catch (Throwable e){
+			e.printStackTrace();
+		}
 		ResponseEntity<byte[]> responseReturn = null;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("text/csv"));
