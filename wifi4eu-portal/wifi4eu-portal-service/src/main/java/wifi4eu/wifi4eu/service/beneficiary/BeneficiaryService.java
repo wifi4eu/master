@@ -218,7 +218,7 @@ public class BeneficiaryService {
             mayor.setMunicipalityId(municipality.getId());
 
             /* create mayor */
-            MayorDTO mayorDtoOutput = mayorService.createMayor(mayor, request);
+            MayorDTO mayorDtoOutput = mayorService.saveMayor(mayor, request);
             permissionChecker.addTablePermissions(userDTO, Integer.toString(mayorDtoOutput.getId()),
                     RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipalityId());
 
@@ -371,7 +371,7 @@ public class BeneficiaryService {
         for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
             /* search for other users registered on the same municipality */
 
-            MunicipalityDTO municipalityDtoOutput = municipalityService.createMunicipality(municipality);
+            MunicipalityDTO municipalityDtoOutput = municipalityService.saveMunicipality(municipality);
             resMunicipalities.add(municipalityDtoOutput);
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality " + municipalityDtoOutput.getId() + " added to the list");
         }

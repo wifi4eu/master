@@ -109,7 +109,7 @@ public class MunicipalityService {
     }
 
     @Transactional
-    public MunicipalityDTO createMunicipality(MunicipalityDTO municipalityDTO) {
+    public MunicipalityDTO saveMunicipality(MunicipalityDTO municipalityDTO) {
         return municipalityMapper.toDTO(municipalityRepository.save(municipalityMapper.toEntity(municipalityDTO)));
     }
 
