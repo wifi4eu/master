@@ -10,7 +10,7 @@
 		    		[isClickable]="true"
 		    		(click)="showUpload('lef')"
 		    	></ux-dashboard-card>
-		    	<input type="file" class="abac-upload" id="abac-upload-lef" (change)="importLegalEntity($event)"/>
+		    	<input type="file" class="abac-upload" id="abac-upload-lef" (change)="importLegalEntity($event)" accept=".zip"/>
 		    </div>
 		    <div class="col-md-6">
 		    	<ux-dashboard-card
@@ -30,7 +30,7 @@
 		    		[isClickable]="true"
 		    		(click)="showUpload('bc')"
 		    	></ux-dashboard-card>
-		    	<input type="file" class="abac-upload" id="abac-upload-bc" (change)="importBudgetaryCommitment($event)"/>
+		    	<input type="file" class="abac-upload" id="abac-upload-bc" (change)="importBudgetaryCommitment($event)" accept=".csv"/>
 		    </div>
 		    <div class="col-md-6">
 		    	<ux-dashboard-card
@@ -50,7 +50,7 @@
 		    		[isClickable]="true"
 		    		(click)="showUpload('lc')"
 		    	></ux-dashboard-card>
-		    	<input type="file" class="abac-upload" id="abac-upload-lc" (change)="importLegalCommitment($event)"/>
+		    	<input type="file" class="abac-upload" id="abac-upload-lc" (change)="importLegalCommitment($event)" accept=".csv"/>
 		    </div>
 		    <div class="col-md-6">
 		    	<ux-dashboard-card

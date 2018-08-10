@@ -22,7 +22,7 @@
 	<properties>
 		<packaging.type>war</packaging.type>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
 		<log4j.version>2.8.2</log4j.version>
 		<apache.commons.csv.version>1.5</apache.commons.csv.version>
 		<ui.folder>src/main/eui</ui.folder>
