@@ -520,10 +520,10 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
                     this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
                     this.voucherApi.checkIfApplicationInSimulation(this.applications[this.selectedIndex].id).subscribe((res: ResponseDTO) => {
-                      if(<number>res.data >= 1){
+                        if(<number>res.data >= 1){
+                            this.displaySimulation = true;
+                        }
                         this.closeModal();
-                        this.displaySimulation = true;
-                      }
                     })
                     this.getApplicationDetailsInfo();
                 }, error => {
