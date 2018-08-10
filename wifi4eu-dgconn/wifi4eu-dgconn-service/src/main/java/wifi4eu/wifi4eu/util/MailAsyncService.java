@@ -1,105 +1,106 @@
 package wifi4eu.wifi4eu.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
-import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
-import wifi4eu.wifi4eu.service.user.UserService;
-
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
+
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 
 /**
  * Created by rgarcita on 11/02/2017.
  */
 
+@Component
+@Scope("prototype")
 public class MailAsyncService implements Runnable {
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private LogEmailRepository logEmailRepository;
 
-    @Autowired
-    private LogEmailRepository logEmailRepository;
+	public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
+	public final static String NO_ACTION = "NO ACTION LOGGED";
 
-    public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
-    public final static String NO_ACTION = "NO ACTION LOGGED";
+	private final Logger _log = LogManager.getLogger(MailAsyncService.class);
 
-    private final Logger _log = LogManager.getLogger(MailAsyncService.class);
+	private String toAddress = null;
+	private String fromAddress = null;
+	private String subject = null;
+	private String msgBody = null;
+	private JavaMailSender mailSender = null;
+	private Integer municipalityId = 0;
+	private String action = NO_ACTION;
 
-    private String toAddress = null;
-    private String fromAddress = null;
-    private String subject = null;
-    private String msgBody = null;
-    private JavaMailSender mailSender = null;
-    private Integer municipalityId = 0;
-    private String action = NO_ACTION;
+	public MailAsyncService(String toAddress, String fromAddress, String subject, String msgBody,
+			JavaMailSender mailSender, int municipalityId, String action) {
+		this.toAddress = toAddress;
+		this.fromAddress = fromAddress;
+		this.subject = subject;
+		this.msgBody = msgBody;
+		this.mailSender = mailSender;
+		this.municipalityId = municipalityId;
+		this.action = action;
+	}
 
-    public MailAsyncService(String toAddress, String fromAddress, String subject, String msgBody, JavaMailSender mailSender, int municipalityId, String action) {
-        this.toAddress = toAddress;
-        this.fromAddress = fromAddress;
-        this.subject = subject;
-        this.msgBody = msgBody;
-        this.mailSender = mailSender;
-        this.municipalityId = municipalityId;
-        this.action = action;
-    }
+	@Override
+	public void run() {
+		_log.info("Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			message.setSubject(subject, "UTF-8");
+			MimeMessageHelper helper = new MimeMessageHelper(message);
+			String encodingOptions = "text/html; charset=UTF-8";
 
-    @Override
-    public void run() {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            message.setSubject(subject, "UTF-8");
-            MimeMessageHelper helper = new MimeMessageHelper(message);
-            String encodingOptions = "text/html; charset=UTF-8";
+			byte[] mgsBody64 = msgBody.getBytes("UTF-8");
 
-            byte[] mgsBody64 = msgBody.getBytes("UTF-8");
+			message.setHeader("Content-Type", encodingOptions);
+			message.setHeader("Content-Type", "multipart/mixed");
 
-            message.setHeader("Content-Type", encodingOptions);
-            message.setHeader("Content-Type", "multipart/mixed");
+			MimeBodyPart bodyPart = new MimeBodyPart();
+			bodyPart.setHeader("Content-Type", "text/html; charset=utf-8");
+			bodyPart.setContent(new String(mgsBody64, "UTF-8"), "text/html; charset=utf-8");
 
-            MimeBodyPart bodyPart = new MimeBodyPart();
-            bodyPart.setHeader("Content-Type", "text/html; charset=utf-8");
-            bodyPart.setContent(new String(mgsBody64, "UTF-8"), "text/html; charset=utf-8");
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(bodyPart);
 
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(bodyPart);
+			message.setContent(multipart);
+			helper.setSubject(subject);
+			helper.setTo(toAddress);
+			helper.setFrom(fromAddress);
 
-            message.setContent(multipart);
-            helper.setSubject(subject);
-            helper.setTo(toAddress);
-            helper.setFrom(fromAddress);
+			mailSender.send(message);
 
-            mailSender.send(message);
+			// -- Log email
+			logEmail();
 
-            //-- Log email
-            logEmail();
+			_log.info("Email sent to " + toAddress);
+		} catch (Exception ex) {
+			_log.error("Cannot send the message", ex.getMessage());
+		}
+	}
 
-            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + toAddress);
-        } catch (Exception ex) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex.getMessage());
-        }
-    }
-
-    private void logEmail() throws Exception {
-        if (this.toAddress != null && this.toAddress.length() > 0 && this.municipalityId > 0) {
-            String setAction = NO_ACTION;
-            if (this.action != null && this.action.length() > 0) {
-                setAction = this.action;
-            }
-            LogEmail logEmail = new LogEmail(this.toAddress, this.fromAddress, this.subject, this.msgBody, this.municipalityId, setAction);
-            logEmailRepository.save(logEmail);
-        }
-    }
+	private void logEmail() {
+    	_log.debug("Logging email");
+    	if (toAddress == null || toAddress.isEmpty()) {
+    		_log.warn("The email was not registered in db because no address was specified.");
+    	} else if (municipalityId == 0) {
+    		_log.warn("The email was not registered in db because municipalityId was not defined.");
+    	} else {
+			String setAction = NO_ACTION;
+			if (this.action != null && this.action.length() > 0) {
+				setAction = this.action;
+			}
+			LogEmail logEmail = new LogEmail(this.toAddress, this.fromAddress, this.subject, this.msgBody, this.municipalityId, setAction);
+			logEmailRepository.save(logEmail);
+		}
+	}
 }

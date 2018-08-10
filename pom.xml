@@ -182,8 +182,8 @@
         <secret.key.encryption>SBzvv73vv73vv70ZS++/vUDvv70I77+9GmoR77+9</secret.key.encryption>
         <azure.blob.storage.key>jtMMLzg075zF7vHVuOnu1K/vnA4jcBm6iDNMERgWnl/DrAgs2+7PFqZfi5+LjzKPhbvA8Xr69/9rX84EinuZqg1jiyYfApJ8AM/JitoO75WbQXLnJBQn1a0NgjZkRT2GhAI8wfGkpslsRvHDLEnOJ9MluozCQ9/uN38b1laLZokgpXgihbN/RCZClpb1XtY1+ULSwk46eGv9nD+hwCccFTd7Ay3G5G8Jqp5QAzN96A4c+eyoL+vA5lINNNrSzrkSO8wNjkhYgDrgVzIZ7PXeD2Sbw8iRr5BocQ2Zn8jZBQ4=</azure.blob.storage.key>
 
-        <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
-        <mail.smtp.port>587</mail.smtp.port>
+        <mail.smtp.host>localhost</mail.smtp.host>
+        <mail.smtp.port>25</mail.smtp.port>
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
         <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
