@@ -1,9 +1,15 @@
 package wifi4eu.wifi4eu.abac.data.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
 @Entity
 @Table(name = "WIF_LEGAL_COMMITMENT")
@@ -12,16 +18,17 @@ public class LegalCommitment {
 	@Id
 	private Integer id;
 
-	@Column(name = "wf_status", length = 20)
-	private String wfStatus;
+	@Column(name = "wf_status")
+	@Enumerated(EnumType.STRING)
+	private AbacWorkflowStatus wfStatus;
 
 	@Column(name = "date_created", length = 20)
-	private String dateCreated;
+	private Date dateCreated;
 
 	public LegalCommitment() {
 	}
 
-	public LegalCommitment(Integer id, String wfStatus, String dateCreated) {
+	public LegalCommitment(Integer id, AbacWorkflowStatus wfStatus, Date dateCreated) {
 		super();
 		this.id = id;
 		this.wfStatus = wfStatus;
@@ -36,19 +43,19 @@ public class LegalCommitment {
 		this.id = id;
 	}
 
-	public String getWfStatus() {
+	public AbacWorkflowStatus getWfStatus() {
 		return wfStatus;
 	}
 
-	public void setWfStatus(String wfStatus) {
+	public void setWfStatus(AbacWorkflowStatus wfStatus) {
 		this.wfStatus = wfStatus;
 	}
 
-	public String getDateCreated() {
+	public Date getDateCreated() {
 		return dateCreated;
 	}
 
-	public void setDateCreated(String dateCreated) {
+	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
 	}
 
