@@ -212,7 +212,7 @@
             <div class="col-sm-12 margin-top button-content">
                 <p>{{ 'shared.withdraw-registration.text' | translate }}</p>
                 <div style="text-align: center !important">
-                    <button type="button" (click)="deleteRegistration()" class="btn btn-primary changePassword" [disabled]="withdrawingRegistration || withdrawnSuccess">
+                    <button type="button" (click)="displayModal('withdraw')" class="btn btn-primary changePassword" [disabled]="withdrawingRegistration || withdrawnSuccess">
                         {{ 'shared.withdraw-registration.button' | translate }}
                     </button>
                 </div>
@@ -243,6 +243,28 @@
             <div *ngFor="let language of row" class="col-md-6">
                 <button class="btn language-modal" [class.btn-secondary]="language.code != selectedLanguage.code" [class.btn-primary]="language.code == selectedLanguage.code" (click)="selectLanguage(language.code)">
                     <label class="text-adjust">{{language.label}} ({{language.code}})</label>
+                </button>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+<!-- Modal to confirm beneficiary withdraw-->
+<p-dialog [(visible)]="withdrawingRegistrationConfirmation" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <h1 class="Modalh1Confirmation">{{ 'benefPortal.withdrawApplication.title' | translate }}</h1>
+    <p class="ModalpConfirmation">
+      {{'benefPortal.withdrawApplication.desc' | translate}}
+    </p>
+    <div class="modal-body">
+        <div class="row center">
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary cancel-button" (click)="withdrawingRegistrationConfirmation = !withdrawingRegistrationConfirmation">
+                    {{ 'shared.close' | translate }}
+                </button>
+            </div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary publish-button" (click)="deleteRegistration()">
+                    {{ 'shared.confirm.button' | translate }}
                 </button>
             </div>
         </div>
