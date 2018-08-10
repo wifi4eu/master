@@ -50,7 +50,7 @@ public class MayorService {
     }
 
     @Transactional
-    public MayorDTO createMayor(MayorDTO mayorDTO, HttpServletRequest request) {
+    public MayorDTO saveMayor(MayorDTO mayorDTO, HttpServletRequest request) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         MayorDTO resMayor = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));

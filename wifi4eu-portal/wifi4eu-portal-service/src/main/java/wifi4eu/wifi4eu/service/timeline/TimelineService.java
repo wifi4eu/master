@@ -1,41 +1,51 @@
 package wifi4eu.wifi4eu.service.timeline;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
+
 import wifi4eu.wifi4eu.common.dto.model.TimelineDTO;
 import wifi4eu.wifi4eu.mapper.timeline.TimelineMapper;
 import wifi4eu.wifi4eu.repository.timeline.TimelineRepository;
 
-import java.util.List;
-
 @Service
 public class TimelineService {
-    @Autowired
-    TimelineMapper timelineMapper;
+	Logger _log = LogManager.getLogger(TimelineService.class);
 
-    @Autowired
-    TimelineRepository timelineRepository;
+	@Autowired
+	TimelineMapper timelineMapper;
 
-    public List<TimelineDTO> getAllTimelines() {
-        return timelineMapper.toDTOList(Lists.newArrayList(timelineRepository.findAll()));
-    }
+	@Autowired
+	TimelineRepository timelineRepository;
 
-    public TimelineDTO getTimelineById(int timelineId) {
-        return timelineMapper.toDTO(timelineRepository.findOne(timelineId));
-    }
+	public List<TimelineDTO> getAllTimelines() {
+		return timelineMapper.toDTOList(Lists.newArrayList(timelineRepository.findAll()));
+	}
 
-    public TimelineDTO createTimeline(TimelineDTO timelineDTO) {
-        return timelineMapper.toDTO(timelineRepository.save(timelineMapper.toEntity(timelineDTO)));
-    }
+	public TimelineDTO getTimelineById(int timelineId) {
+		return timelineMapper.toDTO(timelineRepository.findOne(timelineId));
+	}
 
-    public TimelineDTO deleteTimeline(int timelineId) {
-        TimelineDTO timelineDTO = timelineMapper.toDTO(timelineRepository.findOne(timelineId));
-        if (timelineDTO != null) {
-            timelineRepository.delete(timelineMapper.toEntity(timelineDTO));
-            return timelineDTO;
-        } else {
-            return null;
-        }
-    }
+	public TimelineDTO createTimeline(TimelineDTO timelineDTO) {
+		if (timelineDTO.getId() != 0) {
+			_log.warn("Call to a create method with id set, the value has been removed ({})", timelineDTO.getId());
+			timelineDTO.setId(0);
+		}
+		return timelineMapper.toDTO(timelineRepository.save(timelineMapper.toEntity(timelineDTO)));
+	}
+
+	public TimelineDTO deleteTimeline(int timelineId) {
+		TimelineDTO timelineDTO = timelineMapper.toDTO(timelineRepository.findOne(timelineId));
+		if (timelineDTO != null) {
+			timelineRepository.delete(timelineMapper.toEntity(timelineDTO));
+			return timelineDTO;
+		} else {
+			return null;
+		}
+	}
 }

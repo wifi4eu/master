@@ -1,8 +1,18 @@
 package wifi4eu.wifi4eu.service.thread;
 
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.common.dto.model.*;
+
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadMessageDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.mapper.thread.ThreadMessageMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.thread.ThreadMessageRepository;
@@ -13,12 +23,10 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 @Service
 public class ThreadMessageService {
+    Logger _log = LogManager.getLogger(ThreadMessageService.class);
+
     @Autowired
     ThreadMessageMapper threadMessageMapper;
 
@@ -47,6 +55,10 @@ public class ThreadMessageService {
     UserRepository userRepository;
 
     public ThreadMessageDTO createThreadMessage(ThreadMessageDTO threadMessageDTO) {
+    	if (threadMessageDTO.getId() != 0) {
+    		_log.warn("Call to a create method with id set, the value has been removed ({})", threadMessageDTO.getId());
+    		threadMessageDTO.setId(0);	
+    	}
         ThreadMessageDTO threadMessage = threadMessageMapper.toDTO(threadMessageRepository.save(threadMessageMapper.toEntity(threadMessageDTO)));
         ThreadDTO thread = threadService.getThreadById(threadMessage.getThreadId());
         if (thread.getType() == 1) {
