@@ -52,4 +52,9 @@ public class BudgetaryCommitmentService {
 
 		return budgetaryCommitment;
 	}
+
+
+	public BudgetaryCommitment getBCByLegalEntityAndCommitmentPosition(Long municipalityPortalId, Integer abacCommitmentLevel2Position) {
+		return budgetaryCommitmentyRepository.findByLegalEntityMidAndCommitmentLevel2Position(municipalityPortalId, abacCommitmentLevel2Position);
+	}
 }

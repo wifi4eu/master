@@ -12,6 +12,7 @@ import wifi4eu.wifi4eu.abac.data.repository.BudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,19 +40,32 @@ public class AbacIntegrationService {
             log.info(String.format("Found %s legal entities ready to be sent to ABAC...", legalEntities.size()));
         }
 
-        for (LegalEntity legalEntity: legalEntities) {
-            createLegalEntityInAbac(legalEntity);
+        try {
+            for (LegalEntity legalEntity : legalEntities) {
+                createLegalEntityInAbac(legalEntity);
+            }
+        } catch (Exception e){
+            log.error(String.format("Error sending data to abac: %s", e.getMessage()));
         }
+
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     private void createLegalEntityInAbac(LegalEntity legalEntity) {
-        log.info(String.format("Insert legal entity %s into abac", legalEntity.getId()));
-        legalEntityRepository.createFinancialLegalEntity(legalEntity.getId());
+        try {
+            log.info(String.format("Insert legal entity %s into abac", legalEntity.getId()));
+            legalEntityRepository.createFinancialLegalEntity(legalEntity.getId());
+        } catch (Exception e){
+            log.error(String.format("Error sending data to abac: %s", e.getMessage()));
+        }
     }
 
     public void updateLegalEntitiesStatuses() {
-        legalEntityRepository.updateFinancialLegalEntitiesStatuses();
+        try {
+            legalEntityRepository.updateFinancialLegalEntitiesStatuses();
+        } catch (Exception e){
+            log.error(String.format("Error retrieving data from abac: %s", e.getMessage()));
+        }
     }
 
     public void findAndSendBudgetaryCommitmentsReadyToABAC(Integer max_records_create_legal_entity) {
@@ -61,13 +75,21 @@ public class AbacIntegrationService {
             log.info(String.format("Found %s legal entities with budgetary commitments to be created in ABAC...", legalEntities.size()));
         }
 
-        for (LegalEntity legalEntity : legalEntities) {
-            log.info(String.format("Insert BC for legal entity id %s in ABAC", legalEntity.getId()));
-            budgetaryCommitmentRepository.createBudgetaryCommitmentInAbac(legalEntity.getId());
+        try {
+            for (LegalEntity legalEntity : legalEntities) {
+                log.info(String.format("Insert BC for legal entity id %s in ABAC", legalEntity.getId()));
+                budgetaryCommitmentRepository.createBudgetaryCommitmentInAbac(legalEntity.getId());
+            }
+        } catch (Exception e){
+            log.error(String.format("Error sending data to abac: %s", e.getMessage()));
         }
     }
 
     public void updateBudgetaryCommitmentStatuses() {
-        budgetaryCommitmentRepository.updateBudgetaryCommitmentStatuses();
+        try {
+            budgetaryCommitmentRepository.updateBudgetaryCommitmentStatuses();
+        } catch (Exception e){
+            log.error(String.format("Error retrieving data from abac: %s", e.getMessage()));
+        }
     }
 }

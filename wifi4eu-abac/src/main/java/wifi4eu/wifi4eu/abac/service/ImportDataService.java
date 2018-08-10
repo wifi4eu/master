@@ -137,10 +137,20 @@ public class ImportDataService {
 		List<BudgetaryCommitmentCSVRow> budgetaryCommitmentCSVRows = (List<BudgetaryCommitmentCSVRow>) budgetaryCommitmentCSVFileParser.parseFile(fileDTO);
 
 		for (BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow : budgetaryCommitmentCSVRows) {
-			log.info(String.format("importing BC %s for mid %s", budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey(), budgetaryCommitmentCSVRow.getMunicipalityPortalId()));
 
-			BudgetaryCommitment budgetaryCommitment = budgetaryCommitmentService.mapBudgetaryCommitmentCSVToEntity(budgetaryCommitmentCSVRow);
-			budgetaryCommitmentService.save(budgetaryCommitment);
+			BudgetaryCommitment budgetaryCommitment = budgetaryCommitmentService.getBCByLegalEntityAndCommitmentPosition(budgetaryCommitmentCSVRow.getMunicipalityPortalId(), budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
+
+			if(budgetaryCommitment == null) {
+				log.info(String.format("importing BC %s for mid %s", budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey(), budgetaryCommitmentCSVRow.getMunicipalityPortalId()));
+
+				budgetaryCommitment = budgetaryCommitmentService.mapBudgetaryCommitmentCSVToEntity(budgetaryCommitmentCSVRow);
+				budgetaryCommitmentService.save(budgetaryCommitment);
+			} else {
+				//TODO update or ignore?
+				log.info(String.format("Legal entity mid %s already has a Budgetary commitment position %s. Ignoring it for now",
+										budgetaryCommitmentCSVRow.getMunicipalityPortalId(),
+										budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position()));
+			}
 		}
 	}
 }

@@ -21,6 +21,16 @@ import java.util.List;
 public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 
 	@Override
+	protected Boolean validateColumns(CSVParser csvParser) {
+
+		return super.validateColumns(csvParser,
+					BudgetaryCommitmentImportCSVColumn.MUNICIPALITY_PORTAL_ID,
+					BudgetaryCommitmentImportCSVColumn.ABAC_GLOBAL_COMMITMENT_LEVEL1_POSITION_KEY,
+					BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION,
+					BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT);
+	}
+
+	@Override
 	protected List<BudgetaryCommitmentCSVRow> mapRowsToEntities(CSVParser csvParser) {
 
 		List<BudgetaryCommitmentCSVRow> budgetaryCommitmentCSVRows = new ArrayList<>();
@@ -52,24 +62,19 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 							BudgetaryCommitmentImportCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
 							BudgetaryCommitmentImportCSVColumn.ABAC_GLOBAL_COMMITMENT_LEVEL1_POSITION_KEY.toString(),
 							BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION.toString(),
-							BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT.toString()
+							BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT.toString(),
+							BudgetaryCommitmentImportCSVColumn.ABAC_STATUS.toString()
 					));
 
-			// TODO Finish export
-/*			for (LegalEntity budgetaryCommitment : budgetaryCommitments) {
+			for (BudgetaryCommitment budgetaryCommitment : budgetaryCommitments) {
 				csvPrinter.printRecord(
-						legalEntity.getMid(),
-						legalEntity.getOfficialName(),
-						legalEntity.getOfficialAddress(),
-						legalEntity.getPostalCode(),
-						legalEntity.getCity(),
-						legalEntity.getCountryCode(),
-						legalEntity.getLanguageCode(),
-						legalEntity.getRegistrationNumber(),
-						legalEntity.getAbacFelId(),
-						legalEntity.getWfStatus()
+						budgetaryCommitment.getLegalEntity().getMid(),
+						budgetaryCommitment.getGlobalCommitmentLevel1PositionKey(),
+						budgetaryCommitment.getCommitmentLevel2Position(),
+						budgetaryCommitment.getCommitmentLevel2Amount(),
+						budgetaryCommitment.getWfStatus()
 				);
-			}*/
+			}
 
 			csvPrinter.flush();
 			return stream.toString();
