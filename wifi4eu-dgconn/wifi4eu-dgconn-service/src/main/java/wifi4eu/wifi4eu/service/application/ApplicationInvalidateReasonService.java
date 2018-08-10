@@ -210,35 +210,36 @@ public class ApplicationInvalidateReasonService {
     public Map<String, Boolean> changeStatusApplicationEnabled(Integer applicationId, HttpServletRequest request){
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
-        if (applicationDBO == null) {
+        ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
+        if (applicationDTO == null) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application does not exist");
             throw new AppException("Incorrect application id");
         }
 
         Map<String, Boolean> checks = new HashMap<>();
         boolean valid = false;
-        List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDBO.getRegistrationId());
-        if(Validator.isNull(legalFileCorrectionReasons) || legalFileCorrectionReasons.isEmpty()) {
-            checks.put("invalidate", valid);
-            checks.put("validate", valid);
-        } else {
-            for (LegalFileCorrectionReason legalFileCorrectionReason: legalFileCorrectionReasons) {
-                if(legalFileCorrectionReason.getRequestCorrection()){
-                    Calendar deadline = Calendar.getInstance();
-                    deadline.setTime(legalFileCorrectionReason.getRequestCorrectionDate());
-                    // Date plus 7 days (deadline)
-                    deadline.add(Calendar.DATE, 7);
-                    Date currentTime = Calendar.getInstance().getTime();
-                    if(currentTime.before(deadline.getTime())){
-                        valid = true;
-                        break;
+        // Has the municipality been notified by email of request for changes
+        if (applicationDTO.isSentEmail()) {
+            List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDTO.getRegistrationId());
+            if (Validator.isNotNull(legalFileCorrectionReasons) && !legalFileCorrectionReasons.isEmpty()) {
+                for (LegalFileCorrectionReason legalFileCorrectionReason : legalFileCorrectionReasons) {
+                    // Is there any pending request
+                    if (legalFileCorrectionReason.getRequestCorrection()) {
+                        Calendar deadline = Calendar.getInstance();
+                        deadline.setTime(legalFileCorrectionReason.getRequestCorrectionDate());
+                        deadline.add(Calendar.DATE, 7);
+                        Date currentTime = Calendar.getInstance().getTime();
+                        // Have more than 7 days overcome since the last request
+                        if (currentTime.before(deadline.getTime())) {
+                            valid = true;
+                            break;
+                        }
                     }
                 }
             }
-            checks.put("invalidate", valid);
-            checks.put("validate", valid);
         }
+        checks.put("invalidate", valid);
+        checks.put("validate", valid);
         return checks;
     }
 

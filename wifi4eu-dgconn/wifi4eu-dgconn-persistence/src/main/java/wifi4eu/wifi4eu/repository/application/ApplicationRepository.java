@@ -1,8 +1,10 @@
 package wifi4eu.wifi4eu.repository.application;
 
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.entity.application.Application;
 
 import java.util.List;
@@ -63,4 +65,9 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
 
     @Query(value = "SELECT a.* FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN registration_users ru ON ru.registration = r.id INNER JOIN users u ON ru._user = u.id WHERE a.id IN (SELECT vs.application FROM voucher_simulations vs WHERE vs.voucher_assignment = ?1 AND vs.selection_status = ?2)", nativeQuery = true)
     List<Application> getApplicationsSelectedInVoucherAssignment(Integer voucherAssignmentId, Integer selectionStatus);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE applications SET sent_email = ?#{[0]} WHERE id = ?#{[1]}", nativeQuery = true)
+    int updateSentEmailByApplicationId(boolean sentEmail, int applicationId);
 }

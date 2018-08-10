@@ -444,6 +444,7 @@ public class ApplicationService {
             applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
         }
         applicationDB.setInvalidateReason(null);
+        applicationDB.setSentEmail(false);
         registrationService.saveRegistration(registration);
         ApplicationDTO applicationResponse = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
         _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
@@ -571,6 +572,7 @@ public class ApplicationService {
 
                 if (!emailBody.isEmpty()) {
                     mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
+                    applicationRepository.updateSentEmailByApplicationId(true, application.getApplicationId());
                 }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);
@@ -591,9 +593,7 @@ public class ApplicationService {
     public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
         if (callService.isCallClosed(callId)) {
             LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
-            if (Validator.isNotNull(lastEmailSent)) {
-                return legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(getDateOfLogEmail(lastEmailSent)) > 0;
-            }
+            return legalFileCorrectionReasonRepository.countLegalFileCorrectionsAfterDate(getDateOfLogEmail(lastEmailSent)) > 0;
         }
         return false;
     }
