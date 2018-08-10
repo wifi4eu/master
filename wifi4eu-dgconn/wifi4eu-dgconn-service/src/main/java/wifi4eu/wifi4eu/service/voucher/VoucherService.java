@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -123,6 +125,12 @@ public class VoucherService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    ApplicationContext context;    
+
+    @Autowired
+    TaskExecutor taskExecutor;    
+    
     public List<VoucherAssignmentDTO> getAllVoucherAssignment() {
         return voucherAssignmentMapper.toDTOList(Lists.newArrayList(voucherAssignmentRepository.findAll()));
     }
@@ -840,10 +848,9 @@ public class VoucherService {
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
 
-
-        SendNotificationsAsync sendNotificationsAsync = new SendNotificationsAsync(callId, userConnected);
-        Thread threadSendNotifications = new Thread(sendNotificationsAsync);
-        threadSendNotifications.start();
+        // Let the task executor manage the execution of the new thread to send the mails
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Launched notification for applicants, starting thread...");
+        taskExecutor.execute(context.getBean(SendNotificationsAsync.class, callId, userConnected));    	
     }
 
 }

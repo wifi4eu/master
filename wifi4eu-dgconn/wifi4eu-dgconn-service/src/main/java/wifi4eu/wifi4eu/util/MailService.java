@@ -4,8 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -56,10 +58,13 @@ public class MailService {
     @Autowired
     private UserService userService;
 
-    private final Logger _log = LogManager.getLogger(MailService.class);
+    @Autowired
+    ApplicationContext context;    
 
-    UserContext userContext;
-    UserDTO userConnected;
+    @Autowired
+    TaskExecutor taskExecutor;    
+
+    private final Logger _log = LogManager.getLogger(MailService.class);
 
     @PostConstruct
     public void init() throws Exception{
@@ -76,7 +81,7 @@ public class MailService {
     public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending synchronous mail: " + fromAddress + " " + subject + " " + msgBody);
         if (enableMail) {
             try {
                 MimeMessage message = mailSender.createMimeMessage();
@@ -107,6 +112,8 @@ public class MailService {
             } catch (Exception ex) {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex);
             }
+        } else {
+        	_log.warn("Mail is no enabled, no emails were sent");
         }
     }
 
@@ -115,10 +122,16 @@ public class MailService {
     }
 
     public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
+    	
         if (enableMail) {
-            MailAsyncService asyncService = new MailAsyncService(toAddress, fromAddress, subject, msgBody, this.mailSender, municipalityId, action);
-            Thread thread = new Thread(asyncService);
-            thread.start();
+        	_log.info("Launching send mail thread...");        
+            // Let the task executor manage the execution of the new thread to send the mails
+        	taskExecutor.execute(context.getBean(MailAsyncService.class, toAddress, fromAddress, subject, msgBody, this.mailSender, municipalityId, action));
+        } else {
+        	_log.warn("Mail is no enabled, no emails were sent");
         }
     }
 
