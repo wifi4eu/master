@@ -14,19 +14,19 @@
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="name">{{ 'suppRegistration.company.name' | translate }}</label><br>
                 <input id="name" type="text" name="name" class="form-control"
-                       [(ngModel)]="supplier.name" required>
+                       [(ngModel)]="supplier.name" (ngModelChange)="enableButton($event)" required>
             </div>
             <br>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="address">{{ 'suppRegistration.legal.address' | translate }}</label><br>
                 <input id="address" type="text" name="address" class="form-control"
-                       [(ngModel)]="supplier.address" required>
+                       [(ngModel)]="supplier.address" (ngModelChange)="enableButton($event)" required>
             </div>
             <br>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="vat">{{ 'suppRegistration.vat.label' | translate }}</label><br>
                 <input id="vat" type="text" name="vat" class="form-control"
-                       [(ngModel)]="supplier.vat" required>
+                       [(ngModel)]="supplier.vat" (ngModelChange)="enableButton($event)" required>
             </div>
             <br>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
@@ -68,21 +68,21 @@
                 <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                     <label>{{ 'shared.name.label' | translate }}</label><br>
                     <input [id]="'name-'+i" type="text" [name]="'name-'+i" class="form-control"
-                        [(ngModel)]="users[i].name" required [disabled]="user.type == -1">
+                        [(ngModel)]="users[i].name" required  (ngModelChange)="enableButtonUser($event, i)" [disabled]="user.type == -1">
                 </div>
                 <br>
                 <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                     <label>{{ 'shared.surname.label' | translate }}</label><br>
                     <input [id]="'surname-'+i" type="text" [name]="'surname-'+i" class="form-control"
-                        [(ngModel)]="users[i].surname" required [disabled]="user.type == -1">
+                        [(ngModel)]="users[i].surname" required (ngModelChange)="enableButtonUser($event, i)" [disabled]="user.type == -1">
                 </div>
                 <br>
                 <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
                     <label>{{ 'suppRegistration.phone.number' | translate }}</label><br>
                     <input [id]="'phone-prefix-'+i" type="text" [name]="'phone-prefix-'+i" class="form-control ui-g-2 ui-sm-4"
-                        style="margin-right: 1em;" [(ngModel)]="users[i].phone_prefix" required [disabled]="user.type == -1">
+                        style="margin-right: 1em;" [(ngModel)]="users[i].phone_prefix" (ngModelChange)="enableButtonUser($event, i)" required [disabled]="user.type == -1">
                     <input [id]="'phone-number-'+i" type="text" [name]="'phone-number-'+i" class="form-control ui-g-3 ui-sm-7"
-                        [(ngModel)]="users[i].phone_number" required [disabled]="user.type == -1">
+                        [(ngModel)]="users[i].phone_number" required (ngModelChange)="enableButtonUser($event, i)" [disabled]="user.type == -1">
                     <br>
                     <label class="ui-g-2 ui-sm-4" style="font-size: 70%;color: #8f8f8f;">
                         {{ 'suppRegistration.prefix.number' | translate }}
@@ -119,7 +119,7 @@
                                         header="{{country.label | slice:0:1 | uppercase }}{{country.label | slice:1:country.label.length | lowercase }}">
                                 <p-multiSelect id="{{'selectRegion'+i}}" #selectRegion name="{{'selectRegion'+i}}"
                                                defaultLabel="{{ 'shared.choose.label' | translate }}"
-                                               [options]="regionOptions[country.label]" [(ngModel)]="selectedRegions[country.label]">
+                                               [options]="regionOptions[country.label]" [(ngModel)]="selectedRegions[country.label]" (ngModelChange)="enableButton($event)">
                                 </p-multiSelect>
                             </p-tabPanel>
                         </p-tabView>
@@ -135,7 +135,7 @@
                         class="btn btn-primary whiteButton" style="margin-right: 0.5em;">
                     {{ 'shared.cancel.button' | translate }}
                 </button>
-                <button type="button" (click)="saveSupplierData()" [disabled]="savingData"
+                <button type="button" (click)="saveSupplierData()" [disabled]="savingData || !buttonEnabled"
                         class="btn btn-primary blueButton" style="margin-left: 0.5em;">
                     {{ 'shared.save' | translate }} <i *ngIf="savingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
                 </button>
