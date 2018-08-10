@@ -21,6 +21,7 @@ import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
@@ -136,6 +137,7 @@ public class SendNotificationsAsync implements Runnable {
 				if (userDTO.getLang() != null) {
 					locale = new Locale(userDTO.getLang());
 				}
+				
 				ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
 				subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
 				msgBody = bundle.getString("mail.dgConn.voucherAssignment.successfulApplicant.body");
@@ -144,7 +146,7 @@ public class SendNotificationsAsync implements Runnable {
 				subject = MessageFormat.format(subject, callDTO.getEvent());
 				msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
 				// TODO: Change it to work with CNS
-				mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+				mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId());
 			}
 			_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to "
 					+ successfulApplicants.size() + " successful applicants");
@@ -164,7 +166,7 @@ public class SendNotificationsAsync implements Runnable {
 				subject = MessageFormat.format(subject, callDTO.getEvent());
 				msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
 				// TODO: Change it to work with CNS
-				mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+				mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId());
 			}
 			_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to "
 					+ reserveApplicants.size() + " reserve applicants");
@@ -192,7 +194,7 @@ public class SendNotificationsAsync implements Runnable {
 				msgBody = MessageFormat.format(msgBody, option);
 				subject = MessageFormat.format(subject, callDTO.getEvent());
 				// TODO: Change it to work with CNS
-				mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+				mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId());
 			}
 			_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to "
 					+ unsuccessfulApplicants.size() + " unsuccessful applicants");
@@ -202,6 +204,8 @@ public class SendNotificationsAsync implements Runnable {
 			voucherAssignment.setNotifiedDate(new Date().getTime());
 			voucherAssignmentRepository.save(voucherAssignment);
 		} catch (Exception ex) {
+System.out.println("KKKKKK");			
+ex.printStackTrace();
 			_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message",
 					ex.getMessage());
 		}

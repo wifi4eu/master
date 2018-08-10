@@ -88,19 +88,19 @@ public class MailAsyncService implements Runnable {
 		}
 	}
 
-	private void logEmail() throws Exception {
-		if (this.toAddress != null && this.toAddress.length() > 0 && this.municipalityId > 0) {
+	private void logEmail() {
+    	_log.debug("Logging email");
+    	if (toAddress == null || toAddress.isEmpty()) {
+    		_log.warn("The email was not registered in db because no address was specified.");
+    	} else if (municipalityId == 0) {
+    		_log.warn("The email was not registered in db because municipalityId was not defined.");
+    	} else {
 			String setAction = NO_ACTION;
 			if (this.action != null && this.action.length() > 0) {
 				setAction = this.action;
 			}
-			_log.info("Mail registered1");
-			LogEmail logEmail = new LogEmail(this.toAddress, this.fromAddress, this.subject, this.msgBody,
-					this.municipalityId, setAction);
+			LogEmail logEmail = new LogEmail(this.toAddress, this.fromAddress, this.subject, this.msgBody, this.municipalityId, setAction);
 			logEmailRepository.save(logEmail);
-			_log.info("Mail registered2");
-		} else {
-			_log.info("Mail not registered");
 		}
 	}
 }

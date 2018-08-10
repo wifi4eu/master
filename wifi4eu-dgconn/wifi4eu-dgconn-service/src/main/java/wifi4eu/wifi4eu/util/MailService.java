@@ -1,5 +1,13 @@
 package wifi4eu.wifi4eu.util;
 
+import java.nio.charset.StandardCharsets;
+
+import javax.annotation.PostConstruct;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,26 +20,15 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
+
 import wifi4eu.wifi4eu.common.utils.EncrypterService;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
-import wifi4eu.wifi4eu.service.user.UserService;
-
-import javax.annotation.PostConstruct;
-import javax.mail.Multipart;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import java.nio.charset.StandardCharsets;
 
 
 /**
  * Created by rgarcita on 11/02/2017.
  */
-
 @Configuration
 @PropertySource("classpath:env.properties")
 @Service
@@ -56,9 +53,6 @@ public class MailService {
     private LogEmailRepository logEmailRepository;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     ApplicationContext context;    
 
     @Autowired
@@ -79,9 +73,7 @@ public class MailService {
     }
 
     public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending synchronous mail: " + fromAddress + " " + subject + " " + msgBody);
+        _log.debug("Sending synchronous mail: {} {} {}", fromAddress, subject, msgBody);
         if (enableMail) {
             try {
                 MimeMessage message = mailSender.createMimeMessage();
@@ -108,9 +100,9 @@ public class MailService {
 
                 //-- Log email
                 logEmail(toAddress, fromAddress, subject, msgBody, municipalityId, action);
-                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + toAddress);
+                _log.debug("Email sent to {}", toAddress);
             } catch (Exception ex) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex);
+                _log.error("Cannot send the message", ex);
             }
         } else {
         	_log.warn("Mail is no enabled, no emails were sent");
@@ -121,10 +113,12 @@ public class MailService {
         sendEmailAsync(toAddress, fromAddress, subject, msgBody, 0, NO_ACTION);
     }
 
+    public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId) {
+        sendEmailAsync(toAddress, fromAddress, subject, msgBody, municipalityId, NO_ACTION);
+    }
+
     public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
+        _log.debug("Sending asynchronous mail: {} {} {}", fromAddress, subject, msgBody);
     	
         if (enableMail) {
         	_log.info("Launching send mail thread...");        
@@ -135,8 +129,13 @@ public class MailService {
         }
     }
 
-    private void logEmail(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) throws Exception {
-        if (toAddress != null && toAddress.length() > 0 && municipalityId > 0) {
+    private void logEmail(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
+    	_log.debug("Logging email");
+    	if (toAddress == null || toAddress.isEmpty()) {
+    		_log.warn("The email was not registered in db because no address was specified.");
+    	} else if (municipalityId == 0) {
+    		_log.warn("The email was not registered in db because municipalityId was not defined.");
+    	} else {
             String setAction = NO_ACTION;
             if (action != null && action.length() > 0) {
                 setAction = action;
