@@ -162,8 +162,8 @@ public class DocumentService {
      * from external resources in which only the username is propagated through the SOAP request.
      */
     private void addUserCredentials(ErisClientParams erisClientParams) throws DocumentFault {
-        erisClientParams.setUsername("alexand");
-        erisClientParams.setFirstName("Alexandru");
-        erisClientParams.setLastName("ANDREI");
+        erisClientParams.setUsername("todo");
+        erisClientParams.setFirstName("todo");
+        erisClientParams.setLastName("todo");
     }
 }
