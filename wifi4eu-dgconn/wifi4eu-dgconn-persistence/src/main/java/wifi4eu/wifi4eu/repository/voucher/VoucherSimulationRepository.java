@@ -44,12 +44,24 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
     @Query(value = "SELECT vs.* FROM voucher_simulations vs INNER JOIN municipalities m ON vs.municipality = m.id WHERE vs.voucher_assignment = ?#{[0]} AND LOWER(m.name) LIKE LOWER(CONCAT('%',?#{[1]},'%')) AND LOWER(vs.country) LIKE LOWER(CONCAT('%',?#{[2]},'%')) ORDER BY CASE WHEN ?#{[5]} = 'DESC' THEN m.name END DESC, CASE WHEN ?#{[5]} = 'ASC' THEN m.name END ASC OFFSET ?#{[3]} ROWS FETCH NEXT ?#{[4]} ROWS ONLY", nativeQuery = true)
     List<VoucherSimulation> findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(Integer voucherAssignmentId, String municipality, String country, Integer offset, Integer count, String orderDirection);
 
+    @Query(value = "SELECT vs.id, vs.country, vs.country_rank, vs.eu_rank, vs.municipality, vs.num_applications, vs.rejected, vs.selection_status, vs.voucher_assignment, vs.application, (SELECT COUNT(rw.id) FROM registration_warnings rw WHERE rw.registration_id = app.registration) as issues FROM voucher_simulations vs INNER JOIN municipalities m ON vs.municipality = m.id LEFT JOIN applications app ON vs.application = app.id WHERE vs.voucher_assignment = ?#{[0]} AND LOWER(m.name) LIKE LOWER(CONCAT('%',?#{[1]},'%')) AND LOWER(vs.country) LIKE LOWER(CONCAT('%',?#{[2]},'%')) ORDER BY issues ASC OFFSET ?#{[3]} ROWS FETCH NEXT ?#{[4]} ROWS ONLY", nativeQuery = true)
+    List<VoucherSimulation> findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByIssuesAsc(Integer voucherAssignmentId, String municipality, String country, Integer offset, Integer count, String orderDirection);
+
+    @Query(value = "SELECT vs.id, vs.country, vs.country_rank, vs.eu_rank, vs.municipality, vs.num_applications, vs.rejected, vs.selection_status, vs.voucher_assignment, vs.application, (SELECT COUNT(rw.id) FROM registration_warnings rw WHERE rw.registration_id = app.registration) as issues FROM voucher_simulations vs INNER JOIN municipalities m ON vs.municipality = m.id LEFT JOIN applications app ON vs.application = app.id WHERE vs.voucher_assignment = ?#{[0]} AND LOWER(m.name) LIKE LOWER(CONCAT('%',?#{[1]},'%')) AND LOWER(vs.country) LIKE LOWER(CONCAT('%',?#{[2]},'%')) ORDER BY issues DESC OFFSET ?#{[3]} ROWS FETCH NEXT ?#{[4]} ROWS ONLY", nativeQuery = true)
+    List<VoucherSimulation> findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByIssuesDesc(Integer voucherAssignmentId, String municipality, String country, Integer offset, Integer count, String orderDirection);
+
     @Query(value = "SELECT count(*) FROM voucher_simulations vs INNER JOIN municipalities m ON vs.municipality = m.id WHERE vs.voucher_assignment = ?#{[0]} AND LOWER(m.name) LIKE LOWER(CONCAT('%',?#{[1]},'%')) AND LOWER(vs.country) LIKE LOWER(CONCAT('%',?#{[2]},'%'))", nativeQuery = true)
-    Integer countAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(Integer voucherAssignmentId, String municipality, String country);
+    Integer countAllByVoucherAssignmentAndMunicipalityInCountry(Integer voucherAssignmentId, String municipality, String country);
 
     @Query(value = "SELECT count(*) FROM voucher_simulations vs INNER JOIN applications a ON vs.application = a.id WHERE vs.voucher_assignment = ?1 AND (vs.num_applications > 1 OR a._status != 2)", nativeQuery = true)
     Integer checkIfSimulationIsValid(int voucherAssignmentId);
 
     @Query(value = "SELECT application FROM voucher_simulations WHERE voucher_assignment = ?1 AND selection_status = 3", nativeQuery = true)
     ArrayList<Integer> findApplicationIdsFromVoucherAssignmentAndSelectionStatus(int voucherAssignment);
+
+    @Query(value = "SELECT count(vs) FROM VoucherSimulation vs INNER JOIN vs.voucherAssignment va WHERE vs.application.id =:applicationId AND va.call.id =:callId AND va.status =:status")
+    Integer checkIfApplicationIsFreeze(@Param("applicationId") Integer applicationId, @Param("callId") Integer callId, @Param("status") Integer status);
+
+    @Query(value = "SELECT count(va) FROM VoucherAssignment va WHERE va.call.id =:callId AND va.status =:status or va.status =: secondStatus")
+    Integer checkIfSimulationExistByCallId(@Param("callId") Integer callId, @Param("status") Integer status, @Param("secondStatus") Integer secondStatus);
 }

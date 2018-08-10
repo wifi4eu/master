@@ -156,6 +156,10 @@ public class ApplicationInvalidateReasonService {
         	_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application cannot be invalidated");
         	throw new AppException("The application is cannot be invalidated because is not in the correct status");
         }
+        if(voucherSimulationRepository.checkIfApplicationIsFreeze(applicationDTO.getId(), applicationDTO.getCallId(), VoucherAssignmentStatus.FREEZE_LIST.getValue()) >= 1){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Application can't be invalidated because is in freeze list");
+            throw new AppException("Application can't be invalidated because is in freeze list");
+        }
 
         List<ApplicationInvalidateReasonDTO> applicationInvalidateReasonDTOS = new ArrayList<>();
         for(Integer integer: invalidReasonViewDTO.getReasons()){
