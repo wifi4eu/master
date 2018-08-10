@@ -133,8 +133,8 @@ public class SupplierService {
 
     @Transactional
     public List<UserDTO> updateContactDetails(SupplierDTO supplierDTO) throws Exception {
-        UserDTO userDTO = new UserDTO();
-        UserContext userContext = UserHolder.getUser();
+//        UserDTO userDTO = new UserDTO();
+//        UserContext userContext = UserHolder.getUser();
         List<UserDTO> userDBOList = userMapper.toDTOList(userRepository.findUsersBySupplierId(supplierDTO.getId()));
         for (UserDTO user : userDBOList) {
             for (UserDTO userSupplier : supplierDTO.getUsers()) {
@@ -143,25 +143,23 @@ public class SupplierService {
                     user.setSurname(userSupplier.getSurname());
                     user.setPhone_number(userSupplier.getPhone_number());
                     user.setPhone_prefix(userSupplier.getPhone_prefix());
-                    UserValidator.validateUser(user);
+                    UserValidator.validateUserContact(user);
                     break;
                 }
             }
 
         }
-
-
         userRepository.save(userMapper.toEntityList(userDBOList));
         return userDBOList;
 
     }
 
     @Transactional
-    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String accountNumber, String website, String logo) throws Exception {
+    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String accountNumber, String website, String logo) throws Exception {
         supplierDTO.setName(name);
         supplierDTO.setAddress(address);
-        supplierDTO.setVat(vat);
-        supplierDTO.setBic(bic);
+//        supplierDTO.setVat(vat);
+//        supplierDTO.setBic(bic);
         supplierDTO.setAccountNumber(accountNumber);
         if (website != null) {
             supplierDTO.setWebsite(website);
@@ -204,7 +202,6 @@ public class SupplierService {
     @Transactional
     public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
         UserDTO userDTO;
-        SupplierValidator.validateSupplierNoBicAccount(supplierDTO);
         UserContext userContext = UserHolder.getUser();
         userDTO = userService.getUserByUserContext(userContext);
 
@@ -225,17 +222,14 @@ public class SupplierService {
                 userDTO.setLang(supplierDTO.getLang());
                 userDTO.setPhone_number(supplierDTO.getContactNumber());
                 userDTO.setPhone_prefix(supplierDTO.getContactPrefix());
-
-
                 userDTO.setEmail(supplierDTO.getContactEmail());
                 if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()) {
                     userDTO.setEcasEmail(supplierDTO.getContactEmail());
                 }
-
                 break;
             }
         }
-        UserValidator.validateUser(userDTO);
+
         userDTO = userService.saveUserChanges(userDTO);
         userService.sendActivateAccountMail(userDTO);
         supplierDTO = createSupplier(supplierDTO);
@@ -290,7 +284,7 @@ public class SupplierService {
     }
 
     @Transactional
-    public SupplierDTO updateSupplier(SupplierDTO supplierDTO) {
+    public SupplierDTO updateSupplier(SupplierDTO supplierDTO) throws Exception {
         SupplierDTO supplierDBO = getSupplierById(supplierDTO.getId());
         supplierDBO.setName(supplierDTO.getName());
         supplierDBO.setAddress(supplierDTO.getAddress());
@@ -298,6 +292,7 @@ public class SupplierService {
         supplierDBO.setWebsite(supplierDTO.getWebsite());
         supplierDBO.setLogo(supplierDTO.getLogo());
         supplierDBO.setSuppliedRegions(updateSuppliedRegions(supplierDBO.getSuppliedRegions(), supplierDTO.getSuppliedRegions()));
+        SupplierValidator.validateSupplierUpdate(supplierDBO);
         return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDBO)));
     }
 
@@ -344,7 +339,7 @@ public class SupplierService {
     }
 
     @Transactional
-    public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) {
+    public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) throws Exception {
         supplierDTO.setStatus(1);
         supplierDTO = updateSupplier(supplierDTO);
         UserDTO user = userService.getUserById(getUserIdFromSupplier(supplierDTO.getId()));
