@@ -79,7 +79,6 @@ public class SupplierResource {
 
     @ApiOperation(value = "Update supplier")
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO updateSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
@@ -169,7 +168,6 @@ public class SupplierResource {
 
     @ApiOperation(value = "Submit supplier registration")
     @RequestMapping(value = "/submitRegistration", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
         UserContext userContext = UserHolder.getUser();
