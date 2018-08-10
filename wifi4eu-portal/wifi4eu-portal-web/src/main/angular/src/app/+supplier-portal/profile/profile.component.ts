@@ -47,6 +47,7 @@ export class SupplierProfileComponent {
     protected languageRows: UxLanguage [] [];
     protected languages: UxLanguage [];
     private users: UserDTOBase[] = [];
+    private withdrawingRegistrationConfirmation: boolean = false;
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private userApi: UserApi) {
         let storedUser = this.localStorageService.get('user');
@@ -90,6 +91,9 @@ export class SupplierProfileComponent {
 
     private displayModal(name: string) {
         switch (name) {
+            case 'withdraw':
+                this.withdrawingRegistrationConfirmation = true;
+                break;
             case 'contact':
                 this.displayContact = true;
                 break;
@@ -214,6 +218,7 @@ export class SupplierProfileComponent {
     }
 
     private withdrawRegistration() {
+        this.withdrawingRegistrationConfirmation = false;
         if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
             this.withdrawingRegistration = true;
             this.userApi.deleteUser(this.user.id).subscribe(
@@ -297,7 +302,7 @@ export class SupplierProfileComponent {
         this.deletingLogo = true;
         this.clearLogoFile();
     }
-        
+
     private closeModal(){
         this.displayContact = false;
         this.displayCompany = false;

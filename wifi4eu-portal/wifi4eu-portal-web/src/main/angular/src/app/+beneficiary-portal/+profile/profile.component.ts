@@ -58,6 +58,7 @@ export class BeneficiaryProfileComponent {
     protected modalIsOpen: boolean = false;
     protected languageRows: UxLanguage [] [];
     protected languages: UxLanguage [];
+    private withdrawingRegistrationConfirmation: boolean = false;
 
     constructor(private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
@@ -142,8 +143,15 @@ export class BeneficiaryProfileComponent {
         this.loadLanguages();
     }
 
+    private withdrawRegistration(){
+        this.withdrawingRegistrationConfirmation = true;
+    }
+
     private displayModal(name: string, index?: number) {
         switch (name) {
+            case 'withdraw':
+                this.withdrawingRegistrationConfirmation = true;
+                break;
             case 'user':
                 Object.assign(this.editedUser, this.user);
                 this.displayUser = true;
@@ -232,6 +240,7 @@ export class BeneficiaryProfileComponent {
     }
 
     private deleteRegistration() {
+        this.withdrawingRegistrationConfirmation = false;
         if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
             this.withdrawingRegistration = true;
             this.userApi.deleteUser(this.user.id).subscribe(
