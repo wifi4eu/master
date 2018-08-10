@@ -143,6 +143,10 @@ public class UserService {
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
+       	if (userDTO.getId() != 0) {
+    		_log.warn("Call to a create method with id set, the value has been removed ({})", userDTO.getId());
+    		userDTO.setId(0);	
+    	}
         UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
         if (searchUser != null) {
             userDTO.setPassword(searchUser.getPassword());

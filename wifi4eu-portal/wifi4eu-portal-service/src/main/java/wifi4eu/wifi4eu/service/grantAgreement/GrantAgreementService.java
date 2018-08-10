@@ -1,38 +1,8 @@
 package wifi4eu.wifi4eu.service.grantAgreement;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.*;
-import org.apache.poi.util.IOUtils;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayOutputStream;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorage;
-import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
-import wifi4eu.wifi4eu.entity.registration.Registration;
-import wifi4eu.wifi4eu.mapper.grantAgreement.GrantAgreementMapper;
-import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
-import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
-import wifi4eu.wifi4eu.service.application.ApplicationService;
-import wifi4eu.wifi4eu.service.location.LauService;
-import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
-import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.ParametrizedDocConverter;
-
-import javax.annotation.PostConstruct;
-import java.io.*;
-import java.net.URL;
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,9 +10,47 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorage;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
+import wifi4eu.wifi4eu.common.dto.model.LauDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.mapper.grantAgreement.GrantAgreementMapper;
+import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
+import wifi4eu.wifi4eu.service.location.LauService;
+import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.ParametrizedDocConverter;
+
 @Service
 public class GrantAgreementService {
-
+    Logger _log = LogManager.getLogger(GrantAgreementService.class);
 
     @Autowired
     ApplicationService applicationService;
@@ -111,10 +119,15 @@ public class GrantAgreementService {
 
     public GrantAgreementDTO createGrantAgreement(GrantAgreementDTO inputGrantAgreement) {
         GrantAgreementDTO grantAgreementDTO = getGrantAgreementByApplicationId(inputGrantAgreement.getApplicationId());
+
         if (grantAgreementDTO != null) {
             grantAgreementDTO.setDocumentLanguage(inputGrantAgreement.getDocumentLanguage());
             return grantAgreementMapper.toDTO(agreementRepository.save(grantAgreementMapper.toEntity(grantAgreementDTO)));
         } else {
+        	if (inputGrantAgreement.getId() != 0) {
+        		_log.warn("Call to a create method with id set, the value has been removed ({})", inputGrantAgreement.getId());
+        		inputGrantAgreement.setId(0);	
+        	}        	
             return grantAgreementMapper.toDTO(agreementRepository.save(grantAgreementMapper.toEntity(inputGrantAgreement)));
         }
     }

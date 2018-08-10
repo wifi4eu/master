@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
@@ -339,15 +340,19 @@ public class RegistrationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId + " and file id " + fileId);
         try {
-            if (registrationId == null || (!legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId) && userConnected.getType() != 5)) {
+
+            // Commented checkPermissions - doubt into validation in DgConn
+            // boolean checkPermissions = legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId);
+            if (Validator.isNull(userConnected) || Validator.isNull(registrationId) || userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+
             permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
 
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
+            return new ResponseDTO(false,null,new ErrorDTO(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
 
         LegalFile legalFile = legalFilesRepository.findOne(fileId); //if file doesnt exist user doesnt have permission

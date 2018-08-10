@@ -12,9 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euAbacService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -84,22 +87,36 @@ public class ExportImportWifi4euAbacResource {
     @ResponseBody
     public ResponseEntity<byte[]> exportBeneficiaryInformation(final HttpServletResponse response) throws Exception {
         _log.info("exportBeneficiaryInformation");
-        
-        // WIFIFOREU-2498 JSON -> CSV
-        ResponseEntity<byte[]> responseReturn = null;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/zip"));
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (Validator.isNull(userConnected) || userConnected.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            // WIFIFOREU-2498 JSON -> CSV
+            ResponseEntity<byte[]> responseReturn = null;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/zip"));
 
-        String filename = "exportBeneficiaryInformation.zip";
-        headers.setContentDispositionFormData(filename, filename);
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            String filename = "exportBeneficiaryInformation.zip";
+            headers.setContentDispositionFormData(filename, filename);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-        _log.info("exportBeneficiaryInformation - generating zip file content");
-        ByteArrayOutputStream file = exportImportWifi4euAbacService.exportBeneficiaryInformation();
-        responseReturn = new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
-        
-        _log.info("exportBeneficiaryInformation - csv file exported successfully");
-        return responseReturn;
+            _log.info("exportBeneficiaryInformation - generating zip file content");
+            ByteArrayOutputStream file = exportImportWifi4euAbacService.exportBeneficiaryInformation();
+            responseReturn = new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
+
+            _log.info("exportBeneficiaryInformation - csv file exported successfully");
+            return responseReturn;
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export beneficiary information", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The exportBeneficiaryInformation cannot be executed", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
+        }
     }
 
     @ApiOperation(value = "Export registration data")
@@ -149,21 +166,35 @@ public class ExportImportWifi4euAbacResource {
     @ResponseBody
     public ResponseEntity<byte[]> exportBudgetaryCommitment(final HttpServletResponse response) throws Exception {
         _log.info("exportBudgetaryCommitment");
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (Validator.isNull(userConnected) || userConnected.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            // WIFIFOREU-2498 JSON -> CSV
+            ResponseEntity<byte[]> responseReturn = null;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("text/csv"));
+            String filename = "exportBudgetaryCommitment.csv";
+            headers.setContentDispositionFormData(filename, filename);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-        // WIFIFOREU-2498 JSON -> CSV
-        ResponseEntity<byte[]> responseReturn = null;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("text/csv"));
-        String filename = "exportBudgetaryCommitment.csv";
-        headers.setContentDispositionFormData(filename, filename);
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            _log.info("exportBudgetaryCommitment - generating csv file content");
+            String responseData = exportImportWifi4euAbacService.exportBudgetaryCommitment().getData().toString();
+            // getBytes(Charset.forName("UTF-8"));
+            responseReturn = new ResponseEntity<>(responseData.getBytes(), headers, HttpStatus.OK);
 
-        _log.info("exportBudgetaryCommitment - generating csv file content");
-        String responseData = exportImportWifi4euAbacService.exportBudgetaryCommitment().getData().toString();
-        // getBytes(Charset.forName("UTF-8"));
-        responseReturn = new ResponseEntity<>(responseData.getBytes(), headers, HttpStatus.OK);
-        
-        _log.info("exportBudgetaryCommitment - csv file exported successfully");
-        return responseReturn;
+            _log.info("exportBudgetaryCommitment - csv file exported successfully");
+            return responseReturn;
+        }  catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export budgetary commitment", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The exportBudgetaryCommitment cannot be executed", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
+        }
     }
 }
