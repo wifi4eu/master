@@ -132,9 +132,9 @@ public class SupplierService {
 
 
     @Transactional
-    public List<UserDTO> updateContactDetails(SupplierDTO supplierDTO) {
-//        UserDTO userDTO = new UserDTO();
-//        UserContext userContext = UserHolder.getUser();
+    public List<UserDTO> updateContactDetails(SupplierDTO supplierDTO) throws Exception {
+        UserDTO userDTO = new UserDTO();
+        UserContext userContext = UserHolder.getUser();
         List<UserDTO> userDBOList = userMapper.toDTOList(userRepository.findUsersBySupplierId(supplierDTO.getId()));
         for (UserDTO user : userDBOList) {
             for (UserDTO userSupplier : supplierDTO.getUsers()) {
@@ -143,11 +143,14 @@ public class SupplierService {
                     user.setSurname(userSupplier.getSurname());
                     user.setPhone_number(userSupplier.getPhone_number());
                     user.setPhone_prefix(userSupplier.getPhone_prefix());
+                    UserValidator.validateUser(user);
                     break;
                 }
             }
 
         }
+
+
         userRepository.save(userMapper.toEntityList(userDBOList));
         return userDBOList;
 
