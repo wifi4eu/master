@@ -204,8 +204,6 @@ public class SendNotificationsAsync implements Runnable {
 			voucherAssignment.setNotifiedDate(new Date().getTime());
 			voucherAssignmentRepository.save(voucherAssignment);
 		} catch (Exception ex) {
-System.out.println("KKKKKK");			
-ex.printStackTrace();
 			_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message",
 					ex.getMessage());
 		}
