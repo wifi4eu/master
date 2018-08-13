@@ -384,6 +384,4 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-
-
 }
