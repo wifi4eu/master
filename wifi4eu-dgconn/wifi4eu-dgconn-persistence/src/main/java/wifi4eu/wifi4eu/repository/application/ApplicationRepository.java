@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.entity.application.Application;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ApplicationRepository extends CrudRepository<Application,Integer> {
@@ -68,6 +69,6 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE applications SET sent_email = ?#{[0]} WHERE id = ?#{[1]}", nativeQuery = true)
-    int updateSentEmailByApplicationId(boolean sentEmail, int applicationId);
+    @Query(value = "UPDATE applications SET sent_email = ?#{[0]}, sent_email_date = ?#{[1]} WHERE id = ?#{[2]}", nativeQuery = true)
+    int updateSentEmailByApplicationId(boolean sentEmail, Date sentEmailDate, int applicationId);
 }

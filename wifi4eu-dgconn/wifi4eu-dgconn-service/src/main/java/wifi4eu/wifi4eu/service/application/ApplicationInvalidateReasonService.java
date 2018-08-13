@@ -143,6 +143,7 @@ public class ApplicationInvalidateReasonService {
         List<ApplicationInvalidateReason> invalidateReason = applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntityList(applicationInvalidateReasonDTOS));
 
 
+
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
         if (registration != null) {
@@ -224,23 +225,24 @@ public class ApplicationInvalidateReasonService {
         boolean valid = false;
         // Has the municipality been notified by email of request for changes
         if (applicationDTO.isSentEmail()) {
-            List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDTO.getRegistrationId());
+            Calendar deadline = Calendar.getInstance();
+            deadline.setTime(applicationDTO.getSentEmailDate());
+            deadline.add(Calendar.DATE, 7);
+            Date currentTime = Calendar.getInstance().getTime();
+            // Have more than 7 days overcome since the last request
+            if (currentTime.before(deadline.getTime())) {
+                valid = true;
+            }
+            /* List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDTO.getRegistrationId());
             if (Validator.isNotNull(legalFileCorrectionReasons) && !legalFileCorrectionReasons.isEmpty()) {
                 for (LegalFileCorrectionReason legalFileCorrectionReason : legalFileCorrectionReasons) {
                     // Is there any pending request
                     if (legalFileCorrectionReason.getRequestCorrection()) {
-                        Calendar deadline = Calendar.getInstance();
-                        deadline.setTime(legalFileCorrectionReason.getRequestCorrectionDate());
-                        deadline.add(Calendar.DATE, 7);
-                        Date currentTime = Calendar.getInstance().getTime();
-                        // Have more than 7 days overcome since the last request
-                        if (currentTime.before(deadline.getTime())) {
-                            valid = true;
-                            break;
-                        }
+
                     }
                 }
-            }
+            } */
+
         }
         checks.put("invalidate", valid);
         checks.put("validate", valid);
