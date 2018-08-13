@@ -23,7 +23,9 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
+import wifi4eu.wifi4eu.common.utils.UserValidator;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -77,7 +79,6 @@ public class SupplierResource {
 
     @ApiOperation(value = "Update supplier")
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO updateSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
@@ -87,7 +88,7 @@ public class SupplierResource {
             if (supplierService.getUserIdFromSupplier(supplierDTO.getId()) != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierValidator.validateSupplier(supplierDTO);
+            SupplierValidator.validateSupplierUpdate(supplierDTO);
             SupplierDTO resSupplier = supplierService.updateSupplier(supplierDTO);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier updated successfully");
             return new ResponseDTO(true, resSupplier, null);
@@ -116,6 +117,7 @@ public class SupplierResource {
                     access = true;
                     break;
                 }
+
             }
             if (!access) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -149,7 +151,8 @@ public class SupplierResource {
             if (supplierDTO.getId() != sendSupplierDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO resSupplier = supplierService.updateSupplierDetails(sendSupplierDTO, supplierDTO.getName(), supplierDTO.getAddress(), supplierDTO.getVat(), supplierDTO.getBic(), supplierDTO.getAccountNumber(), supplierDTO.getWebsite(), supplierDTO.getLogo());
+            SupplierValidator.validateSupplierUpdate(supplierDTO);
+            SupplierDTO resSupplier = supplierService.updateSupplierDetails(sendSupplierDTO, supplierDTO.getName(), supplierDTO.getAddress(), supplierDTO.getAccountNumber(), supplierDTO.getWebsite(), supplierDTO.getLogo());
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier's details updated successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
@@ -165,7 +168,6 @@ public class SupplierResource {
 
     @ApiOperation(value = "Submit supplier registration")
     @RequestMapping(value = "/submitRegistration", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response, HttpServletRequest request) throws IOException {
         UserContext userContext = UserHolder.getUser();
@@ -175,6 +177,8 @@ public class SupplierResource {
             if (userConnected.getType() != 0) {
                 throw new AppException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            SupplierValidator.validateSupplierCreate(supplierDTO);
+            UserValidator.validateUser(userConnected);
             SupplierDTO resSupplier = supplierService.submitSupplierRegistration(supplierDTO);
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Supplier registration submitted successfully");
             return new ResponseDTO(true, resSupplier, null);

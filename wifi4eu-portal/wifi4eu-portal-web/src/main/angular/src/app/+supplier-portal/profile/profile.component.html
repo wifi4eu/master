@@ -95,7 +95,7 @@
                 <hr class="beneficiaryHr ui-g-12">
                 <p class="ui-g-12">{{ 'suppPortal.withdraw-registration.text' | translate }}</p>
                 <div class="ui-g-12 center">
-                    <button id="withdrawRegistration" type="button" (click)="withdrawRegistration()" class="btn btn-primary whiteButton">
+                    <button id="withdrawRegistration" type="button" (click)="displayModal('withdraw')" class="btn btn-primary whiteButton">
                         {{ 'shared.withdraw-registration.button' | translate }}
                     </button>
                 </div>
@@ -124,6 +124,29 @@
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
+<!-- Modal to confirm supplier withdraw-->
+<p-dialog [(visible)]="withdrawingRegistrationConfirmation" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <h1 class="Modalh1Confirmation">{{ 'benefPortal.withdrawApplication.title' | translate }}</h1>
+    <p class="ModalpConfirmation" style="margin: 2.4em 0em 2.4em 0em;">
+      {{'suppPortal.withdraw-registration.text' | translate}}
+    </p>
+    <div class="modal-body">
+        <div class="row center">
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary cancel-button" (click)="withdrawingRegistrationConfirmation = !withdrawingRegistrationConfirmation">
+                    {{ 'shared.close' | translate }}
+                </button>
+            </div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary publish-button" (click)="withdrawRegistration()">
+                    {{ 'shared.confirm.button' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+<!-- -->
 <p-dialog [(visible)]="displayLanguageModal" header="{{ 'shared.changeLanguage.modal.title' | translate }}" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="true">
     <div class="modal-body">

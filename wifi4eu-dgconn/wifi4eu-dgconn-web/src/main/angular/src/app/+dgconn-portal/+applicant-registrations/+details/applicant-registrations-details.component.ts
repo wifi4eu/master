@@ -27,6 +27,7 @@ import * as FileSaver from "file-saver";
 import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi, LogEmailDTO, LegalFileDTOBase } from "../../../shared/swagger";
 import { NgForm, NgModel } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
+import {environment} from '../../../../environments/environment';
 
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
@@ -109,7 +110,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private buttonStatusEnabled: any[][] = [];
     private isInFreezeList: any = [];
 
-    private fileURL: string = '/wifi4eu/api/registration/getDocument/';
+    private fileURL: string = `/${environment.context}/api/registration/getDocument/`;
 
     constructor(
         private applicationCommentApi: ApplicationcommentApi,
@@ -707,5 +708,12 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private rerunVoucherSimulation() {
       this.displaySimulation = false;
+        /* this.processingRequest = true;
+        this.voucherApi.simulateVoucherAssignment(this.callId).subscribe(
+            (resp: ResponseDTO) => {
+                this.displaySimulation = false;
+                this.processingRequest = false;
+            }
+        ); */
     }
 }

@@ -1,6 +1,15 @@
 package wifi4eu.wifi4eu.service.application;
 
-import com.google.common.collect.Lists;
+import java.text.MessageFormat;
+import java.time.DateTimeException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,8 +17,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
+
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.ApplicantListItemDTO;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationVoucherInfoDTO;
+import wifi4eu.wifi4eu.common.dto.model.CallDTO;
+import wifi4eu.wifi4eu.common.dto.model.CorrectionRequestEmailDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileCorrectionReasonDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.PagingSortingDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
@@ -24,12 +46,16 @@ import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.application.*;
+import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
-import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -42,11 +68,6 @@ import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.common.helper.Validator;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
-import java.time.DateTimeException;
-import java.util.*;
 
 @Service
 public class ApplicationService {
@@ -229,6 +250,10 @@ public class ApplicationService {
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
                 }
             }
+            if (applicationDTO.getId() != 0) {
+                _log.warn("Call to a create method with id set, the value has been removed ({})", applicationDTO.getId());
+                applicationDTO.setId(0);    
+            }            
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;

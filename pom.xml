@@ -182,8 +182,8 @@
         <secret.key.encryption>SBy2hecZS9lA7wiIGmoRiA==</secret.key.encryption>
         <azure.blob.storage.key>Ft7btrRtNTXc/iX6dwyKkyBHoN4uyJ4yXQ64j59aIzpvB6BbGe2BtyGzmS3ZKKR9aRBGKLI7JXDW0FmD6E8pcvm4CHfaytxyMS4mSm2y3Px12xJIm0FUtREIVSXhNPS4wtiUGREBZY+0FB0ct+6JC935sJnsiL24CupynJotg6YpLv0sP2FzJMrVdujdISYJ1aWjFKwhr05OWytGptGL3fNJV7CElrgV6I5vId7Og2qaQ72vVns6TN9KhtCfiBi3pWRjkMaOz4MH0KLCyag6ng==</azure.blob.storage.key>
 
-        <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
-        <mail.smtp.port>587</mail.smtp.port>
+        <mail.smtp.host>localhost</mail.smtp.host>
+        <mail.smtp.port>25</mail.smtp.port>
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
         <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
@@ -285,7 +285,7 @@
         <profile>
             <id>TEST</id>
             <properties>
-                <ng.env>int</ng.env>
+                <ng.env>test</ng.env>
                 <server.address>${server.test.address}:${server.test.port}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
@@ -306,7 +306,7 @@
         <profile>
             <id>AZUREDEV</id>
             <properties>
-                <ng.env>dev</ng.env>
+                <ng.env>dev-old</ng.env>
                 <schemes>https</schemes>
                 <server.address>${server.azure.dev.address}</server.address>
                 <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>

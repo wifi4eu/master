@@ -116,14 +116,45 @@ public class ApplicationInvalidateReasonService {
         }
     }
 
+    /**
+     *	It is only possible to invalidate an applications if the status is one of the following:
+     *     HOLD(0)
+     *     OK(2)
+     *     PENDING_FOLLOWUP(3)
+     *
+     * @param status
+     * @return
+     */
+    private boolean isPossibleInvalidateApplication(int status) {
+    	return (ApplicationStatus.HOLD.getValue() == status) || (ApplicationStatus.OK.getValue() == status) || (ApplicationStatus.PENDING_FOLLOWUP.getValue() == status);
+    }
+
+    /**
+     *	It is only possible to validate an applications if the status is one of the following:
+     *     HOLD(0)
+     *     KO(1)
+     *     PENDING_FOLLOWUP(3)
+     *
+     * @param status
+     * @return
+     */
+    private boolean isPossibleValidateApplication(int status) {
+    	return (ApplicationStatus.HOLD.getValue() == status) || (ApplicationStatus.KO.getValue() == status) || (ApplicationStatus.PENDING_FOLLOWUP.getValue() == status);
+    }
+
     public List<ApplicationInvalidateReasonDTO> invalidateApplication(InvalidReasonViewDTO invalidReasonViewDTO, HttpServletRequest request) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating application");
+
         ApplicationDTO applicationDTO = applicationService.getApplicationById(invalidReasonViewDTO.getApplicationId());
-        if(applicationDTO == null){
+        if (applicationDTO == null) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application does not exist");
             throw new AppException("Incorrect application id");
+        } else if (!isPossibleInvalidateApplication(applicationDTO.getStatus())) {
+            // Stop here if the application is not in a suitable status
+        	_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application cannot be invalidated");
+        	throw new AppException("The application is cannot be invalidated because is not in the correct status");
         }
         if(voucherSimulationRepository.checkIfApplicationIsFreeze(applicationDTO.getId(), applicationDTO.getCallId(), VoucherAssignmentStatus.FREEZE_LIST.getValue()) >= 1){
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Application can't be invalidated because is in freeze list");
@@ -141,7 +172,6 @@ public class ApplicationInvalidateReasonService {
         updateVoucherSimulationNumDuplicates(applicationDTO);
 
         List<ApplicationInvalidateReason> invalidateReason = applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntityList(applicationInvalidateReasonDTOS));
-
 
 
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
@@ -176,6 +206,10 @@ public class ApplicationInvalidateReasonService {
         if (applicationDBO == null) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application does not exist");
             throw new AppException("Incorrect application id");
+        } else if (!isPossibleValidateApplication(applicationDTO.getStatus())) {
+            // Stop here if the application is not in a suitable status
+        	_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application cannot be validated");
+        	throw new AppException("The application is cannot be invalidated because is not in the correct status");
         }
 
         applicationDBO.setStatus(ApplicationStatus.OK.getValue());
@@ -184,8 +218,7 @@ public class ApplicationInvalidateReasonService {
             ApplicationAuthorizedPersonDTO authorizedPersonDTO = new ApplicationAuthorizedPersonDTO();
             authorizedPersonDTO.setAuthorized_person(applicationDTO.getAuthorizedPerson());
             authorizedPersonDTO.setApplicationId(applicationDTO.getId());
-            applicant_authorizedPersonMapper.toDTO(application_authorizedPersonRepository.save(applicant_authorizedPersonMapper.toEntity
-                    (authorizedPersonDTO)));
+            applicant_authorizedPersonMapper.toDTO(application_authorizedPersonRepository.save(applicant_authorizedPersonMapper.toEntity(authorizedPersonDTO)));
         }
         legalFileCorrectionReasonRepository.deleteLegalFileCorrectionByRegistrationId(applicationDBO.getRegistrationId());
         ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
