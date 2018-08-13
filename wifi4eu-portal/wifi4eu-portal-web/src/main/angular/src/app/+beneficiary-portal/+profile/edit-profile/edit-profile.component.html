@@ -172,7 +172,7 @@
         <div class="col-lg-8">
             <ng-container *ngIf="multipleMunicipalities">
                 <ux-accordion-boxes>
-                    <div *ngFor="let mayor of newMayors; let i = index">
+                    <div *ngFor="let mayor of newMayors; let i = index" id="scrollMunicipality-{{i}}" >
                         <hr class="genericHr" *ngIf="i != 0">
                         <custom-accordion-box [isExpanded]="true" [rightSide]="true">
                             <div class="ui-g">
