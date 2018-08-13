@@ -47,9 +47,9 @@ public class MasterCommitter {
 	public void commit() {
 		List<LocalEntity> localEntities = new ArrayList<>();
 
-		localEntities.addAll(this.localRep.findAll());
+		//localEntities.addAll(this.localRep.findAll());
 		
-		//localEntities.addAll(this.createValidEntities(100_000));
+		localEntities.addAll(this.createValidEntities(100_000));
 		//localEntities.addAll(this.createInvalidEntities(1));
 		this.LOGGER.info("Entities Found: [{}]", localEntities.size());
 		
