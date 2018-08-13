@@ -664,8 +664,6 @@ public class BeneficiaryService {
                 }
 
                 invitationContact.setLastModified(today);
-
-
                 Locale locale = new Locale(UserConstants.DEFAULT_LANG);
                 MunicipalityDTO municipality = municipalityService.getMunicipalityById(idMunicipality);
                 String municipalityName = municipality.getName();
@@ -676,11 +674,10 @@ public class BeneficiaryService {
                 String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
                 msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, newContactEmail);
                 _log.info("TESTING msgBody => "+msgBody);
-                /*
+
                 if (!userService.isLocalHost()) {
                     mailService.sendEmail(newContactEmail, MailService.FROM_ADDRESS, subject, msgBody);
                 }
-                */
 
                 invitationContactRepository.save(invitationContact);
                 _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");

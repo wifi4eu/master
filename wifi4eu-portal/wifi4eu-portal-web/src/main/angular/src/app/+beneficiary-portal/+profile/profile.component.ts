@@ -349,34 +349,14 @@ export class BeneficiaryProfileComponent {
     }
 
     private addNewContact(){
-        if (this.newUserEmail.trim() != ''){
-            this.addContact = true;
-            let userRegistrationDTO: UserRegistrationDTOBase = new UserRegistrationDTOBase();
-            userRegistrationDTO.email = this.newUserEmail;
-            userRegistrationDTO.municipalityId = this.idMunicipalityNewContactUser;
-            this.beneficiaryApi.sendEmailToNewContact(userRegistrationDTO).subscribe(
-                (userRegistration: UserRegistrationDTOBase) => {
-                    this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
-                    this.closeModal();
-                }, error => {
-                    this.addContact = false;
-                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
-                    this.closeModal();
-                }
-            );
-            this.newUserEmail = '';
-        } else {
-            this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
-        }
-    }
-
-    private addNewContactAlex(){
         if (this.newUserEmail.trim() != '' && this.idMunicipalityNewContactUser != 0){
             this.addContact = true;
             this.beneficiaryApi.invitateContactBeneficiary(this.idMunicipalityNewContactUser, this.newUserEmail).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success){
                         this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+                        this.addContact = false;
+                        this.addUser = false;
                         this.closeModal();
                     } else {
                         this.addContact = false;
@@ -393,7 +373,8 @@ export class BeneficiaryProfileComponent {
         } else {
             this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
         }
-        
     }
+
+
 
 }

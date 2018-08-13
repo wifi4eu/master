@@ -9,5 +9,7 @@ public interface InvitationContactRepository extends CrudRepository<InvitationCo
 
     InvitationContact findByEmailInvitedAndIdUserRequest(String emailInvited, int idUserRequest);
 
+    InvitationContact findByEmailInvitedAndStatus(String emailInvited, int status);
+
 }
 

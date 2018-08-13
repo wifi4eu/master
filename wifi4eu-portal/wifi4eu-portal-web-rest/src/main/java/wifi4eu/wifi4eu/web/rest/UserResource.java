@@ -128,7 +128,7 @@ public class UserResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging in with ECAS User");
         // get registrationUsers relation pending to be approved for the user logging in
-        userService.saveInvitedUser(userConnected.getEmail(), userConnected);
+        userService.saveInvitedUserModified(userConnected);
         try {
             Cookie cookie = userService.getCSRFCookie();
             if (cookie != null) {
