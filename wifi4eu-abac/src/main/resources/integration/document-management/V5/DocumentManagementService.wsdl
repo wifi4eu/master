@@ -1,0 +1,1318 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by 
+    Christian Huwaert (European Commission - DIGIT) -->
+<?xml-stylesheet type="text/xsl" href="http://localhost:7001/eris-ws/wsdl-viewer.xsl"?>
+<wsdl:definitions xmlns="http://ec.europa.eu/research/fp/services/document-management/V5" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:itf="http://ec.europa.eu/research/fp/services/document-management/interfaces/V5" xmlns:ns="http://ec.europa.eu/research/fp/model/base/V1" xmlns:ns1="http://ec.europa.eu/research/fp/model/code-ref/V3" xmlns:ns2="http://ec.europa.eu/research/fp/model/document-ref/V3" xmlns:ns3="http://ec.europa.eu/research/fp/model/document/V5" xmlns:ns4="http://ec.europa.eu/research/fp/model/header/V1" xmlns:ns5="http://ec.europa.eu/research/fp/model/legalentity-ref/V3" xmlns:ns6="http://ec.europa.eu/research/fp/model/project-ref/V3" xmlns:ns7="http://ec.europa.eu/research/fp/model/service-context/V2" xmlns:ns8="http://ec.europa.eu/research/fp/model/service-fault/V1" name="DocumentManagementService" targetNamespace="http://ec.europa.eu/research/fp/services/document-management/V5">
+	<wsdl:types>
+		<xs:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://ec.europa.eu/research/fp/services/document-management/interfaces/V5" schemaLocation="DocumentManagementService_ITF.xsd"/>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="createDocumentRequest">
+		<wsdl:part name="in" element="itf:createDocument"/>
+	</wsdl:message>
+	<wsdl:message name="createDocumentResponse">
+		<wsdl:part name="out" element="itf:createDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="createFileRequest">
+		<wsdl:part name="in" element="itf:createFile"/>
+	</wsdl:message>
+	<wsdl:message name="createFileResponse">
+		<wsdl:part name="out" element="itf:createFileResponse"/>
+	</wsdl:message>
+	<wsdl:message name="externalizeDocumentRequest">
+		<wsdl:part name="in" element="itf:externalizeDocument"/>
+	</wsdl:message>
+	<wsdl:message name="externalizeDocumentResponse">
+		<wsdl:part name="out" element="itf:externalizeDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="fileDocumentRequest">
+		<wsdl:part name="in" element="itf:fileDocument"/>
+	</wsdl:message>
+	<wsdl:message name="fileDocumentResponse">
+		<wsdl:part name="out" element="itf:fileDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="unfileDocumentRequest">
+		<wsdl:part name="in" element="itf:unfileDocument"/>
+	</wsdl:message>
+	<wsdl:message name="unfileDocumentResponse">
+		<wsdl:part name="out" element="itf:unfileDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getFiledDocumentsRequest">
+		<wsdl:part name="in" element="itf:getFiledDocuments"/>
+	</wsdl:message>
+	<wsdl:message name="getFiledDocumentsResponse">
+		<wsdl:part name="out" element="itf:getFiledDocumentsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getDocumentRequest">
+		<wsdl:part name="in" element="itf:getDocument"/>
+	</wsdl:message>
+	<wsdl:message name="getDocumentResponse">
+		<wsdl:part name="out" element="itf:getDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getDocumentHistoryRequest">
+		<wsdl:part name="in" element="itf:getDocumentHistory"/>
+	</wsdl:message>
+	<wsdl:message name="getDocumentHistoryResponse">
+		<wsdl:part name="out" element="itf:getDocumentHistoryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="linkAttachmentsToDocumentRequest">
+		<wsdl:part name="in" element="itf:linkAttachmentsToDocument"/>
+	</wsdl:message>
+	<wsdl:message name="linkAttachmentsToDocumentResponse">
+		<wsdl:part name="out" element="itf:linkAttachmentsToDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="registerDocumentByIdRequest">
+		<wsdl:part name="in" element="itf:registerDocumentById"/>
+	</wsdl:message>
+	<wsdl:message name="registerDocumentByIdResponse">
+		<wsdl:part name="out" element="itf:registerDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="registerDocumentRequest">
+		<wsdl:part name="in" element="itf:registerDocument"/>
+	</wsdl:message>
+	<wsdl:message name="registerDocumentResponse">
+		<wsdl:part name="out" element="itf:registerDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="removeDocumentAttachmentRequest">
+		<wsdl:part name="in" element="itf:removeDocumentAttachment"/>
+	</wsdl:message>
+	<wsdl:message name="removeDocumentAttachmentResponse">
+		<wsdl:part name="out" element="itf:removeDocumentAttachmentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="updateAttachmentTypeRequest">
+		<wsdl:part name="in" element="itf:updateAttachmentType"/>
+	</wsdl:message>
+	<wsdl:message name="updateAttachmentTypeResponse">
+		<wsdl:part name="out" element="itf:updateAttachmentTypeResponse"/>
+	</wsdl:message>
+	<wsdl:message name="searchDocumentRequest">
+		<wsdl:part name="in" element="itf:searchDocument"/>
+	</wsdl:message>
+	<wsdl:message name="searchDocumentResponse">
+		<wsdl:part name="out" element="itf:searchDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="synchronizeDocumentRequest">
+		<wsdl:part name="in" element="itf:synchronizeDocument"/>
+	</wsdl:message>
+	<wsdl:message name="synchronizeDocumentResponse">
+		<wsdl:part name="out" element="itf:synchronizeDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="tagDocumentRequest">
+		<wsdl:part name="in" element="itf:tagDocument"/>
+	</wsdl:message>
+	<wsdl:message name="tagDocumentResponse">
+		<wsdl:part name="in" element="itf:tagDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="updateDocumentRequest">
+		<wsdl:part name="in" element="itf:updateDocument"/>
+	</wsdl:message>
+	<wsdl:message name="updateDocumentResponse">
+		<wsdl:part name="out" element="itf:updateDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="copyZipAttachmentsToDocumentRequest">
+		<wsdl:part name="in" element="itf:copyZipAttachmentsToDocument"/>
+	</wsdl:message>
+	<wsdl:message name="copyZipAttachmentsToDocumentResponse">
+		<wsdl:part name="out" element="itf:copyZipAttachmentsToDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="notarizeDocumentRequest">
+		<wsdl:part name="in" element="itf:notarizeDocument"/>
+	</wsdl:message>
+	<wsdl:message name="notarizeDocumentResponse">
+		<wsdl:part name="out" element="itf:notarizeDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="notarizeDocumentWithoutRegistrationRequest">
+		<wsdl:part name="in" element="itf:notarizeDocumentWithoutRegistration"/>
+	</wsdl:message>
+	<wsdl:message name="notarizeDocumentWithoutRegistrationResponse">
+		<wsdl:part name="out" element="itf:notarizeDocumentWithoutRegistrationResponse"/>
+	</wsdl:message>
+	<wsdl:message name="automaticFileCreationRequest">
+		<wsdl:part name="in" element="itf:automaticFileCreation"/>
+	</wsdl:message>
+	<wsdl:message name="automaticFileCreationResponse">
+		<wsdl:part name="out" element="itf:automaticFileCreationResponse"/>
+	</wsdl:message>
+	<wsdl:message name="automaticDocumentFilingRequest">
+		<wsdl:part name="in" element="itf:automaticDocumentFiling"/>
+	</wsdl:message>
+	<wsdl:message name="automaticDocumentFilingResponse">
+		<wsdl:part name="out" element="itf:automaticDocumentFilingResponse"/>
+	</wsdl:message>
+	<wsdl:message name="registerContactPersonFormalNotificationRequest">
+		<wsdl:part name="in" element="itf:registerContactPersonFormalNotification"/>
+	</wsdl:message>
+	<wsdl:message name="registerContactPersonFormalNotificationResponse">
+		<wsdl:part name="out" element="itf:registerContactPersonFormalNotificationResponse"/>
+	</wsdl:message>
+	<wsdl:message name="registerPersonalFormalNotificationRequest">
+		<wsdl:part name="in" element="itf:registerPersonalFormalNotification"/>
+	</wsdl:message>
+	<wsdl:message name="registerPersonalFormalNotificationResponse">
+		<wsdl:part name="out" element="itf:registerPersonalFormalNotificationResponse"/>
+	</wsdl:message>
+	<wsdl:message name="registerLearFormalNotificationRequest">
+		<wsdl:part name="in" element="itf:registerLearFormalNotification"/>
+	</wsdl:message>
+	<wsdl:message name="registerLearFormalNotificationResponse">
+		<wsdl:part name="out" element="itf:registerLearFormalNotificationResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getFormalNotificationAccessLogHistoryRequest">
+		<wsdl:part name="in" element="itf:getFormalNotificationAccessLogHistory"/>
+	</wsdl:message>
+	<wsdl:message name="getFormalNotificationAccessLogHistoryResponse">
+		<wsdl:part name="out" element="itf:getFormalNotificationAccessLogHistoryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="sealSignatureWithEcasSignerRequest">
+		<wsdl:part name="in" element="itf:sealSignatureWithEcasSigner"/>
+	</wsdl:message>
+	<wsdl:message name="sealSignatureWithSignatureTextRequest">
+		<wsdl:part name="in" element="itf:sealSignatureWithSignatureText"/>
+	</wsdl:message>
+	<wsdl:message name="sealSignatureResponse">
+		<wsdl:part name="out" element="itf:sealSignatureResponse"/>
+	</wsdl:message>
+	<wsdl:message name="linkDocumentsRequest">
+		<wsdl:part name="in" element="itf:linkDocuments"/>
+	</wsdl:message>
+	<wsdl:message name="linkDocumentsResponse">
+		<wsdl:part name="out" element="itf:linkDocumentsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="partialExternalizeDocumentRequest">
+		<wsdl:part name="in" element="itf:partialExternalizeDocument"/>
+	</wsdl:message>
+	<wsdl:message name="partialExternalizeDocumentResponse">
+		<wsdl:part name="out" element="itf:partialExternalizeDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="unexternalizeDocumentRequest">
+		<wsdl:part name="in" element="itf:unexternalizeDocument"/>
+	</wsdl:message>
+	<wsdl:message name="unexternalizeDocumentResponse">
+		<wsdl:part name="out" element="itf:unexternalizeDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="deleteDocumentRequest">
+		<wsdl:part name="in" element="itf:deleteDocument"/>
+	</wsdl:message>
+	<wsdl:message name="deleteDocumentResponse">
+		<wsdl:part name="out" element="itf:deleteDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="unlinkDocumentsRequest">
+		<wsdl:part name="in" element="itf:unlinkDocuments"/>
+	</wsdl:message>
+	<wsdl:message name="unlinkDocumentsResponse">
+		<wsdl:part name="out" element="itf:unlinkDocumentsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getDocumentsRequest">
+		<wsdl:part name="in" element="itf:getDocuments"/>
+	</wsdl:message>
+	<wsdl:message name="getDocumentsResponse">
+		<wsdl:part name="out" element="itf:getDocumentsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="createVirtualAttachmentsRequest">
+		<wsdl:part name="in" element="itf:createVirtualAttachments"/>
+	</wsdl:message>
+	<wsdl:message name="createVirtualAttachmentsResponse">
+		<wsdl:part name="out" element="itf:createVirtualAttachmentsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="addAssignmentsRequest">
+		<wsdl:part name="in" element="itf:addAssignments"/>
+	</wsdl:message>
+	<wsdl:message name="addAssignmentsResponse">
+		<wsdl:part name="out" element="itf:addAssignmentsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="notarizeRequest">
+		<wsdl:part name="in" element="itf:notarize"/>
+	</wsdl:message>
+	<wsdl:message name="notarizeResponse">
+		<wsdl:part name="out" element="itf:notarizeResponse"/>
+	</wsdl:message>
+	<wsdl:message name="createAttachmentAttributesRequest">
+		<wsdl:part name="in" element="itf:createAttachmentAttributes"/>
+	</wsdl:message>
+	<wsdl:message name="createAttachmentAttributesResponse">
+		<wsdl:part name="out" element="itf:createAttachmentAttributesResponse"/>
+	</wsdl:message>
+	<wsdl:message name="updateAttachmentAttributesRequest">
+		<wsdl:part name="in" element="itf:updateAttachmentAttributes"/>
+	</wsdl:message>
+	<wsdl:message name="updateAttachmentAttributesResponse">
+		<wsdl:part name="out" element="itf:updateAttachmentAttributesResponse"/>
+	</wsdl:message>
+	<wsdl:message name="deleteAttachmentAttributesRequest">
+		<wsdl:part name="in" element="itf:deleteAttachmentAttributes"/>
+	</wsdl:message>
+	<wsdl:message name="deleteAttachmentAttributesResponse">
+		<wsdl:part name="out" element="itf:deleteAttachmentAttributesResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getAttachmentAttributesRequest">
+		<wsdl:part name="in" element="itf:getAttachmentAttributes"/>
+	</wsdl:message>
+	<wsdl:message name="getAttachmentAttributesResponse">
+		<wsdl:part name="out" element="itf:getAttachmentAttributesResponse"/>
+	</wsdl:message>
+	<wsdl:message name="updateFileRequest">
+		<wsdl:part name="in" element="itf:updateFile"/>
+	</wsdl:message>
+	<wsdl:message name="updateFileResponse">
+		<wsdl:part name="out" element="itf:updateFileResponse"/>
+	</wsdl:message>
+	<wsdl:message name="stampAttachmentRequest">
+		<wsdl:part name="in" element="itf:stampAttachment"/>
+	</wsdl:message>
+	<wsdl:message name="stampAttachmentResponse">
+		<wsdl:part name="out" element="itf:stampAttachmentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="sealAttachmentRequest">
+		<wsdl:part name="in" element="itf:sealAttachment"/>
+	</wsdl:message>
+	<wsdl:message name="sealAttachmentResponse">
+		<wsdl:part name="out" element="itf:sealAttachmentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="updateDocumentRestrictionLevelRequest">
+		<wsdl:part name="in" element="itf:updateDocumentRestrictionLevel"/>
+	</wsdl:message>
+	<wsdl:message name="updateDocumentRestrictionLevelResponse">
+		<wsdl:part name="out" element="itf:updateDocumentRestrictionLevelResponse"/>
+	</wsdl:message>
+	<wsdl:message name="closeFileRequest">
+		<wsdl:part name="in" element="itf:closeFile"/>
+	</wsdl:message>
+	<wsdl:message name="closeFileResponse">
+		<wsdl:part name="out" element="itf:closeFileResponse"/>
+	</wsdl:message>
+	<wsdl:message name="replicateFilingRequest">
+		<wsdl:part name="in" element="itf:replicateFiling"/>
+	</wsdl:message>
+	<wsdl:message name="replicateFilingResponse">
+		<wsdl:part name="out" element="itf:replicateFilingResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getAttachmentHistoryRequest">
+		<wsdl:part name="in" element="itf:getAttachmentHistory"/>
+	</wsdl:message>
+	<wsdl:message name="getAttachmentHistoryResponse">
+		<wsdl:part name="out" element="itf:getAttachmentHistoryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="revertDocumentRequest">
+		<wsdl:part name="in" element="itf:revertDocument"/>
+	</wsdl:message>
+	<wsdl:message name="revertDocumentResponse">
+		<wsdl:part name="out" element="itf:revertDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="populateAttachmentFieldWithTextRequest">
+		<wsdl:part name="in" element="itf:populateAttachmentFieldWithText"/>
+	</wsdl:message>
+	<wsdl:message name="populateAttachmentFieldWithTextResponse">
+		<wsdl:part name="out" element="itf:populateAttachmentFieldWithTextResponse"/>
+	</wsdl:message>
+	<wsdl:message name="searchFilesRequest">
+		<wsdl:part name="in" element="itf:searchFiles"/>
+	</wsdl:message>
+	<wsdl:message name="searchFilesResponse">
+		<wsdl:part name="out" element="itf:searchFilesResponse"/>
+	</wsdl:message>
+	<wsdl:message name="tagDocumentsByCriteriaRequest">
+		<wsdl:part name="in" element="itf:tagDocumentsByCriteria"/>
+	</wsdl:message>
+	<wsdl:message name="tagDocumentsByCriteriaResponse">
+		<wsdl:part name="out" element="itf:tagDocumentsByCriteriaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getAttachmentTaggedChangesRequest">
+		<wsdl:part name="in" element="itf:getAttachmentTaggedChanges"/>
+	</wsdl:message>
+	<wsdl:message name="getAttachmentTaggedChangesResponse">
+		<wsdl:part name="out" element="itf:getAttachmentTaggedChangesResponse"/>
+	</wsdl:message>
+	<wsdl:message name="compareDocumentVersionsRequest">
+		<wsdl:part name="in" element="itf:compareDocumentVersions"/>
+	</wsdl:message>
+	<wsdl:message name="compareDocumentVersionsResponse">
+		<wsdl:part name="out" element="itf:compareDocumentVersionsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="tagDocumentsRequest">
+		<wsdl:part name="in" element="itf:tagDocuments"/>
+	</wsdl:message>
+	<wsdl:message name="tagDocumentsResponse">
+		<wsdl:part name="out" element="itf:tagDocumentsResponse"/>
+	</wsdl:message>
+	<wsdl:message name="documentFault">
+		<wsdl:part name="fault" element="itf:documentFault"/>
+	</wsdl:message>
+	<wsdl:message name="checkServiceHealthRequest">
+		<wsdl:part name="request" element="itf:checkServiceHealthRequest"/>
+	</wsdl:message>
+	<wsdl:message name="checkServiceHealthResponse">
+		<wsdl:part name="response" element="itf:checkServiceHealthResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="IDocumentManagementService">
+		<wsdl:operation name="createDocument">
+			<wsdl:input message="createDocumentRequest"/>
+			<wsdl:output message="createDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="createFile">
+			<wsdl:input message="createFileRequest"/>
+			<wsdl:output message="createFileResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="externalizeDocument">
+			<wsdl:input message="externalizeDocumentRequest"/>
+			<wsdl:output message="externalizeDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="fileDocument">
+			<wsdl:input message="fileDocumentRequest"/>
+			<wsdl:output message="fileDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="unfileDocument">
+			<wsdl:input message="unfileDocumentRequest"/>
+			<wsdl:output message="unfileDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getFiledDocuments">
+			<wsdl:input message="getFiledDocumentsRequest"/>
+			<wsdl:output message="getFiledDocumentsResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getDocument">
+			<wsdl:input message="getDocumentRequest"/>
+			<wsdl:output message="getDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getDocumentHistory">
+			<wsdl:input message="getDocumentHistoryRequest"/>
+			<wsdl:output message="getDocumentHistoryResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="linkAttachmentsToDocument">
+			<wsdl:input message="linkAttachmentsToDocumentRequest"/>
+			<wsdl:output message="linkAttachmentsToDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="registerDocumentById">
+			<wsdl:input message="registerDocumentByIdRequest"/>
+			<wsdl:output message="registerDocumentByIdResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="registerDocument">
+			<wsdl:input message="registerDocumentRequest"/>
+			<wsdl:output message="registerDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="removeDocumentAttachment">
+			<wsdl:input message="removeDocumentAttachmentRequest"/>
+			<wsdl:output message="removeDocumentAttachmentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="updateAttachmentType">
+			<wsdl:input message="updateAttachmentTypeRequest"/>
+			<wsdl:output message="updateAttachmentTypeResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="searchDocument">
+			<wsdl:input message="searchDocumentRequest"/>
+			<wsdl:output message="searchDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="synchronizeDocument">
+			<wsdl:input message="synchronizeDocumentRequest"/>
+			<wsdl:output message="synchronizeDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="tagDocument">
+			<wsdl:input message="tagDocumentRequest"/>
+			<wsdl:output message="tagDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="updateDocument">
+			<wsdl:input message="updateDocumentRequest"/>
+			<wsdl:output message="updateDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="copyZipAttachmentsToDocument">
+			<wsdl:input message="copyZipAttachmentsToDocumentRequest"/>
+			<wsdl:output message="copyZipAttachmentsToDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="automaticFileCreation">
+			<wsdl:input message="automaticFileCreationRequest"/>
+			<wsdl:output message="automaticFileCreationResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="automaticDocumentFiling">
+			<wsdl:input message="automaticDocumentFilingRequest"/>
+			<wsdl:output message="automaticDocumentFilingResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="registerContactPersonFormalNotification">
+			<wsdl:input message="registerContactPersonFormalNotificationRequest"/>
+			<wsdl:output message="registerContactPersonFormalNotificationResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="registerPersonalFormalNotification">
+			<wsdl:input message="registerPersonalFormalNotificationRequest"/>
+			<wsdl:output message="registerPersonalFormalNotificationResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="registerLearFormalNotification">
+			<wsdl:input message="registerLearFormalNotificationRequest"/>
+			<wsdl:output message="registerLearFormalNotificationResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getFormalNotificationAccessLogHistory">
+			<wsdl:input message="getFormalNotificationAccessLogHistoryRequest"/>
+			<wsdl:output message="getFormalNotificationAccessLogHistoryResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="sealSignatureWithEcasSigner">
+			<wsdl:input message="sealSignatureWithEcasSignerRequest"/>
+			<wsdl:output message="sealSignatureResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="sealSignatureWithSignatureText">
+			<wsdl:input message="sealSignatureWithSignatureTextRequest"/>
+			<wsdl:output message="sealSignatureResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="linkDocuments">
+			<wsdl:input message="linkDocumentsRequest"/>
+			<wsdl:output message="linkDocumentsResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="partialExternalizeDocument">
+			<wsdl:input message="partialExternalizeDocumentRequest"/>
+			<wsdl:output message="partialExternalizeDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="unexternalizeDocument">
+			<wsdl:input message="unexternalizeDocumentRequest"/>
+			<wsdl:output message="unexternalizeDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="deleteDocument">
+			<wsdl:input message="deleteDocumentRequest"/>
+			<wsdl:output message="deleteDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="unlinkDocuments">
+			<wsdl:input message="unlinkDocumentsRequest"/>
+			<wsdl:output message="unlinkDocumentsResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getDocuments">
+			<wsdl:input message="getDocumentsRequest"/>
+			<wsdl:output message="getDocumentsResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="createVirtualAttachments">
+			<wsdl:input message="createVirtualAttachmentsRequest"/>
+			<wsdl:output message="createVirtualAttachmentsResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="addAssignments">
+			<wsdl:input message="addAssignmentsRequest"/>
+			<wsdl:output message="addAssignmentsResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="notarize">
+			<wsdl:input message="notarizeRequest"/>
+			<wsdl:output message="notarizeResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="createAttachmentAttributes">
+			<wsdl:input message="createAttachmentAttributesRequest"/>
+			<wsdl:output message="createAttachmentAttributesResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="updateAttachmentAttributes">
+			<wsdl:input message="updateAttachmentAttributesRequest"/>
+			<wsdl:output message="updateAttachmentAttributesResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="deleteAttachmentAttributes">
+			<wsdl:input message="deleteAttachmentAttributesRequest"/>
+			<wsdl:output message="deleteAttachmentAttributesResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getAttachmentAttributes">
+			<wsdl:input message="getAttachmentAttributesRequest"/>
+			<wsdl:output message="getAttachmentAttributesResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="updateFile">
+			<wsdl:input message="updateFileRequest"/>
+			<wsdl:output message="updateFileResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="stampAttachment">
+			<wsdl:input message="stampAttachmentRequest"/>
+			<wsdl:output message="stampAttachmentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="sealAttachment">
+			<wsdl:input message="sealAttachmentRequest"/>
+			<wsdl:output message="sealAttachmentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="updateDocumentRestrictionLevel">
+			<wsdl:input message="updateDocumentRestrictionLevelRequest"/>
+			<wsdl:output message="updateDocumentRestrictionLevelResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="closeFile">
+			<wsdl:input message="closeFileRequest"/>
+			<wsdl:output message="closeFileResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="replicateFiling">
+			<wsdl:input message="replicateFilingRequest"/>
+			<wsdl:output message="replicateFilingResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getAttachmentHistory">
+			<wsdl:input message="getAttachmentHistoryRequest"/>
+			<wsdl:output message="getAttachmentHistoryResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="revertDocument">
+			<wsdl:input message="revertDocumentRequest"/>
+			<wsdl:output message="revertDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="checkServiceHealth">
+			<wsdl:input message="checkServiceHealthRequest"/>
+			<wsdl:output message="checkServiceHealthResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="populateAttachmentFieldWithText">
+			<wsdl:input message="populateAttachmentFieldWithTextRequest"/>
+			<wsdl:output message="populateAttachmentFieldWithTextResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="searchFiles">
+			<wsdl:input message="searchFilesRequest"/>
+			<wsdl:output message="searchFilesResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="tagDocumentsByCriteria">
+			<wsdl:input message="tagDocumentsByCriteriaRequest"/>
+			<wsdl:output message="tagDocumentsByCriteriaResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getAttachmentTaggedChanges">
+			<wsdl:input message="getAttachmentTaggedChangesRequest"/>
+			<wsdl:output message="getAttachmentTaggedChangesResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="compareDocumentVersions">
+			<wsdl:input message="compareDocumentVersionsRequest"/>
+			<wsdl:output message="compareDocumentVersionsResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="tagDocuments">
+			<wsdl:input message="tagDocumentsRequest"/>
+			<wsdl:output message="tagDocumentsResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<!-- DEPRECATED OPERATIONS -->
+		<wsdl:operation name="notarizeDocument">
+			<wsdl:documentation>Deprecated. Use notarize instead.</wsdl:documentation>
+			<wsdl:input message="notarizeDocumentRequest"/>
+			<wsdl:output message="notarizeDocumentResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="notarizeDocumentWithoutRegistration">
+			<wsdl:documentation>Deprecated. Use notarize instead.</wsdl:documentation>
+			<wsdl:input message="notarizeDocumentWithoutRegistrationRequest"/>
+			<wsdl:output message="notarizeDocumentWithoutRegistrationResponse"/>
+			<wsdl:fault name="documentFault" message="documentFault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="IDocumentManagementService_soaphttp" type="IDocumentManagementService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="createDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="createFile">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="externalizeDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="fileDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="unfileDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getFiledDocuments">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getDocumentHistory">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="linkAttachmentsToDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="registerDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="registerDocumentById">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="removeDocumentAttachment">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="updateAttachmentType">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="searchDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="synchronizeDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="tagDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="updateDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="copyZipAttachmentsToDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="automaticFileCreation">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="automaticDocumentFiling">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="registerContactPersonFormalNotification">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="registerPersonalFormalNotification">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="registerLearFormalNotification">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getFormalNotificationAccessLogHistory">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="sealSignatureWithEcasSigner">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="sealSignatureWithSignatureText">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="linkDocuments">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="partialExternalizeDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="unexternalizeDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="deleteDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="unlinkDocuments">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getDocuments">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="createVirtualAttachments">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="addAssignments">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="notarize">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="createAttachmentAttributes">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="updateAttachmentAttributes">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="deleteAttachmentAttributes">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getAttachmentAttributes">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="updateFile">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="stampAttachment">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="sealAttachment">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="updateDocumentRestrictionLevel">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="closeFile">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="replicateFiling">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getAttachmentHistory">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="revertDocument">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="checkServiceHealth">
+			<wsdl:documentation>Diagnostic operation to monitor service health</wsdl:documentation>
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="populateAttachmentFieldWithText">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="searchFiles">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="tagDocumentsByCriteria">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getAttachmentTaggedChanges">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="compareDocumentVersions">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="tagDocuments">
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<!-- DEPRECATED OPERATIONS -->
+		<wsdl:operation name="notarizeDocument">
+			<wsdl:documentation>Deprecated. Use notarize instead.</wsdl:documentation>
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="notarizeDocumentWithoutRegistration">
+			<wsdl:documentation>Deprecated. Use notarize instead.</wsdl:documentation>
+			<soap:operation soapAction="" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="documentFault">
+				<soap:fault name="documentFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="DocumentManagementService">
+		<wsdl:documentation>20150109 - V5.1.0
+20160420 - V5.2.0 - Added checkServiceHealth operation
+20160526 - V5.3.0 - Added populateAttachmentFieldWithText and searchFiles operations
+20161129 - V5.4.0 - Added tagDocumentsByCriteria operation
+20170118 - V5.5.0 - Added getAttachmentTaggedChanges operation
+20170118 - V5.6.0 - Added getAttachmentTaggedChanges and tagDocuments operations</wsdl:documentation>
+		<wsdl:port name="IDocumentManagementService_soaphttp" binding="IDocumentManagementService_soaphttp">
+			<soap:address location="http://localhost:7001/RDGServices/Document-Management/V5/DocumentManagementService"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
