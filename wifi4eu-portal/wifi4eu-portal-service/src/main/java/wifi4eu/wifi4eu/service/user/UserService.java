@@ -143,10 +143,10 @@ public class UserService {
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
-       	if (userDTO.getId() != 0) {
-    		_log.warn("Call to a create method with id set, the value has been removed ({})", userDTO.getId());
-    		userDTO.setId(0);	
-    	}
+        if (userDTO.getId() != 0) {
+            _log.warn("Call to a create method with id set, the value has been removed ({})", userDTO.getId());
+            userDTO.setId(0);
+        }
         UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
         if (searchUser != null) {
             userDTO.setPassword(searchUser.getPassword());
@@ -203,7 +203,7 @@ public class UserService {
         for (RegistrationUsers resRegistrationUser : registrationUsers) {
             if ((resRegistrationUser.getCreationDate().toInstant().plus(24, ChronoUnit.HOURS).compareTo(new Date().toInstant()) < 0)) {
                 if (userDTO.getType() == 0) {
-                    userDTO.setType(((Long)Constant.ROLE_REPRESENTATIVE_CONTACT).intValue());
+                    userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE_CONTACT).intValue());
                     userDTO.setLang(UserConstants.DEFAULT_LANG);
                     userRepository.save(userMapper.toEntity(userDTO));
                 }
@@ -228,12 +228,12 @@ public class UserService {
         List<SupplierUser> supplierUsersToUpdate = new ArrayList<>();
         int userId = userRepository.findByEcasUsername(userDTO.getEcasUsername()).getId();
 
-        if (supplierUsers != null && ((userDTO.getType() == 0) || (userDTO.getType() == 1))){
-            for(SupplierUser supplierUser:supplierUsers){
-                if (supplierUser.getUserId() == null){
-                    if (supplierService.createdLessThan24HBefore(supplierUserMapper.toDTO(supplierUser))){
-                        if(userDTO.getType() == 0){
-                            userDTO.setType(((Long)Constant.ROLE_SUPPLIER_CONTACT).intValue());
+        if (supplierUsers != null && ((userDTO.getType() == 0) || (userDTO.getType() == 1))) {
+            for (SupplierUser supplierUser : supplierUsers) {
+                if (supplierUser.getUserId() == null) {
+                    if (supplierService.createdLessThan24HBefore(supplierUserMapper.toDTO(supplierUser))) {
+                        if (userDTO.getType() == 0) {
+                            userDTO.setType(((Long) Constant.ROLE_SUPPLIER_CONTACT).intValue());
                             userDTO.setLang(UserConstants.DEFAULT_LANG);
                             userRepository.save(userMapper.toEntity(userDTO));
                         }
@@ -256,7 +256,7 @@ public class UserService {
 
                     //first remove connections with registration by setting the status to deleted
                     List<RegistrationUsers> registrationUsers = registrationUsersRepository.findByUserId(userDTO.getId());
-                    for(RegistrationUsers rUser : registrationUsers){
+                    for (RegistrationUsers rUser : registrationUsers) {
                         rUser.setStatus(RegistrationUsersStatus.DELETED.getValue());
                     }
                     registrationUsersRepository.save(registrationUsers);
@@ -273,7 +273,7 @@ public class UserService {
 
                     //first remove connections with suppliers by setting the status to deleted
                     List<SupplierUser> supplierUsers = supplierUserRepository.findByUserId(userDTO.getId());
-                    for(SupplierUser sUser : supplierUsers){
+                    for (SupplierUser sUser : supplierUsers) {
                         sUser.setStatus(SupplierUserStatus.DELETED.getStatus());
                     }
                     supplierUserRepository.save(supplierUsers);
@@ -408,6 +408,22 @@ public class UserService {
             mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
     }
+
+    @Transactional
+    public void sendSupplierRegistrationEmail(UserDTO userDTO) {
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        if (userDTO.getLang() != null) {
+            locale = new Locale(userDTO.getLang());
+        }
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.supplierRegistration.subject");
+        String msgBody = bundle.getString("mail.supplierRegistration.body");
+
+        if (!isLocalHost()) {
+            mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+        }
+    }
+
 
     public boolean resendEmail(String email) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
