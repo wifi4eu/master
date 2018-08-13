@@ -266,16 +266,6 @@ public class ApplicationInvalidateReasonService {
             if (currentTime.before(deadline.getTime())) {
                 valid = true;
             }
-            /* List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDTO.getRegistrationId());
-            if (Validator.isNotNull(legalFileCorrectionReasons) && !legalFileCorrectionReasons.isEmpty()) {
-                for (LegalFileCorrectionReason legalFileCorrectionReason : legalFileCorrectionReasons) {
-                    // Is there any pending request
-                    if (legalFileCorrectionReason.getRequestCorrection()) {
-
-                    }
-                }
-            } */
-
         }
         checks.put("invalidate", valid);
         checks.put("validate", valid);
