@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "WIF_BUDGETARY_COMMITMENT")
@@ -36,18 +37,12 @@ public class BudgetaryCommitment {
 	@Column(name = "date_updated")
 	private Date dateUpdated;
 
-	@Column(name = "GLOBAL_COMMITMENT_L1_POS_KEY")
-	private String globalCommitmentLevel1PositionKey;
-
-	@Column(name = "COMMITMENT_L2_POSITION")
-	private Integer commitmentLevel2Position;
-
-	@Column(name = "COMMITMENT_L2_AMOUNT")
-	private BigDecimal commitmentLevel2Amount;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEGAL_ENTITY_ID")
 	private LegalEntity legalEntity;
+
+	@OneToMany(mappedBy = "budgetaryCommitment", fetch = FetchType.LAZY)
+	private List<BudgetaryCommitmentPosition> positions;
 
 	@PrePersist
 	protected void onCreate() {
@@ -79,35 +74,27 @@ public class BudgetaryCommitment {
 		this.dateCreated = dateCreated;
 	}
 
-	public String getGlobalCommitmentLevel1PositionKey() {
-		return globalCommitmentLevel1PositionKey;
-	}
-
-	public void setGlobalCommitmentLevel1PositionKey(String globalCommitmentLevel1PositionKey) {
-		this.globalCommitmentLevel1PositionKey = globalCommitmentLevel1PositionKey;
-	}
-
-	public Integer getCommitmentLevel2Position() {
-		return commitmentLevel2Position;
-	}
-
-	public void setCommitmentLevel2Position(Integer commitmentLevel2Position) {
-		this.commitmentLevel2Position = commitmentLevel2Position;
-	}
-
-	public BigDecimal getCommitmentLevel2Amount() {
-		return commitmentLevel2Amount;
-	}
-
-	public void setCommitmentLevel2Amount(BigDecimal commitmentLevel2Amount) {
-		this.commitmentLevel2Amount = commitmentLevel2Amount;
-	}
-
 	public LegalEntity getLegalEntity() {
 		return legalEntity;
 	}
 
 	public void setLegalEntity(LegalEntity legalEntity) {
 		this.legalEntity = legalEntity;
+	}
+
+	public Date getDateUpdated() {
+		return dateUpdated;
+	}
+
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
+	}
+
+	public List<BudgetaryCommitmentPosition> getPositions() {
+		return positions;
+	}
+
+	public void setPositions(List<BudgetaryCommitmentPosition> positions) {
+		this.positions = positions;
 	}
 }

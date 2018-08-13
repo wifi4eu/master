@@ -17,5 +17,5 @@ public interface BudgetaryCommitmentRepository extends CrudRepository<BudgetaryC
 	@Procedure(name = "UPDATE_BC_STATUS_FROM_ABAC")
 	void updateBudgetaryCommitmentStatuses();
 
-	BudgetaryCommitment findByLegalEntityMidAndCommitmentLevel2Position(Long municipalityPortalId, Integer abacCommitmentLevel2Position);
+	BudgetaryCommitment findByLegalEntityMid(Long municipalityPortalId);
 }

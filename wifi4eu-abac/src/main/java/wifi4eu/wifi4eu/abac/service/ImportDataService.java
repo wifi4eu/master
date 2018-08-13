@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
@@ -138,13 +139,19 @@ public class ImportDataService {
 
 		for (BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow : budgetaryCommitmentCSVRows) {
 
-			BudgetaryCommitment budgetaryCommitment = budgetaryCommitmentService.getBCByLegalEntityAndCommitmentPosition(budgetaryCommitmentCSVRow.getMunicipalityPortalId(), budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
+			BudgetaryCommitmentPosition budgetaryCommitmentPosition = budgetaryCommitmentService.getBCPosition(budgetaryCommitmentCSVRow.getMunicipalityPortalId(), budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
 
-			if(budgetaryCommitment == null) {
+			if(budgetaryCommitmentPosition == null) {
 				log.info(String.format("importing BC %s for mid %s", budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey(), budgetaryCommitmentCSVRow.getMunicipalityPortalId()));
 
-				budgetaryCommitment = budgetaryCommitmentService.mapBudgetaryCommitmentCSVToEntity(budgetaryCommitmentCSVRow);
-				budgetaryCommitmentService.save(budgetaryCommitment);
+				budgetaryCommitmentPosition = budgetaryCommitmentService.mapBudgetaryCommitmentCSVToEntity(budgetaryCommitmentCSVRow);
+
+				BudgetaryCommitment budgetaryCommitment = budgetaryCommitmentService.getByMunicipalityPortalId(budgetaryCommitmentCSVRow.getMunicipalityPortalId());
+				if (budgetaryCommitment != null) {
+					budgetaryCommitmentPosition.setBudgetaryCommitment(budgetaryCommitment);
+				}
+
+				budgetaryCommitmentService.saveBCPosition(budgetaryCommitmentPosition);
 			} else {
 				//TODO update or ignore?
 				log.info(String.format("Legal entity mid %s already has a Budgetary commitment position %s. Ignoring it for now",

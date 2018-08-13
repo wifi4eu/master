@@ -7,6 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
 import wifi4eu.wifi4eu.abac.data.enums.BudgetaryCommitmentImportCSVColumn;
 
 import java.io.BufferedWriter;
@@ -49,7 +50,7 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 		return budgetaryCommitmentCSVRows;
 	}
 
-	public String exportBudgetaryCommitmentToCSV(List<BudgetaryCommitment> budgetaryCommitments) {
+	public String exportBudgetaryCommitmentToCSV(List<BudgetaryCommitmentPosition> budgetaryCommitments) {
 
 		try {
 
@@ -66,13 +67,13 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 							BudgetaryCommitmentImportCSVColumn.ABAC_STATUS.toString()
 					));
 
-			for (BudgetaryCommitment budgetaryCommitment : budgetaryCommitments) {
+			for (BudgetaryCommitmentPosition budgetaryCommitmentPosition : budgetaryCommitments) {
 				csvPrinter.printRecord(
-						budgetaryCommitment.getLegalEntity().getMid(),
-						budgetaryCommitment.getGlobalCommitmentLevel1PositionKey(),
-						budgetaryCommitment.getCommitmentLevel2Position(),
-						budgetaryCommitment.getCommitmentLevel2Amount(),
-						budgetaryCommitment.getWfStatus()
+						budgetaryCommitmentPosition.getBudgetaryCommitment().getLegalEntity().getMid(),
+						budgetaryCommitmentPosition.getGlobalCommitmentLevel1PositionKey(),
+						budgetaryCommitmentPosition.getCommitmentLevel2Position(),
+						budgetaryCommitmentPosition.getCommitmentLevel2Amount(),
+						budgetaryCommitmentPosition.getBudgetaryCommitment().getWfStatus()
 				);
 			}
 
