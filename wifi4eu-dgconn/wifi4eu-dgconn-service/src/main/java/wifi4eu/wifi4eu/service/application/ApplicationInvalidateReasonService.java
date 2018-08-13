@@ -87,7 +87,7 @@ public class ApplicationInvalidateReasonService {
 
     @Autowired
     ApplicationAuthorizedPersonRepository application_authorizedPersonRepository;
-    
+
     public List<ApplicationInvalidateReasonDTO> getInvalidateReasonByApplicationId(Integer applicationId) {
         return applicationInvalidateReasonMapper.toDTOList(applicationInvalidateReasonRepository.findAllByApplicationIdOrderByReason(applicationId));
     }
@@ -121,12 +121,12 @@ public class ApplicationInvalidateReasonService {
      *     HOLD(0)
      *     OK(2)
      *     PENDING_FOLLOWUP(3)
-     * 
+     *
      * @param status
      * @return
      */
     private boolean isPossibleInvalidateApplication(int status) {
-    	return (ApplicationStatus.HOLD.getValue() == status) || (ApplicationStatus.OK.getValue() == status) || (ApplicationStatus.PENDING_FOLLOWUP.getValue() == status); 
+    	return (ApplicationStatus.HOLD.getValue() == status) || (ApplicationStatus.OK.getValue() == status) || (ApplicationStatus.PENDING_FOLLOWUP.getValue() == status);
     }
 
     /**
@@ -134,19 +134,19 @@ public class ApplicationInvalidateReasonService {
      *     HOLD(0)
      *     KO(1)
      *     PENDING_FOLLOWUP(3)
-     * 
+     *
      * @param status
      * @return
      */
     private boolean isPossibleValidateApplication(int status) {
-    	return (ApplicationStatus.HOLD.getValue() == status) || (ApplicationStatus.KO.getValue() == status) || (ApplicationStatus.PENDING_FOLLOWUP.getValue() == status); 
+    	return (ApplicationStatus.HOLD.getValue() == status) || (ApplicationStatus.KO.getValue() == status) || (ApplicationStatus.PENDING_FOLLOWUP.getValue() == status);
     }
 
     public List<ApplicationInvalidateReasonDTO> invalidateApplication(InvalidReasonViewDTO invalidReasonViewDTO, HttpServletRequest request) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating application");
-        
+
         ApplicationDTO applicationDTO = applicationService.getApplicationById(invalidReasonViewDTO.getApplicationId());
         if (applicationDTO == null) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application does not exist");
@@ -172,6 +172,7 @@ public class ApplicationInvalidateReasonService {
         updateVoucherSimulationNumDuplicates(applicationDTO);
 
         List<ApplicationInvalidateReason> invalidateReason = applicationInvalidateReasonRepository.save(applicationInvalidateReasonMapper.toEntityList(applicationInvalidateReasonDTOS));
+
 
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
@@ -247,35 +248,27 @@ public class ApplicationInvalidateReasonService {
     public Map<String, Boolean> changeStatusApplicationEnabled(Integer applicationId, HttpServletRequest request){
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
-        if (applicationDBO == null) {
+        ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
+        if (applicationDTO == null) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The application does not exist");
             throw new AppException("Incorrect application id");
         }
 
         Map<String, Boolean> checks = new HashMap<>();
         boolean valid = false;
-        List<LegalFileCorrectionReason> legalFileCorrectionReasons = legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(applicationDBO.getRegistrationId());
-        if(Validator.isNull(legalFileCorrectionReasons) || legalFileCorrectionReasons.isEmpty()) {
-            checks.put("invalidate", valid);
-            checks.put("validate", valid);
-        } else {
-            for (LegalFileCorrectionReason legalFileCorrectionReason: legalFileCorrectionReasons) {
-                if(legalFileCorrectionReason.getRequestCorrection()){
-                    Calendar deadline = Calendar.getInstance();
-                    deadline.setTime(legalFileCorrectionReason.getRequestCorrectionDate());
-                    // Date plus 7 days (deadline)
-                    deadline.add(Calendar.DATE, 7);
-                    Date currentTime = Calendar.getInstance().getTime();
-                    if(currentTime.before(deadline.getTime())){
-                        valid = true;
-                        break;
-                    }
-                }
+        // Has the municipality been notified by email of request for changes
+        if (applicationDTO.isSentEmail()) {
+            Calendar deadline = Calendar.getInstance();
+            deadline.setTime(applicationDTO.getSentEmailDate());
+            deadline.add(Calendar.DATE, 7);
+            Date currentTime = Calendar.getInstance().getTime();
+            // Have more than 7 days overcome since the last request
+            if (currentTime.before(deadline.getTime())) {
+                valid = true;
             }
-            checks.put("invalidate", valid);
-            checks.put("validate", valid);
         }
+        checks.put("invalidate", valid);
+        checks.put("validate", valid);
         return checks;
     }
 
