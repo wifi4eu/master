@@ -18,11 +18,14 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.InvitationContactStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
@@ -35,6 +38,7 @@ import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierUserMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
@@ -125,6 +129,9 @@ public class UserService {
     @Autowired
     MunicipalityRepository municipalityRepository;
 
+    @Autowired
+    InvitationContactRepository invitationContactRepository;
+
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
     }
@@ -195,6 +202,39 @@ public class UserService {
         return userDTO;
     }
 
+    @Transactional
+    public void saveInvitedUserModified(UserDTO userDTO){
+        // Missing supplier part
+        if (userDTO.getType() == 0){
+            userDTO.setType(((Long)Constant.ROLE_REPRESENTATIVE_CONTACT).intValue());
+            userDTO.setLang(UserConstants.DEFAULT_LANG);
+            userRepository.save(userMapper.toEntity(userDTO));
+            InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
+            if (Validator.isNotNull(invitationContact)){
+                long idUser = userRepository.findByEcasUsername(userDTO.getEcasUsername()).getId();
+                Date today = new Date();
+                invitationContact.setStatus(InvitationContactStatus.OK.getValue());
+                invitationContact.setLastModified(today);
+                RegistrationUsers registrationUsers = new RegistrationUsers();
+                registrationUsers.setContactEmail(userDTO.getEcasEmail());
+                registrationUsers.setCreationDate(today);
+                registrationUsers.setMain(0);
+                registrationUsers.setRegistrationId(invitationContact.getIdRegistration());
+                registrationUsers.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
+                registrationUsers.setUserId((int) idUser);
+                Registration registration = registrationRepository.findOne(invitationContact.getIdRegistration());
+                Mayor mayor = mayorRepository.findByMunicipalityId(registration.getMunicipality().getId());
+                permissionChecker.addTablePermissions(userDTO, Integer.toString(mayor.getId()),
+                        RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipality().getId());
+                permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getId()),
+                        RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipality().getId());
+                permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getMunicipality().getId()),
+                        RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + registration.getMunicipality().getId() + " - Country: " + registration.getMunicipality().getCountry() + " - Lau Id: " + registration.getMunicipality().getLau().getId());
+                registrationUsersRepository.save(registrationUsers);
+                invitationContactRepository.save(invitationContact);
+            }
+        }
+    }
 
     @Transactional
     public void saveInvitedUser(String userEmail, UserDTO userDTO) {
