@@ -44,15 +44,16 @@ export class BeneficiaryProfileComponent {
     private isRegisterHold: boolean = false;
     private withdrawingRegistration: boolean = false;
     private withdrawnSuccess: boolean = false;
-    private threadId: number;
-    private hasDiscussion: boolean[] = [];
-    private discussionThreads: ThreadDTOBase[] = [];
     private allDocumentsUploaded: boolean[] = [];
     private documentUploaded: boolean = false;
     private oneRegistrationNumber: number = 0;
     private userThreads: ThreadDTOBase [] = [];
-    private threadsByUser : UserThreadsDTOBase[] = [];
-
+    // Removed on bugfix-3099
+    // private threadsByUser : UserThreadsDTOBase[] = [];
+    // private threadId: number;
+    // private hasDiscussion: boolean[] = [];
+    // private discussionThreads: ThreadDTOBase[] = [];
+    
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
     private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
     protected modalIsOpen: boolean = false;
@@ -84,6 +85,9 @@ export class BeneficiaryProfileComponent {
                                                     (mayor: MayorDTOBase) => {
                                                         this.municipalities.push(municipality);
                                                         this.mayors.push(mayor);
+                                                        if(this.municipalities.length == registrations.length) {
+                                                            this.getUserThreads();
+                                                        }
                                                     }
                                                 );
                                             }
@@ -93,6 +97,7 @@ export class BeneficiaryProfileComponent {
                                                     this.users = users;
                                             }
                                         );
+                                        
                                     }
                                 }
                             );
@@ -106,41 +111,52 @@ export class BeneficiaryProfileComponent {
                     this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'shared.error.api.generic', 'error');
                 }
             );
-            this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(
-                (utsByUser: UserThreadsDTOBase[]) => {
-                    for (let utByUser of utsByUser) {
-                        this.threadApi.getThreadById(utByUser.threadId).subscribe(
-                            (thread: ThreadDTOBase) => {
-                                if (thread != null) {
-                                    this.userThreads.push(thread);
-                                    this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
-                                        (utsByThread: UserThreadsDTOBase[]) => {
-                                            this.discussionThreads.push(thread);
-                                            if (utsByThread.length > 1) {
-                                                 for (let i = 0; i < utsByThread.length; ++i) {
-                                                    if (utsByThread[i].userId != this.user.id) {
-                                                        this.threadsByUser.push(utsByThread[i]);
-                                                        this.hasDiscussion[i] = true;
-                                                        
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    );
-                                }
-                            }
-                        );
-                    }
-                }, error => {
-                    console.log("service error: ", error);
-                }
-            );
+
         } else {
             this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
 
         this.loadLanguages();
+    }
+
+    private getUserThreads() {
+        this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(
+            (utsByUser: UserThreadsDTOBase[]) => {
+                for (let utByUser of utsByUser) {
+                    this.threadApi.getThreadById(utByUser.threadId).subscribe(
+                        (thread: ThreadDTOBase) => {
+                            if (thread != null) {
+                                for(let municipality of this.municipalities) {
+                                    if(municipality.name == thread.title) {
+                                        this.userThreads.push(thread);
+                                    } else {
+                                        this.userThreads.push(null);
+                                    }
+                                }
+                                // Not used inside this component, left for later merging issues
+                                /* this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
+                                    (utsByThread: UserThreadsDTOBase[]) => {
+                                        this.discussionThreads.push(thread);
+                                        if (utsByThread.length > 1) {
+                                             for (let i = 0; i < utsByThread.length; ++i) {
+                                                if (utsByThread[i].userId != this.user.id) {
+                                                    this.threadsByUser.push(utsByThread[i]);
+                                                    this.hasDiscussion[i] = true;
+                                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                ); */
+                            }
+                        }
+                    );
+                }
+            }, error => {
+                console.log("service error: ", error);
+            }
+        );
     }
 
     private withdrawRegistration(){
@@ -265,12 +281,7 @@ export class BeneficiaryProfileComponent {
     }
 
     private goToDiscussion(index) {
-        for(let i = 0; i < this.userThreads.length; i++){
-            if(this.userThreads[i].title == this.municipalities[index].name){
-                this.threadId = this.discussionThreads[i].id;
-                this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
-           }
-        }
+        this.router.navigate(['../discussion-forum/', this.userThreads[index].id], {relativeTo: this.route});
     }
 
     private goToUploadDocuments(idMunicipality) {
