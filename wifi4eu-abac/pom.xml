@@ -214,7 +214,7 @@
 		</profile>
 
 		<profile>
-			<!-- This profile is used to generate a war deployable in WebLogic Server 
+			<!-- This profile is used to generate a war deployable in WebLogic Server
 				(uses datasource) -->
 			<id>weblogic</id>
 			<activation>
