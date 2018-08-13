@@ -98,6 +98,12 @@ public class LegalEntity {
 	@OneToMany(mappedBy = "legalEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@OrderBy("submitDate DESC")
 	private List<LegalEntityAbacRequest> legalEntityAbacRequests = new ArrayList<LegalEntityAbacRequest>();
+	
+	@OneToOne
+	private BudgetaryCommitment budgetaryCommitment;
+	
+	@OneToOne
+	private LegalCommitment legalCommitment;
 
 	public LegalEntity() {
 

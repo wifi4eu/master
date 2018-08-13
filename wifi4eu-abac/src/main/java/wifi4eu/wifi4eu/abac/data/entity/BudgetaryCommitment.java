@@ -45,7 +45,7 @@ public class BudgetaryCommitment {
 	@Column(name = "COMMITMENT_L2_AMOUNT")
 	private BigDecimal commitmentLevel2Amount;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEGAL_ENTITY_ID")
 	private LegalEntity legalEntity;
 
