@@ -60,6 +60,8 @@ export class SupplierEditProfileComponent {
     private users: UserDTOBase[] = [];
     private contactIndex: number;
     private displayAddContactModal: boolean = false;
+    private buttonCompanyEnabled: boolean = false;
+    private buttonUserEnabled: boolean = true;
     private buttonEnabled: boolean = false;
  
 
@@ -302,17 +304,29 @@ export class SupplierEditProfileComponent {
             if(this.supplier.name != null && this.supplier.address != null 
                 && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != "" 
                 &&  this.supplier.vat.trim() != ""){
-                    this.buttonEnabled = true;
+                    this.buttonCompanyEnabled = true;
+            } else {
+                this.buttonCompanyEnabled = false;
             }
+            if(this.buttonUserEnabled && this.buttonCompanyEnabled){
+                this.buttonEnabled = true;
+            }
+    
 
         }
 
         private enableButtonUser(event, i){
             this.buttonEnabled = false;
-
             if(this.users[i]['phone_number'] != null && this.users[i]['phone_prefix'] != null && this.users[i].surname != null  && this.users[i].name != null 
                 && this.users[i]['phone_number'].trim() != "" && this.users[i]['phone_prefix'].trim() != ""  && this.users[i].surname.trim() != "" && this.users[i].name.trim() != ""){
-                    this.buttonEnabled = true;
+                    this.buttonUserEnabled = true;
+                   
+            }else{
+                this.buttonUserEnabled = false;
+            }
+
+            if(this.buttonUserEnabled && this.buttonCompanyEnabled){
+                this.buttonEnabled = true;
             }
         }
         

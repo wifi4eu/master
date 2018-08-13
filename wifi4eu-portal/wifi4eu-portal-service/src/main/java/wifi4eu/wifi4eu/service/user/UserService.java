@@ -383,19 +383,6 @@ public class UserService {
 
     @Transactional
     public void sendActivateAccountMail(UserDTO userDTO) {
-        Date now = new Date();
-        TempTokenDTO tempTokenDTO = new TempTokenDTO();
-        tempTokenDTO.setEmail(userDTO.getEcasEmail());
-        tempTokenDTO.setUserId(userDTO.getId());
-        tempTokenDTO.setCreateDate(now.getTime());
-        tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserConstants.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
-        SecureRandom secureRandom = new SecureRandom();
-        String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
-        tempTokenDTO.setToken(token);
-        tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
-        permissionChecker.addTablePermissions(userDTO, Long.toString(tempTokenDTO.getId()),
-                RightConstants.TEMP_TOKENS_TABLE, "[TEMP_TOKENS] - id: " + tempTokenDTO.getId() + " - User Id: " + tempTokenDTO.getUserId() + " - TOKEN: " + tempTokenDTO.getToken());
-
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
