@@ -102,9 +102,9 @@
                         </div>
                         <div class="col-sm-2"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" *ngIf="checkHasDiscussion(municipality)">
                         <div class="col-sm-10 ">
-                            <div *ngIf="hasDiscussion[i]" class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
+                            <div class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
                                 <div class="row">
                                     <div class="col-sm-2">
                                         <i class="fa fa-exclamation-triangle"></i>
@@ -115,7 +115,7 @@
                                 </div>
                             </div>
                             <div style="text-align: center !important">
-                                <button *ngIf="hasDiscussion[i]" class="btn btn-primary discussionWarnigButton" id="muncicipalityButton" (click)="goToDiscussion(i)">
+                                <button class="btn btn-primary discussionWarnigButton" id="muncicipalityButton" (click)="goToDiscussion(i)">
                                 {{'discussionForum.beneficiary.goDiscussion' | translate }}
                                 </button>
                             </div>

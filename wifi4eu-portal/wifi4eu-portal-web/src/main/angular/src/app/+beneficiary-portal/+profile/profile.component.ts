@@ -45,7 +45,6 @@ export class BeneficiaryProfileComponent {
     private withdrawingRegistration: boolean = false;
     private withdrawnSuccess: boolean = false;
     private threadId: number;
-    private hasDiscussion: boolean[] = [];
     private discussionThreads: ThreadDTOBase[] = [];
     private allDocumentsUploaded: boolean[] = [];
     private documentUploaded: boolean = false;
@@ -120,7 +119,6 @@ export class BeneficiaryProfileComponent {
                                                  for (let i = 0; i < utsByThread.length; ++i) {
                                                     if (utsByThread[i].userId != this.user.id) {
                                                         this.threadsByUser.push(utsByThread[i]);
-                                                        this.hasDiscussion[i] = true;
                                                         
                                                     }
                                                 }
@@ -262,6 +260,11 @@ export class BeneficiaryProfileComponent {
                 }
             );
         }
+    }
+
+    private checkHasDiscussion(municipality){
+      var found = this.userThreads.some(userThread => userThread.title === municipality.name);
+      return found;
     }
 
     private goToDiscussion(index) {
