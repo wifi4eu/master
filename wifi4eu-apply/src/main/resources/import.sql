@@ -1,0 +1,10 @@
+--INSERT INTO LocalEntity (id, callId, registrationId, date) VALUES (1, 1, 1254, '2018-01-01 00:00:00.000');
+--INSERT INTO LocalEntity (id, callId, registrationId, date) VALUES (2, 1, 1254, '2018-01-01 00:00:00.000');
+--INSERT INTO LocalEntity (id, callId, registrationId, date) VALUES (3, 1, 1254, '2018-01-01 00:00:00.000');
+--INSERT INTO LocalEntity (id, callId, registrationId, date) VALUES (4, 1, 1254, '2018-01-01 00:00:00.000');
+--INSERT INTO LocalEntity (id, callId, registrationId, date) VALUES (5, 1, 1254, '2018-01-01 00:00:00.000');
+--INSERT INTO LocalEntity (id, callId, registrationId, date) VALUES (6, 1, 1254, '2018-01-01 00:00:00.000');
+--INSERT INTO LocalEntity (id, callId, registrationId, date) VALUES (7, 1, 1254, '2018-01-01 00:00:00.000');
+--INSERT INTO LocalEntity (id, callId, registrationId, date) VALUES (8, 1, 1254, '2018-01-01 00:00:00.000');
+--INSERT INTO LocalEntity (id, callId, registrationId, date) VALUES (9, 1, 1254, '2018-01-01 00:00:00.000');
+--INSERT INTO LocalEntity (id, callId, registrationId, date) VALUES (10, 1, 1254, '2018-01-01 00:00:00.000');
