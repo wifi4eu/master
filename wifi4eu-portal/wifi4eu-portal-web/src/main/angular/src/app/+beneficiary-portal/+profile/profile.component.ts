@@ -111,11 +111,11 @@ export class BeneficiaryProfileComponent {
                         this.threadApi.getThreadById(utByUser.threadId).subscribe(
                             (thread: ThreadDTOBase) => {
                                 if (thread != null) {
-                                    this.userThreads.push(thread);
                                     this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
                                         (utsByThread: UserThreadsDTOBase[]) => {
                                             this.discussionThreads.push(thread);
                                             if (utsByThread.length > 1) {
+                                                this.userThreads.push(thread);
                                                  for (let i = 0; i < utsByThread.length; ++i) {
                                                     if (utsByThread[i].userId != this.user.id) {
                                                         this.threadsByUser.push(utsByThread[i]);
@@ -263,8 +263,7 @@ export class BeneficiaryProfileComponent {
     }
 
     private checkHasDiscussion(municipality){
-      var found = this.userThreads.some(userThread => userThread.title === municipality.name);
-      return found;
+      return this.userThreads.some(userThread => userThread.title === municipality.name);
     }
 
     private goToDiscussion(index) {
