@@ -69,7 +69,7 @@ export class VoucherComponent {
                         this.loadVoucherData();
                     } else {
                         this.voucherCompetitionState = 0;
-                        this.loadVoucherDataWithoutCall(0);
+                        this.loadVoucherDataWithoutCall(-1);
                     }
                 },
                 error => {
@@ -101,6 +101,11 @@ export class VoucherComponent {
             }
         },
         error => {
+          this.sharedService.growlTranslation(
+            "An error occurred while trying to retrieve the data from the server. Please, try again later.",
+            "shared.error.api.generic",
+            "error"
+          );
         }
       );
     }
@@ -124,6 +129,11 @@ export class VoucherComponent {
                 }
             },
             error => {
+              this.sharedService.growlTranslation(
+                "An error occurred while trying to retrieve the data from the server. Please, try again later.",
+                "shared.error.api.generic",
+                "error"
+              );
             }
         );
     }

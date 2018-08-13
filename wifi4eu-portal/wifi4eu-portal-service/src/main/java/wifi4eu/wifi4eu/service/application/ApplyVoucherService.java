@@ -15,7 +15,7 @@ public class ApplyVoucherService {
 
     public List<ApplyVoucher> getDataForApplyVoucher(Integer callId, Integer userId){
         List<ApplyVoucher> applyVouchers;
-        if(callId == 0){
+        if(callId == -1){
             applyVouchers = applyVoucherRepository.findDataToApplyVoucherWithoutCall(userId);
         }else{
             applyVouchers = applyVoucherRepository.findDataToApplyVoucher(callId,userId);
