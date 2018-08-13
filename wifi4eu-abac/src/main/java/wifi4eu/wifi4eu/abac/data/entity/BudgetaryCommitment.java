@@ -37,7 +37,7 @@ public class BudgetaryCommitment {
 	@Column(name = "date_updated")
 	private Date dateUpdated;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEGAL_ENTITY_ID")
 	private LegalEntity legalEntity;
 
