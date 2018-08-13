@@ -29,18 +29,6 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	@Procedure(name = "UPDATE_LEF_STATUS_FROM_ABAC")
 	//void updateFinancialLegalEntitiesStatuses(@Param("ROWS_AFFECTED") Long rowsAffected);
 	void updateFinancialLegalEntitiesStatuses();
-
-//	@Query(
-//		value=
-//			"SELECT " +
-//			"le.id, le.country_code AS countryCode, le.official_name AS municipality, le.registration_number AS registrationNumber, " +
-//			"le.signature_date AS signatureDate, le.wf_status AS lefStatus, bc.wf_status AS bcStatus, lc.wf_status AS lcStatus " +
-//			"FROM WIF_LEGAL_ENTITY le " +
-//			"LEFT JOIN wif_budgetary_commitment bc ON (le.id = bc.id_le) " +
-//			"LEFT JOIN wif_legal_commitment lc ON (le.id = lc.id_le)",
-//		nativeQuery = true
-//	)
-//	List<IMonitoringRowProjection> findMonitoringData_native();
 	
 	@Query(value = "SELECT new wifi4eu.wifi4eu.abac.data.dto.MonitoringRow(le, bc, lc) FROM LegalEntity le, BudgetaryCommitment bc, LegalCommitment lc")
 	List<MonitoringRow> findMonitoringData();

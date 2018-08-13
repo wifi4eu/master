@@ -6,7 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
@@ -16,6 +22,9 @@ import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 public class LegalCommitment {
 
 	@Id
+	@Column(name = "ID", unique = true, nullable = false, precision = 18, scale = 0)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lcIDGenerator")
+	@SequenceGenerator(name = "lcIDGenerator", sequenceName = "SEQ_LEGAL_COMMITMENT", allocationSize = 1)
 	private Integer id;
 
 	@Column(name = "wf_status")
@@ -25,6 +34,10 @@ public class LegalCommitment {
 	@Column(name = "date_created", length = 20)
 	private Date dateCreated;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_LE")
+	private LegalEntity legalEntity;
+	
 	public LegalCommitment() {
 	}
 
@@ -57,6 +70,14 @@ public class LegalCommitment {
 
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+
+	public LegalEntity getLegalEntity() {
+		return legalEntity;
+	}
+
+	public void setLegalEntity(LegalEntity legalEntity) {
+		this.legalEntity = legalEntity;
 	}
 
 	@Override

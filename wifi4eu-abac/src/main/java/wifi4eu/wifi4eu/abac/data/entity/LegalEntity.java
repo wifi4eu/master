@@ -89,14 +89,13 @@ public class LegalEntity {
 	@Column(name = "user_imported", length = 50)
 	private String userImported;
 
-
 	@OneToMany(mappedBy = "legalEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Document> documents;
 
 	@OneToMany(mappedBy = "legalEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@OrderBy("submitDate DESC")
 	private List<LegalEntityAbacRequest> legalEntityAbacRequests = new ArrayList<LegalEntityAbacRequest>();
-
+	
 	public LegalEntity() {
 
 	}
