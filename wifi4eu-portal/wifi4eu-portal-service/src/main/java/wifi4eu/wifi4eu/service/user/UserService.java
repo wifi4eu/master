@@ -150,10 +150,10 @@ public class UserService {
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
-       	if (userDTO.getId() != 0) {
-    		_log.warn("Call to a create method with id set, the value has been removed ({})", userDTO.getId());
-    		userDTO.setId(0);	
-    	}
+        if (userDTO.getId() != 0) {
+            _log.warn("Call to a create method with id set, the value has been removed ({})", userDTO.getId());
+            userDTO.setId(0);
+        }
         UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
         if (searchUser != null) {
             userDTO.setPassword(searchUser.getPassword());
@@ -213,11 +213,11 @@ public class UserService {
                 UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
 
                 if (invitationContact.getIdRegistration() != null){
-                    userDTO.setType(((Long)Constant.ROLE_REPRESENTATIVE).intValue());
+                    userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
                     createRegistrationUser(userDTO, invitationContact.getIdRegistration());
 
                 }else if (invitationContact.getIdSupplier() != null){
-                    userDTO.setType(((Long)Constant.ROLE_SUPPLIER).intValue());
+                    userDTO.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
                     createSupplierUser(userDTO, invitationContact.getIdSupplier());
 
                 }else{
@@ -279,7 +279,7 @@ public class UserService {
 
                     //first remove connections with registration by setting the status to deleted
                     List<RegistrationUsers> registrationUsers = registrationUsersRepository.findByUserId(userDTO.getId());
-                    for(RegistrationUsers rUser : registrationUsers){
+                    for (RegistrationUsers rUser : registrationUsers) {
                         rUser.setStatus(RegistrationUsersStatus.DELETED.getValue());
                     }
                     registrationUsersRepository.save(registrationUsers);
@@ -296,7 +296,7 @@ public class UserService {
 
                     //first remove connections with suppliers by setting the status to deleted
                     List<SupplierUser> supplierUsers = supplierUserRepository.findByUserId(userDTO.getId());
-                    for(SupplierUser sUser : supplierUsers){
+                    for (SupplierUser sUser : supplierUsers) {
                         sUser.setStatus(SupplierUserStatus.DELETED.getStatus());
                     }
                     supplierUserRepository.save(supplierUsers);
@@ -406,19 +406,6 @@ public class UserService {
 
     @Transactional
     public void sendActivateAccountMail(UserDTO userDTO) {
-        Date now = new Date();
-        TempTokenDTO tempTokenDTO = new TempTokenDTO();
-        tempTokenDTO.setEmail(userDTO.getEcasEmail());
-        tempTokenDTO.setUserId(userDTO.getId());
-        tempTokenDTO.setCreateDate(now.getTime());
-        tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserConstants.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
-        SecureRandom secureRandom = new SecureRandom();
-        String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
-        tempTokenDTO.setToken(token);
-        tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
-        permissionChecker.addTablePermissions(userDTO, Long.toString(tempTokenDTO.getId()),
-                RightConstants.TEMP_TOKENS_TABLE, "[TEMP_TOKENS] - id: " + tempTokenDTO.getId() + " - User Id: " + tempTokenDTO.getUserId() + " - TOKEN: " + tempTokenDTO.getToken());
-
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
@@ -431,6 +418,22 @@ public class UserService {
             mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
     }
+
+    @Transactional
+    public void sendSupplierRegistrationEmail(UserDTO userDTO) {
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        if (userDTO.getLang() != null) {
+            locale = new Locale(userDTO.getLang());
+        }
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.supplierRegistration.subject");
+        String msgBody = bundle.getString("mail.supplierRegistration.body");
+
+        if (!isLocalHost()) {
+            mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+        }
+    }
+
 
     public boolean resendEmail(String email) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));

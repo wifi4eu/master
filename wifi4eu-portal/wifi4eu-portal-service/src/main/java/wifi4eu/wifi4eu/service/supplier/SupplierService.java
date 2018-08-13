@@ -239,13 +239,13 @@ public class SupplierService {
                 break;
             }
         }
-
         userDTO = userService.saveUserChanges(userDTO);
-        userService.sendActivateAccountMail(userDTO);
         supplierDTO = createSupplier(supplierDTO);
 
         createSupplierUser(supplierDTO.getId(), userDTO.getId(), userDTO.getEmail(), true);
+        userService.sendSupplierRegistrationEmail(userDTO);
         return supplierDTO;
+
     }
 
     public SupplierDTO getSupplierByUserId(int userId) {

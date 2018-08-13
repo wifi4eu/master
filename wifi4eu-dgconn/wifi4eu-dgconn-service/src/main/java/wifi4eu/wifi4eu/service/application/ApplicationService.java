@@ -67,6 +67,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.common.helper.Validator;
 
 @Service
 public class ApplicationService {
@@ -468,6 +469,8 @@ public class ApplicationService {
             applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
         }
         applicationDB.setInvalidateReason(null);
+        applicationDB.setSentEmail(false);
+        applicationDB.setSentEmailDate(null);
         registrationService.saveRegistration(registration);
         ApplicationDTO applicationResponse = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
         _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Legal files from the application are sent for correction");
@@ -595,6 +598,7 @@ public class ApplicationService {
 
                 if (!emailBody.isEmpty()) {
                     mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
+                    applicationRepository.updateSentEmailByApplicationId(true, new Date(), application.getApplicationId());
                 }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);

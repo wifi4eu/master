@@ -259,6 +259,11 @@ export class BeneficiaryEditProfileComponent {
             this.emailConfirmations.push('');
             this.css_class_email.push('notValid');
             this.css_class_municipalities.push('notValid');
+            setTimeout(()=>{            
+                let i = this.newMunicipalities.length - 1;
+                var element = document.getElementById("scrollMunicipality-"+i);
+                element.scrollIntoView({behavior: "smooth"});
+            },200);
         }
         this.checkMunicipalitiesSelected();
     }

@@ -127,6 +127,7 @@ CREATE NONCLUSTERED INDEX IX_applications_status ON applications (_status)
 -- feature/WIFIFOREU-2568 log_emails registered when sending a message to all applicants of a call
 ALTER TABLE applications ADD sent_email smallint DEFAULT 0;
 UPDATE applications SET sent_email = 0 WHERE sent_email is null;
+ALTER TABLE applications ADD sent_email_date datetime DEFAULT null;
 
 -- feature/WIFIFOREU-2914 Add column issues to voucher_simulations
 ALTER TABLE voucher_simulations ADD issues INT;
