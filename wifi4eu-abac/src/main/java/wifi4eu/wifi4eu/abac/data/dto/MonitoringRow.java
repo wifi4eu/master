@@ -4,8 +4,6 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
-import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
@@ -28,7 +26,7 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(LegalEntity le, BudgetaryCommitment bc, LegalCommitment lc) {
+	public MonitoringRow(LegalEntity le) {
 		if(le != null) {
 			this.setId(le.getId());
 			this.setCountryCode(le.getCountryCode());
@@ -36,8 +34,12 @@ public class MonitoringRow {
 			this.setRegistrationNumber(le.getRegistrationNumber());
 			this.setSignatureDate(le.getSignatureDate());
 			this.setLefStatus(le.getWfStatus());
-			this.setBcStatus(bc.getWfStatus());
-			this.setLcStatus(lc.getWfStatus());
+			if(le.getBudgetaryCommitment() != null) {
+				this.setBcStatus(le.getBudgetaryCommitment().getWfStatus());
+			}
+			if(le.getLegalCommitment() != null) {
+				this.setLcStatus(le.getLegalCommitment().getWfStatus());
+			}
 		}
 	}
 	

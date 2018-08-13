@@ -3,7 +3,6 @@ package wifi4eu.wifi4eu.abac.data.entity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
