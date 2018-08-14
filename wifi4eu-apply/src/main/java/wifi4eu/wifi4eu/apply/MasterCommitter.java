@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -47,9 +49,20 @@ public class MasterCommitter {
 	public void commit() {
 		List<LocalEntity> localEntities = new ArrayList<>();
 
-		//localEntities.addAll(this.localRep.findAll());
+		PageRequest pageRequest = PageRequest.of(0, 100);
 		
-		localEntities.addAll(this.createValidEntities(100_000));
+		Page<LocalEntity> pageLocalEntity = this.localRep.findAll(pageRequest);
+		
+		localEntities.addAll(pageLocalEntity.getContent());
+		
+		
+		
+		
+		
+		
+		//localEntities.addAll(this.localRep.findAll());
+		int quantidade = 100_000;
+		localEntities.addAll(this.createValidEntities(quantidade));
 		//localEntities.addAll(this.createInvalidEntities(1));
 		this.LOGGER.info("Entities Found: [{}]", localEntities.size());
 		
@@ -60,7 +73,11 @@ public class MasterCommitter {
 		
 		try {
 			this.LOGGER.info("COMMITTING TO MASTER DATABASE");
-			jdbcTemplate.batchUpdate(this.INSERT_TEMPLATE, masterPreparedStatementSetter);
+			
+			for (int i = 0; i <= quantidade; i += 1000) {
+				localEntities.subList(i, i + 1000);
+				jdbcTemplate.batchUpdate(this.INSERT_TEMPLATE, masterPreparedStatementSetter);
+			}
 			
 		} catch (DataAccessException e) {
 			this.LOGGER.error("Error", e);
@@ -74,6 +91,60 @@ public class MasterCommitter {
 		
 	}
 
+	public void commitPageable() {
+		List<LocalEntity> localEntities = new ArrayList<>();
+
+		PageRequest pageRequest = PageRequest.of(0, 100);
+		
+		Page<LocalEntity> pageLocalEntity = this.localRep.findAll(pageRequest);
+		
+		localEntities.addAll(pageLocalEntity.getContent());
+		
+		
+		//localEntities.addAll(this.localRep.findAll());
+		int quantidade = 1000 + 200;
+		localEntities.addAll(this.createValidEntities(quantidade));
+		//localEntities.addAll(this.createInvalidEntities(1));
+		this.LOGGER.info("Entities Found: [{}]", localEntities.size());
+		
+
+		long overallStartTime = System.currentTimeMillis();
+		
+		this.commitToDB(localEntities, 1000);
+		
+		long totalTime = System.currentTimeMillis() - overallStartTime;
+		this.LOGGER.info("QTY ENTITIES: [{}], TOTAL TIME: [{}]ms", localEntities.size(), totalTime);
+		
+		this.LOGGER.info("COMMIT FINISHED");
+		
+	}
+	
+	private void commitToDB(List<LocalEntity> listLocalEntities, int pageSize) {
+
+		MasterPreparedStatementSetter masterPreparedStatementSetter = new MasterPreparedStatementSetter();
+		
+		int commitSize = 1000;
+		
+		for (int i = 0; i <= listLocalEntities.size(); i += commitSize) {
+			int end = i + commitSize < listLocalEntities.size() ? (i + commitSize) : (listLocalEntities.size() - i);
+			List<LocalEntity> tempList = listLocalEntities.subList(i, end);
+			masterPreparedStatementSetter.setListLocalEntities(tempList);
+
+			this.LOGGER.info("COMMITTING FROM [{}] TO [{}]", i, end);
+			jdbcTemplate.batchUpdate(this.INSERT_TEMPLATE, masterPreparedStatementSetter);
+		}
+		this.LOGGER.info("COMMITTING FROM [{}] TO [{}]");
+			
+//		} catch (DataAccessException e) {
+//			this.LOGGER.error("Error", e);
+//			
+//		}
+	}
+
+	
+	
+	
+	
 	private List<LocalEntity> createValidEntities(int quantity) {
 		List<LocalEntity> listResult = new ArrayList<>();
 		Date date = new Date();

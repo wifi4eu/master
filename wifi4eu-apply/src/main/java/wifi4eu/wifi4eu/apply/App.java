@@ -36,7 +36,7 @@ public class App extends SpringBootServletInitializer implements CommandLineRunn
 			thread.start();
 			
 		} else if (Modes.commit.name().equals(this.mode)) {
-			this.masterCommitter.commit();
+			this.masterCommitter.commitPageable();
 			
 		}
 		
