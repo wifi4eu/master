@@ -18,11 +18,14 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.InvitationContactStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
@@ -35,6 +38,7 @@ import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierUserMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
@@ -125,6 +129,9 @@ public class UserService {
     @Autowired
     MunicipalityRepository municipalityRepository;
 
+    @Autowired
+    InvitationContactRepository invitationContactRepository;
+
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
     }
@@ -195,56 +202,70 @@ public class UserService {
         return userDTO;
     }
 
-
     @Transactional
-    public void saveInvitedUser(String userEmail, UserDTO userDTO) {
-        List<RegistrationUsers> registrationUsers = registrationUsersRepository.findByContactEmailAndStatus(userEmail, RegistrationUsersStatus.UNREGISTERED.getValue());
+    public void saveInvitedUserModified(UserDTO userDTO){
+        if (userDTO.getType() == 0){
 
-        for (RegistrationUsers resRegistrationUser : registrationUsers) {
-            if ((resRegistrationUser.getCreationDate().toInstant().plus(24, ChronoUnit.HOURS).compareTo(new Date().toInstant()) < 0)) {
-                if (userDTO.getType() == 0) {
-                    userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE_CONTACT).intValue());
-                    userDTO.setLang(UserConstants.DEFAULT_LANG);
-                    userRepository.save(userMapper.toEntity(userDTO));
+            InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
+            if (Validator.isNotNull(invitationContact)){
+
+                if (invitationContact.getIdRegistration() != null){
+                    userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
+                    createRegistrationUser(userDTO, invitationContact.getIdRegistration());
+
+                }else if (invitationContact.getIdSupplier() != null){
+                    userDTO.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
+                    createSupplierUser(userDTO, invitationContact.getIdSupplier());
+
+                }else{
+                    return; //Mister Tester
                 }
 
-                if (resRegistrationUser.getUserId() == null) {
-                    resRegistrationUser.setUserId(userRepository.findByEcasUsername(userDTO.getEcasUsername()).getId());
-                    registrationUsersRepository.save(resRegistrationUser);
-                    Registration registration = registrationRepository.findOne(resRegistrationUser.getRegistrationId());
-                    Municipality municipality = municipalityRepository.findOne(registration.getMunicipality().getId());
-                    Mayor mayor = mayorRepository.findByMunicipalityId(municipality.getId());
-                    permissionChecker.addTablePermissions(userDTO, Integer.toString(mayor.getId()),
-                            RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipality().getId());
-                    permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getId()),
-                            RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipality().getId());
-                    permissionChecker.addTablePermissions(userDTO, Integer.toString(municipality.getId()),
-                            RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + municipality.getId() + " - Country: " + municipality.getCountry() + " - Lau Id: " + municipality.getLau().getId());
-                }
+                UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
+                userDTO.setLang(userDTOInvitatorDTO.getLang());
+                userRepository.save(userMapper.toEntity(userDTO));
+
+                invitationContact.setStatus(InvitationContactStatus.OK.getValue());
+                invitationContact.setLastModified(new Date());
+                invitationContactRepository.save(invitationContact);
             }
         }
+    }
 
-        List<SupplierUser> supplierUsers = supplierUserRepository.findByEmailAndStatus(userDTO.getEmail(), SupplierUserStatus.NOT_REGISTERED.getStatus());
-        List<SupplierUser> supplierUsersToUpdate = new ArrayList<>();
-        int userId = userRepository.findByEcasUsername(userDTO.getEcasUsername()).getId();
 
-        if (supplierUsers != null && ((userDTO.getType() == 0) || (userDTO.getType() == 1))) {
-            for (SupplierUser supplierUser : supplierUsers) {
-                if (supplierUser.getUserId() == null) {
-                    if (supplierService.createdLessThan24HBefore(supplierUserMapper.toDTO(supplierUser))) {
-                        if (userDTO.getType() == 0) {
-                            userDTO.setType(((Long) Constant.ROLE_SUPPLIER_CONTACT).intValue());
-                            userDTO.setLang(UserConstants.DEFAULT_LANG);
-                            userRepository.save(userMapper.toEntity(userDTO));
-                        }
-                        supplierUser.setUserId(userId);
-                        supplierUser.setStatus(SupplierUserStatus.ALREADY_REGISTERED.getStatus());
-                        supplierUsersToUpdate.add(supplierUser);
-                    }
-                }
-            }
-            supplierUserRepository.save(supplierUsersToUpdate);
-        }
+    private void createRegistrationUser(UserDTO userDTO, Integer registrationId){
+        RegistrationUsers registrationUsers = new RegistrationUsers();
+        registrationUsers.setContactEmail(userDTO.getEcasEmail());
+        registrationUsers.setCreationDate(new Date());
+        registrationUsers.setMain(0);
+        registrationUsers.setRegistrationId(registrationId);
+        registrationUsers.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
+        registrationUsers.setUserId(userDTO.getId());
+        Registration registration = registrationRepository.findOne(registrationId);
+        Mayor mayor = mayorRepository.findByMunicipalityId(registration.getMunicipality().getId());
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(mayor.getId()),
+                RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipality().getId());
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getId()),
+                RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipality().getId());
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getMunicipality().getId()),
+                RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + registration.getMunicipality().getId() + " - Country: " + registration.getMunicipality().getCountry() + " - Lau Id: " + registration.getMunicipality().getLau().getId());
+        registrationUsersRepository.save(registrationUsers);
+    }
+
+    private void createSupplierUser(UserDTO userDTO, Integer supplierId){
+        SupplierUser supplierUser = new SupplierUser();
+        supplierUser.setEmail(userDTO.getEcasEmail());
+        supplierUser.setCreationDate(new Date());
+        supplierUser.setMain(0);
+        supplierUser.setSupplierId(supplierId);
+        supplierUser.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
+        supplierUser.setUserId(userDTO.getId());
+
+        SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
+
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(supplierId),
+                RightConstants.USER_TABLE, "[SUPPLIERS] - id: " + supplierId + " - Email: " + supplierDTO.getContactEmail());
+        supplierUserRepository.save(supplierUser);
     }
 
     @Transactional
