@@ -313,8 +313,12 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private openModal(idMunicipality: number){
-        this.deleteMunicipalityId = idMunicipality;
-        this.displayDeleteMunicipality = true;
+        if (this.buttonEnabled){
+            this.sharedService.growlTranslation('Error, you can\'t delete a municipality if there are changes to save. Please confirm the changes or cancel them before deleting municipaliies', 'benefPortal.beneficiary.deleteMunicipality.changesNotSaved', 'warn');
+        }else{
+            this.deleteMunicipalityId = idMunicipality;
+            this.displayDeleteMunicipality = true;
+        } 
     }
 
     private deleteMunicipality(){
@@ -325,7 +329,7 @@ export class BeneficiaryEditProfileComponent {
                         this.sharedService.growlTranslation('Your municipality were succesfully deleted.', 'benefPortal.beneficiary.deleteMunicipality.Success', 'success');
                         this.loadDataEditProfile();
                     } else {
-                        this.sharedService.growlTranslation('Error. You can\'t delete this municipality. At least one municipality should remain in the registration', 'benefPortal.beneficiary.deleteMunicipality.Error', 'warn');
+                        this.sharedService.growlTranslation('Error. You can\'t delete this municipality. At least one municipality should remain in the registration', 'benefPortal.beneficiary.deleteMunicipality.changesNotSaved', 'warn');
                     }
                     this.closeModal();
                 }, error =>{
