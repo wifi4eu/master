@@ -229,7 +229,8 @@ export class SupplierEditProfileComponent {
                         this.supplierApi.updateContactDetails(this.supplier).subscribe(
                             (user: UserDTOBase) =>{
                                 this.savingData = false;
-                                this.sharedService.growlTranslation('Your profile data was updated successfully.', 'suppPortal.editProfile.save.success', 'success');
+                                const keysToTranslate = ['shared.success', 'suppPortal.editProfile.save.success'];
+                                this.sharedService.growlTranslation('Your profile data was updated successfully.', keysToTranslate , 'success');
                                 this.goBack();
                             }, error =>{
                                 this.savingData = false;

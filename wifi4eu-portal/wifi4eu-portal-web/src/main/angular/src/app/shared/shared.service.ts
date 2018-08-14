@@ -47,12 +47,12 @@ export class SharedService {
         this.emitClean.next();
     }
 
-    growlTranslation(translatedString: string, keyToTranslate: string, type: string, params?: any, life?: number) {
+    growlTranslation(translatedString: string, keyToTranslate: any, type: string, params?: any, life?: number) {
         if (life === undefined || !life) {
             life = 10000;
         }
         this.translateService.get(keyToTranslate, params).subscribe(
-            (translation: string) => {
+            (translation: any) => {
                 if (translation) {
                     translatedString = translation;
                 }
@@ -60,8 +60,8 @@ export class SharedService {
                     case 'success':
                         this.uxService.growl({
                             severity: 'success',
-                            summary: 'SUCCESS',
-                            detail: translatedString
+                            summary: translatedString[Object.keys(translatedString)[0]],
+                            detail: translatedString[Object.keys(translatedString)[1]]
                         }, false, false, life);
                         break;
                     case 'error':
