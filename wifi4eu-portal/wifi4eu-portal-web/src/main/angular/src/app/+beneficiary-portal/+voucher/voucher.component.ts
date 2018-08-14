@@ -47,6 +47,7 @@ export class VoucherComponent {
     private voucherApplied: string = "";
     private csrfTokenCookieName: string = "XSRF-TOKEN";
     private nameCookieApply: string = "hasRequested";
+    private allRequestCompleted = false;
 
     private httpOptions = {
         headers: new Headers({
@@ -89,7 +90,10 @@ export class VoucherComponent {
     }
 
     private loadVoucherDataWithoutCall(callId){
-      this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,callId).subscribe(
+      this.allRequestCompleted = false;
+      this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,callId)
+      .finally(() => this.allRequestCompleted = true)
+      .subscribe(
         (applyVoucher: ApplyVoucherBase[]) => {
             this.applyVouchersData = applyVoucher;
             for (let i = 0; i < this.applyVouchersData.length; i++){
@@ -109,15 +113,17 @@ export class VoucherComponent {
         }
       );
     }
-
     private loadVoucherData(){
+        this.allRequestCompleted = false;
         let startDateCall = new Date(this.currentCall.startDate);
         let endDateCall = new Date(this.currentCall.endDate);
         this.startDate = ('0' + startDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (startDateCall.getUTCMonth() + 1)).slice(-2) + "/" + startDateCall.getUTCFullYear();
         this.startHour = ('0' + (startDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + startDateCall.getUTCMinutes()).slice(-2);
         this.endDate = ('0' + endDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (endDateCall.getUTCMonth() + 1)).slice(-2) + "/" + endDateCall.getUTCFullYear();
         this.endHour = ('0' + (endDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + endDateCall.getUTCMinutes()).slice(-2);
-        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,this.currentCall.id).subscribe(
+        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,this.currentCall.id)
+        .finally(() => this.allRequestCompleted = true)
+        .subscribe(
             (applyVoucher: ApplyVoucherBase[]) => {
                 this.applyVouchersData = applyVoucher;
                 for (let i = 0; i < this.applyVouchersData.length; i++){

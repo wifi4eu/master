@@ -31,8 +31,17 @@
     </timer-component>
     <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
-            <p-dataTable [value]="applyVouchersData" [expandableRows]="true" [expandedRows]="applyVouchersData">
-                <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
+            <p-dataTable [value]="applyVouchersData" [expandableRows]="true" [expandedRows]="applyVouchersData" [class.table-disabled]="!allRequestCompleted">
+                <p-column field="municipality" [sortable]="allRequestCompleted ? true : false" styleClass="label">
+                    <ng-template pTemplate="header">
+                        <span *ngIf="!allRequestCompleted">
+                            {{ 'shared.loading.modal.title' | translate }}
+                            <i class="fa fa-spinner fa-spin" *ngIf="!allRequestCompleted"></i>
+                        </span>
+                        <span *ngIf="allRequestCompleted">
+                            {{ 'shared.municipality.label' | translate }}
+                        </span>
+                    </ng-template>  
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
                         <span>
                             <img alt="" class="municipality-icon" src="assets/images/account-balance-material-icons-regular.png">
