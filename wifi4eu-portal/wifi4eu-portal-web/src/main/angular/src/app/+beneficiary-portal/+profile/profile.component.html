@@ -102,7 +102,7 @@
                         </div>
                         <div class="col-sm-2"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" *ngIf="checkHasDiscussion(municipality)">
                         <div class="col-sm-10 ">
                             <div *ngIf="orderedUserThreads[i]" class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
                                 <div class="row">
@@ -116,7 +116,7 @@
                             </div>
                             <div style="text-align: center !important">
                                 <button *ngIf="orderedUserThreads[i]" class="btn btn-primary discussionWarnigButton" id="muncicipalityButton" (click)="goToDiscussion(i)">
-                                {{'discussionForum.beneficiary.goDiscussion' | translate }}
+                                    {{'discussionForum.beneficiary.goDiscussion' | translate }}
                                 </button>
                             </div>
                         </div>

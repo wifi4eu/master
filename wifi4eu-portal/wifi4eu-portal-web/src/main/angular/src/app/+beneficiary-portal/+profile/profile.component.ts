@@ -131,7 +131,6 @@ export class BeneficiaryProfileComponent {
                                             this.discussionThreads.push(thread);
                                             if (utsByThread.length > 1) {
                                                 this.userThreads.push(thread);
-                                                console.log("User threads are ", this.userThreads);
                                                  for (let i = 0; i < utsByThread.length; ++i) {
                                                     if (utsByThread[i].userId != this.user.id) {
                                                         this.threadsByUser.push(utsByThread[i]);

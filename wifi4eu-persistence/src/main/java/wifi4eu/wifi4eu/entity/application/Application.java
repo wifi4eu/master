@@ -85,10 +85,13 @@ public class Application {
     @Column(name = "sent_email")
     private boolean sentEmail;
 
+    @Column(name = "sent_email_date")
+    private Date sentEmailDate;
+
     public Application() {
     }
 
-    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, Date dateSignature, Date dateCounterSignature, boolean sentEmail) {
+    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, Date dateSignature, Date dateCounterSignature, boolean sentEmail, Date sentEmailDate) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -113,6 +116,7 @@ public class Application {
         this.dateSignature = dateSignature;
         this.dateCounterSignature = dateCounterSignature;
         this.sentEmail = sentEmail;
+        this.sentEmailDate = sentEmailDate;
     }
 
     public Integer getId() {
@@ -301,5 +305,13 @@ public class Application {
 
     public void setSentEmail(boolean sentEmail) {
         this.sentEmail = sentEmail;
+    }
+
+    public Date getSentEmailDate() {
+        return sentEmailDate;
+    }
+
+    public void setSentEmailDate(Date sentEmailDate) {
+        this.sentEmailDate = sentEmailDate;
     }
 }

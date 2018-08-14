@@ -69,6 +69,7 @@ export class VoucherComponent {
                         this.loadVoucherData();
                     } else {
                         this.voucherCompetitionState = 0;
+                        this.loadVoucherDataWithoutCall(-1);
                     }
                 },
                 error => {
@@ -85,6 +86,28 @@ export class VoucherComponent {
             }
         }
         return false;
+    }
+
+    private loadVoucherDataWithoutCall(callId){
+      this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,callId).subscribe(
+        (applyVoucher: ApplyVoucherBase[]) => {
+            this.applyVouchersData = applyVoucher;
+            for (let i = 0; i < this.applyVouchersData.length; i++){
+                if (this.applyVouchersData[i].filesUploaded == 1){
+                    let uploaddate = new Date(this.applyVouchersData[i].uploadTime);
+                    this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                    this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+                }
+            }
+        },
+        error => {
+          this.sharedService.growlTranslation(
+            "An error occurred while trying to retrieve the data from the server. Please, try again later.",
+            "shared.error.api.generic",
+            "error"
+          );
+        }
+      );
     }
 
     private loadVoucherData(){
@@ -106,6 +129,11 @@ export class VoucherComponent {
                 }
             },
             error => {
+              this.sharedService.growlTranslation(
+                "An error occurred while trying to retrieve the data from the server. Please, try again later.",
+                "shared.error.api.generic",
+                "error"
+              );
             }
         );
     }

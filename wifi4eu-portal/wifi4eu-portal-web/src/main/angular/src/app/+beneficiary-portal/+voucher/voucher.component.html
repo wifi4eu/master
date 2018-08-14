@@ -47,22 +47,22 @@
                         <button *ngIf="!data.filesUploaded" class="btn btn-primary" id="muncicipalityButton"
                                 (click)="goToDocuments(data.idMunicipality)">{{ 'shared.uploadDocuments' | translate}}
                         </button>
-                        <span *ngIf="data.filesUploaded">
+                        <span *ngIf="data.filesUploaded" [style.margin-right]="voucherCompetitionState == 0 ? '4em' : '0em'" style="display: inline-block;">
                             <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
                             <span>{{ 'shared.documentsSubmitted' | translate:{date:uploadDateTime[data.idMunicipality],time:uploadHourTime[data.idMunicipality]} }}.</span>
                             <a alt="" class="municipality-name" (click)="goToDocuments(data.idMunicipality)">{{ 'shared.link.seeDetails' | translate }}</a>
                         </span>
                     </template>
                 </p-column>
-                <p-column header="" styleClass="label">
+                <p-column header="" styleClass="label" *ngIf="voucherCompetitionState != null && voucherCompetitionState != 0">
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied(data.idRegistration) && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement">
-                            {{ 'benefPortal.voucher.applyforvoucher' | translate }}
-                        </button>
-                        <span *ngIf="data.numberApplicant || isVoucherApplied(data.idRegistration)">
-                            <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
-                            {{ 'benefPortal.voucher.applied' | translate }}
-                        </span>
+                          <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied(data.idRegistration) && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement">
+                              {{ 'benefPortal.voucher.applyforvoucher' | translate }}
+                          </button>
+                          <span *ngIf="data.numberApplicant || isVoucherApplied(data.idRegistration)">
+                              <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
+                              {{ 'benefPortal.voucher.applied' | translate }}
+                          </span>
                     </template>
                 </p-column>
                 <template let-data pTemplate="rowexpansion" let-i="rowIndex">
