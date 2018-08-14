@@ -83,13 +83,11 @@ export class BeneficiaryProfileComponent {
                                             (municipality: MunicipalityDTOBase) => {
                                                 this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                     (mayor: MayorDTOBase) => {
-                                                        this.municipalities.push(municipality);                                                             
-                                                        console.log("Municipalities are ", this.municipalities);
+                                                        this.municipalities.push(municipality);                                                                                                                 
                                                         this.mayors.push(mayor);
-
+                                                        // Order the threads array with the municipalities
                                                         if(this.municipalities.length == registrations.length) {
-                                                            let indexedThreads = this.userThreads.map(function(element) { return element.title});
-                                                            console.log("Indexed user threads are ", indexedThreads);
+                                                            let indexedThreads = this.userThreads.map(function(element) { return element.title});                                                        
                                                             for(let municipality of this.municipalities) {                
                                                                 let exists = indexedThreads.indexOf(municipality.name);                             
                                                                 if(exists != -1) {
@@ -99,7 +97,6 @@ export class BeneficiaryProfileComponent {
                                                                     this.orderedUserThreads.push(null);                                                                
                                                                 }
                                                             }
-                                                            console.log("Ordered threads are ", this.orderedUserThreads);
                                                         }
                                                     }
                                                 );
