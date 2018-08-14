@@ -20,10 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class EssiTest {
 
-    //@Test
+    @Test
     public void testClient() throws Exception {
         Resource resource = new ClassPathResource("essi-client-config.properties");
         Properties essiClientConfigProperties = PropertiesLoaderUtils.loadProperties(resource);
@@ -46,7 +46,7 @@ public class EssiTest {
         byte[] signedDocument = signingResult.getSignature();
         String requestId = signingResult.getRequestId();
 
-        try (FileOutputStream fos = new FileOutputStream("c://PDM//tmp/WIFI//test_signed.pdf")) {
+        try (FileOutputStream fos = new FileOutputStream("c://PGM//tmp/WIFI//test_signed1.pdf")) {
             fos.write(signedDocument);
         } catch (IOException ioe) {
             ioe.printStackTrace();
