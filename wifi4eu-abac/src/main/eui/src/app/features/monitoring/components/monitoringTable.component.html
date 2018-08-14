@@ -15,7 +15,7 @@
 		    <div class="col-md-5">
 			    <select class="form-control" [(ngModel)]="filterCountry" (change)="applyFilters()">
 			    	<option [value]="undefined" disabled selected>Search by country...</option>
-			    	<option *ngFor="let country of countries" [value]="country.cd">{{country.name}}</option>
+			    	<option *ngFor="let country of countries" [value]="country.iso2Code">{{country.name}}</option>
 			    </select>
 			</div>
 			<div class="col-md-5">
