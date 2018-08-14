@@ -21,6 +21,7 @@ import {UserRegistrationDTOBase} from "../../shared/swagger/model/UserRegistrati
 // Languages functionality
 import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import { UserDetailsService } from "../../core/services/user-details.service";
+import { elementAt } from "../../../../node_modules/rxjs/operator/elementAt";
 
 @Component({
     selector: 'beneficiary-profile',
@@ -56,6 +57,7 @@ export class BeneficiaryProfileComponent {
     private documentUploaded: boolean = false;
     private oneRegistrationNumber: number = 0;
     private userThreads: ThreadDTOBase [] = [];
+    private orderedUserThreads: ThreadDTOBase [] = [];
     private threadsByUser : UserThreadsDTOBase[] = [];
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
@@ -87,8 +89,21 @@ export class BeneficiaryProfileComponent {
                                             (municipality: MunicipalityDTOBase) => {
                                                 this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                     (mayor: MayorDTOBase) => {
-                                                        this.municipalities.push(municipality);
+                                                        this.municipalities.push(municipality);                                                                                                                 
                                                         this.mayors.push(mayor);
+                                                        // Order the threads array with the municipalities
+                                                        if(this.municipalities.length == registrations.length) {
+                                                            let indexedThreads = this.userThreads.map(function(element) { return element.title});                                                        
+                                                            for(let municipality of this.municipalities) {                
+                                                                let exists = indexedThreads.indexOf(municipality.name);                             
+                                                                if(exists != -1) {
+                                                                    this.orderedUserThreads.push(this.userThreads[exists]);
+                                                                } 
+                                                                else {
+                                                                    this.orderedUserThreads.push(null);                                                                
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 );
                                             }
