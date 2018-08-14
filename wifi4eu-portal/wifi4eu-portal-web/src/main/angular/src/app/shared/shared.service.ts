@@ -56,14 +56,16 @@ export class SharedService {
                 if (translation) {
                     translatedString = translation;
                 }
+                
+                let successSummary = this.translateService.instant('summary.success');
                 switch (type) {
                     case 'success':
-                        this.uxService.growl({
-                            severity: 'success',
-                            summary: translatedString[Object.keys(translatedString)[0]],
-                            detail: translatedString[Object.keys(translatedString)[1]]
-                        }, false, false, life);
-                        break;
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: successSummary,
+                        detail: translatedString
+                    }, false, false, life);
+                    break;
                     case 'error':
                         this.uxService.growl({
                             severity: 'error',
