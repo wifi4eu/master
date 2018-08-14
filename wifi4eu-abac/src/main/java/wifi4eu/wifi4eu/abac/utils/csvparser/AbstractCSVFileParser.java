@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Component
 public abstract class AbstractCSVFileParser {
@@ -40,12 +42,15 @@ public abstract class AbstractCSVFileParser {
 	protected Boolean validateColumns(CSVParser csvParser, Enum ...mandatoryColumns) throws RuntimeException {
 
 		StringBuilder columnsNotFound = new StringBuilder();
-
 		Boolean isValid = Boolean.TRUE;
+
+		//convert all headers to lowercase so we don't have to care about the case used by the portal
+		Map<String, String> lowerCaseHeaders = new TreeMap<>();
+		csvParser.getHeaderMap().keySet().stream().forEach(key -> lowerCaseHeaders.put(key.toLowerCase(), key));
 
 		for (Enum mandatoryColumn : mandatoryColumns) {
 
-			Boolean isColumnFound = csvParser.getHeaderMap().containsKey(mandatoryColumn.toString());
+			Boolean isColumnFound = csvParser.getHeaderMap().containsKey(lowerCaseHeaders.get(mandatoryColumn.toString().toLowerCase()));
 
 			if(!isColumnFound) {
 				isValid = Boolean.FALSE;
