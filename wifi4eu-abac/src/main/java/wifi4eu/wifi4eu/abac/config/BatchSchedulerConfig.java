@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import wifi4eu.wifi4eu.abac.service.AbacIntegrationService;
-import wifi4eu.wifi4eu.abac.service.LegalEntityService;
+import wifi4eu.wifi4eu.abac.integration.abac.AbacIntegrationService;
 
 @Configuration
 @EnableScheduling
