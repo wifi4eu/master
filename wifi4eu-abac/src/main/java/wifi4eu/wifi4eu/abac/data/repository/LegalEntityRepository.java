@@ -32,6 +32,6 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	@Query(value = "SELECT new wifi4eu.wifi4eu.abac.data.dto.MonitoringRow(le) FROM LegalEntity le LEFT JOIN le.budgetaryCommitment bc LEFT JOIN le.legalCommitment lc")
 	List<MonitoringRow> findMonitoringData();
 	
-	@Query("select distinct bc.legalEntity from BudgetaryCommitment bc where bc.wfStatus = 'READY_FOR_ABAC'")
+	@Query("select bc.legalEntity from BudgetaryCommitment bc where bc.wfStatus = 'READY_FOR_ABAC'")
 	List<LegalEntity> findAvailableLegalEntitiesForBudgetaryCommitmentCreation();
 }
