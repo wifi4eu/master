@@ -693,7 +693,7 @@ public class BeneficiaryService {
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Some fields are null or empty. Please, complete all the fields");
             responseDTO.setSuccess(false);
             responseDTO.setData("Some fields are null or empty. Please, complete all the fields");
-            responseDTO.setError(new ErrorDTO(400, "benefPOrtal.profile.addContact.emptyOrNull"));
+            responseDTO.setError(new ErrorDTO(400, "benefPortal.profile.addContact.emptyOrNull"));
         }
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - END");
         return responseDTO;

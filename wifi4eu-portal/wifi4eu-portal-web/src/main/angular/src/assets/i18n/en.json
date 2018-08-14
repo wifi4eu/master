@@ -958,7 +958,7 @@
   "dgConn.requestCorrectionDate": "Request date",
   "benefPortal.grantAgreement.permissionsWarning.description": "You are not authorized to sign the Grant Agreement because your documents are not yet validated",
   "benefPortal.profile.addContact.exists": "This user has already been invitated. Please, try another user email",
-  "benefPOrtal.profile.addContact.emptyOrNull": "Some fields are null or empty. Please, complete all the fields",
+  "benefPortal.profile.addContact.emptyOrNull": "Some fields are null or empty. Please, complete all the fields",
   "supplierPortal.profile.addContact.exists": "This user has already been invitated. Please, try another user email",
   "supplierPortal.profile.addContact.emptyOrNull": "Some fields are null or empty. Please, complete all the fields"
 }
