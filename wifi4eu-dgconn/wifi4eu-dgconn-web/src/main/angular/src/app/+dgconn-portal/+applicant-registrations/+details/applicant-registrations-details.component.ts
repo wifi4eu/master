@@ -19,6 +19,7 @@ import { RegistrationDTOBase } from "../../../shared/swagger/model/RegistrationD
 import { ThreadDTOBase, ThreadDTO } from "../../../shared/swagger/model/ThreadDTO";
 import { ThreadMessageDTOBase } from "../../../shared/swagger/model/ThreadMessageDTO";
 import { ResponseDTOBase, ResponseDTO } from "../../../shared/swagger/model/ResponseDTO";
+import { UserAuthorizedPersonDTO } from "../../../shared/swagger/model/UserAuthorizedPersonDTO";
 import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { LegalFileCorrectionReasonDTOBase } from "../../../shared/swagger/model/LegalFileCorrectionReasonDTO";
 import { VoucherAssignmentAuxiliarDTOBase } from "../../../shared/swagger/model/VoucherAssignmentAuxiliarDTO";
@@ -83,6 +84,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private processingRequest = false;
     private simulationExists = false;
     private contactUsers: UserDTOBase[][] = [];
+    private userAuthorizedPerson : UserAuthorizedPersonDTO = {};
 
     private correctionRequested: LegalFileCorrectionReasonDTOBase[] = [];
     private invalidateChecks = [false, false, false, false, false, false, false, false, false];
@@ -193,6 +195,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                     this.userApi.getUserByIdFromRegistration(registration.id).subscribe(
                                         (user: UserDTOBase) => {
                                             if (user) {
+                                                console.log("The user is ", user);
                                                 this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                                                     (municipality: MunicipalityDTOBase) => {
                                                         if (municipality) {
@@ -200,33 +203,50 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                 (mayor: MayorDTOBase) => {
                                                                     this.registrationApi.getLegalFilesByRegistrationId(registration.id, new Date().getTime()).subscribe(
                                                                         (legalFiles: LegalFileCorrectionReasonDTOBase[]) => {
-                                                                            if (mayor) {
-                                                                                this.mayors[i] = mayor;
-                                                                            } else {
-                                                                                let mayor = new MayorDTOBase();
-                                                                                mayor.id = -1;
-                                                                                mayor.municipalityId = municipality.id;
-                                                                                mayor.name = '-';
-                                                                                mayor.surname = '-';
-                                                                                mayor.email = '-';
-                                                                                this.mayors[i] = mayor;
-                                                                            }
-                                                                            this.correctionRequested[i] = legalFiles[i];
-                                                                            this.selectedFiles[i] = [];
-                                                                            this.selectedReasonTypes[i] = [];
-                                                                            this.createFrontEndLegalFiles(registration, i, legalFiles);
-                                                                            this.applications[i] = application;
-                                                                            this.registrations[i] = registration;
-                                                                            this.users[i] = user;
-                                                                            this.municipalities[i] = municipality;
-                                                                            if (this.registrations.length == this.municipalities.length) {
-                                                                                this.registrationIssues[i] = 0;
-                                                                            }
-                                                                            correctCount++;
-                                                                            if (correctCount == (applications.length - failCount)) {
-                                                                                this.loadingData = false;
-                                                                            }
+
+                                                                            this.userAuthorizedPerson.userId = user.id;
+                                                                            this.userAuthorizedPerson.applicationId = application.id;
+                                                                            this.userAuthorizedPerson.authorized = null;
+                                                                            console.log("Before sending, the userAuthDTO is ", this.userAuthorizedPerson);
+                                                                            this.applicationApi.getAuthorization(this.userAuthorizedPerson).subscribe(
+                                                                                (response : ResponseDTO) => {
+                                                                                    this.userAuthorizedPerson = response.data;
+                                                                                    console.log("Authorised person is ", this.userAuthorizedPerson);
+
+                                                                                    if (mayor) {
+                                                                                        this.mayors[i] = mayor;
+                                                                                    } else {
+                                                                                        let mayor = new MayorDTOBase();
+                                                                                        mayor.id = -1;
+                                                                                        mayor.municipalityId = municipality.id;
+                                                                                        mayor.name = '-';
+                                                                                        mayor.surname = '-';
+                                                                                        mayor.email = '-';
+                                                                                        this.mayors[i] = mayor;
+                                                                                    }
+                                                                                    this.correctionRequested[i] = legalFiles[i];
+                                                                                    this.selectedFiles[i] = [];
+                                                                                    this.selectedReasonTypes[i] = [];
+                                                                                    this.createFrontEndLegalFiles(registration, i, legalFiles);
+                                                                                    this.applications[i] = application;
+                                                                                    this.registrations[i] = registration;
+                                                                                    this.users[i] = user;
+                                                                                    this.municipalities[i] = municipality;
+                                                                                    if (this.registrations.length == this.municipalities.length) {
+                                                                                        this.registrationIssues[i] = 0;
+                                                                                    }
+                                                                                    correctCount++;
+                                                                                    if (correctCount == (applications.length - failCount)) {
+                                                                                        this.loadingData = false;
+                                                                                    }
+
+
+                                                                                }
+                                                                            );
+
                                                                         }
+
+
                                                                     );
                                                                 }, (error) => {
                                                                     this.loadingData = false;
@@ -712,6 +732,20 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             (resp: ResponseDTO) => {
                 this.displaySimulation = false;
                 this.processingRequest = false;
+            }
+        ); */
+    }
+
+    private changeUser() {
+        console.log("changeUser ");
+    }
+
+    private userAuthorisation(i: number) {
+        console.log("userAuthorisation is ", i);
+        console.log("The person changed is ", this.applications[i].authorizedPerson);
+        /* this.applicationApi.updateAuthorization().subscribe(
+            (response : ResponseDTO) {
+
             }
         ); */
     }

@@ -140,10 +140,11 @@
                                             <div>
                                                 <p-radioButton name="{{applications[i]?.id + z}}" value="{{users?.id}}" label="Yes" [(ngModel)]="applications[i].authorizedPerson"
                                                     inputId="preopt1" pTooltip="{{'dgConn.applicationDetails.auth.tooltip' | translate:{name:users?.name,surname:users?.surname}
-                                                }}" tooltipPosition="bottom" onChange = "changeUser(z)"></p-radioButton>
+                                                }}" tooltipPosition="bottom" (onClick)="userAuthorisation(i)" onChange = "changeUser(z)"></p-radioButton>
                                             </div>
                                             <div>
-                                                <p-radioButton name="{{applications[i]?.id +z}}" value="{{users?.id}}-1" label="No" [(ngModel)]="applications[i].authorizedPerson" inputId="preopt2"></p-radioButton>
+                                                <p-radioButton name="{{applications[i]?.id +z}}" value="{{users?.id}}-1" label="No" [(ngModel)]="applications[i].authorizedPerson" inputId="preopt2"
+                                                (onClick)="userAuthorisation(i)"></p-radioButton>
                                             </div>
                                         </div>
                                     </div>
