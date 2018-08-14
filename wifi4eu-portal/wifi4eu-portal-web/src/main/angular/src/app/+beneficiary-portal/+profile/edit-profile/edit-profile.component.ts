@@ -313,8 +313,12 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private openModal(idMunicipality: number){
-        this.deleteMunicipalityId = idMunicipality;
-        this.displayDeleteMunicipality = true;
+        if (this.buttonEnabled){
+            this.sharedService.growlTranslation('Error, you can\'t delete a municipality if there are changes to save. Please confirm the changes or cancel them before deleting municipaliies', 'benefPortal.beneficiary.deleteMunicipality.changesNotSaved', 'warn');
+        }else{
+            this.deleteMunicipalityId = idMunicipality;
+            this.displayDeleteMunicipality = true;
+        } 
     }
 
     private deleteMunicipality(){
