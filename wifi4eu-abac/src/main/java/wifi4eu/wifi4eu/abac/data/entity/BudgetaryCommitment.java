@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.abac.data.entity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +43,10 @@ public class BudgetaryCommitment {
 
 	@OneToMany(mappedBy = "budgetaryCommitment", fetch = FetchType.LAZY)
 	private List<BudgetaryCommitmentPosition> positions;
+
+	@OneToMany(mappedBy = "budgetaryCommitment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OrderBy("submitDate DESC")
+	private List<BudgetaryCommitmentAbacRequest> abacRequests = new ArrayList<BudgetaryCommitmentAbacRequest>();
 
 	@PrePersist
 	protected void onCreate() {
@@ -95,5 +100,17 @@ public class BudgetaryCommitment {
 
 	public void setPositions(List<BudgetaryCommitmentPosition> positions) {
 		this.positions = positions;
+	}
+
+	public List<BudgetaryCommitmentAbacRequest> getAbacRequests() {
+		return abacRequests;
+	}
+
+	public void setAbacRequests(List<BudgetaryCommitmentAbacRequest> abacRequests) {
+		this.abacRequests = abacRequests;
+	}
+
+	public String getAbacErrorMessage(){
+		return !abacRequests.isEmpty() ? abacRequests.get(0).getErrorMessage() : null;
 	}
 }

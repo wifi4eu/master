@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
+import wifi4eu.wifi4eu.abac.data.entity.Country;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
@@ -22,6 +23,9 @@ public class LegalEntityService {
 
 	@Autowired
 	private LegalEntityCSVFileParser legalEntityCSVFileParser;
+
+	@Autowired
+	private CountryService countryService;
 
 	public LegalEntityService() {
 	}
@@ -49,10 +53,12 @@ public class LegalEntityService {
 		legalEntity.setOfficialAddress(legalEntityInformationCSVRow.getOfficialAddress());
 		legalEntity.setPostalCode(legalEntityInformationCSVRow.getPostalCode());
 		legalEntity.setCity(legalEntityInformationCSVRow.getCity());
-		legalEntity.setCountryCode(legalEntityInformationCSVRow.getCountryCode());
 		legalEntity.setLanguageCode(legalEntityInformationCSVRow.getLanguageCode());
 		legalEntity.setRegistrationNumber(legalEntityInformationCSVRow.getRegistrationNumber());
 		legalEntity.setAbacFelId(legalEntityInformationCSVRow.getAbacReference());
+
+		Country country = countryService.getCountryByISOCode(legalEntityInformationCSVRow.getCountryCode());
+		legalEntity.setCountry(country);
 
 		return legalEntity;
 	}

@@ -5,25 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedStoredProcedureQueries;
-import javax.persistence.NamedStoredProcedureQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.ParameterMode;
-import javax.persistence.PrePersist;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.StoredProcedureParameter;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
@@ -54,8 +36,9 @@ public class LegalEntity {
 	@Column(name = "language_code", length = 3)
 	private String languageCode;
 
-	@Column(name = "country_code", length = 2)
-	private String countryCode;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "country_code")
+	private Country country;
 
 	@Column(name = "official_address", length = 400)
 	private String officialAddress;
@@ -117,7 +100,7 @@ public class LegalEntity {
 		this.mid = mid;
 		this.officialName = officialName;
 		this.languageCode = languageCode;
-		this.countryCode = countryCode;
+		this.country = country;
 		this.officialAddress = officialAddress;
 		this.postalCode = postalCode;
 		this.city = city;
@@ -170,12 +153,12 @@ public class LegalEntity {
 		this.city = city;
 	}
 
-	public String getCountryCode() {
-		return countryCode;
+	public Country getCountry() {
+		return country;
 	}
 
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
+	public void setCountry(Country countryCode) {
+		this.country = countryCode;
 	}
 
 	public String getOfficialAddress() {
@@ -274,6 +257,10 @@ public class LegalEntity {
 		this.legalEntityAbacRequests = legalEntityAbacRequests;
 	}
 
+	public String getAbacErrorMessage(){
+		return !legalEntityAbacRequests.isEmpty() ? legalEntityAbacRequests.get(0).getErrorMessage() : null;
+	}
+
 	public String getRejectionReason(){
 		return !legalEntityAbacRequests.isEmpty() ? legalEntityAbacRequests.get(0).getRejectionReason() : null;
 	}
@@ -302,7 +289,7 @@ public class LegalEntity {
 	@Override
 	public String toString() {
 		return "LegalEntity [id=" + id + ", mid=" + mid + ", officialName=" + officialName + ", languageCode="
-				+ languageCode + ", countryCode=" + countryCode + ", officialAddress=" + officialAddress
+				+ languageCode + (country != null ? ", countryCode=" + country.getIso2Code() : "") + ", officialAddress=" + officialAddress
 				+ ", postalCode=" + postalCode + ", city=" + city + ", registrationNumber=" + registrationNumber
 				+ ", abacFelId=" + abacFelId + ", wfStatus=" + wfStatus + ", dateCreated=" + dateCreated
 				+ ", dateUpdated=" + dateUpdated + ", signatureDate=" + signatureDate + ", userImported=" + userImported
