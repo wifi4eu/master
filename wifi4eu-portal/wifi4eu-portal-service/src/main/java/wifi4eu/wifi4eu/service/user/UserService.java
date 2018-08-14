@@ -204,13 +204,10 @@ public class UserService {
 
     @Transactional
     public void saveInvitedUserModified(UserDTO userDTO){
-        // Missing supplier part
         if (userDTO.getType() == 0){
 
             InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
             if (Validator.isNotNull(invitationContact)){
-
-                UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
 
                 if (invitationContact.getIdRegistration() != null){
                     userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
@@ -224,6 +221,7 @@ public class UserService {
                     return; //Mister Tester
                 }
 
+                UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
                 userDTO.setLang(userDTOInvitatorDTO.getLang());
                 userRepository.save(userMapper.toEntity(userDTO));
 
