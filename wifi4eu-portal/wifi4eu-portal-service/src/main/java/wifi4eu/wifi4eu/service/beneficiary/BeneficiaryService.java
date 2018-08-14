@@ -664,7 +664,7 @@ public class BeneficiaryService {
                 }
 
                 invitationContact.setLastModified(today);
-                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                Locale locale = userConnected.getLang() == null ? new Locale(UserConstants.DEFAULT_LANG) : new Locale(userConnected.getLang());
                 MunicipalityDTO municipality = municipalityService.getMunicipalityById(idMunicipality);
                 String municipalityName = municipality.getName();
                 String userName = userConnected.getName() + ' ' + userConnected.getSurname();
