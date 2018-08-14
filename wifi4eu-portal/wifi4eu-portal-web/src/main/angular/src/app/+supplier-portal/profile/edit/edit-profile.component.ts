@@ -63,6 +63,8 @@ export class SupplierEditProfileComponent {
     private buttonCompanyEnabled: boolean = true;
     private buttonUserEnabled: boolean = true;
     private buttonEnabled: boolean = false;
+    private areRegionsSelected: boolean = false;
+    private buttonRegionsEnabled: boolean = true;
     
  
 
@@ -232,6 +234,7 @@ export class SupplierEditProfileComponent {
                 suppliedRegion.regionId = selectedRegion;
                 suppliedRegion.supplierId = this.supplier.id;
                 this.supplier.suppliedRegions.push(suppliedRegion);
+                
             }
         }
         this.savingDataSubscription = this.supplierApi.updateSupplier(this.supplier).subscribe(
@@ -308,12 +311,13 @@ export class SupplierEditProfileComponent {
             this.displayAddContactModal = true;
         }
 
+ 
         private enableButton(event){
             this.buttonEnabled = false;
             if(this.supplier.name != null && this.supplier.address != null 
                 && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != "" 
                 &&  this.supplier.vat.trim() != ""){
-                    if(this.supplier.website != null){
+                    if(this.supplier.website != null && this.supplier.website.trim() != ""){
                         var pattern = new RegExp(this.websitePattern);
                         this.buttonCompanyEnabled = pattern.test(this.supplier.website);        
                     }else {
@@ -322,11 +326,10 @@ export class SupplierEditProfileComponent {
             } else {
                 this.buttonCompanyEnabled = false;
             }
+         
             if(this.buttonUserEnabled && this.buttonCompanyEnabled){
                 this.buttonEnabled = true;
             }
-    
-
         }
 
         private enableButtonUser(event, i){
@@ -341,6 +344,15 @@ export class SupplierEditProfileComponent {
             if(this.buttonUserEnabled && this.buttonCompanyEnabled){
                 this.buttonEnabled = true;
             }
+        }
+
+        private checkRegions(event){
+            this.buttonRegionsEnabled = false;
+            if(event.length > 0){
+                this.buttonRegionsEnabled = true;
+                this.enableButton(event);
+            }
+
         }
         
 }
