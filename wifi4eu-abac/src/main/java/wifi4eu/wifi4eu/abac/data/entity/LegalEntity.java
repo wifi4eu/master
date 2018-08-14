@@ -14,7 +14,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
@@ -98,6 +97,12 @@ public class LegalEntity {
 	@OneToMany(mappedBy = "legalEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@OrderBy("submitDate DESC")
 	private List<LegalEntityAbacRequest> legalEntityAbacRequests = new ArrayList<LegalEntityAbacRequest>();
+	
+	@OneToOne(mappedBy = "legalEntity")
+	private BudgetaryCommitment budgetaryCommitment;
+	
+	@OneToOne(mappedBy = "legalEntity")
+	private LegalCommitment legalCommitment;
 
 	public LegalEntity() {
 
@@ -271,6 +276,22 @@ public class LegalEntity {
 
 	public String getRejectionReason(){
 		return !legalEntityAbacRequests.isEmpty() ? legalEntityAbacRequests.get(0).getRejectionReason() : null;
+	}
+
+	public BudgetaryCommitment getBudgetaryCommitment() {
+		return budgetaryCommitment;
+	}
+
+	public void setBudgetaryCommitment(BudgetaryCommitment budgetaryCommitment) {
+		this.budgetaryCommitment = budgetaryCommitment;
+	}
+
+	public LegalCommitment getLegalCommitment() {
+		return legalCommitment;
+	}
+
+	public void setLegalCommitment(LegalCommitment legalCommitment) {
+		this.legalCommitment = legalCommitment;
 	}
 
 	@PrePersist

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.repository.BudgetaryCommitmentPositionRepository;
 import wifi4eu.wifi4eu.abac.data.repository.BudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
 
@@ -23,6 +25,9 @@ public class BudgetaryCommitmentService {
 	private BudgetaryCommitmentRepository budgetaryCommitmentyRepository;
 
 	@Autowired
+	private BudgetaryCommitmentPositionRepository budgetaryCommitmentyPositionRepository;
+
+	@Autowired
 	private BudgetaryCommitmentCSVFileParser budgetaryCommitmentCSVFileParser;
 
 	@Autowired
@@ -30,7 +35,7 @@ public class BudgetaryCommitmentService {
 
 	public String exportBudgetaryCommitments() {
 		log.info("exportBudgetaryCommitmentyContent");
-		List<BudgetaryCommitment> budgetaryCommitments = (List<BudgetaryCommitment>) budgetaryCommitmentyRepository.findAll();
+		List<BudgetaryCommitmentPosition> budgetaryCommitments = (List<BudgetaryCommitmentPosition>) budgetaryCommitmentyPositionRepository.findAll();
 		String csvFile = budgetaryCommitmentCSVFileParser.exportBudgetaryCommitmentToCSV(budgetaryCommitments);
 		return csvFile;
 	}
@@ -39,22 +44,33 @@ public class BudgetaryCommitmentService {
 		return budgetaryCommitmentyRepository.save(budgetaryCommitment);
 	}
 
-	public BudgetaryCommitment mapBudgetaryCommitmentCSVToEntity(BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow) {
+	public BudgetaryCommitmentPosition mapBudgetaryCommitmentCSVToEntity(BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow) {
+
+		BudgetaryCommitmentPosition position = new BudgetaryCommitmentPosition();
+
+		position.setGlobalCommitmentLevel1PositionKey(budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey());
+		position.setCommitmentLevel2Position(budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
+		position.setCommitmentLevel2Amount(budgetaryCommitmentCSVRow.getAbacGlobalCommitmentPositionAmmount());
 
 		BudgetaryCommitment budgetaryCommitment = new BudgetaryCommitment();
-
-		budgetaryCommitment.setGlobalCommitmentLevel1PositionKey(budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey());
-		budgetaryCommitment.setCommitmentLevel2Position(budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
-		budgetaryCommitment.setCommitmentLevel2Amount(budgetaryCommitmentCSVRow.getAbacGlobalCommitmentPositionAmmount());
 
 		LegalEntity legalEntity = legalEntityService.getLegalEntityByMunicipalityPortalId(budgetaryCommitmentCSVRow.getMunicipalityPortalId());
 		budgetaryCommitment.setLegalEntity(legalEntity);
 
-		return budgetaryCommitment;
+		position.setBudgetaryCommitment(budgetaryCommitment);
+
+		return position;
 	}
 
+	public BudgetaryCommitmentPosition getBCPosition(Long municipalityPortalId, Integer abacCommitmentLevel2Position) {
+		return budgetaryCommitmentyPositionRepository.findByBudgetaryCommitmentLegalEntityMidAndCommitmentLevel2Position(municipalityPortalId, abacCommitmentLevel2Position);
+	}
 
-	public BudgetaryCommitment getBCByLegalEntityAndCommitmentPosition(Long municipalityPortalId, Integer abacCommitmentLevel2Position) {
-		return budgetaryCommitmentyRepository.findByLegalEntityMidAndCommitmentLevel2Position(municipalityPortalId, abacCommitmentLevel2Position);
+	public BudgetaryCommitmentPosition saveBCPosition(BudgetaryCommitmentPosition budgetaryCommitmentPosition) {
+		return budgetaryCommitmentyPositionRepository.save(budgetaryCommitmentPosition);
+	}
+
+	public BudgetaryCommitment getByMunicipalityPortalId(Long municipalityPortalId) {
+		return budgetaryCommitmentyRepository.findByLegalEntityMid(municipalityPortalId);
 	}
 }

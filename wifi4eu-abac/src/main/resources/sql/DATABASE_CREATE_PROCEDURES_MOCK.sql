@@ -37,4 +37,20 @@ BEGIN
   commit;
 END UPDATE_LEF_STATUS_FROM_ABAC;
 
+CREATE OR REPLACE PROCEDURE "WIFI4EU_ABAC"."UPDATE_BC_STATUS_FROM_ABAC" AS
+  PRAGMA AUTONOMOUS_TRANSACTION;
+  WAITING_FOR_ABAC varchar2(30);
+  WAITING_APPROVAL varchar2(30);
+  request_type varchar2(20);
+  rows_affected number;
+BEGIN
+  --init constants
+  WAITING_FOR_ABAC := 'WAITING_FOR_ABAC';
+  request_type := 'BUDGETARY_COMMITMENT';
+
+  rows_affected := 0;
+  
+  commit;
+END UPDATE_BC_STATUS_FROM_ABAC;
+
 /

@@ -1,12 +1,9 @@
 package wifi4eu.wifi4eu.abac.data.repository;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
-
 import org.springframework.data.repository.query.Param;
+
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 
 public interface BudgetaryCommitmentRepository extends CrudRepository<BudgetaryCommitment, Integer> {
@@ -17,5 +14,5 @@ public interface BudgetaryCommitmentRepository extends CrudRepository<BudgetaryC
 	@Procedure(name = "UPDATE_BC_STATUS_FROM_ABAC")
 	void updateBudgetaryCommitmentStatuses();
 
-	BudgetaryCommitment findByLegalEntityMidAndCommitmentLevel2Position(Long municipalityPortalId, Integer abacCommitmentLevel2Position);
+	BudgetaryCommitment findByLegalEntityMid(Long municipalityPortalId);
 }

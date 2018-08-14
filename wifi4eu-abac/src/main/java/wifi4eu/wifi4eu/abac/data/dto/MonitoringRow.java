@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
 public class MonitoringRow {
@@ -25,37 +26,23 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(IMonitoringRowProjection data) {
-		if(data != null) {
-			this.setId(data.getId());
-			this.setCountryCode(data.getCountryCode());
-			this.setMunicipality(data.getMunicipality());
-			this.setRegistrationNumber(data.getRegistrationNumber());
-			this.setSignatureDate(data.getSignatureDate());
-			try {
-				if(data.getLEFStatus() != null) {
-					this.setLefStatus(AbacWorkflowStatus.valueOf(data.getLEFStatus()).getTitle());
-				}
-			}catch(IllegalArgumentException e) {
-				this.setLefStatus(AbacWorkflowStatus.UNMAPPED_STATUS.getTitle());
+	public MonitoringRow(LegalEntity le) {
+		if(le != null) {
+			this.setId(le.getId());
+			this.setCountryCode(le.getCountryCode());
+			this.setMunicipality(le.getOfficialName());
+			this.setRegistrationNumber(le.getRegistrationNumber());
+			this.setSignatureDate(le.getSignatureDate());
+			this.setLefStatus(le.getWfStatus());
+			if(le.getBudgetaryCommitment() != null) {
+				this.setBcStatus(le.getBudgetaryCommitment().getWfStatus());
 			}
-			try {
-				if(data.getBCStatus() != null) {
-					this.setBcStatus(AbacWorkflowStatus.valueOf(data.getBCStatus()).getTitle());
-				}
-			}catch(IllegalArgumentException e) {
-				this.setBcStatus(AbacWorkflowStatus.UNMAPPED_STATUS.getTitle());
-			}
-			try {
-				if(data.getLCStatus() != null) {
-					this.setLcStatus(AbacWorkflowStatus.valueOf(data.getLCStatus()).getTitle());
-				}
-			}catch(IllegalArgumentException e) {
-				this.setLcStatus(AbacWorkflowStatus.UNMAPPED_STATUS.getTitle());
+			if(le.getLegalCommitment() != null) {
+				this.setLcStatus(le.getLegalCommitment().getWfStatus());
 			}
 		}
 	}
-
+	
 	public Long getId() {
 		return id;
 	}

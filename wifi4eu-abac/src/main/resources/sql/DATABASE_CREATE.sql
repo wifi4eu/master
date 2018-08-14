@@ -2,16 +2,39 @@
 --  DDL for View WIF_ABAC_BC_STATUS_VIEW
 --------------------------------------------------------
 
-  CREATE OR REPLACE FORCE VIEW "WIFI4EU_ABAC"."WIF_ABAC_BC_STATUS_VIEW" ("LOC_OBJ_FOREIGN_ID", "TITLE", "STATUS", "ERROR_MSG") AS
-  select
+  CREATE OR REPLACE FORCE VIEW "WIFI4EU_ABAC"."WIF_ABAC_BC_STATUS_VIEW" ("LOC_OBJ_FOREIGN_ID", "STATUS", "TITLE", "ERROR_MSG") AS
+  select LOC_OBJ_FOREIGN_ID, status, title, listagg(msg_txt, chr(10)) within group (order by error_log_id) as ERROR_MSG
+from (
+select
 bc.LOC_OBJ_FOREIGN_ID,
 bc.title,
-bc.PROCESSED as status,
-listagg(err.msg_txt, chr(10)) within group (order by error_log_id) as ERROR_MSG
+err.msg_txt,
+err.error_log_id,
+case
+
+  --TODO IMPLEMENT
+  --then 'ABAC_VALID'
+
+  --TODO IMPLEMENT
+  --then 'ABAC_REJECTED'
+
+  when bc.PROCESSED = 'N'
+  then 'WAITING_FOR_ABAC'
+
+  --TODO IMPLEMENT
+  --then 'WAITING_APPROVAL'
+
+  --TODO IMPLEMENT
+  --then 'ABAC_FINISH'
+
+  when err.msg_txt is not null
+  then 'ABAC_ERROR'
+  else 'UNMAPPED_STATUS'
+end  as status
 FROM V_LOC_COMMITMENT_HEADER@ABACBUDT_SHARED bc
 LEFT JOIN V_O_LOG_ERRORS@ABACBUDT_SHARED err ON err.batch_id = bc.run_id and err.loc_sys_cd = bc.loc_sys_cd and err.msg_tp_cd <> 'I'
-where bc.LOC_OBJ_FOREIGN_ID like 'WIF%'
-group by bc.LOC_OBJ_FOREIGN_ID, bc.title, bc.PROCESSED;
+where bc.LOC_OBJ_FOREIGN_ID like 'WIF%')
+group by LOC_OBJ_FOREIGN_ID, status, title, status;
 --------------------------------------------------------
 --  DDL for View WIF_ABAC_LEF_STATUS_VIEW
 --------------------------------------------------------
@@ -75,14 +98,22 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS"."REJECTION_MSG" IS 'The rejection reason from ABAC';
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS"."REQUEST_TYPE" IS 'Type of request sent to abac. E.g.: LEGAL_ENTITY';
 --------------------------------------------------------
+--  DDL for Table WIF_BC_LEVEL2_POSITION
+--------------------------------------------------------
+
+  CREATE TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION"
+   (	"ID" NUMBER,
+	"COMMITMENT_L2_POSITION" NUMBER,
+	"COMMITMENT_L2_AMOUNT" NUMBER,
+	"BUDGETARY_COMMITMENT_ID" NUMBER,
+	"GLOBAL_COMMITMENT_L1_POS_KEY" VARCHAR2(50 BYTE)
+   ) ;
+--------------------------------------------------------
 --  DDL for Table WIF_BUDGETARY_COMMITMENT
 --------------------------------------------------------
 
   CREATE TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT"
    (	"ID" NUMBER,
-	"GLOBAL_COMMITMENT_L1_POS_KEY" VARCHAR2(100 BYTE),
-	"COMMITMENT_L2_POSITION" NUMBER,
-	"COMMITMENT_L2_AMOUNT" NUMBER,
 	"WF_STATUS" VARCHAR2(20 BYTE),
 	"LEGAL_ENTITY_ID" NUMBER,
 	"DATE_CREATED" DATE,
@@ -110,6 +141,18 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"NATIVE_DESCRIPTIONS" VARCHAR2(50 BYTE)
    ) ;
 --------------------------------------------------------
+--  DDL for Table WIF_DOCTYPE_METADATA_TYPE
+--------------------------------------------------------
+
+  CREATE TABLE "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE"
+   (	"ID" NUMBER(18,0),
+	"CCM2_DOCTYPE_ID" NUMBER(18,0),
+	"CCM2_DOCTYPE_ABBREV" VARCHAR2(100 BYTE),
+	"CCM2_METADATA_ID" NUMBER(18,0),
+	"CCM2_METADATA_ABBREV" VARCHAR2(100 BYTE),
+	"METADATA_KEY" VARCHAR2(100 BYTE)
+   ) ;
+--------------------------------------------------------
 --  DDL for Table WIF_DOCUMENTS
 --------------------------------------------------------
 
@@ -128,7 +171,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"DOCUMENT_TYPE" VARCHAR2(50 BYTE),
 	"FILE_NAME" VARCHAR2(255 BYTE),
 	"PORTAL_DATE" DATE,
-	"DATA" BLOB
+	"DATA" BLOB,
+	"HERMES_REF" VARCHAR2(100 BYTE),
+	"ORIGINAL" VARCHAR2(1 BYTE),
+	"HERMES_ATT_ID" VARCHAR2(100 BYTE),
+	"HERMES_SAVE_NUMBER" VARCHAR2(200 BYTE),
+	"HERMES_REG_NUMBER" VARCHAR2(200 BYTE),
+	"DOCUMENTTYPE_CCM2CODE" VARCHAR2(100 BYTE)
    ) ;
 
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_DOCUMENTS"."ID" IS 'Incremental ID';
@@ -137,6 +186,19 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_DOCUMENTS"."DATE_CREATED" IS 'Creation date, format MM/DD/YYYY HH:MM:SS';
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_DOCUMENTS"."DATE_UPDATED" IS 'Modification date, format MM/DD/YYYY HH:MM:SS';
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_DOCUMENTS"."WF_STATUS" IS 'Workflow status';
+--------------------------------------------------------
+--  DDL for Table WIF_DOCUMENT_TYPE
+--------------------------------------------------------
+
+  CREATE TABLE "WIFI4EU_ABAC"."WIF_DOCUMENT_TYPE"
+   (	"ID" NUMBER(18,0),
+	"DOCT_TYPE_NAME" VARCHAR2(200 BYTE),
+	"DESCRIPTION" VARCHAR2(200 BYTE),
+	"CCM2_DOCTYPE_ID" NUMBER(18,0),
+	"CCM2_DOCTYPE_ABBREV" VARCHAR2(50 BYTE),
+	"CCM2_DOCTYPE_PARENT_ID" NUMBER,
+	"CCM2_DOCTYPE_PARENT_ABBREV" VARCHAR2(50 BYTE)
+   ) ;
 --------------------------------------------------------
 --  DDL for Table WIF_LANGUAGE
 --------------------------------------------------------
@@ -158,8 +220,8 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"ABAC_ID" NUMBER(18,0),
 	"WF_STATUS" VARCHAR2(20 BYTE) DEFAULT 'READY_FOR_ABAC',
 	"USER_IMPORTED" VARCHAR2(20 BYTE),
-	"DATE_CREATED" VARCHAR2(20 BYTE) DEFAULT TO_CHAR(sysdate, 'MM/DD/YYYY HH:MM:SS'),
-	"DATE_UPDATED" VARCHAR2(20 BYTE),
+	"DATE_CREATED" DATE DEFAULT NULL,
+	"DATE_UPDATED" DATE,
 	"COUNTERSIGNATURE_DATE" VARCHAR2(20 BYTE),
 	"ID_COUNTERSIGNATURE_FILE" NUMBER(18,0),
 	"USER_COUNTERSIGNATURED" VARCHAR2(20 BYTE),
@@ -196,7 +258,8 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"REGISTRATION_NUMBER" NUMBER(18,0),
 	"SIGNATURE_DATE" DATE,
 	"USER_IMPORTED" VARCHAR2(20 BYTE),
-	"ID_SIGNATURE_FILE" NUMBER(18,0)
+	"ID_SIGNATURE_FILE" NUMBER(18,0),
+	"HERMES_FILE_ID" VARCHAR2(200 BYTE)
    ) ;
 
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY"."ID" IS 'AIGAP incremental id';
@@ -216,32 +279,49 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --  DDL for Sequence SEQ_ABAC_RUN_ID
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_ABAC_RUN_ID"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1660 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_ABAC_RUN_ID"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 17340 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_BANK_ACCOUNT
 --------------------------------------------------------
 
    CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BANK_ACCOUNT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
+--  DDL for Sequence SEQ_BC_LEVEL2_POSITION
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BC_LEVEL2_POSITION"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
 --  DDL for Sequence SEQ_BUDGETARY_COMMITMENT
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BUDGETARY_COMMITMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BUDGETARY_COMMITMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 41 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_DOCUMENT
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_DOCUMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_DOCUMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 41 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_LEGAL_ENTITY
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_ENTITY"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 140 NOCACHE  NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_ENTITY"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 143 NOCACHE  NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_WIF_ABAC_STATUS
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_WIF_ABAC_STATUS"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 141 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_WIF_ABAC_STATUS"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 161 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Index WIF_DOCUMENT_TYPE_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_DOCUMENT_TYPE_PK" ON "WIFI4EU_ABAC"."WIF_DOCUMENT_TYPE" ("ID")
+  ;
+--------------------------------------------------------
+--  DDL for Index WIF_DOCTYPE_METADATA_TYPE_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE_PK" ON "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE" ("ID")
+  ;
 --------------------------------------------------------
 --  DDL for Index WIF_ABAC_BATCH_STATUS_PK
 --------------------------------------------------------
@@ -261,40 +341,22 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY_MID_UNQ" ON "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" ("OFFICIAL_NAME")
   ;
 --------------------------------------------------------
---  DDL for Index UK_LANGUAGE_NAME
---------------------------------------------------------
-
-  CREATE UNIQUE INDEX "WIFI4EU_ABAC"."UK_LANGUAGE_NAME" ON "WIFI4EU_ABAC"."WIF_LANGUAGE" ("NAME")
-  ;
---------------------------------------------------------
 --  DDL for Index WIF_CONSTANTS_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_CONSTANTS_PK" ON "WIFI4EU_ABAC"."WIF_CONSTANTS" ("ID")
   ;
 --------------------------------------------------------
---  DDL for Index PK_COUNTRY
+--  DDL for Index WIF_BC_LEVEL2_POSITION_PK
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "WIFI4EU_ABAC"."PK_COUNTRY" ON "WIFI4EU_ABAC"."WIF_COUNTRY" ("CD")
+  CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION_PK" ON "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" ("ID")
   ;
 --------------------------------------------------------
 --  DDL for Index PK_LANGUAGE
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."PK_LANGUAGE" ON "WIFI4EU_ABAC"."WIF_LANGUAGE" ("CD")
-  ;
---------------------------------------------------------
---  DDL for Index IDX_TB_COUNTRYCCM2_CODE
---------------------------------------------------------
-
-  CREATE INDEX "WIFI4EU_ABAC"."IDX_TB_COUNTRYCCM2_CODE" ON "WIFI4EU_ABAC"."WIF_COUNTRY" ("CCM2_CODE")
-  ;
---------------------------------------------------------
---  DDL for Index WIF_MUNICIPALITY_PK
---------------------------------------------------------
-
-  CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_MUNICIPALITY_PK" ON "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" ("ID")
   ;
 --------------------------------------------------------
 --  DDL for Index WIF_DOCUMENTS_PK
@@ -307,6 +369,30 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_LC_PK" ON "WIFI4EU_ABAC"."WIF_LEGAL_COMMITMENT" ("ID")
+  ;
+--------------------------------------------------------
+--  DDL for Index UK_LANGUAGE_NAME
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "WIFI4EU_ABAC"."UK_LANGUAGE_NAME" ON "WIFI4EU_ABAC"."WIF_LANGUAGE" ("NAME")
+  ;
+--------------------------------------------------------
+--  DDL for Index PK_COUNTRY
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "WIFI4EU_ABAC"."PK_COUNTRY" ON "WIFI4EU_ABAC"."WIF_COUNTRY" ("CD")
+  ;
+--------------------------------------------------------
+--  DDL for Index IDX_TB_COUNTRYCCM2_CODE
+--------------------------------------------------------
+
+  CREATE INDEX "WIFI4EU_ABAC"."IDX_TB_COUNTRYCCM2_CODE" ON "WIFI4EU_ABAC"."WIF_COUNTRY" ("CCM2_CODE")
+  ;
+--------------------------------------------------------
+--  DDL for Index WIF_MUNICIPALITY_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_MUNICIPALITY_PK" ON "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" ("ID")
   ;
 --------------------------------------------------------
 --  DDL for Procedure CREATE_BC_IN_ABAC
@@ -358,11 +444,12 @@ BEGIN
   -- Create as many positions as needed
   FOR bugetaryCommitment in (
       SELECT le.OFFICIAL_NAME, le.ABAC_FEL_ID, le.COUNTRY_CODE,
-      BC.GLOBAL_COMMITMENT_L1_POS_KEY, BC.COMMITMENT_L2_POSITION, BC.COMMITMENT_L2_AMOUNT
-      FROM WIF_BUDGETARY_COMMITMENT BC
+      BC_POSITION.GLOBAL_COMMITMENT_L1_POS_KEY, BC_POSITION.COMMITMENT_L2_POSITION, BC_POSITION.COMMITMENT_L2_AMOUNT
+      FROM WIF_BC_LEVEL2_POSITION BC_POSITION
+      join WIF_BUDGETARY_COMMITMENT BC on BC.ID = BC_POSITION.BUDGETARY_COMMITMENT_ID
       JOIN WIF_LEGAL_ENTITY LE on bc.LEGAL_ENTITY_ID = LE.ID
       WHERE LE.ID=l_LE_ID
-      ORDER BY COMMITMENT_L2_POSITION
+      ORDER BY BC_POSITION.COMMITMENT_L2_POSITION
   ) LOOP
 
       --STEP 2 - The creation of the Commitment position
@@ -616,20 +703,24 @@ set define off;
   PRAGMA AUTONOMOUS_TRANSACTION;
   WAITING_FOR_ABAC varchar2(30);
   WAITING_APPROVAL varchar2(30);
-  request_type varchar2(20);
+  req_type varchar2(20);
   rows_affected number;
 BEGIN
   --init constants
   WAITING_FOR_ABAC := 'WAITING_FOR_ABAC';
-  request_type := 'BUDGETARY_COMMITMENT';
+  req_type := 'BUDGETARY_COMMITMENT';
 
   rows_affected := 0;
   for request in (
                   select le_id, l_loc_obj_fk, bc.WF_STATUS as bc_status, status_vw.status as abac_status, status_vw.ERROR_MSG
-                  from wif_abac_request_process request
-                  inner join wif_budgetary_commitment bc on request.le_id = bc.legal_entity_id and bc.wf_status in (WAITING_FOR_ABAC)
-                  left join wif_abac_bc_status_view status_vw on request.l_loc_obj_fk = loc_obj_foreign_id
-                  where request.request_type = request_type
+                  from wif_abac_request_process req
+                  inner join wif_budgetary_commitment bc on req.le_id = bc.legal_entity_id and bc.wf_status in (WAITING_FOR_ABAC)
+                  left join wif_abac_bc_status_view status_vw on req.l_loc_obj_fk = loc_obj_foreign_id
+                  where req.request_type = req_type
+                  and req.submit_date = (select max(all_requests.submit_date)
+                                                from wif_abac_request_process all_requests
+                                                where all_requests.le_id = bc.legal_entity_id
+                                                and all_requests.request_type = req_type)
                   order by le_id, l_loc_obj_fk)
   loop
 
@@ -656,18 +747,25 @@ set define off;
   PRAGMA AUTONOMOUS_TRANSACTION;
   WAITING_FOR_ABAC varchar2(30);
   WAITING_APPROVAL varchar2(30);
+  req_type varchar2(20);
   rows_affected number;
 BEGIN
   --init constants
   WAITING_FOR_ABAC := 'WAITING_FOR_ABAC';
   WAITING_APPROVAL := 'WAITING_APPROVAL';
+  req_type := 'LEGAL_ENTITY';
 
   rows_affected := 0;
   for request in (
                   select le_id, l_loc_obj_fk, le.WF_STATUS as legal_entity_status, status_vw.status as abac_status, status_vw.LE_KEY, status_vw.ERROR_MSG, status_vw.REJECTION_MSG
-                  from wif_abac_request_process request
-                  inner join wif_legal_entity le on request.le_id = le.id and le.wf_status in (WAITING_FOR_ABAC, WAITING_APPROVAL)
-                  left join wif_abac_lef_status_view status_vw on request.l_loc_obj_fk = loc_obj_foreign_id
+                  from wif_abac_request_process req
+                  inner join wif_legal_entity le on req.le_id = le.id and le.wf_status in (WAITING_FOR_ABAC, WAITING_APPROVAL)
+                  left join wif_abac_lef_status_view status_vw on req.l_loc_obj_fk = loc_obj_foreign_id
+                  where req.request_type = req_type
+                  and req.submit_date = (select max(all_requests.submit_date)
+                                                      from wif_abac_request_process all_requests
+                                                      where all_requests.le_id = le.id
+                                                      and all_requests.request_type = req_type)
                   order by le_id, l_loc_obj_fk)
   loop
       dbms_output.put_line('LEGAL_ENTITY_ID='||request.le_id);
@@ -725,9 +823,6 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" ADD CONSTRAINT "WIF_BUDGETARY_COMMITMENT_PK" PRIMARY KEY ("ID")
   USING INDEX  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" MODIFY ("WF_STATUS" NOT NULL ENABLE);
-  ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" MODIFY ("COMMITMENT_L2_AMOUNT" NOT NULL ENABLE);
-  ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" MODIFY ("COMMITMENT_L2_POSITION" NOT NULL ENABLE);
-  ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" MODIFY ("GLOBAL_COMMITMENT_L1_POS_KEY" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" MODIFY ("ID" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" MODIFY ("DATE_CREATED" NOT NULL ENABLE);
 --------------------------------------------------------
@@ -742,6 +837,14 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS" ADD CONSTRAINT "WIF_ABAC_REQUEST_TYPE_CK" CHECK (REQUEST_TYPE in ('LEGAL_ENTITY', 'BUDGETARY_COMMITMENT', 'LEGAL_COMMITMENT')) ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS" MODIFY ("LE_ID" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS" MODIFY ("ID" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table WIF_DOCUMENT_TYPE
+--------------------------------------------------------
+
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCUMENT_TYPE" ADD CONSTRAINT "WIF_DOCUMENT_TYPE_PK" PRIMARY KEY ("ID")
+  USING INDEX  ENABLE;
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCUMENT_TYPE" MODIFY ("DOCT_TYPE_NAME" NOT NULL ENABLE);
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCUMENT_TYPE" MODIFY ("ID" NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table WIF_CONSTANTS
 --------------------------------------------------------
@@ -767,6 +870,27 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("OFFICIAL_NAME" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("MID" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("ID" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table WIF_DOCTYPE_METADATA_TYPE
+--------------------------------------------------------
+
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE" ADD CONSTRAINT "WIF_DOCTYPE_METADATA_TYPE_PK" PRIMARY KEY ("ID")
+  USING INDEX  ENABLE;
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE" MODIFY ("METADATA_KEY" NOT NULL ENABLE);
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE" MODIFY ("CCM2_METADATA_ID" NOT NULL ENABLE);
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE" MODIFY ("CCM2_DOCTYPE_ID" NOT NULL ENABLE);
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE" MODIFY ("ID" NOT NULL ENABLE);
+--------------------------------------------------------
+--  Constraints for Table WIF_BC_LEVEL2_POSITION
+--------------------------------------------------------
+
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" MODIFY ("GLOBAL_COMMITMENT_L1_POS_KEY" NOT NULL ENABLE);
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" ADD CONSTRAINT "WIF_BC_LEVEL2_POSITION_PK" PRIMARY KEY ("ID")
+  USING INDEX  ENABLE;
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" MODIFY ("BUDGETARY_COMMITMENT_ID" NOT NULL ENABLE);
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" MODIFY ("COMMITMENT_L2_AMOUNT" NOT NULL ENABLE);
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" MODIFY ("COMMITMENT_L2_POSITION" NOT NULL ENABLE);
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" MODIFY ("ID" NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table WIF_DOCUMENTS
 --------------------------------------------------------
@@ -795,6 +919,12 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS" ADD CONSTRAINT "WIF_ABAC_BATCH_LE_ID_FK" FOREIGN KEY ("LE_ID")
 	  REFERENCES "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" ("ID") ENABLE;
+--------------------------------------------------------
+--  Ref Constraints for Table WIF_BC_LEVEL2_POSITION
+--------------------------------------------------------
+
+  ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" ADD CONSTRAINT "WIF_BC_POSITION_BC_FK" FOREIGN KEY ("BUDGETARY_COMMITMENT_ID")
+	  REFERENCES "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" ("ID") ENABLE;
 --------------------------------------------------------
 --  Ref Constraints for Table WIF_BUDGETARY_COMMITMENT
 --------------------------------------------------------
