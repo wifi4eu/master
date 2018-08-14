@@ -526,33 +526,4 @@ export class BeneficiaryEditProfileComponent {
             }
         }
     }
-
-
-    /* New contact funciontality */
-    private sendMailToUser(i){
-        this.registrationIndex = i;
-        this.addUser = true;
-    }
-
-    private addNewContact(){
-        this.addContact = true;
-        let storedUser = this.localStorageService.get('user');
-        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-
-        let userRegistrationDTO: UserRegistrationDTOBase = new UserRegistrationDTOBase();
-        userRegistrationDTO.email = this.newUserEmail;
-        userRegistrationDTO.municipalityId = this.municipalities[this.registrationIndex].id;
-        this.beneficiaryApi.sendEmailToNewContact(userRegistrationDTO).subscribe(
-            (userRegistration: UserRegistrationDTOBase) => {
-                this.registrationIndex = null;
-                this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
-                this.closeModal();
-            }, error => {
-                this.registrationIndex = null;
-                this.addContact = false;
-                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
-                this.closeModal();
-            }
-        );
-    }
 }
