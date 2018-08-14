@@ -329,7 +329,7 @@ export class BeneficiaryEditProfileComponent {
                         this.sharedService.growlTranslation('Your municipality were succesfully deleted.', 'benefPortal.beneficiary.deleteMunicipality.Success', 'success');
                         this.loadDataEditProfile();
                     } else {
-                        this.sharedService.growlTranslation('Error. You can\'t delete this municipality. At least one municipality should remain in the registration', 'benefPortal.beneficiary.deleteMunicipality.changesNotSaved', 'warn');
+                        this.sharedService.growlTranslation('Error. You can\'t delete this municipality. At least one municipality should remain in the registration', 'benefPortal.beneficiary.deleteMunicipality.Error', 'warn');
                     }
                     this.closeModal();
                 }, error =>{
