@@ -28,6 +28,9 @@ public abstract class AbacRequest {
     @Column(name = "SUBMIT_DATE", length = 20)
     private Date submitDate;
 
+    @Column(name = "ERROR_MSG")
+    private String errorMessage;
+
     public Integer getId() {
         return id;
     }
@@ -50,6 +53,22 @@ public abstract class AbacRequest {
 
     public void setlQueID(Long lQueID) {
         this.lQueID = lQueID;
+    }
+
+    public Date getSubmitDate() {
+        return submitDate;
+    }
+
+    public void setSubmitDate(Date submitDate) {
+        this.submitDate = submitDate;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     @Override

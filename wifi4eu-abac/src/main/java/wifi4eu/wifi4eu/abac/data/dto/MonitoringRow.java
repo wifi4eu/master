@@ -29,7 +29,9 @@ public class MonitoringRow {
 	public MonitoringRow(LegalEntity le) {
 		if(le != null) {
 			this.setId(le.getId());
-			this.setCountryCode(le.getCountryCode());
+			if(le.getCountry() != null) {
+				this.setCountryCode(le.getCountry().getIso2Code());
+			}
 			this.setMunicipality(le.getOfficialName());
 			this.setRegistrationNumber(le.getRegistrationNumber());
 			this.setSignatureDate(le.getSignatureDate());

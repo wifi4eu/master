@@ -63,6 +63,7 @@ public class ImportDataService {
 
 	public void importLegalEntities(byte[] file) {
 
+		FileDTO documentsCSVFile = null;
 		ZipFileReader zipFileReader = new ZipFileReader(file);
 
 		FileDTO fileDTO = zipFileReader.nextFile();
@@ -85,7 +86,9 @@ public class ImportDataService {
 			fileDTO = zipFileReader.nextFile();
 		}
 
-		importDocuments(documentsCSVFile);
+		if(documentsCSVFile != null) {
+			importDocuments(documentsCSVFile);
+		}
 	}
 
 	private void processLegalEntityInformationFile(FileDTO fileDTO) {

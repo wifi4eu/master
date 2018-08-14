@@ -13,6 +13,6 @@ public interface CountryRepository extends CrudRepository<Country, Integer> {
 	@Query(value = "SELECT c FROM Country c ORDER BY c.name")
 	List<Country> findCountries();
 	
-	@Query(value = "SELECT c FROM Country c WHERE c.iso2Code = :code OR c.iso3Code = :code ")
+	@Query(value = "SELECT c FROM Country c WHERE upper(c.iso2Code) = upper(:code) OR upper(c.iso3Code) = upper(:code)")
 	Country findByCode(@Param("code") String code);
 }
