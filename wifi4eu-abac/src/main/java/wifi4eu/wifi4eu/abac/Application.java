@@ -16,7 +16,7 @@ import org.springframework.web.WebApplicationInitializer;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "wifi4eu.wifi4eu.abac.data.repository")
 @EntityScan(basePackages = "wifi4eu.wifi4eu.abac.data.entity")
-@PropertySource("classpath:wifi4eu.properties")
+@PropertySource("classpath:application_config/TST/wifi4eu.properties")
 public class Application extends SpringBootServletInitializer implements WebApplicationInitializer {
 
 	private final Logger log = LoggerFactory.getLogger(Application.class);

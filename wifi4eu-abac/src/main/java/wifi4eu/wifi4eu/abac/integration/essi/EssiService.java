@@ -47,16 +47,16 @@ public class EssiService {
     public void signDocument(Document document) throws Exception {
         PadesSigner psigner = new PadesSigner(essiClientConfiguration);
         PDFWidgetDescription pdfWidgetDescription = new PDFWidgetDescription();
-        PDFWidgetDescription.Text text = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(100, 100), "Visible signature test");
+        PDFWidgetDescription.Text text = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(100, 100), "This is signed by Alex");
         pdfWidgetDescription.addText(text);
-        pdfWidgetDescription.setPosition(new PDFWidgetDescription.Position(/*x*/50, /*y*/50, /*width*/200, /*height*/100));
+        pdfWidgetDescription.setPosition(new PDFWidgetDescription.Position(/*x*/350, /*y*/150, /*width*/200, /*height*/100));
         psigner.setPdfSignatureField(new PdfSignatureField(PdfSignatureField.Policy.NEW_IF_NO_EXISTING, /*page*/7, "For the Agency", pdfWidgetDescription));
 
         SigningResult signingResult = psigner.signWithResult(document.getData());
         byte[] signedDocument = signingResult.getSignature();
         String requestId = signingResult.getRequestId();
 
-        try (FileOutputStream fos = new FileOutputStream("c://PDM//tmp/WIFI//test_signed.pdf")) {
+        try (FileOutputStream fos = new FileOutputStream("c://PGM//tmp/WIFI//test_signed.pdf")) {
             fos.write(signedDocument);
         } catch (IOException ioe) {
             ioe.printStackTrace();
