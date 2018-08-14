@@ -32,7 +32,7 @@
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="website">{{ 'suppRegistration.company.web' | translate }}</label><br>
                 <input id="website" type="text" name="website" class="form-control"
-                       [(ngModel)]="supplier.website" [pattern]="websitePattern">
+                       [(ngModel)]="supplier.website"  (ngModelChange)="enableButton($event)">
             </div>
             <br>
             <div class="form-group ui-g-12">
@@ -89,9 +89,6 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">   
-                    <p (click)="sendMailToUser()">{{ "benefPortal.beneficary.addMunicipality" | translate}}</p>   
-             </div>
         </div>
   
         <div class="ui-g-12" *ngIf="geographicalScopeLoaded">
@@ -119,7 +116,7 @@
                                         header="{{country.label | slice:0:1 | uppercase }}{{country.label | slice:1:country.label.length | lowercase }}">
                                 <p-multiSelect id="{{'selectRegion'+i}}" #selectRegion name="{{'selectRegion'+i}}"
                                                defaultLabel="{{ 'shared.choose.label' | translate }}"
-                                               [options]="regionOptions[country.label]" [(ngModel)]="selectedRegions[country.label]" (ngModelChange)="enableButton($event)">
+                                               [options]="regionOptions[country.label]" [(ngModel)]="selectedRegions[country.label]" (ngModelChange)="checkRegions($event)">
                                 </p-multiSelect>
                             </p-tabPanel>
                         </p-tabView>
@@ -135,7 +132,7 @@
                         class="btn btn-primary whiteButton" style="margin-right: 0.5em;">
                     {{ 'shared.cancel.button' | translate }}
                 </button>
-                <button type="button" (click)="saveSupplierData()" [disabled]="savingData || !buttonEnabled"
+                <button type="button" (click)="saveSupplierData()" [disabled]="savingData || !buttonEnabled || !buttonRegionsEnabled"
                         class="btn btn-primary blueButton" style="margin-left: 0.5em;">
                     {{ 'shared.save' | translate }} <i *ngIf="savingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
                 </button>
@@ -145,64 +142,3 @@
     </form>
 </div>
 
-
-
-<!-- new user -->
-<p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
-          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
-    <form #addNewUser="ngForm">
-        <div class="form-group">
-            
-            <div class="row marginStep1 landingFirstText">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-8 center">
-                    <h1 class="Modalh1Confirmation ">{{ 'benefPortal.adduser.title' | translate}}</h1>
-                    <p class="left">{{ 'benefPortal.adduser.desc' | translate}}</p>
-                    <p class="left">{{ 'benefPortal.adduser.email' | translate}}</p>
-                    <input type="email" id="newUserEmail" [(ngModel)]="newUserEmail"
-                           class="form-control" name="newUserEmail" [pattern]="emailPattern" size="50" required>
-                </div>
-                <div class="col-sm-2"></div>
-            </div>
-        </div>
-    </form>
-    <div class="row marginStep1 landingFirstText form-group ">
-        <div class="col-lg-2"></div>
-        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
-            <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
-                {{ 'shared.cancel.button' | translate }}
-            </button>
-        </div>
-        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
-            <button (click)="addNewContact()" class="btn btn-primary publish-button"
-                    [disabled]="!addNewUser.form.valid">
-                {{ 'shared.confirm.button' | translate }}
-            </button>
-        </div>
-        <div class="col-lg-2"></div>
-    </div>
-</p-dialog>
-<p-dialog [(visible)]="addContact" [modal]="true" [responsive]="true"
-          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
-    <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
-    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
-    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
-</p-dialog>
-<p-dialog [(visible)]="displayAddContactModal">
-        <div class="form-group ui-g">
-                <h1 class="Modalh1Confirmation">{{ 'shared.deactivateContactModalAreYouSure' | translate}}</h1>
-            <div class="ui-lg-3"></div>
-            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button (click)="closeModal()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' |
-                        translate }}
-                </button>
-            </div>
-            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button (click)="deactivateContactModal()" class="btn btn-primary cancel-button">
-                            {{ 'shared.confirm.button' | translate }}
-                    </button>
-            </div>
-        
-            <div class="ui-lg-3"></div>
-        </div>
-    </p-dialog>
