@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import wifi4eu.wifi4eu.abac.data.entity.ExportFile;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
+import wifi4eu.wifi4eu.abac.service.ImportDataService;
 import wifi4eu.wifi4eu.abac.service.LegalCommitmentService;
 
 @RestController
@@ -25,19 +26,18 @@ public class LegalCommitmentController {
 
 	private final Logger log = LoggerFactory.getLogger(LegalCommitmentController.class);
 
-	private LegalCommitmentService legalCommitmentService;
-
 	@Autowired
-	public LegalCommitmentController(LegalCommitmentService legalCommitmentService) {
-		this.legalCommitmentService = legalCommitmentService;
-	}
+	private LegalCommitmentService legalCommitmentService;
+	
+	@Autowired
+	private ImportDataService importDataService;
 
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO importLegalCommitment(@RequestBody String file) {
 		log.info("importLegalCommitment");
 		ResponseVO result = new ResponseVO();
 		try {
-			legalCommitmentService.importLegalCommitmentContent(file);
+			importDataService.importLegalCommitments(file.getBytes());
 			result.success("Imported OK!");
 		}catch(Exception e) {
 			result.error(e.getMessage());

@@ -7,16 +7,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
+import wifi4eu.wifi4eu.abac.data.dto.LegalCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
+import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.utils.ZipFileReader;
 import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
+import wifi4eu.wifi4eu.abac.utils.csvparser.LegalCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
 import java.util.List;
@@ -35,9 +38,15 @@ public class ImportDataService {
 
 	@Autowired
 	private BudgetaryCommitmentCSVFileParser budgetaryCommitmentCSVFileParser;
+	
+	@Autowired
+	private LegalCommitmentCSVFileParser legalCommitmentCSVFileParser;
 
 	@Autowired
 	private LegalEntityService legalEntityService;
+	
+	@Autowired
+	private LegalCommitmentService legalCommitmentService;
 
 	@Autowired
 	private DocumentService documentService;
@@ -161,4 +170,35 @@ public class ImportDataService {
 			}
 		}
 	}
+	
+	public void importLegalCommitments(byte[] file) {
+		
+		FileDTO fileDTO = new FileDTO();
+		fileDTO.setContent(file);
+		fileDTO.setSize(new Long(file.length));
+		
+		List<LegalCommitmentCSVRow> legalCommitmentCSVRows = (List<LegalCommitmentCSVRow>) legalCommitmentCSVFileParser.parseFile(fileDTO); 
+		
+		for (LegalCommitmentCSVRow legalCommitmentCSVRow : legalCommitmentCSVRows) {
+
+			LegalCommitment legalCommitment = legalCommitmentService.getLegalEntityByMunicipalityPortalId(legalCommitmentCSVRow.getMunicipalityPortalId());
+
+//			if (legalEntity == null) {
+//				//map the csv row to the LegalEntity object
+//				legalEntity = legalEntityService.mapLegalEntityCSVToEntity(legalEntityInformationCSVRow);
+//				//if the LEF is already created in ABAC ignore the creation phase
+//				if(!StringUtils.isEmpty(legalEntity.getAbacFelId())){
+//					legalEntity.setWfStatus(AbacWorkflowStatus.ABAC_VALID);
+//				}else{
+//					legalEntity.setWfStatus(AbacWorkflowStatus.READY_FOR_ABAC);
+//				}
+//				//persist the LegalEntity in the database
+//				legalEntityService.saveLegalEntity(legalEntity);
+//			} else {
+//				//TODO update or ignore?
+//				log.warn("Legal entity already exists in the DB. Ignoring it for now : {}", legalEntity);
+//			}
+		}
+	}
+	
 }
