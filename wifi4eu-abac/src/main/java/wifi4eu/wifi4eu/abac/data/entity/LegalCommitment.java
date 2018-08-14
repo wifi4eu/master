@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.abac.data.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -75,6 +77,13 @@ public class LegalCommitment {
 		this.userCountersignatured = userCountersignatured;
 	}
 
+	@PrePersist
+	protected void onCreate() {
+		this.dateCreated = Calendar.getInstance().getTime();
+		this.wfStatus = AbacWorkflowStatus.READY_FOR_ABAC;
+	}
+
+	
 	public Integer getId() {
 		return id;
 	}

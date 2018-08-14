@@ -309,6 +309,12 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 
    CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_WIF_ABAC_STATUS"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 161 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
+--  DDL for Sequence SEQ_LEGAL_COMMITMENT
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_COMMITMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 100 NOCACHE  NOORDER  NOCYCLE ;
+   
+--------------------------------------------------------
 --  DDL for Index WIF_DOCUMENT_TYPE_PK
 --------------------------------------------------------
 
