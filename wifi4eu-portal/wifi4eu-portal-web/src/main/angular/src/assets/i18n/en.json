@@ -957,8 +957,8 @@
   "shared.supportingDocuments.leavePage.body": "You have confirmed. This will discard any document you uploaded. If you wish to save the documents you uploaded, please return to the page and press Confirm. Are you sure you want to discard your documents?",
   "dgConn.requestCorrectionDate": "Request date",
   "benefPortal.grantAgreement.permissionsWarning.description": "You are not authorized to sign the Grant Agreement because your documents are not yet validated",
-  "benefPortal.profile.addContact.exists": "This user has already been invitated. Please, try another user email",
-  "benefPortal.profile.addContact.emptyOrNull": "Some fields are null or empty. Please, complete all the fields",
-  "supplierPortal.profile.addContact.exists": "This user has already been invitated. Please, try another user email",
-  "supplierPortal.profile.addContact.emptyOrNull": "Some fields are null or empty. Please, complete all the fields"
+  "shared.profile.addContact.exists": "This user has already been invitated. Please, try another user email",
+  "shared.profile.addContact.emptyOrNull": "Some fields are null or empty. Please, complete all the fields",
+  "shared.profile.addContact.exists": "This user has already been invitated. Please, try another user email",
+  "shared.profile.addContact.emptyOrNull": "Some fields are null or empty. Please, complete all the fields"
 }

@@ -660,7 +660,7 @@ public class BeneficiaryService {
                     _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - This user has already been invitated. Please, try another user email");
                     responseDTO.setSuccess(false);
                     responseDTO.setData("This user has already been invitated. Please, try another user email");
-                    responseDTO.setError(new ErrorDTO(400, "benefPortal.profile.addContact.exists"));
+                    responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
                 }
 
                 invitationContact.setLastModified(today);
@@ -687,13 +687,13 @@ public class BeneficiaryService {
                 _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - This user has already been invitated. Please, try another user email");
                 responseDTO.setSuccess(false);
                 responseDTO.setData("This user has already been invitated. Please, try another user email");
-                responseDTO.setError(new ErrorDTO(400, "benefPortal.profile.addContact.exists"));
+                responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
             }
         } else {
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Some fields are null or empty. Please, complete all the fields");
             responseDTO.setSuccess(false);
             responseDTO.setData("Some fields are null or empty. Please, complete all the fields");
-            responseDTO.setError(new ErrorDTO(400, "benefPortal.profile.addContact.emptyOrNull"));
+            responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.emptyOrNull"));
         }
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - END");
         return responseDTO;
