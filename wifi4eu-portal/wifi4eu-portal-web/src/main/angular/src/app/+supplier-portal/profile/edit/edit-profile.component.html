@@ -32,7 +32,7 @@
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="website">{{ 'suppRegistration.company.web' | translate }}</label><br>
                 <input id="website" type="text" name="website" class="form-control"
-                       [(ngModel)]="supplier.website" [pattern]="websitePattern">
+                       [(ngModel)]="supplier.website"  (ngModelChange)="enableButton($event)">
             </div>
             <br>
             <div class="form-group ui-g-12">
@@ -116,7 +116,7 @@
                                         header="{{country.label | slice:0:1 | uppercase }}{{country.label | slice:1:country.label.length | lowercase }}">
                                 <p-multiSelect id="{{'selectRegion'+i}}" #selectRegion name="{{'selectRegion'+i}}"
                                                defaultLabel="{{ 'shared.choose.label' | translate }}"
-                                               [options]="regionOptions[country.label]" [(ngModel)]="selectedRegions[country.label]" (ngModelChange)="enableButton($event)">
+                                               [options]="regionOptions[country.label]" [(ngModel)]="selectedRegions[country.label]" (ngModelChange)="checkRegions($event)">
                                 </p-multiSelect>
                             </p-tabPanel>
                         </p-tabView>
@@ -132,7 +132,7 @@
                         class="btn btn-primary whiteButton" style="margin-right: 0.5em;">
                     {{ 'shared.cancel.button' | translate }}
                 </button>
-                <button type="button" (click)="saveSupplierData()" [disabled]="savingData || !buttonEnabled"
+                <button type="button" (click)="saveSupplierData()" [disabled]="savingData || !buttonEnabled || !buttonRegionsEnabled"
                         class="btn btn-primary blueButton" style="margin-left: 0.5em;">
                     {{ 'shared.save' | translate }} <i *ngIf="savingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
                 </button>
