@@ -245,7 +245,8 @@ export class BeneficiaryProfileComponent {
                 (data: ResponseDTOBase) => {
                     if (data.success) {
                         this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
-                        this.sharedService.logout();
+                        this.router.navigate(['../../../wifi4eu']);
+                        window.location.reload();
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
                     } else {
@@ -342,4 +343,5 @@ export class BeneficiaryProfileComponent {
     private goToEditProfile() {
         this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
     }
+
 }
