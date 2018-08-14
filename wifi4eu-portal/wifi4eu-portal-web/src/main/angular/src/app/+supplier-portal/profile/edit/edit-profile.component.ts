@@ -333,10 +333,7 @@ export class SupplierEditProfileComponent {
             this.buttonEnabled = false;
             if(this.users[i]['phone_number'] != null && this.users[i]['phone_prefix'] != null && this.users[i]['surname'] != null  && this.users[i]['name'] != null 
                 && this.users[i]['phone_number'].trim() != "" && this.users[i]['phone_prefix'].trim() != ""  && this.users[i]['surname'].trim() != "" && this.users[i]['name'].trim() != ""){
-                    this.buttonUserEnabled = true;
-                    console.log("In user");
-                    
-                   
+                    this.buttonUserEnabled = true;                      
             }else{
                 this.buttonUserEnabled = false;
             }
