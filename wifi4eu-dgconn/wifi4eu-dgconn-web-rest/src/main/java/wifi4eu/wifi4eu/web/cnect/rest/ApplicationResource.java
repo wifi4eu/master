@@ -426,7 +426,7 @@ public class ApplicationResource {
         }
     }
 
-    @ApiOperation(value = "Select application")
+    @ApiOperation(value = "Update Authorization")
     @RequestMapping(value = "/updateAuthorization", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO updateAuthorization(@RequestBody final UserAuthorizedPersonDTO userAuthorizedPersonDTO, HttpServletResponse response) throws IOException {
@@ -451,7 +451,7 @@ public class ApplicationResource {
         }
     }
 
-    @ApiOperation(value = "Select application")
+    @ApiOperation(value = "Get Authorization")
     @RequestMapping(value = "/getAuthorization", method = RequestMethod.GET)
     @ResponseBody
     public ResponseDTO getAuthorization(@RequestBody final UserAuthorizedPersonDTO userAuthorizedPersonDTO, HttpServletResponse response) throws IOException {
@@ -477,7 +477,7 @@ public class ApplicationResource {
     }
 
     //ONY FOR SWAGGER
-    @ApiOperation(value = "Return application")
+    @ApiOperation(value = "Return Authorization")
     @RequestMapping(value = "/returnAuthorization", method = RequestMethod.GET)
     @ResponseBody
     public UserAuthorizedPersonDTO updateAuthorization(@RequestBody final UserAuthorizedPersonDTO userAuthorizedPersonDTO){
