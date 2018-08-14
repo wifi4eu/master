@@ -12,32 +12,41 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Country {
 	
 	@Id
-	@Column(name = "cd", length = 2, unique = true)
-	private String cd;
+	@Column(name = "iso2_code", length = 2, unique = true)
+	private String iso2Code;
+	
+	@JsonIgnore
+	@Column(name = "iso3_code", length = 3)
+	private String iso3Code;
 	
 	@Column(name = "name", length = 50)
 	private String name;
-	
-	@JsonIgnore
-	@Column(name = "eu_member", length = 1)
-	private String euMember;
 	
 	public Country() {
 		
 	}
 
-	public Country(String cd, String name, String euMember) {
-		this.cd = cd;
+	public Country(String iso2Code, String iso3Code, String name) {
+		super();
+		this.iso2Code = iso2Code;
+		this.iso3Code = iso3Code;
 		this.name = name;
-		this.euMember = euMember;
 	}
 
-	public String getCd() {
-		return cd;
+	public String getIso2Code() {
+		return iso2Code;
 	}
 
-	public void setCd(String cd) {
-		this.cd = cd;
+	public void setIso2Code(String iso2Code) {
+		this.iso2Code = iso2Code;
+	}
+
+	public String getIso3Code() {
+		return iso3Code;
+	}
+
+	public void setIso3Code(String iso3Code) {
+		this.iso3Code = iso3Code;
 	}
 
 	public String getName() {
@@ -46,14 +55,6 @@ public class Country {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getEuMember() {
-		return euMember;
-	}
-
-	public void setEuMember(String euMember) {
-		this.euMember = euMember;
 	}
 
 }

@@ -1,5 +1,5 @@
 export interface CountryDTO {
-    cd?: string;
+    iso2Code?: string;
     name?: string;
 }
 

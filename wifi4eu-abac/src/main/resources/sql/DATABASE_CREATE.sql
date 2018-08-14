@@ -132,14 +132,14 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --  DDL for Table WIF_COUNTRY
 --------------------------------------------------------
 
-  CREATE TABLE "WIFI4EU_ABAC"."WIF_COUNTRY"
-   (	"CD" VARCHAR2(2 CHAR),
-	"NAME" VARCHAR2(50 CHAR),
-	"EU_MEMBER" VARCHAR2(1 CHAR) DEFAULT 'N',
-	"ACTIVE" VARCHAR2(1 CHAR) DEFAULT 'Y',
-	"CCM2_CODE" NUMBER,
-	"NATIVE_DESCRIPTIONS" VARCHAR2(50 BYTE)
-   ) ;
+  CREATE TABLE "WIFI4EU_ABAC"."WIF_COUNTRY" 
+   (	"ISO2_CODE" VARCHAR2(2 CHAR), 
+	"NAME" VARCHAR2(50 CHAR), 
+	"CCM2_CODE" NUMBER, 
+	"NATIVE_DESCRIPTIONS" VARCHAR2(50 BYTE), 
+	"ISO3_CODE" VARCHAR2(3 CHAR) DEFAULT ''
+   );
+
 --------------------------------------------------------
 --  DDL for Table WIF_DOCTYPE_METADATA_TYPE
 --------------------------------------------------------
@@ -380,7 +380,7 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --  DDL for Index PK_COUNTRY
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "WIFI4EU_ABAC"."PK_COUNTRY" ON "WIFI4EU_ABAC"."WIF_COUNTRY" ("CD")
+  CREATE UNIQUE INDEX "WIFI4EU_ABAC"."PK_COUNTRY" ON "WIFI4EU_ABAC"."WIF_COUNTRY" ("ISO2_CODE")
   ;
 --------------------------------------------------------
 --  DDL for Index IDX_TB_COUNTRYCCM2_CODE
