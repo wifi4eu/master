@@ -108,6 +108,12 @@
 			<groupId>eu.europa.ec.rdg.eris</groupId>
 			<artifactId>eris-ext-client</artifactId>
 			<version>${eris-ext-client.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>xstream</groupId>
+					<artifactId>xstream</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.xml.ws</groupId>
@@ -137,6 +143,24 @@
 			<artifactId>serializer</artifactId>
 			<version>2.7.1</version>
 		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.digit.essi.services.central.client</groupId>
+			<artifactId>essi-central-services-client</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
+			<artifactId>ecas-weblogic-10.3-authprovider</artifactId>
+			<version>4.26.3</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 
@@ -214,7 +238,7 @@
 		</profile>
 
 		<profile>
-			<!-- This profile is used to generate a war deployable in WebLogic Server 
+			<!-- This profile is used to generate a war deployable in WebLogic Server
 				(uses datasource) -->
 			<id>weblogic</id>
 			<activation>
