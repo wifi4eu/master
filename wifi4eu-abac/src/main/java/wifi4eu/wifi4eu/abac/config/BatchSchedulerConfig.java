@@ -6,7 +6,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.integration.abac.AbacIntegrationService;
+import wifi4eu.wifi4eu.abac.service.LegalCommitmentService;
 
 @Configuration
 @EnableScheduling
@@ -18,6 +20,9 @@ public class BatchSchedulerConfig {
 
     @Autowired
     AbacIntegrationService abacIntegrationService;
+
+    @Autowired
+    LegalCommitmentService legalCommitmentService;
 
     @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
@@ -31,11 +36,18 @@ public class BatchSchedulerConfig {
 
     @Scheduled(cron = "${batch.legalentity.checkstatus.crontable}")
     public void checkLegalEntityCreationStatus() {
-    	abacIntegrationService.updateLegalEntitiesStatuses();
+
+        abacIntegrationService.updateLegalEntitiesStatuses();
     }
 
     @Scheduled(cron = "${batch.legalentity.checkstatus.crontable}")
     public void checkBudgetaryCommitmentStatus() {
         abacIntegrationService.updateBudgetaryCommitmentStatuses();
     }
+
+    @Scheduled(cron = "${batch.legalcommitment.countersign.crontable}")
+    public void counterSignGrantAgreements() {
+        legalCommitmentService.findAndCounterSignGrantAgreements();
+    }
+
 }

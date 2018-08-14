@@ -44,7 +44,7 @@ public class EssiService {
         }
     }
 
-    public void signDocument(Document document) throws Exception {
+    public byte[] signDocument(Document document) throws Exception {
         PadesSigner psigner = new PadesSigner(essiClientConfiguration);
         PDFWidgetDescription pdfWidgetDescription = new PDFWidgetDescription();
         PDFWidgetDescription.Text text = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(100, 100), "This is signed by Alex");
@@ -54,12 +54,7 @@ public class EssiService {
 
         SigningResult signingResult = psigner.signWithResult(document.getData());
         byte[] signedDocument = signingResult.getSignature();
-        String requestId = signingResult.getRequestId();
 
-        try (FileOutputStream fos = new FileOutputStream("c://PGM//tmp/WIFI//test_signed.pdf")) {
-            fos.write(signedDocument);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+        return signedDocument;
     }
 }

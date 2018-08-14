@@ -32,7 +32,6 @@ public class LegalCommitmentController {
 		log.info("importLegalCommitment");
 		ResponseVO result = new ResponseVO();
 		try {
-			legalCommitmentService.importLegalCommitmentContent(file);
 			result.success("Imported OK!");
 		}catch(Exception e) {
 			result.error(e.getMessage());

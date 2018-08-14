@@ -11,6 +11,8 @@ import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.DocumentTypeMetadataType;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.repository.DocumentRepository;
 import wifi4eu.wifi4eu.abac.data.repository.DocumentTypeMetadataRepository;
 import wifi4eu.wifi4eu.abac.integration.eris.ErisIntegrationService;
@@ -166,4 +168,8 @@ public class DocumentService {
         erisClientParams.setFirstName("todo");
         erisClientParams.setLastName("todo");
     }
+
+	public List<Document> getDocumentsByTypeAndStatus(DocumentType grantAgreement, DocumentWorkflowStatus waitingCountersignature) {
+    	return documentRepository.findByTypeAndWfStatus(grantAgreement, waitingCountersignature);
+	}
 }

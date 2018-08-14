@@ -5,8 +5,7 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
-import wifi4eu.wifi4eu.abac.data.enums.DocWorkflowStatus;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 
 @Entity
@@ -31,14 +30,18 @@ public class Document {
 	@JoinColumn(name="LEGAL_ENTITY_ID")
 	private LegalEntity legalEntity;
 
-	@Column(name = "name", length = 400)
+	@Column(name = "name")
 	private String name;
 
 	@Lob
 	@Column(name = "data")
 	private byte[] data;
 
-	@Column(name = "ares_reference", length = 50)
+	@Lob
+	@Column(name = "countersigned_data")
+	private byte[] countersignedData;
+
+	@Column(name = "ares_reference")
 	private String aresReference;
 
 	@Column(name = "ares_date")
@@ -47,17 +50,17 @@ public class Document {
 	@Column(name = "file_size")
 	private Long size;
 
-	@Column(name = "mimetype", length = 50)
+	@Column(name = "mimetype")
 	private String mimetype;
 
-	@Column(name = "wf_status", length = 20)
+	@Column(name = "wf_status")
 	@Enumerated(EnumType.STRING)
-	private DocWorkflowStatus wfStatus;
+	private DocumentWorkflowStatus wfStatus;
 
-	@Column(name = "date_created", length = 20)
+	@Column(name = "date_created")
 	private Date dateCreated;
 
-	@Column(name = "date_updated", length = 20)
+	@Column(name = "date_updated")
 	private Date dateUpdated;
 
 	@Column(name = "document_type")
@@ -82,7 +85,7 @@ public class Document {
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
-		this.wfStatus = DocWorkflowStatus.IMPORTED;
+		this.wfStatus = DocumentWorkflowStatus.IMPORTED;
 	}
 
 	public Long getId() {
@@ -141,11 +144,11 @@ public class Document {
 		this.mimetype = mimetype;
 	}
 
-	public DocWorkflowStatus getWfStatus() {
+	public DocumentWorkflowStatus getWfStatus() {
 		return wfStatus;
 	}
 
-	public void setWfStatus(DocWorkflowStatus wfStatus) {
+	public void setWfStatus(DocumentWorkflowStatus wfStatus) {
 		this.wfStatus = wfStatus;
 	}
 
@@ -243,5 +246,13 @@ public class Document {
 
 	public void setDocTypeCCM2Id(String docTypeCCM2Id) {
 		this.docTypeCCM2Id = docTypeCCM2Id;
+	}
+
+	public byte[] getCountersignedData() {
+		return countersignedData;
+	}
+
+	public void setCountersignedData(byte[] countersignedData) {
+		this.countersignedData = countersignedData;
 	}
 }

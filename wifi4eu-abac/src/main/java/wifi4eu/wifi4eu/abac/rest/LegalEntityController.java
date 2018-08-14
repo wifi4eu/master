@@ -40,10 +40,6 @@ public class LegalEntityController {
 	@Autowired
 	private DocumentService documentService;
 
-	@Autowired
-	private EssiService essiService;
-
-
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO importLegalEntity(@RequestParam("file") MultipartFile file) {
 		ResponseVO result = new ResponseVO();
@@ -59,17 +55,6 @@ public class LegalEntityController {
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
 	public ResponseEntity<byte[]> exportLegalEntity(final HttpServletResponse response, Model model) throws Exception {
 		log.info("exportLegalEntity");
-
-		Document document = documentService.getDocumentByPortalId(1131L);
-		try {
-			essiService.signDocument(document);
-		}catch (Exception e){
-			e.printStackTrace();
-		}catch (Error ex){
-			ex.printStackTrace();
-		}catch (Throwable e){
-			e.printStackTrace();
-		}
 		ResponseEntity<byte[]> responseReturn = null;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("text/csv"));
