@@ -198,14 +198,16 @@ public class SupplierResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting supplier by user id " + userId);
         try {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
+            return supplierService.getSupplierByUserId(userId);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this supplier", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This supplier cannot been retrieved", e);
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return null;
         }
-        return supplierService.getSupplierByUserId(userId);
     }
 
     @ApiOperation(value = "Get suppliers that have the same VAT and/or Account Number as the specific supplier")

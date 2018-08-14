@@ -603,9 +603,9 @@ public class SupplierService {
                 msgBody = MessageFormat.format(msgBody, userName, supplierName, additionalInfoUrl, newContactEmail);
                 _log.info("TESTING msgBody => "+msgBody);
 
-                //if (!userService.isLocalHost()) {
+                if (!userService.isLocalHost()) {
                     mailService.sendEmail(newContactEmail, MailService.FROM_ADDRESS, subject, msgBody);
-                //}
+                }
 
                 invitationContactRepository.save(invitationContact);
                 _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");
