@@ -20,6 +20,7 @@ import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
 // Languages functionality
 import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import { UserDetailsService } from "../../core/services/user-details.service";
+import { environment } from "environments/environment";
 
 @Component({
     selector: 'beneficiary-profile',
@@ -245,10 +246,17 @@ export class BeneficiaryProfileComponent {
                 (data: ResponseDTOBase) => {
                     if (data.success) {
                         this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
-                        this.router.navigate(['../../../wifi4eu']);
-                        window.location.reload();
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
+                        this.localStorageService.remove('user');
+                        window.location.href = environment['homeURL'];
+
+                        /* this.router.navigate(['/']).then
+                        (()=>{
+                                document.location.reload();
+                            }
+                        );  */
+
                     } else {
                         this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
                         this.withdrawingRegistration = false;
