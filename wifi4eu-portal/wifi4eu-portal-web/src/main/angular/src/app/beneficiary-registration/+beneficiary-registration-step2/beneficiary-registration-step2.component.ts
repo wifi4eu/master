@@ -160,6 +160,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
             this.checkMunicipalitiesSelected();
         }
         this.checkEmailsMatch();
+        this.checkButtonEnabled(null);
 
     }
 
