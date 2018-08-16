@@ -19,82 +19,13 @@
                     <hr class="beneficiaryHr">
                 </div>
             </div>
-            <div *ngFor="let user of users; let i = index">
-                <div class="row">
-                    <br>
-                    <div class="col-sm-10">
-                        <span class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
-                    </div>
-                    <div class="col-sm-2">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <p>{{ 'shared.name.label' | translate }}</p>
-                    </div>
-                    <div class="col-sm-8">
-                        <p class="profileData">{{user?.name}}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <p>{{ 'shared.surname.label' | translate }}</p>
-                    </div>
-                    <div class="col-sm-8">
-                        <p class="profileData">{{user?.surname}}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <p>{{ 'shared.email.label' | translate }}</p>
-                    </div>
-                    <div class="col-sm-8">
-                        <p class="profileData">{{user?.email}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <hr class="beneficiaryHr">
-                </div>
-            </div>
             <div class="row" *ngIf="municipalities.length > 0 && municipalities.length == mayors.length">
                 <div class="col-sm-12" *ngFor="let municipality of municipalities; let i = index">
-                    <div class="row">
+                    <div *ngIf = "i >= 1" class="row">
                         <br>
-                        <div class="col-sm-10">
-                            <span class="beneficiaryMayor">
-                                {{ 'benefRegistration.registration.legalRepresentative' | translate }}
-                            </span>
-                        </div>
-                        <div class="col-sm-2">
-                        </div>
+                        <br>
+                        <br>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <p>{{ 'shared.name.label' | translate }}</p>
-                        </div>
-                        <div class="col-sm-8">
-                            <p class="profileData">{{mayors[i]?.name}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <p>{{ 'shared.surname.label' | translate }}</p>
-                        </div>
-                        <div class="col-sm-8">
-                            <p class="profileData">{{mayors[i]?.surname}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <p>{{ 'shared.email.label' | translate }}</p>
-                        </div>
-                        <div class="col-sm-8">
-                            <p class="profileData">{{mayors[i]?.email}}</p>
-                        </div>
-                    </div>
-                    <br>
                     <div class="row">
                         <br>
                         <div class="col-sm-10">
@@ -102,9 +33,9 @@
                         </div>
                         <div class="col-sm-2"></div>
                     </div>
-                    <div class="row">
+                    <div class="row" *ngIf="checkHasDiscussion(municipality)">
                         <div class="col-sm-10 ">
-                            <div *ngIf="hasDiscussion[i]" class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
+                            <div *ngIf="orderedUserThreads[i]" class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
                                 <div class="row">
                                     <div class="col-sm-2">
                                         <i class="fa fa-exclamation-triangle"></i>
@@ -115,8 +46,8 @@
                                 </div>
                             </div>
                             <div style="text-align: center !important">
-                                <button *ngIf="hasDiscussion[i]" class="btn btn-primary discussionWarnigButton" id="muncicipalityButton" (click)="goToDiscussion(i)">
-                                {{'discussionForum.beneficiary.goDiscussion' | translate }}
+                                <button *ngIf="orderedUserThreads[i]" class="btn btn-primary discussionWarnigButton" id="muncicipalityButton" (click)="goToDiscussion(i)">
+                                    {{'discussionForum.beneficiary.goDiscussion' | translate }}
                                 </button>
                             </div>
                         </div>
@@ -175,8 +106,97 @@
                             <hr class="beneficiaryHr">
                         </div>
                     </div>
+                    <div class="row">
+                        <br>
+                        <div class="col-sm-10">
+                            <span class="beneficiaryMayor">
+                                {{ 'benefRegistration.registration.legalRepresentative' | translate }}
+                            </span>
+                        </div>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p>{{ 'shared.name.label' | translate }}</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="profileData">{{mayors[i]?.name}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p>{{ 'shared.surname.label' | translate }}</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="profileData">{{mayors[i]?.surname}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p>{{ 'shared.email.label' | translate }}</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="profileData">{{mayors[i]?.email}}</p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <hr class="beneficiaryHr">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p class="edit" (click)="addNewContactToMunicipality(municipality.id)">{{ 'benefPortal.beneficary.addMunicipality' | translate}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                            <br>
+                            <div class="col-sm-10">
+                                <span class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
+                            </div>
+                            <div class="col-sm-2">
+                            </div>
+                        </div>
+                    <div *ngFor="let user of users[municipality.id]; let i = index">
+                        <div *ngIf="i >= 1" class="row">
+                                <div class="col-sm-12">
+                                    <hr class="beneficiaryHr">
+                                </div>
+                            </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p>{{ 'shared.name.label' | translate }}</p>
+                            </div>
+                            <div class="col-sm-8">
+                                <p class="profileData">{{user?.name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p>{{ 'shared.surname.label' | translate }}</p>
+                            </div>
+                            <div class="col-sm-8">
+                                <p class="profileData">{{user?.surname}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p>{{ 'shared.email.label' | translate }}</p>
+                            </div>
+                            <div class="col-sm-8">
+                                <p class="profileData">{{user?.email}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <hr class="beneficiaryHr">
+                        </div>
+                    </div>
                 </div>
-
+                
             </div>
         </div>
         <div class="col-sm-4">
@@ -279,6 +299,49 @@
         <span>·</span>
         <span>·</span>
     </p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>
+
+
+<!-- new user -->
+<p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <form #addNewUser="ngForm">
+        <div class="form-group">
+
+            <div class="row marginStep1 landingFirstText">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8 center">
+                    <h1 class="Modalh1Confirmation ">{{ 'benefPortal.adduser.title' | translate}}</h1>
+                    <p class="left">{{ 'benefPortal.adduser.desc' | translate}}</p>
+                    <p class="left">{{ 'benefPortal.adduser.email' | translate}}</p>
+                    <input type="email" id="newUserEmail" [(ngModel)]="newUserEmail"
+                           class="form-control" name="newUserEmail" [pattern]="emailPattern" size="50" required>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+        </div>
+    </form>
+    <div class="row marginStep1 landingFirstText form-group ">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button" (click)="closeAddNewContactModal()">
+                {{ 'shared.cancel.button' | translate }}
+            </button>
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button (click)="addNewContact()" class="btn btn-primary publish-button"
+                    [disabled]="!addNewUser.form.valid">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</p-dialog>
+<p-dialog [(visible)]="addContact" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>

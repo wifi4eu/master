@@ -259,6 +259,11 @@ export class BeneficiaryEditProfileComponent {
             this.emailConfirmations.push('');
             this.css_class_email.push('notValid');
             this.css_class_municipalities.push('notValid');
+            setTimeout(()=>{            
+                let i = this.newMunicipalities.length - 1;
+                var element = document.getElementById("scrollMunicipality-"+i);
+                element.scrollIntoView({behavior: "smooth"});
+            },200);
         }
         this.checkMunicipalitiesSelected();
     }
@@ -308,8 +313,12 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private openModal(idMunicipality: number){
-        this.deleteMunicipalityId = idMunicipality;
-        this.displayDeleteMunicipality = true;
+        if (this.buttonEnabled){
+            this.sharedService.growlTranslation('Error, you can\'t delete a municipality if there are changes to save. Please confirm the changes or cancel them before deleting municipaliies', 'benefPortal.beneficiary.deleteMunicipality.changesNotSaved', 'warn');
+        }else{
+            this.deleteMunicipalityId = idMunicipality;
+            this.displayDeleteMunicipality = true;
+        } 
     }
 
     private deleteMunicipality(){
@@ -520,34 +529,5 @@ export class BeneficiaryEditProfileComponent {
                 this.municipalitiesSelected = true;
             }
         }
-    }
-
-
-    /* New contact funciontality */
-    private sendMailToUser(i){
-        this.registrationIndex = i;
-        this.addUser = true;
-    }
-
-    private addNewContact(){
-        this.addContact = true;
-        let storedUser = this.localStorageService.get('user');
-        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-
-        let userRegistrationDTO: UserRegistrationDTOBase = new UserRegistrationDTOBase();
-        userRegistrationDTO.email = this.newUserEmail;
-        userRegistrationDTO.municipalityId = this.municipalities[this.registrationIndex].id;
-        this.beneficiaryApi.sendEmailToNewContact(userRegistrationDTO).subscribe(
-            (userRegistration: UserRegistrationDTOBase) => {
-                this.registrationIndex = null;
-                this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
-                this.closeModal();
-            }, error => {
-                this.registrationIndex = null;
-                this.addContact = false;
-                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
-                this.closeModal();
-            }
-        );
     }
 }

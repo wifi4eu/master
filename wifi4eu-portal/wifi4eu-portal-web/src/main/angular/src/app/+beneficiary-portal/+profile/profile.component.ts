@@ -16,10 +16,12 @@ import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 import { ThreadApi } from "../../shared/swagger/api/ThreadApi";
 import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
+import {UserRegistrationDTOBase} from "../../shared/swagger/model/UserRegistrationDTO";
 
 // Languages functionality
 import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import { UserDetailsService } from "../../core/services/user-details.service";
+import { elementAt } from "../../../../node_modules/rxjs/operator/elementAt";
 
 @Component({
     selector: 'beneficiary-profile',
@@ -29,9 +31,14 @@ import { UserDetailsService } from "../../core/services/user-details.service";
 
 export class BeneficiaryProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
-    private users: UserDTOBase[] = [];
+    // private users: UserDTOBase[] = [];
+    private users = {};
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
+    private addUser: boolean = false;
+    private addContact: boolean = false;
+    private newUserEmail: string = '';
+    private idMunicipalityNewContactUser: number = 0;
     private editedUser: UserDTOBase = new UserDTOBase();
     private editedMunicipality: MunicipalityDTOBase = new MunicipalityDTOBase();
     private editedMayor: MayorDTOBase = new MayorDTOBase();
@@ -45,14 +52,14 @@ export class BeneficiaryProfileComponent {
     private withdrawingRegistration: boolean = false;
     private withdrawnSuccess: boolean = false;
     private threadId: number;
-    private hasDiscussion: boolean[] = [];
     private discussionThreads: ThreadDTOBase[] = [];
     private allDocumentsUploaded: boolean[] = [];
     private documentUploaded: boolean = false;
     private oneRegistrationNumber: number = 0;
     private userThreads: ThreadDTOBase [] = [];
+    private orderedUserThreads: ThreadDTOBase [] = [];
     private threadsByUser : UserThreadsDTOBase[] = [];
-
+    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
     private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
     protected modalIsOpen: boolean = false;
@@ -82,15 +89,28 @@ export class BeneficiaryProfileComponent {
                                             (municipality: MunicipalityDTOBase) => {
                                                 this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                     (mayor: MayorDTOBase) => {
-                                                        this.municipalities.push(municipality);
+                                                        this.municipalities.push(municipality);                                                                                                                 
                                                         this.mayors.push(mayor);
+                                                        // Order the threads array with the municipalities
+                                                        if(this.municipalities.length == registrations.length) {
+                                                            let indexedThreads = this.userThreads.map(function(element) { return element.title});                                                        
+                                                            for(let municipality of this.municipalities) {                
+                                                                let exists = indexedThreads.indexOf(municipality.name);                             
+                                                                if(exists != -1) {
+                                                                    this.orderedUserThreads.push(this.userThreads[exists]);
+                                                                } 
+                                                                else {
+                                                                    this.orderedUserThreads.push(null);                                                                
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 );
                                             }
                                         );
                                         this.userApi.getUsersFromRegistration(registration.id).subscribe(
                                             (users: UserDTOBase[]) => {
-                                                    this.users = users;
+                                                this.users[registration.municipalityId] = users;
                                             }
                                         );
                                     }
@@ -112,15 +132,14 @@ export class BeneficiaryProfileComponent {
                         this.threadApi.getThreadById(utByUser.threadId).subscribe(
                             (thread: ThreadDTOBase) => {
                                 if (thread != null) {
-                                    this.userThreads.push(thread);
                                     this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
                                         (utsByThread: UserThreadsDTOBase[]) => {
                                             this.discussionThreads.push(thread);
                                             if (utsByThread.length > 1) {
+                                                this.userThreads.push(thread);
                                                  for (let i = 0; i < utsByThread.length; ++i) {
                                                     if (utsByThread[i].userId != this.user.id) {
                                                         this.threadsByUser.push(utsByThread[i]);
-                                                        this.hasDiscussion[i] = true;
                                                         
                                                     }
                                                 }
@@ -264,6 +283,10 @@ export class BeneficiaryProfileComponent {
         }
     }
 
+    private checkHasDiscussion(municipality){
+      return this.userThreads.some(userThread => userThread.title === municipality.name);
+    }
+
     private goToDiscussion(index) {
         for(let i = 0; i < this.userThreads.length; i++){
             if(this.userThreads[i].title == this.municipalities[index].name){
@@ -340,4 +363,42 @@ export class BeneficiaryProfileComponent {
     private goToEditProfile() {
         this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
     }
+
+    private addNewContactToMunicipality(municipalityId: number){
+        this.idMunicipalityNewContactUser = municipalityId;
+        this.addUser = true;
+    }
+
+    private closeAddNewContactModal(){
+        this.newUserEmail = '';
+        this.addUser = false;
+    }
+
+    private addNewContact(){
+        if (this.newUserEmail.trim() != '' && this.idMunicipalityNewContactUser != 0){
+            this.addContact = true;
+            this.beneficiaryApi.invitateContactBeneficiary(this.idMunicipalityNewContactUser, this.newUserEmail).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success){
+                        this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+                        this.addContact = false;
+                        this.addUser = false;
+                        this.closeModal();
+                    } else {
+                        this.addContact = false;
+                        this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+                        this.closeModal();
+                    }
+                }, error => {
+                    this.addContact = false;
+                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.closeModal();
+                }
+            );
+            this.newUserEmail = '';
+        } else {
+            this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
+        }
+    }
+
 }

@@ -60,11 +60,16 @@ export class SupplierEditProfileComponent {
     private users: UserDTOBase[] = [];
     private contactIndex: number;
     private displayAddContactModal: boolean = false;
+    private buttonCompanyEnabled: boolean = true;
+    private buttonUserEnabled: boolean = true;
     private buttonEnabled: boolean = false;
+    private areRegionsSelected: boolean = false;
+    private buttonRegionsEnabled: boolean = true;
+    
  
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
-        let allow = true;
+          let allow = true;
         if (this.sharedService.user) {
             this.user = this.sharedService.user;
             this.getSupplierData();
@@ -131,6 +136,7 @@ export class SupplierEditProfileComponent {
     }
 
     private changeLogo(event): any {
+              
         if (event.target.files.length > 0) {
             this.logoFile = event.target.files[0];
             if (this.logoFile.size > 2560000) {
@@ -146,6 +152,7 @@ export class SupplierEditProfileComponent {
             let image = new Image();
             image.onload = function () {
                 imageStatus = 'correct';
+                
             };
             image.onerror = function () {
                 imageStatus = 'wrong';
@@ -165,6 +172,12 @@ export class SupplierEditProfileComponent {
                     }
                 }
             );
+            if(imageStatus = 'correct'){
+                this.enableButton(event);
+                 for(let i = 0; i < this.users.length; i++){
+                    this.enableButtonUser(event, i);
+                }
+            }
         }
         return null;
     }
@@ -221,6 +234,7 @@ export class SupplierEditProfileComponent {
                 suppliedRegion.regionId = selectedRegion;
                 suppliedRegion.supplierId = this.supplier.id;
                 this.supplier.suppliedRegions.push(suppliedRegion);
+                
             }
         }
         this.savingDataSubscription = this.supplierApi.updateSupplier(this.supplier).subscribe(
@@ -230,7 +244,7 @@ export class SupplierEditProfileComponent {
                         this.supplierApi.updateContactDetails(this.supplier).subscribe(
                             (user: UserDTOBase) =>{
                                 this.savingData = false;
-                                this.sharedService.growlTranslation('Your profile data was updated successfully.', 'suppPortal.editProfile.save.success', 'success');
+                                this.sharedService.growlTranslation('Your profile data was updated successfully.', 'suppPortal.editProfile.save.success' , 'success');
                                 this.goBack();
                             }, error =>{
                                 this.savingData = false;
@@ -297,23 +311,48 @@ export class SupplierEditProfileComponent {
             this.displayAddContactModal = true;
         }
 
+ 
         private enableButton(event){
             this.buttonEnabled = false;
             if(this.supplier.name != null && this.supplier.address != null 
                 && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != "" 
                 &&  this.supplier.vat.trim() != ""){
-                    this.buttonEnabled = true;
+                    if(this.supplier.website != null && this.supplier.website.trim() != ""){
+                        var pattern = new RegExp(this.websitePattern);
+                        this.buttonCompanyEnabled = pattern.test(this.supplier.website);        
+                    }else {
+                        this.buttonCompanyEnabled = true;   
+                    }
+            } else {
+                this.buttonCompanyEnabled = false;
             }
-
+         
+            if(this.buttonUserEnabled && this.buttonCompanyEnabled){
+                this.buttonEnabled = true;
+            }
         }
 
         private enableButtonUser(event, i){
             this.buttonEnabled = false;
-
-            if(this.users[i]['phone_number'] != null && this.users[i]['phone_prefix'] != null && this.users[i].surname != null  && this.users[i].name != null 
-                && this.users[i]['phone_number'].trim() != "" && this.users[i]['phone_prefix'].trim() != ""  && this.users[i].surname.trim() != "" && this.users[i].name.trim() != ""){
-                    this.buttonEnabled = true;
+            if(this.users[i]['phone_number'] != null && this.users[i]['phone_prefix'] != null && this.users[i]['surname'] != null  && this.users[i]['name'] != null 
+                && this.users[i]['phone_number'].trim() != "" && this.users[i]['phone_prefix'].trim() != ""  && this.users[i]['surname'].trim() != "" && this.users[i]['name'].trim() != ""){
+                    this.buttonUserEnabled = true;                      
+            }else{
+                this.buttonUserEnabled = false;
             }
+
+            if(this.buttonUserEnabled && this.buttonCompanyEnabled){
+                this.buttonEnabled = true;
+            }
+        }
+
+        private checkRegions(event){
+            this.buttonRegionsEnabled = false;
+            if(event.length > 0){
+                this.buttonRegionsEnabled = true;
+                this.enableButton(event);
+            }
+
         }
         
 }

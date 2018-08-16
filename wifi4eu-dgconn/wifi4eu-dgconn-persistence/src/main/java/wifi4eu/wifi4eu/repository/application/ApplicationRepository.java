@@ -1,10 +1,13 @@
 package wifi4eu.wifi4eu.repository.application;
 
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.entity.application.Application;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ApplicationRepository extends CrudRepository<Application,Integer> {
@@ -62,6 +65,11 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
 
     @Query(value = "SELECT a.* FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN registration_users ru ON ru.registration = r.id INNER JOIN users u ON ru._user = u.id WHERE a.id IN (SELECT vs.application FROM voucher_simulations vs WHERE vs.voucher_assignment = ?1 AND vs.selection_status = ?2)", nativeQuery = true)
     List<Application> getApplicationsSelectedInVoucherAssignment(Integer voucherAssignmentId, Integer selectionStatus);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE applications SET sent_email = ?#{[0]}, sent_email_date = ?#{[1]} WHERE id = ?#{[2]}", nativeQuery = true)
+    int updateSentEmailByApplicationId(boolean sentEmail, Date sentEmailDate, int applicationId);
 
     @Query(value = "SELECT count(a.id) FROM applications a WHERE a.call_id = ?1", nativeQuery = true)
     Long countApplicationsForCallId(int idCall);
@@ -227,5 +235,4 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "INNER JOIN nuts n ON l.country_code = n.country_code " +
             "WHERE a._status = 1 AND a.call_id = ?1 AND air.reason = ?2 AND n.id = ?3", nativeQuery = true)
     Integer findApplicationsInvalidatedByCallAndReasonAndNut(int idCall, int reason, int idNut);
-
 }

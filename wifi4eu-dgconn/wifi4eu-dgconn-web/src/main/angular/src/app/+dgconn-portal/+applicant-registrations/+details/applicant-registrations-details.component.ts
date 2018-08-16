@@ -165,6 +165,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                             this.applicationInvalidateReasonApi.getInvalidateReasonsByApplication(applications[i].id).subscribe((res: ApplicationInvalidateReasonDTO[]) => {
                                 this.applicationInvalidateReason[i] = res;
                             })
+                        } else {
+                            this.applicationInvalidateReason[i] = [];
                         }
                         this.isApplicationInFreeze(applications[i].id, i);
                         let application = applications[i];
@@ -484,7 +486,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                             if (response.success) {
                                 if (response.data != null) {
                                     this.applications[this.selectedIndex].status = 2;
-
                                     this.getApplicationDetailsInfo();
                                     this.applicationInvalidateReason[this.selectedIndex] = null;
                                     this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
@@ -520,12 +521,12 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
                     this.invalidateChecks = [false, false, false, false, false, false, false, false, false];
                     this.voucherApi.checkIfApplicationInSimulation(this.applications[this.selectedIndex].id).subscribe((res: ResponseDTO) => {
-                      if(<number>res.data >= 1){
-                        
-                        this.displaySimulation = true;
-                      }
-                      this.closeModal();
-                    });
+                        if(<number>res.data >= 1){
+                            this.displaySimulation = true;
+                        }
+                        this.closeModal();
+                    })
+                    this.getApplicationDetailsInfo();
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
                     this.closeModal();

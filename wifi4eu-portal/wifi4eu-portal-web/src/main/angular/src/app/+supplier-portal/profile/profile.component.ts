@@ -49,6 +49,10 @@ export class SupplierProfileComponent {
     private users: UserDTOBase[] = [];
     private withdrawingRegistrationConfirmation: boolean = false;
 
+    private addContact: boolean = false;
+    private newUserEmail: string = '';
+    private addUser: boolean = false;
+
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private userApi: UserApi) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
@@ -310,6 +314,37 @@ export class SupplierProfileComponent {
         this.clearLogoFile();
         Object.assign(this.editedSupplier, this.supplier);
    
+    }
+
+    private addNewContactToSupplier(){
+        this.addUser = true;
+    }
+
+    private addNewContact(){
+        if (this.newUserEmail.trim() != '' && this.supplier.id != 0){
+            this.addContact = true;
+            this.supplierApi.invitateContactSupplier(this.supplier.id, this.newUserEmail).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success){
+                        this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+                        this.addContact = false;
+                        this.addUser = false;
+                        this.closeModal();
+                    } else {
+                        this.addContact = false;
+                        this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+                        this.closeModal();
+                    }
+                }, error => {
+                    this.addContact = false;
+                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.closeModal();
+                }
+            );
+            this.newUserEmail = '';
+        } else {
+            this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'supplierPortal.profile.addNewContact.empty', 'error');
         }
+    }
 
 }
