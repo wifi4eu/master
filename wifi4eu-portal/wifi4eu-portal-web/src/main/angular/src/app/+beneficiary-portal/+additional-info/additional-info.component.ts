@@ -146,6 +146,7 @@ export class AdditionalInfoComponent {
 
     private uploadFile(event: any, type: number) {
         if (event.target.files[0]) {
+            this.reader = new FileReader();
             if (event.target.files[0].size > 1024000) {
                 this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'benefPortal.file.toobig.maxsize', 'warn', { size: '1 MB' });
                 this.removeFile(type);
@@ -164,7 +165,7 @@ export class AdditionalInfoComponent {
                             file.fileName = event.target.files[0].name;
                             file.fileSize = event.target.files[0].size;
                             file.registration = this.registration.id;
-                            this.legalFilesToUpload.push(file)
+                            this.legalFilesToUpload.push(file);
                             this.checkDocuments();
                             switch (type) {
                                 case 1:
