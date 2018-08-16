@@ -244,7 +244,7 @@ export class SupplierEditProfileComponent {
                         this.supplierApi.updateContactDetails(this.supplier).subscribe(
                             (user: UserDTOBase) =>{
                                 this.savingData = false;
-                                this.sharedService.growlTranslation('Your profile data was updated successfully.', 'suppPortal.editProfile.save.success' , 'success');
+                                this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success' , 'success');
                                 this.goBack();
                             }, error =>{
                                 this.savingData = false;
@@ -254,11 +254,11 @@ export class SupplierEditProfileComponent {
                         )            
                 } else {
                     this.savingData = false;
-                    this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'suppPortal.editProfile.save.error', 'error');
+                    this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
                 }
             }, error => {
                 this.savingData = false;
-                this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'suppPortal.editProfile.save.error', 'error');
+                this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
             }
         );
 

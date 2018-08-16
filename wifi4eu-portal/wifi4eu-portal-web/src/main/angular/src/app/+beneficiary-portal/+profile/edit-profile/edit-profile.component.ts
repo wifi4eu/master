@@ -417,7 +417,8 @@ export class BeneficiaryEditProfileComponent {
 
     private editProfile() {
         this.submittingData = true;
-  
+        let hasBeenAnError = false;
+
         for(let i = 0; i < this.municipalities.length; i++){
             if (this.isMunicipalityEditable[this.municipalities[i].id]){
                 this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
@@ -426,6 +427,8 @@ export class BeneficiaryEditProfileComponent {
                             this.municipalityFinish = true;
                             this.checkFinishedCalls();
                             this.municipalities[this.currentEditIndex] = response.data;
+                        }else{
+                            hasBeenAnError = true;
                         }
                         this.municipalityFinish = true;
                         this.checkFinishedCalls();
@@ -438,6 +441,8 @@ export class BeneficiaryEditProfileComponent {
                         this.mayorFinish = true;
                         this.checkFinishedCalls();
                         this.mayors[this.currentEditIndex] = response.data;
+                    }else{
+                        hasBeenAnError = true;
                     }
                     this.municipalityFinish = true;
                         this.checkFinishedCalls();                    
@@ -453,6 +458,8 @@ export class BeneficiaryEditProfileComponent {
                     this.userFinish = true;
                     this.checkFinishedCalls();
                     this.user = response.data;
+                }else{
+                    hasBeenAnError = true
                 }
             }
         );
@@ -463,20 +470,30 @@ export class BeneficiaryEditProfileComponent {
         if(this.registration.associationName != null && this.registration.associationName != ""){
             this.registrationApi.updateAssociationName(this.registration).subscribe(
             (response: ResponseDTOBase) =>{
-                this.registrationFinish = true;
-                this.checkFinishedCalls();
+                if (response.success) {
+                    this.registrationFinish = true;
+                    this.checkFinishedCalls();
+                }else{
+                    hasBeenAnError = true
+                }
             },error =>{
                 console.log(error);
                 this.registrationFinish = true;
                 this.checkFinishedCalls();
+                hasBeenAnError = true
             }
             );
         } else {
             this.registrationFinish = true;
             this.checkFinishedCalls();
         }
-     
-      
+
+        if (hasBeenAnError){
+            this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+        }else{
+            this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success', 'success');
+            this.goBackToProfile();
+        }
     }
 
     private goBackToProfile(){
