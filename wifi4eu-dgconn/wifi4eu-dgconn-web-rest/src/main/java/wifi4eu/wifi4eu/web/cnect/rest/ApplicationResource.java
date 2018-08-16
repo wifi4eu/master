@@ -426,26 +426,26 @@ public class ApplicationResource {
         }
     }
 
-    @ApiOperation(value = "Get Authorization")
-    @RequestMapping(value = "/getAuthorization", method = RequestMethod.GET)
+    @ApiOperation(value = "Update Authorization")
+    @RequestMapping(value = "/updateAuthorization", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO getAuthorization(@RequestBody final UserAuthorizedPersonDTO userAuthorizedPersonDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO updateAuthorization(@RequestBody final UserAuthorizedPersonDTO userAuthorizedPersonDTO, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - get Authorization for user");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Authorizing/Deauthorizing user");
         try {
             if (userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
-            ApplicationAuthorizedPersonDTO applicationAuthorizedPersonDTO = applicationAuthorizedPersonService.findByApplicationAndAuthorisedPerson(userAuthorizedPersonDTO.getApplicationId(), userAuthorizedPersonDTO.getApplicationId());
-            return new ResponseDTO(true, applicationAuthorizedPersonDTO != null, null);
+            applicationAuthorizedPersonService.updateAuthorization(userAuthorizedPersonDTO);
+            return new ResponseDTO(true, userAuthorizedPersonDTO, null);
         } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions for getting authorization for user", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions for authorising/deauthorizing this user", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, null);
         } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- can not get authorization of the user", e);
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- the user can not be authorized/desauthorized", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, null);
         }
