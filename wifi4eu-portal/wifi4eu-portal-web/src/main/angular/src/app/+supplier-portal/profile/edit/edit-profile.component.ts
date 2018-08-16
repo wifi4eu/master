@@ -270,19 +270,19 @@ export class SupplierEditProfileComponent {
         this.displayAddContactModal = false;  
         }
     
-        private addNewContact(){       
+    private addNewContact(){       
         this.addContact = true; 
-           this.supplierApi.sendEmailToNewContact(this.newUserEmail).subscribe(
-                (responseDTO: ResponseDTOBase) => {
-                    this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
-                    this.closeModal();
-                }, error => {
-                    this.sharedService.growlTranslation('An error occurred. This contact has been added to this supplier before or has related registrations.', 'shared.email.error', 'error');
-                    this.closeModal();
-                }
-            );
-        }
-    
+        this.supplierApi.sendEmailToNewContact(this.newUserEmail).subscribe(
+            (responseDTO: ResponseDTOBase) => {
+                this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
+                this.closeModal();
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred. This contact has been added to this supplier before or has related registrations.', 'shared.email.error', 'error');
+                this.closeModal();
+            }
+        );
+    }
+
     
         
         /* New contact funciontality */

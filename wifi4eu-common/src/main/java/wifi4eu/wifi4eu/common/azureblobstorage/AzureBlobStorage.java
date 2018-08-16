@@ -115,12 +115,12 @@ public class AzureBlobStorage {
                 //Creating blob and uploading file to it
                 // System.out.println("Uploading the sample file to absolute path : " + sourceFile.getAbsolutePath());
 
-                System.out.println("Uploading bytesArray to the Azure Blob Storage");
+                // System.out.println("Uploading bytesArray to the Azure Blob Storage");
 
                 // blob.uploadFromFile(sourceFile.getAbsolutePath());
                 blob.uploadFromByteArray(sourceFile,0,sourceFile.length);
 
-                System.out.println("blobReferenceName => " + filename);
+                // System.out.println("blobReferenceName => " + filename);
                 CloudBlob blobDownload = container.getBlobReferenceFromServer(filename);
                 downloadUrl = azureBlobStorageUtils.generateFileWithToken(blobDownload,policy);
 
@@ -134,7 +134,7 @@ public class AzureBlobStorage {
                 if (sourceFile != null)
                     sourceFile.delete();
                 */
-                System.out.println("Final URL => " + downloadUrl);
+                // System.out.println("Final URL => " + downloadUrl);
                 return downloadUrl;
             }
         }

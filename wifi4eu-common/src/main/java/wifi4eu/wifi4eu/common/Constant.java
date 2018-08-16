@@ -32,4 +32,8 @@ public abstract class Constant {
 
 	//EMAIL LOG
 	public static final String LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS = "sendCorrectionEmails";
+
+	public static final String REPORTING_CALL_OPEN = "call_open";
+	public static final String REPORTING_TYPES_INSTALLATION_REPORT = "types_IR";
+	public final static String REPORTING_DEFAULT_LANG = "en";
 }

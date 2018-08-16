@@ -13,6 +13,7 @@ import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-reg
 import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrations/details/supplier-registrations-details.component";
 import {DgConnApplicantRegistrationsDetailsComponent} from "./+applicant-registrations/+details/applicant-registrations-details.component";
 import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
+import {ReportingComponent} from "./reporting/reporting.component";
 import { BeneficiaryListComponent } from "./+beneficiary-list/beneficiary-list.component";
 
 @NgModule({
@@ -66,6 +67,9 @@ import { BeneficiaryListComponent } from "./+beneficiary-list/beneficiary-list.c
         }, {
             path: 'exportImport',
             component: DgConnExportImportComponent
+        }, {
+            path: 'reporting',
+            component: ReportingComponent
         }
     ])],
     exports: [RouterModule]

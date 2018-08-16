@@ -237,4 +237,25 @@ public class CNSManager {
 
         logger.info("[F] sendMessage");
     }
+
+    public void sendReportingSystemCallOpen(String email, String name, String url, Locale locale){
+        logger.info("[I] sendMessageReportingSystem");
+
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.reporting.subject");
+        String msgBody = bundle.getString("mail.reporting.body");
+        String msgBody2 = bundle.getString("mail.reporting.body2");
+        String summary = bundle.getString("mail.reporting.summary");
+
+        Recipient recipient = new Recipient(TO, email).setName(name);
+        ContentTranslation contentTranslation = new ContentTranslation(EN, subject, msgBody+"<br>"+url+"<br>"+msgBody2).setSummary(summary);
+        Notification notification = new Notification(this.notificationGroupCode, recipient, contentTranslation);
+
+        logger.info("Sending message to CNS");
+        long notificationId = serviceGateway.getNotificationService().submit(notification);
+        logger.info("Message delivered with id: " + notificationId);
+
+        logger.info("[F] sendMessageReportingSystem");
+    }
+
 }
