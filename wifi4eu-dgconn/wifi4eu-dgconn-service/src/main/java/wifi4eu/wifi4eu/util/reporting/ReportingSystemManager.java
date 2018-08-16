@@ -34,7 +34,7 @@ public class ReportingSystemManager {
     }
 
     public String generateReportingExcel(String currentQuery){
-        logger.info("Generate reporting excel with arraybytes");
+        logger.debug("Generate reporting excel with arraybytes");
         String filename = azureBlobStorageUtils.generateNameFile(currentQuery);
         String urlDownload = null;
         if (Validator.isNotNull(filename)) {
@@ -48,7 +48,7 @@ public class ReportingSystemManager {
                     }
                 }
             } catch (IOException e){
-                logger.info("Exception => "+e.getMessage());
+                logger.debug("Exception => "+e.getMessage());
                 logger.error("ERROR => ",e);
             }
         }

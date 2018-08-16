@@ -67,22 +67,27 @@ public class ReportCallOpen {
     static String[] totalValues = {"callApplicants", "warning1Applicant", "warning2Applicant", "warning3Applicant", "warningsType1", "warningsType2", "warningsType3", "numberDuplicates", "numberDuplicatesInvalidated", "reason1", "reason2", "reason3", "reason4", "reason5", "reason6", "reason7", "reason8", "reason9"};
 
     public void generate(HSSFWorkbook workbook) {
-        HSSFSheet sheet = workbook.createSheet("State of play Report");
-        int numColumn = 0;
-        HSSFRow firstRow = sheet.createRow((short) numColumn);
-        firstRow.createCell(0).setCellValue(callRepository.getNameCurrentCall());
-        firstRow.createCell(1).setCellValue("Total");
-        firstRow.createCell(2).setCellValue("%");
-        numColumn++;
-        HSSFRow row;
-        for (int i = numColumn; i <= fields.length; i++) {
-            row = sheet.createRow((short) i);
-            row.createCell(0).setCellValue(fields[i - 1]);
+        if (Validator.isNotNull(callRepository.getIdCurrentCall())) {
+            HSSFSheet sheet = workbook.createSheet("State of play Report");
+            int numColumn = 0;
+            HSSFRow firstRow = sheet.createRow((short) numColumn);
+            firstRow.createCell(0).setCellValue(callRepository.getNameCurrentCall());
+            firstRow.createCell(1).setCellValue("Total");
+            firstRow.createCell(2).setCellValue("%");
+            numColumn++;
+            HSSFRow row;
+            for (int i = numColumn; i <= fields.length; i++) {
+                row = sheet.createRow((short) i);
+                row.createCell(0).setCellValue(fields[i - 1]);
+            }
+            generateTotalValues(sheet, 0);
+            generateTotalPercentValues(sheet, 0);
+            putCountriesCallOpen(sheet, firstRow, 3);
+            ReportingUtils.autoSizeColumns(workbook);
+        } else {
+            // send email notifying that no open call is available?
+            System.out.println("No call open found");
         }
-        generateTotalValues(sheet, 0);
-        generateTotalPercentValues(sheet, 0);
-        putCountriesCallOpen(sheet, firstRow, 3);
-        ReportingUtils.autoSizeColumns(workbook);
     }
 
     private void putCountriesCallOpen(HSSFSheet sheet, HSSFRow row, int numColumn) {

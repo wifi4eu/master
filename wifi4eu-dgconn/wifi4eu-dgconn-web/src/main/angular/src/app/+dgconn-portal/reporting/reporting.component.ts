@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
-// import {ReportingApi} from '../../../shared/swagger/api/ReportingApi';
-// import { MessageService } from '../../../core/services/message.service';
-// import { ErrorHandlingService } from '../../../core/services/error.service';
 import { ReportingApi } from "../../shared/swagger/api/ReportingApi";
 import { SharedService } from "../../shared/shared.service";
 
@@ -12,8 +8,6 @@ import { SharedService } from "../../shared/shared.service";
   styleUrls: ['./reporting.component.scss'],
   providers: [
     ReportingApi
-    // ErrorHandlingService,
-    // MessageService
   ]
 })
 export class ReportingComponent implements OnInit {
@@ -23,13 +17,10 @@ export class ReportingComponent implements OnInit {
   constructor(
     private reportingApi: ReportingApi,
     private sharedService: SharedService
-    // private errorHandlingService: ErrorHandlingService,
-    // private messageService: MessageService
   ) { }
 
   ngOnInit() {
     window.scrollTo(0,0);
-  
   }
 
   private onReport(report: string) {
@@ -38,9 +29,11 @@ export class ReportingComponent implements OnInit {
           this.firstReport();
         break;
 
+        /*
         case "eight":
           this.eightReport();
-        break; 
+        break;
+        */
     }
   }
   
@@ -53,7 +46,6 @@ export class ReportingComponent implements OnInit {
       }
     }, (error: Error) => {
       this.sharedService.growlTranslation('An error occurred while generating the report', 'reports.generate.error', 'error');
-      // this.sharedService.growlTranslation('An error ocurred while downloading the list', 'dgConn.voucherAssignment.error.exportExcel', 'error');
     });
   }
 
@@ -66,7 +58,6 @@ export class ReportingComponent implements OnInit {
       }
     }, (error: Error) => {
       this.sharedService.growlTranslation('An error occurred while generating the report', 'reports.generate.error', 'error');
-      // return this.errorHandlingService.handleError(error);
     });
   }
 

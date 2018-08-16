@@ -988,6 +988,7 @@
   "reports.title.eleventh": "Details of each call",
   "reports.subtitle.eleventh": "This report provides information on the overall WiFi4EU initiative.",
   "reports.generate.success" : "Request sent successfully",
-  "reports.generate.error" : "An error ocurred while generating the report"
-
+  "reports.generate.error" : "An error ocurred while generating the report",
+  "reports.generate.callOpen.callNotFound" : "There is no open call available to generate the report",
+  "reports.generate.typesIr.callNotFound" : "There is no calls available to generate the report"
 }

@@ -52,7 +52,6 @@ public class ReportTypesInstallation {
     public void generate(HSSFWorkbook workbook){
         HSSFSheet sheet;
         ArrayList<Call> calls = callRepository.findCallsIncludeCurrent();
-        // ArrayList<Call> calls = callRepository.findCallsIncludeCurrentWithApplicants();
         for (Call call : calls) {
             if (applicationRepository.countApplicationsForCallId(call.getId()) > 0) {
                 sheet = workbook.createSheet(call.getEvent());
@@ -210,6 +209,9 @@ public class ReportTypesInstallation {
 
             case "Average number of Indoor AP":
                 value = df.format((float) (applicationRepository.countAccessPointsForCurrentCallAndNut(true, idCall, idNut)) / (applicationRepository.getNumberBeneficiariesByCallIdAndNut(idCall,idNut)));
+                if (value.equals("∞")){
+                    value = "0";
+                }
                 averageIndoor += Float.parseFloat(value.replace(",","."));
                 break;
 
@@ -220,6 +222,9 @@ public class ReportTypesInstallation {
 
             case "Average number of Outdoor AP":
                 value = df.format((float) (applicationRepository.countAccessPointsForCurrentCallAndNut(false, idCall, idNut)) / (applicationRepository.getNumberBeneficiariesByCallIdAndNut(idCall,idNut)));
+                if (value.equals("∞")){
+                    value = "0";
+                }
                 averageOutdoor += Float.parseFloat(value.replace(",","."));
                 break;
 
@@ -249,6 +254,9 @@ public class ReportTypesInstallation {
 
             case "Average number of Indoor AP":
                 value = df.format((float) (applicationRepository.countAccessPointsForNut(true, idNut)) / (applicationRepository.getNumberBeneficiariesByNut(idNut)));
+                if (value.equals("∞")){
+                    value = "0";
+                }
                 break;
 
             case "Standard deviation for Indoor AP":
@@ -257,6 +265,9 @@ public class ReportTypesInstallation {
 
             case "Average number of Outdoor AP":
                 value = df.format((float) (applicationRepository.countAccessPointsForNut(false, idNut)) / (applicationRepository.getNumberBeneficiariesByNut(idNut)));
+                if (value.equals("∞")){
+                    value = "0";
+                }
                 break;
 
             case "Standard deviation for Outdoor AP":
