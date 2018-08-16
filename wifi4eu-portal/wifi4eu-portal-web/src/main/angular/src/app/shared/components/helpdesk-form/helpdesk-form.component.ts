@@ -1,3 +1,4 @@
+import {animate, style, transition, trigger} from "@angular/animations";
 import {Component, Input, Inject} from "@angular/core";
 import {ChangeDetectorRef} from "@angular/core";
 import {ElementRef} from "@angular/core";
@@ -14,12 +15,27 @@ import {lang} from "moment";
 @Component({
     selector: 'helpdesk-form-component',
     templateUrl: 'helpdesk-form.component.html',
-    providers: [HelpdeskissuesApi, NutsApi]
+    providers: [HelpdeskissuesApi, NutsApi],
+    animations: [
+        trigger(
+            'enterSpinner', [
+                transition(':enter', [
+                    style({opacity: 0}),
+                    animate('200ms', style({opacity: 1}))
+                ]),
+                transition(':leave', [
+                    style({opacity: 1}),
+                    animate('200ms', style({opacity: 0}))
+                ])
+            ]
+        )
+    ]
 })
 export class HelpdeskFormComponent {
     private helpdeskIssue: HelpdeskIssueDTOBase = new HelpdeskIssueDTOBase();
     private user: UserDTOBase = null;
     private expanded: boolean = false;
+    private sending: boolean = false;
     private success: boolean = false;
     private countries: NutsDTOBase[] = [];
     @Input('portal') portal: string;
@@ -63,7 +79,7 @@ export class HelpdeskFormComponent {
 
 
     private sendIssue() {
-        if (this.user != null) {
+        if (this.user != null && !this.sending) {
             let language = this.localStorage.get('lang');
             if (!language) {
                 language = 'en';
@@ -75,18 +91,22 @@ export class HelpdeskFormComponent {
             this.helpdeskIssue.fromEmail = this.user.ecasEmail;
             this.helpdeskIssue.summary = 'WiFi4EU: ' + this.problem_desc;
             this.helpdeskIssue.lang = language.toString();
+            this.sending = true;
             this.helpdeskApi.createHelpdeskIssue(this.helpdeskIssue).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
                         this.success = true;
                         this.sharedService.growlTranslation('Your issue was sent successfully sent to your Member State! We\'ll contact you as soon as possible to give you a solution to your problem.', 'helpdesk.helpdeskform.success', 'success');
                     }
+                    this.sending = false;
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
+                    this.sending = false;
                 }
             );
         } else {
             this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
+            this.sending = false;
         }
     }
 }

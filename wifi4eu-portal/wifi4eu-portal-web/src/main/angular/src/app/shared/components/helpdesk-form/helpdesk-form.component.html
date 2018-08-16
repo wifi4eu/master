@@ -55,7 +55,7 @@
                             {{ 'benefRegistration.registration.selectCountry' | translate }}
                         </option>
                         <option *ngFor="let country of countries" [value]="country.label">
-                            {{country.label}}
+                            {{country.label | slice:0:1 | uppercase }}{{country.label | slice:1:country.label.length | lowercase }}
                         </option>
                     </select>
                 </div>
@@ -71,8 +71,9 @@
                     </button>
                 </div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary changePassword" [disabled]="!issueForm.form.valid">
+                    <button type="submit" class="btn btn-primary changePassword" [disabled]="!issueForm.form.valid || sending">
                         {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
+                        <i *ngIf="sending" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
                     </button>
                 </div>
 
