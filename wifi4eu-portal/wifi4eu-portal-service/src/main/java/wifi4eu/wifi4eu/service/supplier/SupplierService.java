@@ -41,6 +41,7 @@ import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.util.RegistrationUtils;
 
 import java.text.MessageFormat;
 import java.util.*;
@@ -88,6 +89,9 @@ public class SupplierService {
 
     @Autowired
     InvitationContactRepository invitationContactRepository;
+
+    @Autowired
+    RegistrationUtils registrationUtils;
 
     private final Logger _log = LogManager.getLogger(SupplierService.class);
 
@@ -571,9 +575,9 @@ public class SupplierService {
 
     public ResponseDTO invitateContactSupplier(UserDTO userConnected, int supplierId, String newContactEmail){
         ResponseDTO responseDTO = new ResponseDTO();
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - START");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - START");
         if (Validator.isNotNull(supplierId) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty()){
-            if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail,userConnected.getId())) && !(registrationUsersRepository.findByContactEmail(newContactEmail).size() > 0)){
+            if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail,userConnected.getId())) && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)){
                 InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndIdUserRequest(newContactEmail,userConnected.getId());
                 Date today = new Date();
                 if (Validator.isNull(invitationContact)){
@@ -585,8 +589,7 @@ public class SupplierService {
                     invitationContact.setStatus(InvitationContactStatus.PENDING.getValue());
                     invitationContact.setCreateDate(today);
                 } else if (invitationContact.getIdSupplier() != supplierId){
-                    // THE SAME USER IS TRYING TO INVITATE THE SAME NEWEMAILCONTACT WITH A DIFFERENT MUNICIPALITY
-                    _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - This user has already been invitated. Please, try another user email");
+                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - This user has already been invitated. Please, try another user email");
                     responseDTO.setSuccess(false);
                     responseDTO.setData("This user has already been invitated. Please, try another user email");
                     responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
@@ -601,29 +604,29 @@ public class SupplierService {
                 String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
                 String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
                 msgBody = MessageFormat.format(msgBody, userName, supplierName, additionalInfoUrl, newContactEmail);
-                _log.info("TESTING msgBody => "+msgBody);
+                _log.debug("TESTING msgBody => "+msgBody);
 
                 if (!userService.isLocalHost()) {
                     mailService.sendEmail(newContactEmail, MailService.FROM_ADDRESS, subject, msgBody);
                 }
 
                 invitationContactRepository.save(invitationContact);
-                _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");
                 responseDTO.setSuccess(true);
                 responseDTO.setData("shared.email.sent");
             } else {
-                _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - This user has already been invitated. Please, try another user email");
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - This user has already been invitated. Please, try another user email");
                 responseDTO.setSuccess(false);
                 responseDTO.setData("This user has already been invitated. Please, try another user email");
                 responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
             }
         } else {
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - Some fields are null or empty. Please, complete all the fields");
+            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - Some fields are null or empty. Please, complete all the fields");
             responseDTO.setSuccess(false);
             responseDTO.setData("Some fields are null or empty. Please, complete all the fields");
             responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.emptyOrNull"));
         }
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - END");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - END");
         return responseDTO;
     }
 }
