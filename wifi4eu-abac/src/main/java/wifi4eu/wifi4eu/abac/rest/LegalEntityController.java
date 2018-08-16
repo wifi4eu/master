@@ -47,6 +47,7 @@ public class LegalEntityController {
 			importDataService.importLegalEntities(file.getBytes());
 			result.success("Imported OK!");
 		}catch(Exception e) {
+			log.error(e.getMessage());
 			result.error(e.getMessage());
 		}
 		return result;

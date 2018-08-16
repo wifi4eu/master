@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -62,9 +63,9 @@ public class ImportDataService {
 	FileDTO documentsCSVFile;
 	private Map<String, FileDTO> documentsToBeImported = new TreeMap<>();
 
+	@Transactional(Transactional.TxType.REQUIRED)
 	public void importLegalEntities(byte[] file) {
 
-		FileDTO documentsCSVFile = null;
 		ZipFileReader zipFileReader = new ZipFileReader(file);
 
 		FileDTO fileDTO = zipFileReader.nextFile();
@@ -143,6 +144,7 @@ public class ImportDataService {
 		}
 	}
 
+	@Transactional
 	public void importBudgetaryCommitments(byte[] file) {
 
 		FileDTO fileDTO = new FileDTO();
@@ -174,7 +176,8 @@ public class ImportDataService {
 			}
 		}
 	}
-	
+
+	@Transactional
 	public void importLegalCommitments(byte[] file) {
 		
 		FileDTO fileDTO = new FileDTO();
