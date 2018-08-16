@@ -438,7 +438,7 @@ public class ApplicationResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
-            applicationAuthorizedPersonService.updateAuthorization(userAuthorizedPersonDTO);
+            userAuthorizedPersonDTO = applicationAuthorizedPersonService.updateAuthorization(userAuthorizedPersonDTO);
             return new ResponseDTO(true, userAuthorizedPersonDTO, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions for authorising/deauthorizing this user", ade.getMessage());
