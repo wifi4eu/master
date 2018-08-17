@@ -24,7 +24,7 @@ public class ApplicationAuthorizedPersonService {
     }
 
     public List<ApplicationAuthorizedPersonDTO> findByApplication(int applicationId) {
-        return applicantAuthorizedPersonMapper.toDTOList(applicationAuthorizedPersonRepository.findByApplicationIdOrderByUserId(applicationId));
+        return applicantAuthorizedPersonMapper.toDTOList(applicationAuthorizedPersonRepository.findByApplicationIdOrderByAuthorizedPerson(applicationId));
     }
 
     public void updateAuthorization(UserAuthorizedPersonDTO userAuthorizedPersonDTO){

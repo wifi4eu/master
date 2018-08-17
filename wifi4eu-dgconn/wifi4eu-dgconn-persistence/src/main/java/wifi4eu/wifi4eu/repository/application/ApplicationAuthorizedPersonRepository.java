@@ -12,7 +12,7 @@ import java.util.List;
 public interface ApplicationAuthorizedPersonRepository extends CrudRepository<ApplicationAuthorizedPerson, Integer> {
     ApplicationAuthorizedPerson findByApplicationIdAndAuthorizedPerson(Integer applicationId, Integer authorizedPerson);
 
-    List<ApplicationAuthorizedPerson> findByApplicationIdOrderByUserId(Integer applicationId);
+    List<ApplicationAuthorizedPerson> findByApplicationIdOrderByAuthorizedPerson(Integer applicationId);
 
     @Transactional
     @Modifying

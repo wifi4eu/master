@@ -5,6 +5,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { SharedService } from "app/shared/shared.service";
 import { ApplicationApi } from "../../../shared/swagger/api/ApplicationApi";
+//import { ApplicationAuthorizedPersonApi } from "../../../shared/swagger/api/ApplicationAuthorizedPersonApi";
 import { BeneficiaryApi } from "../../../shared/swagger/api/BeneficiaryApi";
 import { MayorApi } from "../../../shared/swagger/api/MayorApi";
 import { MunicipalityApi } from "../../../shared/swagger/api/MunicipalityApi";
@@ -25,14 +26,14 @@ import { LegalFileCorrectionReasonDTOBase } from "../../../shared/swagger/model/
 import { VoucherAssignmentAuxiliarDTOBase } from "../../../shared/swagger/model/VoucherAssignmentAuxiliarDTO";
 import { TranslateService } from "ng2-translate";
 import * as FileSaver from "file-saver";
-import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi, LogEmailDTO, LegalFileDTOBase } from "../../../shared/swagger";
+import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi, LogEmailDTO, LegalFileDTOBase, ApplicationauthorizedPersonApi } from "../../../shared/swagger";
 import { NgForm, NgModel } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import {environment} from '../../../../environments/environment';
 
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
-    providers: [ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi, InvalidateReasonApi, ApplicationcommentApi, VoucherApi],
+    providers: [ApplicationApi, ApplicationauthorizedPersonApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi, InvalidateReasonApi, ApplicationcommentApi, VoucherApi],
     styleUrls: ['./applicant-registrations-details.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
@@ -122,6 +123,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         private route: ActivatedRoute,
         private sharedService: SharedService,
         private applicationApi: ApplicationApi,
+        private applicationAuthorizedPersonApi: ApplicationauthorizedPersonApi,
         private beneficiaryApi: BeneficiaryApi,
         private registrationApi: RegistrationApi,
         private threadApi: ThreadApi,
@@ -208,7 +210,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                             this.userAuthorizedPerson.applicationId = application.id;
                                                                             this.userAuthorizedPerson.authorized = null;
                                                                             console.log("Before sending, the userAuthDTO is ", this.userAuthorizedPerson);
-                                                                            this.applicationApi.getAuthorization(this.userAuthorizedPerson).subscribe(
+                                                                            this.applicationAuthorizedPersonApi.getAuthorization(this.userAuthorizedPerson.applicationId).subscribe(
                                                                                 (response : ResponseDTO) => {
                                                                                     this.userAuthorizedPerson = response.data;
                                                                                     console.log("Authorised person is ", this.userAuthorizedPerson);
