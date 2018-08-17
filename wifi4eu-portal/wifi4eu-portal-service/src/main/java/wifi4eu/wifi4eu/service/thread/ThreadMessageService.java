@@ -15,6 +15,7 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -71,6 +72,8 @@ public class ThreadMessageService {
                             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                             String subject = bundle.getString("mail.thread.subject");
                             String msgBody = bundle.getString("mail.thread.body");
+//                             String forumUrl = userService.getBaseUrl() + "beneficiary-portal/discussion-forum/" + thread.getId();
+//                             msgBody = MessageFormat.format(msgBody, forumUrl);
                             mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "createThreadMessage");
                         }
                     }
