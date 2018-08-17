@@ -249,14 +249,8 @@ export class BeneficiaryProfileComponent {
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
                         this.localStorageService.remove('user');
-                        window.location.href = environment['homeURL'];
-
-                        /* this.router.navigate(['/']).then
-                        (()=>{
-                                document.location.reload();
-                            }
-                        );  */
-
+                        var currentWindow: any = window;
+                        window.location.href = currentWindow.origin+'/wifi4eu/index.html';
                     } else {
                         this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
                         this.withdrawingRegistration = false;

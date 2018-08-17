@@ -228,6 +228,8 @@ export class SupplierProfileComponent {
                         this.sharedService.logout();
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
+                        var currentWindow: any = window;
+                        window.location.href = currentWindow.origin+'/wifi4eu/index.html';
                     }
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
