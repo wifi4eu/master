@@ -15,11 +15,14 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityCorrespondenceMapper;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
+import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
 import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -63,10 +66,16 @@ public class MunicipalityService {
     @Autowired
     MunicipalityCorrespondenceMapper municipalityCorrespondenceMapper;
 
+    @Autowired
+    InvitationContactRepository invitationContactRepository;
+
     private final Logger _log = LogManager.getLogger(MayorService.class);
 
     @Autowired
     PermissionChecker permissionChecker;
+
+    @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
 
     @Autowired
     CallRepository callRepository;
@@ -161,6 +170,11 @@ public class MunicipalityService {
     }
 
     @Transactional
+    public void deleteInvitationsByRegistrationId(Integer registrationId){
+        invitationContactRepository.delete(invitationContactRepository.findByIdRegistration(registrationId));
+    }
+
+    @Transactional
     public MunicipalityDTO deleteMunicipality(int municipalityId, HttpServletRequest request) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
@@ -175,6 +189,8 @@ public class MunicipalityService {
             }
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
             if (registration != null) {
+                deleteInvitationsByRegistrationId(registration.getId());
+                registrationUsersRepository.delete(registrationUsersRepository.findByRegistrationId(registration.getId()));
                 List<RegistrationWarningDTO> registrationWarningDTOs = registrationWarningService.getWarningsByRegistrationId(registration.getId());
                 if(registrationWarningDTOs.size() > 0){
                     registrationWarningService.deleteWarningFromRegistration(registrationWarningDTOs);

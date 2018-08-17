@@ -258,7 +258,7 @@ export class BeneficiaryProfileComponent {
         this.displayLanguageModal = false;
     }
 
-    private deleteRegistration() {
+    private deleteRegistration() {        
         this.withdrawingRegistrationConfirmation = false;
         if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
             this.withdrawingRegistration = true;
@@ -270,7 +270,11 @@ export class BeneficiaryProfileComponent {
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
                     } else {
-                        this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
+                        if(data.error != null){
+                          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', data.error.errorMessage, 'warn');  
+                        }else{
+                          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
+                        }
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
                     }
