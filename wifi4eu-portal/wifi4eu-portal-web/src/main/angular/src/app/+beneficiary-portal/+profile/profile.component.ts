@@ -89,18 +89,18 @@ export class BeneficiaryProfileComponent {
                                             (municipality: MunicipalityDTOBase) => {
                                                 this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                     (mayor: MayorDTOBase) => {
-                                                        this.municipalities.push(municipality);                                                                                                                 
+                                                        this.municipalities.push(municipality);
                                                         this.mayors.push(mayor);
                                                         // Order the threads array with the municipalities
                                                         if(this.municipalities.length == registrations.length) {
-                                                            let indexedThreads = this.userThreads.map(function(element) { return element.title});                                                        
-                                                            for(let municipality of this.municipalities) {                
-                                                                let exists = indexedThreads.indexOf(municipality.name);                             
+                                                            let indexedThreads = this.userThreads.map(function(element) { return element.title});
+                                                            for(let municipality of this.municipalities) {
+                                                                let exists = indexedThreads.indexOf(municipality.name);
                                                                 if(exists != -1) {
                                                                     this.orderedUserThreads.push(this.userThreads[exists]);
-                                                                } 
+                                                                }
                                                                 else {
-                                                                    this.orderedUserThreads.push(null);                                                                
+                                                                    this.orderedUserThreads.push(null);
                                                                 }
                                                             }
                                                         }
@@ -266,9 +266,11 @@ export class BeneficiaryProfileComponent {
                 (data: ResponseDTOBase) => {
                     if (data.success) {
                         this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
-                        this.sharedService.logout();
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
+                        this.localStorageService.remove('user');
+                        var currentWindow: any = window;
+                        window.location.href = currentWindow.origin+'/wifi4eu/index.html';
                     } else {
                         this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
                         this.withdrawingRegistration = false;
