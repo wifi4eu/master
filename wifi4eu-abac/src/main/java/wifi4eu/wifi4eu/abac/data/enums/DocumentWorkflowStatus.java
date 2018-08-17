@@ -3,7 +3,7 @@ package wifi4eu.wifi4eu.abac.data.enums;
 public enum DocumentWorkflowStatus {
 
 	IMPORTED("IMPORTED", "Imported"),
-	WAITING_COUNTERSIGNATURE("WAITING_COUNTERSIGNATURE", "Waiting for Counter Signature"),
+	COUNTERSIGNATURE_REQUESTED("COUNTERSIGNATURE_REQUESTED", "Counter Signature Requested"),
 	COUNTERSIGNED("COUNTERSIGNED", "Counter Signed"),
 	ARCHIVED_IN_ARES("ARCHIVED_IN_ARES", "Created and registered in ARES"),
 	UNMAPPED_STATUS("UNMAPPED_STATUS", "Unknown status");

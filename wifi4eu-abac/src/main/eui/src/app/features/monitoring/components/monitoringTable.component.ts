@@ -2,27 +2,29 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/components/table/table';
 import { MonitoringRowDTO, CountryDTO } from '../../../shared/model/DTOs';
 import { ApiModule } from '../../../shared/api.module';
+import { UxMessageBoxComponent } from '@eui/ux-commons';
+import { UxService } from '@eui/ux-core';
 
 @Component({
     templateUrl: './monitoringTable.component.html'
 })
 export class MonitoringTableComponent implements OnInit{
-  
+
     private cols: any[];
     private countries: CountryDTO[];
     private rows: MonitoringRowDTO[];
-    
+
     private showLEF: boolean = true;
     private showBC: boolean = false;
     private showLC: boolean = false;
-  
+
     private filterTimeout: any;
-    private filterCountry: string; 
+    private filterCountry: string;
     private filterName: string;
-  
+
     @ViewChild('monitoring') monitoringTable: Table;
-  
-    constructor(protected api: ApiModule){
+
+    constructor(protected api: ApiModule, protected uxService: UxService){
         this.cols = [
             { field: 'countryCode', header: '<br/>Country' },
             { field: 'municipality', header: '<br/>Municipality' },
@@ -34,7 +36,7 @@ export class MonitoringTableComponent implements OnInit{
             { field: 'counterSignatureDate', header: 'Date of<br/>counter signature' },
         ];
     }
-  
+
     ngOnInit() {
         this.monitoringTable.multiSortMeta = [
             { field: 'countryCode', order: 1 },
@@ -49,7 +51,7 @@ export class MonitoringTableComponent implements OnInit{
             this.rows = monitoringRows;
         });
     }
-  
+
     showColumn(isFor){
         return isFor === undefined ||
             (isFor === 'lef' && this.showLEF) ||
@@ -57,13 +59,13 @@ export class MonitoringTableComponent implements OnInit{
             (isFor === 'lc' && this.showLC)
         ;
     }
-  
+
     clearFilters(){
         this.filterCountry = undefined;
         this.filterName = undefined;
         this.applyFilters();
     }
-  
+
     applyFilters(){
         if (this.filterTimeout) {
             clearTimeout(this.filterTimeout);
@@ -75,5 +77,25 @@ export class MonitoringTableComponent implements OnInit{
           };
           this.monitoringTable._filter();
         }, 200);
+    }
+
+    countersignSelected() {
+        let dummyIds: number[] = [174];
+        this.api.counterSignGrantAgreements(dummyIds).subscribe(
+            event => {
+                this.showSuccess();
+            },
+            (err) => {
+                this.showError(undefined);
+            }
+        );
+    }
+
+    showError(message: string){
+        this.uxService.openMessageBox('messagebox_countersign_fail');
+    }
+
+    showSuccess(){
+        this.uxService.openMessageBox('messagebox_countersign_success');
     }
 }

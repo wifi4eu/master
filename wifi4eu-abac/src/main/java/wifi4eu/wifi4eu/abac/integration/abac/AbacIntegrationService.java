@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.repository.BudgetaryCommitmentRepository;
+import wifi4eu.wifi4eu.abac.data.repository.LegalCommitmentRepository;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 
 import javax.transaction.Transactional;
@@ -26,6 +27,9 @@ public class AbacIntegrationService {
 
     @Autowired
     BudgetaryCommitmentRepository budgetaryCommitmentRepository;
+
+    @Autowired
+    LegalCommitmentRepository legalCommitmentRepository;
 
     /**
      * Send the legal entities with status READY_FOR_ABAC, limited to a maximum of @maxRecords
@@ -91,4 +95,12 @@ public class AbacIntegrationService {
             log.error(String.format("Error retrieving data from abac: %s", e.getMessage()));
         }
     }
+
+	public void updateLegalCommitmentStatuses() {
+        try {
+            legalCommitmentRepository.updateLegalCommitmentStatuses();
+        } catch (Exception e){
+            log.error(String.format("Error retrieving data from abac: %s", e.getMessage()));
+        }
+	}
 }

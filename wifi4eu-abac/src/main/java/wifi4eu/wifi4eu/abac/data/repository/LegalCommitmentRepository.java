@@ -3,10 +3,13 @@ package wifi4eu.wifi4eu.abac.data.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
 
+import org.springframework.data.repository.query.Param;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
 public interface LegalCommitmentRepository extends CrudRepository<LegalCommitment, Integer> {
 
@@ -15,4 +18,11 @@ public interface LegalCommitmentRepository extends CrudRepository<LegalCommitmen
 	
 	LegalCommitment findByLegalEntityMid(Long municipalityPortalId);
 
+	List<LegalCommitment> findByWfStatus(AbacWorkflowStatus readyForAbac);
+
+	@Procedure(name = "CREATE_LC_IN_ABAC")
+	void createLegalCommitmentInABAC(@Param("LEGAL_COMMITMENT_ID") Long legalCommitmentId);
+
+	@Procedure(name = "UPDATE_LC_STATUS_FROM_ABAC")
+	void updateLegalCommitmentStatuses();
 }

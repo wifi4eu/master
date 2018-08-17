@@ -50,6 +50,15 @@ export class ApiModule {
         return this.httpClient.get<MonitoringRowDTO[]>(path);
     }
 
+    counterSignGrantAgreements(legalEntityIds: number[]): Observable<HttpEvent<ResponseDTO>> {
+
+        let formData = new FormData();
+        formData.set('legalEntityIds', JSON.stringify(legalEntityIds));
+        const req = new HttpRequest('POST', 'legalCommitment/countersign', formData);
+
+        return this.httpClient.request(req);
+    }
+
     private importFile(endpoint?: string, file?: File): Observable<HttpEvent<ResponseDTO>> {
         let formData = new FormData();
         formData.append('file', file);

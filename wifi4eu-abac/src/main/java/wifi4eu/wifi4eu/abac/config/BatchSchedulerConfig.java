@@ -34,20 +34,21 @@ public class BatchSchedulerConfig {
         abacIntegrationService.findAndSendBudgetaryCommitmentsReadyToABAC(MAX_RECORDS_CREATE);
     }
 
-    @Scheduled(cron = "${batch.legalentity.checkstatus.crontable}")
-    public void checkLegalEntityCreationStatus() {
+    @Scheduled(cron = "${batch.legalcommitment.countersign.crontable}")
+    public void createLegalCommitmentsInABAC() {
+        legalCommitmentService.findAndSendLegalCommitmentsReadyToABAC();
+    }
+
+    @Scheduled(cron = "${batch.abac.checkstatus.crontable}")
+    public void checkAbacStatuses() {
 
         abacIntegrationService.updateLegalEntitiesStatuses();
-    }
-
-    @Scheduled(cron = "${batch.legalentity.checkstatus.crontable}")
-    public void checkBudgetaryCommitmentStatus() {
         abacIntegrationService.updateBudgetaryCommitmentStatuses();
+        abacIntegrationService.updateLegalCommitmentStatuses();
     }
 
-    @Scheduled(cron = "${batch.legalcommitment.countersign.crontable}")
+    @Scheduled(cron = "${batch.legalcommitment.create.crontable}")
     public void counterSignGrantAgreements() {
         legalCommitmentService.findAndCounterSignGrantAgreements();
     }
-
 }

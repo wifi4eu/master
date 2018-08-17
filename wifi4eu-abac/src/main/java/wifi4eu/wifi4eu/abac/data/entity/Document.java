@@ -41,6 +41,9 @@ public class Document {
 	@Column(name = "countersigned_data")
 	private byte[] countersignedData;
 
+	@Column(name="COUNTERSIGNATURE_DATE")
+	private Date counterSignatureDate;
+
 	@Column(name = "ares_reference")
 	private String aresReference;
 
@@ -255,4 +258,8 @@ public class Document {
 	public void setCountersignedData(byte[] countersignedData) {
 		this.countersignedData = countersignedData;
 	}
+
+	public Date getCounterSignatureDate() {return counterSignatureDate;}
+
+	public void setCounterSignatureDate(Date counterSignatureDate) {this.counterSignatureDate = counterSignatureDate;}
 }

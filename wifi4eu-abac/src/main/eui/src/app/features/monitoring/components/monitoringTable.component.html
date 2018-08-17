@@ -1,7 +1,7 @@
 <div class="content-wrapper">
 	<div class="page-title">Monitoring</div>
 	<p>Here you can find an overview of the beneficiaries data, and check their status in ABAC</p>
-	
+
 	<ux-tabs>
 	    <ux-tab label="Call 1"></ux-tab>
 	    <ux-tab label="Call 2" [isDisabled]="true"></ux-tab>
@@ -9,7 +9,7 @@
 	    <ux-tab label="Call 4" [isDisabled]="true"></ux-tab>
 	    <ux-tab label="Call 5" [isDisabled]="true"></ux-tab>
 	</ux-tabs>
-	
+
 	<ux-panel [hasNoHeader]="true">
 		<div class="row">
 		    <div class="col-md-5">
@@ -26,9 +26,9 @@
 			</div>
 		</div>
 	</ux-panel>
-	
+
 	<ux-panel label="List of Beneficiaries of Call 1" [hasNoContentPadding]="true">
-	
+
 		<uxPanelHeaderRightContent>
 	        <div class="form-check form-check-inline">
 			  <input class="form-check-input" type="checkbox" id="chkLef" value="1" [checked]="showLEF" (change)="showLEF = !showLEF">
@@ -43,7 +43,7 @@
 			  <label class="form-check-label" for="chkLC">Legal Commitments</label>
 			</div>
 	    </uxPanelHeaderRightContent>
-	
+
 		<p-table #monitoring [value]="rows" [paginator]="true" [rows]="20" sortMode="multiple" autoLayout="true">
 		    <ng-template pTemplate="header">
 		    	<tr>
@@ -63,10 +63,12 @@
 		        </tr>
 		    </ng-template>
 		</p-table>
-		
+
 	</ux-panel>
-	
+
 	<div class="row">
-		<div class="col-12"><button class="btn btn-primary pull-right">Counter-sign Grant Agreements</button></div>
+		<div class="col-12">
+            <ux-button (click)="countersignSelected()">Counter-sign Grant Agreements</ux-button>
+        </div>
 	</div>
 </div>

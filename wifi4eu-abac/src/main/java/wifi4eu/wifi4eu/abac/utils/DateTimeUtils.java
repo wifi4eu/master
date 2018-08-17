@@ -25,10 +25,6 @@ public class DateTimeUtils {
 
 	}
 
-	public static String getCurrentDateTime() {
-		return dateFormat.format(new Date());
-	}
-
 	public static Date parseDate(String date, String format) {
 		DateFormat dateFormat = new SimpleDateFormat(format);
 		Date parsedDate = null;

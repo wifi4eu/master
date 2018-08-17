@@ -3,31 +3,28 @@ package wifi4eu.wifi4eu.abac.data.entity;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
 @Entity
 @Table(name = "WIF_LEGAL_COMMITMENT")
+@NamedStoredProcedureQueries({
+	@NamedStoredProcedureQuery(name = "CREATE_LC_IN_ABAC",
+		procedureName = "CREATE_LC_IN_ABAC",
+		parameters = {
+			@StoredProcedureParameter(mode = ParameterMode.IN, name = "LEGAL_COMMITMENT_ID", type = Long.class)
+		}),
+	@NamedStoredProcedureQuery(name = "UPDATE_LC_STATUS_FROM_ABAC",
+		procedureName = "UPDATE_LC_STATUS_FROM_ABAC")
+})
 public class LegalCommitment {
 
 	@Id
 	@Column(name = "ID", unique = true, nullable = false, precision = 18, scale = 0)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lcIDGenerator")
 	@SequenceGenerator(name = "lcIDGenerator", sequenceName = "SEQ_LEGAL_COMMITMENT", allocationSize = 1)
-	private Integer id;
+	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "LEGAL_ENTITY_ID")
@@ -40,28 +37,17 @@ public class LegalCommitment {
 	@Enumerated(EnumType.STRING)
 	private AbacWorkflowStatus wfStatus;
 
-	@Column(name = "user_imported")
-	private String userImported;
-	
 	@Column(name = "date_created", length = 20)
 	private Date dateCreated;
 	
 	@Column(name = "date_updated", length = 20)
 	private Date dateUpdated;
-	
-	@Column(name = "countersignature_date", length = 20)
-	private Date countersignatureDate;
 
-	@Column(name = "id_countersignature_file")
-	private Long idCountersignatureFile;
-	
-	@Column(name = "user_countersignatured")
-	private String userCountersignatured;
 	
 	public LegalCommitment() {
 	}
 
-	public LegalCommitment(Integer id, LegalEntity legalEntity, Long abacId, AbacWorkflowStatus wfStatus,
+	public LegalCommitment(Long id, LegalEntity legalEntity, Long abacId, AbacWorkflowStatus wfStatus,
 			String userImported, Date dateCreated, Date dateUpdated, Date countersignatureDate,
 			Long idCountersignatureFile, String userCountersignatured) {
 		super();
@@ -69,12 +55,8 @@ public class LegalCommitment {
 		this.legalEntity = legalEntity;
 		this.abacId = abacId;
 		this.wfStatus = wfStatus;
-		this.userImported = userImported;
 		this.dateCreated = dateCreated;
 		this.dateUpdated = dateUpdated;
-		this.countersignatureDate = countersignatureDate;
-		this.idCountersignatureFile = idCountersignatureFile;
-		this.userCountersignatured = userCountersignatured;
 	}
 
 	@PrePersist
@@ -84,11 +66,11 @@ public class LegalCommitment {
 	}
 
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -116,14 +98,6 @@ public class LegalCommitment {
 		this.wfStatus = wfStatus;
 	}
 
-	public String getUserImported() {
-		return userImported;
-	}
-
-	public void setUserImported(String userImported) {
-		this.userImported = userImported;
-	}
-
 	public Date getDateCreated() {
 		return dateCreated;
 	}
@@ -140,35 +114,9 @@ public class LegalCommitment {
 		this.dateUpdated = dateUpdated;
 	}
 
-	public Date getCountersignatureDate() {
-		return countersignatureDate;
-	}
-
-	public void setCountersignatureDate(Date countersignatureDate) {
-		this.countersignatureDate = countersignatureDate;
-	}
-
-	public Long getIdCountersignatureFile() {
-		return idCountersignatureFile;
-	}
-
-	public void setIdCountersignatureFile(Long idCountersignatureFile) {
-		this.idCountersignatureFile = idCountersignatureFile;
-	}
-
-	public String getUserCountersignatured() {
-		return userCountersignatured;
-	}
-
-	public void setUserCountersignatured(String userCountersignatured) {
-		this.userCountersignatured = userCountersignatured;
-	}
-
 	@Override
 	public String toString() {
 		return "LegalCommitment [id=" + id + ", legalEntity=" + legalEntity + ", abacId=" + abacId + ", wfStatus="
-				+ wfStatus + ", userImported=" + userImported + ", dateCreated=" + dateCreated + ", dateUpdated="
-				+ dateUpdated + ", countersignatureDate=" + countersignatureDate + ", idCountersignatureFile="
-				+ idCountersignatureFile + ", userCountersignatured=" + userCountersignatured + "]";
+				+ wfStatus + ", dateCreated=" + dateCreated + ", dateUpdated=" + dateUpdated + "]";
 	}
 }

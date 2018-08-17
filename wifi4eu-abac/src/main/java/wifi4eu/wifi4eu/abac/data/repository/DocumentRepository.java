@@ -14,4 +14,6 @@ public interface DocumentRepository extends CrudRepository<Document, Long> {
 	Document findByPortalId(Long portalId);
 
 	List<Document> findByTypeAndWfStatus(DocumentType grantAgreement, DocumentWorkflowStatus waitingCountersignature);
+
+	Document findByLegalEntityIdAndType(Long legalEntityId, DocumentType documentType);
 }

@@ -63,8 +63,20 @@ public class ImportDataService {
 	FileDTO documentsCSVFile;
 	private Map<String, FileDTO> documentsToBeImported = new TreeMap<>();
 
-	@Transactional(Transactional.TxType.REQUIRED)
 	public void importLegalEntities(byte[] file) {
+		importDataViaZipFile(file);
+	}
+
+	/**
+	 * Legal Commitments will be treated as a regular upload of documents where the docType is GRANT_AGREEMENT
+	 * @param file
+	 */
+	public void importLegalCommitments(byte[] file) {
+		importDataViaZipFile(file);
+	}
+
+	@Transactional(Transactional.TxType.REQUIRED)
+	private void importDataViaZipFile(byte[] file) {
 
 		ZipFileReader zipFileReader = new ZipFileReader(file);
 
@@ -177,7 +189,7 @@ public class ImportDataService {
 		}
 	}
 
-	@Transactional
+/*	@Transactional
 	public void importLegalCommitments(byte[] file) {
 		
 		FileDTO fileDTO = new FileDTO();
@@ -198,6 +210,6 @@ public class ImportDataService {
 				log.warn("Legal commitment already exists in the DB. Ignoring it for now : {}", legalCommitment);
 			}
 		}
-	}
+	}*/
 	
 }

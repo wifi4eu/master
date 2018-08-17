@@ -8,11 +8,14 @@ import wifi4eu.wifi4eu.abac.data.dto.LegalCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.repository.LegalCommitmentRepository;
 import wifi4eu.wifi4eu.abac.integration.essi.EssiService;
+import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -34,7 +37,7 @@ public class LegalCommitmentService {
 
 	public void findAndCounterSignGrantAgreements() {
 
-		List<Document> grantAgreements = documentService.getDocumentsByTypeAndStatus(DocumentType.GRANT_AGREEMENT, DocumentWorkflowStatus.WAITING_COUNTERSIGNATURE);
+		List<Document> grantAgreements = documentService.getDocumentsByTypeAndStatus(DocumentType.GRANT_AGREEMENT, DocumentWorkflowStatus.COUNTERSIGNATURE_REQUESTED);
 
 		try {
 			for (Document grantAgreement : grantAgreements) {
@@ -42,8 +45,11 @@ public class LegalCommitmentService {
 
 				grantAgreement.setWfStatus(DocumentWorkflowStatus.COUNTERSIGNED);
 				grantAgreement.setCountersignedData(countersignedFile);
+				grantAgreement.setCounterSignatureDate(Calendar.getInstance().getTime());
 
 				documentService.saveDocument(grantAgreement);
+
+				createLegalCommitment(grantAgreement);
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -52,6 +58,12 @@ public class LegalCommitmentService {
 		} catch (Throwable e) {
 			log.error(e.getMessage());
 		}
+	}
+
+	private void createLegalCommitment(Document grantAgreement) {
+		LegalCommitment legalCommitment = new LegalCommitment();
+		legalCommitment.setLegalEntity(grantAgreement.getLegalEntity());
+		legalCommitmentyRepository.save(legalCommitment);
 	}
 
 	public LegalCommitment getLegalCommitmentByMunicipalityPortalId(Long municipalityPortalId) {
@@ -72,4 +84,22 @@ public class LegalCommitmentService {
 		return legalCommitment;
 	}
 
+	public void requestCountersignature(List<Long> legalEntityIds) {
+
+		for (Long legalEntityId : legalEntityIds) {
+			Document document = documentService.getDocumentsByLegalEntityIdAndType(legalEntityId, DocumentType.GRANT_AGREEMENT);
+			document.setWfStatus(DocumentWorkflowStatus.COUNTERSIGNATURE_REQUESTED);
+			documentService.saveDocument(document);
+		}
+
+	}
+
+	public void findAndSendLegalCommitmentsReadyToABAC() {
+
+		List<LegalCommitment> legalCommitments = legalCommitmentyRepository.findByWfStatus(AbacWorkflowStatus.READY_FOR_ABAC);
+
+		for (LegalCommitment legalCommitment : legalCommitments) {
+			legalCommitmentyRepository.createLegalCommitmentInABAC(legalCommitment.getId());
+		}
+	}
 }
