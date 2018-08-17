@@ -462,7 +462,7 @@ public class ApplicationResource {
     @ApiOperation(value = "Get Authorization")
     @RequestMapping(value = "/getAuthorization", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseDTO getAuthorization(@RequestParam("applicationId") final Integer applicationId, @RequestParam("userId") final Integer userId, HttpServletResponse response) throws IOException {
+    public ResponseDTO getAuthorization(@RequestParam("applicationId") final Integer applicationId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - get Authorization for user");
@@ -470,8 +470,8 @@ public class ApplicationResource {
             if (userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            ApplicationAuthorizedPersonDTO applicationAuthorizedPersonDTO = applicationAuthorizedPersonService.findByApplicationAndAuthorisedPerson(applicationId, userId);
-            return new ResponseDTO(true, applicationAuthorizedPersonDTO != null, null);
+            List<ApplicationAuthorizedPersonDTO> applicationAuthorizedPersonDTOList = applicationAuthorizedPersonService.findByApplication(applicationId);
+            return new ResponseDTO(true, applicationAuthorizedPersonDTOList, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions for getting authorization for user", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());

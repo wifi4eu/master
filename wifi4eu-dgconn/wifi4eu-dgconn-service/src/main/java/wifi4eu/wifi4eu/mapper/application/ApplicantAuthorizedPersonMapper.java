@@ -6,6 +6,8 @@ import org.mapstruct.Mappings;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
 import wifi4eu.wifi4eu.entity.application.ApplicationAuthorizedPerson;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ApplicantAuthorizedPersonMapper {
 
@@ -21,5 +23,7 @@ public interface ApplicantAuthorizedPersonMapper {
     })
     ApplicationAuthorizedPerson toEntity(ApplicationAuthorizedPersonDTO vo);
 
+    List<ApplicationAuthorizedPersonDTO> toDTOList(List<ApplicationAuthorizedPerson> list);
+    List<ApplicationAuthorizedPerson> toEntityList(List<ApplicationAuthorizedPersonDTO> list);
 
 }
