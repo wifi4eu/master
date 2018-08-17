@@ -47,7 +47,6 @@ export class SupplierRegistrationStep2Component {
                 if (selectedCountry.countryCode == country.value.countryCode) {
                     if (this.selectedRegions[country.value.label].length > 0) {
                         this.areRegionsSelected = true;
-
                     }
                     countryFound = true;
                 }
