@@ -156,7 +156,7 @@ public class ReportCallOpen {
                 if (Validator.isNotNull(mayor) && Validator.isNotNull(lau)) {
                     // User user = userRepository.findOne(registration.getIdUser());
                     User user = userRepository.findOne(registrationUsersRepository.findUserIdFromRegistrationId(registration.getId()));
-                    if (Validator.isNotNull(user) && Validator.isNotNull(user.getEmail()) && Validator.isNotNull(user.getEcasEmail()) && Validator.isNotNull(mayor.getEmail())) {
+                    if (Validator.isNotNull(user) && Validator.isNotNull(user.getEmail()) && Validator.isNotNull(user.getEcasEmail()) && Validator.isNotNull(mayor.getEmail()) && Validator.isNotNull(lau) && Validator.isNotNull(lau.getCountryCode())) {
                         switch (lau.getCountryCode().toUpperCase()) {
                             case "AT":
                                 if (!user.getEmail().trim().toLowerCase().endsWith(".at") ||
@@ -398,7 +398,7 @@ public class ReportCallOpen {
                 List<Registration> ipRegistrations = Lists.newArrayList(registrationRepository.findByIpRegistration(registration.getIpRegistration()));
                 for (Registration ipRegistration : ipRegistrations) {
                     Municipality ipMunicipality = municipalityRepository.findOne(ipRegistration.getMunicipality().getId());
-                    if (ipRegistration.getId() != registration.getId() && ipMunicipality.getLau().getId() == municipality.getLau().getId()) {
+                    if (Validator.isNotNull(ipMunicipality) && Validator.isNotNull(ipRegistration) && ipRegistration.getId() != registration.getId() && ipMunicipality.getLau().getId() == municipality.getLau().getId()) {
                         warning = true;
                         break;
                     }
@@ -419,7 +419,7 @@ public class ReportCallOpen {
                 if (Validator.isNotNull(mayor) && Validator.isNotNull(lau)) {
                     // User user = userRepository.findOne(registration.getIdUser());
                     User user = userRepository.findOne(registrationUsersRepository.findUserIdFromRegistrationId(registration.getId()));
-                    if (Validator.isNotNull(user) && Validator.isNotNull(user.getEmail()) && Validator.isNotNull(user.getEcasEmail()) && Validator.isNotNull(mayor.getEmail())) {
+                    if (Validator.isNotNull(user) && Validator.isNotNull(user.getEmail()) && Validator.isNotNull(user.getEcasEmail()) && Validator.isNotNull(mayor.getEmail()) && Validator.isNotNull(lau) && Validator.isNotNull(lau.getCountryCode())) {
                         switch (lau.getCountryCode().toUpperCase()) {
                             case "AT":
                                 if (!(user.getLang().toLowerCase().equals("de"))) {
