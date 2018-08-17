@@ -314,7 +314,11 @@ export class SupplierProfileComponent {
         this.deletingLogo = false;
         this.clearLogoFile();
         Object.assign(this.editedSupplier, this.supplier);
-   
+    }
+
+    private closeAddNewContactModal(){
+        this.newUserEmail = '';
+        this.addUser = false;
     }
 
     private addNewContactToSupplier(){
