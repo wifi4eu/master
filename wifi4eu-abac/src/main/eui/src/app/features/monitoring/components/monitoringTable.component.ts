@@ -26,6 +26,7 @@ export class MonitoringTableComponent implements OnInit{
 
     constructor(protected api: ApiModule, protected uxService: UxService){
         this.cols = [
+            { field: 'selected', header: 'Select' },
             { field: 'countryCode', header: '<br/>Country' },
             { field: 'municipality', header: '<br/>Municipality' },
             { field: 'registrationNumber', header: 'Registration<br/>Number' },
@@ -80,8 +81,16 @@ export class MonitoringTableComponent implements OnInit{
     }
 
     countersignSelected() {
-        let dummyIds: number[] = [174];
-        this.api.counterSignGrantAgreements(dummyIds).subscribe(
+
+        let selectedLegalEntities: number[] = new Array();
+
+        this.rows.forEach(row => {
+            if (row.selected) {
+                selectedLegalEntities.concat(row.id);
+            }
+        });
+
+        this.api.counterSignGrantAgreements(selectedLegalEntities).subscribe(
             event => {
                 this.showSuccess();
             },

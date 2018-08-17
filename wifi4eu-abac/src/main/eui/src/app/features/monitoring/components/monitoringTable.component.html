@@ -47,7 +47,7 @@
 		<p-table #monitoring [value]="rows" [paginator]="true" [rows]="20" sortMode="multiple" autoLayout="true">
 		    <ng-template pTemplate="header">
 		    	<tr>
-		    		<ng-container *ngFor="let col of cols">
+                    <ng-container *ngFor="let col of cols">
 			     		<th [pSortableColumn]="col.field" *ngIf="showColumn(col.isFor)">
 			     			<span [innerHTML]="col.header"></span>
 			     			<p-sortIcon [field]="col.field"></p-sortIcon>
@@ -58,7 +58,10 @@
 		    <ng-template pTemplate="body" let-row>
 		        <tr>
 		        	<ng-container *ngFor="let col of cols">
-		        		<td *ngIf="showColumn(col.isFor)">{{row[col.field]}}</td>
+                        <td *ngIf="col.field == 'selected'" class="text-center">
+                            <p-checkbox type="checkbox" [(ngModel)]="row['selected']" binary="true"></p-checkbox>
+                        </td>
+		        		<td *ngIf="(col.field != 'selected') && showColumn(col.isFor)">{{row[col.field]}}</td>
 		        	</ng-container>
 		        </tr>
 		    </ng-template>

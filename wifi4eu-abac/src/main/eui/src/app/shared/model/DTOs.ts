@@ -7,12 +7,13 @@ export interface MonitoringRowDTO {
     id?: number;
     countryCode?: string;
     municipality?: string;
-    registrationNumber?: number; 
+    registrationNumber?: number;
     lefStatus?: string;
     bcStatus?: string;
     lcStatus?: string;
     signatureDate?: string;
     counterSignatureDate?: string;
+    selected?: boolean;
 }
 
 export interface ResponseDTO {
