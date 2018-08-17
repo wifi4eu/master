@@ -1,11 +1,7 @@
 package wifi4eu.wifi4eu.web.cnect.rest;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,31 +11,23 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import wifi4eu.wifi4eu.common.dto.model.ApplicantListItemDTO;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationVoucherInfoDTO;
-import wifi4eu.wifi4eu.common.dto.model.CorrectionRequestEmailDTO;
-import wifi4eu.wifi4eu.common.dto.model.PagingSortingDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -57,6 +45,9 @@ public class ApplicationResource {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
 
     Logger _log = LogManager.getLogger(ApplicationResource.class);
 
