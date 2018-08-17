@@ -19,6 +19,7 @@ import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
@@ -31,6 +32,7 @@ import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
@@ -135,6 +137,9 @@ public class RegistrationService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    LogEmailRepository logEmailRepository;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -467,6 +472,11 @@ public class RegistrationService {
     }
 
     public List<Integer> findTypeFilesWaitingUploadByRegistration(Integer registrationId){
-        return registrationRepository.findTypeFilesWaitingUploadByRegistration(registrationId);
+        LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
+        return legalFileCorrectionReasonRepository.findTypeFilesWaitingUploadByRegistration(lastEmailSent.getSentDate(),registrationId);
+    }
+
+    private Long getDateOfLogEmail(LogEmail logEmail){
+        return logEmail == null ? 0 : logEmail.getSentDate();
     }
 }

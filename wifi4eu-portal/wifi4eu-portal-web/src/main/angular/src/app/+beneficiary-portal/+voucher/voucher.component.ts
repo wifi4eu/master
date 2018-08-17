@@ -47,6 +47,7 @@ export class VoucherComponent {
     private voucherApplied: string = "";
     private csrfTokenCookieName: string = "XSRF-TOKEN";
     private nameCookieApply: string = "hasRequested";
+    private allRequestCompleted = false;
 
     private httpOptions = {
         headers: new Headers({
@@ -69,6 +70,7 @@ export class VoucherComponent {
                         this.loadVoucherData();
                     } else {
                         this.voucherCompetitionState = 0;
+                        this.loadVoucherDataWithoutCall(-1);
                     }
                 },
                 error => {
@@ -87,14 +89,41 @@ export class VoucherComponent {
         return false;
     }
 
+    private loadVoucherDataWithoutCall(callId){
+      this.allRequestCompleted = false;
+      this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,callId)
+      .finally(() => this.allRequestCompleted = true)
+      .subscribe(
+        (applyVoucher: ApplyVoucherBase[]) => {
+            this.applyVouchersData = applyVoucher;
+            for (let i = 0; i < this.applyVouchersData.length; i++){
+                if (this.applyVouchersData[i].filesUploaded == 1){
+                    let uploaddate = new Date(this.applyVouchersData[i].uploadTime);
+                    this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                    this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+                }
+            }
+        },
+        error => {
+          this.sharedService.growlTranslation(
+            "An error occurred while trying to retrieve the data from the server. Please, try again later.",
+            "shared.error.api.generic",
+            "error"
+          );
+        }
+      );
+    }
     private loadVoucherData(){
+        this.allRequestCompleted = false;
         let startDateCall = new Date(this.currentCall.startDate);
         let endDateCall = new Date(this.currentCall.endDate);
         this.startDate = ('0' + startDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (startDateCall.getUTCMonth() + 1)).slice(-2) + "/" + startDateCall.getUTCFullYear();
         this.startHour = ('0' + (startDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + startDateCall.getUTCMinutes()).slice(-2);
         this.endDate = ('0' + endDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (endDateCall.getUTCMonth() + 1)).slice(-2) + "/" + endDateCall.getUTCFullYear();
         this.endHour = ('0' + (endDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + endDateCall.getUTCMinutes()).slice(-2);
-        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,this.currentCall.id).subscribe(
+        this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id,this.currentCall.id)
+        .finally(() => this.allRequestCompleted = true)
+        .subscribe(
             (applyVoucher: ApplyVoucherBase[]) => {
                 this.applyVouchersData = applyVoucher;
                 for (let i = 0; i < this.applyVouchersData.length; i++){
@@ -106,6 +135,11 @@ export class VoucherComponent {
                 }
             },
             error => {
+              this.sharedService.growlTranslation(
+                "An error occurred while trying to retrieve the data from the server. Please, try again later.",
+                "shared.error.api.generic",
+                "error"
+              );
             }
         );
     }

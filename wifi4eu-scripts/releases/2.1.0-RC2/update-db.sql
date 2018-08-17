@@ -131,3 +131,22 @@ ALTER TABLE applications ADD sent_email_date datetime DEFAULT null;
 
 -- feature/WIFIFOREU-2914 Add column issues to voucher_simulations
 ALTER TABLE voucher_simulations ADD issues INT;
+
+-- addContacts beneficiary / supplier table
+create table invitation_contacts(
+   [id] INT NOT NULL IDENTITY,
+   [type] INT NOT NULL,
+   [id_registration] INT NULL,
+   [id_supplier] INT NULL,
+   [id_user_request] INT NOT NULL,
+   [email_invited] VARCHAR(255),
+   [status] INT NOT NULL,
+   [create_date] datetime,
+   [last_modified] datetime,
+   PRIMARY KEY ([id]),
+   CONSTRAINT [fk_invitationContacts_users]
+   FOREIGN KEY ([id_user_request])
+   REFERENCES dbo.users ([id])
+       ON DELETE CASCADE
+       ON UPDATE CASCADE
+);

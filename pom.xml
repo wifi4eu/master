@@ -600,6 +600,43 @@
             </properties>
         </profile>
         <profile>
+            <id>ACCEPTANCE</id>
+            <properties>
+                <ng.env>acc</ng.env>
+                <schemes>https</schemes>
+                <server.address>wifi4eu-acc.everincloud.com</server.address>
+                <server.dgconn.address>wifi4eu-acc-cnect.everincloud.com</server.dgconn.address>
+                <dgconn.name>wifi4eu</dgconn.name>
+                <dgconn.context.name>/wifi4eu</dgconn.context.name>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <enable.appinsights.start>--&gt;</enable.appinsights.start>
+                <enable.appinsights.end>&lt;!--</enable.appinsights.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+                <war.output.directory/>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
+                <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
+                <ecas.server.address>wifi4eu-acc.everincloud.com</ecas.server.address>
+                <ecas.server.dgconn.address>wifi4eu-acc-cnect.everincloud.com</ecas.server.dgconn.address>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
+                <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
+                <mail.serv.enable>false</mail.serv.enable>
+                <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <rabbitmq.host></rabbitmq.host>
+                <rabbitmq.username></rabbitmq.username>
+                <rabbitmq.password></rabbitmq.password>
+            </properties>
+        </profile>
+        <profile>
             <id>AZUREPROD</id>
             <properties>
                 <ng.env>prod</ng.env>

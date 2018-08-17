@@ -51,5 +51,9 @@
             <artifactId>azure-storage</artifactId>
             <version>7.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
     </dependencies>
 </project>

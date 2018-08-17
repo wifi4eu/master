@@ -21,9 +21,6 @@ public class HelpdeskIssueValidator {
         if(helpdeskIssue.getStatus() != 0){
             throw new Exception("Invalid helpdesk Status");
         }
-        if(!helpdeskIssue.isTicket()){
-            throw new Exception("Invalid helpdesk Ticket value");
-        }
         Boolean nutsValidation = false;
         for(NutsDTO nuts : nutsList) {
             if (helpdeskIssue.getMemberState().equals(nuts.getLabel())) {

@@ -46,7 +46,7 @@
                     <span class="badge badge-fail" *ngIf="rowData.status">{{ 'dgConn.badge.invalid' | translate | uppercase }}</span>
                 </ng-template>
             </p-column>
-            <p-column field="numberRegistrations" [sortable]="false"
+            <p-column field="numberRegistrations" [sortable]="true"
                       header="{{ 'dgConn.number.registrations' | translate }}" styleClass="text-center"></p-column>
             <p-column [sortable]="false" header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
                 <ng-template let-row="rowData" pTemplate="body">

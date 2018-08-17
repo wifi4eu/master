@@ -8,20 +8,24 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.InvitationContactStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.enums.UserHistoryActionList;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
+import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
 import wifi4eu.wifi4eu.mapper.history_action.UserHistoryActionMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
-import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.repository.history_action.UserHistoryActionRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
@@ -29,7 +33,6 @@ import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
@@ -37,6 +40,9 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.util.RegistrationUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
@@ -98,6 +104,15 @@ public class BeneficiaryService {
 
     @Autowired
     RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    RegistrationRepository registrationRepository;
+
+    @Autowired
+    InvitationContactRepository invitationContactRepository;
+
+    @Autowired
+    RegistrationUtils registrationUtils;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
@@ -627,6 +642,65 @@ public class BeneficiaryService {
             userService.createNewRegistrationUser(userRegistrationDTO);
         }
         return userRegistrationDTO;
+    }
+
+    public ResponseDTO invitateContactBeneficiary(UserDTO userConnected, int idMunicipality, String newContactEmail){
+        ResponseDTO responseDTO = new ResponseDTO();
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - START");
+        if (Validator.isNotNull(idMunicipality) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && Validator.isNotNull(registrationRepository.findByMunicipalityId(idMunicipality))){
+            if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail,userConnected.getId())) && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)){
+                InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndIdUserRequest(newContactEmail,userConnected.getId());
+                Date today = new Date();
+                if (Validator.isNull(invitationContact)){
+                    invitationContact = new InvitationContact();
+                    invitationContact.setEmailInvited(newContactEmail);
+                    invitationContact.setIdRegistration(registrationRepository.findByMunicipalityId(idMunicipality).getId());
+                    invitationContact.setIdUserRequest(userConnected.getId());
+                    invitationContact.setType((int) Constant.ROLE_REPRESENTATIVE);
+                    invitationContact.setStatus(InvitationContactStatus.PENDING.getValue());
+                    invitationContact.setCreateDate(today);
+                } else if (invitationContact.getIdRegistration() != registrationRepository.findByMunicipalityId(idMunicipality).getId()){
+                    // same user, same email invited, different municipality
+                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - This user has already been invitated. Please, try another user email");
+                    responseDTO.setSuccess(false);
+                    responseDTO.setData("This user has already been invitated. Please, try another user email");
+                    responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
+                }
+
+                invitationContact.setLastModified(today);
+                Locale locale = userConnected.getLang() == null ? new Locale(UserConstants.DEFAULT_LANG) : new Locale(userConnected.getLang());
+                MunicipalityDTO municipality = municipalityService.getMunicipalityById(idMunicipality);
+                String municipalityName = municipality.getName();
+                String userName = userConnected.getName() + ' ' + userConnected.getSurname();
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
+                String msgBody = bundle.getString("mail.sendUserEmail.beneficiary.body");
+                String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
+                msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, newContactEmail);
+                _log.debug("TESTING msgBody => "+msgBody);
+
+                if (!userService.isLocalHost()) {
+                    mailService.sendEmail(newContactEmail, MailService.FROM_ADDRESS, subject, msgBody);
+                }
+
+                invitationContactRepository.save(invitationContact);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");
+                responseDTO.setSuccess(true);
+                responseDTO.setData("shared.email.sent");
+            } else {
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - This user has already been invitated. Please, try another user email");
+                responseDTO.setSuccess(false);
+                responseDTO.setData("This user has already been invitated. Please, try another user email");
+                responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
+            }
+        } else {
+            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Some fields are null or empty. Please, complete all the fields");
+            responseDTO.setSuccess(false);
+            responseDTO.setData("Some fields are null or empty. Please, complete all the fields");
+            responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.emptyOrNull"));
+        }
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - END");
+        return responseDTO;
     }
 
     public boolean checkContactEmailWithMunicipality(String email, Integer municipalityId){
