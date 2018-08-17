@@ -149,13 +149,13 @@ export class AdditionalInfoComponent {
             this.reader = new FileReader();
             if (event.target.files[0].size > 1024000) {
                 this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'benefPortal.file.toobig.maxsize', 'warn', { size: '1 MB' });
-                this.removeFile(type);
+                this.cleanFile(type);
                 return;
             }
             if (event.target.files[0].type == "application/pdf" || event.target.files[0].type == "image/png" || event.target.files[0].type == "image/jpg" || event.target.files[0].type == "image/jpeg") {
                 let subscription;
                 this.reader.readAsDataURL(event.target.files[0]);
-                this.removeFile(type);
+                this.cleanFile(type);
                 subscription = Observable.interval(200).subscribe(
                     x => {
                         if (this.reader.result != "") {
@@ -192,11 +192,11 @@ export class AdditionalInfoComponent {
                 this.filesUploaded = false;
             }
         } else {
-            this.removeFile(type);
+            this.cleanFile(type);
         }
     }
 
-    private removeFile(type: number) {
+    private cleanFile(type: number) {
         if (this.legalFilesToUpload.length != 0) {
             for (var i = 0; i < this.legalFilesToUpload.length; i++) {
                 if (this.legalFilesToUpload[i].fileType == type) {
@@ -230,6 +230,24 @@ export class AdditionalInfoComponent {
             }
             this.checkDocuments();
         }
+    }
+
+    private removeFile(type: number) {
+        switch (type) {
+            case 1:
+                this.document1.nativeElement.value = "";
+                break;
+            case 2:
+                this.document2.nativeElement.value = "";
+                break;
+            case 3:
+                this.document3.nativeElement.value = "";
+                break;
+            case 4:
+                this.document4.nativeElement.value = "";
+                break;
+        }
+        this.cleanFile(type);
     }
 
     private onSubmit() {
