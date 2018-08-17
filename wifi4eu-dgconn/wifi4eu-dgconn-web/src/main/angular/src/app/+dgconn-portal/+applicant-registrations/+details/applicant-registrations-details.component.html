@@ -138,13 +138,13 @@
                                         </span>
                                         <div class="innerOptions">
                                             <div>
-                                                <p-radioButton name="{{applications[i]?.id + z}}" value="{{users?.id}}" label="Yes" [(ngModel)]="applications[i].authorizedPerson"
+                                                <p-radioButton name="{{applications[i]?.id + z}}" [value]="true" label="Yes" [(ngModel)]="users.authorized"
                                                     inputId="preopt1" pTooltip="{{'dgConn.applicationDetails.auth.tooltip' | translate:{name:users?.name,surname:users?.surname}
-                                                }}" tooltipPosition="bottom" (onClick)="userAuthorisation(i)" onChange = "changeUser(z)"></p-radioButton>
+                                                }}" tooltipPosition="bottom" (onClick)="userAuthorisation(i, users)" ></p-radioButton>
                                             </div>
                                             <div>
-                                                <p-radioButton name="{{applications[i]?.id +z}}" value="{{users?.id}}-1" label="No" [(ngModel)]="applications[i].authorizedPerson" inputId="preopt2"
-                                                (onClick)="userAuthorisation(i)"></p-radioButton>
+                                                <p-radioButton name="{{applications[i]?.id +z}}" [value]="false" label="No" [(ngModel)]="users.authorized" inputId="preopt2"
+                                                (onClick)="userAuthorisation(i, users)"></p-radioButton>
                                             </div>
                                         </div>
                                     </div>

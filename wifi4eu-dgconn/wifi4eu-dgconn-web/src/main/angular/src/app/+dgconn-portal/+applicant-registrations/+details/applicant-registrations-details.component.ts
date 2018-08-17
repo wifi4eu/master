@@ -5,7 +5,6 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { SharedService } from "app/shared/shared.service";
 import { ApplicationApi } from "../../../shared/swagger/api/ApplicationApi";
-//import { ApplicationAuthorizedPersonApi } from "../../../shared/swagger/api/ApplicationAuthorizedPersonApi";
 import { BeneficiaryApi } from "../../../shared/swagger/api/BeneficiaryApi";
 import { MayorApi } from "../../../shared/swagger/api/MayorApi";
 import { MunicipalityApi } from "../../../shared/swagger/api/MunicipalityApi";
@@ -20,20 +19,20 @@ import { RegistrationDTOBase } from "../../../shared/swagger/model/RegistrationD
 import { ThreadDTOBase, ThreadDTO } from "../../../shared/swagger/model/ThreadDTO";
 import { ThreadMessageDTOBase } from "../../../shared/swagger/model/ThreadMessageDTO";
 import { ResponseDTOBase, ResponseDTO } from "../../../shared/swagger/model/ResponseDTO";
-import { UserAuthorizedPersonDTO } from "../../../shared/swagger/model/UserAuthorizedPersonDTO";
+import { UserAuthorizedPersonDTO, UserAuthorizedPersonDTOBase } from "../../../shared/swagger/model/UserAuthorizedPersonDTO";
 import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { LegalFileCorrectionReasonDTOBase } from "../../../shared/swagger/model/LegalFileCorrectionReasonDTO";
 import { VoucherAssignmentAuxiliarDTOBase } from "../../../shared/swagger/model/VoucherAssignmentAuxiliarDTO";
 import { TranslateService } from "ng2-translate";
 import * as FileSaver from "file-saver";
-import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi, LogEmailDTO, LegalFileDTOBase, ApplicationauthorizedPersonApi } from "../../../shared/swagger";
+import { RegistrationWarningApi, InvalidateReasonApi, ApplicationInvalidateReasonDTO, ApplicationCommentDTO, ApplicationcommentApi, LogEmailDTO, LegalFileDTOBase, ApplicationauthorizedPersonApi, ApplicationAuthorizedPersonDTOBase } from "../../../shared/swagger";
 import { NgForm, NgModel } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import {environment} from '../../../../environments/environment';
 
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
-    providers: [ApplicationApi, ApplicationauthorizedPersonApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi, InvalidateReasonApi, ApplicationcommentApi, VoucherApi],
+    providers: [ApplicationauthorizedPersonApi, ApplicationApi, BeneficiaryApi, MayorApi, MunicipalityApi, RegistrationApi, ThreadApi, UserApi, RegistrationWarningApi, InvalidateReasonApi, ApplicationcommentApi, VoucherApi],
     styleUrls: ['./applicant-registrations-details.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
@@ -112,6 +111,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private correspondenceDialogInfo: LogEmailDTO;
     private buttonStatusEnabled: any[][] = [];
     private isInFreezeList: any = [];
+    private applicationAuthorizedUsers: any[][] = [];
 
     private fileURL: string = `/${environment.context}/api/registration/getDocument/`;
 
@@ -123,7 +123,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         private route: ActivatedRoute,
         private sharedService: SharedService,
         private applicationApi: ApplicationApi,
-        private applicationAuthorizedPersonApi: ApplicationauthorizedPersonApi,
         private beneficiaryApi: BeneficiaryApi,
         private registrationApi: RegistrationApi,
         private threadApi: ThreadApi,
@@ -132,7 +131,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         private mayorApi: MayorApi,
         private voucherApi: VoucherApi,
         private translateService: TranslateService,
-        private location: Location
+        private location: Location,
+        private applicationAuthorizedPersonApi: ApplicationauthorizedPersonApi
     ) {
         this.loadingData = true;
         this.route.params.subscribe(
@@ -175,12 +175,36 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                         this.applicationInvalidateReasonApi.changeStatusApplicationEnabled(application.id).subscribe((response: ResponseDTO) => {
                             this.buttonStatusEnabled[i] = response.data;
                         })
+                       
+
                         this.registrationApi.getRegistrationById(application.registrationId).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 if (registration) {
                                     this.userApi.getUsersByIdFromRegistration(registration.id).subscribe(
                                         (users: UserDTOBase[]) => {
-                                            this.contactUsers[i] = users;
+                                            users.map((user) => {
+                                                return user['authorized'] = false;
+                                            })
+
+                                            this.applicationAuthorizedPersonApi.getAuthorization(application.id).subscribe(
+                                                (response : ResponseDTO)=>{
+                                                   response.data.forEach(element => {
+                                                    let authorizationUser = <ApplicationAuthorizedPersonDTOBase> element;
+                                                    users.forEach((user) => {
+                                                        if(authorizationUser['authorized_person'] == user.id){
+                                                           user['authorized'] = true;
+                                                        }
+                                                    })
+                                                   });
+                                                    this.contactUsers[i] = users;
+                                                
+                                                },error=>{
+                                                    console.log(error);
+                                                    
+                                                }
+                                            );
+                                            
+
                                         }
                                     )
                                     this.registrationApi.getTypesDisabled(registration.id).subscribe(
@@ -209,46 +233,33 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                             this.userAuthorizedPerson.userId = user.id;
                                                                             this.userAuthorizedPerson.applicationId = application.id;
                                                                             this.userAuthorizedPerson.authorized = null;
-                                                                            console.log("Before sending, the userAuthDTO is ", this.userAuthorizedPerson);
-                                                                            this.applicationAuthorizedPersonApi.getAuthorization(this.userAuthorizedPerson.applicationId).subscribe(
-                                                                                (response : ResponseDTO) => {
-                                                                                    this.userAuthorizedPerson = response.data;
-                                                                                    console.log("Authorised person is ", this.userAuthorizedPerson);
-
-                                                                                    if (mayor) {
-                                                                                        this.mayors[i] = mayor;
-                                                                                    } else {
-                                                                                        let mayor = new MayorDTOBase();
-                                                                                        mayor.id = -1;
-                                                                                        mayor.municipalityId = municipality.id;
-                                                                                        mayor.name = '-';
-                                                                                        mayor.surname = '-';
-                                                                                        mayor.email = '-';
-                                                                                        this.mayors[i] = mayor;
-                                                                                    }
-                                                                                    this.correctionRequested[i] = legalFiles[i];
-                                                                                    this.selectedFiles[i] = [];
-                                                                                    this.selectedReasonTypes[i] = [];
-                                                                                    this.createFrontEndLegalFiles(registration, i, legalFiles);
-                                                                                    this.applications[i] = application;
-                                                                                    this.registrations[i] = registration;
-                                                                                    this.users[i] = user;
-                                                                                    this.municipalities[i] = municipality;
-                                                                                    if (this.registrations.length == this.municipalities.length) {
-                                                                                        this.registrationIssues[i] = 0;
-                                                                                    }
-                                                                                    correctCount++;
-                                                                                    if (correctCount == (applications.length - failCount)) {
-                                                                                        this.loadingData = false;
-                                                                                    }
-
-
-                                                                                }
-                                                                            );
-
+                                                                            this.correctionRequested[i] = legalFiles[i];
+                                                                            this.selectedFiles[i] = [];
+                                                                            this.selectedReasonTypes[i] = [];
+                                                                            this.createFrontEndLegalFiles(registration, i, legalFiles);
+                                                                            this.applications[i] = application;
+                                                                            this.registrations[i] = registration;
+                                                                            this.users[i] = user;
+                                                                            this.municipalities[i] = municipality;
+                                                                            if (this.registrations.length == this.municipalities.length) {
+                                                                                this.registrationIssues[i] = 0;
+                                                                            }
+                                                                            correctCount++;
+                                                                            if (correctCount == (applications.length - failCount)) {
+                                                                                this.loadingData = false;
+                                                                            }
+                                                                            if (mayor) {
+                                                                                this.mayors[i] = mayor;
+                                                                            } else {
+                                                                                let mayor = new MayorDTOBase();
+                                                                                mayor.id = -1;
+                                                                                mayor.municipalityId = municipality.id;
+                                                                                mayor.name = '-';
+                                                                                mayor.surname = '-';
+                                                                                mayor.email = '-';
+                                                                                this.mayors[i] = mayor;
+                                                                            }
                                                                         }
-
-
                                                                     );
                                                                 }, (error) => {
                                                                     this.loadingData = false;
@@ -738,17 +749,20 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         ); */
     }
 
-    private changeUser() {
-        console.log("changeUser ");
-    }
+    private userAuthorisation(i: number, user) {
 
-    private userAuthorisation(i: number) {
-        console.log("userAuthorisation is ", i);
-        console.log("The person changed is ", this.applications[i].authorizedPerson);
-        /* this.applicationApi.updateAuthorization().subscribe(
-            (response : ResponseDTO) {
-
+        let applicationAuthorizedPerson = new UserAuthorizedPersonDTOBase();
+        applicationAuthorizedPerson.userId = user.id;
+        applicationAuthorizedPerson.applicationId = this.applications[i].id;
+        applicationAuthorizedPerson.authorized = !user['authorized'];
+       this.applicationAuthorizedPersonApi.updateAuthorization_1(applicationAuthorizedPerson).subscribe(
+            (UserAuthorizedPersonDTO) =>{
+                               
+            }, error =>{
+                applicationAuthorizedPerson.authorized = user['authorized'];
+                this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'suppPortal.editProfile.save.error', 'error');
             }
-        ); */
+            
+        ); 
     }
 }
