@@ -223,6 +223,14 @@ public class SupplierService {
                 }
 
                 break;
+            case "numberRegistrations":
+                if (direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNumberRegistrationsAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNumberRegistrationsDesc(name, page * count, count));
+                }
+
+                break;
             case "status":
                 if (direction.equals(Direction.ASC)) {
                     suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusAsc(name, page * count, count));
