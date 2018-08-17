@@ -103,7 +103,8 @@
                         <br>
                         <p-multiSelect id="selectCountry" #selectCountry name="selectCountry"
                                        defaultLabel="{{ 'shared.choose.label' | translate }}"
-                                       [options]="countryOptions" [(ngModel)]="selectedCountries">
+                                       [options]="countryOptions" [(ngModel)]="selectedCountries"
+                                       (onChange)="checkRegions($event)">
                         </p-multiSelect>
                     </div>
                     <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
@@ -116,7 +117,8 @@
                                         header="{{country.label | slice:0:1 | uppercase }}{{country.label | slice:1:country.label.length | lowercase }}">
                                 <p-multiSelect id="{{'selectRegion'+i}}" #selectRegion name="{{'selectRegion'+i}}"
                                                defaultLabel="{{ 'shared.choose.label' | translate }}"
-                                               [options]="regionOptions[country.label]" [(ngModel)]="selectedRegions[country.label]" (ngModelChange)="checkRegions($event)">
+                                               [options]="regionOptions[country.label]" [(ngModel)]="selectedRegions[country.label]"
+                                               (onChange)="checkRegions($event)">
                                 </p-multiSelect>
                             </p-tabPanel>
                         </p-tabView>

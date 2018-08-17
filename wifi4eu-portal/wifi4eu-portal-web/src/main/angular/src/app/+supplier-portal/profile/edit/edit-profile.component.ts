@@ -63,13 +63,11 @@ export class SupplierEditProfileComponent {
     private buttonCompanyEnabled: boolean = true;
     private buttonUserEnabled: boolean = true;
     private buttonEnabled: boolean = false;
-    private areRegionsSelected: boolean = false;
+//    private areRegionsSelected: boolean = false;
     private buttonRegionsEnabled: boolean = true;
-    
- 
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
-          let allow = true;
+        let allow = true;
         if (this.sharedService.user) {
             this.user = this.sharedService.user;
             this.getSupplierData();
@@ -87,7 +85,6 @@ export class SupplierEditProfileComponent {
         this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
-                  
                     this.supplier = supplier;
                     this.users = this.supplier.users;
                     if (this.supplier.logo != null)
@@ -136,7 +133,6 @@ export class SupplierEditProfileComponent {
     }
 
     private changeLogo(event): any {
-              
         if (event.target.files.length > 0) {
             this.logoFile = event.target.files[0];
             if (this.logoFile.size > 2560000) {
@@ -172,11 +168,10 @@ export class SupplierEditProfileComponent {
                     }
                 }
             );
-            if(imageStatus = 'correct'){
+            if (imageStatus = 'correct') {
                 this.enableButton(event);
-                 for(let i = 0; i < this.users.length; i++){
+                for (let i = 0; i < this.users.length; i++)
                     this.enableButtonUser(event, i);
-                }
             }
         }
         return null;
@@ -217,16 +212,13 @@ export class SupplierEditProfileComponent {
     private saveSupplierData(i) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-
         this.savingData = true;
-        var newRegions = [];
-
+        let newRegions = [];
         this.selectedCountries.forEach(selectedCountry => {
-            if(typeof this.selectedRegions[selectedCountry.label] !== "undefined") {
+            if (typeof this.selectedRegions[selectedCountry.label] !== "undefined") {
                 newRegions[selectedCountry.label] = this.selectedRegions[selectedCountry.label];
             }
         });
-
         this.supplier.suppliedRegions = [];
         for (let selectedCountry in newRegions) {
             for (let selectedRegion of this.selectedRegions[selectedCountry]) {
@@ -234,7 +226,6 @@ export class SupplierEditProfileComponent {
                 suppliedRegion.regionId = selectedRegion;
                 suppliedRegion.supplierId = this.supplier.id;
                 this.supplier.suppliedRegions.push(suppliedRegion);
-                
             }
         }
         this.savingDataSubscription = this.supplierApi.updateSupplier(this.supplier).subscribe(
@@ -261,16 +252,15 @@ export class SupplierEditProfileComponent {
                 this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
             }
         );
-
     }
 
-    private closeModal(){
+    private closeModal() {
         this.addContact = false;
         this.addUser = false;      
         this.displayAddContactModal = false;  
-        }
-    
-    private addNewContact(){       
+    }
+
+    private addNewContact() {
         this.addContact = true; 
         this.supplierApi.sendEmailToNewContact(this.newUserEmail).subscribe(
             (responseDTO: ResponseDTOBase) => {
@@ -283,76 +273,77 @@ export class SupplierEditProfileComponent {
         );
     }
 
-    
-        
-        /* New contact funciontality */
-        private sendMailToUser(){
+    /* New contact funciontality */
+    private sendMailToUser(){
         this.newUserEmail = '';
         this.addUser = true;
-        }
+    }
 
-        private deactivateContactModal(){
-            this.closeModal();
-            this.supplierApi.deactivateSupplierContact(this.users[this.contactIndex].id).subscribe(
-                (responseDTO: ResponseDTOBase) => {
-                    this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.email.sent', 'success');
-                    this.closeModal();
-                    this.goBack();
-                }, error => {
-                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
-                    this.closeModal();
-                }
-            );
+    private deactivateContactModal() {
+        this.closeModal();
+        this.supplierApi.deactivateSupplierContact(this.users[this.contactIndex].id).subscribe(
+            (responseDTO: ResponseDTOBase) => {
+                this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.email.sent', 'success');
+                this.closeModal();
+                this.goBack();
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                this.closeModal();
+            }
+        );
+    }
 
-        }
-
-        private deactivateShowModal(i){
-            this.contactIndex = i;
-            this.displayAddContactModal = true;
-        }
+    private deactivateShowModal(i) {
+        this.contactIndex = i;
+        this.displayAddContactModal = true;
+    }
 
  
-        private enableButton(event){
-            this.buttonEnabled = false;
-            if(this.supplier.name != null && this.supplier.address != null 
-                && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != "" 
-                &&  this.supplier.vat.trim() != ""){
-                    if(this.supplier.website != null && this.supplier.website.trim() != ""){
-                        var pattern = new RegExp(this.websitePattern);
-                        this.buttonCompanyEnabled = pattern.test(this.supplier.website);        
-                    }else {
-                        this.buttonCompanyEnabled = true;   
-                    }
+    private enableButton(event) {
+        this.buttonEnabled = false;
+        if (this.supplier.name != null && this.supplier.address != null
+            && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != ""
+            &&  this.supplier.vat.trim() != "") {
+            if (this.supplier.website != null && this.supplier.website.trim() != "") {
+                let pattern = new RegExp(this.websitePattern);
+                this.buttonCompanyEnabled = pattern.test(this.supplier.website);
             } else {
-                this.buttonCompanyEnabled = false;
+                this.buttonCompanyEnabled = true;
             }
-         
-            if(this.buttonUserEnabled && this.buttonCompanyEnabled){
-                this.buttonEnabled = true;
+        } else {
+            this.buttonCompanyEnabled = false;
+        }
+        if (this.buttonUserEnabled && this.buttonCompanyEnabled)
+            this.buttonEnabled = true;
+    }
+
+    private enableButtonUser(event, i) {
+        this.buttonEnabled = false;
+        if (this.users[i]['phone_number'] != null && this.users[i]['phone_prefix'] != null
+            && this.users[i]['surname'] != null  && this.users[i]['name'] != null
+            && this.users[i]['phone_number'].trim() != "" && this.users[i]['phone_prefix'].trim() != ""
+            && this.users[i]['surname'].trim() != "" && this.users[i]['name'].trim() != "")
+            this.buttonUserEnabled = true;
+        else
+            this.buttonUserEnabled = false;
+        if (this.buttonUserEnabled && this.buttonCompanyEnabled)
+            this.buttonEnabled = true;
+    }
+
+    private checkRegions(event) {
+        this.buttonRegionsEnabled = true;
+        if (this.selectedCountries.length > 0) {
+        for (let selectedCountry of this.selectedCountries) {
+            if (this.selectedRegions[selectedCountry.label] != null) {
+                if (this.selectedRegions[selectedCountry.label].length == 0) {
+                    this.buttonRegionsEnabled = false;
+                }
+            } else {
+                this.buttonRegionsEnabled = false;
             }
         }
-
-        private enableButtonUser(event, i){
-            this.buttonEnabled = false;
-            if(this.users[i]['phone_number'] != null && this.users[i]['phone_prefix'] != null && this.users[i]['surname'] != null  && this.users[i]['name'] != null 
-                && this.users[i]['phone_number'].trim() != "" && this.users[i]['phone_prefix'].trim() != ""  && this.users[i]['surname'].trim() != "" && this.users[i]['name'].trim() != ""){
-                    this.buttonUserEnabled = true;                      
-            }else{
-                this.buttonUserEnabled = false;
-            }
-
-            if(this.buttonUserEnabled && this.buttonCompanyEnabled){
-                this.buttonEnabled = true;
-            }
-        }
-
-        private checkRegions(event){
+        } else {
             this.buttonRegionsEnabled = false;
-            if(event.length > 0){
-                this.buttonRegionsEnabled = true;
-                this.enableButton(event);
-            }
-
         }
-        
+    }
 }
