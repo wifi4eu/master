@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -28,6 +30,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
+import wifi4eu.wifi4eu.entity.registration.ConditionsAgreement;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
@@ -41,13 +44,16 @@ import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.registration.ConditionsAgreementRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
@@ -131,6 +137,15 @@ public class UserService {
 
     @Autowired
     InvitationContactRepository invitationContactRepository;
+
+    @Autowired
+    ConditionsAgreementRepository conditionsAgreementRepository;
+    
+    @Autowired
+    ApplicationService applicationService;
+
+    @Autowired
+    RightRepository rightRepository;
 
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
@@ -269,26 +284,39 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO deleteUser(int userId, HttpServletRequest request) {
+    public void deleteInvitationByUser(String email){
+        invitationContactRepository.delete(invitationContactRepository.findByEmailInvited(email));
+    }
+
+    @Transactional
+    public ResponseDTO deleteUser(int userId, HttpServletRequest request) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
-        if (userDTO != null) {
+        if (Validator.isNotNull(userDTO)) {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
 
-                    //first remove connections with registration by setting the status to deleted
-                    List<RegistrationUsers> registrationUsers = registrationUsersRepository.findByUserId(userDTO.getId());
-                    for (RegistrationUsers rUser : registrationUsers) {
-                        rUser.setStatus(RegistrationUsersStatus.DELETED.getValue());
-                    }
-                    registrationUsersRepository.save(registrationUsers);
+                    if(applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0){
 
-                    removeTempToken(userDTO);
-                    for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
-                        municipalityService.deleteMunicipality(municipality.getId(), request);
+                        for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
+                            municipalityService.deleteMunicipality(municipality.getId(), request);
+                        }
+                        for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
+                            userThreadsService.deleteUserThreads(userThread.getId());
+                        }
+
+                        removeTempToken(userDTO);
+                        deleteUserRights(userDTO.getId());
+                        deleteUserConditionAgreements(userDTO.getId());
+                        deleteInvitationByUser(userDTO.getEcasEmail());
+
+                        userDTO.setType(0);
+                        userRepository.save(userMapper.toEntity(userDTO));
+                    }else{
+                        // Application detected for this user id
+                        _log.warn("ECAS Username: " + userDTO.getEcasUsername() + " - User registrations cannot be deleted due to one registration is applied");
+                        return new ResponseDTO(false, null, new ErrorDTO(10, "benefPortal.withdraw.existingApplication.error"));
                     }
-                    for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
-                        userThreadsService.deleteUserThreads(userThread.getId());
-                    }
+
                     break;
                 case (int) Constant.ROLE_SUPPLIER:
 
@@ -299,7 +327,6 @@ public class UserService {
                     }
                     supplierUserRepository.save(supplierUsers);
 
-
                     removeTempToken(userDTO);
                     removeSuppliedRegion(userDTO);
 
@@ -307,13 +334,25 @@ public class UserService {
                     if (supplier != null) {
                         supplierService.deleteSupplier(supplier.getId());
                     }
+                    userDTO.setType(0);
+                    userRepository.save(userMapper.toEntity(userDTO));
                     break;
             }
-            userRepository.delete(userMapper.toEntity(userDTO));
-            return userDTO;
+            userDTO.setPassword(null);
+            return new ResponseDTO(true, userDTO, null);
         } else {
-            return null;
+            return new ResponseDTO(false, null, null);
         }
+    }
+
+    @Transactional
+    public void deleteUserRights(Integer userId){
+        rightRepository.deleteByUserId(userId);
+    }
+
+    @Transactional
+    public void deleteUserConditionAgreements(Integer userId){
+        conditionsAgreementRepository.deleteByUserId(userId);
     }
 
     @Transactional

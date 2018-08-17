@@ -258,6 +258,10 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.findTopByRegistrationIdOrderByDateDesc(registrationId));
     }
 
+    public List<ApplicationDTO> applicationsByListOfMunicipalities(Integer userId){
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsByMunicipalities(userId));
+    }
+
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
