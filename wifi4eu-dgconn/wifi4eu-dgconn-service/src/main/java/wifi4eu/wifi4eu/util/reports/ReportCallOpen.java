@@ -149,241 +149,241 @@ public class ReportCallOpen {
         boolean warning = false;
         if (Validator.isNotNull(registration)) {
             Municipality municipality = municipalityRepository.findOne(registration.getMunicipality().getId());
-            if (Validator.isNotNull(municipality)) {
+            if (Validator.isNotNull(municipality) && Validator.isNotNull(municipality.getLau()) && Validator.isNotNull(municipality.getLau().getId())){
                 // Lau lau = lauRepository.findOne(Integer.parseInt(municipality.getId().toString()));
-                Lau lau = lauRepository.findOne(municipality.getLau().getId());
-                Mayor mayor = mayorRepository.findByMunicipalityId(municipality.getId());
-                if (Validator.isNotNull(mayor) && Validator.isNotNull(lau)) {
-                    // User user = userRepository.findOne(registration.getIdUser());
-                    User user = userRepository.findOne(registrationUsersRepository.findUserIdFromRegistrationId(registration.getId()));
-                    if (Validator.isNotNull(user) && Validator.isNotNull(user.getEmail()) && Validator.isNotNull(user.getEcasEmail()) && Validator.isNotNull(mayor.getEmail()) && Validator.isNotNull(lau) && Validator.isNotNull(lau.getCountryCode())) {
-                        switch (lau.getCountryCode().toUpperCase()) {
-                            case "AT":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".at") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".at") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".at")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "BE":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".be") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".be") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".be")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "BG":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".bg") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".bg") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".bg")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "HR":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".hr") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".hr") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".hr")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "CY":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".cy") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".cy") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".cy")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "CZ":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".cz") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".cz") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".cz")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "DK":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".dk") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".dk") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".dk")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "EE":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".ee") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".ee") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".ee")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "FI":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".fi") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".fi") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".fi")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "FR":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".fr") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".fr") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".fr")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "DE":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".de") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".de") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".de")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "EL":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".el") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".el") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".el")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "HU":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".hu") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".hu") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".hu")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "IS":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".is") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".is") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".is")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "IE":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".ie") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".ie") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".ie")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "IT":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".it") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".it") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".it")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "LV":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".lv") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".lv") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".lv")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "LT":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".lt") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".lt") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".lt")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "LU":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".lu") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".lu") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".lu")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "MT":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".mt") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".mt") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".mt")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "NL":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".nl") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".nl") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".nl")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "NO":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".no") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".no") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".no")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "PL":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".pl") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".pl") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".pl")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "PT":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".pt") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".pt") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".pt")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "RO":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".ro") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".ro") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".ro")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "SK":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".sk") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".sk") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".sk")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "SI":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".si") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".si") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".si")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "ES":
-                                if (!(
-                                        user.getEmail().trim().toLowerCase().endsWith(".es") ||
-                                                user.getEmail().trim().toLowerCase().endsWith(".cat") ||
-                                                user.getEmail().trim().toLowerCase().endsWith(".gal") ||
-                                                user.getEmail().trim().toLowerCase().endsWith(".eus")
-                                ) || !(
-                                        user.getEcasEmail().trim().toLowerCase().endsWith(".es") ||
-                                                user.getEcasEmail().trim().toLowerCase().endsWith(".cat") ||
-                                                user.getEcasEmail().trim().toLowerCase().endsWith(".gal") ||
-                                                user.getEcasEmail().trim().toLowerCase().endsWith(".eus")
-                                ) || !(
-                                        mayor.getEmail().trim().toLowerCase().endsWith(".es") ||
-                                                mayor.getEmail().trim().toLowerCase().endsWith(".cat") ||
-                                                mayor.getEmail().trim().toLowerCase().endsWith(".gal") ||
-                                                mayor.getEmail().trim().toLowerCase().endsWith(".eus")
-                                )) {
-                                    warning = true;
-                                }
-                                break;
-                            case "SE":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".se") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".se") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".se")) {
-                                    warning = true;
-                                }
-                                break;
-                            case "UK":
-                                if (!user.getEmail().trim().toLowerCase().endsWith(".uk") ||
-                                        !user.getEcasEmail().trim().toLowerCase().endsWith(".uk") ||
-                                        !mayor.getEmail().trim().toLowerCase().endsWith(".uk")) {
-                                    warning = true;
-                                }
-                                break;
+                    Lau lau = lauRepository.findOne(municipality.getLau().getId());
+                    Mayor mayor = mayorRepository.findByMunicipalityId(municipality.getId());
+                    if (Validator.isNotNull(mayor) && Validator.isNotNull(lau)) {
+                        // User user = userRepository.findOne(registration.getIdUser());
+                        User user = userRepository.findOne(registrationUsersRepository.findUserIdFromRegistrationId(registration.getId()));
+                        if (Validator.isNotNull(user) && Validator.isNotNull(user.getEmail()) && Validator.isNotNull(user.getEcasEmail()) && Validator.isNotNull(mayor.getEmail()) && Validator.isNotNull(lau) && Validator.isNotNull(lau.getCountryCode())) {
+                            switch (lau.getCountryCode().toUpperCase()) {
+                                case "AT":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".at") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".at") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".at")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "BE":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".be") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".be") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".be")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "BG":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".bg") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".bg") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".bg")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "HR":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".hr") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".hr") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".hr")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "CY":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".cy") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".cy") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".cy")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "CZ":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".cz") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".cz") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".cz")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "DK":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".dk") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".dk") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".dk")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "EE":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".ee") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".ee") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".ee")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "FI":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".fi") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".fi") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".fi")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "FR":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".fr") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".fr") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".fr")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "DE":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".de") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".de") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".de")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "EL":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".el") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".el") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".el")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "HU":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".hu") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".hu") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".hu")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "IS":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".is") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".is") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".is")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "IE":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".ie") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".ie") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".ie")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "IT":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".it") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".it") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".it")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "LV":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".lv") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".lv") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".lv")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "LT":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".lt") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".lt") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".lt")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "LU":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".lu") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".lu") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".lu")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "MT":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".mt") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".mt") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".mt")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "NL":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".nl") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".nl") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".nl")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "NO":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".no") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".no") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".no")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "PL":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".pl") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".pl") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".pl")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "PT":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".pt") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".pt") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".pt")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "RO":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".ro") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".ro") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".ro")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "SK":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".sk") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".sk") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".sk")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "SI":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".si") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".si") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".si")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "ES":
+                                    if (!(
+                                            user.getEmail().trim().toLowerCase().endsWith(".es") ||
+                                                    user.getEmail().trim().toLowerCase().endsWith(".cat") ||
+                                                    user.getEmail().trim().toLowerCase().endsWith(".gal") ||
+                                                    user.getEmail().trim().toLowerCase().endsWith(".eus")
+                                    ) || !(
+                                            user.getEcasEmail().trim().toLowerCase().endsWith(".es") ||
+                                                    user.getEcasEmail().trim().toLowerCase().endsWith(".cat") ||
+                                                    user.getEcasEmail().trim().toLowerCase().endsWith(".gal") ||
+                                                    user.getEcasEmail().trim().toLowerCase().endsWith(".eus")
+                                    ) || !(
+                                            mayor.getEmail().trim().toLowerCase().endsWith(".es") ||
+                                                    mayor.getEmail().trim().toLowerCase().endsWith(".cat") ||
+                                                    mayor.getEmail().trim().toLowerCase().endsWith(".gal") ||
+                                                    mayor.getEmail().trim().toLowerCase().endsWith(".eus")
+                                    )) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "SE":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".se") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".se") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".se")) {
+                                        warning = true;
+                                    }
+                                    break;
+                                case "UK":
+                                    if (!user.getEmail().trim().toLowerCase().endsWith(".uk") ||
+                                            !user.getEcasEmail().trim().toLowerCase().endsWith(".uk") ||
+                                            !mayor.getEmail().trim().toLowerCase().endsWith(".uk")) {
+                                        warning = true;
+                                    }
+                                    break;
+                            }
                         }
                     }
-                }
             }
         }
         return warning;
@@ -398,7 +398,7 @@ public class ReportCallOpen {
                 List<Registration> ipRegistrations = Lists.newArrayList(registrationRepository.findByIpRegistration(registration.getIpRegistration()));
                 for (Registration ipRegistration : ipRegistrations) {
                     Municipality ipMunicipality = municipalityRepository.findOne(ipRegistration.getMunicipality().getId());
-                    if (Validator.isNotNull(ipMunicipality) && Validator.isNotNull(ipRegistration) && ipRegistration.getId() != registration.getId() && ipMunicipality.getLau().getId() == municipality.getLau().getId()) {
+                    if (Validator.isNotNull(ipMunicipality) && Validator.isNotNull(ipRegistration) && Validator.isNotNull(ipMunicipality.getLau().getId()) && Validator.isNotNull(municipality.getLau().getId()) && ipRegistration.getId() != registration.getId() && ipMunicipality.getLau().getId() == municipality.getLau().getId()) {
                         warning = true;
                         break;
                     }
@@ -413,7 +413,7 @@ public class ReportCallOpen {
         boolean warning = false;
         if (Validator.isNotNull(registration)) {
             Municipality municipality = municipalityRepository.findOne(registration.getMunicipality().getId());
-            if (Validator.isNotNull(municipality)) {
+            if (Validator.isNotNull(municipality) && Validator.isNotNull(municipality.getLau()) && Validator.isNotNull(municipality.getLau().getId())){
                 Lau lau = lauRepository.findOne(municipality.getLau().getId());
                 Mayor mayor = mayorRepository.findByMunicipalityId(municipality.getId());
                 if (Validator.isNotNull(mayor) && Validator.isNotNull(lau)) {
