@@ -17,4 +17,7 @@ public interface RegistrationUsersRepository extends CrudRepository<Registration
 
     @Query(value = "SELECT _user FROM registration_users where registration = (SELECT registration FROM applications where id = ?1) AND main = 1", nativeQuery = true)
     Integer findUserIdFromApplicationId(int applicationId);
+
+    @Query(value = "SELECT _user FROM registration_users where registration = ?1 AND main = 1", nativeQuery = true)
+    Integer findUserIdFromRegistrationId(int registrationId);
 }

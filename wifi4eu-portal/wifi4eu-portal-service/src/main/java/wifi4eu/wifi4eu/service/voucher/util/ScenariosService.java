@@ -167,7 +167,7 @@ public class ScenariosService {
                         municipalityDTO.setLauId(lauDTO.getId());
                         municipalityDTO.setAddress("address" + row.getRowNum());
 
-                        MunicipalityDTO resM = municipalityService.createMunicipality(municipalityDTO);
+                        MunicipalityDTO resM = municipalityService.saveMunicipality(municipalityDTO);
                         registrationDTO.setMunicipalityId(resM.getId());
                         registrationDTO.setAllFilesFlag(1);
                         RegistrationDTO resR = registrationService.createRegistration(registrationDTO);
@@ -184,7 +184,7 @@ public class ScenariosService {
                             municipalityDTO.setLauId(lauDTO.getId());
                             municipalityDTO.setAddress("address" + row.getRowNum());
 
-                            MunicipalityDTO resM = municipalityService.createMunicipality(municipalityDTO);
+                            MunicipalityDTO resM = municipalityService.saveMunicipality(municipalityDTO);
                             registrationDTO.setMunicipalityId(resM.getId());
                             registrationDTO.setAllFilesFlag(1);
                             RegistrationDTO resR = registrationService.createRegistration(registrationDTO);
@@ -204,7 +204,7 @@ public class ScenariosService {
                                 municipalityDTO.setLauId(lauDTO.getId());
                                 municipalityDTO.setAddress("address" + row.getRowNum());
 
-                                MunicipalityDTO resM = municipalityService.createMunicipality(municipalityDTO);
+                                MunicipalityDTO resM = municipalityService.saveMunicipality(municipalityDTO);
                                 registrationDTO.setMunicipalityId(resM.getId());
                                 registrationDTO.setAllFilesFlag(1);
                                 RegistrationDTO resR = registrationService.createRegistration(registrationDTO);
@@ -222,7 +222,7 @@ public class ScenariosService {
                                     municipalityDTO.setLauId(lauDTO.getId());
                                     municipalityDTO.setAddress("address" + row.getRowNum());
 
-                                    MunicipalityDTO resM = municipalityService.createMunicipality(municipalityDTO);
+                                    MunicipalityDTO resM = municipalityService.saveMunicipality(municipalityDTO);
                                     registrationDTO.setMunicipalityId(resM.getId());
                                     registrationDTO.setAllFilesFlag(1);
                                     RegistrationDTO resR = registrationService.createRegistration(registrationDTO);

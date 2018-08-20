@@ -67,7 +67,7 @@
                       <button type="button" class="btn greenButton" #validateBtn (click)="displayValidateModal(i)" [disabled]="buttonStatusEnabled[i]?.validate || applications[i].status == 2">
                         {{ 'dgConn.applicantDetails.validateApplication.title' | translate }}
                       </button>
-                      <button type="button" class="btn redButton" #invalidateBtn (click)="displayInvalidateModal(i)" [disabled]="buttonStatusEnabled[i]?.invalidate || applications[i].status == 1">
+                      <button type="button" class="btn redButton" #invalidateBtn (click)="displayInvalidateModal(i)" [disabled]="isInFreezeList[i] || buttonStatusEnabled[i]?.invalidate || applications[i].status == 1">
                           {{ 'dgConn.applicantDetails.invalidateApplication.title' | translate }}
                       </button>
                     </span>
@@ -138,12 +138,13 @@
                                         </span>
                                         <div class="innerOptions">
                                             <div>
-                                                <p-radioButton name="{{applications[i]?.id + z}}" value="{{users?.id}}" label="Yes" [(ngModel)]="applications[i].authorizedPerson"
+                                                <p-radioButton name="{{applications[i]?.id + z}}" [value]="true" label="Yes" [(ngModel)]="users.authorized"
                                                     inputId="preopt1" pTooltip="{{'dgConn.applicationDetails.auth.tooltip' | translate:{name:users?.name,surname:users?.surname}
-                                                }}" tooltipPosition="bottom" onChange = "changeUser(z)"></p-radioButton>
+                                                }}" tooltipPosition="bottom" (onClick)="userAuthorisation(i, users)" ></p-radioButton>
                                             </div>
                                             <div>
-                                                <p-radioButton name="{{applications[i]?.id +z}}" value="{{users?.id}}-1" label="No" [(ngModel)]="applications[i].authorizedPerson" inputId="preopt2"></p-radioButton>
+                                                <p-radioButton name="{{applications[i]?.id +z}}" [value]="false" label="No" [(ngModel)]="users.authorized" inputId="preopt2"
+                                                (onClick)="userAuthorisation(i, users)"></p-radioButton>
                                             </div>
                                         </div>
                                     </div>
@@ -602,15 +603,9 @@
                 </div>
                 <div style="padding: 2em; padding-top: 0em;">
                     <div class="row center">
-                        <div class="col-sm-6">
-                            <button type="button" class="btn btn-primary cancel-button" [disabled]="processingRequest" (click)="closeModal()">
-                                {{ 'shared.cancel.button' | translate }}
-                            </button>
-                        </div>
-                        <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary publish-button" [disabled]="processingRequest">
-                                {{ 'shared.confirm.button' | translate }}
-                                <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary publish-button">
+                                {{ 'shared.close.label' | translate }}
                             </button>
                         </div>
                     </div>

@@ -18,6 +18,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -44,6 +45,9 @@ public class ApplicationResource {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
 
     Logger _log = LogManager.getLogger(ApplicationResource.class);
 
@@ -79,10 +83,10 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications voucher by call id " + callId);
         try {
-            if (userConnected.getType() != 5) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
+            if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            
             return applicationService.getApplicationsVoucherInfoByCall(callId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
@@ -121,10 +125,10 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn applicants by call id " + callId);
         try {
-            if (userConnected.getType() != 5) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
+            if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country, null, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country));
@@ -146,10 +150,10 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn applicants searching name by call id " + callId + ", country " + country + " and searching name " + name);
         try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
+            if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country, name, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name));
@@ -170,10 +174,10 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications voucher information by call id " + callId);
         try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
+            if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Applications not invalidated are retrieved successfully");
             return applicationService.countApplicationsNotInvalidated(callId);
         } catch (AccessDeniedException ade) {
@@ -193,10 +197,10 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting applications by call id " + callId + " lau id" + lauId + " with date " + currentDate);
         try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
+            if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Applications retrieved successfully");
             return applicationService.getApplicationsByCallIdAndLauId(callId, lauId);
         } catch (AccessDeniedException ade) {
@@ -220,6 +224,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            
             ApplicationDTO resApplication = applicationService.sendLegalDocumentsCorrection(applicationDTO, request);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Legal documents correction request sent successfully");
             return new ResponseDTO(true, resApplication, null);
@@ -245,6 +250,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            
             ResponseEntity<byte[]> responseReturn = null;
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
@@ -276,6 +282,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
+            
             ResponseEntity<byte[]> responseReturn = null;
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
@@ -307,6 +314,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
+            
             CorrectionRequestEmailDTO correctionRequest = applicationService.sendCorrectionEmails(callId);
             return new ResponseDTO(true, correctionRequest, null);
         } catch (AccessDeniedException ade) {
@@ -331,6 +339,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
+            
             return applicationService.getLastCorrectionRequestEmailInCall(callId);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the request", ade.getMessage());
@@ -354,6 +363,7 @@ public class ApplicationResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
+            
             return applicationService.checkIfCorrectionRequestEmailIsAvailable(callId);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to check the option", ade.getMessage());
@@ -374,8 +384,7 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Rejecting application");
         try {
-
-            if (userConnected.getType() != 5) {
+        	if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -400,7 +409,7 @@ public class ApplicationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Selecting application");
         try {
-            if (userConnected.getType() != 5) {
+            if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 

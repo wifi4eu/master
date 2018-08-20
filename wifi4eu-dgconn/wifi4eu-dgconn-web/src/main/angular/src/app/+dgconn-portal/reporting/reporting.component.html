@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="header">
+    <div class="back-button">
+      <a href="#" [routerLink]="['/dgconn-portal']">
+        <i class="fa fa-arrow-left"></i> Back</a>
+    </div>
+    <h1>{{'home.report.title' | translate}}</h1>
+    <p>{{'reports.subtitle' | translate}}</p>
+  </div>
+
+  <div class="report" *ngFor="let report of reports">
+    <h5>{{'reports.title.' + report | translate}}</h5>
+
+    <p>{{'reports.subtitle.' + report | translate}}</p>
+
+
+    <div class="row">
+      <div class="form-group col-md-3" *ngIf="isCallSelector(report)">
+        <label for="selectCall">{{ 'reports.call.label' | translate }}</label>
+        <select class="form-control"  id="selectCall">
+          <option value="" disabled selected> {{'reports.select.placeholder' | translate}}</option>
+          <!-- [compareWith]="byId"  [(ngModel)]="beneficiarySelected" (ngModelChange)="onBeneficiarySelected(this)" -->
+          <!-- <option *ngFor="let bf of beneficiarySuggestions"  [ngValue]="bf" >
+              {{ bf.name }}
+          </option> -->
+        </select>
+      </div>
+      <div class="form-group col-md-3" *ngIf="report == 'seventh'">
+        <label for="selectCall">{{'reports.numberOfMonths.label' | translate}}</label>
+        <select class="form-control"  id="selectCall">
+          <option value="" disabled selected>{{'reports.select.placeholder' | translate}}</option>
+          <!-- [compareWith]="byId"  [(ngModel)]="beneficiarySelected" (ngModelChange)="onBeneficiarySelected(this)" -->
+          <!-- <option *ngFor="let bf of beneficiarySuggestions"  [ngValue]="bf" >
+                {{ bf.name }}
+            </option> -->
+        </select>
+      </div>
+      <div class="form-group col-md-6">
+          <button type="button" class="btn btn-primary simulate-button btn-flat-link" (click)="onReport(report)">
+              {{'reports.generateReport.label' | translate}}
+            </button>
+        <!-- <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fas fa-download" (click)="onReport(report)">{{'reports.generateReport.label' | translate}}</ux-button> -->
+      </div>
+    </div>
+  </div>
+
+</div>

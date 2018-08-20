@@ -57,6 +57,56 @@ public class VoucherResource {
 
     Logger _log = LogManager.getLogger(VoucherResource.class);
 
+    @ApiOperation(value = "Get if application is in freeze list")
+    @RequestMapping(value = "/in-freeze/application/{applicationId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO checkIfApplicationInFreeze(@PathVariable("applicationId") final Integer applicationId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving all the voucher assignments");
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: checkIfApplicationInFreeze");
+            }
+            ResponseDTO responseDTO = new ResponseDTO();
+            responseDTO.setData(voucherService.checkIfApplicationInFreeze(applicationId));
+            responseDTO.setSuccess(true);
+            responseDTO.setError(null);
+            return responseDTO;
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to retrieve all the voucher assignments", ade.getMessage());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The voucher assignments cannot been retrieved", e);
+            return null;
+        }
+    }
+
+    @ApiOperation(value = "Get if application is in simulation list")
+    @RequestMapping(value = "/in-simulation/application/{applicationId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO checkIfApplicationInSimulation(@PathVariable("applicationId") final Integer applicationId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving all the voucher assignments");
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: checkIfApplicationInSimulation");
+            }
+            ResponseDTO responseDTO = new ResponseDTO();
+            responseDTO.setData(voucherService.checkIfApplicationInSimulation(applicationId));
+            responseDTO.setSuccess(true);
+            responseDTO.setError(null);
+            return responseDTO;
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to retrieve all the voucher assignments", ade.getMessage());
+            return null;
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The voucher assignments cannot been retrieved", e);
+            return null;
+        }
+    }
+
     @ApiOperation(value = "Get all the voucher assignment")
     @RequestMapping(value = "/assignments", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
