@@ -659,12 +659,13 @@ public class BeneficiaryService {
                     invitationContact.setType((int) Constant.ROLE_REPRESENTATIVE);
                     invitationContact.setStatus(InvitationContactStatus.PENDING.getValue());
                     invitationContact.setCreateDate(today);
-                } else if (invitationContact.getIdRegistration() != registrationRepository.findByMunicipalityId(idMunicipality).getId()){
+                } else if (invitationContact.getIdRegistration().intValue() != registrationRepository.findByMunicipalityId(idMunicipality).getId().intValue()){
                     // same user, same email invited, different municipality
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - This user has already been invitated. Please, try another user email");
                     responseDTO.setSuccess(false);
                     responseDTO.setData("This user has already been invitated. Please, try another user email");
                     responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
+                    return responseDTO;
                 }
 
                 invitationContact.setLastModified(today);

@@ -53,6 +53,9 @@
                     </span>
                 </label>
             </div>
+            <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">   
+                <p (click)="addNewContactToSupplier()">{{ "benefPortal.beneficary.addMunicipality" | translate}}</p>   
+            </div>
         </div>
 
 
@@ -143,4 +146,45 @@
         </div>
     </form>
 </div>
+
+<p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <form #addNewUser="ngForm">
+        <div class="form-group">
+
+            <div class="row marginStep1 landingFirstText">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8 center">
+                    <h1 class="Modalh1Confirmation ">{{ 'benefPortal.adduser.title' | translate}}</h1>
+                    <p class="left">{{ 'benefPortal.adduser.desc' | translate}}</p>
+                    <p class="left">{{ 'benefPortal.adduser.email' | translate}}</p>
+                    <input type="email" id="newUserEmail" [(ngModel)]="newUserEmail"
+                           class="form-control" name="newUserEmail" [pattern]="emailPattern" size="50" required>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+        </div>
+    </form>
+    <div class="row marginStep1 landingFirstText form-group ">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button" (click)="closeAddNewContactModal()">
+                {{ 'shared.cancel.button' | translate }}
+            </button>
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button (click)="addNewContact()" class="btn btn-primary publish-button"
+                    [disabled]="!addNewUser.form.valid">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</p-dialog>
+<p-dialog [(visible)]="addContact" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>
 
