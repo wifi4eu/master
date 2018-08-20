@@ -45,11 +45,13 @@ export class AdditionalInfoComponent {
     private doc3: boolean = false;
     private doc4: boolean = false;
     private displayConfirmClose: boolean = false;
+    private changedDocs: number;
 
     private fileURL: string = '/wifi4eu/api/registration/getDocument/';
 
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
+        this.changedDocs = 0;
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             let municipalityId;
@@ -183,6 +185,7 @@ export class AdditionalInfoComponent {
                                 default:
                                     break;
                             }
+                            this.changedDocs++;
                             subscription.unsubscribe();
                         }
                     }
@@ -247,11 +250,12 @@ export class AdditionalInfoComponent {
                 this.document4.nativeElement.value = "";
                 break;
         }
+        this.changedDocs--;
         this.cleanFile(type);
     }
 
     private onSubmit() {
-        if (this.legalFilesToUpload.length > 0) {
+        if (this.legalFilesToUpload.length > 0 || this.changedDocs > 0) {
             let sendObject = new LegalFilesViewDTOBase();
             sendObject.arrayOfFiles = this.legalFilesToUpload;
             this.displayConfirmingData = true;
@@ -272,7 +276,6 @@ export class AdditionalInfoComponent {
             );
         } else {
             this.sharedService.growlTranslation('You cant upload documents right now', 'shared.cantUploadDocs', 'error');
-            this.filesUploaded = false;
         }
     }
 
