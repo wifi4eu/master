@@ -230,7 +230,6 @@ export class SupplierProfileComponent {
                 (data: ResponseDTOBase) => {
                     if (data.success) {
                         this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
-                        this.sharedService.logout();
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
                         var currentWindow: any = window;
