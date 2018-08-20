@@ -596,7 +596,7 @@
         </form>
     </p-dialog>
     <p-dialog [(visible)]="displaySimulation" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="!processingRequest" (onAfterHide)="closeModal()">
-        <form (ngSubmit)="rerunVoucherSimulation()" #validateConfirmationForm="ngForm">
+        <form (ngSubmit)="closeModal()" #validateConfirmationForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
                     <p [innerHTML]="'dgConn.applicantDetails.invalidateApplication.rerunVoucherSimulation' | translate"></p>
