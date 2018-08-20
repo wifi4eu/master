@@ -32,9 +32,9 @@ public interface SupplierListItemRepository extends CrudRepository<SupplierListI
     @Query(value = "select sup.id, sup.name, sup.website, sup.vat, sup._status as status, (select count(1) from suppliers where (account_number = sup.account_number or vat = sup.vat) and _status != 1) as numberRegistrations from suppliers as sup WHERE sup.name like concat('%',?#{[0]},'%') ORDER BY status DESC OFFSET ?#{[1]} ROWS FETCH NEXT ?#{[2]} ROWS ONLY", nativeQuery = true)
     List<SupplierListItem> findSupplierListItemsOrderByStatusDesc(String name, Integer offset, Integer count);
 
-    @Query(value = "select sup.id, sup.name, sup.website, sup.vat, sup._status as status, (select count(1) from suppliers where account_number = sup.account_number or vat = sup.vat) as numberRegistrations from suppliers as sup WHERE sup.name like concat('%',?#{[0]},'%') ORDER BY numberRegistrations ASC OFFSET ?#{[1]} ROWS FETCH NEXT ?#{[2]} ROWS ONLY", nativeQuery = true)
+    @Query(value = "select sup.id, sup.name, sup.website, sup.vat, sup._status as status, (select count(1) from suppliers where (account_number = sup.account_number or vat = sup.vat) and _status != 1) as numberRegistrations from suppliers as sup WHERE sup.name like concat('%',?#{[0]},'%') ORDER BY numberRegistrations ASC OFFSET ?#{[1]} ROWS FETCH NEXT ?#{[2]} ROWS ONLY", nativeQuery = true)
     List<SupplierListItem> findSupplierListItemsOrderByNumberRegistrationsAsc(String name, Integer offset, Integer count);
 
-    @Query(value = "select sup.id, sup.name, sup.website, sup.vat, sup._status as status, (select count(1) from suppliers where account_number = sup.account_number or vat = sup.vat) as numberRegistrations from suppliers as sup WHERE sup.name like concat('%',?#{[0]},'%') ORDER BY numberRegistrations DESC OFFSET ?#{[1]} ROWS FETCH NEXT ?#{[2]} ROWS ONLY", nativeQuery = true)
+    @Query(value = "select sup.id, sup.name, sup.website, sup.vat, sup._status as status, (select count(1) from suppliers where (account_number = sup.account_number or vat = sup.vat) and _status != 1) as numberRegistrations from suppliers as sup WHERE sup.name like concat('%',?#{[0]},'%') ORDER BY numberRegistrations DESC OFFSET ?#{[1]} ROWS FETCH NEXT ?#{[2]} ROWS ONLY", nativeQuery = true)
     List<SupplierListItem> findSupplierListItemsOrderByNumberRegistrationsDesc(String name, Integer offset, Integer count);
 }
