@@ -171,7 +171,7 @@
                     </span>
                 </div>
             </div>
-
+           
             <div class="row" *ngIf="!isMayor">
 
                 <div class="row">
@@ -179,6 +179,10 @@
                         <hr class="beneficiaryHr marginHr">
                     </div>
                 </div>
+
+                 <p class="labelModal profileData">
+                    {{ 'shared.supportingDocuments.provide.optional' | translate }}
+                </p>
 
                 <div class="col-offset-12">
                     <label class="label" for="document4" [innerHTML]="'benefPortal.request.additionalInfo.doc3.label' | translate"></label>
@@ -217,6 +221,7 @@
                                         <a class="link-label" href="{{fileURL}}{{registration.id}}/{{file.id}}" target="_blank">
                                             <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                         </a>
+
                                         <span class="attachment-label">
                                             <br />{{ 'shared.supportingDocuments.attachment' | translate:{uploadTime:documentFilesType4[i].uploadTime
                                             | date : "h:mm a, d MMM y"} }}
@@ -233,9 +238,7 @@
                     </div>
                 </div>
 
-                <p class="labelModal profileData">
-                    {{ 'shared.supportingDocuments.provide.optional' | translate }}
-                </p>
+       
 
                 <div class="col-offset-12">
                     <label class="label" for="document2" [innerHTML]="'benefPortal.request.additionalInfo.doc4.label' | translate"></label>
