@@ -10,17 +10,21 @@ import { UxService } from '@eui/ux-core';
 })
 export class MonitoringTableComponent implements OnInit{
 
+    private errorMessage: string;
+
     private cols: any[];
     private countries: CountryDTO[];
     private rows: MonitoringRowDTO[];
 
     private showLEF: boolean = true;
-    private showBC: boolean = false;
-    private showLC: boolean = false;
+    private showBC: boolean = true;
+    private showLC: boolean = true;
 
     private filterTimeout: any;
     private filterCountry: string;
     private filterName: string;
+
+    private selectedLegalEntities = [];
 
     @ViewChild('monitoring') monitoringTable: Table;
 
@@ -43,14 +47,14 @@ export class MonitoringTableComponent implements OnInit{
             { field: 'countryCode', order: 1 },
             { field: 'municipality', order: 1 }
         ];
-        this.api.getMonitoringData().toPromise().then(rows => this.rows = rows);
-        this.api.getCountries().toPromise().then(countries => this.countries = countries);
+        this.loadData();
+
     }
 
     loadData() {
-        this.api.getMonitoringData().subscribe(monitoringRows => {
-            this.rows = monitoringRows;
-        });
+        this.selectedLegalEntities = [];
+        this.api.getMonitoringData().subscribe(monitoringRows => this.rows = monitoringRows);
+        this.api.getCountries().subscribe(countries => this.countries = countries);
     }
 
     showColumn(isFor){
@@ -80,28 +84,24 @@ export class MonitoringTableComponent implements OnInit{
         }, 200);
     }
 
-    countersignSelected() {
+    countersignSelected(userConfirmedOperation) {
 
-        let selectedLegalEntities: number[] = new Array();
-
-        this.rows.forEach(row => {
-            if (row.selected) {
-                selectedLegalEntities.concat(row.id);
-            }
-        });
-
-        this.api.counterSignGrantAgreements(selectedLegalEntities).subscribe(
-            event => {
-                this.showSuccess();
-            },
-            (err) => {
-                this.showError(undefined);
-            }
-        );
+        if (userConfirmedOperation) {
+            this.api.counterSignGrantAgreements(this.selectedLegalEntities).subscribe(
+                event => {
+                    this.showSuccess();
+                    this.loadData();
+                },
+                (err) => {
+                    this.showError(err.message);
+                }
+            );
+        }
     }
 
     showError(message: string){
-        this.uxService.openMessageBox('messagebox_countersign_fail');
+        this.errorMessage = message;
+        this.uxService.openMessageBox('messagebox_fail');
     }
 
     showSuccess(){

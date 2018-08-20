@@ -4,8 +4,12 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.Document;
+import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 
 public class MonitoringRow {
 	
@@ -16,6 +20,7 @@ public class MonitoringRow {
 	private String lefStatus;
 	private String bcStatus;
 	private String lcStatus;
+	private Boolean readyToBeCounterSigned;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date signatureDate;
@@ -26,23 +31,41 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(LegalEntity le) {
-		if(le != null) {
-			this.setId(le.getId());
-			if(le.getCountry() != null) {
-				this.setCountryCode(le.getCountry().getIso2Code());
+	public MonitoringRow(LegalEntity legalEntity, BudgetaryCommitment budgetaryCommitment, LegalCommitment legalCommitment, Document grantAgreementDoc) {
+
+		//Legal Entity data
+		if(legalEntity != null) {
+			this.setId(legalEntity.getId());
+			if (legalEntity.getCountry() != null) {
+				this.setCountryCode(legalEntity.getCountry().getIso2Code());
 			}
-			this.setMunicipality(le.getOfficialName());
-			this.setRegistrationNumber(le.getRegistrationNumber());
-			this.setSignatureDate(le.getSignatureDate());
-			this.setLefStatus(le.getWfStatus());
-			if(le.getBudgetaryCommitment() != null) {
-				this.setBcStatus(le.getBudgetaryCommitment().getWfStatus());
-			}
-			if(le.getLegalCommitment() != null) {
-				this.setLcStatus(le.getLegalCommitment().getWfStatus());
-			}
+			this.setMunicipality(legalEntity.getOfficialName());
+			this.setRegistrationNumber(legalEntity.getRegistrationNumber());
+			this.setSignatureDate(legalEntity.getSignatureDate());
+			this.setLefStatus(legalEntity.getWfStatus());
 		}
+
+		//Budgetary Commitment Data
+		if(budgetaryCommitment != null) {
+			this.setBcStatus(budgetaryCommitment.getWfStatus());
+		}
+
+		//Legal Commitment Data
+		if(legalCommitment != null) {
+			this.setLcStatus(legalCommitment.getWfStatus());
+		}
+
+		//Grant Agreement Data
+		if(grantAgreementDoc != null) {
+			this.setSignatureDate(grantAgreementDoc.getPortalDate());
+			this.setCounterSignatureDate(grantAgreementDoc.getCounterSignatureDate());
+		}
+
+		//TODO check in the USER REQUIREMENTS if these condtions are right
+		readyToBeCounterSigned = legalEntity != null && budgetaryCommitment != null && grantAgreementDoc != null
+								&& legalEntity.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)
+								&& budgetaryCommitment.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)
+								&& grantAgreementDoc.getWfStatus().equals(DocumentWorkflowStatus.IMPORTED);
 	}
 	
 	public Long getId() {
@@ -129,4 +152,11 @@ public class MonitoringRow {
 		this.counterSignatureDate = counterSignatureDate;
 	}
 
+	public Boolean getReadyToBeCounterSigned() {
+		return readyToBeCounterSigned;
+	}
+
+	public void setReadyToBeCounterSigned(Boolean readyToBeCounterSigned) {
+		this.readyToBeCounterSigned = readyToBeCounterSigned;
+	}
 }

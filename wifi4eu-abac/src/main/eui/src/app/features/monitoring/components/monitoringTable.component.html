@@ -59,7 +59,7 @@
 		        <tr>
 		        	<ng-container *ngFor="let col of cols">
                         <td *ngIf="col.field == 'selected'" class="text-center">
-                            <p-checkbox type="checkbox" [(ngModel)]="row['selected']" binary="true"></p-checkbox>
+                            <p-checkbox [(ngModel)]="selectedLegalEntities" name="selectedRows" value="{{row.id}}" [disabled]="!row.readyToBeCounterSigned"></p-checkbox>
                         </td>
 		        		<td *ngIf="(col.field != 'selected') && showColumn(col.isFor)">{{row[col.field]}}</td>
 		        	</ng-container>
@@ -70,8 +70,22 @@
 	</ux-panel>
 
 	<div class="row">
-		<div class="col-12">
-            <ux-button (click)="countersignSelected()">Counter-sign Grant Agreements</ux-button>
+		<div class="col-12 text-right">
+            <ux-button (click)="uxService.openMessageBox('confirmCounterSignatureMessageBox')" [isDisabled]="selectedLegalEntities.length == 0">Counter-sign Grant Agreements</ux-button>
         </div>
-	</div>
+    </div>
+
+    <ux-message-box id="confirmCounterSignatureMessageBox" titleLabel="WARNING" acceptLabel="YES" dismissLabel="NO" (clicked)="countersignSelected($event)">
+        <p>The selected Legal Entities will be Counter-signed by you. Do you confirm the operation?</p>
+    </ux-message-box>
+
+	<ux-message-box id="messagebox_countersign_success" titleLabel="SUCCESS" typeClass="success" messageBoxType="ok">
+		<p>Grant Agreements will be silently counter-signed. You will be notified when the process is completed.</p>
+    </ux-message-box>
+
+	<ux-message-box id="messagebox_fail" titleLabel="ERROR" typeClass="danger" messageBoxType="ok">
+		<p>An error has occurred!</p>
+		<p *ngIf='errorMessage !== undefined'>{{errorMessage}}</p>
+		<p>The file was not imported!</p>
+	</ux-message-box>
 </div>

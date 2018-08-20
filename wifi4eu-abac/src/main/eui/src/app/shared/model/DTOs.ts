@@ -13,7 +13,7 @@ export interface MonitoringRowDTO {
     lcStatus?: string;
     signatureDate?: string;
     counterSignatureDate?: string;
-    selected?: boolean;
+    readyToBeCounterSigned?: Boolean;
 }
 
 export interface ResponseDTO {

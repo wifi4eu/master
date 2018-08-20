@@ -88,8 +88,10 @@ public class LegalCommitmentService {
 
 		for (Long legalEntityId : legalEntityIds) {
 			Document document = documentService.getDocumentsByLegalEntityIdAndType(legalEntityId, DocumentType.GRANT_AGREEMENT);
-			document.setWfStatus(DocumentWorkflowStatus.COUNTERSIGNATURE_REQUESTED);
-			documentService.saveDocument(document);
+			if (document != null) {
+				document.setWfStatus(DocumentWorkflowStatus.COUNTERSIGNATURE_REQUESTED);
+				documentService.saveDocument(document);
+			}
 		}
 
 	}

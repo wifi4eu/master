@@ -49,7 +49,7 @@ public class LegalCommitmentController {
 	@RequestMapping(value = "countersign", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO counterSign(@RequestBody List<Long> legalEntityIds) {
 
-		log.info("countersign");
+		log.info("Requested countersignature");
 
 		ResponseVO result = new ResponseVO();
 		try {

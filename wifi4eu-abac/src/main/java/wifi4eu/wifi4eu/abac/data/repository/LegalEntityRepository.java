@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.dto.MonitoringRow;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 
 public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integer> {
 
@@ -29,7 +30,13 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	@Procedure(name = "UPDATE_LEF_STATUS_FROM_ABAC")
 	void updateFinancialLegalEntitiesStatuses();
 	
-	@Query(value = "SELECT new wifi4eu.wifi4eu.abac.data.dto.MonitoringRow(le) FROM LegalEntity le LEFT JOIN le.budgetaryCommitment bc LEFT JOIN le.legalCommitment lc")
+	@Query(value =
+			"SELECT new wifi4eu.wifi4eu.abac.data.dto.MonitoringRow(le, bc, lc, doc) " +
+			"FROM LegalEntity le " +
+			"LEFT JOIN BudgetaryCommitment bc on bc.legalEntity.id = le.id " +
+			"LEFT JOIN LegalCommitment lc on lc.legalEntity.id = le.id " +
+			"LEFT JOIN Document doc on le.id = doc.legalEntity.id and doc.type = 'GRANT_AGREEMENT'"
+	)
 	List<MonitoringRow> findMonitoringData();
 	
 	@Query("select bc.legalEntity from BudgetaryCommitment bc where bc.wfStatus = 'READY_FOR_ABAC'")
