@@ -347,10 +347,10 @@
   <p class="center paddingStats">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedConfirmation.text' | translate }}</p>
   <div class="row center">
     <div class="col-sm-6 marginStep1">
-      <button (click)="preSelectedEnabled = null" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+      <button (click)="preSelectedEnabled = null" #cancelPreListBtn class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>
     <div class="col-sm-6 marginStep1">
-      <button #savePreListBtn (click)="savePreList(savePreListBtn)" class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+      <button #savePreListBtn (click)="savePreList(savePreListBtn, cancelPreListBtn)" class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
     </div>
   </div>
 </p-dialog>

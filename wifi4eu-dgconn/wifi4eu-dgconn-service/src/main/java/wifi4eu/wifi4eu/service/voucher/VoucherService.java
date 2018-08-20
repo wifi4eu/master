@@ -160,7 +160,8 @@ public class VoucherService {
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(int callId) {
         VoucherAssignmentAuxiliarDTO voucherAssignmentAuxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 1));
         if (voucherAssignmentAuxiliarDTO == null) {
-            throw new AppException("Voucher assigment not found for call id: " + callId);
+            _log.debug("Voucher assigment not found for call id: " + callId);
+            return null;
         }
 
         VoucherAssignmentAuxiliarDTO voucherAssignmentPreList = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 2));
