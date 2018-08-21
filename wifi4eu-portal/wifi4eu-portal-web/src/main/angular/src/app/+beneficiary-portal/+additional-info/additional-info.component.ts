@@ -39,12 +39,9 @@ export class AdditionalInfoComponent {
     @ViewChild('document3') private document3: any;
     @ViewChild('document4') private document4: any;
     private displayConfirmingData: boolean = false;
-    private date: number;
-    private doc1: boolean = false;
-    private doc2: boolean = false;
-    private doc3: boolean = false;
-    private doc4: boolean = false;
     private displayConfirmClose: boolean = false;
+    private displayConfirmDelete: boolean = false;
+    private removingFile: number;
     private changedDocs: number;
 
     private fileURL: string = '/wifi4eu/api/registration/getDocument/';
@@ -235,8 +232,13 @@ export class AdditionalInfoComponent {
         }
     }
 
-    private removeFile(type: number) {
-        switch (type) {
+    private openDeleteModal(type: number) {
+        this.displayConfirmDelete = true;
+        this.removingFile = type;
+    }
+
+    private removeFile(){
+        switch (this.removingFile) {
             case 1:
                 this.document1.nativeElement.value = "";
                 break;
@@ -251,7 +253,8 @@ export class AdditionalInfoComponent {
                 break;
         }
         this.changedDocs--;
-        this.cleanFile(type);
+        this.cleanFile(this.removingFile);
+        this.cancelBack();
     }
 
     private onSubmit() {
@@ -285,5 +288,7 @@ export class AdditionalInfoComponent {
 
     cancelBack() {
         this.displayConfirmClose = false;
+        this.displayConfirmDelete = false;
+        this.removingFile = null;
     }
 }

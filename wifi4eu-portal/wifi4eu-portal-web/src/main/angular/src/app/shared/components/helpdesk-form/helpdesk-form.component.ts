@@ -58,6 +58,9 @@ export class HelpdeskFormComponent {
     }
 
     private gotoHelpdeskForm() {
+        if (this.success) {
+            this.cleanHelpdeskForm();
+        }
         this.expanded = true;
         this.changeDetectorRef.detectChanges();
         const child = this.elementRef.nativeElement.querySelector('#helpdesk-form');
@@ -108,5 +111,11 @@ export class HelpdeskFormComponent {
             this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
             this.sending = false;
         }
+    }
+
+    private cleanHelpdeskForm() {
+        this.helpdeskIssue = new HelpdeskIssueDTOBase();
+        this.problem_desc = '';
+        this.success = false;
     }
 }

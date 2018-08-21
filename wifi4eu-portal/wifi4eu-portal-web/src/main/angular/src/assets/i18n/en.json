@@ -965,5 +965,7 @@
   "summary.warning": "WARNING",
   "summary.info": "INFO",
   "shared.editProfile.save.error": "An error ocurred while trying to update your profile data. Please, try again later.",
-  "benefPortal.withdraw.existingApplication.error": "Your registrations cannot be removed because one of your registrations is applied"
+  "benefPortal.withdraw.existingApplication.error": "Your registrations cannot be removed because one of your registrations is applied",
+  "shared.supportingDocuments.removeDocument": "Remove document",
+  "shared.supportingDocuments.removeModalAreYouSure": "Are you sure you want to remove this document?"
 }
