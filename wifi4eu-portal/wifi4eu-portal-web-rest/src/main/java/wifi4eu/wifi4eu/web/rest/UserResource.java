@@ -118,7 +118,6 @@ public class UserResource {
     }
 
 
-
     @ApiOperation(value = "Service to do Login with a ECAS User")
     @RequestMapping(value = "/ecaslogin", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
@@ -198,22 +197,22 @@ public class UserResource {
     @RequestMapping(value = "/updateLanguage", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO updateLanguage(@RequestBody final String language, HttpServletResponse response) throws IOException {
-       UserContext userContext = UserHolder.getUser();
-       UserDTO userDTO = userService.getUserByUserContext(userContext);
-       _log.debug("ECAS Username: " + userDTO.getEcasUsername() + " - Updating user language notification emails by id " + userDTO.getId());
-       try {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userDTO = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userDTO.getEcasUsername() + " - Updating user language notification emails by id " + userDTO.getId());
+        try {
             userDTO = userService.updateLanguage(userDTO, language);
             return new ResponseDTO(true, userDTO, null);
-       } catch (Exception e) {
+        } catch (Exception e) {
             _log.error("ECAS Username: " + userDTO.getEcasUsername() + " - Cannot change notifications language", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-       }
-   }
+        }
+    }
 
     @ApiOperation(value = "Get all users from registration")
-    @RequestMapping (value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserDTO> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId){
+    public List<UserDTO> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
@@ -221,10 +220,18 @@ public class UserResource {
             List<UserDTO> users = new ArrayList<>();
             users = registrationService.getUsersFromRegistration(registrationId);
             return users;
-        } catch (Exception e){
+        } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
             return null;
         }
+    }
+
+
+    @ApiOperation(value = "Update new language for user")
+    @RequestMapping(value = "/checkIfApplied", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public boolean checkIfApplied() {
+        return userService.checkIfApplied();
     }
 
 }

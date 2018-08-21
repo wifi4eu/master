@@ -140,7 +140,7 @@ public class UserService {
 
     @Autowired
     ConditionsAgreementRepository conditionsAgreementRepository;
-    
+
     @Autowired
     ApplicationService applicationService;
 
@@ -218,21 +218,21 @@ public class UserService {
     }
 
     @Transactional
-    public void saveInvitedUserModified(UserDTO userDTO){
-        if (userDTO.getType() == 0){
+    public void saveInvitedUserModified(UserDTO userDTO) {
+        if (userDTO.getType() == 0) {
 
             InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
-            if (Validator.isNotNull(invitationContact)){
+            if (Validator.isNotNull(invitationContact)) {
 
-                if (invitationContact.getIdRegistration() != null){
+                if (invitationContact.getIdRegistration() != null) {
                     userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
                     createRegistrationUser(userDTO, invitationContact.getIdRegistration());
 
-                }else if (invitationContact.getIdSupplier() != null){
+                } else if (invitationContact.getIdSupplier() != null) {
                     userDTO.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
                     createSupplierUser(userDTO, invitationContact.getIdSupplier());
 
-                }else{
+                } else {
                     return; //Mister Tester
                 }
 
@@ -248,7 +248,7 @@ public class UserService {
     }
 
 
-    private void createRegistrationUser(UserDTO userDTO, Integer registrationId){
+    private void createRegistrationUser(UserDTO userDTO, Integer registrationId) {
         RegistrationUsers registrationUsers = new RegistrationUsers();
         registrationUsers.setContactEmail(userDTO.getEcasEmail());
         registrationUsers.setCreationDate(new Date());
@@ -267,7 +267,7 @@ public class UserService {
         registrationUsersRepository.save(registrationUsers);
     }
 
-    private void createSupplierUser(UserDTO userDTO, Integer supplierId){
+    private void createSupplierUser(UserDTO userDTO, Integer supplierId) {
         SupplierUser supplierUser = new SupplierUser();
         supplierUser.setEmail(userDTO.getEcasEmail());
         supplierUser.setCreationDate(new Date());
@@ -284,7 +284,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteInvitationByUser(String email){
+    public void deleteInvitationByUser(String email) {
         invitationContactRepository.delete(invitationContactRepository.findByEmailInvited(email));
     }
 
@@ -295,7 +295,7 @@ public class UserService {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
 
-                    if(applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0){
+                    if (applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0) {
 
                         for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
                             municipalityService.deleteMunicipality(municipality.getId(), request);
@@ -311,7 +311,7 @@ public class UserService {
 
                         userDTO.setType(0);
                         userRepository.save(userMapper.toEntity(userDTO));
-                    }else{
+                    } else {
                         // Application detected for this user id
                         _log.warn("ECAS Username: " + userDTO.getEcasUsername() + " - User registrations cannot be deleted due to one registration is applied");
                         return new ResponseDTO(false, null, new ErrorDTO(10, "benefPortal.withdraw.existingApplication.error"));
@@ -346,12 +346,12 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserRights(Integer userId){
+    public void deleteUserRights(Integer userId) {
         rightRepository.deleteByUserId(userId);
     }
 
     @Transactional
-    public void deleteUserConditionAgreements(Integer userId){
+    public void deleteUserConditionAgreements(Integer userId) {
         conditionsAgreementRepository.deleteByUserId(userId);
     }
 
@@ -581,5 +581,11 @@ public class UserService {
         registrationUsers.setStatus(0);
         registrationUsers.setMain(0);
         registrationUsersRepository.save(registrationUsers);
+    }
+
+    public boolean checkIfApplied() {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userDTO = getUserByUserContext(userContext);
+        return applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0;
     }
 }
