@@ -87,6 +87,9 @@ public class LegalEntity {
 	@OneToOne(mappedBy = "legalEntity")
 	private LegalCommitment legalCommitment;
 
+	@Column(name = "BATCH_REF", length = 50)
+	private String batchRef;
+
 	public LegalEntity() {
 
 	}
@@ -239,6 +242,14 @@ public class LegalEntity {
 
 	public void setHermesFileId(String hermesFileId) {
 		this.hermesFileId = hermesFileId;
+	}
+
+	public String getBatchRef() {
+		return batchRef;
+	}
+
+	public void setBatchRef(String batchRef) {
+		this.batchRef = batchRef;
 	}
 
 	public List<Document> getDocuments() {

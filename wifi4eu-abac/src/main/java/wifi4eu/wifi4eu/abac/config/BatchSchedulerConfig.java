@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.integration.abac.AbacIntegrationService;
 import wifi4eu.wifi4eu.abac.service.LegalCommitmentService;
+import wifi4eu.wifi4eu.abac.service.NotificationService;
 
 @Configuration
 @EnableScheduling
@@ -23,6 +24,9 @@ public class BatchSchedulerConfig {
 
     @Autowired
     LegalCommitmentService legalCommitmentService;
+
+    @Autowired
+    NotificationService notificationService;
 
     @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
@@ -50,5 +54,10 @@ public class BatchSchedulerConfig {
     @Scheduled(cron = "${batch.legalcommitment.create.crontable}")
     public void counterSignGrantAgreements() {
         legalCommitmentService.findAndCounterSignGrantAgreements();
+    }
+
+    @Scheduled(cron = "${batch.legalentity.create.notification.crontable}")
+    public void notifyCreateLegalEntitiesInABAC() {
+        notificationService.notifyLegalEntityProcessFinished();
     }
 }

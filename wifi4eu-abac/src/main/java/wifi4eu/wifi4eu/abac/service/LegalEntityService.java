@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.abac.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Country;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
@@ -61,5 +63,17 @@ public class LegalEntityService {
 		legalEntity.setCountry(country);
 
 		return legalEntity;
+	}
+
+	public Boolean isBatchProcessed(String batchRef){
+		List<AbacWorkflowStatus> finishedStatuses = new ArrayList<>();
+		finishedStatuses.add(AbacWorkflowStatus.ABAC_VALID);
+		finishedStatuses.add(AbacWorkflowStatus.ABAC_REJECTED);
+		finishedStatuses.add(AbacWorkflowStatus.ABAC_ERROR);
+		finishedStatuses.add(AbacWorkflowStatus.ABAC_FINISH);
+
+		Long pending = legalEntityRepository.countAllByWfStatusNotInAndBatchRefEquals(finishedStatuses, batchRef);
+
+		return pending.equals(0L);
 	}
 }

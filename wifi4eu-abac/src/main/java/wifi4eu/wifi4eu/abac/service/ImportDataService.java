@@ -1,5 +1,8 @@
 package wifi4eu.wifi4eu.abac.service;
 
+import eu.cec.digit.ecas.client.jaas.DetailedUser;
+import eu.cec.digit.ecas.client.jaas.SubjectNotFoundException;
+import eu.cec.digit.ecas.client.jaas.SubjectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,26 +10,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
-import wifi4eu.wifi4eu.abac.data.dto.LegalCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
-import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.ImportLog;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
+import wifi4eu.wifi4eu.abac.data.repository.ImportLogRepository;
 import wifi4eu.wifi4eu.abac.utils.ZipFileReader;
 import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
-import wifi4eu.wifi4eu.abac.utils.csvparser.LegalCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 @Service
 @SuppressWarnings("unchecked")
@@ -40,20 +42,19 @@ public class ImportDataService {
 
 	@Autowired
 	private BudgetaryCommitmentCSVFileParser budgetaryCommitmentCSVFileParser;
-	
-	@Autowired
-	private LegalCommitmentCSVFileParser legalCommitmentCSVFileParser;
 
 	@Autowired
 	private LegalEntityService legalEntityService;
-	
-	@Autowired
-	private LegalCommitmentService legalCommitmentService;
 
 	@Autowired
 	private DocumentService documentService;
 
 	@Autowired BudgetaryCommitmentService budgetaryCommitmentService;
+
+	@Autowired
+	private ImportLogRepository importLogRepository;
+
+	@Autowired NotificationService notificationService;
 
 	static final String LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "portal_exportBeneficiaryInformation.csv";
 	static final String LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME = "portal_exportBeneficiaryDocuments.csv";
@@ -63,6 +64,7 @@ public class ImportDataService {
 	FileDTO documentsCSVFile;
 	private Map<String, FileDTO> documentsToBeImported = new TreeMap<>();
 
+	@Transactional(Transactional.TxType.REQUIRED)
 	public void importLegalEntities(byte[] file) {
 		importDataViaZipFile(file);
 	}
@@ -71,11 +73,12 @@ public class ImportDataService {
 	 * Legal Commitments will be treated as a regular upload of documents where the docType is GRANT_AGREEMENT
 	 * @param file
 	 */
+	@Transactional(Transactional.TxType.REQUIRED)
 	public void importLegalCommitments(byte[] file) {
 		importDataViaZipFile(file);
 	}
 
-	@Transactional(Transactional.TxType.REQUIRED)
+
 	private void importDataViaZipFile(byte[] file) {
 
 		ZipFileReader zipFileReader = new ZipFileReader(file);
@@ -88,9 +91,11 @@ public class ImportDataService {
 
 			switch (fileDTO.getFileName()) {
 				case LEGAL_ENTITY_INFORMATION_CSV_FILENAME:
+					fileDTO.setFileType(FileDTO.FileType.LEGAL_ENTITY_INFORMATION_CSV);
 					processLegalEntityInformationFile(fileDTO);
 					break;
 				case LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME:
+					fileDTO.setFileType(FileDTO.FileType.LEGAL_ENTITY_DOCUMENTS_CSV);
 					addDocumentsCSVIndexFile(fileDTO);
 					break;
 				default:
@@ -108,6 +113,17 @@ public class ImportDataService {
 	private void processLegalEntityInformationFile(FileDTO fileDTO) {
 		List<LegalEntityInformationCSVRow> legalEntities = (List<LegalEntityInformationCSVRow>) legalEntityCSVFileParser.parseFile(fileDTO);
 
+		//generate a unique batch file ID
+		String batchRef = UUID.randomUUID().toString();
+
+		//get user authenticated
+		DetailedUser currentEcasUser = null;
+		try {
+			currentEcasUser = SubjectUtil.getCurrentEcasUser();
+		} catch (SubjectNotFoundException e) {
+			log.error("ERROR while trying to retrieve the current user", e);
+		}
+
 		for (LegalEntityInformationCSVRow legalEntityInformationCSVRow : legalEntities) {
 
 			LegalEntity legalEntity = legalEntityService.getLegalEntityByMunicipalityPortalId(legalEntityInformationCSVRow.getMid());
@@ -115,6 +131,13 @@ public class ImportDataService {
 			if (legalEntity == null) {
 				//map the csv row to the LegalEntity object
 				legalEntity = legalEntityService.mapLegalEntityCSVToEntity(legalEntityInformationCSVRow);
+
+				//set the current user
+                legalEntity.setUserImported(currentEcasUser.getUid());
+
+                //set the current batch ID
+				legalEntity.setBatchRef(batchRef);
+
 				//if the LEF is already created in ABAC ignore the creation phase
 				if(!StringUtils.isEmpty(legalEntity.getAbacFelId())){
 					legalEntity.setWfStatus(AbacWorkflowStatus.ABAC_VALID);
@@ -128,6 +151,21 @@ public class ImportDataService {
 				log.warn("Legal entity already exists in the DB. Ignoring it for now : {}", legalEntity);
 			}
 		}
+
+		//log the imported file
+		logImport(fileDTO, batchRef, currentEcasUser.getUid());
+
+		//create user notification
+		notificationService.createLegalEntityProcessPendingNotification(batchRef);
+	}
+
+	private void logImport(FileDTO fileDTO, String batchRef, String userId){
+		ImportLog importLog = new ImportLog();
+		importLog.setFileName(fileDTO.getFileName());
+		importLog.setBatchRef(batchRef);
+		importLog.setUserId(userId);
+
+		importLogRepository.save(importLog);
 	}
 
 	private void addDocumentsCSVIndexFile(final FileDTO fileDTO) {

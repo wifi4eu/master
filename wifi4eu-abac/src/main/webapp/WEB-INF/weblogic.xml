@@ -22,5 +22,7 @@
 			<package-name>org.apache.xerces.*</package-name>
 			<package-name>com.thoughtworks.xstream.*</package-name>
 		</prefer-application-packages>
+
+		<allow-all-roles>true</allow-all-roles>
 	</container-descriptor>
 </weblogic-web-app>

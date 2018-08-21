@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.abac.data.dto;
 public class FileDTO {
 
 	private String fileName;
+	private FileType fileType;
 	private Long size;
 	byte[] content;
 
@@ -38,5 +39,18 @@ public class FileDTO {
 
 	public void setContent(byte[] content) {
 		this.content = content;
+	}
+
+	public FileType getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(FileType fileType) {
+		this.fileType = fileType;
+	}
+
+	public enum FileType{
+		LEGAL_ENTITY_INFORMATION_CSV,
+		LEGAL_ENTITY_DOCUMENTS_CSV
 	}
 }

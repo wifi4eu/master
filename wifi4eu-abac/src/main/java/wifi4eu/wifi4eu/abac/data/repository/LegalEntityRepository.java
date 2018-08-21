@@ -41,4 +41,6 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	
 	@Query("select bc.legalEntity from BudgetaryCommitment bc where bc.wfStatus = 'READY_FOR_ABAC'")
 	List<LegalEntity> findAvailableLegalEntitiesForBudgetaryCommitmentCreation();
+
+	Long countAllByWfStatusNotInAndBatchRefEquals(List<AbacWorkflowStatus> wfStatuses, String batchRef);
 }
