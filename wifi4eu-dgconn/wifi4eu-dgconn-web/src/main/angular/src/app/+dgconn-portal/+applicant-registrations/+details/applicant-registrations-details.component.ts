@@ -187,7 +187,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                             users.map((user) => {
                                                 return user['authorized'] = false;
                                             })
-
                                             this.applicationAuthorizedPersonApi.getAuthorization(application.id).subscribe(
                                                 (response : ResponseDTO)=>{
                                                    response.data.forEach(element => {
@@ -199,10 +198,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                     })
                                                    });
                                                     this.contactUsers[i] = users;
-                                                
                                                 },error=>{
                                                     console.log(error);
-                                                    
                                                 }
                                             );
                                             
@@ -212,18 +209,19 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                     this.registrationApi.getTypesDisabled(registration.id).subscribe(
                                         (response: ResponseDTO) => {
                                             this.listDisabled[i] = [0,0,0,0];
-
-                                            var typesDisabled :number[] = response.data;
-                                            for (var j = 0; j < typesDisabled.length; j++) {
-                                                let type = typesDisabled[j];
-                                                this.listDisabled[i][type] = 1;
+                                            if (response.success) {
+                                                let typesDisabled :number[] = response.data;
+                                                for (let j = 0; j < typesDisabled.length; j++) {
+                                                    let type = typesDisabled[j];
+                                                    this.listDisabled[i][type] = 1;
+                                                }
                                             }
                                         }
                                     );
                                     this.userApi.getUserByIdFromRegistration(registration.id).subscribe(
                                         (user: UserDTOBase) => {
                                             if (user) {
-                                                console.log("The user is ", user);
+//                                                console.log("The user is ", user);
                                                 this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                                                     (municipality: MunicipalityDTOBase) => {
                                                         if (municipality) {
@@ -556,10 +554,11 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     this.voucherApi.checkIfApplicationInSimulation(this.applications[this.selectedIndex].id).subscribe((res: ResponseDTO) => {
                         if(<number>res.data >= 1){
                             this.displaySimulation = true;
+                        } else {
+                            this.closeModal();
+                            this.getApplicationDetailsInfo();
                         }
-                        this.closeModal();
-                    })
-                    this.getApplicationDetailsInfo();
+                    });
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
                     this.closeModal();
