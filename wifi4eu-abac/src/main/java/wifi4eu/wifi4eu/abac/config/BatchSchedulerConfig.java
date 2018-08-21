@@ -40,7 +40,7 @@ public class BatchSchedulerConfig {
 
     @Scheduled(cron = "${batch.legalcommitment.countersign.crontable}")
     public void createLegalCommitmentsInABAC() {
-        legalCommitmentService.findAndSendLegalCommitmentsReadyToABAC();
+        abacIntegrationService.findAndSendLegalCommitmentsReadyToABAC();
     }
 
     @Scheduled(cron = "${batch.abac.checkstatus.crontable}")

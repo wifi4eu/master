@@ -48,6 +48,9 @@ public class BudgetaryCommitment {
 	@OrderBy("submitDate DESC")
 	private List<BudgetaryCommitmentAbacRequest> abacRequests = new ArrayList<BudgetaryCommitmentAbacRequest>();
 
+	@Column(name = "COMMITMENT_L2_KEY")
+	private String commitmentLevel2Key;
+
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
@@ -113,4 +116,8 @@ public class BudgetaryCommitment {
 	public String getAbacErrorMessage(){
 		return !abacRequests.isEmpty() ? abacRequests.get(0).getErrorMessage() : null;
 	}
+
+	public String getCommitmentLevel2Key() {return commitmentLevel2Key;	}
+
+	public void setCommitmentLevel2Key(String commitmentLevel2Key) {this.commitmentLevel2Key = commitmentLevel2Key;	}
 }

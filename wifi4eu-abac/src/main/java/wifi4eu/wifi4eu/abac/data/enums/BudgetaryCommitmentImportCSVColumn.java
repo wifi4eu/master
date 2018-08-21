@@ -7,7 +7,8 @@ public enum BudgetaryCommitmentImportCSVColumn {
 	ABAC_COMMITMENT_LEVEL2_POSITION("abac_commitmentLevel2Position"),
 	ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT("abac_commitmentLevel2PositionAmount"),
 	ABAC_STATUS("bc_abacStatus"),
-	ABAC_MESSAGE("abac_message");
+	ABAC_MESSAGE("abac_message"),
+	ABAC_COMMITMENT_LEVEL2_KEY("abac_commitmentLevel2Key");
 
 	private String value;
 

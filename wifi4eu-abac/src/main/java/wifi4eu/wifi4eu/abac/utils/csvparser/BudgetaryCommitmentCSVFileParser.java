@@ -65,7 +65,8 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 							BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION.toString(),
 							BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT.toString(),
 							BudgetaryCommitmentImportCSVColumn.ABAC_STATUS.toString(),
-							BudgetaryCommitmentImportCSVColumn.ABAC_MESSAGE.toString()
+							BudgetaryCommitmentImportCSVColumn.ABAC_MESSAGE.toString(),
+							BudgetaryCommitmentImportCSVColumn.ABAC_COMMITMENT_LEVEL2_KEY.toString()
 					));
 
 			for (BudgetaryCommitmentPosition budgetaryCommitmentPosition : budgetaryCommitments) {
@@ -75,7 +76,8 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 						budgetaryCommitmentPosition.getCommitmentLevel2Position(),
 						budgetaryCommitmentPosition.getCommitmentLevel2Amount(),
 						budgetaryCommitmentPosition.getBudgetaryCommitment().getWfStatus(),
-						budgetaryCommitmentPosition.getBudgetaryCommitment().getAbacErrorMessage()
+						budgetaryCommitmentPosition.getBudgetaryCommitment().getAbacErrorMessage(),
+						budgetaryCommitmentPosition.getBudgetaryCommitment().getCommitmentLevel2Key()
 				);
 			}
 
