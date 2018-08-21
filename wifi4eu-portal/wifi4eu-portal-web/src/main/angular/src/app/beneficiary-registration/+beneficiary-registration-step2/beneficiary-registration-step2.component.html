@@ -115,7 +115,7 @@
             <div id="mayor-confirm-email" class="form-group ui-g">
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.confirmemail.label' | translate }}</label>
-                    <input class="form-control paddingInput {{css_class_email[0]}}" [pattern]="emailPattern"
+                    <input class="form-control paddingInput {{css_class_email[0]}}" 
                            name="confirm-email" id="confirm-emailStep2" type="email"
                            (input)="checkEmailsMatch()" (paste)="preventPaste()"
                            [(ngModel)]="emailConfirmations[0]" maxlength="254" required>

@@ -42,11 +42,12 @@ export class SupplierRegistrationStep3Component {
         this.supplierChange.emit(this.supplier);
         this.onNext.emit();
         this.confirmEmailField = '';
+        this.emailMatches = false;
     }
 
     private back() {
         this.onBack.emit();
-        this.confirmEmailField = '';
+        this.confirmEmailField = '';      
     }
 
     private checkIfEmailMatches() {
@@ -62,15 +63,6 @@ export class SupplierRegistrationStep3Component {
         return false;
     }
 
-
-    //HOW TO SOLVE THE ERROR OF THE DISABLED BUTTON
-    //CAUSE: buttonEnabled variable isnt used
-    //SOLUTION: adapt this method to the new model and it should solve it and work.
-    //this method was created to verify that no input is empty
-    //
-    // the changes in the model are like : this.supplier.contactName  ----> this.supplier['contactName'] 
-    // please make sure that the info arrives correctly to the server and supplier is created with the correct data from the inputs!
-    //
      private checkButtonEnabled(event){
          this.buttonEnabled = false;
          if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
