@@ -19,13 +19,18 @@ public class VoucherAssignmentAuxiliar {
     @Column(name = "status")
     private Integer status;
 
+    @Column(name = "notified_date")
+    private Long notifiedDate;
+
     public VoucherAssignmentAuxiliar() {
 
     }
 
-    public VoucherAssignmentAuxiliar(Long executionDate, Integer status) {
+    public VoucherAssignmentAuxiliar(Integer id, Long executionDate, Integer status, Long notifiedDate) {
+        this.id = id;
         this.executionDate = executionDate;
         this.status = status;
+        this.notifiedDate = notifiedDate;
     }
 
     public Integer getId() {
@@ -52,5 +57,11 @@ public class VoucherAssignmentAuxiliar {
         this.status = status;
     }
 
+    public Long getNotifiedDate() {
+        return notifiedDate;
+    }
 
+    public void setNotifiedDate(Long notifiedDate) {
+        this.notifiedDate = notifiedDate;
+    }
 }

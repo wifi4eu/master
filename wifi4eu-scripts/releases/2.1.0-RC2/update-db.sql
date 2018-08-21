@@ -150,3 +150,18 @@ create table invitation_contacts(
        ON DELETE CASCADE
        ON UPDATE CASCADE
 );
+
+create table admin_actions(
+   [id]	INT	NOT NULL IDENTITY,
+   [action] varchar(MAX) NOT NULL,
+   [is_running] bit,
+   [start_date] datetime,
+   [end_date] datetime,
+   [_user] int NOT NULL,
+   PRIMARY KEY ([id]),
+   CONSTRAINT [fk_user_action]
+   FOREIGN KEY ([_user])
+   REFERENCES dbo.users ([id])
+       ON DELETE CASCADE
+       ON UPDATE CASCADE
+);

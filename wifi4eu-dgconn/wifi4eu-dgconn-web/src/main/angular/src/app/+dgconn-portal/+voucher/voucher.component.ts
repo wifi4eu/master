@@ -76,11 +76,14 @@ export class DgConnVoucherComponent {
   private preSelectedEnabled = null;
   private confirmationModal = false;
   private displayFreezeConfirmation = false;
+  private pressedNotificationButton = false;
 
   private dateNumberPreList: string;
   private hourNumberPreList: string; 
   private dateNumberFreeze: string;
   private hourNumberFreeze: string; 
+  private dateNumberNotified: string;
+  private hourNumberNotified: string;
 
   private hasCallEnded : boolean = false;
 
@@ -198,6 +201,12 @@ export class DgConnVoucherComponent {
                           let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
                           this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                           this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+
+                          if(response.notifiedDate != null){
+                            let dateNotified = new Date(response.notifiedDate);
+                            this.dateNumberNotified = ('0' + dateNotified.getUTCDate()).slice(-2) + "/" + ('0' + (dateNotified.getUTCMonth() + 1)).slice(-2) + "/" + dateNotified.getUTCFullYear();
+                            this.hourNumberNotified = ('0' + (dateNotified.getUTCHours() + 2)).slice(-2) + ":" + ('0' + dateNotified.getUTCMinutes()).slice(-2);
+                          }
                           this.loadPage();
                         }                    
                       }, error => {
@@ -490,12 +499,16 @@ export class DgConnVoucherComponent {
     });    
   }
 
-  sendNotificationToApplicants(){
+  private sendNotificationToApplicants(){
     if(!this.callVoucherAssignment.hasFreezeListSaved || !this.hasCallEnded){
       return;
     }
     this.voucherApi.sendNotificationForApplicants(this.callSelected.id).subscribe((response: ResponseDTO) => {
-      if(!response.success){
+      this.pressedNotificationButton = response.success;
+      if(response.success){
+        this.sharedService.growlTranslation('The process of sending notifications has started.', 'dgConn.voucherAssignment.success.sendingNotifications', 'success');
+      }
+      else{
         this.sharedService.growlTranslation('An error occurred while sending notifications.', 'dgConn.voucherAssignment.error.sendingNotifications', 'error');
       }
     }, (error) => {
