@@ -45,7 +45,7 @@
                             <label class="label floatLeft" for="address">{{ 'benefRegistration.townHall.address' |
                                 translate }}</label>
                             <input type="text" class="form-control paddingInput" min="1" 
-                                   id="addressStep2" name="address" [(ngModel)]="municipalities[0].address"  (ngModelChange)="checkButtonEnabled($event)" required>
+                                   id="addressStep2" name="address" maxlength="255" [(ngModel)]="municipalities[0].address"  (ngModelChange)="checkButtonEnabled($event)" required>
                         </div>
                     </div>
 
@@ -54,7 +54,7 @@
                             <label class="label floatLeft" for="address">{{ 'shared.number.label' | translate
                                 }}</label>
                             <input type="text" class="form-control paddingInput"
-                                   id="addressNumStep2" name="addressNum"  [(ngModel)]="municipalities[0].addressNum"  (ngModelChange)="checkButtonEnabled($event)"
+                                   id="addressNumStep2" name="addressNum" maxlength="255"  [(ngModel)]="municipalities[0].addressNum"  (ngModelChange)="checkButtonEnabled($event)"
                                    required>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                             <label class="label floatLeft" for="postalCode">{{ 'shared.postal-code.label' | translate
                                 }}</label>
                             <input type="text" class="form-control paddingInput"
-                                   id="postalCodeStep2" name="postalCode" [(ngModel)]="municipalities[0].postalCode"  (ngModelChange)="checkButtonEnabled($event)"
+                                   id="postalCodeStep2" name="postalCode" maxlength="255" [(ngModel)]="municipalities[0].postalCode"  (ngModelChange)="checkButtonEnabled($event)"
                                    required>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
             <div id="mayor-name" class="form-group ui-g">
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.name.label' | translate }}</label>
-                    <input class="form-control paddingInput" type="text" name="name" id="nameStep2"
+                    <input class="form-control paddingInput" maxlength="255" type="text" name="name" id="nameStep2"
                            [(ngModel)]="mayors[0].name"   (ngModelChange)="checkButtonEnabled($event)"required>
                 </div>
             </div>
@@ -95,7 +95,7 @@
             <div id="mayor-last-name" class="form-group ui-g">
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.surname.label' | translate }}</label>
-                    <input class="form-control paddingInput" type="text" name="surname" id="surnameStep2" 
+                    <input class="form-control paddingInput" maxlength="255" type="text" name="surname" id="surnameStep2" 
                            [(ngModel)]="mayors[0].surname" (ngModelChange)="checkButtonEnabled($event)"  required>
                 </div>
             </div>
@@ -103,7 +103,7 @@
             <div id="mayor-email" class="form-group ui-g">
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.email.label' | translate }}</label>
-                    <input class="form-control paddingInput" type="email" [pattern]="emailPattern" 
+                    <input class="form-control paddingInput"  type="email" [pattern]="emailPattern" 
                            [(ngModel)]="mayors[0].email" id="emailStep2" name="email"
                            (input)="checkEmailsMatch()" maxlength="254" required>
                     <label class="field-desc" style="margin-top: 10px;color: gray;">
