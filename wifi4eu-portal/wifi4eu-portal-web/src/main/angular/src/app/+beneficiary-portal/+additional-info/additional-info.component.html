@@ -161,8 +161,8 @@
                                             <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                         </a>
                                         <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{date:documentFilesType1[i].uploadTime|
-                                            date : "d MMM y", time:documentFilesType1[i].uploadTime| date : "h:mm a"} }}
+                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{date:documentFilesType3[i].uploadTime|
+                                            date : "d MMM y", time:documentFilesType3[i].uploadTime| date : "h:mm a"} }}
                                         </span>
                                     </span>
                                 </span>
@@ -223,8 +223,8 @@
                                         </a>
 
                                         <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{date:documentFilesType1[i].uploadTime|
-                                            date : "d MMM y", time:documentFilesType1[i].uploadTime| date : "h:mm a"} }}
+                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{date:documentFilesType4[i].uploadTime|
+                                            date : "d MMM y", time:documentFilesType4[i].uploadTime| date : "h:mm a"} }}
                                         </span>
                                     </span>
                                 </span>
@@ -278,8 +278,8 @@
                                             <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                         </a>
                                         <span class="attachment-label">
-                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{date:documentFilesType1[i].uploadTime|
-                                            date : "d MMM y", time:documentFilesType1[i].uploadTime| date : "h:mm a"} }}
+                                            <br />{{ 'shared.supportingDocuments.attachment' | translate:{date:documentFilesType2[i].uploadTime|
+                                            date : "d MMM y", time:documentFilesType2[i].uploadTime| date : "h:mm a"} }}
                                         </span>
                                     </span>
                                 </span>
@@ -307,7 +307,7 @@
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button type="submit" class="btn btn-primary publish-button" [disabled]="!legalForm.form.valid || !filesUploaded">
+                <button type="submit" class="btn btn-primary publish-button" [disabled]="!legalForm.form.valid || !filesUploaded || !changedDocs > 0">
                     {{ 'shared.confirm.button' | translate }}
                 </button>
             </div>
