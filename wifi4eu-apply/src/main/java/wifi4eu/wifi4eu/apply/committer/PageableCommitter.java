@@ -1,8 +1,9 @@
 package wifi4eu.wifi4eu.apply.committer;
 
-import java.sql.BatchUpdateException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -18,8 +19,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.apply.MasterCommitter;
-import wifi4eu.wifi4eu.apply.localEntity.LocalEntity;
+import wifi4eu.wifi4eu.apply.localEntity.ApplicationSQLite;
 import wifi4eu.wifi4eu.apply.localEntity.LocalRepository;
+import wifi4eu.wifi4eu.apply.masterEntity.ApplicationSQLServer;
 
 @Service
 public class PageableCommitter implements ICommitter {
@@ -48,18 +50,18 @@ public class PageableCommitter implements ICommitter {
 	 * 
 	 */
 	public void commit() {
-		List<LocalEntity> localEntities = new ArrayList<>();
+		List<ApplicationSQLite> localEntities = new ArrayList<>();
 
-		PageRequest pageRequest = PageRequest.of(0, 100);
+		//PageRequest pageRequest = PageRequest.of(0, 10000);
+		//Page<ApplicationSQLite> pageLocalEntity = this.localRep.findAll(pageRequest);
+		//localEntities.addAll(pageLocalEntity.getContent());
 		
-		Page<LocalEntity> pageLocalEntity = this.localRep.findAll(pageRequest);
-		
-		localEntities.addAll(pageLocalEntity.getContent());
-		
+		localEntities.addAll(this.localRep.findAll());
+
 		//localEntities.addAll(this.localRep.findAll());
-		localEntities.addAll(MasterCommitter.createValidEntities(49_999));
-		localEntities.addAll(MasterCommitter.createInvalidEntities(1));
-		localEntities.addAll(MasterCommitter.createValidEntities(50000));
+		//localEntities.addAll(MasterCommitter.createValidEntities(49_999));
+		//localEntities.addAll(MasterCommitter.createInvalidEntities(1));
+		//localEntities.addAll(MasterCommitter.createValidEntities(50000));
 
 		
 		this.LOGGER.info("Entities Found: [{}]", localEntities.size());
@@ -76,23 +78,28 @@ public class PageableCommitter implements ICommitter {
 		
 	}
 	
-	private void commitToDB(List<LocalEntity> listLocalEntities, int pageSize) {
+	private void commitToDB(List<ApplicationSQLite> listLocalEntities, int pageSize) {
 
 		MasterPreparedStatementSetter masterPreparedStatementSetter = new MasterPreparedStatementSetter();
+		Date dateApplication = new Date();
 		
 		for (int i = 0; i <= listLocalEntities.size(); i += pageSize) {
 			int end = (i + pageSize) < listLocalEntities.size() ? (i + pageSize) : (listLocalEntities.size());
-			List<LocalEntity> tempList = listLocalEntities.subList(i, end);
-			masterPreparedStatementSetter.setListLocalEntities(tempList);
+			List<ApplicationSQLite> tempList = listLocalEntities.subList(i, end);
+			
+			//
+			List<ApplicationSQLServer> applications = tempList.stream().map(a -> new ApplicationSQLServer(Long.valueOf(a.getCallId()), Long.valueOf(a.getRegistrationId()), dateApplication) ).collect(Collectors.toList());
+			masterPreparedStatementSetter.setListLocalEntities(applications);
 
 			this.LOGGER.info("COMMITTING FROM [{}] TO [{}]", i, end);
 			long startTime = System.currentTimeMillis();
 			
 			try {
 				jdbcTemplate.batchUpdate(this.INSERT_TEMPLATE, masterPreparedStatementSetter);
+				
 			} catch (DataAccessException e) {
 				if (pageSize == 1) {
-					LocalEntity localEntity = tempList.get(0);
+					ApplicationSQLite localEntity = tempList.get(0);
 					this.LOGGER.info("ERROS ID[{}]  CallId[{}] RegistrationId[{}]", localEntity.getId(), localEntity.getCallId(), localEntity.getRegistrationId());
 					
 				} else {
@@ -102,11 +109,5 @@ public class PageableCommitter implements ICommitter {
 			}
 			this.LOGGER.info("   IT TOOK [{}]ms", System.currentTimeMillis() - startTime);
 		}
-			
-//		} catch (DataAccessException e) {
-//			this.LOGGER.error("Error", e);
-//			
-//		}
 	}
-
 }

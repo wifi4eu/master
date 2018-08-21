@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 )
 public class LocalDbConfig {
 	
-    @Value( "${wifi4eu.localdb.url}" )
+    @Value( "${wifi4eu.localdb.uri}" )
 	private String localdbUrl;
 
 	@Primary
@@ -46,7 +46,7 @@ public class LocalDbConfig {
 			@Qualifier("localDataSource") DataSource dataSource) {
 		
 		Map<String, String> properties = new HashMap<>();
-		properties.put("hibernate.hbm2ddl.auto", "create-drop");
+		properties.put("hibernate.hbm2ddl.auto", "validate");
 		properties.put("hibernate.dialect", "wifi4eu.wifi4eu.apply.SQLiteDialect");
 
 		LocalContainerEntityManagerFactoryBean container = builder.dataSource(dataSource)
@@ -64,6 +64,4 @@ public class LocalDbConfig {
 			localEntityManagerFactory) {
 		return new JpaTransactionManager(localEntityManagerFactory);
 	}
-
-
 }

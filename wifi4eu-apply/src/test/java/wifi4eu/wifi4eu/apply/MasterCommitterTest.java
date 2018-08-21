@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import wifi4eu.wifi4eu.apply.localEntity.LocalEntity;
+import wifi4eu.wifi4eu.apply.localEntity.ApplicationSQLite;
 import wifi4eu.wifi4eu.apply.localEntity.LocalRepository;
 
 @RunWith(SpringRunner.class)
@@ -28,12 +28,11 @@ public class MasterCommitterTest {
 
     @Before
     public void setUp() {
-    	Date dateLocalEntity = new Date();
-    	LocalEntity localEntity1 = new LocalEntity(1, 1, 1254, dateLocalEntity);
-    	LocalEntity localEntity2 = new LocalEntity(1, 1, 1254, dateLocalEntity);
-    	LocalEntity localEntity3 = new LocalEntity(1, 1, 1254, dateLocalEntity);
+    	ApplicationSQLite localEntity1 = new ApplicationSQLite("1", 1L, "1254");
+    	ApplicationSQLite localEntity2 = new ApplicationSQLite("1", 1L, "1254");
+    	ApplicationSQLite localEntity3 = new ApplicationSQLite("1", 1L, "1254");
     	
-    	List<LocalEntity> localEntities = Arrays.asList(localEntity1, localEntity2, localEntity3);
+    	List<ApplicationSQLite> localEntities = Arrays.asList(localEntity1, localEntity2, localEntity3);
     	
         Mockito.when(this.localEntityRepository.findAll()).thenReturn(localEntities);
     }

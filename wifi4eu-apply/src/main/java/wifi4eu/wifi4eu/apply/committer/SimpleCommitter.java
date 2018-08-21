@@ -1,7 +1,9 @@
 package wifi4eu.wifi4eu.apply.committer;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -17,8 +19,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.apply.MasterCommitter;
-import wifi4eu.wifi4eu.apply.localEntity.LocalEntity;
+import wifi4eu.wifi4eu.apply.localEntity.ApplicationSQLite;
 import wifi4eu.wifi4eu.apply.localEntity.LocalRepository;
+import wifi4eu.wifi4eu.apply.masterEntity.ApplicationSQLServer;
 
 @Service
 public class SimpleCommitter implements ICommitter {
@@ -44,11 +47,11 @@ public class SimpleCommitter implements ICommitter {
 	}
 
 	public void commit() {
-		List<LocalEntity> localEntities = new ArrayList<>();
+		List<ApplicationSQLite> localEntities = new ArrayList<>();
 
 		PageRequest pageRequest = PageRequest.of(0, 100);
 		
-		Page<LocalEntity> pageLocalEntity = this.localRep.findAll(pageRequest);
+		Page<ApplicationSQLite> pageLocalEntity = this.localRep.findAll(pageRequest);
 		
 		localEntities.addAll(pageLocalEntity.getContent());
 		
@@ -58,8 +61,11 @@ public class SimpleCommitter implements ICommitter {
 		//localEntities.addAll(this.createInvalidEntities(1));
 		this.LOGGER.info("Entities Found: [{}]", localEntities.size());
 		
+		Date dateApplication = new Date();
 		MasterPreparedStatementSetter masterPreparedStatementSetter = new MasterPreparedStatementSetter();
-		masterPreparedStatementSetter.setListLocalEntities(localEntities);
+		
+		List<ApplicationSQLServer> applications = localEntities.stream().map(l -> new ApplicationSQLServer(Long.valueOf(l.getCallId()), Long.valueOf(l.getRegistrationId()), dateApplication) ).collect(Collectors.toList());
+		masterPreparedStatementSetter.setListLocalEntities(applications);
 		
 		long start = System.currentTimeMillis();
 		int savingPageSize = 1000;
