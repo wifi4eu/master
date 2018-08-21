@@ -24,8 +24,8 @@ public class ApplicationDTO {
     private Boolean preSelectedFlag;
     private Boolean rejected;
     private Integer authorizedPerson;
-    private boolean sentEmail;
-    private Date sentEmailDate;
+//    private boolean sentEmail;
+//    private Date sentEmailDate;
 
     public ApplicationDTO() {
     }
@@ -52,8 +52,8 @@ public class ApplicationDTO {
         this.preSelectedFlag = preSelectedFlag;
         this.rejected = rejected;
         this.authorizedPerson = authorizedPerson;
-        this.sentEmail = sentEmail;
-        this.sentEmailDate = sentEmailDate;
+//        this.sentEmail = sentEmail;
+//        this.sentEmailDate = sentEmailDate;
     }
 
     public int getId() {
@@ -219,20 +219,20 @@ public class ApplicationDTO {
     public void setCancelReason(String cancelReason) {
         this.cancelReason = cancelReason;
     }
-
-    public boolean isSentEmail() {
-        return sentEmail;
-    }
-
-    public void setSentEmail(boolean sentEmail) {
-        this.sentEmail = sentEmail;
-    }
-
-    public Date getSentEmailDate() {
-        return sentEmailDate;
-    }
-
-    public void setSentEmailDate(Date sentEmailDate) {
-        this.sentEmailDate = sentEmailDate;
-    }
+//
+//    public boolean isSentEmail() {
+//        return sentEmail;
+//    }
+//
+//    public void setSentEmail(boolean sentEmail) {
+//        this.sentEmail = sentEmail;
+//    }
+//
+//    public Date getSentEmailDate() {
+//        return sentEmailDate;
+//    }
+//
+//    public void setSentEmailDate(Date sentEmailDate) {
+//        this.sentEmailDate = sentEmailDate;
+//    }
 }
