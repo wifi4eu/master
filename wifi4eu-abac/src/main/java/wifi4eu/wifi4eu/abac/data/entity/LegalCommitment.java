@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
+import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentWorkflowStatus;
 
 @Entity
 @Table(name = "WIF_LEGAL_COMMITMENT")
@@ -35,7 +36,7 @@ public class LegalCommitment {
 	
 	@Column(name = "wf_status")
 	@Enumerated(EnumType.STRING)
-	private AbacWorkflowStatus wfStatus;
+	private LegalCommitmentWorkflowStatus wfStatus;
 
 	@Column(name = "date_created", length = 20)
 	private Date dateCreated;
@@ -47,7 +48,7 @@ public class LegalCommitment {
 	public LegalCommitment() {
 	}
 
-	public LegalCommitment(Long id, LegalEntity legalEntity, Long abacId, AbacWorkflowStatus wfStatus,
+	public LegalCommitment(Long id, LegalEntity legalEntity, Long abacId, LegalCommitmentWorkflowStatus wfStatus,
 			String userImported, Date dateCreated, Date dateUpdated, Date countersignatureDate,
 			Long idCountersignatureFile, String userCountersignatured) {
 		super();
@@ -62,7 +63,7 @@ public class LegalCommitment {
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
-		this.wfStatus = AbacWorkflowStatus.READY_FOR_ABAC;
+		this.wfStatus = LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED;
 	}
 
 	
@@ -90,11 +91,11 @@ public class LegalCommitment {
 		this.abacId = abacId;
 	}
 
-	public AbacWorkflowStatus getWfStatus() {
+	public LegalCommitmentWorkflowStatus getWfStatus() {
 		return wfStatus;
 	}
 
-	public void setWfStatus(AbacWorkflowStatus wfStatus) {
+	public void setWfStatus(LegalCommitmentWorkflowStatus wfStatus) {
 		this.wfStatus = wfStatus;
 	}
 

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.ImportDataService;
 import wifi4eu.wifi4eu.abac.service.LegalCommitmentService;
@@ -41,9 +42,12 @@ public class LegalCommitmentController {
 	}
 
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "application/zip")
-	public ResponseEntity<byte[]> exportLegalCommitment(final HttpServletResponse response, Model model) throws Exception {
+	public void exportLegalCommitment(final HttpServletResponse response, Model model) throws Exception {
 		log.info("exportLegalCommitment");
-		return null;
+
+		FileDTO fileDTO = importDataService.exportLegalCommitments();
+		response.getOutputStream().write(fileDTO.getContent());
+		response.flushBuffer();
 	}
 
 	@RequestMapping(value = "countersign", method = RequestMethod.POST, produces = "application/json")

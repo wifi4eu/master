@@ -1,15 +1,15 @@
 package wifi4eu.wifi4eu.abac.data.dto;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
+import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentWorkflowStatus;
+
+import java.util.Date;
 
 public class MonitoringRow {
 	
@@ -65,7 +65,7 @@ public class MonitoringRow {
 		readyToBeCounterSigned = legalEntity != null && budgetaryCommitment != null && grantAgreementDoc != null
 								&& legalEntity.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)
 								&& budgetaryCommitment.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)
-								&& grantAgreementDoc.getWfStatus().equals(DocumentWorkflowStatus.IMPORTED);
+								&& legalCommitment.getWfStatus().equals(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);
 	}
 	
 	public Long getId() {
@@ -132,7 +132,7 @@ public class MonitoringRow {
 		this.lcStatus = lcStatus;
 	}
 	
-	public void setLcStatus(AbacWorkflowStatus lcStatus) {
+	public void setLcStatus(LegalCommitmentWorkflowStatus lcStatus) {
 		this.lcStatus = lcStatus.getTitle();
 	}
 

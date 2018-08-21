@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.abac.service;
 
+import eu.europa.ec.research.fp.services.document_management.interfaces.v5.FileDocumentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,17 @@ import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 import wifi4eu.wifi4eu.abac.utils.ZipFileReader;
+import wifi4eu.wifi4eu.abac.utils.ZipFileWriter;
 import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +78,7 @@ public class ImportDataService {
 	 */
 	public void importLegalCommitments(byte[] file) {
 		importDataViaZipFile(file);
+		legalCommitmentService.createLegalCommitments();
 	}
 
 	@Transactional(Transactional.TxType.REQUIRED)
@@ -189,27 +195,16 @@ public class ImportDataService {
 		}
 	}
 
-/*	@Transactional
-	public void importLegalCommitments(byte[] file) {
-		
-		FileDTO fileDTO = new FileDTO();
-		fileDTO.setContent(file);
-		fileDTO.setSize(new Long(file.length));
-		
-		List<LegalCommitmentCSVRow> legalCommitmentCSVRows = (List<LegalCommitmentCSVRow>) legalCommitmentCSVFileParser.parseFile(fileDTO); 
-		
-		for (LegalCommitmentCSVRow legalCommitmentCSVRow : legalCommitmentCSVRows) {
+	public FileDTO exportLegalCommitments() throws IOException {
+		ZipFileWriter zipFileWriter = new ZipFileWriter("export.zip");
 
-			LegalCommitment legalCommitment = legalCommitmentService.getLegalCommitmentByMunicipalityPortalId(legalCommitmentCSVRow.getMunicipalityPortalId());
+		List<Document> documents = documentService.getDocumentsByTypeAndStatus(DocumentType.GRANT_AGREEMENT, DocumentWorkflowStatus.IMPORTED);
 
-			if (legalCommitment == null) {
-				legalCommitment = legalCommitmentService.mapLegalCommitmentCSVToEntity(legalCommitmentCSVRow);
-				legalCommitmentService.saveLegalCommitment(legalCommitment);
-			} else {
-				//TODO update or ignore?
-				log.warn("Legal commitment already exists in the DB. Ignoring it for now : {}", legalCommitment);
-			}
+		for (Document document : documents) {
+			FileDTO fileDTO = new FileDTO(document.getFileName(), new Long(document.getCountersignedData().length), document.getCountersignedData());
+			zipFileWriter.addFile(fileDTO);
 		}
-	}*/
-	
+
+		return zipFileWriter.finishAndReturnZipfile();
+	}
 }
