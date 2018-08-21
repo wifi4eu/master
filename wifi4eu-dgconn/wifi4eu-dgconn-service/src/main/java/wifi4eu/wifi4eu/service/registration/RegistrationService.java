@@ -445,7 +445,6 @@ public class RegistrationService {
      * Gets all documents independent of user and type.
      * If type is not null it returns all documents uploaded for that type.
      * @param registrationId
-     * @param type
      * @return
      */
     public List<LegalFileDTO> getHistoryDocuments(Integer registrationId) {
@@ -473,6 +472,9 @@ public class RegistrationService {
 
     public List<Integer> findTypeFilesWaitingUploadByRegistration(Integer registrationId){
         LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
+        if(lastEmailSent == null){
+            return new ArrayList<Integer>();
+        }
         return legalFileCorrectionReasonRepository.findTypeFilesWaitingUploadByRegistration(lastEmailSent.getSentDate(),registrationId);
     }
 
