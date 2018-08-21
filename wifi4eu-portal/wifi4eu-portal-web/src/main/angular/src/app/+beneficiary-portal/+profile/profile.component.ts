@@ -26,6 +26,7 @@ import { elementAt } from "../../../../node_modules/rxjs/operator/elementAt";
 @Component({
     selector: 'beneficiary-profile',
     templateUrl: 'profile.component.html',
+    styleUrls: ['profile.component.scss'],
     providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi, BeneficiaryApi]
 })
 

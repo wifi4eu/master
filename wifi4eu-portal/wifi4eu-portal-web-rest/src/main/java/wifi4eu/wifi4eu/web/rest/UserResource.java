@@ -20,6 +20,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -213,14 +214,13 @@ public class UserResource {
     @ApiOperation(value = "Get all users from registration")
     @RequestMapping (value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserDTO> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId){
+    public List<UserContactDetails> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId){
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
         try {
-            List<UserDTO> users = new ArrayList<>();
-            users = registrationService.getUsersFromRegistration(registrationId);
-            return users;
+            return registrationService.findUsersContactDetailsByRegistrationId(registrationId);
+            // return registrationService.getUsersFromRegistration(registrationId);
         } catch (Exception e){
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
             return null;

@@ -415,6 +415,16 @@ body {
   background: none;
 }
 
+.sizeBeneficiaryHr{
+  width: 98.5%;
+  margin-top: 20px !important;
+}
+
+.sizeBeneficiaryHr2{
+  width: 100%;
+  margin-top: 20px !important;
+}
+
 .genericHr {
   border: 0;
   border-top: 2px solid rgba(0, 0, 0, 0.1);
@@ -1818,6 +1828,10 @@ input.email_profile::-ms-clear{
   border: 2px solid #d2d2d2;
 }
 
+.whitePanelBeneficiary{
+  background-color: white;
+}
+
 
 .whiteButton {
   font-size: 0.8em;
@@ -1892,4 +1906,34 @@ input.email_profile::-ms-clear{
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
+}
+
+.panelMunicipality{
+  font-size: 14px !important;
+}
+
+.panel-header{
+  background-color: #fff !important;
+  padding: 1px 1px 0.3px 1px;
+}
+
+.panel-content{
+  padding: 0px !important;
+}
+
+.label{
+  margin-top: 1em;
+}
+
+li.panel .panel-header .toggle{
+  margin-top: 0.5em;
+}
+
+.editRegistrationsLabel{
+  margin-top: 0.3em;
+  font-size: 17px;
+}
+
+.marginSecondSectionBeneficiary{
+  margin-top: 9.80em;
 }
