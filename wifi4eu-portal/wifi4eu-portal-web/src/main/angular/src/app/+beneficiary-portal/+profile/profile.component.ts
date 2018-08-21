@@ -22,6 +22,7 @@ import {UserRegistrationDTOBase} from "../../shared/swagger/model/UserRegistrati
 import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import { UserDetailsService } from "../../core/services/user-details.service";
 import { elementAt } from "../../../../node_modules/rxjs/operator/elementAt";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
     selector: 'beneficiary-profile',
@@ -66,8 +67,10 @@ export class BeneficiaryProfileComponent {
     protected languageRows: UxLanguage [] [];
     protected languages: UxLanguage [];
     private withdrawingRegistrationConfirmation: boolean = false;
+    private registrations: RegistrationDTOBase[] = [];
+    private nameCookieApply: string = "hasRequested";
 
-    constructor(private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+    constructor(private cookieService: CookieService, private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -79,6 +82,7 @@ export class BeneficiaryProfileComponent {
                             Object.assign(this.editedUser, this.user);
                             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                                 (registrations: RegistrationDTOBase[]) => {
+                                    this.registrations = registrations;
                                     for (let registration of registrations) {
                                         if (registration.municipalityId == 0){
                                             continue;
@@ -258,8 +262,22 @@ export class BeneficiaryProfileComponent {
         this.displayLanguageModal = false;
     }
 
+    private isVoucherApplied(idRegistration:number){
+      if (this.cookieService.check(this.nameCookieApply+"_"+idRegistration)){
+          if (this.cookieService.get(this.nameCookieApply+"_"+idRegistration) == "true"){
+              return true;
+          }
+      }
+      return false;
+    }
+
     private deleteRegistration() {        
         this.withdrawingRegistrationConfirmation = false;
+        var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
+        if(appliedExist){
+          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.withdraw.existingApplication.error', 'warn');  
+          return;
+        }
         if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
             this.withdrawingRegistration = true;
             this.userApi.deleteUser(this.user.id).subscribe(
