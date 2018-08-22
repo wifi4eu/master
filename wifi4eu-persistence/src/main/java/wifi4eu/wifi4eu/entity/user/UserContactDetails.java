@@ -1,10 +1,8 @@
 package wifi4eu.wifi4eu.entity.user;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
 public class UserContactDetails {
 
     @Column(name = "id")

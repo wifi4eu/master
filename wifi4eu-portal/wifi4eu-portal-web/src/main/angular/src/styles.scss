@@ -458,7 +458,7 @@ body {
 
 .fa-exclamation-triangle{
   font-size: 2.5em;
-  margin-top: 25%;
+  margin-top: 12%;
   color: #fff;
 }
 
@@ -1936,4 +1936,18 @@ li.panel .panel-header .toggle{
 
 .marginSecondSectionBeneficiary{
   margin-top: 9.80em;
+}
+
+.blueText{
+  color:#254872;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.cursorPointer{
+  cursor: pointer;
+}
+
+li.panel .panel-header .label-wrapper .label {
+  color:#254872 !important;
 }

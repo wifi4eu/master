@@ -227,4 +227,13 @@ public class UserResource {
         }
     }
 
+    @ApiOperation(value = "Edit method")
+    @RequestMapping (value  = "/edit", method = RequestMethod.PUT, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO editDummy(@RequestBody UserContactDetails userContactDetails){
+        return new ResponseDTO(true,"not implemented", new ErrorDTO());
+    }
+
+
+
 }
