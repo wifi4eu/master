@@ -16,11 +16,7 @@ import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
-import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
-import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
-import wifi4eu.wifi4eu.abac.data.entity.Document;
-import wifi4eu.wifi4eu.abac.data.entity.ImportLog;
-import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.entity.*;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
 import wifi4eu.wifi4eu.abac.data.repository.ImportLogRepository;
@@ -32,6 +28,7 @@ import wifi4eu.wifi4eu.abac.utils.ZipFileReader;
 import wifi4eu.wifi4eu.abac.utils.ZipFileWriter;
 import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
+import wifi4eu.wifi4eu.abac.utils.csvparser.LegalCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
 import javax.transaction.Transactional;
@@ -53,6 +50,9 @@ public class ImportDataService {
 
 	@Autowired
 	private DocumentCSVFileParser documentCSVFileParser;
+
+	@Autowired
+	private LegalCommitmentCSVFileParser legalCommitmentCSVFileParser;
 
 	@Autowired
 	private BudgetaryCommitmentCSVFileParser budgetaryCommitmentCSVFileParser;
@@ -248,12 +248,20 @@ public class ImportDataService {
 	public FileDTO exportLegalCommitments() throws IOException {
 		ZipFileWriter zipFileWriter = new ZipFileWriter("export.zip");
 
-		List<Document> documents = documentService.getDocumentsByTypeAndStatus(DocumentType.COUNTERSIGNED_GRANT_AGREEMENT, DocumentWorkflowStatus.IMPORTED);
+		List<LegalCommitment> legalCommitments = legalCommitmentService.getAllLegalCommitments();
 
-		for (Document document : documents) {
-			FileDTO fileDTO = new FileDTO(document.getFileName(), new Long(document.getData().length), document.getData());
-			zipFileWriter.addFile(fileDTO);
+		for (LegalCommitment legalCommitment : legalCommitments) {
+
+			Document counterSignedGrantAgreement = legalCommitment.getCounterSignedGrantAgreementDocument();
+			if (counterSignedGrantAgreement != null) {
+				FileDTO fileDTO = new FileDTO(counterSignedGrantAgreement.getFileName(), new Long(counterSignedGrantAgreement.getData().length), counterSignedGrantAgreement.getData());
+				zipFileWriter.addFile(fileDTO);
+			}
 		}
+
+		byte[] legalCommitmentsCSVbytes = legalCommitmentCSVFileParser.exportBudgetaryCommitmentToCSV(legalCommitments).getBytes();
+		FileDTO legalCommitmentsCSVFile = new FileDTO("legalCommitments.csv", new Long(legalCommitmentsCSVbytes.length), legalCommitmentsCSVbytes);
+		zipFileWriter.addFile(legalCommitmentsCSVFile);
 
 		return zipFileWriter.finishAndReturnZipfile();
 	}

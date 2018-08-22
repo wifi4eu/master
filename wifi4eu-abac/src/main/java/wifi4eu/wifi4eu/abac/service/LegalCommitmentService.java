@@ -57,6 +57,7 @@ public class LegalCommitmentService {
 
 				legalCommitment.setGrantAgreementCounterSignatureDate(Calendar.getInstance().getTime());
 				legalCommitment.setWfStatus(LegalCommitmentWorkflowStatus.COUNTERSIGNED);
+				legalCommitment.setCounterSignedGrantAgreementDocument(counterSignedGrantAgreement);
 				saveLegalCommitment(legalCommitment);
 			}
 		} catch (Exception e) {
@@ -117,5 +118,9 @@ public class LegalCommitmentService {
 			}
 		}
 
+	}
+
+	public List<LegalCommitment> getAllLegalCommitments() {
+		return (List<LegalCommitment>) legalCommitmentRepository.findAll();
 	}
 }
