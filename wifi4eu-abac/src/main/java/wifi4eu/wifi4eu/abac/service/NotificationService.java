@@ -1,14 +1,16 @@
 package wifi4eu.wifi4eu.abac.service;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.entity.Notification;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.NotificationStatus;
 import wifi4eu.wifi4eu.abac.data.enums.NotificationType;
 import wifi4eu.wifi4eu.abac.data.repository.NotificationRepository;
@@ -22,9 +24,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.StringWriter;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 @Service
 public class NotificationService {
@@ -42,6 +46,9 @@ public class NotificationService {
 
     @Autowired
     private LegalEntityService legalEntityService;
+
+    @Autowired
+    private VelocityEngine velocityEngine;
 
     @Transactional
     public void createLegalEntityProcessPendingNotification(String batchRef){
@@ -75,27 +82,22 @@ public class NotificationService {
     private String buildLegalEntityNotificationFinishedMessage(String batchRef){
         List<LegalEntity> legalEntities = legalEntityService.getAllByBatchRef(batchRef);
 
-        String msgTemplate = getFileAsString("LEF_MAIL_REPORT_TEMPLATE.html");
+        Integer legalEntitiesCount = legalEntities.size();
+        Long legalEntitiesValidCount = legalEntities.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)).count();
+        Long legalEntitiesRejectedCount = legalEntities.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_REJECTED)).count();
+        Long legalEntitiesErrorCount = legalEntities.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_ERROR)).count();
 
-        Integer legalEntitiesValidCount = 10;
-        Integer legalEntitiesRejectedCount = 10;
-        Integer legalEntitiesErrorCount = 10;
+        VelocityContext velocityContext = new VelocityContext();
+        velocityContext.put("legalEntitiesCount", legalEntitiesCount);
+        velocityContext.put("legalEntitiesValidCount", legalEntitiesValidCount);
+        velocityContext.put("legalEntitiesRejectedCount", legalEntitiesRejectedCount);
+        velocityContext.put("legalEntitiesErrorCount", legalEntitiesErrorCount);
+        velocityContext.put("reportDate", Calendar.getInstance().getTime().toString());
 
-        return msgTemplate.replace("[[$legalEntitiesValidCount]]", legalEntitiesValidCount.toString()).replace("[[$legalEntitiesRejectedCount]]", legalEntitiesRejectedCount.toString()).replace("[[$legalEntitiesErrorCount]]", legalEntitiesErrorCount.toString());
-    }
+        StringWriter stringWriter = new StringWriter();
+        velocityEngine.mergeTemplate("templates/LEF_MAIL_REPORT_TEMPLATE.html", "UTF-8", velocityContext, stringWriter);
 
-    private String getFileAsString(String fileName) {
-
-        String result = "";
-
-        ClassLoader classLoader = getClass().getClassLoader();
-        try {
-            result = IOUtils.toString(classLoader.getResourceAsStream(fileName));
-        } catch (IOException e) {
-            log.error("ERROR reading file "+fileName, e);
-        }
-
-        return result;
+        return stringWriter.toString();
     }
 
 
