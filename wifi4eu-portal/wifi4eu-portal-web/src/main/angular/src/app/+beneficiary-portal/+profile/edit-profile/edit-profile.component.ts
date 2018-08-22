@@ -47,6 +47,9 @@ export class BeneficiaryEditProfileComponent {
     private css_class_municipalities: string[] = ['notValid'];
     private css_class_email: string[] = ['notValid'];
     private countries: NutsDTOBase[] = [];
+    private addUser: boolean = false;
+    private addContact: boolean = false;
+    private idMunicipalityNewContactUser: number = 0;
     private country: NutsDTOBase;
     private laus: LauDTOBase[] = [];
     private user: UserDTOBase = new UserDTOBase;
@@ -90,12 +93,10 @@ export class BeneficiaryEditProfileComponent {
     @ViewChild('municipalityForm') municipalityForm: NgForm;
     private organizationId: number = 0;
     private isOrganisation: boolean = false;
-    private addUser: boolean = false;
     private currentCall: CallDTOBase;
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private newUserEmail: string = '';
     private registrationIndex: number = null;
-    private addContact:boolean = false;
     private associationName: String = '';
     private registration: RegistrationDTOBase ;
     private registrationFinish: boolean = false;
@@ -546,6 +547,44 @@ export class BeneficiaryEditProfileComponent {
             }
         }
     }
+
+    private addNewContactToMunicipality(municipalityId: number){
+        this.idMunicipalityNewContactUser = municipalityId;
+        this.addUser = true;
+    }
+
+    private closeAddNewContactModal(){
+        this.newUserEmail = '';
+        this.addUser = false;
+    }
+
+    private addNewContact(){
+        if (this.newUserEmail.trim() != '' && this.idMunicipalityNewContactUser != 0){
+            this.addContact = true;
+            this.beneficiaryApi.invitateContactBeneficiary(this.idMunicipalityNewContactUser, this.newUserEmail).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success){
+                        this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+                        this.addContact = false;
+                        this.addUser = false;
+                        this.closeModal();
+                    } else {
+                        this.addContact = false;
+                        this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+                        this.closeModal();
+                    }
+                }, error => {
+                    this.addContact = false;
+                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.closeModal();
+                }
+            );
+            this.newUserEmail = '';
+        } else {
+            this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
+        }
+    }
+
 
     private checkButtonEnabledUser(event){
         this.buttonEnabled = false;
