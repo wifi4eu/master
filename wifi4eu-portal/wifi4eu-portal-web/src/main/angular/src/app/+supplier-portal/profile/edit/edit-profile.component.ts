@@ -86,6 +86,7 @@ export class SupplierEditProfileComponent {
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
                     this.supplier = supplier;
+                    // this.users = this.supplier.users;
                     this.users = this.supplier.users;
                     if (this.supplier.logo != null)
                         this.isLogoUploaded = true;
