@@ -8,16 +8,18 @@ import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { Observable } from 'rxJs/Observable';
 import { SharedService } from "../../shared/shared.service";
-import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO, VoucherAssignmentAuxiliarDTOBase, RegistrationWarningApi, VoucherAssignmentDTOBase } from "../../shared/swagger";
+import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO, VoucherAssignmentAuxiliarDTOBase, RegistrationWarningApi, VoucherAssignmentDTOBase, AdminactionsApi } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
 import { count } from "rxjs/operator/count";
 import { Paginator, MenuItem, DataTable, TabView } from "primeng/primeng";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as FileSaver from "file-saver";
 import { Subscription } from "rxjs";
+import { AdminActionsDTO } from "../../shared/swagger/model/AdminActionsDTO";
 
 @Component({
-  templateUrl: 'voucher.component.html', providers: [ApplicationApi, NutsApi, VoucherApi, RegistrationWarningApi, CallApi],
+  templateUrl: 'voucher.component.html', 
+  providers: [ApplicationApi, NutsApi, VoucherApi, RegistrationWarningApi, CallApi, AdminactionsApi],
   styleUrls: ['./voucher.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: [
@@ -84,6 +86,7 @@ export class DgConnVoucherComponent {
   private hourNumberFreeze: string; 
   private dateNumberNotified: string;
   private hourNumberNotified: string;
+  private startSendingNotifications = {};
 
   private hasCallEnded : boolean = false;
 
@@ -96,7 +99,7 @@ export class DgConnVoucherComponent {
   private downloadingExcel: boolean = false;
   @ViewChild("municipalitySearch") municipalitySearch: ElementRef;
 
-  constructor(private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
+  constructor(private adminActionsApi: AdminactionsApi, private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
     private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, private registrationWarningApi: RegistrationWarningApi ) {
     this.callApi.allCalls().subscribe(
       (calls: CallDTOBase[]) => {
@@ -176,7 +179,7 @@ export class DgConnVoucherComponent {
                   }
                 });
               });
-              
+              this.pressedNotificationButton = true;
               this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callSelected.id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
                 if(data != null){
                   this.callVoucherAssignment = data;
@@ -207,6 +210,21 @@ export class DgConnVoucherComponent {
                             this.dateNumberNotified = ('0' + dateNotified.getUTCDate()).slice(-2) + "/" + ('0' + (dateNotified.getUTCMonth() + 1)).slice(-2) + "/" + dateNotified.getUTCFullYear();
                             this.hourNumberNotified = ('0' + (dateNotified.getUTCHours() + 2)).slice(-2) + ":" + ('0' + dateNotified.getUTCMinutes()).slice(-2);
                           }
+                          this.adminActionsApi.getByActionName("voucher_send_notifications").subscribe((response: ResponseDTO) => {
+                            if(response.success){
+                              let adminAction = <AdminActionsDTO>response.data;
+                              if(adminAction != null){
+                                if(adminAction.running){
+                                  let dateStartSending = new Date(adminAction['startDate']);
+                                  this.startSendingNotifications['startSendingDate'] = ('0' + dateStartSending.getUTCDate()).slice(-2) + "/" + ('0' + (dateStartSending.getUTCMonth() + 1)).slice(-2) + "/" +dateStartSending.getUTCFullYear();
+                                  this.startSendingNotifications['startSendingHour'] = ('0' + (dateStartSending.getUTCHours() + 2)).slice(-2) + ":" + ('0' + dateStartSending.getUTCMinutes()).slice(-2);
+                                }
+                                this.pressedNotificationButton = adminAction.running;
+                              }else{
+                                this.pressedNotificationButton = false;
+                              }
+                            }
+                          })
                           this.loadPage();
                         }                    
                       }, error => {
@@ -473,6 +491,7 @@ export class DgConnVoucherComponent {
   private freezeList(){
     this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
       this.displayFreezeConfirmation = enabled;
+      this.pressedNotificationButton = !enabled;
       if(!enabled){
         this.sharedService.growlTranslation('It\'s not possible to freeze the list with applications left to be validated', 'dgConn.voucherAssignment.warning.savingFreezeList','warn');
       }
@@ -500,15 +519,20 @@ export class DgConnVoucherComponent {
   }
 
   private sendNotificationToApplicants(){
+    if(this.callVoucherAssignment.notifiedDate != null){
+      return;
+    }
     if(!this.callVoucherAssignment.hasFreezeListSaved || !this.hasCallEnded){
       return;
     }
+    this.pressedNotificationButton = true;
     this.voucherApi.sendNotificationForApplicants(this.callSelected.id).subscribe((response: ResponseDTO) => {
-      this.pressedNotificationButton = response.success;
       if(response.success){
+        this.pressedNotificationButton = true;
         this.sharedService.growlTranslation('The process of sending notifications has started.', 'dgConn.voucherAssignment.success.sendingNotifications', 'success');
       }
       else{
+        this.pressedNotificationButton = false;
         this.sharedService.growlTranslation('An error occurred while sending notifications.', 'dgConn.voucherAssignment.error.sendingNotifications', 'error');
       }
     }, (error) => {

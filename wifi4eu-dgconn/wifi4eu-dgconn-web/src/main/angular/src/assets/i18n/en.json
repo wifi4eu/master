@@ -718,7 +718,6 @@
   "dgConn.voucherAssignment.growl.error": "An error ocurred while trying to update the application",
   "dgConn.voucherAssignment.preList.date": "Saved on {{date}} at {{hour}}",
   "dgConn.voucherAssignment.freezeList.date": "Frozen on {{date}} at {{hour}}. Read only.",
-  "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
   "dgConn.voucherAssignment.invalidateReason": "Invalidate reason(s)",
   "dgconn.voucherAssignment.runningSimulation.confirm": "Confirm",
   "dgconn.sendRequestCorrectionEmails": "Send request for correction e-mails",
@@ -966,6 +965,5 @@
   "summary.warning": "WARNING",
   "summary.info": "INFO",
   "shared.editProfile.save.error": "An error ocurred while trying to update your profile data. Please, try again later.",
-  "benefPortal.withdraw.existingApplication.error": "Your registrations cannot be removed because one of your registrations is applied",
-  "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started"
+  "benefPortal.withdraw.existingApplication.error": "Your registrations cannot be removed because one of your registrations is applied"
 }
