@@ -17,6 +17,8 @@ import java.util.TreeMap;
 @Component
 public abstract class AbstractCSVFileParser {
 
+	protected static final String PORTAL_CSV_DATE_FORMAT = "yyyy-MM-dd";
+
 	private final Logger log = LoggerFactory.getLogger(AbstractCSVFileParser.class);
 
 	public List<?> parseFile(FileDTO fileDTO) throws RuntimeException {

@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.*;
+import javax.print.Doc;
 
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentWorkflowStatus;
@@ -44,7 +45,20 @@ public class LegalCommitment {
 	@Column(name = "date_updated", length = 20)
 	private Date dateUpdated;
 
-	
+	@OneToOne
+	@JoinColumn(name="GRANT_AGREEMENT_DOC_ID")
+	private Document grantAgreementDocument;
+
+	@OneToOne
+	@JoinColumn(name="COUNTERSIGNED_GRANT_AGR_DOC_ID")
+	private Document counterSignedGrantAgreementDocument;
+
+	@Column(name="GRANT_AGREEMENT_SIGNATURE_DATE")
+	private Date grantAgreementSignatureDate;
+
+	@Column(name="GRANT_AGREEMENT_CNTRSIGN_DATE")
+	private Date grantAgreementCounterSignatureDate;
+
 	public LegalCommitment() {
 	}
 
@@ -113,6 +127,38 @@ public class LegalCommitment {
 
 	public void setDateUpdated(Date dateUpdated) {
 		this.dateUpdated = dateUpdated;
+	}
+
+	public Document getGrantAgreementDocument() {
+		return grantAgreementDocument;
+	}
+
+	public void setGrantAgreementDocument(Document grantAgreementDocument) {
+		this.grantAgreementDocument = grantAgreementDocument;
+	}
+
+	public Document getCounterSignedGrantAgreementDocument() {
+		return counterSignedGrantAgreementDocument;
+	}
+
+	public void setCounterSignedGrantAgreementDocument(Document counterSignedGrantAgreementDocument) {
+		this.counterSignedGrantAgreementDocument = counterSignedGrantAgreementDocument;
+	}
+
+	public Date getGrantAgreementSignatureDate() {
+		return grantAgreementSignatureDate;
+	}
+
+	public void setGrantAgreementSignatureDate(Date grantAgreementSignatureDate) {
+		this.grantAgreementSignatureDate = grantAgreementSignatureDate;
+	}
+
+	public Date getGrantAgreementCounterSignatureDate() {
+		return grantAgreementCounterSignatureDate;
+	}
+
+	public void setGrantAgreementCounterSignatureDate(Date grantAgreementCounterSignatureDate) {
+		this.grantAgreementCounterSignatureDate = grantAgreementCounterSignatureDate;
 	}
 
 	@Override

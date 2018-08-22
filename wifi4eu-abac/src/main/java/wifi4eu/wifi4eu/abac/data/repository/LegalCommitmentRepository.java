@@ -26,4 +26,6 @@ public interface LegalCommitmentRepository extends CrudRepository<LegalCommitmen
 
 	@Procedure(name = "UPDATE_LC_STATUS_FROM_ABAC")
 	void updateLegalCommitmentStatuses();
+
+	LegalCommitment findByLegalEntityIdAndWfStatus(Long legalEntityId, LegalCommitmentWorkflowStatus legalCommitmentStatus);
 }

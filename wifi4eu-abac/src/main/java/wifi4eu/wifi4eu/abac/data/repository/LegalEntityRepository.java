@@ -31,11 +31,10 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	void updateFinancialLegalEntitiesStatuses();
 	
 	@Query(value =
-			"SELECT new wifi4eu.wifi4eu.abac.data.dto.MonitoringRow(le, bc, lc, doc) " +
+			"SELECT new wifi4eu.wifi4eu.abac.data.dto.MonitoringRow(le, bc, lc) " +
 			"FROM LegalEntity le " +
 			"LEFT JOIN BudgetaryCommitment bc on bc.legalEntity.id = le.id " +
-			"LEFT JOIN LegalCommitment lc on lc.legalEntity.id = le.id " +
-			"LEFT JOIN Document doc on le.id = doc.legalEntity.id and doc.type = 'GRANT_AGREEMENT'"
+			"LEFT JOIN LegalCommitment lc on lc.legalEntity.id = le.id"
 	)
 	List<MonitoringRow> findMonitoringData();
 	

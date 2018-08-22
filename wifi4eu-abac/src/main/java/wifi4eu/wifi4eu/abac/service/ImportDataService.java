@@ -249,10 +249,10 @@ public class ImportDataService {
 	public FileDTO exportLegalCommitments() throws IOException {
 		ZipFileWriter zipFileWriter = new ZipFileWriter("export.zip");
 
-		List<Document> documents = documentService.getDocumentsByTypeAndStatus(DocumentType.GRANT_AGREEMENT, DocumentWorkflowStatus.IMPORTED);
+		List<Document> documents = documentService.getDocumentsByTypeAndStatus(DocumentType.COUNTERSIGNED_GRANT_AGREEMENT, DocumentWorkflowStatus.IMPORTED);
 
 		for (Document document : documents) {
-			FileDTO fileDTO = new FileDTO(document.getFileName(), new Long(document.getCountersignedData().length), document.getCountersignedData());
+			FileDTO fileDTO = new FileDTO(document.getFileName(), new Long(document.getData().length), document.getData());
 			zipFileWriter.addFile(fileDTO);
 		}
 
