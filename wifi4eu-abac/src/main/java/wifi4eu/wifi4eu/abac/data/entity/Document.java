@@ -43,9 +43,6 @@ public class Document {
 	@Column(name = "ares_date")
 	private Date aresDate;
 
-	@Column(name = "file_size")
-	private Long size;
-
 	@Column(name = "mimetype")
 	private String mimetype;
 
@@ -122,14 +119,6 @@ public class Document {
 
 	public void setAresDate(Date aresDate) {
 		this.aresDate = aresDate;
-	}
-
-	public Long getSize() {
-		return size;
-	}
-
-	public void setSize(Long size) {
-		this.size = size;
 	}
 
 	public String getMimetype() {
