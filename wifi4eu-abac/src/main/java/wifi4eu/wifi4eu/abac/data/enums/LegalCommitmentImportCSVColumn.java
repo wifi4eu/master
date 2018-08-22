@@ -2,7 +2,9 @@ package wifi4eu.wifi4eu.abac.data.enums;
 
 public enum LegalCommitmentImportCSVColumn {
 
-	MUNICIPALITY_PORTAL_ID("mun_id");
+	MUNICIPALITY_PORTAL_ID("mun_id"),
+	GRANT_AGREEMENT_SIGNATURE_DATE("ga_signatureDate"),
+	GRANT_AGREEMENT_COUNTERSIGNATURE_DATE("ga_counterSignatureDate");
 	
 	private String value;
 

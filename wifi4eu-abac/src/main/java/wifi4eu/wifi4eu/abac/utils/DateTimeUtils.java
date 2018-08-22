@@ -6,6 +6,10 @@ import org.slf4j.LoggerFactory;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -13,8 +17,6 @@ import java.util.Date;
  *
  */
 public class DateTimeUtils {
-
-	public static final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 	private final static Logger log = LoggerFactory.getLogger(DateTimeUtils.class);
 
@@ -34,5 +36,15 @@ public class DateTimeUtils {
 			log.error("ERROR parsing date {}",date,e);
 		}
 		return parsedDate;
+	}
+
+	public static String format(Date date, String pattern) {
+		String stringDate = new String();
+		if (date != null) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+			LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			stringDate = localDate.format(formatter);
+		}
+		return stringDate;
 	}
 }
