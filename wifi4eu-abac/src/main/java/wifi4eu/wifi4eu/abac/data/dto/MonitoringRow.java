@@ -31,7 +31,7 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(LegalEntity legalEntity, BudgetaryCommitment budgetaryCommitment, LegalCommitment legalCommitment, Document grantAgreementDoc) {
+	public MonitoringRow(LegalEntity legalEntity, BudgetaryCommitment budgetaryCommitment, LegalCommitment legalCommitment) {
 
 		//Legal Entity data
 		if(legalEntity != null) {
@@ -53,16 +53,13 @@ public class MonitoringRow {
 		//Legal Commitment Data
 		if(legalCommitment != null) {
 			this.setLcStatus(legalCommitment.getWfStatus());
-		}
+			this.setSignatureDate(legalCommitment.getGrantAgreementSignatureDate());
+			this.setCounterSignatureDate(legalCommitment.getGrantAgreementCounterSignatureDate());
 
-		//Grant Agreement Data
-		if(grantAgreementDoc != null) {
-			this.setSignatureDate(grantAgreementDoc.getPortalDate());
-			this.setCounterSignatureDate(grantAgreementDoc.getCounterSignatureDate());
 		}
 
 		//TODO check in the USER REQUIREMENTS if these condtions are right
-		readyToBeCounterSigned = legalEntity != null && budgetaryCommitment != null && grantAgreementDoc != null
+		readyToBeCounterSigned = legalEntity != null && budgetaryCommitment != null && legalCommitment != null
 								&& legalEntity.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)
 								&& budgetaryCommitment.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)
 								&& legalCommitment.getWfStatus().equals(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);

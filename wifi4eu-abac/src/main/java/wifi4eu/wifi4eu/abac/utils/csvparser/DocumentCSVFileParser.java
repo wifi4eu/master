@@ -16,8 +16,6 @@ import java.util.List;
 @Component
 public class DocumentCSVFileParser extends AbstractCSVFileParser {
 
-	private static final String PORTAL_CSV_DATE_FORMAT = "yyyy-MM-dd";
-
 	@Override
 	protected Boolean validateColumns(CSVParser csvParser) {
 		return super.validateColumns(csvParser,
@@ -27,7 +25,8 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 				LegalEntityDocumentImportCSVColumn.DOCUMENT_FILENAME,
 				LegalEntityDocumentImportCSVColumn.DOCUMENT_MIMETYPE,
 				LegalEntityDocumentImportCSVColumn.DOCUMENT_DATE,
-				LegalEntityDocumentImportCSVColumn.DOCUMENT_TYPE);
+				LegalEntityDocumentImportCSVColumn.DOCUMENT_TYPE,
+				LegalEntityDocumentImportCSVColumn.ARES_REFERENCE);
 	}
 
 	@Override

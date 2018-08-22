@@ -38,19 +38,22 @@ public class LegalCommitmentService {
 	@Transactional
 	public void findAndCounterSignGrantAgreements() {
 
-		List<Document> grantAgreements = documentService.getDocumentsByTypeAndStatus(DocumentType.GRANT_AGREEMENT, DocumentWorkflowStatus.COUNTERSIGNATURE_REQUESTED);
-
+		List<LegalCommitment> legalCommitments = legalCommitmentRepository.findByWfStatus(LegalCommitmentWorkflowStatus.COUNTERSIGNATURE_REQUESTED);
 		try {
-			for (Document grantAgreement : grantAgreements) {
+			for (LegalCommitment legalCommitment : legalCommitments) {
+
+				Document grantAgreement = legalCommitment.getGrantAgreementDocument();
 				byte[] countersignedFile = essiService.signDocument(grantAgreement);
 
-				grantAgreement.setWfStatus(DocumentWorkflowStatus.COUNTERSIGNED);
-				grantAgreement.setCountersignedData(countersignedFile);
-				grantAgreement.setCounterSignatureDate(Calendar.getInstance().getTime());
+				Document counterSignedGrantAgreement = new Document();
+				counterSignedGrantAgreement.setFileName("countersigned_"+ grantAgreement.getFileName());
+				counterSignedGrantAgreement.setLegalEntity(grantAgreement.getLegalEntity());
+				counterSignedGrantAgreement.setType(DocumentType.COUNTERSIGNED_GRANT_AGREEMENT);
+				counterSignedGrantAgreement.setWfStatus(DocumentWorkflowStatus.COUNTERSIGNED);
+				counterSignedGrantAgreement.setData(countersignedFile);
+				documentService.saveDocument(counterSignedGrantAgreement);
 
-				documentService.saveDocument(grantAgreement);
-
-				LegalCommitment legalCommitment = grantAgreement.getLegalEntity().getLegalCommitment();
+				legalCommitment.setGrantAgreementCounterSignatureDate(Calendar.getInstance().getTime());
 				legalCommitment.setWfStatus(LegalCommitmentWorkflowStatus.COUNTERSIGNED);
 				saveLegalCommitment(legalCommitment);
 			}
@@ -76,6 +79,9 @@ public class LegalCommitmentService {
 	private void createLegalCommitment(Document grantAgreement) {
 		LegalCommitment legalCommitment = new LegalCommitment();
 		legalCommitment.setLegalEntity(grantAgreement.getLegalEntity());
+		legalCommitment.setGrantAgreementDocument(grantAgreement);
+		legalCommitment.setGrantAgreementSignatureDate(grantAgreement.getPortalDate());
+		legalCommitment.setWfStatus(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);
 		legalCommitmentRepository.save(legalCommitment);
 	}
 
@@ -100,12 +106,10 @@ public class LegalCommitmentService {
 	public void requestCountersignature(List<Long> legalEntityIds) {
 
 		for (Long legalEntityId : legalEntityIds) {
-			Document document = documentService.getDocumentsByLegalEntityIdAndType(legalEntityId, DocumentType.GRANT_AGREEMENT);
-			if (document != null) {
-				document.setWfStatus(DocumentWorkflowStatus.COUNTERSIGNATURE_REQUESTED);
-				documentService.saveDocument(document);
 
-				LegalCommitment legalCommitment = document.getLegalEntity().getLegalCommitment();
+			LegalCommitment legalCommitment = legalCommitmentRepository.findByLegalEntityIdAndWfStatus(legalEntityId, LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);
+
+			if (legalCommitment != null) {
 				legalCommitment.setWfStatus(LegalCommitmentWorkflowStatus.COUNTERSIGNATURE_REQUESTED);
 				saveLegalCommitment(legalCommitment);
 			}

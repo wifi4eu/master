@@ -37,13 +37,6 @@ public class Document {
 	@Column(name = "data")
 	private byte[] data;
 
-	@Lob
-	@Column(name = "countersigned_data")
-	private byte[] countersignedData;
-
-	@Column(name="COUNTERSIGNATURE_DATE")
-	private Date counterSignatureDate;
-
 	@Column(name = "ares_reference")
 	private String aresReference;
 
@@ -250,16 +243,4 @@ public class Document {
 	public void setDocTypeCCM2Id(String docTypeCCM2Id) {
 		this.docTypeCCM2Id = docTypeCCM2Id;
 	}
-
-	public byte[] getCountersignedData() {
-		return countersignedData;
-	}
-
-	public void setCountersignedData(byte[] countersignedData) {
-		this.countersignedData = countersignedData;
-	}
-
-	public Date getCounterSignatureDate() {return counterSignatureDate;}
-
-	public void setCounterSignatureDate(Date counterSignatureDate) {this.counterSignatureDate = counterSignatureDate;}
 }
