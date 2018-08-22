@@ -877,8 +877,26 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 }
 
 .progress-indicator {
-  padding-top: 5.3em;
-  width: 100%;
+    padding-top: 5.3em;
+    width: 100%;
+    .completed:focus {
+        color: #4caf50;
+    }
+    .completed:hover {
+        color: #4caf50;
+    }
+    .active:focus {
+        color: #004494;
+    }
+    .active:hover {
+        color: #004494;
+    }
+    li:focus {
+        color: #bdbdbd;
+    }
+    li:hover {
+        color: #bdbdbd;
+    }
 }
 
 #app-header .right-content {

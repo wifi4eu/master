@@ -535,7 +535,7 @@
                         </div>
                         <div class="col-sm-6">
                             <button type="submit" class="btn btn-primary publish-button" [disabled]="processingRequest || !commentConfirmationForm.valid">
-                                {{ 'shared.confirm.button' | translate }}
+                                {{ 'shared.save' | translate }}
                                 <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
@@ -596,7 +596,7 @@
         </form>
     </p-dialog>
     <p-dialog [(visible)]="displaySimulation" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="!processingRequest" (onAfterHide)="closeModal()">
-        <form (ngSubmit)="rerunVoucherSimulation()" #validateConfirmationForm="ngForm">
+        <form (ngSubmit)="closeModal()" #validateConfirmationForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
                     <p [innerHTML]="'dgConn.applicantDetails.invalidateApplication.rerunVoucherSimulation' | translate"></p>

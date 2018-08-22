@@ -78,8 +78,9 @@
                     <div class="ui-grid ui-grid-responsive ui-fluid">
                         <div class="row conditions-agreement">
                             <div class="col-sm-1 col-md-1 col-lg-1">
-                                <i *ngIf="!data.conditionAgreement" class="fa fa-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
-                                <i *ngIf="data.conditionAgreement" class="fa fa-check-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
+                                <i *ngIf="!data.conditionAgreement && !(data.numberApplicant || isVoucherApplied(data.idRegistration))" class="fa fa-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
+                                <i *ngIf="data.conditionAgreement && !(data.numberApplicant || isVoucherApplied(data.idRegistration))" class="fa fa-check-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
+                                <i *ngIf="data.numberApplicant || isVoucherApplied(data.idRegistration)" class="fa fa-check-square-o" aria-hidden="true" ></i>
                             </div>
                             <div class="col-sm-11 col-md-11 col-lg-11">
                                 <div [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></div>

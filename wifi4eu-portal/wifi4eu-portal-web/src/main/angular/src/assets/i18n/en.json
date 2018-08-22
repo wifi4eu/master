@@ -670,7 +670,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Please note that this countdown is indicative. Click on \"apply\" when the call opens to proceed with your application (any click before the formal opening of the call will show an error message) ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "I agree with the #call conditions# and I declare that the municipality I represent is not included in any of the situations listed in Article 136 (1) of the #Regulation (EU, Euratom) 2018/1046#",
+  "benefPortal.voucher.conditionsAgreement": "I agree with the <a href= \\\"\\\">call conditions</a> and I declare that the municipality I represent is not included in any of the situations listed in Article 136 (1) of the <a href=https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf>Regulation (EU, Euratom) 2018/1046</a>.",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "benefPortal.granAgreement.addressLabel": "Street name",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
@@ -965,5 +965,7 @@
   "summary.warning": "WARNING",
   "summary.info": "INFO",
   "shared.editProfile.save.error": "An error ocurred while trying to update your profile data. Please, try again later.",
-  "benefPortal.withdraw.existingApplication.error": "Your registrations cannot be removed because one of your registrations is applied"
+  "benefPortal.withdraw.existingApplication.error": "Your registrations cannot be removed because one of your registrations is applied",
+  "shared.supportingDocuments.removeDocument": "Remove document",
+  "shared.supportingDocuments.removeModalAreYouSure": "Are you sure you want to remove this document?"
 }

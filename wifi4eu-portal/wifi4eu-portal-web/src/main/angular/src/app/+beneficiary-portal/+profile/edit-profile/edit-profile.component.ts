@@ -31,6 +31,7 @@ import {NgForm} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import { TranslateService } from "ng2-translate";
 import { CallDTO, CallDTOBase, OrganizationApi, OrganizationDTOBase } from "../../../shared/swagger";
+import { CookieService } from "ngx-cookie-service";
 
 
 @Component({
@@ -100,8 +101,10 @@ export class BeneficiaryEditProfileComponent {
     private registration: RegistrationDTOBase ;
     private registrationFinish: boolean = false;
     private hasAssociation : boolean = false;
+    private nameCookieApply: string = "hasRequested";
+    private registrations: RegistrationDTOBase[] = [];
 
-    constructor(private callApi: CallApi, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private translateService: TranslateService, private nutsApi: NutsApi, private lauApi: LauApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+    constructor(private cookieService: CookieService, private callApi: CallApi, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private translateService: TranslateService, private nutsApi: NutsApi, private lauApi: LauApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         this.loadDataEditProfile();
     }
 
@@ -148,7 +151,7 @@ export class BeneficiaryEditProfileComponent {
                             Object.assign(this.editedUser, this.user);
                             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                                 (registrations: RegistrationDTOBase[]) => {
-                                    
+                                    this.registrations = registrations;
                                     if (registrations.length == 1) {
                                         this.oneRegsitration = true;
                                         this.oneRegistrationNumber = registrations[0].municipalityId;
@@ -243,11 +246,25 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
+    private isVoucherApplied(idRegistration:number){
+      if (this.cookieService.check(this.nameCookieApply+"_"+idRegistration)){
+          if (this.cookieService.get(this.nameCookieApply+"_"+idRegistration) == "true"){
+              return true;
+          }
+      }
+      return false;
+    }
+
     private checkEditPermissionMunicipality(municipalityId: number){
         this.applicationApi.isMunicipalityEditable(municipalityId).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success){
                     this.isMunicipalityEditable[municipalityId] = response.data;
+                    if(response.data){
+                      //Check if municipality have applied cookie and then disable input fields
+                      var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
+                      this.isMunicipalityEditable[municipalityId] = !appliedExist;
+                    }
                 }
             }
         );

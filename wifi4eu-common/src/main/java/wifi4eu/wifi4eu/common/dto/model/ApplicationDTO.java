@@ -25,7 +25,7 @@ public class ApplicationDTO {
     private Boolean rejected;
     private Integer authorizedPerson;
     private boolean sentEmail;
-    private Date sentEmailDate;
+//    private Date sentEmailDate;
 
     public ApplicationDTO() {
     }
@@ -53,7 +53,7 @@ public class ApplicationDTO {
         this.rejected = rejected;
         this.authorizedPerson = authorizedPerson;
         this.sentEmail = sentEmail;
-        this.sentEmailDate = sentEmailDate;
+//        this.sentEmailDate = sentEmailDate;
     }
 
     public int getId() {
@@ -228,11 +228,11 @@ public class ApplicationDTO {
         this.sentEmail = sentEmail;
     }
 
-    public Date getSentEmailDate() {
-        return sentEmailDate;
-    }
-
-    public void setSentEmailDate(Date sentEmailDate) {
-        this.sentEmailDate = sentEmailDate;
-    }
+//    public Date getSentEmailDate() {
+//        return sentEmailDate;
+//    }
+//
+//    public void setSentEmailDate(Date sentEmailDate) {
+//        this.sentEmailDate = sentEmailDate;
+//    }
 }
