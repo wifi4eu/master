@@ -384,13 +384,15 @@ export class DgConnVoucherComponent {
         this.displayConfirmingData = false;
         if(this.callVoucherAssignment == null){
           this.callVoucherAssignment = resp.data;
+        }else{
+          this.callVoucherAssignment.id = resp.data.id;
+        }
+        if(!this.callVoucherAssignment.hasPreListSaved){
           this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
             this.preSelectedEnabledButton = response;
           },(error) => { 
             this.sharedService.growlTranslation('An error occured while checking if pre-list is enabled', 'dgConn.voucherAssignment.error.checkPreList', 'error');
           })
-        }else{
-          this.callVoucherAssignment.id = resp.data.id;
         }
         this.loadPage();
         this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
