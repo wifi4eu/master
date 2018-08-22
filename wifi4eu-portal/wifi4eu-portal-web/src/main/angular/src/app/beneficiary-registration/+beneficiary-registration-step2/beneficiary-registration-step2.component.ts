@@ -29,6 +29,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
     @Output() private lausChange: EventEmitter<LauDTOBase[]>;
+    @ViewChild('municipalityForm') private municipalityForms: NgForm;
     private lauSuggestions: LauDTOBase[] = [];
     private municipalitiesSelected: boolean = false;
     private emailsMatch: boolean = false;
@@ -37,7 +38,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private css_class_municipalities: string[] = ['notValid'];
     private css_class_email: string[] = ['notValid'];
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
-
+    private buttonEnabled : boolean = false;
     private userEcas: UserDTOBase;
 
     @ViewChild('municipalityForm') municipalityForm: NgForm;
@@ -123,14 +124,16 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
                 this.emailsMatch = true;
             }
         }
-        if (this.municipalitiesSelected && this.emailsMatch) {
+    /*   if (this.municipalitiesSelected && this.emailsMatch) {
             const keys = Object.keys(this.municipalityForm.controls);
             keys.forEach(key => {
                 this.municipalityForm.controls[key].setErrors({'incorrect': true});
                 this.municipalityForm.controls[key].setErrors(null);
             });
-        }
+        }  */
     }
+
+    
 
     private addMunicipality() {
         if (this.multipleMunicipalities) {
@@ -159,20 +162,22 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
             this.checkMunicipalitiesSelected();
         }
         this.checkEmailsMatch();
+        this.checkButtonEnabled(null);
 
     }
 
     private submit() {
-        for (let i = 0; i < this.municipalities.length; i++) {
-            this.municipalities[i].name = this.laus[i].name1;
-            this.municipalities[i].country = this.country.label;
-            this.municipalities[i].lauId = this.laus[i].id;
-        }
-        this.mayorsChange.emit(this.mayors);
-        this.municipalitiesChange.emit(this.municipalities);
-        this.lausChange.emit(this.laus);
-        this.onNext.emit();
-        this.emailsMatch = false;
+      
+            for (let i = 0; i < this.municipalities.length; i++) {
+                this.municipalities[i].name = this.laus[i].name1;
+                this.municipalities[i].country = this.country.label;
+                this.municipalities[i].lauId = this.laus[i].id;
+            }
+            this.mayorsChange.emit(this.mayors);
+            this.municipalitiesChange.emit(this.municipalities);
+            this.lausChange.emit(this.laus);
+            this.onNext.emit();
+            this.emailsMatch = false;
     }
 
     private back() {
@@ -189,5 +194,49 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
 
     private preventPaste(event: any) {
         return false;
+    }
+
+    private checkButtonEnabled(event){
+            this.buttonEnabled = true;
+        for (let i = 0; i < this.municipalities.length; i++) {
+            if(this.municipalities[i].address != null && this.municipalities[i].addressNum != null && this.municipalities[i].postalCode != null && this.mayors[i].name != null && this.mayors[i].surname != null 
+                && this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != "" && this.mayors[i].surname.trim() != ""){
+                    continue;
+            } else {
+                this.buttonEnabled = false;
+                //this.municipalityForms.controls[`address-${i}`].setErrors(null);
+               
+            }
+           /*  if(this.municipalities[i].address != null && this.municipalities[i].address.trim() != ""){
+                setTimeout(()=>{this.municipalityForms.controls[`address-${i}`].setErrors(null);} ,5);
+
+            }else {
+                setTimeout(()=>{this.municipalityForms.controls[`address-${i}`].setErrors({'invalid': true});} ,5);
+            }
+            //custom addressNum validator
+             if(this.municipalities[i].addressNum != null && this.municipalities[i].addressNum.trim() != ""){
+                setTimeout(()=>{this.municipalityForms.controls[`addressNum-${i}`].setErrors(null);} ,5);
+            }else {
+                setTimeout(()=>{this.municipalityForms.controls[`addressNum-${i}`].setErrors({'invalid': true});} ,5);
+            }
+            //custom postalCode validator
+            if(this.municipalities[i].postalCode != null && this.municipalities[i].postalCode.trim() != ""){
+                setTimeout(()=>{this.municipalityForms.controls[`postalCode-${i}`].setErrors(null);} ,5);
+            }else {
+                setTimeout(()=>{this.municipalityForms.controls[`postalCode-${i}`].setErrors({'invalid': true});} ,5);
+            }
+             //custom name validator
+             if(this.mayors[i].name != null && this.mayors[i].name.trim() != ""){
+                setTimeout(()=>{this.municipalityForms.controls[`name-${i}`].setErrors(null);} ,5);
+            }else {
+                setTimeout(()=>{this.municipalityForms.controls[`name-${i}`].setErrors({'invalid': true});} ,5);
+            }
+             //custom surname validator
+             if(this.mayors[i].surname != null && this.mayors[i].surname.trim() != ""){
+                setTimeout(()=>{this.municipalityForms.controls[`surname-${i}`].setErrors(null);} ,5);
+            }else {
+                setTimeout(()=>{this.municipalityForms.controls[`surname-${i}`].setErrors({'invalid': true});} ,5);
+            }  */
+        }
     }
 }

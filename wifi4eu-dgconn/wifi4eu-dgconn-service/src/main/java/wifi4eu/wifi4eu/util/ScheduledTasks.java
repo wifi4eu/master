@@ -9,18 +9,29 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
+import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
+import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
-import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,11 +41,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -58,9 +69,6 @@ public class ScheduledTasks {
     private UserService userService;
 
     @Autowired
-    private AzureQueueService azureQueueService;
-
-    @Autowired
     private ApplicationMapper applicationMapper;
 
     @Autowired
@@ -68,6 +76,36 @@ public class ScheduledTasks {
 
     @Autowired
     private CallService callService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private CorrectionRequestEmailRepository correctionRequestEmailRepository;
+
+    @Autowired
+    private CorrectionRequestEmailMapper correctionRequestEmailMapper;
+
+    @Autowired
+    private VoucherAssignmentRepository voucherAssignmentRepository;
+
+    @Autowired
+    private VoucherSimulationRepository voucherSimulationRepository;
+
+    @Autowired
+    GrantAgreementRepository grantAgreementRepository;
+
+    @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    GrantAgreementUtils grantAgreementUtils;
+
+    @Autowired
+    DateUtils dateUtils;
 
     private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
@@ -181,42 +219,6 @@ public class ScheduledTasks {
         }
     }
 
-    //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 8 ? * MON-FRI")
-    public void sendDocRequest() {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending document request");
-        List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
-        for (RegistrationDTO registrationDTO : registrationDTOS) {
-            try {
-                if (registrationDTO != null && registrationDTO.getMailCounter() > 0) {
-                    UserDTO user = userService.getUserById(registrationDTO.getUserId());
-                    if (user != null && user.getEcasEmail() != null) {
-                        if (!userService.isLocalHost()) {
-                            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                            if (user.getLang() != null) {
-                                locale = new Locale(user.getLang());
-                            }
-                            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                            String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                            String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
-                            String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
-                            msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-
-                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                        }
-                        int mailCounter = registrationDTO.getMailCounter() - 1;
-                        registrationDTO.setMailCounter(mailCounter);
-                        registrationService.createRegistration(registrationDTO);
-                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Document request sent for registration with id " + registrationDTO.getId());
-                    }
-                }
-            } catch (Exception e) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send document rquest for this registration", e);
-            }
-        }
-    }
-
     private long processQueueMessage(GetResponse response, HttpServletRequest request) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
@@ -292,5 +294,31 @@ public class ScheduledTasks {
         }
     }
 
+    @Scheduled(cron = "0 0 4 * * *", zone = "Europe/Madrid")
+    public void sendMessageNotSigned() {
+        _log.debug("SCHEDULED TASK: Reminder email for users who haven't signed after 7 or 14 days before the notification date - START");
+        ArrayList<VoucherAssignment.VoucherAssignmentGetIdAndNotificationDate> voucherAssignment = voucherAssignmentRepository.findByNotifiedDateNotNull();
+        LocalDate localCurrentDate = dateUtils.getLocalTimeFromDate(new Date());
+        LocalDate notifiedDate;
+        for (int i = 0; i < voucherAssignment.size(); i++) {
+            notifiedDate = dateUtils.getLocalTimeFromDate(new Date(voucherAssignment.get(i).getNotifiedDate()));
+            long days = ChronoUnit.DAYS.between(localCurrentDate, notifiedDate);
+            if (days == -7 || days == -14) {
+                ArrayList<Integer> applicationIds = null;
+                applicationIds = voucherSimulationRepository.findApplicationIdsFromVoucherAssignmentAndSelectionStatus(voucherAssignment.get(i).getId());
+                if (applicationIds != null) {
+                    for (int j = 0; j < applicationIds.size(); j++) {
+                        if (grantAgreementRepository.countByApplicationId(applicationIds.get(j)) <= 0) {
+                            String emailUser = registrationUsersRepository.findContactEmailFromApplicationId(applicationIds.get(j));
+                            Integer userId = registrationUsersRepository.findUserIdFromApplicationId(applicationIds.get(j));
+                            grantAgreementUtils.sendEmailSignPdfNotified(userId, emailUser, days);
+                        }
+                    }
+                }
+            }
+        }
+
+        _log.debug("SCHEDULED TASK: Reminder email for users who haven't signed after 7 or 14 days before the notification date - FINISH");
+    }
 
 }

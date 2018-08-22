@@ -3,21 +3,32 @@ package wifi4eu.wifi4eu.repository.application;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.user.User;
 
+import java.util.Date;
 import java.util.List;
 
-public interface ApplicationRepository extends CrudRepository<Application,Integer> {
+public interface ApplicationRepository extends CrudRepository<Application, Integer> {
     Iterable<Application> findBySupplierId(Integer supplierId);
+
     Application findByCallIdAndRegistrationId(Integer callId, Integer registrationId);
+
     Iterable<Application> findByRegistrationId(Integer registrationId);
 
+    Application findTopByRegistrationIdOrderByDateDesc(Integer registrationId);
+
+    Application findTopByRegistrationIdAndCallId(Integer registrationId, Integer callId);
+
     Iterable<Application> findByCallId(Integer callId);
+
     Iterable<Application> findByCallIdOrderByIdAsc(Integer callId);
+
     List<Application> findByCallIdOrderByDateAsc(Integer callId);
+
     List<Application> findByCallIdAndStatus(Integer callId, Integer status);
+
+    @Query(value = "SELECT a.* from applications a INNER JOIN registrations r ON r.id = a.registration INNER JOIN municipalities m ON r.municipality = m.id WHERE m.id IN (SELECT m.id FROM municipalities m INNER JOIN registrations r ON r.municipality = m.id INNER JOIN registration_users ru ON ru.registration = r.id WHERE ru._user = ?1 and ru.status != 3 and ru.main = 1)", nativeQuery = true)
+    List<Application> findApplicationsByMunicipalities(Integer userId);
 
     @Query(value = "SELECT ap.* FROM applications ap INNER JOIN registrations r ON ap.registration = r.id WHERE r._status != 1 AND ap.call_id = ?1", nativeQuery = true)
 //    AND r.allFilesFlag = 1
@@ -55,9 +66,10 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     @Query(value = "SELECT * FROM applications app LEFT JOIN registrations reg ON reg.id = app.registration LEFT JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]} ORDER BY app.date ASC", nativeQuery = true)
     List<Application> findByCallIdAndLauIdOrderByDateAsc(Integer callId, Integer lauId);
 
-    @Query(value = "SELECT a.* FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN users u ON r._user = u.id WHERE a.id NOT IN (SELECT vs.application FROM voucher_simulations vs WHERE vs.voucher_assignment = ?2) AND a.call_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT a.* FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN registration_users ru ON ru.registration = r.id INNER JOIN users u ON ru._user = u.id WHERE a.id NOT IN (SELECT vs.application FROM voucher_simulations vs WHERE vs.voucher_assignment = ?2) AND a.call_id = ?1", nativeQuery = true)
     List<Application> getApplicationsNotSelectedInVoucherAssignment(Integer callId, Integer voucherAssignmentId);
 
-    @Query(value = "SELECT a.* FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN users u ON r._user = u.id WHERE a.id IN (SELECT vs.application FROM voucher_simulations vs WHERE vs.voucher_assignment = ?1 AND vs.selection_status = ?2)", nativeQuery = true)
+    @Query(value = "SELECT a.* FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN registration_users ru ON ru.registration = r.id INNER JOIN users u ON ru._user = u.id WHERE a.id IN (SELECT vs.application FROM voucher_simulations vs WHERE vs.voucher_assignment = ?1 AND vs.selection_status = ?2)", nativeQuery = true)
     List<Application> getApplicationsSelectedInVoucherAssignment(Integer voucherAssignmentId, Integer selectionStatus);
+
 }

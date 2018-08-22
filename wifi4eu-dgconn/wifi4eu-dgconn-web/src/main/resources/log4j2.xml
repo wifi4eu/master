@@ -7,15 +7,15 @@
         <Console name="CONSOLE_APPENDER" target="SYSTEM_OUT">
             <PatternLayout pattern="%d - %-5p - [%c{1}:%L] - %m%n"/>
         </Console>
-        <RollingFile name="FILE_APPENDER" fileName="logs/wifi4eu_app.log"
+        <RollingFile name="FILE_APPENDER" fileName="${sys:catalina.home}/logs/wifi4eu_app.log"
                      filePattern="logs/wifi4eu_app-%d{yyyy-MM-dd}.log" append="true">
             <PatternLayout>
                 <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
             </PatternLayout>
             <TimeBasedTriggeringPolicy />
         </RollingFile>
-        <RollingFile name="BUSINESS_FILE_APPENDER" fileName="../logs/wifi4eu_business_app.log"
-                     filePattern="../logs/wifi4eu_business_app-%d{yyyy-MM-dd}.log" append="true">
+        <RollingFile name="BUSINESS_FILE_APPENDER" fileName="${sys:catalina.home}/logs/wifi4eu_business_app.log"
+                     filePattern="${sys:catalina.home}/logs/wifi4eu_business_app-%d{yyyy-MM-dd}.log" append="true">
             <PatternLayout>
                 <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
             </PatternLayout>
@@ -24,22 +24,22 @@
             </Filters>
             <TimeBasedTriggeringPolicy />
         </RollingFile>
-        <RollingFile name="CRON_FILE_APPENDER" fileName="../logs/wifi4eu_cron_app.log"
-                     filePattern="../logs/wifi4eu_cron_app-%d{yyyy-MM-dd}.log" append="true">
+        <RollingFile name="CRON_FILE_APPENDER" fileName="${sys:catalina.home}/logs/wifi4eu_cron_app.log"
+                     filePattern="${sys:catalina.home}/logs/wifi4eu_cron_app-%d{yyyy-MM-dd}.log" append="true">
             <PatternLayout>
                 <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
             </PatternLayout>
             <TimeBasedTriggeringPolicy />
         </RollingFile>
-        <RollingFile name="APPLY_FILE_APPENDER" fileName="../logs/wifi4eu_apply_app.log"
-                     filePattern="../logs/wifi4eu_apply_app-%d{yyyy-MM-dd}.log" append="true">
+        <RollingFile name="APPLY_FILE_APPENDER" fileName="${sys:catalina.home}/logs/wifi4eu_apply_app.log"
+                     filePattern="${sys:catalina.home}/logs/wifi4eu_apply_app-%d{yyyy-MM-dd}.log" append="true">
             <PatternLayout>
                 <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
             </PatternLayout>
             <TimeBasedTriggeringPolicy />
         </RollingFile>
-        <RollingFile name="ECAS_CLIENT_FILE" fileName="../logs/ecas-client.log"
-                     filePattern="../logs/ecas-client-%d{yyyy-MM-dd}.log" append="true">
+        <RollingFile name="ECAS_CLIENT_FILE" fileName="${sys:catalina.home}/logs/ecas-client.log"
+                     filePattern="${sys:catalina.home}/logs/ecas-client-%d{yyyy-MM-dd}.log" append="true">
             <PatternLayout>
                 <Pattern>%d - %-5p - [%c{1}:%L] - %m%n </Pattern>
             </PatternLayout>

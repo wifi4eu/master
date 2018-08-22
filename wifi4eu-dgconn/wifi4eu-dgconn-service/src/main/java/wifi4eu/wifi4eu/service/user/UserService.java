@@ -93,9 +93,6 @@ public class UserService {
     @Autowired
     UserThreadsService userThreadsService;
 
-    @Autowired
-    UserService userService;
-
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
     }
@@ -112,8 +109,22 @@ public class UserService {
         return userMapper.toDTO(userRepository.findByEcasEmail(email));
     }
 
+    public UserDTO getMainUserByIdFromRegistration(Integer registrationId) {
+        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationId));
+        return user;
+    }
+
+    public List<UserDTO> getUsersByIdFromRegistration(Integer registrationId) {
+        List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersFromRegistration(registrationId));
+        return users;
+    }
+
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
+       	if (userDTO.getId() != 0) {
+    		_log.warn("Call to a create method with id set, the value has been removed ({})", userDTO.getId());
+    		userDTO.setId(0);	
+    	}
         UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
         if (searchUser != null) {
             userDTO.setPassword(searchUser.getPassword());
@@ -395,7 +406,7 @@ public class UserService {
     }
 
     private void removeSuppliedRegion(UserDTO userDTO) {
-        SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findByUserId(userDTO.getId()));
+        SupplierDTO supplierDTO = supplierService.getSupplierByUserId(userDTO.getId());
         List<SuppliedRegionDTO> suppliedRegionDTOList = supplierDTO.getSuppliedRegions();
         for (SuppliedRegionDTO anElementList : suppliedRegionDTOList) {
             suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(anElementList));

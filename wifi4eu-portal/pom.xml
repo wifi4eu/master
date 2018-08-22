@@ -23,7 +23,6 @@
         <module>wifi4eu-portal-web-rest-swagger</module>
         <module>wifi4eu-portal-web-rest</module>
         <module>wifi4eu-portal-web</module>
-        <module>wifi4eu-portal-ear</module>
     </modules>
 
 </project>

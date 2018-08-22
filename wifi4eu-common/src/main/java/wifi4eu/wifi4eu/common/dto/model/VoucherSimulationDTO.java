@@ -17,11 +17,12 @@ public class VoucherSimulationDTO {
     private int lau;
     private String municipalityName;
     private List<RegistrationWarningDTO> registrationWarningDTO;
+    private Integer issues;
 
     public VoucherSimulationDTO() {
     }
 
-    public VoucherSimulationDTO(List<RegistrationWarningDTO> registrationWarningDTO, int id, int euRank, int countryRank, String country, int municipality, int numApplications, int rejected, int voucherAssignment, int selectionStatus, ApplicationDTO application, int lau, String municipalityName) {
+    public VoucherSimulationDTO(List<RegistrationWarningDTO> registrationWarningDTO, int id, int euRank, int countryRank, String country, int municipality, int numApplications, int rejected, int voucherAssignment, int selectionStatus, ApplicationDTO application, int lau, String municipalityName, Integer issues) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
@@ -35,6 +36,7 @@ public class VoucherSimulationDTO {
         this.lau = lau;
         this.municipalityName = municipalityName;
         this.registrationWarningDTO = registrationWarningDTO;
+        this.issues = issues;
     }
 
     public int getId() {
@@ -141,4 +143,11 @@ public class VoucherSimulationDTO {
         this.registrationWarningDTO = registrationWarningDTO;
     }
 
+    public Integer getIssues() {
+        return issues;
+    }
+
+    public void setIssues(Integer issues) {
+        this.issues = issues;
+    }
 }

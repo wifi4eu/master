@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+                           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+                           http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+    <context:annotation-config/>
+    <context:load-time-weaver/>
+    <tx:annotation-driven/>
+
+    <jee:jndi-lookup id="dataSource" jndi-name="wifi4eu-financial" expected-type="javax.sql.DataSource"/>
+
+    <!--bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/-->
+
+    <!--bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+
+        <property name="packagesToScan" value="wifi4eu.wifi4eu.entity"/>
+        <property name="persistenceUnitName" value="${persistence.unit.name}" />
+        <property name="dataSource" ref="dataSource">
+
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect" />
+        </property>
+        <property name="persistenceProvider">
+          <bean class="org.eclipse.persistence.jpa.PersistenceProvider"/>
+        </property>
+    </bean-->
+
+    <!--jpa:repositories base-package="wifi4eu.wifi4eu.repository"/-->
+
+</beans>

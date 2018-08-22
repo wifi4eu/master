@@ -9,11 +9,11 @@ import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
-import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface VoucherSimulationMapper {
 
     @Mappings({
@@ -36,14 +36,11 @@ public interface VoucherSimulationMapper {
     Application applicationDTOtoApplication(ApplicationDTO dto);
 
     @Mappings({
-            @Mapping(source = "entity.user.id", target = "userId", ignore = true),
             @Mapping(source = "entity.municipality.id", target = "municipalityId")
     })
     RegistrationDTO toDTO(Registration entity);
     @Mappings({
-            @Mapping(source = "vo.userId", target = "user.id", ignore = true),
             @Mapping(source = "vo.municipalityId", target = "municipality.id")
     })
     Registration toEntity(RegistrationDTO vo);
-
 }

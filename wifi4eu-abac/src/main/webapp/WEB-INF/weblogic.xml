@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3.0.xsd http://xmlns.oracle.com/weblogic/weblogic-web-app http://xmlns.oracle.com/weblogic/weblogic-web-app/1.8/weblogic-web-app.xsd">
+
+    <session-descriptor>
+        <cookie-path>/wifi4eu-abac</cookie-path>
+    </session-descriptor>
+
+    <!-- We want to allow some resources to be accessed by authenticated users who do not possess any role -->
+    <container-descriptor>
+        <allow-all-roles>true</allow-all-roles>
+    </container-descriptor>
+
+    <context-root>/wifi4eu-financial</context-root>
+</weblogic-web-app>

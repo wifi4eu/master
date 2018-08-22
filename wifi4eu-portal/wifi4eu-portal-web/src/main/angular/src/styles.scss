@@ -431,6 +431,32 @@ body {
   background-color: white;
 }
 
+.discussionWarningBox{
+  border: solid 1px rgba(0, 0, 0, 0.3);
+}
+
+.discussionWarning{
+  color: #c53b0c;
+  background-color: #ffc488;
+ 
+}
+
+.discussionWarning-icon{
+  background-color: #ff9933;
+  text-align: center;
+}
+
+.fa-exclamation-triangle{
+  font-size: 2.5em;
+  margin-top: 25%;
+  color: #fff;
+}
+
+.discussionWarnigButton{
+  margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 .discussion-content {
   border: solid 1px rgba(0, 0, 0, 0.3);
   padding-bottom: 0px;
@@ -567,14 +593,20 @@ body {
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
-
 }
 
-.row.vertical-align {
-  display: flex;
-  align-items: center;
-  margin-top: 1em;
-
+.row {
+  .vertical-align {
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+  }
+  .conditions-agreement {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: $dark-grey;
+  }
 }
 
 .cancel-button {
@@ -586,6 +618,14 @@ body {
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
+}
+
+.removeMunicipalityBtn{
+  font-family: Verdana;
+  font-weight: bold;
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
 }
 
 .cancel-button.cancel-link {
@@ -827,7 +867,26 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 }
 
 .progress-indicator {
-  padding-top: 5.3em;
+    padding-top: 5.3em;
+    width: 100%;
+    .completed:focus {
+        color: #4caf50;
+    }
+    .completed:hover {
+        color: #4caf50;
+    }
+    .active:focus {
+        color: #004494;
+    }
+    .active:hover {
+        color: #004494;
+    }
+    li:focus {
+        color: #bdbdbd;
+    }
+    li:hover {
+        color: #bdbdbd;
+    }
 }
 
 #app-header .right-content {
@@ -1670,6 +1729,44 @@ input.email_profile::-ms-clear{
   display:none;
 }
 
+.sessionOff {
+  background-color: rgba(1, 1, 1, 0.7);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 5000;
+  pointer-events: none;
+}
+
+.sessionOn{
+  height: 100%;
+}
+
+.topButtonSession {
+  width: 10%;
+  min-width: 100px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.topBarSession {
+  line-height:35px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 5px;
+}
+
+.disabledUserWork{
+  position:absolute;
+  top: 123px;
+  background-color: rgba(1, 1, 1, 0.7);;
+  width: 100%;
+  height: 100%;
+  z-index: 99999999;
+  margin-top: -100px;}
+  
 .voucher__assignment{
   margin-top: 4rem;
 }
@@ -1677,4 +1774,140 @@ input.email_profile::-ms-clear{
 .manageMunicipalities{
   padding-top: 1.9em;
   padding-bottom: 0.9em;
+}
+
+.installation {
+  width: 13em;
+  margin-top: 2em;
+  font-size: 1.2em;
+}
+
+.linkNoStyle {
+  color: #000 !important;
+}
+
+.paddingTable {
+  padding-right: 1em;
+}
+
+#nav-bar{
+  height:100%;
+  min-height: 55px;
+}
+
+#top-menu {
+  min-height: 55px;
+  display:flex;
+}
+
+#top-menu > ul > li{
+  max-width: 70vw;
+  float:none;
+  vertical-align:top;
+}
+
+@media only screen and (max-width: 1154px) {
+  #top-menu > ul > li{
+    max-width: 31vw;
+    height:100%;
+    min-height: 55px;
+ }
+}
+#top-menu > ul > li > a {
+  height: 100%;
+}
+
+#top-menu ul, #top-menu ul li, #top-menu ul li a{
+  display: inline-block;
+}
+
+.language-modal {
+  margin: 10px;
+  width: 100%;
+}
+
+.text-adjust {
+  overflow: hidden;
+  white-space: normal;
+}
+
+.whitePanel {
+  background-color: white;
+  border: 2px solid #d2d2d2;
+}
+
+
+.whiteButton {
+  font-size: 0.8em;
+}
+
+.grantAgreementImg{
+  width: 6.5em;
+  height: 6.5em;
+  margin-top: 0.6em;
+}
+
+.smallCharacters{
+  font-size: 0.7em;
+}
+
+.voucherStatusAgreement{
+  vertical-align: middle;
+  font-size: 1.8em;
+}
+
+.voucherStatusAgreementBorder{
+  color: darkblue;
+  background: #fff;
+  margin-top: 2em;
+  border: solid 0.1em darkblue;
+}
+
+.voucherStatusBackButton{
+  margin-top: 3em;
+}
+.hoja-ID-card {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+}
+
+.documents-info {
+    div.alert {
+        background-color: #ffffff !important;
+        border: solid 1px #004494 !important;
+        width: 100%;
+        height: auto;
+        color: #4a4a4a;
+        font-weight: bold;
+        font-size: 11px;
+        text-transform: uppercase;
+        .text.with-icon {
+            margin-top: 0 !important;
+        }
+    }
+}
+
+.attachment-label {
+    font-style: italic;
+    color: #727272
+}
+
+.alert-icon {
+    color: #004494;
+    font-size: 15px !important;
+    padding-left: 0.5rem;
+}
+
+.margin-docs:first-child{ 
+    padding-top: 4em;
+}
+
+.table-disabled > *{
+  opacity: 0.5;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
 }

@@ -1,12 +1,13 @@
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import {NgModule} from "@angular/core";
+import {RouterModule} from "@angular/router";
 import { AppGuard } from "./app.guard";
 import { HomeComponent } from "./home/home.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
-import { ActivationComponent } from "./activation/activation.component";
-import { ForgotComponent } from "./+forgot/forgot.component";
+import {ActivationComponent} from "./activation/activation.component";
+import {ForgotComponent} from "./+forgot/forgot.component";
 // import { HelpdeskComponent } from "./+helpdesk/helpdesk.component";
 import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.component";
+
 // import {EcasComponent} from "./+ecas/ecas.component";
 
 @NgModule({
@@ -38,7 +39,7 @@ import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.componen
             path: 'helpdesk',
             component: HelpdeskComponent,
             canActivate: [AppGuard]
-        }, {            
+        }, {
 		*/
             path: 'beneficiary-registration',
             loadChildren: 'app/beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule',
@@ -66,7 +67,7 @@ import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.componen
             path: '**',
             redirectTo: 'notfound'
         }
-    ], { useHash: true })],
+    ], {useHash: true})],
     providers: [AppGuard],
     exports: [RouterModule]
 })

@@ -3,6 +3,9 @@ import { NutsDTOBase, NutsApi, SupplierApi, ResponseDTO } from '../shared/swagge
 import { DatePipe } from '@angular/common';
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
 import { DataGrid, Paginator } from 'primeng/primeng';
+import {TranslateService} from "ng2-translate/ng2-translate";
+import { SharedService } from '../shared/shared.service';
+
 
 @Component({
   selector: 'app-list-suppliers',
@@ -49,15 +52,29 @@ export class ListSuppliersComponent implements OnInit {
   @ViewChild("gridSuppliers") gridSuppliers: DataGrid;
   @ViewChild("paginator") paginator: Paginator;
 
-  constructor(private nutsApi: NutsApi, private supplierApi: SupplierApi) {}
+  constructor(private nutsApi: NutsApi, private supplierApi: SupplierApi, private translateService: TranslateService, private sharedService: SharedService) {}
 
   ngOnInit() {
+    this.sharedService.languageEmitter.subscribe(()=>{
+      this.translateService.get('shared.all').subscribe(
+        (translatedString: string) => {
+          this.defaultRegion.label = translatedString;
+          this.regions.findIndex(x => x.id == 0);
+          this.regions[this.regions.findIndex(x => x.id == 0)].label = translatedString;
+        }
+      );
+    });
     this.nutsApi.getNutsByLevel(0).subscribe(
       (countries: NutsDTOBase[]) => {
         this.countries = countries;
         if(countries.length > 0){
           this.defaultRegion.code = "ALL";
-          this.defaultRegion.label = "All";
+          this.translateService.get('shared.all').subscribe(
+            (translatedString: string) => {
+              this.defaultRegion.label = translatedString;
+            }
+        );
+          
           this.defaultRegion.id = 0;
           this.defaultRegion.countryCode = "ALL";
           this.regions.push(this.defaultRegion);

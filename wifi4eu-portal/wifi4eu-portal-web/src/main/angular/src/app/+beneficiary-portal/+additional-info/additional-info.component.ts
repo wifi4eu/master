@@ -1,17 +1,18 @@
-import {Component, ViewChild} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {LocalStorageService} from "angular-2-local-storage";
-import {Observable} from "rxjs/Observable";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {SharedService} from "../../shared/shared.service";
-import {DomSanitizer} from "@angular/platform-browser";
-import {MayorApi} from "../../shared/swagger/api/MayorApi";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
+import { Component, ViewChild } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { LocalStorageService } from "angular-2-local-storage";
+import { Observable } from "rxjs/Observable";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { SharedService } from "../../shared/shared.service";
+import { DomSanitizer } from "@angular/platform-browser";
+import { MayorApi } from "../../shared/swagger/api/MayorApi";
+import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
+import { LegalFileDTOBase, LegalFilesViewDTOBase } from "../../shared/swagger";
 
 
 @Component({
@@ -25,8 +26,11 @@ export class AdditionalInfoComponent {
     private municipality: MunicipalityDTOBase;
     private registration: RegistrationDTOBase;
     private mayor: MayorDTOBase;
-    private documentFiles: File[] = [];
-    private documentUrls: string[] = [];
+    private documentFilesType1: LegalFileDTOBase[] = [];
+    private documentFilesType2: LegalFileDTOBase[] = [];
+    private documentFilesType3: LegalFileDTOBase[] = [];
+    private documentFilesType4: LegalFileDTOBase[] = [];
+    private legalFilesToUpload: LegalFileDTOBase[] = [];
     private reader: FileReader = new FileReader();
     private filesUploaded: boolean = false;
     private isMayor: boolean = false;
@@ -35,18 +39,16 @@ export class AdditionalInfoComponent {
     @ViewChild('document3') private document3: any;
     @ViewChild('document4') private document4: any;
     private displayConfirmingData: boolean = false;
-    private date: number;
-    private deleteBlocker: boolean = false;
-    private doc1: boolean = false;
-    private doc2: boolean = false;
-    private doc3: boolean = false;
-    private doc4: boolean = false;
     private displayConfirmClose: boolean = false;
-    
-    private fileURL: string = '/wifi4eu/api/registration/registrations/';
+    private displayConfirmDelete: boolean = false;
+    private removingFile: number;
+    private changedDocs: number;
+
+    private fileURL: string = '/wifi4eu/api/registration/getDocument/';
 
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
+        this.changedDocs = 0;
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             let municipalityId;
@@ -58,11 +60,39 @@ export class AdditionalInfoComponent {
                         this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
-                                this.checkFirstDocuments();
+                                this.filesUploaded = this.registration.allFilesFlag == 1 ? true : false;
+                                this.registrationApi.getHistoryForType(this.registration.id, 1).subscribe(
+                                    (response: ResponseDTOBase) => {
+                                        this.documentFilesType1 = response.data;
+                                    }, error => {
 
+                                    }
+                                );
+                                this.registrationApi.getHistoryForType(this.registration.id, 2).subscribe(
+                                    (response: ResponseDTOBase) => {
+                                        this.documentFilesType2 = response.data;
+                                    }, error => {
+
+                                    }
+                                );
+                                this.registrationApi.getHistoryForType(this.registration.id, 3).subscribe(
+                                    (response: ResponseDTOBase) => {
+                                        this.documentFilesType3 = response.data;
+                                    }, error => {
+
+                                    }
+                                );
+                                this.registrationApi.getHistoryForType(this.registration.id, 4).subscribe(
+                                    (response: ResponseDTOBase) => {
+                                        this.documentFilesType4 = response.data;
+                                    }, error => {
+
+                                    }
+                                );
                             }, error => {
                             }
                         );
+
                     }, error => {
                     }
                 );
@@ -94,160 +124,152 @@ export class AdditionalInfoComponent {
             this.router.navigateByUrl('/home');
         }
     }
-
-    private checkFirstDocuments() {
-        if (!this.registration.legalFile1Size || !this.registration.legalFile3Size) {
-            this.deleteBlocker = true;
-        } else {
-            this.deleteBlocker = false;
-        }
-		return true;
-    }
-
-    private checkFileMimeType(file: File) : Promise<any>{
-      return new Promise((resolve, reject) => {        
-        var blob = file;
-        var fileReader = new FileReader();
-        fileReader.onloadend = function(e: any) {
-          var arr = (new Uint8Array(e.target.result)).subarray(0, 4);
-          var header = "";
-          for(var i = 0; i < arr.length; i++) {
-            header += arr[i].toString(16);
-          }
-          var type = "";
-          // Check the file signature against known types
-          switch (header) {
-            case "89504e47":
-                type = "image/png";
-                resolve();
-                break;            
-            case "ffd8ffe0":
-            case "ffd8ffe1":
-            case "ffd8ffe2":
-            case "ffd8ffe3":
-            case "ffd8ffe8":
-                type = "image/jpeg";
-                resolve();
-                break;
-            case "25504446":
-                type = "application/pdf";
-                resolve();
-                break;
-            default:
-                // extension not 
-                reject();
-                break;
-          }
-        };
-        fileReader.readAsArrayBuffer(blob);
-      });
-    }
-
-    private uploadFile(event: any, index: number = 0) {
-        if (this.registration.allFilesFlag != 1) {
-            this.filesUploaded = true;
-            if (event.target.files[0]) {
-                if (event.target.files[0].size > 1024000) {
-                    this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'benefPortal.file.toobig.maxsize', 'warn', {size: '1 MB'});
-                    this.removeFile(index);
-                    return;
+    private checkDocuments() {
+        if (!this.registration.allFilesFlag) {
+            let type1: boolean = false;
+            let type3: boolean = false;
+            for (var i = 0; i < this.legalFilesToUpload.length; i++) {
+                if (this.legalFilesToUpload[i].fileType == 1) {
+                    type1 = true;
+                } else if (this.legalFilesToUpload[i].fileType == 3) {
+                    type3 = true;
                 }
-                if (event.target.files[0].type == "application/pdf" || event.target.files[0].type == "image/png" || event.target.files[0].type == "image/jpg" || event.target.files[0].type == "image/jpeg") {
-                  this.checkFileMimeType(event.target.files[0]).then(() => {
-                    this.documentFiles[index] = event.target.files[0];
-                    this.reader.readAsDataURL(this.documentFiles[index]);
-                    let subscription = Observable.interval(200).subscribe(
-                        x => {
-                            if (this.reader.result != "") {
-                                this.documentUrls[index] = this.reader.result;
-                                this.filesUploaded = true;
-                                switch (index) {
-                                    case 0:
-                                        this.doc1 = true;
-                                        break;
-                                    case 1:
-                                        this.doc2 = true;
-                                        break;
-                                    case 2:
-                                        this.doc3 = true;
-                                        break;
-                                    case 3:
-                                        this.doc4 = true;
-                                        break;
-                                }
-                                subscription.unsubscribe();
-                            }
-                        }
-                    );
-                  }).catch(() => {
-                    this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
-                    this.filesUploaded = false;
-                    this.removeFile(index);
-                  });
-                } else {
-                    this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
-                    this.filesUploaded = false;
-                }
+            }
+            if (this.documentFilesType1.length > 0 && this.legalFilesToUpload.length > 0) {
+                type1 = true;
+            }
+            if (this.documentFilesType3.length > 0 && this.legalFilesToUpload.length > 0) {
+                type3 = true;
+            }
+            if (type1 && type3) {
+                this.filesUploaded = true;
             } else {
-                this.removeFile(index);
+                this.filesUploaded = false;
+            }
+        }
+    }
+
+    private uploadFile(event: any, type: number) {
+        if (event.target.files[0]) {
+            this.reader = new FileReader();
+            if (event.target.files[0].size > 1024000) {
+                this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'benefPortal.file.toobig.maxsize', 'warn', { size: '1 MB' });
+                this.cleanFile(type);
+                return;
+            }
+            if (event.target.files[0].type == "application/pdf" || event.target.files[0].type == "image/png" || event.target.files[0].type == "image/jpg" || event.target.files[0].type == "image/jpeg") {
+                let subscription;
+                this.reader.readAsDataURL(event.target.files[0]);
+                this.cleanFile(type);
+                subscription = Observable.interval(200).subscribe(
+                    x => {
+                        if (this.reader.result != "") {
+                            let file = new LegalFileDTOBase();
+                            file.fileData = this.reader.result;
+                            file.fileType = type;
+                            file.fileName = event.target.files[0].name;
+                            file.fileSize = event.target.files[0].size;
+                            file.registration = this.registration.id;
+                            this.legalFilesToUpload.push(file);
+                            this.checkDocuments();
+                            switch (type) {
+                                case 1:
+                                    this.documentFilesType1.push(file);
+                                    break;
+                                case 2:
+                                    this.documentFilesType2.push(file);
+                                    break;
+                                case 3:
+                                    this.documentFilesType3.push(file);
+                                    break;
+                                case 4:
+                                    this.documentFilesType4.push(file);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            this.changedDocs++;
+                            subscription.unsubscribe();
+                        }
+                    }
+                );
+            } else {
+                this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
+                this.filesUploaded = false;
             }
         } else {
-            this.sharedService.growlTranslation('You can\'t upload documents right now', 'shared.cantUploadDocs', 'error');
-            this.filesUploaded = false;
-
+            this.cleanFile(type);
         }
     }
 
-    private removeFile(index: number) {
-        this.documentFiles[index] = null;
-        this.filesUploaded = false;
-        this.documentUrls[index] = '';
-        switch (index) {
-            case 0:
-                this.document1.nativeElement.value = '';
-                this.doc1 = false;
-                break;
+    private cleanFile(type: number) {
+        if (this.legalFilesToUpload.length != 0) {
+            for (var i = 0; i < this.legalFilesToUpload.length; i++) {
+                if (this.legalFilesToUpload[i].fileType == type) {
+                    this.legalFilesToUpload = this.legalFilesToUpload.filter(item => item.fileType !== type);
+                    break;
+                }
+            }
+            switch (type) {
+                case 1:
+                    if (this.documentFilesType1.length > 0 && this.documentFilesType1[this.documentFilesType1.length - 1].uploadTime == undefined) {
+                        this.documentFilesType1.pop();
+                    }
+                    break;
+                case 2:
+                    if (this.documentFilesType2.length > 0 && this.documentFilesType2[this.documentFilesType2.length - 1].uploadTime == undefined) {
+                        this.documentFilesType2.pop();
+                    }
+                    break;
+                case 3:
+                    if (this.documentFilesType3.length > 0 && this.documentFilesType3[this.documentFilesType3.length - 1].uploadTime == undefined) {
+                        this.documentFilesType3.pop();
+                    }
+                    break;
+                case 4:
+                    if (this.documentFilesType4.length > 0 && this.documentFilesType4[this.documentFilesType4.length - 1].uploadTime == undefined) {
+                        this.documentFilesType4.pop();
+                    }
+                    break;
+                default:
+                    return;
+            }
+            this.checkDocuments();
+        }
+    }
+
+    private openDeleteModal(type: number) {
+        this.displayConfirmDelete = true;
+        this.removingFile = type;
+    }
+
+    private removeFile(){
+        switch (this.removingFile) {
             case 1:
-                this.document2.nativeElement.value = '';
-                this.doc2 = false;
+                this.document1.nativeElement.value = "";
                 break;
             case 2:
-                this.document3.nativeElement.value = '';
-                this.doc3 = false;
+                this.document2.nativeElement.value = "";
                 break;
             case 3:
-                this.document4.nativeElement.value = '';
-                this.doc4 = false;
+                this.document3.nativeElement.value = "";
+                break;
+            case 4:
+                this.document4.nativeElement.value = "";
                 break;
         }
-        if (this.doc1 || this.doc2 || this.doc3 || this.doc4) {
-            this.filesUploaded = true;
-        }
-        this.checkFirstDocuments();
+        this.changedDocs--;
+        this.cleanFile(this.removingFile);
+        this.cancelBack();
     }
 
     private onSubmit() {
-        if (this.registration.allFilesFlag != 1) {
-            if (this.documentUrls[0]) {
-                this.registration.legalFile1Mime = this.documentUrls[0];
-                this.registration.legalFile1Size = this.documentFiles[0].size;
-            }
-            if (this.documentUrls[1]) {
-                this.registration.legalFile2Mime = this.documentUrls[1];
-                this.registration.legalFile2Size = this.documentFiles[1].size;
-            }
-            if (this.documentUrls[2]) {
-                this.registration.legalFile3Mime = this.documentUrls[2];
-                this.registration.legalFile3Size = this.documentFiles[2].size;
-            }
-            if (this.documentUrls[3]) {
-                this.registration.legalFile4Mime = this.documentUrls[3];
-                this.registration.legalFile4Size = this.documentFiles[3].size;
-            }
+        if (this.legalFilesToUpload.length > 0 || this.changedDocs > 0) {
+            let sendObject = new LegalFilesViewDTOBase();
+            sendObject.arrayOfFiles = this.legalFilesToUpload;
             this.displayConfirmingData = true;
-            this.registrationApi.updateRegistrationDocuments(this.registration).subscribe(
+            this.registrationApi.uploadRegistrationDocuments(this.registration.id, sendObject).subscribe(
                 (response: ResponseDTOBase) => {
-                    this.displayConfirmingData = false;
                     if (response.success) {
                         this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
                         this.registration = response.data;
@@ -255,6 +277,7 @@ export class AdditionalInfoComponent {
                     } else {
                         this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
                     }
+                    this.displayConfirmingData = false;
                 }, error => {
                     this.displayConfirmingData = false;
                     this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
@@ -262,78 +285,16 @@ export class AdditionalInfoComponent {
             );
         } else {
             this.sharedService.growlTranslation('You cant upload documents right now', 'shared.cantUploadDocs', 'error');
-            this.filesUploaded = false;
-        }
-        this.checkFirstDocuments();
-    }
-
-    // private updateMailings() {
-    //     if (!this.isMayor) {
-    //         if (this.registration.legalFile1Size && this.registration.legalFile2Size && this.registration.legalFile3Size && this.registration.legalFile4Size) {
-    //             this.registration.allFilesFlag = 1;
-    //             this.registration.mailCounter = 0;
-    //         } else {
-    //             this.registration.allFilesFlag = 0;
-    //             this.registration.uploadTime = 0;
-    //             this.registration.mailCounter = 3;
-    //         }
-    //     } else {
-    //         if (this.registration.legalFile1Size && this.registration.legalFile3Size) {
-    //             this.registration.allFilesFlag = 1;
-    //             this.registration.mailCounter = 0;
-    //         } else {
-    //             this.registration.allFilesFlag = 0;
-    //             this.registration.uploadTime = 0;
-    //             this.registration.mailCounter = 3;
-    //         }
-    //     }
-    // }
-
-    private deleteFromServer(index: number) {
-        if (this.registration.allFilesFlag != 1) {
-            this.filesUploaded = true;
-            switch (index) {
-                case 0:
-                    this.registration.legalFile1Mime = null;
-                    break;
-                case 1:
-                    this.registration.legalFile2Mime = null;
-                    break;
-                case 2:
-                    this.registration.legalFile3Mime = null;
-                    break;
-                case 3:
-                    this.registration.legalFile4Mime = null;
-                    break;
-            }
-            this.displayConfirmingData = true;
-            this.registrationApi.deleteRegistrationDocuments(this.registration).subscribe(
-                (response: ResponseDTOBase) => {
-                    this.displayConfirmingData = false;
-                    if (response.success) {
-                        this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
-                        this.registration = response.data;
-                        // this.router.navigateByUrl('/beneficiary-portal/voucher');
-                    } else {
-                        this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
-                    }
-                }, error => {
-                    this.displayConfirmingData = false;
-                    this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
-                }
-            );
-        } else {
-            this.sharedService.growlTranslation('You cant upload documents right now', 'shared.cantUploadDocs', 'error');
-            this.filesUploaded = false;
         }
     }
 
-    confirmClose(){
+    confirmClose() {
         this.displayConfirmClose = true;
     }
 
-    cancelBack(){
+    cancelBack() {
         this.displayConfirmClose = false;
+        this.displayConfirmDelete = false;
+        this.removingFile = null;
     }
-
 }

@@ -1,73 +1,83 @@
-<ux-layout-app>
-    <uxLayoutAppMainContainer>
-        <ux-layout-app-main>
-            <uxLayoutAppMainHeaderContainer>
-                <custom-layout-header appFullName="WiFi4EU DGConn" appShortName="App" [userInfos]="userInfos"
-									  [isCustomRightContent]="true"
-                                      logoUrl="https://ec.europa.eu/">
-                    <uxLayoutHeaderRightContent>
-                        <ux-language-selector [selectedLanguage]="selectedLanguage" [languageCodes]="newLanguageArray"
-                                              (languageChanged)="changeLanguage($event)"></ux-language-selector>
-                        <div class="profile-wrapper" isCompact="false">
-                            <div class="left-panel">
-                                <div *ngIf="user" class="user-infos">
-                                    <span class="wellcomeHeader">{{ 'shared.loggedin.as' | translate }}:
-                                        <a [routerLink]="profileUrl">
-                                            <strong class="color-primary">{{user.ecasUsername}}</strong>
-                                        </a>
-                                    </span>
-                                    <br>
-                                    <button (click)="logout()" class="headerButton">
-                                        {{ 'shared.logout.label' | translate }}
-                                    </button>
-                                </div>
-                                <div *ngIf="!user" class="user-infos">
-                                    <strong class="color-primary">
-                                    </strong>
-                                    <a href="../../../wifi4eu">
-                                        <button class="headerButton">
-                                            {{ 'shared.login.label' | translate }}
+<ux-alert *ngIf="sessionExpired" typeClass="warning" style="position: fixed; z-index: 9999; right:0; width: 100%">
+  <span class="topBarSession">
+      {{'shared.session.expired' | translate}}<br>
+      {{'shared.session.expired.reload' | translate}}
+  </span>
+    <button typeClass="warning" class="pull-right btn btn-primary changePassword confirm-button topButtonSession" (click)="reload()">Reload</button>
+</ux-alert>
+<div class="{{sessionExpired ? 'sessionOff' : 'sessionOn'}}">
+    <div *ngIf="sessionExpired" class="disabledUserWork"> <br> </div>
+    <ux-layout-app>
+        <uxLayoutAppMainContainer>
+            <ux-layout-app-main>
+                <uxLayoutAppMainHeaderContainer>
+                    <custom-layout-header appFullName="WiFi4EU CNECT Portal" appShortName="App" [userInfos]="userInfos"
+                                          [isCustomRightContent]="true"
+                                          logoUrl="https://ec.europa.eu/">
+                        <uxLayoutHeaderRightContent>
+                            <ux-language-selector [selectedLanguage]="selectedLanguage" [languageCodes]="newLanguageArray"
+                                                  (languageChanged)="changeLanguage($event)"></ux-language-selector>
+                            <div class="profile-wrapper" isCompact="false">
+                                <div class="left-panel">
+                                    <div *ngIf="user" class="user-infos">
+                                        <span class="wellcomeHeader">{{ 'shared.loggedin.as' | translate }}:
+                                            <a [routerLink]="profileUrl">
+                                                <strong class="color-primary">{{user.ecasUsername}}</strong>
+                                            </a>
+                                        </span>
+                                        <br>
+                                        <button (click)="logout()" class="headerButton">
+                                            {{ 'shared.logout.label' | translate }}
                                         </button>
-                                    </a>
+                                    </div>
+                                    <div *ngIf="!user" class="user-infos">
+                                        <strong class="color-primary">
+                                        </strong>
+                                        <a href="../../../wifi4eu">
+                                            <button class="headerButton">
+                                                {{ 'shared.login.label' | translate }}
+                                            </button>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </uxLayoutHeaderRightContent>
-                </custom-layout-header>
-            </uxLayoutAppMainHeaderContainer>
-            <uxLayoutAppMainNavBarContainer>
-                <ux-layout-nav-bar>
-                    <custom-layout-nav-bar-top-menu [links]="menuLinks" homeUrl="../home"
-                                                    goToHomeButton="true"></custom-layout-nav-bar-top-menu>
-                    <ux-layout-nav-bar-actions>
-                        <div *ngIf="user">
-                            <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
-                                                               isOverlayPanel="true"
-                                                               userInfos="{{ 'shared.loggedin.as' | translate }} {{user.email}}"
-                                                               [links]="menuLinks" homeUrl="/home"
-                                                               goToHomeButton="true">
-                            </custom-layout-nav-bar-action-item>
-                        </div>
-                        <div *ngIf="!user">
-                            <div class="clearfix"></div>
-                            <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
-                                                               isOverlayPanel="true" [links]="menuLinks"
-                                                               homeUrl="/home">
-                                {{ 'shared.logout.label' | translate }}
-                            </custom-layout-nav-bar-action-item>
-                        </div>
-                    </ux-layout-nav-bar-actions>
-                </ux-layout-nav-bar>
-            </uxLayoutAppMainNavBarContainer>
-            <uxLayoutAppMainContentContainer>
-                <router-outlet></router-outlet>
-            </uxLayoutAppMainContentContainer>
-            <uxLayoutAppMainFooterContainer>
-                <ux-layout-footer isCompact="true">
-                    {{ 'home.footer.update' | translate:{version:"2.1.0", versionDate:"29/06/2018"} }}
-                    <a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
-                </ux-layout-footer>
-            </uxLayoutAppMainFooterContainer>
-        </ux-layout-app-main>
-    </uxLayoutAppMainContainer>
-</ux-layout-app>
+                        </uxLayoutHeaderRightContent>
+                    </custom-layout-header>
+                </uxLayoutAppMainHeaderContainer>
+                <uxLayoutAppMainNavBarContainer>
+                    <ux-layout-nav-bar>
+                        <custom-layout-nav-bar-top-menu [links]="menuLinks" homeUrl="../home"
+                                                        goToHomeButton="true"></custom-layout-nav-bar-top-menu>
+                        <ux-layout-nav-bar-actions>
+                            <div *ngIf="user">
+                                <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
+                                                                   isOverlayPanel="true"
+                                                                   userInfos="{{ 'shared.loggedin.as' | translate }} {{user.email}}"
+                                                                   [links]="menuLinks" homeUrl="/home"
+                                                                   goToHomeButton="true">
+                                </custom-layout-nav-bar-action-item>
+                            </div>
+                            <div *ngIf="!user">
+                                <div class="clearfix"></div>
+                                <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
+                                                                   isOverlayPanel="true" [links]="menuLinks"
+                                                                   homeUrl="/home">
+                                    {{ 'shared.logout.label' | translate }}
+                                </custom-layout-nav-bar-action-item>
+                            </div>
+                        </ux-layout-nav-bar-actions>
+                    </ux-layout-nav-bar>
+                </uxLayoutAppMainNavBarContainer>
+                <uxLayoutAppMainContentContainer>
+                    <router-outlet></router-outlet>
+                </uxLayoutAppMainContentContainer>
+                <uxLayoutAppMainFooterContainer>
+                    <ux-layout-footer isCompact="true">
+                        {{ 'home.footer.update' | translate:{version:"2.1.0_RC8.21.1", versionDate:"21/08/2018"} }}
+                        <a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
+                    </ux-layout-footer>
+                </uxLayoutAppMainFooterContainer>
+            </ux-layout-app-main>
+        </uxLayoutAppMainContainer>
+    </ux-layout-app>
+</div>

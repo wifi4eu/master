@@ -1,20 +1,39 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
+import com.google.common.collect.Lists;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
+import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryFinalListItem;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryFinalListItemMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryFinalListItemRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -29,6 +48,7 @@ import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayOutputStream;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -71,6 +91,21 @@ public class BeneficiaryService {
     @Autowired
     MailService mailService;
 
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    ApplicationRepository applicationRepository;
+
+    @Autowired
+    BeneficiaryFinalListItemRepository beneficiaryFinalListItemRepository;
+
+    @Autowired
+    BeneficiaryFinalListItemMapper beneficiaryFinalListItemMapper;
+
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
     private List<Integer> municipalitiesLauIdToHold = new ArrayList<>();
@@ -99,6 +134,7 @@ public class BeneficiaryService {
             user.setAddressNum(beneficiaryDTO.getUser().getAddressNum());
             user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
             user.setEmail(beneficiaryDTO.getUser().getEmail());
+            user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
             user.setType(3);
             isEcasUser = true;
         }
@@ -139,7 +175,7 @@ public class BeneficiaryService {
             mayor.setMunicipalityId(municipality.getId());
 
             /* create mayor */
-            MayorDTO mayorDtoOutput = mayorService.createMayor(mayor, request);
+            MayorDTO mayorDtoOutput = mayorService.saveMayor(mayor, request);
             permissionChecker.addTablePermissions(userDTO, Integer.toString(mayorDtoOutput.getId()),
                     RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipalityId());
 
@@ -175,7 +211,7 @@ public class BeneficiaryService {
                 String subject = bundle.getString("mail.discussionMunicipality.subject");
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userDTO.getEcasEmail());
                 }
 
@@ -186,7 +222,7 @@ public class BeneficiaryService {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
                         }
-                        UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
+                        UserDTO userRegistration = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
                         if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
@@ -196,7 +232,7 @@ public class BeneficiaryService {
                         subject = bundle.getString("mail.discussionMunicipality.subject");
                         msgBody = bundle.getString("mail.discussionMunicipality.body");
                         if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "checkDuplicates");
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
                         }
                     }
@@ -209,7 +245,7 @@ public class BeneficiaryService {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
                         }
-                        UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
+                        UserDTO userRegistration = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
                         if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
                             continue;
@@ -219,7 +255,7 @@ public class BeneficiaryService {
                         subject = bundle.getString("mail.discussionMunicipality.subject");
                         msgBody = bundle.getString("mail.discussionMunicipality.body");
                         if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "checkDuplicates");
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
                         }
                     }
@@ -242,7 +278,7 @@ public class BeneficiaryService {
                         RegistrationDTO conflictRegistrationDTO = registrationService.getRegistrationByMunicipalityId(conflictMunicipality.getId());
                         if (conflictRegistrationDTO != null) {
                             UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
-                            userThreadsDTO.setUserId(conflictRegistrationDTO.getUserId());
+                            userThreadsDTO.setUserId(userRepository.findMainUserFromRegistration(conflictRegistrationDTO.getId()).getId());
                             userThreadsDTO.setThreadId(threadDTO.getId());
                             userThreadsService.createUserThreads(userThreadsDTO);
                             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - User thread " + threadDTO.getId() + " added");
@@ -268,9 +304,10 @@ public class BeneficiaryService {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         RegistrationDTO registration = new RegistrationDTO();
+        RegistrationUsers registrationUsers = new RegistrationUsers();
         registration.setRole(role);
         registration.setMunicipalityId(municipality.getId());
-        registration.setUserId(userId);
+       // registration.setUserId(userId);
         registration.setStatus(generateRegistrationStatus(municipality));
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - New registration generated");
         return registration;
@@ -291,7 +328,7 @@ public class BeneficiaryService {
         for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
             /* search for other users registered on the same municipality */
 
-            MunicipalityDTO municipalityDtoOutput = municipalityService.createMunicipality(municipality);
+            MunicipalityDTO municipalityDtoOutput = municipalityService.saveMunicipality(municipality);
             resMunicipalities.add(municipalityDtoOutput);
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality " + municipalityDtoOutput.getId() + " added to the list");
         }
@@ -303,14 +340,14 @@ public class BeneficiaryService {
      * The update registration status to hold
      */
     private void updateRegistrationStatusToHold(List<MunicipalityDTO> municipalitiesWithSameLau) {
-        final String LOG_STATUS_2_HOLD = "Registraion Id {0} updated to the status HOLD";
+        final String LOG_STATUS_2_HOLD = "Registration Id {0} updated to the status HOLD";
 
-        /* put all the registrations for a given municiaplity on Hold*/
+        /* put all the registrations for a given municipality on Hold*/
         for (MunicipalityDTO aMunicipality : municipalitiesWithSameLau) {
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(aMunicipality.getId());
             if (registration != null) {
                 registration.setStatus(RegistrationStatus.HOLD.getValue());
-                registrationService.createRegistration(registration);
+                registrationService.saveRegistration(registration);
                 _log.info(MessageFormat.format(LOG_STATUS_2_HOLD, registration.getId()));
             }
         }
@@ -527,4 +564,126 @@ public class BeneficiaryService {
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - CSV generated");
         return sb.toString();
     }
+
+    public ResponseDTO findBeneficiariesFromFinalList(Integer callId, String countryCode, String municipality, Integer page, Integer sizePage, String field, String sortDirection){
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Finding beneficiary list");
+        if(municipality.equalsIgnoreCase("%")){
+            municipality = "";
+        }
+        List<BeneficiaryFinalListItemDTO> beneficiaryFinalListItemDTOList;
+        field = field.toLowerCase();
+        switch (field){
+
+            case "name":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByNameASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByNameDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            case "countrycode":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByCountryASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByCountryDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            case "registrationid":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByRegistrationIdASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByRegistrationIdDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            case "verifiedtosign":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByVerifiedToSignASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByVerifiedToSignDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            case "datesignature":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByDateSignatureASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByDateSignatureDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            case "datecountersignature":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByDateCounterSignatureASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByDateCounterSignatureDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            case "status":
+                if(sortDirection.equalsIgnoreCase("asc")){
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByStatusASC(callId, countryCode, municipality, page, sizePage));
+                } else {
+                    beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalListOrderByStatusDESC(callId, countryCode, municipality, page, sizePage));
+                }
+                break;
+
+            default:
+                beneficiaryFinalListItemDTOList = beneficiaryFinalListItemMapper.toDTOList(beneficiaryFinalListItemRepository.findBeneficiariesFromFinalList(callId));
+                break;
+        }
+
+        ResponseDTO response = new ResponseDTO();
+        response.setSuccess(true);
+        response.setXTotalCount(beneficiaryFinalListItemRepository.countBeneficiariesFromFinalList(callId));
+        response.setData(beneficiaryFinalListItemDTOList);
+        return response;
+    }
+
+    public ByteArrayOutputStream downloadGrantAgreementPdfFromRegistrationId(int registrationId){
+        ByteArrayOutputStream outputStream = null;
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Downloading Grant Agreement Pdf");
+        try {
+            Document document = new Document();
+            outputStream = new ByteArrayOutputStream();
+            PdfWriter.getInstance(document, outputStream);
+            document.open();
+            String docName = "This pdf will show the Grant Agreement of the registration" + registrationId;
+            document.addTitle(docName);
+            document.addSubject(docName);
+            document.add(new Paragraph(docName));
+            document.close();
+        } catch (DocumentException e){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Error generating PDF Grant Agreement");
+            e.printStackTrace();
+        }
+        return outputStream;
+    }
+
+    public ResponseDTO cancelBeneficiaryFromRegistrationId(int registrationId, String reason, int callId){
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Cancel beneficiary with a reason");
+        ResponseDTO responseDTO = new ResponseDTO();
+        Application application = applicationRepository.findByRegistrationIdAndCallId(registrationId, callId);
+        if (application != null && reason.trim().length() > 0){
+            application.setStatus(ApplicationStatus.CANCELLED.getValue());
+            application.setCanceledReason(reason);
+            applicationRepository.save(application);
+            responseDTO.setSuccess(true);
+            responseDTO.setData("CANCELING BENEFICIARY BY REGISTRATION ID - "+registrationId+" - "+reason);
+        } else {
+            responseDTO.setSuccess(false);
+            responseDTO.setData("Error on requirements");
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Error cancelling beneficiary");
+        }
+        return responseDTO;
+    }
+
 }

@@ -1,0 +1,15 @@
+DELETE FROM wifi4eu.registrations;
+DELETE FROM wifi4eu.municipalities;
+DELETE FROM wifi4eu.mayors;
+DELETE FROM wifi4eu.users;
+DELETE FROM wifi4eu.rights;
+DELETE FROM wifi4eu.temp_tokens;
+DELETE FROM wifi4eu.suppliers;
+DELETE FROM wifi4eu.thread_messages;
+DELETE FROM wifi4eu.helpdesk_issues;
+DELETE FROM wifi4eu.timelines;
+DELETE FROM wifi4eu.user_threads;
+DELETE FROM wifi4eu.threads;
+DELETE FROM wifi4eu.applications;
+DELETE FROM wifi4eu.supplied_regions;
+DELETE FROM wifi4eu.representations;

@@ -15,22 +15,45 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.InvitationContactStatus;
+import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
+import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
+import wifi4eu.wifi4eu.entity.mayor.Mayor;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
+import wifi4eu.wifi4eu.entity.registration.ConditionsAgreement;
+import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
+import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierUserMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
+import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
+import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.registration.ConditionsAgreementRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
@@ -40,10 +63,8 @@ import wifi4eu.wifi4eu.util.MailService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -53,6 +74,9 @@ public class UserService {
 
     @Value("${mail.server.location}")
     private String baseUrl;
+
+    @Value("${ecas.location}")
+    private String ecasUrl;
 
     @Autowired
     UserMapper userMapper;
@@ -82,7 +106,13 @@ public class UserService {
     SupplierMapper supplierMapper;
 
     @Autowired
+    SupplierUserMapper supplierUserMapper;
+
+    @Autowired
     SupplierRepository supplierRepository;
+
+    @Autowired
+    SupplierUserRepository supplierUserRepository;
 
     @Autowired
     SuppliedRegionMapper suppliedRegionMapper;
@@ -94,7 +124,28 @@ public class UserService {
     UserThreadsService userThreadsService;
 
     @Autowired
-    UserService userService;
+    RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    RegistrationRepository registrationRepository;
+
+    @Autowired
+    MayorRepository mayorRepository;
+
+    @Autowired
+    MunicipalityRepository municipalityRepository;
+
+    @Autowired
+    InvitationContactRepository invitationContactRepository;
+
+    @Autowired
+    ConditionsAgreementRepository conditionsAgreementRepository;
+    
+    @Autowired
+    ApplicationService applicationService;
+
+    @Autowired
+    RightRepository rightRepository;
 
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
@@ -114,6 +165,10 @@ public class UserService {
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
+        if (userDTO.getId() != 0) {
+            _log.warn("Call to a create method with id set, the value has been removed ({})", userDTO.getId());
+            userDTO.setId(0);
+        }
         UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
         if (searchUser != null) {
             userDTO.setPassword(searchUser.getPassword());
@@ -146,6 +201,7 @@ public class UserService {
         _log.debug("User Email: " + userContext.getEmail() + " and User PerId: " + userContext.getPerId());
 
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
+
         if (userDTO == null) {
             userDTO = new UserDTO();
             userDTO.setAccessDate(new Date().getTime());
@@ -155,7 +211,6 @@ public class UserService {
             userDTO.setSurname(userContext.getLastName());
             userDTO.setEmail(userContext.getEmail());
             userDTO = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
-
             permissionChecker.addTablePermissions(userDTO, Integer.toString(userDTO.getId()),
                     RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
         }
@@ -163,20 +218,115 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO deleteUser(int userId, HttpServletRequest request) {
+    public void saveInvitedUserModified(UserDTO userDTO){
+        if (userDTO.getType() == 0){
+
+            InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
+            if (Validator.isNotNull(invitationContact)){
+
+                if (invitationContact.getIdRegistration() != null){
+                    userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
+                    createRegistrationUser(userDTO, invitationContact.getIdRegistration());
+
+                }else if (invitationContact.getIdSupplier() != null){
+                    userDTO.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
+                    createSupplierUser(userDTO, invitationContact.getIdSupplier());
+
+                }else{
+                    return; //Mister Tester
+                }
+
+                UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
+                userDTO.setLang(userDTOInvitatorDTO.getLang());
+                userRepository.save(userMapper.toEntity(userDTO));
+
+                invitationContact.setStatus(InvitationContactStatus.OK.getValue());
+                invitationContact.setLastModified(new Date());
+                invitationContactRepository.save(invitationContact);
+            }
+        }
+    }
+
+
+    private void createRegistrationUser(UserDTO userDTO, Integer registrationId){
+        RegistrationUsers registrationUsers = new RegistrationUsers();
+        registrationUsers.setContactEmail(userDTO.getEcasEmail());
+        registrationUsers.setCreationDate(new Date());
+        registrationUsers.setMain(0);
+        registrationUsers.setRegistrationId(registrationId);
+        registrationUsers.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
+        registrationUsers.setUserId(userDTO.getId());
+        Registration registration = registrationRepository.findOne(registrationId);
+        Mayor mayor = mayorRepository.findByMunicipalityId(registration.getMunicipality().getId());
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(mayor.getId()),
+                RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipality().getId());
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getId()),
+                RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipality().getId());
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getMunicipality().getId()),
+                RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + registration.getMunicipality().getId() + " - Country: " + registration.getMunicipality().getCountry() + " - Lau Id: " + registration.getMunicipality().getLau().getId());
+        registrationUsersRepository.save(registrationUsers);
+    }
+
+    private void createSupplierUser(UserDTO userDTO, Integer supplierId){
+        SupplierUser supplierUser = new SupplierUser();
+        supplierUser.setEmail(userDTO.getEcasEmail());
+        supplierUser.setCreationDate(new Date());
+        supplierUser.setMain(0);
+        supplierUser.setSupplierId(supplierId);
+        supplierUser.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
+        supplierUser.setUserId(userDTO.getId());
+
+        SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
+
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(supplierId),
+                RightConstants.USER_TABLE, "[SUPPLIERS] - id: " + supplierId + " - Email: " + supplierDTO.getContactEmail());
+        supplierUserRepository.save(supplierUser);
+    }
+
+    @Transactional
+    public void deleteInvitationByUser(String email){
+        invitationContactRepository.delete(invitationContactRepository.findByEmailInvited(email));
+    }
+
+    @Transactional
+    public ResponseDTO deleteUser(int userId, HttpServletRequest request) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
-        if (userDTO != null) {
+        if (Validator.isNotNull(userDTO)) {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
-                    removeTempToken(userDTO);
-                    for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
-                        municipalityService.deleteMunicipality(municipality.getId(), request);
+
+                    if(applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0){
+
+                        for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
+                            municipalityService.deleteMunicipality(municipality.getId(), request);
+                        }
+                        for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
+                            userThreadsService.deleteUserThreads(userThread.getId());
+                        }
+
+                        removeTempToken(userDTO);
+                        deleteUserRights(userDTO.getId());
+                        deleteUserConditionAgreements(userDTO.getId());
+                        deleteInvitationByUser(userDTO.getEcasEmail());
+
+                        userDTO.setType(0);
+                        userRepository.save(userMapper.toEntity(userDTO));
+                    }else{
+                        // Application detected for this user id
+                        _log.warn("ECAS Username: " + userDTO.getEcasUsername() + " - User registrations cannot be deleted due to one registration is applied");
+                        return new ResponseDTO(false, null, new ErrorDTO(10, "benefPortal.withdraw.existingApplication.error"));
                     }
-                    for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
-                        userThreadsService.deleteUserThreads(userThread.getId());
-                    }
+
                     break;
                 case (int) Constant.ROLE_SUPPLIER:
+
+                    //first remove connections with suppliers by setting the status to deleted
+                    List<SupplierUser> supplierUsers = supplierUserRepository.findByUserId(userDTO.getId());
+                    for (SupplierUser sUser : supplierUsers) {
+                        sUser.setStatus(SupplierUserStatus.DELETED.getStatus());
+                    }
+                    supplierUserRepository.save(supplierUsers);
+
                     removeTempToken(userDTO);
                     removeSuppliedRegion(userDTO);
 
@@ -184,13 +334,25 @@ public class UserService {
                     if (supplier != null) {
                         supplierService.deleteSupplier(supplier.getId());
                     }
+                    userDTO.setType(0);
+                    userRepository.save(userMapper.toEntity(userDTO));
                     break;
             }
-            userRepository.delete(userMapper.toEntity(userDTO));
-            return userDTO;
+            userDTO.setPassword(null);
+            return new ResponseDTO(true, userDTO, null);
         } else {
-            return null;
+            return new ResponseDTO(false, null, null);
         }
+    }
+
+    @Transactional
+    public void deleteUserRights(Integer userId){
+        rightRepository.deleteByUserId(userId);
+    }
+
+    @Transactional
+    public void deleteUserConditionAgreements(Integer userId){
+        conditionsAgreementRepository.deleteByUserId(userId);
     }
 
     @Transactional
@@ -281,19 +443,6 @@ public class UserService {
 
     @Transactional
     public void sendActivateAccountMail(UserDTO userDTO) {
-        Date now = new Date();
-        TempTokenDTO tempTokenDTO = new TempTokenDTO();
-        tempTokenDTO.setEmail(userDTO.getEcasEmail());
-        tempTokenDTO.setUserId(userDTO.getId());
-        tempTokenDTO.setCreateDate(now.getTime());
-        tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserConstants.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
-        SecureRandom secureRandom = new SecureRandom();
-        String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
-        tempTokenDTO.setToken(token);
-        tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
-        permissionChecker.addTablePermissions(userDTO, Long.toString(tempTokenDTO.getId()),
-                RightConstants.TEMP_TOKENS_TABLE, "[TEMP_TOKENS] - id: " + tempTokenDTO.getId() + " - User Id: " + tempTokenDTO.getUserId() + " - TOKEN: " + tempTokenDTO.getToken());
-
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
@@ -306,6 +455,22 @@ public class UserService {
             mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
     }
+
+    @Transactional
+    public void sendSupplierRegistrationEmail(UserDTO userDTO) {
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        if (userDTO.getLang() != null) {
+            locale = new Locale(userDTO.getLang());
+        }
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.supplierRegistration.subject");
+        String msgBody = bundle.getString("mail.supplierRegistration.body");
+
+        if (!isLocalHost()) {
+            mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+        }
+    }
+
 
     public boolean resendEmail(String email) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
@@ -384,8 +549,8 @@ public class UserService {
         return baseUrl;
     }
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
+    public String getEcasUrl() {
+        return ecasUrl;
     }
 
     private void removeTempToken(UserDTO userDTO) {
@@ -395,10 +560,26 @@ public class UserService {
     }
 
     private void removeSuppliedRegion(UserDTO userDTO) {
-        SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findByUserId(userDTO.getId()));
+        SupplierDTO supplierDTO = supplierService.getSupplierByUserId(userDTO.getId());
         List<SuppliedRegionDTO> suppliedRegionDTOList = supplierDTO.getSuppliedRegions();
         for (SuppliedRegionDTO anElementList : suppliedRegionDTOList) {
             suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(anElementList));
         }
+    }
+
+    public UserDTO updateLanguage(UserDTO userDTO, String lang) {
+        userDTO.setLang(lang);
+        return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
+    }
+
+    public void createNewRegistrationUser(UserRegistrationDTO userRegistrationDTO) {
+        RegistrationUsers registrationUsers = new RegistrationUsers();
+        Integer registrationId = registrationRepository.findByMunicipalityId(userRegistrationDTO.getMunicipalityId()).getId();
+        registrationUsers.setContactEmail(userRegistrationDTO.getEmail());
+        registrationUsers.setCreationDate(new Date());
+        registrationUsers.setRegistrationId(registrationId);
+        registrationUsers.setStatus(0);
+        registrationUsers.setMain(0);
+        registrationUsersRepository.save(registrationUsers);
     }
 }

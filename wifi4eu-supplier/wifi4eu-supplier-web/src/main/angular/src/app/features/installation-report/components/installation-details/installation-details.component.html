@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="back-button">
+        <a href="#" [routerLink]="['/screen/installation-report']">
+            <i class="fa fa-arrow-left"></i> Back</a>
+    </div>
+    <div class="header">
+        <h1>{{ 'installationDetails.title' | translate }}</h1>
+        <p>{{ 'installationDetails.subtitle' | translate }}</p>
+    </div>
+    <div class="form-group col-md-12 row">
+        <p>{{ 'shared.beneficiary.label' | translate }}:</p>
+        <p class="font-weight-bold">{{beneficiary.name}}</p>
+    </div>
+
+    <div class="results">
+        <div class="row results-row">
+            <div class="col-md-2">
+                <p>{{'shared.number.label' | translate}}</p>
+                <p>{{'installationReport.siteName' | translate }}</p>
+                <p>{{'installationDetails.captivePortal' | translate }}</p>
+                <p>{{'installationDetails.networkId' | translate }}</p>
+            </div>
+            <div class="col-md-7 font-weight-bold">
+                <p>{{installationSite.number}}</p>
+                <p>{{installationSite.name}}</p>
+                <p>{{installationSite.url}}</p>
+                <p>{{installationSite.idNetworkSnippet}}</p>
+            </div>
+            <div class="col-md-3 text-right detailsButtons">
+                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-pencil" (click)="openUpdateInstallationSite()" [isDisabled]="beneficiary.wifiIndicator">
+                    {{ 'shared.edit' | translate }}</ux-button>
+                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-trash" (click)="openRemoveInstallationSite()" [isDisabled]="beneficiary.wifiIndicator">
+                    {{ 'shared.remove' | translate }}</ux-button>
+            </div>
+        </div>
+    </div>
+    <update-installation-site [isEdit]="true" [installationSite]='installationSite'></update-installation-site>
+
+    <ux-modal id="removeInstallationSite" titleLabel="{{ 'installationDetails.removeModalTitle' | translate }}" isOverflowVisible="true"
+        [isHandleCloseOnAccept]="false" [isSizeSmall]="false" (onDismiss)="closeRemoveInstallationSite()">
+        <uxModalBody>
+            <div class="text-center">
+                <p>{{'installationDetails.removeModalAreYouSure' | translate}}</p>
+                <p>{{'installationDetails.removeModalThisAction' | translate}}</p>
+            </div>
+        </uxModalBody>
+        <uxModalFooter>
+            <ux-button typeClass="primary" [isSecondary]="true" (click)="closeRemoveInstallationSite()" [isLarge]="true">{{ 'shared.close' | translate }}</ux-button>
+            <ux-button typeClass="primary" (click)="submitRemoveInstallationSite()" [isLarge]="true"> {{ 'shared.confirm' | translate }}</ux-button>
+        </uxModalFooter>
+    </ux-modal>
+
+</div>

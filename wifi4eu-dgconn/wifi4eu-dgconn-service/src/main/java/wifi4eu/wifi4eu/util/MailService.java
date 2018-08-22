@@ -1,39 +1,41 @@
 package wifi4eu.wifi4eu.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.utils.EncrypterService;
-import wifi4eu.wifi4eu.service.user.UserService;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.PostConstruct;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.nio.charset.StandardCharsets;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+
+import wifi4eu.wifi4eu.common.utils.EncrypterService;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 
 
 /**
  * Created by rgarcita on 11/02/2017.
  */
-
 @Configuration
 @PropertySource("classpath:env.properties")
 @Service
 public class MailService {
 
     public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
+    public final static String NO_ACTION = "NO ACTION LOGGED";
 
     @Value("${mail.serv.enable}")
     private boolean enableMail;
@@ -48,25 +50,30 @@ public class MailService {
     private JavaMailSender mailSender;
 
     @Autowired
-    private UserService userService;
+    private LogEmailRepository logEmailRepository;
+
+    @Autowired
+    ApplicationContext context;    
+
+    @Autowired
+    TaskExecutor taskExecutor;    
 
     private final Logger _log = LogManager.getLogger(MailService.class);
-
-    UserContext userContext;
-    UserDTO userConnected;
 
     @PostConstruct
     public void init() throws Exception{
         if(mailSender != null){
-            String dPassword = encrypterService.decrypt(passwordEncrypted.getBytes(StandardCharsets.UTF_8));
+        	String dPassword = encrypterService.getDecodedValue(passwordEncrypted);
             ((JavaMailSenderImpl) mailSender).setPassword(dPassword);
         }
     }
 
     public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
+        sendEmail(toAddress, fromAddress, subject, msgBody, 0, NO_ACTION);
+    }
+
+    public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
+        _log.debug("Sending synchronous mail: {} {} {}", fromAddress, subject, msgBody);
         if (enableMail) {
             try {
                 MimeMessage message = mailSender.createMimeMessage();
@@ -90,18 +97,51 @@ public class MailService {
                 helper.setTo(toAddress);
                 helper.setFrom(fromAddress);
                 mailSender.send(message);
-                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + toAddress);
+
+                //-- Log email
+                logEmail(toAddress, fromAddress, subject, msgBody, municipalityId, action);
+                _log.debug("Email sent to {}", toAddress);
             } catch (Exception ex) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex);
+                _log.error("Cannot send the message", ex);
             }
+        } else {
+        	_log.warn("Mail is no enabled, no emails were sent");
         }
     }
 
     public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody) {
+        sendEmailAsync(toAddress, fromAddress, subject, msgBody, 0, NO_ACTION);
+    }
+
+    public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId) {
+        sendEmailAsync(toAddress, fromAddress, subject, msgBody, municipalityId, NO_ACTION);
+    }
+
+    public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
+        _log.debug("Sending asynchronous mail: {} {} {}", fromAddress, subject, msgBody);
+    	
         if (enableMail) {
-            MailAsyncService asyncService = new MailAsyncService(toAddress, fromAddress, subject, msgBody, this.mailSender);
-            Thread thread = new Thread(asyncService);
-            thread.start();
+        	_log.info("Launching send mail thread...");        
+            // Let the task executor manage the execution of the new thread to send the mails
+        	taskExecutor.execute(context.getBean(MailAsyncService.class, toAddress, fromAddress, subject, msgBody, this.mailSender, municipalityId, action));
+        } else {
+        	_log.warn("Mail is no enabled, no emails were sent");
+        }
+    }
+
+    private void logEmail(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
+    	_log.debug("Logging email");
+    	if (toAddress == null || toAddress.isEmpty()) {
+    		_log.warn("The email was not registered in db because no address was specified.");
+    	} else if (municipalityId == 0) {
+    		_log.warn("The email was not registered in db because municipalityId was not defined.");
+    	} else {
+            String setAction = NO_ACTION;
+            if (action != null && action.length() > 0) {
+                setAction = action;
+            }
+            LogEmail logEmail = new LogEmail(toAddress, fromAddress, subject, msgBody, municipalityId, setAction);
+            logEmailRepository.save(logEmail);
         }
     }
 }

@@ -8,11 +8,12 @@ import {RegistrationApi} from "../../../shared/swagger/api/RegistrationApi";
 import {RegistrationDTOBase} from "../../../shared/swagger/model/RegistrationDTO";
 import {ThreadApi} from "../../../shared/swagger/api/ThreadApi";
 import {ThreadDTOBase} from "../../../shared/swagger/model/ThreadDTO";
-import {ResponseDTOBase} from "../../../shared/swagger/model/ResponseDTO";
+import {ResponseDTOBase, ResponseDTO} from "../../../shared/swagger/model/ResponseDTO";
 import {SharedService} from "../../../shared/shared.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ThreadMessageDTOBase} from "../../../shared/swagger/model/ThreadMessageDTO";
 import {BeneficiaryApi} from "../../../shared/swagger/api/BeneficiaryApi";
+import { LegalFileDTOBase } from "../../../shared/swagger";
 
 @Component({
     templateUrl: 'beneficiary-registrations-details.component.html',
@@ -33,6 +34,9 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private selectedIndex = null;
     private displayInvalidate = false;
     private processingRequest = false;
+    private legalFiles : LegalFileDTOBase[][] = [];
+
+    private fileURL: string = '/dashboard/api/registration/getDocument/';
 
     constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private beneficiaryApi: BeneficiaryApi, private sharedService: SharedService, private sanitizer: DomSanitizer) {
         this.route.params.subscribe(
@@ -56,6 +60,11 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                                     this.registrationApi.getRegistrationByMunicipalityId(municipality.id).subscribe(
                                         (registration: RegistrationDTOBase) => {
                                             if (registration) {
+                                                this.registrationApi.getHistoryAll(registration.id).subscribe((response : ResponseDTOBase) =>{
+                                                    if(response.success){
+                                                        this.legalFiles[i].push(response.data);
+                                                    }
+                                                });
                                                 this.entitiesChecked.push(false);
                                                 this.registrations.push(registration);
                                                 this.mayors.push(mayor);
@@ -74,7 +83,8 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                 }
             );
             this.threadApi.getThreadByTypeAndReason(1, String(this.lauId)).subscribe(
-                (thread: ThreadDTOBase) => {
+                (response: ResponseDTO) => {
+                    var thread = response.data;
                     if (thread) {
                         this.discussionThread = thread;
                         this.displayedMessages = thread.messages;
@@ -82,10 +92,6 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                 }
             );
         }
-    }
-
-    private getLegalFileUrl(index: number, fileNumber: number) {
-		return this.registrationApi.getLegalFilesByFileType(this.registrations[index].id, fileNumber);
     }
 
     private checkEntity(index: number) {

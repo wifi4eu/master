@@ -10,16 +10,6 @@
     <name>wifi4eu</name>
     <description>J2EE, SpringMVC, eUI application</description>
 
-
-    <modules>
-        <module>wifi4eu-common</module>
-        <module>wifi4eu-portal</module>
-        <module>wifi4eu-public-portal</module>
-        <module>wifi4eu-dgconn</module>
-        <!--<module>wifi4eu-financial</module>-->
-    </modules>
-
-
     <scm>
         <connection>scm:svn:https://webgate.ec.europa.eu/CITnet/svn/wifi4eu</connection>
         <developerConnection>scm:svn:https://webgate.ec.europa.eu/CITnet/svn/wifi4eu
@@ -132,10 +122,35 @@
         <!--
         <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
         -->
+
+        <!-- DEV environments -->
         <server.azure.dev.address>wifi4eu-dev.everincloud.com</server.azure.dev.address>
+        <server.azure.devb.address>wifi4eu-devb.everincloud.com</server.azure.devb.address>
+        <server.azure.devhf.address>wifi4eu-devhf.everincloud.com</server.azure.devhf.address>
+        <server.azure.devpg.address>wifi4eu-dev1.everincloud.com</server.azure.devpg.address>
+        <server.azure.devnf.address>wifi4eu-devnf.everincloud.com</server.azure.devnf.address>
+
         <server.azure.dev.dgconn.address>cnect-wifi4eu-dev.everincloud.com</server.azure.dev.dgconn.address>
+        <server.azure.devb.dgconn.address>wifi4eu-devb.everincloud.com</server.azure.devb.dgconn.address>
+        <server.azure.devhf.dgconn.address>wifi4eu-devhf.everincloud.com</server.azure.devhf.dgconn.address>
+        <server.azure.devpg.dgconn.address>wifi4eu-dev1.everincloud.com</server.azure.devpg.dgconn.address>
+        <server.azure.devnf.dgconn.address>wifi4eu-devnf.everincloud.com</server.azure.devnf.dgconn.address>
+
+        <!-- SEC environment -->
+
+        <server.azure.sec.address>wifi4eu-sec.everincloud.com</server.azure.sec.address>
+
+        <!-- TEST environment -->
+
+        <server.azure.testbf.address>wifi4eu-tstb.everincloud.com</server.azure.testbf.address>
+        <server.azure.testnf.address>wifi4eu-tst.everincloud.com</server.azure.testnf.address>
+        <server.azure.testbf.dgconn.address>wifi4eu-tstb.everincloud.com</server.azure.testbf.dgconn.address>
+        <server.azure.testnf.dgconn.address>wifi4eu-tst.everincloud.com</server.azure.testnf.dgconn.address>
+
         <dgconn.name>dashboard</dgconn.name>
         <dgconn.context.name>/dashboard</dgconn.context.name>
+        <procedures.name>procedures</procedures.name>
+        <procedures.context.name>/procedures</procedures.context.name>
         <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
         <server.azure.test2.address>wifi4eutest.eu</server.azure.test2.address>
         <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
@@ -154,13 +169,21 @@
         <enable.appinsights.end></enable.appinsights.end>
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
 
+        <!-- CNS -->
+        <cns.client.system.key>KEY-WiFi4EU-B49nLE82Cx</cns.client.system.key>
+        <cns.client.system.password>secret</cns.client.system.password>
+        <cns.notification.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/NotificationWebService</cns.notification.service.url>
+        <cns.user.preferences.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/UserPreferencesWebService</cns.user.preferences.service.url>
+        <cns.notification.group.code>WiFi4EU_OP</cns.notification.group.code>
+
         <!-- SMTP -->
         <encrypted.azure.smtp.password>EXdNJgAGhKHJNcH3M9F2XuFcjyY0vx4dsvGcOkv8Bkt5HjXq5uvc6fvMP1/jqDo2</encrypted.azure.smtp.password>
         <encrypted.smtp.password>rAVMaF9Tq672wijgk9LxfA==</encrypted.smtp.password>
         <secret.key.encryption>SBy2hecZS9lA7wiIGmoRiA==</secret.key.encryption>
+        <azure.blob.storage.key>Ft7btrRtNTXc/iX6dwyKkyBHoN4uyJ4yXQ64j59aIzpvB6BbGe2BtyGzmS3ZKKR9aRBGKLI7JXDW0FmD6E8pcvm4CHfaytxyMS4mSm2y3Px12xJIm0FUtREIVSXhNPS4wtiUGREBZY+0FB0ct+6JC935sJnsiL24CupynJotg6YpLv0sP2FzJMrVdujdISYJ1aWjFKwhr05OWytGptGL3fNJV7CElrgV6I5vId7Og2qaQ72vVns6TN9KhtCfiBi3pWRjkMaOz4MH0KLCyag6ng==</azure.blob.storage.key>
 
-        <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
-        <mail.smtp.port>587</mail.smtp.port>
+        <mail.smtp.host>localhost</mail.smtp.host>
+        <mail.smtp.port>25</mail.smtp.port>
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
         <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
@@ -177,10 +200,92 @@
 
 
     <profiles>
+
+        <!-- By default, include all the modules -->
+        <profile>
+            <id>full-build</id>
+            <activation>
+                <property>
+                    <name>!skipFullBuild</name>
+                </property>
+            </activation>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+
+                <!-- Webapp modules -->
+                <module>wifi4eu-portal</module>
+                <module>wifi4eu-public-portal</module>
+                <module>wifi4eu-dgconn</module>
+                <module>wifi4eu-supplier</module>
+                <module>wifi4eu-procedures</module>
+                <!--<module>wifi4eu-financial</module>-->
+            </modules>
+        </profile>
+
+		<!-- APP PROFILES -->
+
+        <profile>
+            <id>wifi4eu-portal</id>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+                <!-- Webapp modules -->
+                <module>wifi4eu-portal</module>
+            </modules>
+        </profile>
+
+		<profile>
+            <id>wifi4eu-public-portal</id>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+                <!-- Webapp modules -->
+                <module>wifi4eu-public-portal</module>
+            </modules>
+        </profile>
+
+		<profile>
+            <id>wifi4eu-dgconn</id>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+                <!-- Webapp modules -->
+                <module>wifi4eu-dgconn</module>
+            </modules>
+        </profile>
+
+		<profile>
+            <id>wifi4eu-supplier</id>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+                <!-- Webapp modules -->
+                <module>wifi4eu-supplier</module>
+            </modules>
+        </profile>
+
+		<profile>
+            <id>wifi4eu-financial</id>
+            <modules>
+                <!-- Common modules -->
+                <module>wifi4eu-common</module>
+                <module>wifi4eu-persistence</module>
+                <!-- Webapp modules -->
+                <module>wifi4eu-financial</module>
+            </modules>
+        </profile>
+
+        <!-- ENVIRONMENT PROFILES -->
         <profile>
             <id>TEST</id>
             <properties>
-                <ng.env>int</ng.env>
+                <ng.env>test</ng.env>
                 <server.address>${server.test.address}:${server.test.port}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
@@ -201,7 +306,7 @@
         <profile>
             <id>AZUREDEV</id>
             <properties>
-                <ng.env>dev</ng.env>
+                <ng.env>dev-old</ng.env>
                 <schemes>https</schemes>
                 <server.address>${server.azure.dev.address}</server.address>
                 <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>
@@ -224,7 +329,7 @@
                 <ecas.server.port>${server.pro.port}</ecas.server.port>
                 <ecas.config.strength>PASSWORD</ecas.config.strength>
                 <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
-                <mail.serv.enable>false</mail.serv.enable>
+                <mail.serv.enable>true</mail.serv.enable>
                 <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
@@ -236,12 +341,14 @@
             </properties>
         </profile>
         <profile>
-            <id>Azure DEV - DGCONN</id>
+            <id>AZUREDEV-BF</id>
             <properties>
                 <ng.env>dev</ng.env>
                 <schemes>https</schemes>
-                <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>
-                <dgconn.name>wifi4eu</dgconn.name>
+                <server.address>${server.azure.devb.address}</server.address>
+                <server.dgconn.address>${server.azure.devb.dgconn.address}</server.dgconn.address>
+                <dgconn.name>dashboard</dgconn.name>
+                <dgconn.context.name>/dashboard</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
@@ -253,72 +360,280 @@
                 <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
-                <ecas.server.address>${server.azure.dev.dgconn.address}</ecas.server.address>
+                <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
+                <ecas.server.address>${server.azure.devb.address}</ecas.server.address>
+                <ecas.server.dgconn.address>${server.azure.devb.dgconn.address}</ecas.server.dgconn.address>
                 <ecas.server.port>${server.pro.port}</ecas.server.port>
-                <mail.serv.enable>false</mail.serv.enable>
-                <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
+                <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
+                <mail.serv.enable>true</mail.serv.enable>
+                <mail.serv.location>https://${server.azure.devb.address}/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
-                <rabbitmq.password></rabbitmq.password>
+                <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
             </properties>
         </profile>
         <profile>
-            <id>AZURETEST</id>
+            <id>AZUREDEV-HF</id>
             <properties>
-                <ng.env>test</ng.env>
+                <ng.env>dev</ng.env>
                 <schemes>https</schemes>
-                <server.dgconn.address>${server.azure.test.address}</server.dgconn.address>
-                <dgconn.name>wifi4eu</dgconn.name>
-                <dgconn.context.name>/wifi4eu</dgconn.context.name>
-                <server.address>${server.azure.test.address}</server.address>
+                <server.address>${server.azure.devhf.address}</server.address>
+                <server.dgconn.address>${server.azure.devhf.dgconn.address}</server.dgconn.address>
+                <dgconn.name>dashboard</dgconn.name>
+                <dgconn.context.name>/dashboard</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
+                <enable.appinsights.start>--&gt;</enable.appinsights.start>
+                <enable.appinsights.end>&lt;!--</enable.appinsights.end>
                 <eclipselink.logging.level>WARNING</eclipselink.logging.level>
                 <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
-                <ecas.config.base.url.dgconn>${ecas.config.base.url}</ecas.config.base.url.dgconn>
-                <ecas.server.address>${server.azure.test.address}</ecas.server.address>
-                <ecas.server.dgconn.address>${ecas.server.address}</ecas.server.dgconn.address>
+                <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
+                <ecas.server.address>${server.azure.devhf.address}</ecas.server.address>
+                <ecas.server.dgconn.address>${server.azure.devhf.dgconn.address}</ecas.server.dgconn.address>
                 <ecas.server.port>${server.pro.port}</ecas.server.port>
-                <ecas.config.strength.dgconn>${ecas.config.strength}</ecas.config.strength.dgconn>
-                <mail.serv.location>https://wifi4eutest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
+                <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
+                <mail.serv.enable>true</mail.serv.enable>
+                <mail.serv.location>https://${server.azure.devhf.address}/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <rabbitmq.host>10.0.2.31</rabbitmq.host>
+                <rabbitmq.username>devel</rabbitmq.username>
+                <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
             </properties>
         </profile>
         <profile>
-            <id>AZURETEST2</id>
+            <id>AZUREDEV-PG</id>
             <properties>
-                <ng.env>test</ng.env>
+                <ng.env>dev</ng.env>
                 <schemes>https</schemes>
-                <server.address>${server.azure.test2.address}</server.address>
+                <server.address>${server.azure.devpg.address}</server.address>
+                <server.dgconn.address>${server.azure.devpg.dgconn.address}</server.dgconn.address>
+                <dgconn.name>dashboard</dgconn.name>
+                <dgconn.context.name>/dashboard</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
+                <enable.appinsights.start>--&gt;</enable.appinsights.start>
+                <enable.appinsights.end>&lt;!--</enable.appinsights.end>
                 <eclipselink.logging.level>WARNING</eclipselink.logging.level>
                 <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
-                <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
-                <ecas.config.strength>BASIC</ecas.config.strength>
-                <ecas.server.address>${server.azure.test2.address}</ecas.server.address>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
+                <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
+                <ecas.server.address>${server.azure.devpg.address}</ecas.server.address>
+                <ecas.server.dgconn.address>${server.azure.devpg.dgconn.address}</ecas.server.dgconn.address>
                 <ecas.server.port>${server.pro.port}</ecas.server.port>
-                <mail.serv.location>https://http://wifi4eutest.eu/wifi4eu/#/</mail.serv.location>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
+                <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
+                <mail.serv.enable>true</mail.serv.enable>
+                <mail.serv.location>https://${server.azure.devpg.address}/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <rabbitmq.host>10.0.2.31</rabbitmq.host>
+                <rabbitmq.username>devel</rabbitmq.username>
+                <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>AZUREDEV-NF</id>
+            <properties>
+                <ng.env>dev</ng.env>
+                <schemes>https</schemes>
+                <server.address>${server.azure.devnf.address}</server.address>
+                <server.dgconn.address>${server.azure.devnf.dgconn.address}</server.dgconn.address>
+                <dgconn.name>dashboard</dgconn.name>
+                <dgconn.context.name>/dashboard</dgconn.context.name>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <enable.appinsights.start>--&gt;</enable.appinsights.start>
+                <enable.appinsights.end>&lt;!--</enable.appinsights.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+                <war.output.directory/>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
+                <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
+                <ecas.server.address>${server.azure.devnf.address}</ecas.server.address>
+                <ecas.server.dgconn.address>${server.azure.devnf.dgconn.address}</ecas.server.dgconn.address>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
+                <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
+                <mail.serv.enable>true</mail.serv.enable>
+                <mail.serv.location>https://${server.azure.devnf.address}/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <rabbitmq.host>10.0.2.31</rabbitmq.host>
+                <rabbitmq.username>devel</rabbitmq.username>
+                <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>AZUREDEV-SEC</id>
+            <properties>
+                <ng.env>dev</ng.env>
+                <schemes>https</schemes>
+                <server.address>${server.azure.sec.address}</server.address>
+                <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>
+                <dgconn.name>wifi4eu</dgconn.name>
+                <dgconn.context.name>/wifi4eu</dgconn.context.name>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <enable.appinsights.start>--&gt;</enable.appinsights.start>
+                <enable.appinsights.end>&lt;!--</enable.appinsights.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+                <war.output.directory/>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
+                <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
+                <ecas.server.address>${server.azure.sec.address}</ecas.server.address>
+                <ecas.server.dgconn.address>${server.azure.dev.dgconn.address}</ecas.server.dgconn.address>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
+                <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
+                <mail.serv.enable>false</mail.serv.enable>
+                <mail.serv.location>https://wifi4eu-sec.everincloud.com/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <rabbitmq.host>10.0.2.31</rabbitmq.host>
+                <rabbitmq.username>devel</rabbitmq.username>
+                <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>AZURETEST-NF</id>
+            <properties>
+                <ng.env>test</ng.env>
+                <schemes>https</schemes>
+                <server.address>${server.azure.testnf.address}</server.address>
+                <server.dgconn.address>${server.azure.testnf.dgconn.address}</server.dgconn.address>
+                <dgconn.name>dashboard</dgconn.name>
+                <dgconn.context.name>/dashboard</dgconn.context.name>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <enable.appinsights.start>--&gt;</enable.appinsights.start>
+                <enable.appinsights.end>&lt;!--</enable.appinsights.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+                <war.output.directory/>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
+                <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
+                <ecas.server.address>${server.azure.testnf.address}</ecas.server.address>
+                <ecas.server.dgconn.address>${server.azure.testnf.dgconn.address}</ecas.server.dgconn.address>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
+                <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
+                <mail.serv.enable>true</mail.serv.enable>
+                <mail.serv.location>https://${server.azure.testnf.address}/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <rabbitmq.host>10.0.2.31</rabbitmq.host>
+                <rabbitmq.username>devel</rabbitmq.username>
+                <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>AZURETEST-BF</id>
+            <properties>
+                <ng.env>test</ng.env>
+                <schemes>https</schemes>
+                <server.address>${server.azure.testbf.address}</server.address>
+                <server.dgconn.address>${server.azure.testbf.dgconn.address}</server.dgconn.address>
+                <dgconn.name>dashboard</dgconn.name>
+                <dgconn.context.name>/dashboard</dgconn.context.name>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <enable.appinsights.start>--&gt;</enable.appinsights.start>
+                <enable.appinsights.end>&lt;!--</enable.appinsights.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+                <war.output.directory/>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
+                <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
+                <ecas.server.address>${server.azure.testbf.address}</ecas.server.address>
+                <ecas.server.dgconn.address>${server.azure.testbf.dgconn.address}</ecas.server.dgconn.address>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
+                <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
+                <mail.serv.enable>true</mail.serv.enable>
+                <mail.serv.location>https://${server.azure.testbf.address}/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <rabbitmq.host>10.0.2.31</rabbitmq.host>
+                <rabbitmq.username>devel</rabbitmq.username>
+                <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>ACCEPTANCE</id>
+            <properties>
+                <ng.env>acc</ng.env>
+                <schemes>https</schemes>
+                <server.address>wifi4eu-acc.everincloud.com</server.address>
+                <server.dgconn.address>wifi4eu-acc-cnect.everincloud.com</server.dgconn.address>
+                <dgconn.name>wifi4eu</dgconn.name>
+                <dgconn.context.name>/wifi4eu</dgconn.context.name>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <enable.appinsights.start>--&gt;</enable.appinsights.start>
+                <enable.appinsights.end>&lt;!--</enable.appinsights.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+                <war.output.directory/>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
+                <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
+                <ecas.server.address>wifi4eu-acc.everincloud.com</ecas.server.address>
+                <ecas.server.dgconn.address>wifi4eu-acc-cnect.everincloud.com</ecas.server.dgconn.address>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
+                <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
+                <mail.serv.enable>false</mail.serv.enable>
+                <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <rabbitmq.host></rabbitmq.host>
+                <rabbitmq.username></rabbitmq.username>
+                <rabbitmq.password></rabbitmq.password>
             </properties>
         </profile>
         <profile>

@@ -43,47 +43,6 @@ public class HelpdeskIssueResource {
 
     Logger _log = LogManager.getLogger(HelpdeskIssueResource.class);
 
-    @ApiOperation(value = "Get all the helpdesk issues")
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<HelpdeskIssueDTO> allHelpdeskIssues(HttpServletResponse response) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting all the helpdesk issues");
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the helpdesk issues", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issues cannot been retrieved", e);
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return helpdeskService.getAllHelpdeskIssues();
-    }
-
-    @ApiOperation(value = "Get helpdesk issue by specific id")
-    @RequestMapping(value = "/{issueId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public HelpdeskIssueDTO getHelpdeskIssueById(@PathVariable("issueId") final Integer issueId, HttpServletResponse response) throws IOException {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting helpdesk issue by id " + issueId);
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issue cannot been retrieved", e);
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return helpdeskService.getHelpdeskIssueById(issueId);
-    }
-
     @ApiOperation(value = "Create helpdesk issue")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -99,7 +58,6 @@ public class HelpdeskIssueResource {
             }
             List<NutsDTO> nuts = nutsService.getNutsByLevel(0);
             HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO, nuts);
-
             helpdeskIssueDTO.setCreateDate(new Date().getTime());
             helpdeskIssueDTO.setStatus(0);
             HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.createHelpdeskIssue(helpdeskIssueDTO);
@@ -115,35 +73,4 @@ public class HelpdeskIssueResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
-
-    /*
-    @ApiOperation(value = "Delete helpdesk by specific id")
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseDTO deleteHelpdeskIssue(@RequestBody final Integer issueId, HttpServletResponse response) throws IOException {
-        try {
-            _log.info("deleteHelpdeskIssue: " + issueId);
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
-                response.sendError(HttpStatus.NOT_FOUND.value());
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.deleteHelpdeskIssue(issueId);
-            return new ResponseDTO(true, resHelpdeskIssue, null);
-        }
-        catch (AccessDeniedException ade) {
-          if (_log.isErrorEnabled()) {
-            _log.error("Access denied on 'deleteHelpdeskIssue' operation.", ade);
-        }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        catch (Exception e) {
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteHelpdeskIssue' operation.", e);
-            }
-        }
-        return new ResponseDTO(false, null, null);
-    }
-    */
 }

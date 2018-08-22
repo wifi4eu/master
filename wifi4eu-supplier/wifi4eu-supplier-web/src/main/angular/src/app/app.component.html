@@ -1,0 +1,53 @@
+<ux-alert *ngIf="sessionExpired" styleClass="info" style="position: fixed; z-index: 9999; right:0; width: 100%">
+  <span class="topBarSession">
+      {{'shared.session.expired' | translate}}<br>
+      {{'shared.session.expired.reload' | translate}}
+  </span>
+    <button typeClass="warning" class="pull-right btn btn-primary changePassword confirm-button topButtonSession" (click)="reload()">Reload</button>
+</ux-alert>
+<div class="{{sessionExpired ? 'sessionOff' : 'sessionOn'}}">
+    <div *ngIf="sessionExpired" class="disabledUserWork"> <br> </div>
+    <ux-layout-app-shell [isScrollHandlerActive]="true" headerAppFullName="WiFi4EU web portal" headerAppShortName="WiFi4EU - Supp"
+        [headerUserInfos]="userInfos" (headerLanguageChanged)="onLanguageChanged($event)" [navBarNotificationLinks]="" [navBarTopMenuLinks]="menuLinks"
+        [isFooterStyleInverse]="true" logoUrl="https://ec.europa.eu/">
+
+        <uxAppShellHeaderRightContent>
+            <ux-language-selector (languageChanged)="onLanguageChanged($event)"></ux-language-selector>
+            <div class="profile-wrapper" isCompact="false">
+                <div class="left-panel">
+                    <div *ngIf="user" class="user-infos">
+                        <span>
+                            {{ 'shared.loggedInAs' | translate }}
+                            <strong class="user-name">{{user.ecasUsername}}
+                                <i class="header-icons fa fa-user"></i>
+                            </strong>
+                        </span>
+                        <span class="logout-button">
+                            <a (click)="logout()">{{ 'shared.logout' | translate }}
+                                <i class="header-icons fa fa-sign-out"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div *ngIf="!user" class="user-infos">
+                        <a href="#">
+                            <strong class="color-primary">{{'shared.login'|translate}}
+                                <i class="header-icons fa fa-sign-in"></i>
+                            </strong>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </uxAppShellHeaderRightContent>
+
+        <uxAppShellFooterContent>
+            <ul>
+                {{ 'home.footer.update' | translate:{version:"2.1.0_RC8.21.1", versionDate:"21/08/2018"} }}
+                <li>
+                    <a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
+                </li>
+            </ul>
+        </uxAppShellFooterContent>
+
+    </ux-layout-app-shell>
+</div>

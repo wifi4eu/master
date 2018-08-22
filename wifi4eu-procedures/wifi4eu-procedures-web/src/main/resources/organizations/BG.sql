@@ -1,0 +1,10 @@
+INSERT INTO `wifi4eu`.`organizations`(`name`, `country`) VALUES ('National Association of the Municipalities in Republic of Bulgaria','BG');
+INSERT INTO `wifi4eu`.`organizations`(`name`, `country`) VALUES ('The regional association of municipalities "Trakia"','BG');
+INSERT INTO `wifi4eu`.`organizations`(`name`, `country`) VALUES ('Regional Municipalities Association "Maritza"','BG');
+INSERT INTO `wifi4eu`.`organizations`(`name`, `country`) VALUES ('Association of South-Western Municipalities (ASWM)','BG');
+INSERT INTO `wifi4eu`.`organizations`(`name`, `country`) VALUES ('Regional Municipalities Association “Yantra”','BG');
+INSERT INTO `wifi4eu`.`organizations`(`name`, `country`) VALUES ('Association of Municipalities of the South Central Region "Heber"','BG');
+INSERT INTO `wifi4eu`.`organizations`(`name`, `country`) VALUES ('Association of Rhodope Municipalities','BG');
+INSERT INTO `wifi4eu`.`organizations`(`name`, `country`) VALUES ('Union of the Bulgarian Black Sea Local Authorities','BG');
+INSERT INTO `wifi4eu`.`organizations`(`name`, `country`) VALUES ('Association of Danube River Municipalities "Danube"','BG');
+INSERT INTO `wifi4eu`.`organizations`(`name`, `country`) VALUES ('Regional Association of Municipalities "Central Stara Planina"','BG');

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>wifi4eu</artifactId>
+        <groupId>wifi4eu.wifi4eu</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>wifi4eu-procedures</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>wifi4eu-procedures</name>
+    <description>Procedures WiFi4EU</description>
+
+    <modules>
+        <module>wifi4eu-procedures-persistence</module>
+        <module>wifi4eu-procedures-service</module>
+        <!--<module>wifi4eu-procedures-web-rest-swagger</module>-->
+        <module>wifi4eu-procedures-web-rest</module>
+        <module>wifi4eu-procedures-web</module>
+    </modules>
+
+    <properties>
+        <app.context.root>${procedures.context.name}</app.context.root>
+        <apache.poi.version>3.17</apache.poi.version>
+    </properties>
+
+</project>

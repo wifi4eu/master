@@ -5,34 +5,52 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.Constant;
+import wifi4eu.wifi4eu.common.cns.CNSManager;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.enums.FileTypes;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
+import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.mapper.registrationWarning.RegistrationWarningMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
-import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
 import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.util.UserUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
@@ -93,6 +111,36 @@ public class RegistrationService {
     @Autowired
     LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
 
+    @Autowired
+    CNSManager cnsManager;
+
+    @Autowired
+    ApplicationRepository applicationRepository;
+
+    @Autowired
+    PermissionChecker permissionChecker;
+
+    @Autowired
+    UserUtils userUtils;
+
+    @Autowired
+    SupplierService supplierService;
+
+    @Autowired
+    SupplierMapper supplierMapper;
+
+    @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    LogEmailRepository logEmailRepository;
+
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
     }
@@ -107,166 +155,135 @@ public class RegistrationService {
 
     @Transactional
     public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
+        RegistrationUsers registrationUsers = new RegistrationUsers();
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (registrationDTO.getId() == 0) {
             registrationDTO.setMailCounter(3);
         }
         RegistrationDTO registrationCreated = saveRegistration(registrationDTO);
+        registrationUsers.setUserId(userConnected.getId());
+        registrationUsers.setRegistrationId(registrationCreated.getId());
+        registrationUsers.setMain(1);
+        registrationUsers.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
+        registrationUsers.setCreationDate(new Date());
+        registrationUsers.setContactEmail(userConnected.getEcasEmail());
+        registrationUsersRepository.save(registrationUsers);
         registrationWarningService.createWarningsByRegistration(registrationCreated);
         return registrationCreated;
     }
 
-    @Transactional
-    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) {
+     public ResponseDTO confirmOrRejectInstallationAndSendCNS(Map<String, Object> map, HttpServletRequest request) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
-        if (registrationDBO.getAllFilesFlag() != 1) {
-            if (registrationDTO.getLegalFile1Mime() == null || registrationDTO.getLegalFile1Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 1);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 1");
-                registrationDBO.setLegalFile1Mime(null);
-                registrationDBO.setLegalFile1Size(0);
-            }
+        ResponseDTO response = new ResponseDTO();
+        if (!map.isEmpty()) {
+            if (map.containsKey("id") && map.containsKey("beneficiaryIndicator")) {
+                Registration registration = registrationRepository.findOne((int) map.get("id"));
 
-            if (registrationDTO.getLegalFile2Mime() == null || registrationDTO.getLegalFile2Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 2);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 3");
-                registrationDBO.setLegalFile2Mime(null);
-                registrationDBO.setLegalFile2Size(0);
-            }
+                if (!checkPermissionsRegistrations(registration)) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to confirm or reject");
+                    return permissionChecker.getAccessDeniedResponse();
+                }
 
-            if (registrationDTO.getLegalFile3Mime() == null || registrationDTO.getLegalFile3Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 3);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 2");
-                registrationDBO.setLegalFile3Mime(null);
-                registrationDBO.setLegalFile3Size(0);
-            }
+                // take origin submitted date
+                if (registration != null && registration.getInstallationSiteSubmission() != null) {
+                    boolean beneficiaryIndicator = (boolean) map.get("beneficiaryIndicator");
 
-            if (registrationDTO.getLegalFile4Mime() == null || registrationDTO.getLegalFile4Size() <= 0) {
-                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 4);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted legal document number 4");
-                registrationDBO.setLegalFile4Mime(null);
-                registrationDBO.setLegalFile4Size(0);
-            }
-        }
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
-    }
+                    if (beneficiaryIndicator) {
+                        registration.setInstallationSiteConfirmation(new java.sql.Date(new Date().getTime()));
+                        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Installation site confirmed");
+                    } else {
+                        registration.setInstallationSiteRejection(new java.sql.Date(new Date().getTime()));
+                        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Installation site rejected");
+                    }
+                    // we save the new indicators
+                    if (sendEmailOnConfirmOrReject(registration)) {
+                        registrationRepository.save(registration);
+                        //if everything goes ok it's a success
+                        response.setSuccess(true);
+                        MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipality().getId());
+                        response.setData(municipality);
+                        return response;
+                    }
 
-    @Transactional
-    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO, HttpServletRequest request) throws Exception {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = userService.getUserByUserContext(userContext);
-        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
-        Long currentTime = new Date().getTime();
-        String lf1 = registrationDTO.getLegalFile1Mime();
-        if (lf1 != null) {
-            byte[] lf1ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf1));
-            String lf1Extension = LegalFilesService.getValidFileExtension(lf1);
-            if (lf1ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                throw new Exception("File size cannot bet greater than 1 MB.");
-            } else if (lf1Extension == null) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                throw new Exception("File must have a valid extension.");
-            } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE1.getValue()));
-                if (legalFilesDTO == null) {
-                    legalFilesDTO = new LegalFilesDTO();
+                } else {
+                    response.setSuccess(false);
+                    response.setData("Error querying municipality - registration");
+                    response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The beneficiary is not found");
                 }
-                legalFilesDTO.setRegistration(registrationDBO.getId());
-                legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
-                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf1));
-                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                registrationDBO.setLegalFile1Mime(LegalFilesService.getMimeType(lf1));
-                registrationDBO.setLegalFile1Size(lf1ByteArray.length);
-                registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 1");
             }
-        }
-        String lf2 = registrationDTO.getLegalFile2Mime();
-        if (lf2 != null) {
-            byte[] lf2ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf2));
-            String lf2Extension = LegalFilesService.getValidFileExtension(lf2);
-            if (lf2ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                throw new Exception("File size cannot bet greater than 1 MB.");
-            } else if (lf2Extension == null) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                throw new Exception("File must have a valid extension.");
-            } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE2.getValue()));
-                if (legalFilesDTO == null) {
-                    legalFilesDTO = new LegalFilesDTO();
-                }
-                legalFilesDTO.setRegistration(registrationDBO.getId());
-                legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
-                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf2));
-                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                registrationDBO.setLegalFile2Mime(LegalFilesService.getMimeType(lf2));
-                registrationDBO.setLegalFile2Size(lf2ByteArray.length);
-                registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 2");
-            }
-        }
-        String lf3 = registrationDTO.getLegalFile3Mime();
-        if (lf3 != null) {
-            byte[] lf3ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf3));
-            String lf3Extension = LegalFilesService.getValidFileExtension(lf3);
-            if (lf3ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                throw new Exception("File size cannot bet greater than 1 MB.");
-            } else if (lf3Extension == null) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                throw new Exception("File must have a valid extension.");
-            } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE3.getValue()));
-                if (legalFilesDTO == null) {
-                    legalFilesDTO = new LegalFilesDTO();
-                }
-                legalFilesDTO.setRegistration(registrationDBO.getId());
-                legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
-                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf3));
-                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                registrationDBO.setLegalFile3Mime(LegalFilesService.getMimeType(lf3));
-                registrationDBO.setLegalFile3Size(lf3ByteArray.length);
-                registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 3");
-            }
-        }
-        String lf4 = registrationDTO.getLegalFile4Mime();
-        if (lf4 != null) {
-            byte[] lf4ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf4));
-            String lf4Extension = LegalFilesService.getValidFileExtension(lf4);
-            if (lf4ByteArray.length > 1024000) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
-                throw new Exception("File size cannot bet greater than 1 MB.");
-            } else if (lf4Extension == null) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
-                throw new Exception("File must have a valid extension.");
-            } else {
-                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDBO.getId(), FileTypes.LEGALFILE4.getValue()));
-                if (legalFilesDTO == null) {
-                    legalFilesDTO = new LegalFilesDTO();
-                }
-                legalFilesDTO.setRegistration(registrationDBO.getId());
-                legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
-                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf4));
-                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-                registrationDBO.setLegalFile4Mime(LegalFilesService.getMimeType(lf4));
-                registrationDBO.setLegalFile4Size(lf4ByteArray.length);
-                registrationDBO.setUploadTime(currentTime);
-                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal document number 4");
-            }
-        }
-        if (checkAllFilesFlag(registrationDBO)) {
-            registrationDBO.setAllFilesFlag(1);
-            registrationDBO.setMailCounter(0);
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(400, "error.400.invalidFields"));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The fields are invalid");
         } else {
-            registrationDBO.setAllFilesFlag(0);
-            registrationDBO.setMailCounter(3);
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(400, "error.400.noData"));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Data not found");
         }
-        return saveRegistration(registrationDBO);
+        return response;
     }
+
+    private boolean checkPermissionsRegistrations(Registration registration) {
+        try {
+            UserDTO user = permissionChecker.checkBeneficiaryPermission();
+            if (registrationUsersRepository.findByUserIdAndRegistrationId(user.getId(), registration.getId()) == null) {
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    /* Method called when the user confirms/rejects the installation report. This method sends the CNS email to the
+     * supplier.
+     *
+     * @param registration
+     * @return
+     */
+    private boolean sendEmailOnConfirmOrReject(Registration registration) {
+        //sending CNS
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending email for registration with id " + registration.getId());
+        String beneficiaryName = registration.getMunicipality().getName();
+        Iterable<Application> applicationList = applicationRepository.findByRegistrationId(registration
+                .getId());
+        Supplier supplier = supplierMapper.toEntity(supplierService.getSupplierById(applicationList.iterator().next().getSupplierId()));
+        String name = supplier.getName();
+        String email = supplier.getContactEmail();
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+
+        Integer userId = supplierService.getUserIdFromSupplier(supplier.getId());
+        if(userId != 0) {
+            String lang = userUtils.getUserLangByUserId(userId);
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - No language specified, using the default language");
+            locale = new Locale(lang);
+        }
+        //if beneficiary indicator and wifi indicator are true we send a confirmation email
+        if (registration.getInstallationSiteConfirmation() != null) {
+            cnsManager.sendInstallationConfirmationFromBeneficiary(email, name, beneficiaryName, locale);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Confirmation email for registration " + registration.getId() + " sent to " + email);
+            return true;
+        } else {
+            Date dateSubmission = registration.getInstallationSiteSubmission();
+            Date dateReject = registration.getInstallationSiteRejection();
+            if (dateSubmission.before(dateReject)) {
+                // if rejection date is bigger than submission date, send email
+                User user = userRepository.findMainUserFromRegistration(registration.getId());
+                String ccName = user.getName();
+                String ccEmail = user.getEmail();
+                cnsManager.sendInstallationRejectionFromBeneficiary(email, name, beneficiaryName, ccEmail,
+                        ccName, locale);
+                _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Rejection email for registration " + registration.getId() + " sent to " + email);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Transactional
     public RegistrationDTO deleteRegistration(int registrationId, HttpServletRequest request) {
@@ -318,7 +335,7 @@ public class RegistrationService {
     public boolean requestLegalDocuments(int registrationId) {
         RegistrationDTO registration = getRegistrationById(registrationId);
         if (registration != null) {
-            UserDTO user = userService.getUserById(registration.getUserId());
+            UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationId));
             if (user != null) {
                 Locale locale = new Locale(UserConstants.DEFAULT_LANG);
                 if (user.getLang() != null) {
@@ -331,7 +348,7 @@ public class RegistrationService {
                 msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
                 _log.info("additionalInfoUrl: " + additionalInfoUrl + " msgBody: " + msgBody + " language: " + locale.getLanguage());
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "requestLegalDocuments");
                 }
                 return true;
             }
@@ -391,7 +408,12 @@ public class RegistrationService {
     }
 
     @Transactional
-    public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) {
+    public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) throws Exception {
+        legalFileDTO.setRequestCorrectionDate(new Date());
+        if (legalFileDTO.getCorrectionReason() == null) {
+            legalFileDTO.setRequestCorrection(false);
+        }
+
         return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
     }
 
@@ -400,7 +422,7 @@ public class RegistrationService {
     }
 
     public boolean checkIfMayor(RegistrationDTO registrationDTO) {
-        UserDTO user = userService.getUserById(registrationDTO.getUserId());
+        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
         MayorDTO mayor = mayorService.getMayorByMunicipalityId(registrationDTO.getMunicipalityId());
         if (user != null && mayor != null) {
             if (mayor.getName().equals(user.getName()) && mayor.getSurname().equals(user.getSurname())) {
@@ -412,33 +434,51 @@ public class RegistrationService {
         return false;
     }
 
-    public boolean checkAllFilesFlag(RegistrationDTO registrationDTO) {
-        boolean allFilesFlag = false;
-        boolean lf1Exists = false;
-        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE1.getValue()) != null) {
-            lf1Exists = true;
+    public boolean checkUserWithRegistration(Integer registrationId, Integer userId) {
+        if (registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId) != null) {
+            return true;
         }
-        boolean lf2Exists = false;
-        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE2.getValue()) != null) {
-            lf2Exists = true;
-        }
-        boolean lf3Exists = false;
-        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE3.getValue()) != null) {
-            lf3Exists = true;
-        }
-        boolean lf4Exists = false;
-        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE4.getValue()) != null) {
-            lf4Exists = true;
-        }
-        if (checkIfMayor(registrationDTO)) {
-            if (lf1Exists && lf3Exists) {
-                allFilesFlag = true;
+        return false;
+    }
+
+    /**
+     * Gets all documents independent of user and type.
+     * If type is not null it returns all documents uploaded for that type.
+     * @param registrationId
+     * @return
+     */
+    public List<LegalFileDTO> getHistoryDocuments(Integer registrationId) {
+        return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId));
+    }
+
+    private List<UserDTO> findUsersFromRegistration(Integer registrationId){
+        return userMapper.toDTOList(userRepository.findUsersFromRegistration(registrationId));
+    }
+
+    public void clearCorrectionReason(LegalFileCorrectionReasonDTO legalFileCorrectionReasonDTO, UserDTO userDTO){
+        if ((legalFileCorrectionReasonDTO.getType() == 1) || (legalFileCorrectionReasonDTO.getType() == 3)){
+            legalFileCorrectionReasonRepository.clearCorrectionReason(legalFileCorrectionReasonDTO.getRegistrationId(),legalFileCorrectionReasonDTO.getType());
+
+        }else  if ((legalFileCorrectionReasonDTO.getType() == 2) || (legalFileCorrectionReasonDTO.getType() == 4)){
+            List<LegalFileCorrectionReasonDTO> legalFileCorrectionReasonDTOList =  legalFileCorrectionReasonMapper.toDTOList(legalFileCorrectionReasonRepository.getByRegistrationIdAndTypeAndUserId(legalFileCorrectionReasonDTO.getRegistrationId(),legalFileCorrectionReasonDTO.getType(),userDTO.getId()));
+            for (LegalFileCorrectionReasonDTO lfcDTO: legalFileCorrectionReasonDTOList){
+                lfcDTO.setRequestCorrection(false);
+                lfcDTO.setCorrectionReason(null);
             }
-        } else {
-            if (lf1Exists && lf2Exists && lf3Exists && lf4Exists) {
-                allFilesFlag = true;
-            }
+
+            legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntityList(legalFileCorrectionReasonDTOList));
         }
-        return allFilesFlag;
+    }
+
+    public List<Integer> findTypeFilesWaitingUploadByRegistration(Integer registrationId){
+        LogEmail lastEmailSent = logEmailRepository.findTopByActionOrderBySentDateDesc(Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
+        if(lastEmailSent == null){
+            return new ArrayList<Integer>();
+        }
+        return legalFileCorrectionReasonRepository.findTypeFilesWaitingUploadByRegistration(lastEmailSent.getSentDate(),registrationId);
+    }
+
+    private Long getDateOfLogEmail(LogEmail logEmail){
+        return logEmail == null ? 0 : logEmail.getSentDate();
     }
 }

@@ -1,0 +1,80 @@
+{{#models}}
+{{#model}}
+import * as models from './models';
+import {Type} from "class-transformer";
+
+{{#description}}
+/**
+ * {{{description}}}
+ */
+{{/description}}
+export interface {{classname}} {{#parent}}extends models.{{{parent}}} {{/parent}}{
+{{#additionalPropertiesType}}
+    [key: string]: {{{additionalPropertiesType}}}{{#hasVars}} | any{{/hasVars}};
+
+{{/additionalPropertiesType}}
+{{#vars}}
+{{#description}}
+    /**
+     * {{{description}}}
+     */
+{{/description}}
+    {{name}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}};
+
+{{/vars}}
+}
+{{#hasEnums}}
+export namespace {{classname}} {
+{{#vars}}
+{{#isEnum}}
+    export enum {{enumName}} {
+    {{#allowableValues}}
+    {{#enumVars}}
+        {{{name}}} = <any> {{{value}}}{{^-last}},{{/-last}}
+    {{/enumVars}}
+    {{/allowableValues}}
+    }
+{{/isEnum}}
+{{/vars}}
+}
+{{/hasEnums}}
+{{/model}}
+{{/models}}
+
+
+
+
+/*default implementation one might extend from (or use as is) */
+
+{{#models}}
+{{#model}}
+
+{{#description}}
+/**
+ * {{{description}}}
+ */
+{{/description}}
+export class {{classname}}Base {{#parent}}extends models.{{{parent}}}Base {{/parent}} implements {{classname}}{
+{{#additionalPropertiesType}}
+    [key: string]: {{{additionalPropertiesType}}}{{#hasVars}} | any{{/hasVars}};
+
+{{/additionalPropertiesType}}
+{{#vars}}
+{{#description}}
+    /**
+     * {{{description}}}
+     */
+{{/description}}
+{{#isPrimitiveType}}
+{{#isDate}}@Type(() => Date){{/isDate}}{{#isDateTime}}@Type(() => Date){{/isDateTime}}
+    {{name}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}} {{{datatype}}} {{/isEnum}};
+{{/isPrimitiveType}}
+{{^isPrimitiveType}}
+    {{#isListContainer}}@Type(() => {{complexType}}Base){{/isListContainer}}
+    {{name}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}} {{{complexType}}}Base{{#isListContainer}}[]{{/isListContainer}} {{/isEnum}};
+{{/isPrimitiveType}}
+
+{{/vars}}
+}
+{{/model}}
+{{/models}}

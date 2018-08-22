@@ -1,0 +1,146 @@
+<div class="container">
+    <div class="ui-g-12" style="margin-top: 1em;">
+        <a class="link-label" routerLink=".." routerLinkActive="active">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{'shared.back.button' | translate}}
+        </a>
+        <p class="beneficiaryTitle">{{ 'myRegistration.editingMode' | translate }}</p>
+        <!--<p>In this page you can edit the company information, contact details and geographical scope of your supplier. The contact e-mail address cannot be edited as it is realated to the EU Login account.</p>-->
+    </div>
+    <i *ngIf="!supplier" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+    <form *ngIf="supplier" #editProfileForm="ngForm">
+        <div class="ui-g-12">
+            <hr class="genericHr" />
+            <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'suppPortal.companyInformation' | translate }}</p>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="name">{{ 'suppRegistration.company.name' | translate }}</label><br>
+                <input id="name" type="text" name="name" class="form-control"
+                       [(ngModel)]="supplier.name" (ngModelChange)="enableButton($event)" required>
+            </div>
+            <br>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="address">{{ 'suppRegistration.legal.address' | translate }}</label><br>
+                <input id="address" type="text" name="address" class="form-control"
+                       [(ngModel)]="supplier.address" (ngModelChange)="enableButton($event)" required>
+            </div>
+            <br>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="vat">{{ 'suppRegistration.vat.label' | translate }}</label><br>
+                <input id="vat" type="text" name="vat" class="form-control"
+                       [(ngModel)]="supplier.vat" (ngModelChange)="enableButton($event)" required>
+            </div>
+            <br>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="website">{{ 'suppRegistration.company.web' | translate }}</label><br>
+                <input id="website" type="text" name="website" class="form-control"
+                       [(ngModel)]="supplier.website"  (ngModelChange)="enableButton($event)">
+            </div>
+            <br>
+            <div class="form-group ui-g-12">
+                <label for="logo">{{ 'suppRegistration.company.logo' | translate }}</label><br>
+                <label *ngIf="!isLogoUploaded" id="logo" for="logoInput" class="uploadLogoLabel">
+                    <i class="fa fa-upload" style="margin-right: 1em;"></i> {{ 'suppPortal.editProfile.uploadLogo' | translate }}
+                    <input #logoInput id="logoInput" name="logoInput" type="file"
+                           (change)="changeLogo($event)" accept="image/png,image/jpeg"
+                           style="visibility:hidden;height: 0;width: 0;padding: 0;margin: 0;">
+                </label>
+                <label *ngIf="isLogoUploaded" id="logo" for="logoInput" class="uploadLogoLabel">
+                    <img [src]="supplier.logo" style="max-width: 25em;max-height: 25em;border: 1px solid #d7d7d7;padding: 0;">
+                    <span style="margin-left: 1.5em;">
+                        <i class="fa fa-upload" style="margin-right: 1em;"></i> {{ 'suppPortal.editProfile.changeLogo' | translate }}
+                        <input #logoInput id="logoInput" name="logoInput" type="file"
+                               (change)="changeLogo($event)" accept="image/png,image/jpeg"
+                               style="visibility:hidden;height: 0;width: 0;padding: 0;margin: 0;">
+                    </span>
+                </label>
+            </div>
+        </div>
+
+
+        <div class="ui-g-12">
+            <hr class="genericHr" />
+            <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
+            <div *ngFor="let user of supplier.users; let i = index">
+
+                <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12"> 
+                    <b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>
+                    <span class="btn redButton right" (click)="deactivateShowModal(i)" *ngIf="!(user.type == -1) && !(userConnected.id == user.id)">{{ 'shared.deactivate.button' | translate}}</span>
+                </div>  
+                <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                    <label>{{ 'shared.name.label' | translate }}</label><br>
+                    <input [id]="'name-'+i" type="text" [name]="'name-'+i" class="form-control"
+                        [(ngModel)]="users[i].name" required  (ngModelChange)="enableButtonUser($event, i)" [disabled]="user.type == -1">
+                </div>
+                <br>
+                <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                    <label>{{ 'shared.surname.label' | translate }}</label><br>
+                    <input [id]="'surname-'+i" type="text" [name]="'surname-'+i" class="form-control"
+                        [(ngModel)]="users[i].surname" required (ngModelChange)="enableButtonUser($event, i)" [disabled]="user.type == -1">
+                </div>
+                <br>
+                <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
+                    <label>{{ 'suppRegistration.phone.number' | translate }}</label><br>
+                    <input [id]="'phone-prefix-'+i" type="text" [name]="'phone-prefix-'+i" class="form-control ui-g-2 ui-sm-4"
+                        style="margin-right: 1em;" [(ngModel)]="users[i].phone_prefix" (ngModelChange)="enableButtonUser($event, i)" required [disabled]="user.type == -1">
+                    <input [id]="'phone-number-'+i" type="text" [name]="'phone-number-'+i" class="form-control ui-g-3 ui-sm-7"
+                        [(ngModel)]="users[i].phone_number" required (ngModelChange)="enableButtonUser($event, i)" [disabled]="user.type == -1">
+                    <br>
+                    <label class="ui-g-2 ui-sm-4" style="font-size: 70%;color: #8f8f8f;">
+                        {{ 'suppRegistration.prefix.number' | translate }}
+                    </label>
+                </div>
+            </div>
+        </div>
+  
+        <div class="ui-g-12" *ngIf="geographicalScopeLoaded">
+            <hr class="genericHr" />
+            <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'suppRegistration.entity.support' | translate }}</p>
+            <div class="form-group ui-g-12">
+                <div>
+                    <div class="ui-g-4 ui-lg-4 ui-md-12 ui-sm-12">
+                        <label>
+                            {{ 'suppRegistration.registration.selectCountry' | translate }}
+                        </label>
+                        <br>
+                        <p-multiSelect id="selectCountry" #selectCountry name="selectCountry"
+                                       defaultLabel="{{ 'shared.choose.label' | translate }}"
+                                       [options]="countryOptions" [(ngModel)]="selectedCountries"
+                                       (onChange)="checkRegions($event)">
+                        </p-multiSelect>
+                    </div>
+                    <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
+                        <label>
+                            {{ 'suppRegistration.registration.chooseAreas' | translate }}
+                        </label>
+                        <br>
+                        <p-tabView>
+                            <p-tabPanel *ngFor="let country of selectedCountries; let i = index"
+                                        header="{{country.label | slice:0:1 | uppercase }}{{country.label | slice:1:country.label.length | lowercase }}">
+                                <p-multiSelect id="{{'selectRegion'+i}}" #selectRegion name="{{'selectRegion'+i}}"
+                                               defaultLabel="{{ 'shared.choose.label' | translate }}"
+                                               [options]="regionOptions[country.label]" [(ngModel)]="selectedRegions[country.label]"
+                                               (onChange)="checkRegions($event)">
+                                </p-multiSelect>
+                            </p-tabPanel>
+                        </p-tabView>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <i *ngIf="!geographicalScopeLoaded" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+        <div class="ui-g-12">
+            <hr class="genericHr" />
+            <div class="form-group" style="text-align: center;">
+                <button type="button" (click)="goBack()"
+                        class="btn btn-primary whiteButton" style="margin-right: 0.5em;">
+                    {{ 'shared.cancel.button' | translate }}
+                </button>
+                <button type="button" (click)="saveSupplierData()" [disabled]="savingData || !buttonEnabled || !buttonRegionsEnabled"
+                        class="btn btn-primary blueButton" style="margin-left: 0.5em;">
+                    {{ 'shared.save' | translate }} <i *ngIf="savingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                </button>
+            </div>
+            <br style="margin-bottom: 2em;">
+        </div>
+    </form>
+</div>
+

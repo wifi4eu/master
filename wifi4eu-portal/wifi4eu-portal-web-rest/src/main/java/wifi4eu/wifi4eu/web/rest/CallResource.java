@@ -10,11 +10,15 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.CallDTO;
+import wifi4eu.wifi4eu.common.dto.model.TimelineDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherManagementDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -41,58 +45,38 @@ public class CallResource {
         return callService.getCallById(callId);
     }
 
-//    @ApiOperation(value = "Create call")
-//    @RequestMapping(method = RequestMethod.POST)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ResponseBody
-//    public ResponseDTO createCall(@RequestBody final CallDTO callDTO, HttpServletResponse response) throws
-// IOException {
-//
-//        //TODO:check DGConn permissions
-//
-//        try {
-//            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-//            if(userDTO.getType() != 5){
-//                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-//            }
-//            _log.info("createCall");
-//            CallDTO resCall = callService.createCall(callDTO);
-//            return new ResponseDTO(true, resCall, null);
-//        }
-//        catch (AccessDeniedException ade){
-//            response.sendError(HttpStatus.NOT_FOUND.value());
-//        }
-//        catch (Exception e) {
-//            if (_log.isErrorEnabled()) {
-//                _log.error("Error on 'createCall' operation.", e);
-//            }
-//            response.sendError(HttpStatus.NOT_FOUND.value());
-//        }
-//        return new ResponseDTO(false, null, null);
-//    }
-//
-//    @ApiOperation(value = "Delete call by specific id")
-//    @RequestMapping(method = RequestMethod.DELETE)
-//    @ResponseBody
-//    public ResponseDTO deleteCall(@RequestBody final Integer callId, HttpServletResponse response) throws
-// IOException {
-//
-//        //TODO: check DGConn permissions
-//        try {
-//            _log.info("deleteCall: " + callId);
-//            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-//            if(userDTO.getType() != 5){
-//                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-//            }
-//            CallDTO resCall = callService.deleteCall(callId);
-//            return new ResponseDTO(true, resCall, null);
-//        }
-//        catch (AccessDeniedException ade) {
-//            response.sendError(HttpStatus.NOT_FOUND.value());
-//            if (_log.isErrorEnabled()) {
-//                _log.error("Error on 'deleteCall' operation.", e);
-//            }
-//        }
-//        return new ResponseDTO(false, null, null);
-//    }
+    @ApiOperation(value = "Get the current call")
+    @RequestMapping(value = "/current-active", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public CallDTO getCurrentCall() {
+        return callService.getCurrentCall();
+    }
+
+    @ApiOperation(value = "Get the current call")
+    @RequestMapping(value = "/current-active-modified", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public CallDTO getCurrentCallWithoutRelatedObjects() {
+        // clean related Call objects to generate less traffic into apply page
+        CallDTO call = callService.getCurrentCall();
+        call.setTimelines(new ArrayList<TimelineDTO>());
+        call.setVoucherManagements(new ArrayList<VoucherManagementDTO>());
+        return call;
+    }
+
+
+    @ApiOperation(value = "Get if call is closed by specific id or not")
+    @RequestMapping(value = "isCallClosed/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public boolean isCallClosed(@PathVariable("callId") final Integer callId) {
+        return false;
+    }
+
+
+    @ApiOperation(value = "time")
+    @RequestMapping(value = "/time", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Date getTime() {
+        return callService.getTime();
+    }
+
 }

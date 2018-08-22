@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+                     debug="false">
+
+
+    <appender name="CONSOLE_APPENDER" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p | %d [%t] | [%c{1}:%L] - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="FILE_APPENDER" class="org.apache.log4j.RollingFileAppender">
+        <param name="append" value="false"/>
+        <param name="file" value="${catalina.home}/logs/wifi4eu_app.log"/>
+        <!--Taille max pour le fichier de log -->
+        <param name="MaxFileSize" value="10MB"/>
+        <!-- Nombre de fichiers de logs (sauvegardes). -->
+        <param name="MaxBackupIndex" value="10"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%t] %-5p %c{1} - %x - %m%n"/>
+        </layout>
+    </appender>
+
+    <!--<appender name="FILE_APPENDER" class="org.apache.log4j.RollingFileAppender">
+        <param name="file" value="server.log"/>
+        &lt;!&ndash; Taille max pour le fichier de log &ndash;&gt;
+        <param name="MaxFileSize" value="10MB"/>
+        &lt;!&ndash; Nombre de fichiers de logs (sauvegardes). &ndash;&gt;
+        <param name="MaxBackupIndex" value="10"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%t] %-5p %c{1} - %x - %m%n"/>
+        </layout>
+    </appender>-->
+
+
+    <!--<category name="org.apache.commons.digester">
+        <level value="debug"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+    </category>-->
+
+    <logger name="wifi4eu" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <logger name="org.springframework" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+    <root>
+        <level value="info"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="FILE_APPENDER"/>
+    </root>
+
+</log4j:configuration>

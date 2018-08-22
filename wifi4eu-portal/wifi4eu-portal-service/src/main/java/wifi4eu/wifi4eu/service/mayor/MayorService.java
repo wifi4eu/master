@@ -50,7 +50,7 @@ public class MayorService {
     }
 
     @Transactional
-    public MayorDTO createMayor(MayorDTO mayorDTO, HttpServletRequest request) {
+    public MayorDTO saveMayor(MayorDTO mayorDTO, HttpServletRequest request) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         MayorDTO resMayor = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
@@ -64,11 +64,12 @@ public class MayorService {
     }
 
     @Transactional
-    public MayorDTO updateMayor(MayorDTO mayorDetails, String name, String surname) {
+    public MayorDTO updateMayor(MayorDTO mayorDetails, String name, String surname, String email) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         mayorDetails.setName(name);
         mayorDetails.setSurname(surname);
+        mayorDetails.setEmail(email);
 
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Mayor updated");
         return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDetails)));

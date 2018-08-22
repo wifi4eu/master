@@ -4,8 +4,9 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { SharedService } from "../../../shared/shared.service";
 import { SupplierApi } from "../../../shared/swagger/api/SupplierApi";
 import { SupplierDTOBase } from "../../../shared/swagger/model/SupplierDTO";
-import { ResponseDTOBase } from "../../../shared/swagger/model/ResponseDTO";
+import { ResponseDTOBase, ResponseDTO } from "../../../shared/swagger/model/ResponseDTO";
 import { animate, style, transition, trigger } from "@angular/animations";
+import { Subject } from "rxjs";
 
 @Component({
     templateUrl: 'supplier-registrations-details.component.html',
@@ -34,24 +35,25 @@ export class DgConnSupplierRegistrationsDetailsComponent {
     private selectedIndex: number = null;
     private processingRequest: boolean = false;
     private loadingData: boolean = false;
+    private findSimilarSupplier;
+
+    private page = 0;
+    private itemsPerPageSelector = [10,20,50];
+    private pageSize = this.itemsPerPageSelector[0];
+    private totalRecords = 0;
+    private supplierId;    
 
     constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private sharedService: SharedService, private supplierApi: SupplierApi) {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
                 let supplierId = params['id'];
+                this.supplierId = supplierId;
                 this.supplierApi.getSupplierById(supplierId).subscribe(
                     (supplier: SupplierDTOBase) => {
                         if (supplier != null) {
-                            this.supplierApi.findSimilarSuppliers(supplierId).subscribe(
-                                (suppliers: SupplierDTOBase[]) => {
-                                    if (suppliers.length != 0) {
-                                        this.similarSuppliers = suppliers;
-                                    }
-                                    this.supplier = supplier;
-                                    this.loadingData = false;
-                                }
-                            );
+                            this.loadSimilarSuppliers();
+                            this.supplier = supplier;
                         } else {
                             this.loadingData = false;
                         }
@@ -59,6 +61,29 @@ export class DgConnSupplierRegistrationsDetailsComponent {
                 );
             }
         );
+    }
+
+    private paginateSimilarSuppliers(event){
+      this.page = event.page;
+      this.pageSize = event.rows;
+      this.loadSimilarSuppliers();
+    }
+
+    private loadSimilarSuppliers(){
+      if(this.findSimilarSupplier != null && this.findSimilarSupplier['destination']['closed'] === false){
+        this.findSimilarSupplier.unsubscribe();
+      }
+      
+      this.findSimilarSupplier = this.supplierApi.findSimilarSuppliersPaged(this.supplierId, this.page, this.pageSize).subscribe(
+        (response: ResponseDTO) => {
+            var suppliers = response.data;
+            this.totalRecords = response.xtotalCount;
+            if (suppliers.length != 0) {
+                this.similarSuppliers = suppliers;
+            }            
+            this.loadingData = false;
+        }
+      );
     }
 
     private getLegalFileUrl(mainSupplier: boolean, fileNumber: number, index?: number) {

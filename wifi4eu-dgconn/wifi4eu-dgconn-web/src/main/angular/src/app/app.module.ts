@@ -26,6 +26,7 @@ import {ChartsModule} from "ng2-charts";
 import {AppGuard} from "./app.guard";
 //import {ListSuppliersComponent} from './list-suppliers/list-suppliers.component';
 import {DataGridModule, PaginatorModule} from "primeng/primeng";
+import {CookieService} from 'ngx-cookie-service';
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -76,7 +77,9 @@ export function translateFactory(http: Http) {
         CoreService,
         AppGuard,
         SharedService,
-        {provide: RequestOptions, useClass: CustomRequestOptions}
+        {provide: RequestOptions, useClass: CustomRequestOptions},
+        SharedService,
+        CookieService
     ],
     bootstrap: [AppComponent]
 })

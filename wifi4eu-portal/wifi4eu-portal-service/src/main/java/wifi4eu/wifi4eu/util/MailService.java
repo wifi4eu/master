@@ -14,6 +14,8 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.EncrypterService;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.annotation.PostConstruct;
@@ -34,6 +36,7 @@ import java.nio.charset.StandardCharsets;
 public class MailService {
 
     public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
+    public final static String NO_ACTION = "NO ACTION LOGGED";
 
     @Value("${mail.serv.enable}")
     private boolean enableMail;
@@ -48,6 +51,9 @@ public class MailService {
     private JavaMailSender mailSender;
 
     @Autowired
+    private LogEmailRepository logEmailRepository;
+
+    @Autowired
     private UserService userService;
 
     private final Logger _log = LogManager.getLogger(MailService.class);
@@ -58,12 +64,16 @@ public class MailService {
     @PostConstruct
     public void init() throws Exception{
         if(mailSender != null){
-            String dPassword = encrypterService.decrypt(passwordEncrypted.getBytes(StandardCharsets.UTF_8));
+        	String dPassword = encrypterService.getDecodedValue(passwordEncrypted);
             ((JavaMailSenderImpl) mailSender).setPassword(dPassword);
         }
     }
 
     public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
+        sendEmail(toAddress, fromAddress, subject, msgBody, 0, NO_ACTION);
+    }
+
+    public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
@@ -90,6 +100,9 @@ public class MailService {
                 helper.setTo(toAddress);
                 helper.setFrom(fromAddress);
                 mailSender.send(message);
+
+                //-- Log email
+                logEmail(toAddress, fromAddress, subject, msgBody, municipalityId, action);
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + toAddress);
             } catch (Exception ex) {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex);
@@ -98,10 +111,25 @@ public class MailService {
     }
 
     public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody) {
+        sendEmailAsync(toAddress, fromAddress, subject, msgBody, 0, NO_ACTION);
+    }
+
+    public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
         if (enableMail) {
-            MailAsyncService asyncService = new MailAsyncService(toAddress, fromAddress, subject, msgBody, this.mailSender);
+            MailAsyncService asyncService = new MailAsyncService(toAddress, fromAddress, subject, msgBody, this.mailSender, municipalityId, action);
             Thread thread = new Thread(asyncService);
             thread.start();
+        }
+    }
+
+    private void logEmail(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) throws Exception {
+        if (toAddress != null && toAddress.length() > 0 && municipalityId > 0) {
+            String setAction = NO_ACTION;
+            if (action != null && action.length() > 0) {
+                setAction = action;
+            }
+            LogEmail logEmail = new LogEmail(toAddress, fromAddress, subject, msgBody, municipalityId, setAction);
+            logEmailRepository.save(logEmail);
         }
     }
 }

@@ -52,6 +52,10 @@ public class RegistrationWarningService {
         return responseDTO;
     }
 
+    public void deleteWarningFromRegistration(List<RegistrationWarningDTO> warningsDTO){
+        registrationWarningRepository.delete(registrationWarningMapper.toEntityList(warningsDTO));
+    }
+
     public void createWarningsForAllRegistrations() {
         List<ApplicationIssueUtil> applicationIssueUtilList = applicationIssueUtilRepository.findAllApplicationIssueUtil();
         List<RegistrationWarning> toSaveList = new ArrayList<>();

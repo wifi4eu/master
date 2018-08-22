@@ -5,17 +5,30 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
+import wifi4eu.wifi4eu.mapper.municipality.MunicipalityCorrespondenceMapper;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
+import wifi4eu.wifi4eu.repository.call.CallRepository;
+import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -42,9 +55,30 @@ public class MunicipalityService {
     MayorService mayorService;
 
     @Autowired
+    RegistrationWarningService registrationWarningService;
+
+    @Autowired
     MunicipalityService municipalityService;
 
+    @Autowired
+    LogEmailRepository logEmailRepository;
+
+    @Autowired
+    MunicipalityCorrespondenceMapper municipalityCorrespondenceMapper;
+
+    @Autowired
+    InvitationContactRepository invitationContactRepository;
+
     private final Logger _log = LogManager.getLogger(MayorService.class);
+
+    @Autowired
+    PermissionChecker permissionChecker;
+
+    @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    CallRepository callRepository;
 
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
@@ -54,8 +88,50 @@ public class MunicipalityService {
         return municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
     }
 
+    /**
+     * This service is used only on the beneficiary-portal/installations page.
+     * We need to allow only to return the municipalities that the user is associated with.
+     *
+     * @param municipalityId
+     * @return
+     */
+    public ResponseDTO getUsersMunicipalityById(Integer municipalityId) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from municipality with id " +municipalityId);
+        ResponseDTO response = new ResponseDTO();
+        MunicipalityDTO municipality = getMunicipalityById(municipalityId);
+        if (checkPermissions(municipalityId)) {
+            response.setSuccess(true);
+            response.setData(municipality);
+        } else {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to access");
+            return permissionChecker.getAccessDeniedResponse();
+        }
+        return response;
+    }
+
+    public boolean checkPermissions(int idMunicipality) throws AccessDeniedException {
+        try {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+
+            //we check that this user has a relation to this installation site's municipality
+            RegistrationDTO registrationDTO = registrationService.getRegistrationByUserAndMunicipality(userDTO.getId(), idMunicipality);
+            if (registrationDTO == null) {
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+
+            //then we check if user logged in is a beneficiary and has permissions to access this municipality and registration
+            permissionChecker.checkBeneficiaryPermission(userDTO.getType(), idMunicipality, registrationDTO.getId());
+
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     @Transactional
-    public MunicipalityDTO createMunicipality(MunicipalityDTO municipalityDTO) {
+    public MunicipalityDTO saveMunicipality(MunicipalityDTO municipalityDTO) {
         return municipalityMapper.toDTO(municipalityRepository.save(municipalityMapper.toEntity(municipalityDTO)));
     }
 
@@ -68,6 +144,34 @@ public class MunicipalityService {
         municipalitySave.setPostalCode(municipalityDTO.getPostalCode());
 
         return municipalityMapper.toDTO(municipalityRepository.save(municipalityMapper.toEntity(municipalitySave)));
+    }
+
+    @Transactional
+    public long countMunicipalitiesByUserId(long idUser){
+        return municipalityRepository.countMunicipalitiesByUserId(idUser);
+    }
+
+    @Transactional
+    public boolean deleteMunicipalityById(int id){
+        if (municipalityRepository.findOne(id) != null){
+            municipalityRepository.delete(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean isMunicipalityEditable(int municipalityId){
+        Integer firstQuery = municipalityRepository.checkMunicipalityEditPermission(municipalityId);
+        if (firstQuery > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public void deleteInvitationsByRegistrationId(Integer registrationId){
+        invitationContactRepository.delete(invitationContactRepository.findByIdRegistration(registrationId));
     }
 
     @Transactional
@@ -85,6 +189,12 @@ public class MunicipalityService {
             }
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
             if (registration != null) {
+                deleteInvitationsByRegistrationId(registration.getId());
+                registrationUsersRepository.delete(registrationUsersRepository.findByRegistrationId(registration.getId()));
+                List<RegistrationWarningDTO> registrationWarningDTOs = registrationWarningService.getWarningsByRegistrationId(registration.getId());
+                if(registrationWarningDTOs.size() > 0){
+                    registrationWarningService.deleteWarningFromRegistration(registrationWarningDTOs);
+                }
                 for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registration.getId())) {
                     applicationService.deleteApplication(application.getId(), request);
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Application from this municipality removed");
@@ -109,7 +219,10 @@ public class MunicipalityService {
         List<MunicipalityDTO> municipalities = new ArrayList<>();
         List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userId);
         for (RegistrationDTO registration : registrations) {
-            municipalities.add(getMunicipalityById(registration.getMunicipalityId()));
+            MunicipalityDTO mun = getMunicipalityById(registration.getMunicipalityId());
+            if(mun != null) {
+                municipalities.add(mun);
+            }
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality with id " + registration.getMunicipalityId() + " added to the list");
         }
         return municipalities;
@@ -140,5 +253,11 @@ public class MunicipalityService {
             country = "%";
         }
         return municipalityRepository.countDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name);
+    }
+
+    public ResponseDTO getCorrespondenceByMunicipalityId(Integer municipalityId, Pageable pageable) {
+        Page<LogEmail> page = logEmailRepository.findAllByMunicipalityId(municipalityId, pageable);
+        List<LogEmailDTO> correspondanceDTOS = municipalityCorrespondenceMapper.toDTOList(page.getContent());
+        return new ResponseDTO(true, correspondanceDTOS, page.getTotalElements(), null);
     }
 }
