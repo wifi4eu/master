@@ -23,16 +23,19 @@ import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-langua
 import { UserDetailsService } from "../../core/services/user-details.service";
 import { elementAt } from "../../../../node_modules/rxjs/operator/elementAt";
 import { CookieService } from "ngx-cookie-service";
+import { UserContactDetailsBase } from "../../shared/swagger";
 
 @Component({
     selector: 'beneficiary-profile',
     templateUrl: 'profile.component.html',
+    styleUrls: ['profile.component.scss'],
     providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi, BeneficiaryApi]
 })
 
 export class BeneficiaryProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
     // private users: UserDTOBase[] = [];
+    private userMain;
     private users = {};
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
@@ -69,6 +72,7 @@ export class BeneficiaryProfileComponent {
     private withdrawingRegistrationConfirmation: boolean = false;
     private registrations: RegistrationDTOBase[] = [];
     private nameCookieApply: string = "hasRequested";
+    private isOrganisation: boolean = false;
     private withdrawAble: boolean = false;
 
     constructor(private cookieService: CookieService, private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
@@ -87,6 +91,9 @@ export class BeneficiaryProfileComponent {
                                     for (let registration of registrations) {
                                         if (registration.municipalityId == 0){
                                             continue;
+                                        }
+                                        if (!this.isOrganisation && registration.organisationId > 0){
+                                            this.isOrganisation = true;
                                         }
                                         this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                                         this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
@@ -114,9 +121,17 @@ export class BeneficiaryProfileComponent {
                                             }
                                         );
                                         this.userApi.getUsersFromRegistration(registration.id).subscribe(
+                                            (users: UserContactDetailsBase[]) => {
+                                                this.users[registration.municipalityId] = users;
+                                                this.userMain = users.find(x => x.main === 1);
+                                                console.log(this.userMain);
+                                            }
+                                            // work here!
+                                            /*
                                             (users: UserDTOBase[]) => {
                                                 this.users[registration.municipalityId] = users;
                                             }
+                                            */
                                         );
                                     }
                                 }
@@ -178,7 +193,7 @@ export class BeneficiaryProfileComponent {
                 this.withdrawAble = hasApplied;
             }, error =>{
                 console.log(error);
-                
+
             }
         );
     }
@@ -284,11 +299,11 @@ export class BeneficiaryProfileComponent {
       return false;
     }
 
-    private deleteRegistration() {        
+    private deleteRegistration() {
         this.withdrawingRegistrationConfirmation = false;
         var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
         if(appliedExist){
-          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.withdraw.existingApplication.error', 'warn');  
+          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.withdraw.existingApplication.error', 'warn');
           return;
         }
         if (!this.withdrawingRegistration && !this.withdrawnSuccess) {

@@ -82,9 +82,9 @@ public class Application {
     @Column(name = "date_counter_signature")
     private Date dateCounterSignature;
 
-//    @Column(name = "sent_email")
-//    private boolean sentEmail;
-//
+    @Column(name = "sent_email")
+    private boolean sentEmail;
+
 //    @Column(name = "sent_email_date")
 //    private Date sentEmailDate;
 
@@ -115,7 +115,7 @@ public class Application {
         this.authorizedPerson = authorizedPerson;
         this.dateSignature = dateSignature;
         this.dateCounterSignature = dateCounterSignature;
-//        this.sentEmail = sentEmail;
+        this.sentEmail = sentEmail;
 //        this.sentEmailDate = sentEmailDate;
     }
 
@@ -298,15 +298,15 @@ public class Application {
     public void setDateCounterSignature(Date dateCounterSignature) {
         this.dateCounterSignature = dateCounterSignature;
     }
-//
-//    public boolean isSentEmail() {
-//        return sentEmail;
-//    }
-//
-//    public void setSentEmail(boolean sentEmail) {
-//        this.sentEmail = sentEmail;
-//    }
-//
+
+    public boolean isSentEmail() {
+        return sentEmail;
+    }
+
+    public void setSentEmail(boolean sentEmail) {
+        this.sentEmail = sentEmail;
+    }
+
 //    public Date getSentEmailDate() {
 //        return sentEmailDate;
 //    }
