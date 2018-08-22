@@ -265,7 +265,7 @@ public class RegistrationService {
                     legalFile.setId(0);
                     legalFile.setRegistration(registrationID);
                     legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
-                    legalFile.setUploadTime(new Date());
+                    legalFile.setUploadTime(new Date().getTime());
                     legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
                     legalFile.setFileSize(byteArray.length);
                     legalFile.setUserId(userConnected.getId());
@@ -278,7 +278,6 @@ public class RegistrationService {
                     for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
                         legalFileCorrectionReason.setCorrectionReason(null);
                         legalFileCorrectionReason.setRequestCorrection(false);
-                        legalFileCorrectionReason.setRequestCorrectionDate(null);
                     }
 
                     legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);

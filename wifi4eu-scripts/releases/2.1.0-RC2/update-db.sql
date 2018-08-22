@@ -152,3 +152,21 @@ create table invitation_contacts(
 );
 
 ALTER TABLE application_comment ALTER COLUMN [comment] NVARCHAR(256) NOT NULL;
+
+
+--WIFIFOREU-2939 because of time zones problems we are changing date field to long
+ --New temporary columns
+ alter table legal_files ADD upload_time2 bigint NULL;
+ alter table legal_files_correction_reason ADD request_correction_date2 bigint NULL;
+
+--updating dates to long
+ update legal_files set upload_time2 = DATEDIFF(second, '1970-01-01 00:00:00', upload_time) * 1000
+ update legal_files_correction_reason set request_correction_date2 = DATEDIFF(second, '1970-01-01 00:00:00', request_correction_date) * 1000
+
+ --drop old columns with the wrong type
+ALTER TABLE legal_files DROP COLUMN upload_time;
+ALTER TABLE legal_files_correction_reason DROP COLUMN request_correction_date;
+
+--renaming temp column to the old ones
+ EXEC sp_RENAME 'legal_files.upload_time2' , 'upload_time', 'COLUMN'
+ EXEC sp_RENAME 'legal_files_correction_reason.request_correction_date2' , 'request_correction_date', 'COLUMN'
