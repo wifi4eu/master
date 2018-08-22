@@ -150,3 +150,5 @@ create table invitation_contacts(
        ON DELETE CASCADE
        ON UPDATE CASCADE
 );
+
+ALTER TABLE application_comment ALTER COLUMN [comment] NVARCHAR(256) NOT NULL;
