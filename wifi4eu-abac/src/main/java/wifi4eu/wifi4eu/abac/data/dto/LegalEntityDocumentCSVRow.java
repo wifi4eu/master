@@ -13,6 +13,7 @@ public class LegalEntityDocumentCSVRow {
 	private String documentMimeType;
 	private Date documentDate;
 	private DocumentType documentType;
+	private String aresReference;
 
 	public Long getMunicipalityPortalId() {
 		return municipalityPortalId;
@@ -68,5 +69,13 @@ public class LegalEntityDocumentCSVRow {
 
 	public void setDocumentType(DocumentType documentType) {
 		this.documentType = documentType;
+	}
+
+	public String getAresReference() {
+		return aresReference;
+	}
+
+	public void setAresReference(String aresReference) {
+		this.aresReference = aresReference;
 	}
 }

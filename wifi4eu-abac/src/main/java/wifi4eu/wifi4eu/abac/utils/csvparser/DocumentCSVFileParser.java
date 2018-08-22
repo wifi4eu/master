@@ -45,6 +45,7 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 			documentCSVRow.setDocumentMimeType(csvRecord.get(LegalEntityDocumentImportCSVColumn.DOCUMENT_MIMETYPE));
 			documentCSVRow.setDocumentDate(DateTimeUtils.parseDate(csvRecord.get(LegalEntityDocumentImportCSVColumn.DOCUMENT_DATE), PORTAL_CSV_DATE_FORMAT));
 			documentCSVRow.setDocumentType(DocumentType.valueOf(csvRecord.get(LegalEntityDocumentImportCSVColumn.DOCUMENT_TYPE)));
+			documentCSVRow.setAresReference(csvRecord.get(LegalEntityDocumentImportCSVColumn.ARES_REFERENCE));
 			documents.add(documentCSVRow);
 		}
 		return documents;

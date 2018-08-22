@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.integration.abac.AbacIntegrationService;
 import wifi4eu.wifi4eu.abac.service.LegalCommitmentService;
+import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 import wifi4eu.wifi4eu.abac.service.NotificationService;
 
 @Configuration
@@ -28,8 +29,14 @@ public class BatchSchedulerConfig {
     @Autowired
     NotificationService notificationService;
 
+    @Autowired
+    LegalEntityService legalEntityService;
+
     @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
+        //check-update the LE status for ABAC (change from IMPORTED to READY_FOR_ABAC)
+        legalEntityService.checkLegalEntityReadyForAbac();
+        //submit LE to ABAC
 		abacIntegrationService.findAndSendLegalEntitiesReadyToABAC(MAX_RECORDS_CREATE);
     }
 

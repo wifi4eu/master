@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.abac.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,8 +13,11 @@ import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Country;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
+
+import javax.transaction.Transactional;
 
 @Service
 public class LegalEntityService {
@@ -75,5 +79,20 @@ public class LegalEntityService {
 		Long pending = legalEntityRepository.countAllByWfStatusNotInAndBatchRefEquals(finishedStatuses, batchRef);
 
 		return pending.equals(0L);
+	}
+
+	@Transactional
+	public void checkLegalEntityReadyForAbac(){
+		List<LegalEntity> legalEntitiesWaitingForAres = legalEntityRepository.findAllByWfStatusIn(Arrays.asList(AbacWorkflowStatus.IMPORTED, AbacWorkflowStatus.WAITING_FOR_ARES));
+		//check if there is a AREs reference present and is true than the LE is ready to be submitted to ABAC
+		for(LegalEntity legalEntity:legalEntitiesWaitingForAres){
+			if(!legalEntity.getDocumentsStoredInAres(DocumentType.IDENTIFICATION_FORM).isEmpty()){
+				legalEntity.setWfStatus(AbacWorkflowStatus.READY_FOR_ABAC);
+				legalEntityRepository.save(legalEntity);
+			}else{
+                legalEntity.setWfStatus(AbacWorkflowStatus.WAITING_FOR_ARES);
+                legalEntityRepository.save(legalEntity);
+            }
+		}
 	}
 }

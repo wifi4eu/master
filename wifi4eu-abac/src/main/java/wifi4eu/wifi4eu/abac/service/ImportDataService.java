@@ -161,7 +161,7 @@ public class ImportDataService {
 				if(!StringUtils.isEmpty(legalEntity.getAbacFelId())){
 					legalEntity.setWfStatus(AbacWorkflowStatus.ABAC_VALID);
 				}else{
-					legalEntity.setWfStatus(AbacWorkflowStatus.READY_FOR_ABAC);
+					legalEntity.setWfStatus(AbacWorkflowStatus.IMPORTED);
 				}
 				//persist the LegalEntity in the database
 				legalEntityService.saveLegalEntity(legalEntity);

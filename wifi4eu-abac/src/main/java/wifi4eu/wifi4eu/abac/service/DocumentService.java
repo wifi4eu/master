@@ -65,6 +65,7 @@ public class DocumentService {
 		document.setMimetype(documentCSVRow.getDocumentMimeType());
 		document.setPortalDate(documentCSVRow.getDocumentDate());
 		document.setType(documentCSVRow.getDocumentType());
+		document.setAresReference(documentCSVRow.getAresReference());
 
 		LegalEntity legalEntity = legalEntityService.getLegalEntityByMunicipalityPortalId(documentCSVRow.getMunicipalityPortalId());
 		document.setLegalEntity(legalEntity);

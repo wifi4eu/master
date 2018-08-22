@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.abac.data.enums;
 public enum AbacWorkflowStatus {
 	
 	IMPORTED("IMPORTED", "Imported"),
+	WAITING_FOR_ARES("WAITING_FOR_ARES", "Waiting for ARES reference"),
 	READY_FOR_ABAC("READY_FOR_ABAC", "Ready for ABAC"),
 	WAITING_FOR_ABAC("WAITING_FOR_ABAC", "Waiting to be sent to ABAC"),
 	WAITING_APPROVAL("WAITING_APPROVAL", "Waiting for approval"),

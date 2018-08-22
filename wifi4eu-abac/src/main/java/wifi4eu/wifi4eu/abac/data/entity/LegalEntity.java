@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
+import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 
 @Entity
 @Table(name = "WIF_LEGAL_ENTITY")
@@ -258,6 +260,10 @@ public class LegalEntity {
 
 	public void setDocuments(List<Document> documents) {
 		this.documents = documents;
+	}
+
+	public List<Document> getDocumentsStoredInAres(DocumentType type) {
+		return documents.stream().filter(d -> d.getAresReference() != null).collect(Collectors.toList());
 	}
 
 	public List<LegalEntityAbacRequest> getLegalEntityAbacRequests() {
