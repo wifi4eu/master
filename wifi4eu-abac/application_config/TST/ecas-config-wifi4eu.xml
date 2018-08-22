@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <client-config xmlns="https://www.cc.cec/cas/schemas/client-config/ecas/">
-    <configurationId>eu.europa.ec.digit.pdmv5</configurationId>
+    <configurationId>eu.europa.ec.digit.wifi4eu</configurationId>
 
 	<ecasBaseUrl>https://webgate.ec.europa.eu</ecasBaseUrl>
 	<validateUrl>/cas/laxValidate</validateUrl>
     <serverName>webgate.test.ec.europa.eu</serverName>
+    <serverProtocol>https</serverProtocol>
+    <serverPort>80</serverPort>
+    <serverSSLPort>443</serverSSLPort>
 
     <requestingUserDetails>true</requestingUserDetails>
     <applicationServer>weblogic</applicationServer>
+
     <acceptStrengths>
         <strength>STRONG</strength>
     </acceptStrengths>
