@@ -48,31 +48,30 @@
             <br/><br/>
             <p *ngIf="users" class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
                 <div *ngFor="let user of users; let i = index">
-                <p><b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b></p>
-                <div class="ui-g-12 whitePanel">
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.name }}</b></span>
-                    </div>
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'shared.surname.label' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.surname }}</b></span>
-                    </div>
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.phone.number' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.phone_prefix }} {{ user?.phone_number }}</b></span>
-                    </div>
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'shared.email.label' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.email }}</b></span>
+                    <div class="clearfix"></div>
+                    <p class><b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b></p>
+                    <div class="ui-g-12 whitePanel">
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.name }}</b></span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'shared.surname.label' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.surname }}</b></span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.phone.number' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.phone_prefix }} {{ user?.phone_number }}</b></span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'shared.email.label' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.email }}</b></span>
+                        </div>
                     </div>
                 </div>
-                <br><br>
-                <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">   
-                    <p (click)="addNewContactToSupplier()">{{ "benefPortal.beneficary.addMunicipality" | translate}}</p>   
-                </div>
-             </div>   
-            <br/><br/>
+            <div class="form-group ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 contactPersonMargin">   
+                <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToSupplier()">+ {{ "benefPortal.beneficary.addMunicipality" | translate}}</p>   
+            </div>
             <p class="beneficiaryMayor">{{ 'suppRegistration.entity.support' | translate }}</p>
             <div class="ui-g-12 whitePanel" style="padding: 0;">
                 <p-tabView *ngIf="selectedCountriesNames.length > 0" (onChange)="selectCountry($event, tableRegions)">
@@ -166,7 +165,6 @@
 
 <helpdesk-form-component portal="supplier-profile"></helpdesk-form-component>
 
-<!-- new user -->
 <p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <form #addNewUser="ngForm">

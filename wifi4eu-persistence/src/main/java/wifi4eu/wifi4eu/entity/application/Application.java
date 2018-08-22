@@ -85,8 +85,8 @@ public class Application {
     @Column(name = "sent_email")
     private boolean sentEmail;
 
-    @Column(name = "sent_email_date")
-    private Date sentEmailDate;
+//    @Column(name = "sent_email_date")
+//    private Date sentEmailDate;
 
     public Application() {
     }
@@ -116,7 +116,7 @@ public class Application {
         this.dateSignature = dateSignature;
         this.dateCounterSignature = dateCounterSignature;
         this.sentEmail = sentEmail;
-        this.sentEmailDate = sentEmailDate;
+//        this.sentEmailDate = sentEmailDate;
     }
 
     public Integer getId() {
@@ -307,11 +307,11 @@ public class Application {
         this.sentEmail = sentEmail;
     }
 
-    public Date getSentEmailDate() {
-        return sentEmailDate;
-    }
-
-    public void setSentEmailDate(Date sentEmailDate) {
-        this.sentEmailDate = sentEmailDate;
-    }
+//    public Date getSentEmailDate() {
+//        return sentEmailDate;
+//    }
+//
+//    public void setSentEmailDate(Date sentEmailDate) {
+//        this.sentEmailDate = sentEmailDate;
+//    }
 }

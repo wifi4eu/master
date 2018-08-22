@@ -151,6 +151,13 @@ create table invitation_contacts(
        ON UPDATE CASCADE
 );
 
+ALTER TABLE application_comment ALTER COLUMN [comment] NVARCHAR(256) NOT NULL;
+
+-- addContact - to follow the good way to create new contact emails, need to create two extra fields on users table
+ALTER TABLE users ADD country nvarchar(256) NULL;
+ALTER TABLE users ADD city nvarchar(256) NULL;
+
+
 create table admin_actions(
    [id]	INT	NOT NULL IDENTITY,
    [action] varchar(MAX) NOT NULL,
