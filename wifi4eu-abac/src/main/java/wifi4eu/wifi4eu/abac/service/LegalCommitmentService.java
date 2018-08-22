@@ -46,11 +46,13 @@ public class LegalCommitmentService {
 				byte[] countersignedFile = essiService.signDocument(grantAgreement);
 
 				Document counterSignedGrantAgreement = new Document();
+				counterSignedGrantAgreement.setName("countersigned_"+ grantAgreement.getName());
 				counterSignedGrantAgreement.setFileName("countersigned_"+ grantAgreement.getFileName());
-				counterSignedGrantAgreement.setLegalEntity(grantAgreement.getLegalEntity());
+				counterSignedGrantAgreement.setMimetype(grantAgreement.getMimetype());
 				counterSignedGrantAgreement.setType(DocumentType.COUNTERSIGNED_GRANT_AGREEMENT);
 				counterSignedGrantAgreement.setWfStatus(DocumentWorkflowStatus.COUNTERSIGNED);
 				counterSignedGrantAgreement.setData(countersignedFile);
+				counterSignedGrantAgreement.setLegalEntity(grantAgreement.getLegalEntity());
 				documentService.saveDocument(counterSignedGrantAgreement);
 
 				legalCommitment.setGrantAgreementCounterSignatureDate(Calendar.getInstance().getTime());

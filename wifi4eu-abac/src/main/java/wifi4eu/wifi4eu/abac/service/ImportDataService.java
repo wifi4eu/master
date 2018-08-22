@@ -204,7 +204,6 @@ public class ImportDataService {
 			if (document == null) {
 				document = documentService.mapDocumentCSVToEntity(documentCSVRow);
 				document.setData(documentsToBeImported.get(documentCSVRow.getDocumentFileName()).getContent());
-				document.setSize(fileDTO.getSize());
 				documentService.saveDocument(document);
 			} else {
 				//TODO update or ignore?
