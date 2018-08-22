@@ -95,4 +95,8 @@ public class LegalEntityService {
             }
 		}
 	}
+
+	public List<LegalEntity> getAllByBatchRef(String batchRef){
+        return legalEntityRepository.findAllByBatchRefEquals(batchRef);
+    }
 }
