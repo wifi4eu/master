@@ -9,17 +9,24 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import wifi4eu.wifi4eu.apply.committer.ICommitter;
+import wifi4eu.wifi4eu.apply.committer.PageableCommitter;
 import wifi4eu.wifi4eu.apply.localEntity.ApplicationSQLite;
 
 
 @Service
-public class MasterCommitter {
+public class MasterCommitter implements Runnable {
 	
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	@Qualifier(value="pageableCommitter")
-	private ICommitter committer;
+	//@Qualifier(value="pageableCommitter")
+	private PageableCommitter committer;
+	
+	@Override
+	public void run() {
+		this.commit();
+		
+	}
 	
 	public void commit() {
 		this.committer.commit();
@@ -52,6 +59,5 @@ public class MasterCommitter {
 		
 		return listResult;
 	}
-	
-	
+
 }

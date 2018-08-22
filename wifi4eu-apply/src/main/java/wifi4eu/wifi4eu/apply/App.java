@@ -7,11 +7,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.core.env.Environment;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 @SpringBootApplication
+@EnableTransactionManagement
 public class App extends SpringBootServletInitializer implements CommandLineRunner {
 
 	@Autowired
@@ -36,28 +41,13 @@ public class App extends SpringBootServletInitializer implements CommandLineRunn
 			thread.start();
 			
 		} else if (Modes.commit.name().equals(this.mode)) {
-			this.masterCommitter.commit();
+			ScheduledExecutorService schedulerExecutorService = Executors.newSingleThreadScheduledExecutor();
+			schedulerExecutorService.scheduleAtFixedRate(this.masterCommitter, 0, 60, TimeUnit.SECONDS);
 			
 		}
-		
 	}
 
 	public static void main(String[] args) throws IOException {
-
 		SpringApplication.run(App.class, args);
 	}
-
-
-//	@Bean
-//	public DataSource dataSource() {
-//	        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-//	        dataSourceBuilder.driverClassName("org.sqlite.JDBC");
-//	        dataSourceBuilder.url("jdbc:sqlite:journal");
-//	        return dataSourceBuilder.build();   
-//	}
-
 }
-
-
-
-
