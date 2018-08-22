@@ -149,15 +149,47 @@ export class AdditionalInfoComponent {
         }
     }
 
+    private checkMime(signature: any){
+        switch (signature) {
+            case '89504E47':
+                return 'image/png';
+            case '25504446':
+                return 'application/pdf';
+            case 'FFD8FFE0':
+                return 'image/jpeg'
+            default:
+                return 'uknown filetype';
+        }
+    }
+
     private uploadFile(event: any, type: number) {
         if (event.target.files[0]) {
+            let file = event.target.files[0];
+           
+            let blob = file;
+            let hex = blob.type;
             this.reader = new FileReader();
             if (event.target.files[0].size > 1024000) {
                 this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'benefPortal.file.toobig.maxsize', 'warn', { size: '1 MB' });
                 this.cleanFile(type);
                 return;
             }
-            if (event.target.files[0].type == "application/pdf" || event.target.files[0].type == "image/png" || event.target.files[0].type == "image/jpg" || event.target.files[0].type == "image/jpeg") {
+            this.reader.onloadend = function(e){
+                let arr = (new Uint8Array(e.target.result)).subarray(0,4);
+                let header = "";
+                for(let i = 0; i < arr.length; i++){
+                    header += arr[i].toString(16);
+                }
+            };
+            this.reader.readAsArrayBuffer(blob);
+           /*  this.reader.readAsArrayBuffer(blob);
+            let uint = new Uint8Array(this.reader.result);
+            let bytes = [];
+            uint.forEach((byte) => {
+                bytes.push(byte.toString(16));
+            });
+            hex = bytes.join('').toUpperCase(); */
+            if (event.target.files[0].type == "application/pdf"/*  && this.checkMime(hex) == "application/pdf" */ || event.target.files[0].type == "image/png"/*  && this.checkMime(hex) == "image/png" */ || event.target.files[0].type == "image/jpg"  && this.checkMime(hex) == "image/jpeg"  || event.target.files[0].type == "image/jpeg" &&  this.checkMime(hex) == "image/jpeg") {
                 let subscription;
                 this.reader.readAsDataURL(event.target.files[0]);
                 this.cleanFile(type);
@@ -243,7 +275,7 @@ export class AdditionalInfoComponent {
         this.removingFile = type;
     }
 
-    private removeFile(){
+    private removeFile() {
         switch (this.removingFile) {
             case 1:
                 this.document1.nativeElement.value = "";
