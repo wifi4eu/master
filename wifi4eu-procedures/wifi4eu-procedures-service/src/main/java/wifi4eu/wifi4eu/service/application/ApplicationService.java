@@ -68,7 +68,7 @@ public class ApplicationService {
 
         }
             mailService.sendEmailAsync(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityId, "createApplication");
-            application.setSentEmail(true);
+//            application.setSentEmail(true);
             applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
             _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + application.getId());
     }
