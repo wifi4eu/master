@@ -124,14 +124,16 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
                 this.emailsMatch = true;
             }
         }
-      if (this.municipalitiesSelected && this.emailsMatch) {
+    /*   if (this.municipalitiesSelected && this.emailsMatch) {
             const keys = Object.keys(this.municipalityForm.controls);
             keys.forEach(key => {
                 this.municipalityForm.controls[key].setErrors({'incorrect': true});
                 this.municipalityForm.controls[key].setErrors(null);
             });
-        } 
+        }  */
     }
+
+    
 
     private addMunicipality() {
         if (this.multipleMunicipalities) {
