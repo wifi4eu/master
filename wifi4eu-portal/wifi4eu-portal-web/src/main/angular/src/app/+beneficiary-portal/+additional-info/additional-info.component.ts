@@ -135,6 +135,12 @@ export class AdditionalInfoComponent {
                     type3 = true;
                 }
             }
+            if (this.documentFilesType1.length > 0 && this.legalFilesToUpload.length > 0) {
+                type1 = true;
+            }
+            if (this.documentFilesType3.length > 0 && this.legalFilesToUpload.length > 0) {
+                type3 = true;
+            }
             if (type1 && type3) {
                 this.filesUploaded = true;
             } else {
