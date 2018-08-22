@@ -30,6 +30,9 @@ public class NotificationService {
     @Value("${notifications.default.recipients}")
     private String defaultRecipients;
 
+    @Value("${notifications.default.sender}")
+    private String defaultSender;
+
     @Autowired
     private NotificationRepository notificationRepository;
 
@@ -53,9 +56,9 @@ public class NotificationService {
 
         for(Notification notification:notificationsPending){
             if(legalEntityService.isBatchProcessed(notification.getBatchRef())){
-                log.info("BATCH Processing finished for BatchRef {}", notification.getBatchRef());
+                log.info("LEF BATCH Processing finished for BatchRef {}", notification.getBatchRef());
                 //send email
-                sendEmailNotification(defaultRecipients, "\"BATCH Processing finished for BatchRef - " + notification.getBatchRef(), "Please check the application Monitoring page for more details!");
+                sendEmailNotification(defaultRecipients, "LEF BATCH Processing finished for BatchRef <" + notification.getBatchRef() + ">", "Please check the application Monitoring page for more details!");
 
                 //update notification status
                 notification.setNotificationStatus(NotificationStatus.SENT);
@@ -72,17 +75,20 @@ public class NotificationService {
 
         try {
             Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress("Alexandru.ANDREI@ext.ec.europa.eu", "ANDREI Alexandru"));
-            msg.addRecipient(Message.RecipientType.TO,
-                    new InternetAddress("Alexandru.ANDREI@ext.ec.europa.eu", "ANDREi Alexandru"));
-            msg.setSubject("Your Example.com account has been activated");
-            msg.setText("This is a test");
+            msg.setFrom(new InternetAddress(defaultSender));
+
+            for(String recipient: recipients.split(",")) {
+                msg.addRecipient(Message.RecipientType.TO,
+                        new InternetAddress(recipient));
+            }
+            msg.setSubject(subject);
+            msg.setText(body);
             Transport.send(msg);
         } catch (AddressException e) {
             log.error("ERROR sending email",e);
         } catch (MessagingException e) {
             log.error("ERROR sending email",e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             log.error("ERROR sending email",e);
         }
     }
