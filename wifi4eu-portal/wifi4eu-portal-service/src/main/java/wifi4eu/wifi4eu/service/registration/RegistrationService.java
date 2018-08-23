@@ -25,6 +25,7 @@ import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;import wifi
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.entity.user.User;
+import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
@@ -37,6 +38,7 @@ import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonReposito
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
+import wifi4eu.wifi4eu.repository.user.UserContactDetailsRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -143,6 +145,9 @@ public class RegistrationService {
     @Autowired
     CallService callService;
 
+    @Autowired
+    UserContactDetailsRepository userContactDetailsRepository;
+
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
     }
@@ -227,6 +232,20 @@ public class RegistrationService {
                 }
             }
         }
+        //DUPLICATED CODE, PLEASE WHEN UNCOMMENTING THIS MAKE IT RIGHT
+        // application has a correction request, set sent_email and sent_email_date to null to enable again the dgconn to validate/invalidate application according to new uploaded documents
+//        CallDTO lastCall = callService.getLastCallClosed();
+//        if(lastCall != null) {
+//            Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationID, lastCall.getId());
+//            if(applicationDB != null) {
+//                applicationDB.setSentEmail(false);
+//                applicationDB.setSentEmailDate(null);
+//                applicationRepository.save(applicationDB);
+//                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected
+//                        .getEcasUsername() + " - Changing applicant sent_email and sent_email_date to null, as it has documents requested for " +
+//                        "correction. Dgconn can again validate/invalidate application. Application id: " + applicationDB.getId() + ". Registration id: " + registrationID);
+//            }
+//        }
         return new ResponseDTO(true, "sucess", null);
     }
 
@@ -251,7 +270,7 @@ public class RegistrationService {
                     legalFile.setId(0);
                     legalFile.setRegistration(registrationID);
                     legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
-                    legalFile.setUploadTime(new Date());
+                    legalFile.setUploadTime(new Date().getTime());
                     legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
                     legalFile.setFileSize(byteArray.length);
                     legalFile.setUserId(userConnected.getId());
@@ -259,13 +278,14 @@ public class RegistrationService {
                     _log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
                             "document number type:" + legalFile.getFileType());
 
-                    LegalFileCorrectionReason legalFilesCorrectionReasons = legalFileCorrectionReasonRepository
-                            .findLastCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(), userConnected.getId(), legalFile.getFileType());
-                    if(legalFilesCorrectionReasons != null) {
-                        legalFilesCorrectionReasons.setCorrectionReason(null);
-                        legalFilesCorrectionReasons.setRequestCorrection(false);
-                        legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
+                    List<LegalFileCorrectionReason> legalFilesCorrectionReasons = legalFileCorrectionReasonRepository.findAllCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(),legalFile.getFileType());
+
+                    for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
+                        legalFileCorrectionReason.setCorrectionReason(null);
+                        legalFileCorrectionReason.setRequestCorrection(false);
                     }
+
+                    legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
                 }
             }else{
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file its data is in incorrect format");
@@ -552,6 +572,10 @@ public class RegistrationService {
             return true;
         }
         return false;
+    }
+
+    public List<UserContactDetails> findUsersContactDetailsByRegistrationId(Integer registrationId){
+        return userContactDetailsRepository.findUsersContactDetailsByRegistrationId(registrationId);
     }
 
     public List<UserDTO> getUsersFromRegistration(Integer registrationId){

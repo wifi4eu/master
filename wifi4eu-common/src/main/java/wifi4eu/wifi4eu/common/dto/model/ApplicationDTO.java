@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import java.util.Date;
+
 public class ApplicationDTO {
     private int id;
     private int callId;
@@ -22,11 +24,13 @@ public class ApplicationDTO {
     private Boolean preSelectedFlag;
     private Boolean rejected;
     private Integer authorizedPerson;
+    private boolean sentEmail;
+//    private Date sentEmailDate;
 
     public ApplicationDTO() {
     }
 
-    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson) {
+    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, String cancelReason, Boolean preSelectedFlag, Boolean rejected, Integer authorizedPerson, boolean sentEmail, Date sentEmailDate) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -48,6 +52,8 @@ public class ApplicationDTO {
         this.preSelectedFlag = preSelectedFlag;
         this.rejected = rejected;
         this.authorizedPerson = authorizedPerson;
+        this.sentEmail = sentEmail;
+//        this.sentEmailDate = sentEmailDate;
     }
 
     public int getId() {
@@ -213,4 +219,20 @@ public class ApplicationDTO {
     public void setCancelReason(String cancelReason) {
         this.cancelReason = cancelReason;
     }
+
+    public boolean isSentEmail() {
+        return sentEmail;
+    }
+
+    public void setSentEmail(boolean sentEmail) {
+        this.sentEmail = sentEmail;
+    }
+
+//    public Date getSentEmailDate() {
+//        return sentEmailDate;
+//    }
+//
+//    public void setSentEmailDate(Date sentEmailDate) {
+//        this.sentEmailDate = sentEmailDate;
+//    }
 }

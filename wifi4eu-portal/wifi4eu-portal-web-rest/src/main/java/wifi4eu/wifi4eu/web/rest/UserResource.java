@@ -15,11 +15,12 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
-import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -103,10 +104,9 @@ public class UserResource {
         try {
             //check permission
             permissionChecker.check(RightConstants.USER_TABLE + userId);
-            UserDTO resUser = userService.deleteUser(userId, request);
-            resUser.setPassword(null);
+            ResponseDTO serviceResponse = userService.deleteUser(userId, request);
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
-            return new ResponseDTO(true, resUser, null);
+            return serviceResponse;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to remove this user", ade.getMessage());
             response.sendError(HttpStatus.FORBIDDEN.value());
@@ -128,7 +128,7 @@ public class UserResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging in with ECAS User");
         // get registrationUsers relation pending to be approved for the user logging in
-        userService.saveInvitedUser(userConnected.getEmail(), userConnected);
+        userService.saveInvitedUserModified(userConnected);
         try {
             Cookie cookie = userService.getCSRFCookie();
             if (cookie != null) {
@@ -214,18 +214,26 @@ public class UserResource {
     @ApiOperation(value = "Get all users from registration")
     @RequestMapping (value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserDTO> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId){
+    public List<UserContactDetails> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId){
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
         try {
-            List<UserDTO> users = new ArrayList<>();
-            users = registrationService.getUsersFromRegistration(registrationId);
-            return users;
+            return registrationService.findUsersContactDetailsByRegistrationId(registrationId);
+            // return registrationService.getUsersFromRegistration(registrationId);
         } catch (Exception e){
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
             return null;
         }
     }
+
+    @ApiOperation(value = "Edit method")
+    @RequestMapping (value  = "/edit", method = RequestMethod.PUT, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO editDummy(@RequestBody UserContactDetails userContactDetails){
+        return new ResponseDTO(true,"not implemented", new ErrorDTO());
+    }
+
+
 
 }

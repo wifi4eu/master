@@ -28,4 +28,18 @@ public interface SupplierRepository extends JpaRepository<Supplier,Integer> {
 
     @Query(value = "SELECT * FROM suppliers WHERE id != ?#{[0]} and (vat = (SELECT vat FROM suppliers where id = ?#{[0]}) OR account_number = (SELECT account_number FROM suppliers where id = ?#{[0]}))", nativeQuery = true)
     List<Supplier> findSimilarSuppliers(Integer supplierId);
+
+    @Query(value = "SELECT * FROM suppliers " +
+            "WHERE id != ?#{[0]} " +
+            "and (vat = (SELECT vat FROM suppliers where id = ?#{[0]}) OR account_number = (SELECT account_number FROM suppliers where id = ?#{[0]}))" +
+            "ORDER BY suppliers.id DESC OFFSET ?#{[1]} ROWS FETCH NEXT ?#{[2]} ROWS ONLY",
+            nativeQuery = true)
+    List<Supplier> findSimilarSuppliersPaged(Integer supplierId, Integer offset, Integer size);
+
+    @Query(value = "SELECT count(*) FROM suppliers " +
+            "WHERE id != ?#{[0]} " +
+            "and (vat = (SELECT vat FROM suppliers where id = ?#{[0]}) OR account_number = (SELECT account_number FROM suppliers where id = ?#{[0]}))",
+            nativeQuery = true)
+    Integer countSimilarSuppliersPaged(Integer supplierId);
+
 }

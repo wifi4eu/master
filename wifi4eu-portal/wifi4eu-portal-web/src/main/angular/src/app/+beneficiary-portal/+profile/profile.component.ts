@@ -16,22 +16,33 @@ import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 import { ThreadApi } from "../../shared/swagger/api/ThreadApi";
 import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
+import {UserRegistrationDTOBase} from "../../shared/swagger/model/UserRegistrationDTO";
 
 // Languages functionality
 import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import { UserDetailsService } from "../../core/services/user-details.service";
+import { elementAt } from "../../../../node_modules/rxjs/operator/elementAt";
+import { CookieService } from "ngx-cookie-service";
+import { UserContactDetailsBase } from "../../shared/swagger";
 
 @Component({
     selector: 'beneficiary-profile',
     templateUrl: 'profile.component.html',
+    styleUrls: ['profile.component.scss'],
     providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi, BeneficiaryApi]
 })
 
 export class BeneficiaryProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
-    private users: UserDTOBase[] = [];
+    // private users: UserDTOBase[] = [];
+    private userMain;
+    private users = {};
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
+    private addUser: boolean = false;
+    private addContact: boolean = false;
+    private newUserEmail: string = '';
+    private idMunicipalityNewContactUser: number = 0;
     private editedUser: UserDTOBase = new UserDTOBase();
     private editedMunicipality: MunicipalityDTOBase = new MunicipalityDTOBase();
     private editedMayor: MayorDTOBase = new MayorDTOBase();
@@ -45,22 +56,25 @@ export class BeneficiaryProfileComponent {
     private withdrawingRegistration: boolean = false;
     private withdrawnSuccess: boolean = false;
     private threadId: number;
-    private hasDiscussion: boolean[] = [];
     private discussionThreads: ThreadDTOBase[] = [];
     private allDocumentsUploaded: boolean[] = [];
     private documentUploaded: boolean = false;
-    private oneRegsitration: boolean = false;
     private oneRegistrationNumber: number = 0;
     private userThreads: ThreadDTOBase [] = [];
+    private orderedUserThreads: ThreadDTOBase [] = [];
     private threadsByUser : UserThreadsDTOBase[] = [];
-
+    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
     private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
     protected modalIsOpen: boolean = false;
     protected languageRows: UxLanguage [] [];
     protected languages: UxLanguage [];
+    private withdrawingRegistrationConfirmation: boolean = false;
+    private registrations: RegistrationDTOBase[] = [];
+    private nameCookieApply: string = "hasRequested";
+    private isOrganisation: boolean = false;
 
-    constructor(private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+    constructor(private cookieService: CookieService, private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -72,18 +86,13 @@ export class BeneficiaryProfileComponent {
                             Object.assign(this.editedUser, this.user);
                             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                                 (registrations: RegistrationDTOBase[]) => {
-                                    if (registrations.length == 1) {
-                                        this.oneRegsitration = true;
-                                        this.oneRegistrationNumber = registrations[0].municipalityId;
-                                        if (registrations[0].allFilesFlag == 1) {
-                                            this.documentUploaded = true;
-                                        }
-                                    } else {
-                                        this.oneRegsitration = false;
-                                    }
+                                    this.registrations = registrations;
                                     for (let registration of registrations) {
                                         if (registration.municipalityId == 0){
                                             continue;
+                                        }
+                                        if (!this.isOrganisation && registration.organisationId > 0){
+                                            this.isOrganisation = true;
                                         }
                                         this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                                         this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
@@ -93,14 +102,35 @@ export class BeneficiaryProfileComponent {
                                                     (mayor: MayorDTOBase) => {
                                                         this.municipalities.push(municipality);
                                                         this.mayors.push(mayor);
+                                                        // Order the threads array with the municipalities
+                                                        if(this.municipalities.length == registrations.length) {
+                                                            let indexedThreads = this.userThreads.map(function(element) { return element.title});
+                                                            for(let municipality of this.municipalities) {
+                                                                let exists = indexedThreads.indexOf(municipality.name);
+                                                                if(exists != -1) {
+                                                                    this.orderedUserThreads.push(this.userThreads[exists]);
+                                                                }
+                                                                else {
+                                                                    this.orderedUserThreads.push(null);
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 );
                                             }
                                         );
                                         this.userApi.getUsersFromRegistration(registration.id).subscribe(
-                                            (users: UserDTOBase[]) => {
-                                                    this.users = users;
+                                            (users: UserContactDetailsBase[]) => {
+                                                this.users[registration.municipalityId] = users;
+                                                this.userMain = users.find(x => x.main === 1);
+                                                console.log(this.userMain);
                                             }
+                                            // work here!
+                                            /*
+                                            (users: UserDTOBase[]) => {
+                                                this.users[registration.municipalityId] = users;
+                                            }
+                                            */
                                         );
                                     }
                                 }
@@ -121,15 +151,14 @@ export class BeneficiaryProfileComponent {
                         this.threadApi.getThreadById(utByUser.threadId).subscribe(
                             (thread: ThreadDTOBase) => {
                                 if (thread != null) {
-                                    this.userThreads.push(thread);
                                     this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
                                         (utsByThread: UserThreadsDTOBase[]) => {
                                             this.discussionThreads.push(thread);
                                             if (utsByThread.length > 1) {
+                                                this.userThreads.push(thread);
                                                  for (let i = 0; i < utsByThread.length; ++i) {
                                                     if (utsByThread[i].userId != this.user.id) {
                                                         this.threadsByUser.push(utsByThread[i]);
-                                                        this.hasDiscussion[i] = true;
                                                         
                                                     }
                                                 }
@@ -152,8 +181,15 @@ export class BeneficiaryProfileComponent {
         this.loadLanguages();
     }
 
+    private withdrawRegistration(){
+        this.withdrawingRegistrationConfirmation = true;
+    }
+
     private displayModal(name: string, index?: number) {
         switch (name) {
+            case 'withdraw':
+                this.withdrawingRegistrationConfirmation = true;
+                break;
             case 'user':
                 Object.assign(this.editedUser, this.user);
                 this.displayUser = true;
@@ -241,18 +277,39 @@ export class BeneficiaryProfileComponent {
         this.displayLanguageModal = false;
     }
 
+    private isVoucherApplied(idRegistration:number){
+      if (this.cookieService.check(this.nameCookieApply+"_"+idRegistration)){
+          if (this.cookieService.get(this.nameCookieApply+"_"+idRegistration) == "true"){
+              return true;
+          }
+      }
+      return false;
+    }
+
     private deleteRegistration() {
+        this.withdrawingRegistrationConfirmation = false;
+        var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
+        if(appliedExist){
+          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.withdraw.existingApplication.error', 'warn');
+          return;
+        }
         if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
             this.withdrawingRegistration = true;
             this.userApi.deleteUser(this.user.id).subscribe(
                 (data: ResponseDTOBase) => {
                     if (data.success) {
                         this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
-                        this.sharedService.logout();
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
+                        this.localStorageService.remove('user');
+                        var port = window.location.port ? ':' + window.location.port : '';
+                        window.location.href = window.location.protocol + "//" + window.location.hostname + port+'/wifi4eu/index.html';
                     } else {
-                        this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
+                        if(data.error != null){
+                          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', data.error.errorMessage, 'warn');  
+                        }else{
+                          this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
+                        }
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
                     }
@@ -265,8 +322,11 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-    private goToDiscussion(index) {
+    private checkHasDiscussion(municipality){
+      return this.userThreads.some(userThread => userThread.title === municipality.name);
+    }
 
+    private goToDiscussion(index) {
         for(let i = 0; i < this.userThreads.length; i++){
             if(this.userThreads[i].title == this.municipalities[index].name){
                 this.threadId = this.discussionThreads[i].id;
@@ -275,8 +335,8 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-    private goToUploadDocuments() {
-        this.router.navigate(['../additional-info/', this.oneRegistrationNumber], { relativeTo: this.route });
+    private goToUploadDocuments(idMunicipality) {
+        this.router.navigate(['../additional-info/', idMunicipality], { relativeTo: this.route });
     }
 
     private goToapplyForVOucher() {
@@ -340,6 +400,43 @@ export class BeneficiaryProfileComponent {
     }
 
     private goToEditProfile() {
-            this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
+        this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
+    }
+
+    private addNewContactToMunicipality(municipalityId: number){
+        this.idMunicipalityNewContactUser = municipalityId;
+        this.addUser = true;
+    }
+
+    private closeAddNewContactModal(){
+        this.newUserEmail = '';
+        this.addUser = false;
+    }
+
+    private addNewContact(){
+        if (this.newUserEmail.trim() != '' && this.idMunicipalityNewContactUser != 0){
+            this.addContact = true;
+            this.beneficiaryApi.invitateContactBeneficiary(this.idMunicipalityNewContactUser, this.newUserEmail).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success){
+                        this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+                        this.addContact = false;
+                        this.addUser = false;
+                        this.closeModal();
+                    } else {
+                        this.addContact = false;
+                        this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+                        this.closeModal();
+                    }
+                }, error => {
+                    this.addContact = false;
+                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.closeModal();
+                }
+            );
+            this.newUserEmail = '';
+        } else {
+            this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
         }
+    }
 }

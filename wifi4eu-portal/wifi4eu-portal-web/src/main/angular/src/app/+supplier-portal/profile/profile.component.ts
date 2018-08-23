@@ -37,6 +37,7 @@ export class SupplierProfileComponent {
     private displayLanguageModal: boolean = false;
     private logoUrl: FileReader = new FileReader();
     private logoFile: File;
+    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
     @ViewChild('logoInput') private logoInput: any;
     private regionsToRender: NutsDTOBase[] = [];
@@ -47,6 +48,11 @@ export class SupplierProfileComponent {
     protected languageRows: UxLanguage [] [];
     protected languages: UxLanguage [];
     private users: UserDTOBase[] = [];
+    private withdrawingRegistrationConfirmation: boolean = false;
+
+    private addContact: boolean = false;
+    private newUserEmail: string = '';
+    private addUser: boolean = false;
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private userApi: UserApi) {
         let storedUser = this.localStorageService.get('user');
@@ -90,6 +96,9 @@ export class SupplierProfileComponent {
 
     private displayModal(name: string) {
         switch (name) {
+            case 'withdraw':
+                this.withdrawingRegistrationConfirmation = true;
+                break;
             case 'contact':
                 this.displayContact = true;
                 break;
@@ -214,15 +223,17 @@ export class SupplierProfileComponent {
     }
 
     private withdrawRegistration() {
+        this.withdrawingRegistrationConfirmation = false;
         if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
             this.withdrawingRegistration = true;
             this.userApi.deleteUser(this.user.id).subscribe(
                 (data: ResponseDTOBase) => {
                     if (data.success) {
                         this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
-                        this.sharedService.logout();
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
+                        var port = window.location.port ? ':' + window.location.port : '';
+                        window.location.href = window.location.protocol + "//" + window.location.hostname + port+'/wifi4eu/index.html';
                     }
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
@@ -297,14 +308,49 @@ export class SupplierProfileComponent {
         this.deletingLogo = true;
         this.clearLogoFile();
     }
-        
+
     private closeModal(){
         this.displayContact = false;
         this.displayCompany = false;
         this.deletingLogo = false;
         this.clearLogoFile();
         Object.assign(this.editedSupplier, this.supplier);
-   
+    }
+
+    private closeAddNewContactModal(){
+        this.newUserEmail = '';
+        this.addUser = false;
+    }
+
+    private addNewContactToSupplier(){
+        this.addUser = true;
+    }
+
+    private addNewContact(){
+        if (this.newUserEmail.trim() != '' && this.supplier.id != 0){
+            this.addContact = true;
+            this.supplierApi.invitateContactSupplier(this.supplier.id, this.newUserEmail).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success){
+                        this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+                        this.addContact = false;
+                        this.addUser = false;
+                        this.closeModal();
+                    } else {
+                        this.addContact = false;
+                        this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+                        this.closeModal();
+                    }
+                }, error => {
+                    this.addContact = false;
+                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.closeModal();
+                }
+            );
+            this.newUserEmail = '';
+        } else {
+            this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'supplierPortal.profile.addNewContact.empty', 'error');
         }
+    }
 
 }

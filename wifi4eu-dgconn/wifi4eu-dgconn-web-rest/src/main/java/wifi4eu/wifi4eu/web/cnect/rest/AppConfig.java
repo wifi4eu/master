@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @EnableCaching
 @Configuration
@@ -28,4 +29,13 @@ public class AppConfig {
         return factory;
     }
 
+    @Bean
+    public ThreadPoolTaskExecutor taskExecutor() {
+    	ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
+    	// The pool of threads can be configured here
+		//pool.setCorePoolSize(5);
+		//pool.setMaxPoolSize(10);
+		//pool.setWaitForTasksToCompleteOnShutdown(true);
+		return pool;
+    }
 }

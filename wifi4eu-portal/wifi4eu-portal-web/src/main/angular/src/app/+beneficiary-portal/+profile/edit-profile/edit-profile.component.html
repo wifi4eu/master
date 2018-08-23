@@ -163,6 +163,14 @@
                 </div>
                 <div class="col-sm-2"></div>
             </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <p class="edit" (click)="addNewContactToMunicipality(municipality.id)">{{ 'benefPortal.beneficary.addMunicipality' | translate}}</p>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
             
         </div>
     </div>
@@ -172,7 +180,7 @@
         <div class="col-lg-8">
             <ng-container *ngIf="multipleMunicipalities">
                 <ux-accordion-boxes>
-                    <div *ngFor="let mayor of newMayors; let i = index">
+                    <div *ngFor="let mayor of newMayors; let i = index" id="scrollMunicipality-{{i}}" >
                         <hr class="genericHr" *ngIf="i != 0">
                         <custom-accordion-box [isExpanded]="true" [rightSide]="true">
                             <div class="ui-g">
@@ -326,9 +334,7 @@
             <div class="col-sm-6">
                 <span class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
             </div>
-            <div class="col-sm-4">
-            <p class="edit" (click)="sendMailToUser(i)">{{ 'benefPortal.beneficary.addMunicipality' | translate}}</p>
-            </div>
+            <div class="col-sm-4"></div>
         </div>
         <div class="row">
             <div class="col-sm-2"></div>
@@ -425,7 +431,7 @@
                 {{ 'shared.cancel.button' | translate }}
             </button>
         </div>
-
+        <!-- {{ !municipalitiesSelected }} - {{!emailsMatch}} - {{!profileEditForm.form.valid}} - {{!buttonEnabled}} -->
         <div class="col-sm-6 col-lg-4" style="text-align: center !important">
             <button (click)="editProfile()" class="btn btn-primary publish-button"
                     [disabled]="!municipalitiesSelected || !emailsMatch || !profileEditForm.form.valid || !buttonEnabled">
@@ -467,8 +473,6 @@
     </div>
 </p-dialog>
 
-
-<!-- new user -->
 <p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <form #addNewUser="ngForm">
@@ -490,7 +494,7 @@
     <div class="row marginStep1 landingFirstText form-group ">
         <div class="col-lg-2"></div>
         <div class="col-sm-6 col-lg-4" style="text-align: center !important">
-            <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+            <button type="button" class="btn btn-primary cancel-button" (click)="closeAddNewContactModal()">
                 {{ 'shared.cancel.button' | translate }}
             </button>
         </div>

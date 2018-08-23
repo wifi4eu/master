@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
@@ -339,15 +340,19 @@ public class RegistrationResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId + " and file id " + fileId);
         try {
-            if (registrationId == null || (!legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId) && userConnected.getType() != 5)) {
+
+            // Commented checkPermissions - doubt into validation in DgConn
+            // boolean checkPermissions = legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId);
+            if (Validator.isNull(userConnected) || Validator.isNull(registrationId) || userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+
             permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
 
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
+            return new ResponseDTO(false,null,new ErrorDTO(HttpStatus.NOT_FOUND.value(),HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
 
         LegalFile legalFile = legalFilesRepository.findOne(fileId); //if file doesnt exist user doesnt have permission
@@ -469,4 +474,29 @@ public class RegistrationResource {
         response.setData("Not implemented");
         return response;
     }
+
+    @ApiOperation(value = "Get legal files types with correction request disabled by registration id")
+    @RequestMapping(value = "/getTypesDisabled/{registrationId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO getTypesDisabled(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting legal files types with correction request disabled by registration id "+registrationId);
+        try {
+            if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Legal files retrieved successfully");
+
+            List<Integer> typesWithCorrectionDisabledList = registrationService.findTypeFilesWaitingUploadByRegistration(registrationId);
+            return new ResponseDTO(true, typesWithCorrectionDisabledList, null);
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve these legal files types with correction request", ade.getMessage());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal files types with correction request cannot been retrieved", e);
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+    }
+
 }

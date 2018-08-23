@@ -21,7 +21,7 @@
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
                 <label class="label floatLeft" for="contactName">{{ 'shared.name.label' | translate }}</label>
-                <input class="form-control paddingInput" type="text" id="contactName" name="contactName"
+                <input class="form-control paddingInput" type="text" id="contactName" name="contactName" maxlength="255"
                        [(ngModel)]="supplier.contactName" #contactName="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <!--
                 <div class="alert alert-danger" [hidden]="contactName.valid || contactName.pristine">
@@ -38,7 +38,7 @@
             <div class="form-group">
                 <label class="label floatLeft" for="contactSurname">{{ 'shared.surname.label' | translate
                     }}</label>
-                <input class="form-control paddingInput" type="text"
+                <input class="form-control paddingInput" type="text" maxlength="255"
                        id="contactSurname" name="contactSurname" [(ngModel)]="supplier.contactSurname"
                        #contactSurname="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <!--
@@ -57,7 +57,7 @@
             <div class="form-group">
                 <label class="label floatLeft" for="contactPhonePrefix">{{ 'suppRegistration.prefix.number' | translate
                     }}</label>
-                <input class="form-control paddingInput" type="text"
+                <input class="form-control paddingInput" type="text" maxlength="255"
                        id="contactPhonePrefix" name="contactPhonePrefix" pattern="[0-9]{1,4}"
                        [(ngModel)]="supplier.contactPhonePrefix" #contactPhonePrefix="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <!--
@@ -72,7 +72,7 @@
             <div class="form-group">
                 <label class="label floatLeft" for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate
                     }}</label>
-                <input class="form-control paddingInput" type="text"
+                <input class="form-control paddingInput" type="text" maxlength="255"
                        id="contactPhoneNumber" name="contactPhoneNumber" pattern="[0-9]{1,}"
                        [(ngModel)]="supplier.contactPhoneNumber" #contactPhoneNumber="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <!--
@@ -91,7 +91,7 @@
             <div class="form-group">
                 <label class="label floatLeft" for="contactEmail">{{ 'shared.email.label' | translate
                     }}</label>
-                <input class="form-control paddingInput" type="email" id="contactEmail" name="contactEmail"
+                <input class="form-control paddingInput" type="email" id="contactEmail" maxlength="255" name="contactEmail"
                        [(ngModel)]="supplier.contactEmail" #contactEmail="ngModel"
                        (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
                 <div class="alert alert-danger" [hidden]="contactEmail.valid || contactEmail.pristine">

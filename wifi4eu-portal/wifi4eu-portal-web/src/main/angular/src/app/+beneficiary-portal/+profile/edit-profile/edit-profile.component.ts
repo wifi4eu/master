@@ -31,6 +31,7 @@ import {NgForm} from "@angular/forms";
 import {Observable} from "rxjs/Observable";
 import { TranslateService } from "ng2-translate";
 import { CallDTO, CallDTOBase, OrganizationApi, OrganizationDTOBase } from "../../../shared/swagger";
+import { CookieService } from "ngx-cookie-service";
 
 
 @Component({
@@ -46,6 +47,9 @@ export class BeneficiaryEditProfileComponent {
     private css_class_municipalities: string[] = ['notValid'];
     private css_class_email: string[] = ['notValid'];
     private countries: NutsDTOBase[] = [];
+    private addUser: boolean = false;
+    private addContact: boolean = false;
+    private idMunicipalityNewContactUser: number = 0;
     private country: NutsDTOBase;
     private laus: LauDTOBase[] = [];
     private user: UserDTOBase = new UserDTOBase;
@@ -89,18 +93,18 @@ export class BeneficiaryEditProfileComponent {
     @ViewChild('municipalityForm') municipalityForm: NgForm;
     private organizationId: number = 0;
     private isOrganisation: boolean = false;
-    private addUser: boolean = false;
     private currentCall: CallDTOBase;
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private newUserEmail: string = '';
     private registrationIndex: number = null;
-    private addContact:boolean = false;
     private associationName: String = '';
     private registration: RegistrationDTOBase ;
     private registrationFinish: boolean = false;
     private hasAssociation : boolean = false;
+    private nameCookieApply: string = "hasRequested";
+    private registrations: RegistrationDTOBase[] = [];
 
-    constructor(private callApi: CallApi, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private translateService: TranslateService, private nutsApi: NutsApi, private lauApi: LauApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+    constructor(private cookieService: CookieService, private callApi: CallApi, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private translateService: TranslateService, private nutsApi: NutsApi, private lauApi: LauApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         this.loadDataEditProfile();
     }
 
@@ -147,7 +151,7 @@ export class BeneficiaryEditProfileComponent {
                             Object.assign(this.editedUser, this.user);
                             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                                 (registrations: RegistrationDTOBase[]) => {
-                                    
+                                    this.registrations = registrations;
                                     if (registrations.length == 1) {
                                         this.oneRegsitration = true;
                                         this.oneRegistrationNumber = registrations[0].municipalityId;
@@ -242,11 +246,25 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
+    private isVoucherApplied(idRegistration:number){
+      if (this.cookieService.check(this.nameCookieApply+"_"+idRegistration)){
+          if (this.cookieService.get(this.nameCookieApply+"_"+idRegistration) == "true"){
+              return true;
+          }
+      }
+      return false;
+    }
+
     private checkEditPermissionMunicipality(municipalityId: number){
         this.applicationApi.isMunicipalityEditable(municipalityId).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success){
                     this.isMunicipalityEditable[municipalityId] = response.data;
+                    if(response.data){
+                      //Check if municipality have applied cookie and then disable input fields
+                      var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
+                      this.isMunicipalityEditable[municipalityId] = !appliedExist;
+                    }
                 }
             }
         );
@@ -259,6 +277,11 @@ export class BeneficiaryEditProfileComponent {
             this.emailConfirmations.push('');
             this.css_class_email.push('notValid');
             this.css_class_municipalities.push('notValid');
+            setTimeout(()=>{            
+                let i = this.newMunicipalities.length - 1;
+                var element = document.getElementById("scrollMunicipality-"+i);
+                element.scrollIntoView({behavior: "smooth"});
+            },200);
         }
         this.checkMunicipalitiesSelected();
     }
@@ -308,8 +331,12 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private openModal(idMunicipality: number){
-        this.deleteMunicipalityId = idMunicipality;
-        this.displayDeleteMunicipality = true;
+        if (this.buttonEnabled){
+            this.sharedService.growlTranslation('Error, you can\'t delete a municipality if there are changes to save. Please confirm the changes or cancel them before deleting municipaliies', 'benefPortal.beneficiary.deleteMunicipality.changesNotSaved', 'warn');
+        }else{
+            this.deleteMunicipalityId = idMunicipality;
+            this.displayDeleteMunicipality = true;
+        } 
     }
 
     private deleteMunicipality(){
@@ -408,7 +435,8 @@ export class BeneficiaryEditProfileComponent {
 
     private editProfile() {
         this.submittingData = true;
-  
+        let hasBeenAnError = false;
+
         for(let i = 0; i < this.municipalities.length; i++){
             if (this.isMunicipalityEditable[this.municipalities[i].id]){
                 this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
@@ -417,6 +445,8 @@ export class BeneficiaryEditProfileComponent {
                             this.municipalityFinish = true;
                             this.checkFinishedCalls();
                             this.municipalities[this.currentEditIndex] = response.data;
+                        }else{
+                            hasBeenAnError = true;
                         }
                         this.municipalityFinish = true;
                         this.checkFinishedCalls();
@@ -429,6 +459,8 @@ export class BeneficiaryEditProfileComponent {
                         this.mayorFinish = true;
                         this.checkFinishedCalls();
                         this.mayors[this.currentEditIndex] = response.data;
+                    }else{
+                        hasBeenAnError = true;
                     }
                     this.municipalityFinish = true;
                         this.checkFinishedCalls();                    
@@ -444,31 +476,42 @@ export class BeneficiaryEditProfileComponent {
                     this.userFinish = true;
                     this.checkFinishedCalls();
                     this.user = response.data;
+                }else{
+                    hasBeenAnError = true
                 }
             }
         );
 
         if (this.newMunicipalities.length > 0){
-            alert(this.newMunicipalities.length);
             this.submitNewMunicipalities();
         }
         if(this.registration.associationName != null && this.registration.associationName != ""){
             this.registrationApi.updateAssociationName(this.registration).subscribe(
             (response: ResponseDTOBase) =>{
-                this.registrationFinish = true;
-                this.checkFinishedCalls();
+                if (response.success) {
+                    this.registrationFinish = true;
+                    this.checkFinishedCalls();
+                }else{
+                    hasBeenAnError = true
+                }
             },error =>{
                 console.log(error);
                 this.registrationFinish = true;
                 this.checkFinishedCalls();
+                hasBeenAnError = true
             }
             );
         } else {
             this.registrationFinish = true;
             this.checkFinishedCalls();
         }
-     
-      
+
+        if (hasBeenAnError){
+            this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+        }else{
+            this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success', 'success');
+            this.goBackToProfile();
+        }
     }
 
     private goBackToProfile(){
@@ -497,12 +540,51 @@ export class BeneficiaryEditProfileComponent {
                 } else {
                     this.emailsMatch = true;
                     this.municipalitiesSelected = true;
-
                 }
+            } else {
+                this.emailsMatch = true;
+                this.municipalitiesSelected = true;
             }
-           
         }
     }
+
+    private addNewContactToMunicipality(municipalityId: number){
+        this.idMunicipalityNewContactUser = municipalityId;
+        this.addUser = true;
+    }
+
+    private closeAddNewContactModal(){
+        this.newUserEmail = '';
+        this.addUser = false;
+    }
+
+    private addNewContact(){
+        if (this.newUserEmail.trim() != '' && this.idMunicipalityNewContactUser != 0){
+            this.addContact = true;
+            this.beneficiaryApi.invitateContactBeneficiary(this.idMunicipalityNewContactUser, this.newUserEmail).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success){
+                        this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+                        this.addContact = false;
+                        this.addUser = false;
+                        this.closeModal();
+                    } else {
+                        this.addContact = false;
+                        this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+                        this.closeModal();
+                    }
+                }, error => {
+                    this.addContact = false;
+                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.closeModal();
+                }
+            );
+            this.newUserEmail = '';
+        } else {
+            this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
+        }
+    }
+
 
     private checkButtonEnabledUser(event){
         this.buttonEnabled = false;
@@ -520,34 +602,5 @@ export class BeneficiaryEditProfileComponent {
                 this.municipalitiesSelected = true;
             }
         }
-    }
-
-
-    /* New contact funciontality */
-    private sendMailToUser(i){
-        this.registrationIndex = i;
-        this.addUser = true;
-    }
-
-    private addNewContact(){
-        this.addContact = true;
-        let storedUser = this.localStorageService.get('user');
-        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-
-        let userRegistrationDTO: UserRegistrationDTOBase = new UserRegistrationDTOBase();
-        userRegistrationDTO.email = this.newUserEmail;
-        userRegistrationDTO.municipalityId = this.municipalities[this.registrationIndex].id;
-        this.beneficiaryApi.sendEmailToNewContact(userRegistrationDTO).subscribe(
-            (userRegistration: UserRegistrationDTOBase) => {
-                this.registrationIndex = null;
-                this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
-                this.closeModal();
-            }, error => {
-                this.registrationIndex = null;
-                this.addContact = false;
-                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
-                this.closeModal();
-            }
-        );
     }
 }

@@ -15,16 +15,22 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.InvitationContactStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
+import wifi4eu.wifi4eu.entity.registration.ConditionsAgreement;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
@@ -35,15 +41,19 @@ import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierUserMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.registration.ConditionsAgreementRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
@@ -125,6 +135,18 @@ public class UserService {
     @Autowired
     MunicipalityRepository municipalityRepository;
 
+    @Autowired
+    InvitationContactRepository invitationContactRepository;
+
+    @Autowired
+    ConditionsAgreementRepository conditionsAgreementRepository;
+    
+    @Autowired
+    ApplicationService applicationService;
+
+    @Autowired
+    RightRepository rightRepository;
+
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
     }
@@ -143,6 +165,10 @@ public class UserService {
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
+        if (userDTO.getId() != 0) {
+            _log.warn("Call to a create method with id set, the value has been removed ({})", userDTO.getId());
+            userDTO.setId(0);
+        }
         UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
         if (searchUser != null) {
             userDTO.setPassword(searchUser.getPassword());
@@ -191,89 +217,115 @@ public class UserService {
         return userDTO;
     }
 
-
     @Transactional
-    public void saveInvitedUser(String userEmail, UserDTO userDTO) {
-        List<RegistrationUsers> registrationUsers = registrationUsersRepository.findByContactEmailAndStatus(userEmail, RegistrationUsersStatus.UNREGISTERED.getValue());
+    public void saveInvitedUserModified(UserDTO userDTO){
+        if (userDTO.getType() == 0){
 
-        for (RegistrationUsers resRegistrationUser : registrationUsers) {
-            if ((resRegistrationUser.getCreationDate().toInstant().plus(24, ChronoUnit.HOURS).compareTo(new Date().toInstant()) < 0)) {
-                if (userDTO.getType() == 0) {
-                    userDTO.setType(((Long)Constant.ROLE_REPRESENTATIVE_CONTACT).intValue());
-                    userDTO.setLang(UserConstants.DEFAULT_LANG);
-                    userRepository.save(userMapper.toEntity(userDTO));
+            InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
+            if (Validator.isNotNull(invitationContact)){
+
+                if (invitationContact.getIdRegistration() != null){
+                    userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
+                    createRegistrationUser(userDTO, invitationContact.getIdRegistration());
+
+                }else if (invitationContact.getIdSupplier() != null){
+                    userDTO.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
+                    createSupplierUser(userDTO, invitationContact.getIdSupplier());
+
+                }else{
+                    return; //Mister Tester
                 }
 
-                if (resRegistrationUser.getUserId() == null) {
-                    resRegistrationUser.setUserId(userRepository.findByEcasUsername(userDTO.getEcasUsername()).getId());
-                    registrationUsersRepository.save(resRegistrationUser);
-                    Registration registration = registrationRepository.findOne(resRegistrationUser.getRegistrationId());
-                    Municipality municipality = municipalityRepository.findOne(registration.getMunicipality().getId());
-                    Mayor mayor = mayorRepository.findByMunicipalityId(municipality.getId());
-                    permissionChecker.addTablePermissions(userDTO, Integer.toString(mayor.getId()),
-                            RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipality().getId());
-                    permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getId()),
-                            RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipality().getId());
-                    permissionChecker.addTablePermissions(userDTO, Integer.toString(municipality.getId()),
-                            RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + municipality.getId() + " - Country: " + municipality.getCountry() + " - Lau Id: " + municipality.getLau().getId());
-                }
+                UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
+                userDTO.setLang(userDTOInvitatorDTO.getLang());
+                userRepository.save(userMapper.toEntity(userDTO));
+
+                invitationContact.setStatus(InvitationContactStatus.OK.getValue());
+                invitationContact.setLastModified(new Date());
+                invitationContactRepository.save(invitationContact);
             }
-        }
-
-        List<SupplierUser> supplierUsers = supplierUserRepository.findByEmailAndStatus(userDTO.getEmail(), SupplierUserStatus.NOT_REGISTERED.getStatus());
-        List<SupplierUser> supplierUsersToUpdate = new ArrayList<>();
-        int userId = userRepository.findByEcasUsername(userDTO.getEcasUsername()).getId();
-
-        if (supplierUsers != null && ((userDTO.getType() == 0) || (userDTO.getType() == 1))){
-            for(SupplierUser supplierUser:supplierUsers){
-                if (supplierUser.getUserId() == null){
-                    if (supplierService.createdLessThan24HBefore(supplierUserMapper.toDTO(supplierUser))){
-                        if(userDTO.getType() == 0){
-                            userDTO.setType(((Long)Constant.ROLE_SUPPLIER_CONTACT).intValue());
-                            userDTO.setLang(UserConstants.DEFAULT_LANG);
-                            userRepository.save(userMapper.toEntity(userDTO));
-                        }
-                        supplierUser.setUserId(userId);
-                        supplierUser.setStatus(SupplierUserStatus.ALREADY_REGISTERED.getStatus());
-                        supplierUsersToUpdate.add(supplierUser);
-                    }
-                }
-            }
-            supplierUserRepository.save(supplierUsersToUpdate);
         }
     }
 
+
+    private void createRegistrationUser(UserDTO userDTO, Integer registrationId){
+        RegistrationUsers registrationUsers = new RegistrationUsers();
+        registrationUsers.setContactEmail(userDTO.getEcasEmail());
+        registrationUsers.setCreationDate(new Date());
+        registrationUsers.setMain(0);
+        registrationUsers.setRegistrationId(registrationId);
+        registrationUsers.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
+        registrationUsers.setUserId(userDTO.getId());
+        Registration registration = registrationRepository.findOne(registrationId);
+        Mayor mayor = mayorRepository.findByMunicipalityId(registration.getMunicipality().getId());
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(mayor.getId()),
+                RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipality().getId());
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getId()),
+                RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipality().getId());
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getMunicipality().getId()),
+                RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + registration.getMunicipality().getId() + " - Country: " + registration.getMunicipality().getCountry() + " - Lau Id: " + registration.getMunicipality().getLau().getId());
+        registrationUsersRepository.save(registrationUsers);
+    }
+
+    private void createSupplierUser(UserDTO userDTO, Integer supplierId){
+        SupplierUser supplierUser = new SupplierUser();
+        supplierUser.setEmail(userDTO.getEcasEmail());
+        supplierUser.setCreationDate(new Date());
+        supplierUser.setMain(0);
+        supplierUser.setSupplierId(supplierId);
+        supplierUser.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
+        supplierUser.setUserId(userDTO.getId());
+
+        SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
+
+        permissionChecker.addTablePermissions(userDTO, Integer.toString(supplierId),
+                RightConstants.USER_TABLE, "[SUPPLIERS] - id: " + supplierId + " - Email: " + supplierDTO.getContactEmail());
+        supplierUserRepository.save(supplierUser);
+    }
+
     @Transactional
-    public UserDTO deleteUser(int userId, HttpServletRequest request) {
+    public void deleteInvitationByUser(String email){
+        invitationContactRepository.delete(invitationContactRepository.findByEmailInvited(email));
+    }
+
+    @Transactional
+    public ResponseDTO deleteUser(int userId, HttpServletRequest request) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
-        if (userDTO != null) {
+        if (Validator.isNotNull(userDTO)) {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
 
-                    //first remove connections with registration by setting the status to deleted
-                    List<RegistrationUsers> registrationUsers = registrationUsersRepository.findByUserId(userDTO.getId());
-                    for(RegistrationUsers rUser : registrationUsers){
-                        rUser.setStatus(RegistrationUsersStatus.DELETED.getValue());
-                    }
-                    registrationUsersRepository.save(registrationUsers);
+                    if(applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0){
 
-                    removeTempToken(userDTO);
-                    for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
-                        municipalityService.deleteMunicipality(municipality.getId(), request);
+                        for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
+                            municipalityService.deleteMunicipality(municipality.getId(), request);
+                        }
+                        for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
+                            userThreadsService.deleteUserThreads(userThread.getId());
+                        }
+
+                        removeTempToken(userDTO);
+                        deleteUserRights(userDTO.getId());
+                        deleteUserConditionAgreements(userDTO.getId());
+                        deleteInvitationByUser(userDTO.getEcasEmail());
+
+                        userDTO.setType(0);
+                        userRepository.save(userMapper.toEntity(userDTO));
+                    }else{
+                        // Application detected for this user id
+                        _log.warn("ECAS Username: " + userDTO.getEcasUsername() + " - User registrations cannot be deleted due to one registration is applied");
+                        return new ResponseDTO(false, null, new ErrorDTO(10, "benefPortal.withdraw.existingApplication.error"));
                     }
-                    for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
-                        userThreadsService.deleteUserThreads(userThread.getId());
-                    }
+
                     break;
                 case (int) Constant.ROLE_SUPPLIER:
 
                     //first remove connections with suppliers by setting the status to deleted
                     List<SupplierUser> supplierUsers = supplierUserRepository.findByUserId(userDTO.getId());
-                    for(SupplierUser sUser : supplierUsers){
+                    for (SupplierUser sUser : supplierUsers) {
                         sUser.setStatus(SupplierUserStatus.DELETED.getStatus());
                     }
                     supplierUserRepository.save(supplierUsers);
-
 
                     removeTempToken(userDTO);
                     removeSuppliedRegion(userDTO);
@@ -282,13 +334,25 @@ public class UserService {
                     if (supplier != null) {
                         supplierService.deleteSupplier(supplier.getId());
                     }
+                    userDTO.setType(0);
+                    userRepository.save(userMapper.toEntity(userDTO));
                     break;
             }
-            userRepository.delete(userMapper.toEntity(userDTO));
-            return userDTO;
+            userDTO.setPassword(null);
+            return new ResponseDTO(true, userDTO, null);
         } else {
-            return null;
+            return new ResponseDTO(false, null, null);
         }
+    }
+
+    @Transactional
+    public void deleteUserRights(Integer userId){
+        rightRepository.deleteByUserId(userId);
+    }
+
+    @Transactional
+    public void deleteUserConditionAgreements(Integer userId){
+        conditionsAgreementRepository.deleteByUserId(userId);
     }
 
     @Transactional
@@ -379,19 +443,6 @@ public class UserService {
 
     @Transactional
     public void sendActivateAccountMail(UserDTO userDTO) {
-        Date now = new Date();
-        TempTokenDTO tempTokenDTO = new TempTokenDTO();
-        tempTokenDTO.setEmail(userDTO.getEcasEmail());
-        tempTokenDTO.setUserId(userDTO.getId());
-        tempTokenDTO.setCreateDate(now.getTime());
-        tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserConstants.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
-        SecureRandom secureRandom = new SecureRandom();
-        String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
-        tempTokenDTO.setToken(token);
-        tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
-        permissionChecker.addTablePermissions(userDTO, Long.toString(tempTokenDTO.getId()),
-                RightConstants.TEMP_TOKENS_TABLE, "[TEMP_TOKENS] - id: " + tempTokenDTO.getId() + " - User Id: " + tempTokenDTO.getUserId() + " - TOKEN: " + tempTokenDTO.getToken());
-
         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
@@ -404,6 +455,22 @@ public class UserService {
             mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
     }
+
+    @Transactional
+    public void sendSupplierRegistrationEmail(UserDTO userDTO) {
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        if (userDTO.getLang() != null) {
+            locale = new Locale(userDTO.getLang());
+        }
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.supplierRegistration.subject");
+        String msgBody = bundle.getString("mail.supplierRegistration.body");
+
+        if (!isLocalHost()) {
+            mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+        }
+    }
+
 
     public boolean resendEmail(String email) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));

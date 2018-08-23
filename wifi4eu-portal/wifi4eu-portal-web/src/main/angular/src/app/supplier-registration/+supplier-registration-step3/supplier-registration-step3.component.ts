@@ -35,18 +35,19 @@ export class SupplierRegistrationStep3Component {
         this.user.email = this.supplier.contactEmail;
         this.user.name = this.supplier['contactName'];
         this.user.surname = this.supplier['contactSurname'];
-        this.user.phonePrefix = this.supplier['contactPhonePrefix'];
-        this.user.phoneNumber = this.supplier['contactPhoneNumber'];
+        this.supplier.contactPrefix = this.supplier['contactPhonePrefix'];
+        this.supplier.contactNumber = this.supplier['contactPhoneNumber'];
         this.supplier['users'] = []
         this.supplier.users.push(this.user);
         this.supplierChange.emit(this.supplier);
         this.onNext.emit();
         this.confirmEmailField = '';
+        this.emailMatches = false;
     }
 
     private back() {
         this.onBack.emit();
-        this.confirmEmailField = '';
+        this.confirmEmailField = '';      
     }
 
     private checkIfEmailMatches() {
@@ -61,4 +62,39 @@ export class SupplierRegistrationStep3Component {
     private preventPaste(event: any) {
         return false;
     }
+
+     private checkButtonEnabled(event){
+         this.buttonEnabled = false;
+         if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
+          && this.supplier['contactPhoneNumber'] != null && this.supplier['contactPhonePrefix'] != null
+              && this.supplier['contactSurname'].trim() != "" && this.supplier['contactName'].trim() != "" && this.supplier['contactPhoneNumber'].trim() != "" && this.supplier['contactPhonePrefix'].trim() != ""){
+                 this.buttonEnabled = true;
+        }
+    }
+    //      //¡custom name validator
+    //     if(this.supplier.contactName != null && this.supplier.contactName.trim() != ""){
+    //         setTimeout(()=>{this.supplierForm.controls['contactName'].setErrors(null);} ,5);
+    //     }else {
+    //         setTimeout(()=>{this.supplierForm.controls['contactName'].setErrors({'invalid': true});} ,5);
+    //     }
+    //      //custom surname validator
+    //     if(this.supplier.contactSurname != null && this.supplier.contactSurname.trim() != ""){
+    //         setTimeout(()=>{this.supplierForm.controls['contactSurname'].setErrors(null);} ,5);
+    //     }else {
+    //         setTimeout(()=>{this.supplierForm.controls['contactSurname'].setErrors({'invalid': true});} ,5);
+    //     }
+    //      //custom surname validator
+    //     if(this.supplier.contactPhoneNumber != null && this.supplier.contactPhoneNumber.trim() != ""){
+    //         setTimeout(()=>{this.supplierForm.controls['contactPhoneNumber'].setErrors(null);} ,5);
+    //     }else {
+    //         setTimeout(()=>{this.supplierForm.controls['contactPhoneNumber'].setErrors({'invalid': true});} ,5);
+    //     }
+    //      //custom surname validator
+    //      if(this.supplier.contactPhonePrefix != null && this.supplier.contactPhonePrefix.trim() != ""){
+    //         setTimeout(()=>{this.supplierForm.controls['contactPhonePrefix'].setErrors(null);} ,5);
+    //     }else {
+    //         setTimeout(()=>{this.supplierForm.controls['contactPhonePrefix'].setErrors({'invalid': true});} ,5);
+    //     }
+    // }
+
 }

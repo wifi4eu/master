@@ -194,6 +194,10 @@ public class ApplicationService {
         }
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
         if (registration.getAllFilesFlag() == 1) {
+            if (applicationDTO.getId() != 0) {
+                _log.warn("Call to a create method with id set, the value has been removed ({})", applicationDTO.getId());
+                applicationDTO.setId(0);    
+            }            
             ApplicationDTO application = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Application created");
             return application;
@@ -252,6 +256,10 @@ public class ApplicationService {
 
     public ApplicationDTO getApplicationByRegistrationId(int registrationId) {
         return applicationMapper.toDTO(applicationRepository.findTopByRegistrationIdOrderByDateDesc(registrationId));
+    }
+
+    public List<ApplicationDTO> applicationsByListOfMunicipalities(Integer userId){
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsByMunicipalities(userId));
     }
 
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {

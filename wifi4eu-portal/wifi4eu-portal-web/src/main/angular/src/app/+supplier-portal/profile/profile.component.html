@@ -26,14 +26,14 @@
                     <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.vat.label' | translate }}</span>
                     <span class="ui-g-8 ui-sm-12"><b>{{ supplier.vat }}</b></span>
                 </div>
-                <div class="ui-g-12">
+               <!--  <div class="ui-g-12">
                     <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bic.label' | translate }}</span>
                     <span class="ui-g-8 ui-sm-12"><b>{{ supplier.bic }}</b></span>
                 </div>
                 <div class="ui-g-12">
                     <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.bank.account' | translate }}</span>
                     <span class="ui-g-8 ui-sm-12"><b>{{ supplier.accountNumber }}</b></span>
-                </div>
+                </div> -->
                 <div class="ui-g-12" *ngIf="supplier.website">
                     <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.company.web' | translate }}</span>
                     <span class="ui-g-8 ui-sm-12"><b>{{ supplier.website }}</b></span>
@@ -48,28 +48,30 @@
             <br/><br/>
             <p *ngIf="users" class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
                 <div *ngFor="let user of users; let i = index">
-                <p><b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b></p>
-                <div class="ui-g-12 whitePanel">
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.name }}</b></span>
-                    </div>
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'shared.surname.label' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.surname }}</b></span>
-                    </div>
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.phone.number' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.phoneNumber }} {{ user?.phonePrefix }}</b></span>
-                    </div>
-                    <div class="ui-g-12">
-                        <span class="ui-g-4 ui-sm-12">{{ 'shared.email.label' | translate }}</span>
-                        <span class="ui-g-8 ui-sm-12"><b>{{ user?.email }}</b></span>
+                    <div class="clearfix"></div>
+                    <p class><b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b></p>
+                    <div class="ui-g-12 whitePanel">
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.name }}</b></span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'shared.surname.label' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.surname }}</b></span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.phone.number' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.phone_prefix }} {{ user?.phone_number }}</b></span>
+                        </div>
+                        <div class="ui-g-12">
+                            <span class="ui-g-4 ui-sm-12">{{ 'shared.email.label' | translate }}</span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.email }}</b></span>
+                        </div>
                     </div>
                 </div>
-                <br><br>
-             </div>   
-            <br/><br/>
+            <div class="form-group ui-g-12 ui-lg-12 ui-md-12 ui-sm-12 contactPersonMargin">   
+                <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToSupplier()">+ {{ "benefPortal.beneficary.addMunicipality" | translate}}</p>   
+            </div>
             <p class="beneficiaryMayor">{{ 'suppRegistration.entity.support' | translate }}</p>
             <div class="ui-g-12 whitePanel" style="padding: 0;">
                 <p-tabView *ngIf="selectedCountriesNames.length > 0" (onChange)="selectCountry($event, tableRegions)">
@@ -95,7 +97,7 @@
                 <hr class="beneficiaryHr ui-g-12">
                 <p class="ui-g-12">{{ 'suppPortal.withdraw-registration.text' | translate }}</p>
                 <div class="ui-g-12 center">
-                    <button id="withdrawRegistration" type="button" (click)="withdrawRegistration()" class="btn btn-primary whiteButton">
+                    <button id="withdrawRegistration" type="button" (click)="displayModal('withdraw')" class="btn btn-primary whiteButton">
                         {{ 'shared.withdraw-registration.button' | translate }}
                     </button>
                 </div>
@@ -124,6 +126,29 @@
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
+<!-- Modal to confirm supplier withdraw-->
+<p-dialog [(visible)]="withdrawingRegistrationConfirmation" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <h1 class="Modalh1Confirmation">{{ 'benefPortal.withdrawApplication.title' | translate }}</h1>
+    <p class="ModalpConfirmation" style="margin: 2.4em 0em 2.4em 0em;">
+      {{'suppPortal.withdraw-registration.text' | translate}}
+    </p>
+    <div class="modal-body">
+        <div class="row center">
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary cancel-button" (click)="withdrawingRegistrationConfirmation = !withdrawingRegistrationConfirmation">
+                    {{ 'shared.close' | translate }}
+                </button>
+            </div>
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-primary publish-button" (click)="withdrawRegistration()">
+                    {{ 'shared.confirm.button' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+<!-- -->
 <p-dialog [(visible)]="displayLanguageModal" header="{{ 'shared.changeLanguage.modal.title' | translate }}" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="true">
     <div class="modal-body">
@@ -139,3 +164,62 @@
 <!--MODALS ABOVE-->
 
 <helpdesk-form-component portal="supplier-profile"></helpdesk-form-component>
+
+<p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <form #addNewUser="ngForm">
+        <div class="form-group">
+
+            <div class="row marginStep1 landingFirstText">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8 center">
+                    <h1 class="Modalh1Confirmation ">{{ 'benefPortal.adduser.title' | translate}}</h1>
+                    <p class="left">{{ 'benefPortal.adduser.desc' | translate}}</p>
+                    <p class="left">{{ 'benefPortal.adduser.email' | translate}}</p>
+                    <input type="email" id="newUserEmail" [(ngModel)]="newUserEmail"
+                           class="form-control" name="newUserEmail" [pattern]="emailPattern" size="50" required>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+        </div>
+    </form>
+    <div class="row marginStep1 landingFirstText form-group ">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button" (click)="closeAddNewContactModal()">
+                {{ 'shared.cancel.button' | translate }}
+            </button>
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button (click)="addNewContact()" class="btn btn-primary publish-button"
+                    [disabled]="!addNewUser.form.valid">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</p-dialog>
+<p-dialog [(visible)]="addContact" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>
+<p-dialog [(visible)]="displayAddContactModal">
+    <div class="form-group ui-g">
+        <h1 class="Modalh1Confirmation">{{ 'shared.deactivateContactModalAreYouSure' | translate}}</h1>
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+            <button (click)="closeModal()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' |
+                translate }}
+            </button>
+        </div>
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+            <button (click)="deactivateContactModal()" class="btn btn-primary cancel-button">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+
+        <div class="ui-lg-3"></div>
+    </div>
+</p-dialog>
