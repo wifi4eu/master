@@ -409,7 +409,7 @@ public class RegistrationService {
 
     @Transactional
     public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) throws Exception {
-        legalFileDTO.setRequestCorrectionDate(new Date());
+        legalFileDTO.setRequestCorrectionDate(new Date().getTime());
         if (legalFileDTO.getCorrectionReason() == null) {
             legalFileDTO.setRequestCorrection(false);
         }
