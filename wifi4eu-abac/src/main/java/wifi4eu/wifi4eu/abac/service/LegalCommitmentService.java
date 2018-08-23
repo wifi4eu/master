@@ -50,17 +50,8 @@ public class LegalCommitmentService {
 			for (LegalCommitment legalCommitment : legalCommitments) {
 
 				Document grantAgreement = legalCommitment.getGrantAgreementDocument();
-				DetailedUser currentUser = getCurrentUser();
-				String currentUserName = currentUser.getName();
-				String designatedOfficer = propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER");
-				String signatureDescription = "";
-				if(currentUserName.equalsIgnoreCase(designatedOfficer)){
-					signatureDescription = "Signed by " + currentUserName;
-				}else{
-					signatureDescription = "Signed on behalf of " + designatedOfficer;
-				}
 
-				byte[] countersignedFile = essiService.signDocument(grantAgreement, signatureDescription);
+				byte[] countersignedFile = essiService.signDocument(grantAgreement, createSignatureDescription(legalCommitment));
 
 				Document counterSignedGrantAgreement = new Document();
 				counterSignedGrantAgreement.setName("countersigned_"+ grantAgreement.getName());
@@ -84,6 +75,18 @@ public class LegalCommitmentService {
 		} catch (Throwable e) {
 			log.error(e.getMessage());
 		}
+	}
+
+	private String createSignatureDescription(LegalCommitment legalCommitment) {
+		String designatedOfficerUid = propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_UID");
+		String designatedOfficerName = propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_NAME");
+		String signatureDescription = "";
+		if(legalCommitment.getGrantAgreementCounterSignatureUser().equalsIgnoreCase(designatedOfficerUid)){
+            signatureDescription = "Signed by " + designatedOfficerName;
+        }else{
+            signatureDescription = "Signed on behalf of " + designatedOfficerName;
+        }
+		return signatureDescription;
 	}
 
 	private DetailedUser getCurrentUser() {
@@ -142,6 +145,7 @@ public class LegalCommitmentService {
 
 			if (legalCommitment != null) {
 				legalCommitment.setWfStatus(LegalCommitmentWorkflowStatus.COUNTERSIGNATURE_REQUESTED);
+				legalCommitment.setGrantAgreementCounterSignatureUser(getCurrentUser().getUid());
 				saveLegalCommitment(legalCommitment);
 			}
 		}

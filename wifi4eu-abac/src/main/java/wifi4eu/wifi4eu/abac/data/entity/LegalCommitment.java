@@ -60,6 +60,9 @@ public class LegalCommitment {
 	@Column(name = "BATCH_REF", length = 50)
 	private String batchRef;
 
+	@Column(name = "GRANT_AGREEMENT_CNTRSIGN_USER")
+	private String grantAgreementCounterSignatureUser;
+
 	public LegalCommitment() {
 	}
 
@@ -168,6 +171,14 @@ public class LegalCommitment {
 
 	public void setBatchRef(String batchRef) {
 		this.batchRef = batchRef;
+	}
+
+	public String getGrantAgreementCounterSignatureUser() {
+		return grantAgreementCounterSignatureUser;
+	}
+
+	public void setGrantAgreementCounterSignatureUser(String grantAgreementCounterSignatureUser) {
+		this.grantAgreementCounterSignatureUser = grantAgreementCounterSignatureUser;
 	}
 
 	@Override
