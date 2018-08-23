@@ -4,8 +4,8 @@ alter table [dbo].[applications] ADD cancel_reason VARCHAR(255) NULL;
 CREATE TABLE authorized_person_application (id INT IDENTITY NOT NULL, authorized_person INT, application_id INT, PRIMARY KEY (id)) ;
 ALTER TABLE users ADD contact_phone_prefix NVARCHAR(255);
 ALTER TABLE users ADD contact_phone_number NVARCHAR(255);
-update users set users.contact_phone_number = (SELECT s.contact_phone_number from suppliers s inner join users u on s._user = u.id where users.id = u.id);
-update users set users.contact_phone_prefix = (SELECT s.contact_phone_prefix from suppliers s inner join users u on s._user = u.id where users.id = u.id);
+UPDATE users SET users.contact_phone_number = SUP.contact_phone_number FROM users US INNER JOIN suppliers SUP ON US.id = SUP._user;
+UPDATE users SET users.contact_phone_prefix = SUP.contact_phone_prefix FROM users US INNER JOIN suppliers SUP ON US.id = SUP._user;
 ALTER TABLE suppliers DROP COLUMN contact_phone_prefix;
 ALTER TABLE suppliers DROP COLUMN contact_phone_number;
 ALTER TABLE suppliers DROP COLUMN contact_name;
@@ -33,8 +33,25 @@ create table grant_agreement(
        ON UPDATE CASCADE
 ); 
 
-ALTER TABLE log_emails ALTER COLUMN body NTEXT;
-ALTER TABLE log_emails ALTER COLUMN subject NTEXT;
+--ALTER TABLE log_emails ALTER COLUMN body NTEXT;
+--ALTER TABLE log_emails ALTER COLUMN subject NTEXT;
+CREATE TABLE dbo.log_emails(
+	[id]               	INT           NOT NULL IDENTITY,
+	[municipalityId]   	INT          NOT NULL,
+	[sent_date]  		BIGINT       NOT NULL,
+	[action]  			NVARCHAR(255)       NOT NULL,
+	[fromAddress]   	NVARCHAR(255) NULL,
+	[toAddress]   		NVARCHAR(255) NOT NULL,
+	[subject]   		NTEXT NULL,
+	[body]   			NTEXT NULL,
+	PRIMARY KEY ([id]),
+	CONSTRAINT [fk_registrations_municipalities]
+  	FOREIGN KEY ([municipalityId])
+  	REFERENCES dbo.municipalities ([id])
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE
+);
+
 
 -- 27/07/2018 -  populate table supplier_users with supplier table values. ONLY on db where supplier_users is empty and you have supplier's table with information.
 INSERT INTO [dbo].[supplier_users]
