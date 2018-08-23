@@ -8,6 +8,7 @@ import wifi4eu.wifi4eu.abac.data.dto.LegalCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentWorkflowStatus;
@@ -15,6 +16,7 @@ import wifi4eu.wifi4eu.abac.data.repository.LegalCommitmentRepository;
 import wifi4eu.wifi4eu.abac.integration.essi.EssiService;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -69,22 +71,23 @@ public class LegalCommitmentService {
 		}
 	}
 
-	public void createLegalCommitments() {
+	public void createLegalCommitments(String batchRef) {
 		List<Document> grantAgreements = documentService.getDocumentsByTypeAndStatus(DocumentType.GRANT_AGREEMENT, DocumentWorkflowStatus.IMPORTED);
 
 		for (Document grantAgreement : grantAgreements) {
 			if (grantAgreement.getLegalEntity().getLegalCommitment() == null) {
-				createLegalCommitment(grantAgreement);
+				createLegalCommitment(grantAgreement, batchRef);
 			}
 		}
 	}
 
-	private void createLegalCommitment(Document grantAgreement) {
+	private void createLegalCommitment(Document grantAgreement, String batchRef) {
 		LegalCommitment legalCommitment = new LegalCommitment();
 		legalCommitment.setLegalEntity(grantAgreement.getLegalEntity());
 		legalCommitment.setGrantAgreementDocument(grantAgreement);
 		legalCommitment.setGrantAgreementSignatureDate(grantAgreement.getPortalDate());
 		legalCommitment.setWfStatus(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);
+		legalCommitment.setBatchRef(batchRef);
 		legalCommitmentRepository.save(legalCommitment);
 	}
 
@@ -122,5 +125,20 @@ public class LegalCommitmentService {
 
 	public List<LegalCommitment> getAllLegalCommitments() {
 		return (List<LegalCommitment>) legalCommitmentRepository.findAll();
+	}
+
+	public Boolean isBatchProcessed(String batchRef){
+		List<LegalCommitmentWorkflowStatus> finishedStatuses = new ArrayList<>();
+		finishedStatuses.add(LegalCommitmentWorkflowStatus.ABAC_VALID);
+		finishedStatuses.add(LegalCommitmentWorkflowStatus.ABAC_REJECTED);
+		finishedStatuses.add(LegalCommitmentWorkflowStatus.ABAC_ERROR);
+
+		Long pending = legalCommitmentRepository.countAllByWfStatusNotInAndBatchRefEquals(finishedStatuses, batchRef);
+
+		return pending.equals(0L);
+	}
+
+	public List<LegalCommitment> getAllByBatchRef(String batchRef){
+		return legalCommitmentRepository.findAllByBatchRefEquals(batchRef);
 	}
 }

@@ -28,4 +28,8 @@ public interface LegalCommitmentRepository extends CrudRepository<LegalCommitmen
 	void updateLegalCommitmentStatuses();
 
 	LegalCommitment findByLegalEntityIdAndWfStatus(Long legalEntityId, LegalCommitmentWorkflowStatus legalCommitmentStatus);
+
+	Long countAllByWfStatusNotInAndBatchRefEquals(List<LegalCommitmentWorkflowStatus> wfStatuses, String batchRef);
+
+	List<LegalCommitment> findAllByBatchRefEquals(String batchRef);
 }

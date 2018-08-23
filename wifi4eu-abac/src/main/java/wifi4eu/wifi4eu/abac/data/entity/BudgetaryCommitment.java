@@ -51,6 +51,9 @@ public class BudgetaryCommitment {
 	@Column(name = "COMMITMENT_L2_KEY")
 	private String commitmentLevel2Key;
 
+	@Column(name = "BATCH_REF", length = 50)
+	private String batchRef;
+
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
@@ -120,4 +123,12 @@ public class BudgetaryCommitment {
 	public String getCommitmentLevel2Key() {return commitmentLevel2Key;	}
 
 	public void setCommitmentLevel2Key(String commitmentLevel2Key) {this.commitmentLevel2Key = commitmentLevel2Key;	}
+
+	public String getBatchRef() {
+		return batchRef;
+	}
+
+	public void setBatchRef(String batchRef) {
+		this.batchRef = batchRef;
+	}
 }

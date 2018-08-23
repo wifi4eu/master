@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.abac.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.repository.BudgetaryCommitmentPositionRepository;
 import wifi4eu.wifi4eu.abac.data.repository.BudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
@@ -72,5 +74,21 @@ public class BudgetaryCommitmentService {
 
 	public BudgetaryCommitment getByMunicipalityPortalId(Long municipalityPortalId) {
 		return budgetaryCommitmentyRepository.findByLegalEntityMid(municipalityPortalId);
+	}
+
+	public Boolean isBatchProcessed(String batchRef){
+		List<AbacWorkflowStatus> finishedStatuses = new ArrayList<>();
+		finishedStatuses.add(AbacWorkflowStatus.ABAC_VALID);
+		finishedStatuses.add(AbacWorkflowStatus.ABAC_REJECTED);
+		finishedStatuses.add(AbacWorkflowStatus.ABAC_ERROR);
+		finishedStatuses.add(AbacWorkflowStatus.ABAC_FINISH);
+
+		Long pending = budgetaryCommitmentyRepository.countAllByWfStatusNotInAndBatchRefEquals(finishedStatuses, batchRef);
+
+		return pending.equals(0L);
+	}
+
+	public List<BudgetaryCommitment> getAllByBatchRef(String batchRef){
+		return budgetaryCommitmentyRepository.findAllByBatchRefEquals(batchRef);
 	}
 }

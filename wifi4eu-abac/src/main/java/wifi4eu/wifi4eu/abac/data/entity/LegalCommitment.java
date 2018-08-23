@@ -59,6 +59,9 @@ public class LegalCommitment {
 	@Column(name="GRANT_AGREEMENT_CNTRSIGN_DATE")
 	private Date grantAgreementCounterSignatureDate;
 
+	@Column(name = "BATCH_REF", length = 50)
+	private String batchRef;
+
 	public LegalCommitment() {
 	}
 
@@ -159,6 +162,14 @@ public class LegalCommitment {
 
 	public void setGrantAgreementCounterSignatureDate(Date grantAgreementCounterSignatureDate) {
 		this.grantAgreementCounterSignatureDate = grantAgreementCounterSignatureDate;
+	}
+
+	public String getBatchRef() {
+		return batchRef;
+	}
+
+	public void setBatchRef(String batchRef) {
+		this.batchRef = batchRef;
 	}
 
 	@Override

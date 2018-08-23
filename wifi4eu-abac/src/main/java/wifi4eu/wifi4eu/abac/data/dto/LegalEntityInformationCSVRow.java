@@ -11,6 +11,7 @@ public class LegalEntityInformationCSVRow {
 	private String languageCode;
 	private Long registrationNumber;
 	private String abacReference;
+	private Integer callNumber;
 
 	public Long getMid() {
 		return mid;
@@ -82,5 +83,13 @@ public class LegalEntityInformationCSVRow {
 
 	public void setAbacReference(String abacReference) {
 		this.abacReference = abacReference;
+	}
+
+	public Integer getCallNumber() {
+		return callNumber;
+	}
+
+	public void setCallNumber(Integer callNumber) {
+		this.callNumber = callNumber;
 	}
 }

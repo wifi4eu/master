@@ -12,6 +12,7 @@ public enum LegalEntityImportCSVColumn {
 	MUNICIPALITY_REGISTRATION_NUMBER("mun_registrationNumber"),
 	MUNICIPALITY_ABAC_REFERENCE("mun_ABACReference"),
 	MUNICIPALITY_ABAC_STATUS("mun_abacStatus"),
+	MUNICIPALITY_CALL_NUMBER("mun_CallNumber"),
 	MUNICIPALITY_ABAC_MESSAGE("abac_Message");
 
 

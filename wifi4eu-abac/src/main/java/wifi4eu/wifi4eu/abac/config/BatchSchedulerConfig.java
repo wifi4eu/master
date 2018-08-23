@@ -63,8 +63,10 @@ public class BatchSchedulerConfig {
         legalCommitmentService.findAndCounterSignGrantAgreements();
     }
 
-    @Scheduled(cron = "${batch.legalentity.create.notification.crontable}")
-    public void notifyCreateLegalEntitiesInABAC() {
+    @Scheduled(cron = "${notifications.batch.crontable}")
+    public void sendNotifications() {
         notificationService.notifyLegalEntityProcessFinished();
+        notificationService.notifyBudgetaryCommitmentProcessFinished();
+        notificationService.notifyLegalCommitmentProcessFinished();
     }
 }

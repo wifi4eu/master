@@ -32,6 +32,7 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 				LegalEntityImportCSVColumn.MUNICIPALITY_COUNTRY_CODE,
 				LegalEntityImportCSVColumn.MUNICIPALITY_LANGUAGE_CODE,
 				LegalEntityImportCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER,
+				LegalEntityImportCSVColumn.MUNICIPALITY_CALL_NUMBER,
 				LegalEntityImportCSVColumn.MUNICIPALITY_ABAC_REFERENCE);
 	}
 
@@ -53,6 +54,7 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 			legalEntityInformationCSVRow.setLanguageCode(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_LANGUAGE_CODE));
 			legalEntityInformationCSVRow.setRegistrationNumber(Long.parseLong(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER)));
 			legalEntityInformationCSVRow.setAbacReference(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_ABAC_REFERENCE));
+			legalEntityInformationCSVRow.setCallNumber(Integer.parseInt(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_CALL_NUMBER)));
 
 			legalEntityRows.add(legalEntityInformationCSVRow);
 		}

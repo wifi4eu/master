@@ -5,8 +5,6 @@ import eu.cec.digit.ecas.client.jaas.DetailedUser;
 import eu.cec.digit.ecas.client.jaas.SubjectNotFoundException;
 import eu.cec.digit.ecas.client.jaas.SubjectUtil;
 
-import eu.europa.ec.research.fp.services.document_management.interfaces.v5.FileDocumentType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +17,8 @@ import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.*;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
+import wifi4eu.wifi4eu.abac.data.enums.NotificationType;
 import wifi4eu.wifi4eu.abac.data.repository.ImportLogRepository;
-
-import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
-import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 
 import wifi4eu.wifi4eu.abac.utils.ZipFileReader;
 import wifi4eu.wifi4eu.abac.utils.ZipFileWriter;
@@ -34,7 +30,6 @@ import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 import javax.transaction.Transactional;
 
 import java.io.IOException;
-import java.util.Date;
 
 import java.util.List;
 import java.util.Map;
@@ -93,8 +88,22 @@ public class ImportDataService {
 	 */
 	@Transactional(Transactional.TxType.REQUIRED)
 	public void importLegalCommitments(byte[] file) {
+		FileDTO fileDTO = new FileDTO();
+		fileDTO.setContent(file);
+		fileDTO.setSize(new Long(file.length));
+		fileDTO.setFileName("import_LC_from_portal");
+
 		importDataViaZipFile(file);
-		legalCommitmentService.createLegalCommitments();
+		//generate a unique batch file ID
+		String batchRef = UUID.randomUUID().toString();
+		//create the lines in the database
+		legalCommitmentService.createLegalCommitments(batchRef);
+
+		//log the imported file
+		logImport(fileDTO, batchRef, getCurrentUser().getUid());
+
+		//create user notification
+		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LC_CREATION);
 	}
 
 
@@ -135,14 +144,6 @@ public class ImportDataService {
 		//generate a unique batch file ID
 		String batchRef = UUID.randomUUID().toString();
 
-		//get user authenticated
-		DetailedUser currentEcasUser = null;
-		try {
-			currentEcasUser = SubjectUtil.getCurrentEcasUser();
-		} catch (SubjectNotFoundException e) {
-			log.error("ERROR while trying to retrieve the current user", e);
-		}
-
 		for (LegalEntityInformationCSVRow legalEntityInformationCSVRow : legalEntities) {
 
 			LegalEntity legalEntity = legalEntityService.getLegalEntityByMunicipalityPortalId(legalEntityInformationCSVRow.getMid());
@@ -152,7 +153,7 @@ public class ImportDataService {
 				legalEntity = legalEntityService.mapLegalEntityCSVToEntity(legalEntityInformationCSVRow);
 
 				//set the current user
-                legalEntity.setUserImported(currentEcasUser.getUid());
+                legalEntity.setUserImported(getCurrentUser().getUid());
 
                 //set the current batch ID
 				legalEntity.setBatchRef(batchRef);
@@ -172,10 +173,20 @@ public class ImportDataService {
 		}
 
 		//log the imported file
-		logImport(fileDTO, batchRef, currentEcasUser.getUid());
+		logImport(fileDTO, batchRef, getCurrentUser().getUid());
 
 		//create user notification
-		notificationService.createLegalEntityProcessPendingNotification(batchRef);
+		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LEF_CREATION);
+	}
+
+	private DetailedUser getCurrentUser() {
+		DetailedUser currentEcasUser = null;
+		try {
+			currentEcasUser = SubjectUtil.getCurrentEcasUser();
+		} catch (SubjectNotFoundException e) {
+			log.error("ERROR while trying to retrieve the current user", e);
+		}
+		return currentEcasUser;
 	}
 
 	private void logImport(FileDTO fileDTO, String batchRef, String userId){
@@ -218,8 +229,12 @@ public class ImportDataService {
 		FileDTO fileDTO = new FileDTO();
 		fileDTO.setContent(file);
 		fileDTO.setSize(new Long(file.length));
+		fileDTO.setFileName("portal_EXP_TO_AIRGAP_BC.csv");
 
 		List<BudgetaryCommitmentCSVRow> budgetaryCommitmentCSVRows = (List<BudgetaryCommitmentCSVRow>) budgetaryCommitmentCSVFileParser.parseFile(fileDTO);
+
+		//generate a unique batch file ID
+		String batchRef = UUID.randomUUID().toString();
 
 		for (BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow : budgetaryCommitmentCSVRows) {
 
@@ -235,6 +250,8 @@ public class ImportDataService {
 					budgetaryCommitmentPosition.setBudgetaryCommitment(budgetaryCommitment);
 				}
 
+				budgetaryCommitmentPosition.getBudgetaryCommitment().setBatchRef(batchRef);
+
 				budgetaryCommitmentService.saveBCPosition(budgetaryCommitmentPosition);
 			} else {
 				//TODO update or ignore?
@@ -243,6 +260,12 @@ public class ImportDataService {
 										budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position()));
 			}
 		}
+
+		//log the imported file
+		logImport(fileDTO, batchRef, getCurrentUser().getUid());
+
+		//create user notification
+		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.BC_CREATION);
 	}
 
 	public FileDTO exportLegalCommitments() throws IOException {

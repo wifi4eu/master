@@ -92,31 +92,10 @@ public class LegalEntity {
 	@Column(name = "BATCH_REF", length = 50)
 	private String batchRef;
 
-	public LegalEntity() {
+	@Column(name = "CALL_NUMBER")
+	private Integer callNumber;
 
-	}
-
-	public LegalEntity(Long id, Long mid, String officialName, String languageCode, String countryCode,
-					   String officialAddress, String postalCode, String city, Long registrationNumber, String abacFelId,
-					   AbacWorkflowStatus wfStatus, Date dateCreated, Date dateUpdated, Date signatureDate,
-					   String userImported) {
-		super();
-		this.id = id;
-		this.mid = mid;
-		this.officialName = officialName;
-		this.languageCode = languageCode;
-		this.country = country;
-		this.officialAddress = officialAddress;
-		this.postalCode = postalCode;
-		this.city = city;
-		this.registrationNumber = registrationNumber;
-		this.abacFelId = abacFelId;
-		this.wfStatus = wfStatus;
-		this.dateCreated = dateCreated;
-		this.dateUpdated = dateUpdated;
-		this.signatureDate = signatureDate;
-		this.userImported = userImported;
-	}
+	public LegalEntity() {}
 
 	public Long getId() {
 		return id;
@@ -252,6 +231,14 @@ public class LegalEntity {
 
 	public void setBatchRef(String batchRef) {
 		this.batchRef = batchRef;
+	}
+
+	public Integer getCallNumber() {
+		return callNumber;
+	}
+
+	public void setCallNumber(Integer callNumber) {
+		this.callNumber = callNumber;
 	}
 
 	public List<Document> getDocuments() {
