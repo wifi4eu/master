@@ -282,7 +282,7 @@ public class ImportDataService {
 			}
 		}
 
-		byte[] legalCommitmentsCSVbytes = legalCommitmentCSVFileParser.exportBudgetaryCommitmentToCSV(legalCommitments).getBytes();
+		byte[] legalCommitmentsCSVbytes = legalCommitmentCSVFileParser.exportLegalCommitmentToCSV(legalCommitments).getBytes();
 		FileDTO legalCommitmentsCSVFile = new FileDTO("legalCommitments.csv", new Long(legalCommitmentsCSVbytes.length), legalCommitmentsCSVbytes);
 		zipFileWriter.addFile(legalCommitmentsCSVFile);
 
