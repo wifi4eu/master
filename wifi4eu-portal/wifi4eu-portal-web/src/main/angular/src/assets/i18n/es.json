@@ -641,7 +641,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Atención: esta cuenta atrás es indicativa. Haga clic en \"solicitar\" una vez publicada la convocatoria para proceder con su solicitud (si lo hace antes de la publicación oficial de la convocatoria el sistema mostrará un mensaje de error) ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Estoy de acuerdo con las #condiciones de la convocatoria# y declaro que el municipio al que represento no está incluido en ninguna de las situaciones que se enumeran en el artículo 136, apartado 1, del #Reglamento (UE, Euratom) 2018/1046#",
+  "benefPortal.voucher.conditionsAgreement": "Estoy de acuerdo con las <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>condiciones de la convocatoria</a> y declaro que el municipio al que represento no está incluido en ninguna de las situaciones que se enumeran en el artículo 136, apartado 1, del <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>Reglamento (UE, Euratom) 2018/1046</a>",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",

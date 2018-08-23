@@ -618,7 +618,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "A visszaszámlálás csak indikatív jellegű. Csak a felhívás közzétételét követően kattintson a „Pályázás” lehetőségre (ha ezt a hivatalos közzététel előtt teszi, hibaüzenet fog megjelenni). ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Elfogadom a #pályázati feltételeket# és kijelentem, hogy az általam képviselt település az #(EU, Euratom) 2018/1046 rendelet# 136. cikkének (1) bekezdésében említett, kizárást indokoló helyzetek egyikében sem érintett.",
+  "benefPortal.voucher.conditionsAgreement": "Elfogadom a <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>pályázati feltételeket</a> és kijelentem, hogy az általam képviselt település az <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>(EU, Euratom) 2018/1046 rendelet</a> 136. cikkének (1) bekezdésében említett, kizárást indokoló helyzetek egyikében sem érintett.",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",

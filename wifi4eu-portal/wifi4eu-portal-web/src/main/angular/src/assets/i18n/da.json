@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Denne nedtælling er vejledende. Klik på \"ansøg\", når indkaldelsen åbner, for at gå videre med din ansøgning (alle klik forud for den formelle åbning af indkaldelsen vil føre til en fejlmeddelelse) ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Jeg accepterer #indkaldelsens betingelser#, og jeg erklærer, at den kommune, som jeg repræsenterer, ikke er omfattet af nogen af situationerne opremset i artikel 136, stk. 1, i #forordning (EU, Euratom) nr. 2018/1046#",
+  "benefPortal.voucher.conditionsAgreement": "Jeg accepterer <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>indkaldelsens betingelser</a>, og jeg erklærer, at den kommune, som jeg repræsenterer, ikke er omfattet af nogen af situationerne opremset i artikel 136, stk. 1, i <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>forordning (EU, Euratom) nr. 2018/1046</a>",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",

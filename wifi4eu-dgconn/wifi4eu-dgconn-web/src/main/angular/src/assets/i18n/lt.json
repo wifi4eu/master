@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Atkreipkite dėmesį į tai, kad likęs laikas yra orientacinis. Kai kvietimas bus paskelbtas, kad pateiktumėte paraišką, spustelėkite „Teikti paraišką“ (mygtuką spustelėjus prieš oficialų kvietimo paskelbimą bus pateiktas pranešimas apie klaidą). ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Sutinku su #kvietimo teikti paraiškas sąlygomis# ir pareiškiu, kad mano atstovaujama savivaldybė nėra nė vienoje situacijoje, nurodytoje #Reglamento (ES, Euratomas) 2018/1046# 136 straipsnio 1 dalyje.",
+  "benefPortal.voucher.conditionsAgreement": "Sutinku su <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>kvietimo teikti paraiškas sąlygomis</a> ir pareiškiu, kad mano atstovaujama savivaldybė nėra nė vienoje situacijoje, nurodytoje <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>Reglamento (ES, Euratomas) 2018/1046</a> 136 straipsnio 1 dalyje.",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",

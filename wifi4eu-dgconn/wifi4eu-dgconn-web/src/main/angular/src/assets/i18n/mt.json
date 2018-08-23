@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Jekk jogħġbok innota li dan il-countdown huwa indikattiv. Ikklikkja fuq “applika” meta tiftaħ is-sejħa biex tipproċedi bl-applikazzjoni tiegħek (jekk tikklikkja qabel il-ftuħ formali tas-sejħa se jidher messaġġ ta' żball) ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Naqbel mal-#kundizzjonijiet tas-sejħa# u niddikjara li l-muniċipalità li nirrappreżenta mhijiex inkluża f’xi waħda mis-sitwazzjonijiet elenkati fl-Artikolu 136(1) tar-#Regolament (UE, Euratom) 2018/1046#",
+  "benefPortal.voucher.conditionsAgreement": "Naqbel mal-<a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>kundizzjonijiet tas-sejħa</a> u niddikjara li l-muniċipalità li nirrappreżenta mhijiex inkluża f’xi waħda mis-sitwazzjonijiet elenkati fl-Artikolu 136(1) tar-<a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>Regolament (UE, Euratom) 2018/1046</a>",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",

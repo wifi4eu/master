@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Ņemiet vērā, ka šī norāde par laiku, kas atlicis līdz nākamā uzaicinājuma izsludināšanai, ir tikai orientējoša. Lai pieteiktos, noklikšķiniet uz “Pieteikties”, kad uzaicinājums ir izsludināts (ja noklikšķināsiet pirms uzaicinājuma oficiālās izsludināšanas, parādīsies kļūdas paziņojums). ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Piekrītu #uzaicinājuma noteikumiem# un deklarēju, ka pašvaldība, kuru pārstāvu, nav nonākusi nevienā no situācijām, kas uzskaitītas  #Regulas (ES, Euratom) 2018/1046# 136. panta 1. punktā.",
+  "benefPortal.voucher.conditionsAgreement": "Piekrītu <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>uzaicinājuma noteikumiem</a> un deklarēju, ka pašvaldība, kuru pārstāvu, nav nonākusi nevienā no situācijām, kas uzskaitītas  <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>Regulas (ES, Euratom) 2018/1046</a> 136. panta 1. punktā.",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",

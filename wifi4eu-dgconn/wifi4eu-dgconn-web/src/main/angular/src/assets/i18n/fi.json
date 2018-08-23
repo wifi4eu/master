@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Huomaa, että laskuri on suuntaa antava. Kun hakuaika alkaa, napsauta Hae maksuseteliä -painiketta ja tee hakemuksesi (jos napsautat painiketta ennen hakuajan virallista alkua, näytölle tulee virheilmoitus). ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Hyväksyn #hakuilmoituksen ehdot# ja vahvistan, että edustamani kunta ei ole missään #asetuksen (EU, Euratom) 2018/1046# 136 artiklan 1 kohdassa tarkoitetuista tilanteista.",
+  "benefPortal.voucher.conditionsAgreement": "Hyväksyn <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>hakuilmoituksen ehdot</a> ja vahvistan, että edustamani kunta ei ole missään <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>asetuksen (EU, Euratom) 2018/1046</a> 136 artiklan 1 kohdassa tarkoitetuista tilanteista.",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",
