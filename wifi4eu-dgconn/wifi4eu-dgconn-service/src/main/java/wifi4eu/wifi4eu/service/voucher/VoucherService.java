@@ -18,7 +18,9 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
@@ -26,6 +28,7 @@ import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherSimulationMapper;
+import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentAuxiliarRepository;
@@ -45,6 +48,7 @@ import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.util.SendNotificationsAsync;
 import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
 
+import javax.annotation.PostConstruct;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -129,8 +133,23 @@ public class VoucherService {
     ApplicationContext context;    
 
     @Autowired
-    TaskExecutor taskExecutor;    
-    
+    TaskExecutor taskExecutor;
+
+    @Autowired
+    AdminActionsRepository adminActionsRepository;
+
+    @PostConstruct
+    public void init() {
+        AdminActions adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
+        if(Validator.isNotNull(adminActions)){
+            adminActions.setAction("voucher_send_notifications");
+            adminActions.setStartDate(null);
+            adminActions.setRunning(false);
+            adminActions.setEndDate(null);
+            adminActionsRepository.save(adminActions);
+        }
+    }
+
     public List<VoucherAssignmentDTO> getAllVoucherAssignment() {
         return voucherAssignmentMapper.toDTOList(Lists.newArrayList(voucherAssignmentRepository.findAll()));
     }

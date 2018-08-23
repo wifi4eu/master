@@ -232,8 +232,8 @@ export class SupplierProfileComponent {
                         this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
-                        var currentWindow: any = window;
-                        window.location.href = currentWindow.origin+'/wifi4eu/index.html';
+                        var port = window.location.port ? ':' + window.location.port : '';
+                        window.location.href = window.location.protocol + "//" + window.location.hostname + port+'/wifi4eu/index.html';
                     }
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');

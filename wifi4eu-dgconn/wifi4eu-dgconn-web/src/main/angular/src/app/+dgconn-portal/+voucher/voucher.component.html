@@ -267,7 +267,7 @@
                           <p-paginator class="paginator-panel" [first]="page * sizePage" [rows]="sizePage" totalRecords="{{totalRecords}}" #paginator
                             (onPageChange)="paginate($event)" [rowsPerPageOptions]="itemsPerPageSelector"></p-paginator>
                           <div class="totalRecords">
-                            <span style="color: #929292;">{{ 'dgConn.totalRecords' | translate }}: {{totalRecords}} </span>
+                            <span style="color: #929292;">{{ 'dgConn.totalRecords' | translate }}: {{totalRecords == null ? '0' : totalRecords}} </span>
                           </div>
                         </div>
                       </footer>
@@ -290,12 +290,14 @@
                     <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i>
                     {{'dgConn.voucherAssignment.freezeList.button' | translate}}
                   </button>
-                  <span class="dates-voucher-assignment" *ngIf="callVoucherAssignment?.hasFreezeListSaved" [innerHTML]="'dgConn.voucherAssignment.freezeList.date' | translate:{date:dateNumberFreeze,hour:hourNumberFreeze}"></span>
+                  <span class="dates-voucher-assignment" *ngIf="callVoucherAssignment?.hasFreezeListSaved && dateNumberFreeze" [innerHTML]="'dgConn.voucherAssignment.freezeList.date' | translate:{date:dateNumberFreeze,hour:hourNumberFreeze}"></span>
                 </div>
                 <div class="col-md-4">
-                  <button type="button" class="btn btn-primary sendNotification-button" (click)="sendNotificationToApplicants()" [disabled]="!callVoucherAssignment?.hasFreezeListSaved || !hasCallEnded">
+                  <button type="button" class="btn btn-primary sendNotification-button" (click)="sendNotificationToApplicants()" [disabled]="!callVoucherAssignment?.hasFreezeListSaved || !hasCallEnded || pressedNotificationButton || callVoucherAssignment?.notifiedDate">
                     {{'dgConn.voucherAssignment.sendNotification.button' | translate}}
                   </button>
+                  <span class="dates-voucher-assignment" *ngIf="startSendingNotifications.startSendingDate && !callVoucherAssignment.notifiedDate">{{ 'dgConn.voucherAssignment.sendingNotifications.process.startDate' | translate:{date: startSendingNotifications?.startSendingDate,time: startSendingNotifications?.startSendingHour} }}</span>
+                  <span class="dates-voucher-assignment" *ngIf="callVoucherAssignment?.notifiedDate && dateNumberNotified">{{ 'dgConn.voucherAssignment.sendNotifications.date' | translate:{date:dateNumberNotified,hour:hourNumberNotified} }}</span>
                 </div>
               </div>
             </p-tabPanel>
