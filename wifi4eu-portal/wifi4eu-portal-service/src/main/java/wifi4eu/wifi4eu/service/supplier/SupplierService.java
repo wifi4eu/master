@@ -588,11 +588,12 @@ public class SupplierService {
                     invitationContact.setType((int) Constant.ROLE_SUPPLIER);
                     invitationContact.setStatus(InvitationContactStatus.PENDING.getValue());
                     invitationContact.setCreateDate(today);
-                } else if (invitationContact.getIdSupplier() != supplierId){
+                } else if (invitationContact.getIdSupplier().intValue() != supplierId){
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - This user has already been invitated. Please, try another user email");
                     responseDTO.setSuccess(false);
                     responseDTO.setData("This user has already been invitated. Please, try another user email");
                     responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
+                    return responseDTO;
                 }
 
                 invitationContact.setLastModified(today);

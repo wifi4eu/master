@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.application.ApplicationInvalidateReason;
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
 import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
 import wifi4eu.wifi4eu.entity.voucher.SimpleMunicipality;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
@@ -27,6 +28,7 @@ import wifi4eu.wifi4eu.repository.application.ApplicationAuthorizedPersonReposit
 import wifi4eu.wifi4eu.repository.application.ApplicationInvalidateReasonRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.repository.voucher.SimpleMunicipalityRepository;
@@ -87,6 +89,9 @@ public class ApplicationInvalidateReasonService {
 
     @Autowired
     ApplicationAuthorizedPersonRepository application_authorizedPersonRepository;
+
+    @Autowired
+    LogEmailRepository logEmailRepository;
 
     public List<ApplicationInvalidateReasonDTO> getInvalidateReasonByApplicationId(Integer applicationId) {
         return applicationInvalidateReasonMapper.toDTOList(applicationInvalidateReasonRepository.findAllByApplicationIdOrderByReason(applicationId));
@@ -257,9 +262,11 @@ public class ApplicationInvalidateReasonService {
         Map<String, Boolean> checks = new HashMap<>();
         boolean valid = false;
         // Has the municipality been notified by email of request for changes
-        if (applicationDTO.isSentEmail()) {
+        // If user has uploaded all the requested documents and it's before the deadline, disable buttons
+        LogEmail logEmail = logEmailRepository.findLastEmailsSendCorrectionNotUploadedYet(applicationDTO.getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
+        if (logEmail != null) {
             Calendar deadline = Calendar.getInstance();
-            deadline.setTime(applicationDTO.getSentEmailDate());
+            deadline.setTime(new Date(logEmail.getSentDate()));
             deadline.add(Calendar.DATE, 7);
             Date currentTime = Calendar.getInstance().getTime();
             // Have more than 7 days overcome since the last request

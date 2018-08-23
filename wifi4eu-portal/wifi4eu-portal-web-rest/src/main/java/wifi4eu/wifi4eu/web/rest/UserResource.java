@@ -14,22 +14,23 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.Response;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -118,7 +119,6 @@ public class UserResource {
     }
 
 
-
     @ApiOperation(value = "Service to do Login with a ECAS User")
     @RequestMapping(value = "/ecaslogin", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
@@ -198,33 +198,71 @@ public class UserResource {
     @RequestMapping(value = "/updateLanguage", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO updateLanguage(@RequestBody final String language, HttpServletResponse response) throws IOException {
-       UserContext userContext = UserHolder.getUser();
-       UserDTO userDTO = userService.getUserByUserContext(userContext);
-       _log.debug("ECAS Username: " + userDTO.getEcasUsername() + " - Updating user language notification emails by id " + userDTO.getId());
-       try {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userDTO = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userDTO.getEcasUsername() + " - Updating user language notification emails by id " + userDTO.getId());
+        try {
             userDTO = userService.updateLanguage(userDTO, language);
             return new ResponseDTO(true, userDTO, null);
-       } catch (Exception e) {
+        } catch (Exception e) {
             _log.error("ECAS Username: " + userDTO.getEcasUsername() + " - Cannot change notifications language", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-       }
-   }
+        }
+    }
 
     @ApiOperation(value = "Get all users from registration")
-    @RequestMapping (value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserDTO> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId){
+    public List<UserContactDetails> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
         try {
-            List<UserDTO> users = new ArrayList<>();
-            users = registrationService.getUsersFromRegistration(registrationId);
-            return users;
-        } catch (Exception e){
+            return registrationService.findUsersContactDetailsByRegistrationId(registrationId);
+            // return registrationService.getUsersFromRegistration(registrationId);
+        } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
             return null;
         }
     }
+
+    @ApiOperation(value = "Edit method")
+    @RequestMapping(value = "/edit", method = RequestMethod.PUT, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO editDummy(@RequestBody UserContactDetails userContactDetails) {
+        return new ResponseDTO(true, "not implemented", new ErrorDTO());
+    }
+
+
+    @ApiOperation(value = "Update new language for user")
+    @RequestMapping(value = "/checkIfApplied", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO checkIfApplied() {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            if (Validator.isNotNull(userConnected)) {
+                if (userConnected.getType() != 3) {
+                    throw new AccessDeniedException("");
+                }
+                responseDTO.setSuccess(true);
+                responseDTO.setData(userService.checkIfApplied(userConnected));
+            } else {
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(400, "User not found"));
+            }
+
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been checked", e);
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(400, "Bad Request"));
+        }
+
+        return responseDTO;
+    }
+
 
 }
