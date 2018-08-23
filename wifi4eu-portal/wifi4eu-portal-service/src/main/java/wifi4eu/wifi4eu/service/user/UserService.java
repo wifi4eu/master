@@ -583,9 +583,7 @@ public class UserService {
         registrationUsersRepository.save(registrationUsers);
     }
 
-    public boolean checkIfApplied() {
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userDTO = getUserByUserContext(userContext);
-        return applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0;
+    public boolean checkIfApplied(UserDTO userDTO) {
+       return applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0;
     }
 }

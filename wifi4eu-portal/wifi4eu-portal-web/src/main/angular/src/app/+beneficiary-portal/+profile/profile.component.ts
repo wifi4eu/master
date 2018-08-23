@@ -189,8 +189,8 @@ export class BeneficiaryProfileComponent {
 
     private checkIfWithdrawAble(){
         this.userApi.checkIfApplied().subscribe(
-            (hasApplied : boolean) => {
-                this.withdrawAble = hasApplied;
+            (hasApplied : ResponseDTOBase) => {
+                this.withdrawAble = hasApplied.data;
             }, error =>{
                 console.log(error);
 
