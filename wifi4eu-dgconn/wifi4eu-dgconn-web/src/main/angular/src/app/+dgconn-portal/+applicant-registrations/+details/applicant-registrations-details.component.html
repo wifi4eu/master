@@ -201,7 +201,7 @@
                                             </p-column>
                                             <p-column field="uploadTime" [sortable]="true" header="{{ 'dgConn.dateRecieved' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <span *ngIf="row.uploadTime">{{ row.uploadTime | date:'dd/MM/yyyy' }}</span>
+                                                    <span *ngIf="row.uploadTime">{{ row.uploadTime | date:'dd/MM/yyyy HH:mm' }}</span>
                                                     <span *ngIf="!row.uploadTime">-</span>
                                                 </ng-template>
                                             </p-column>
@@ -213,7 +213,7 @@
                                              </p-column>
                                             <p-column field="requestCorrectionDate" [sortable]="true" header="{{ 'dgConn.requestCorrectionDate' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <span *ngIf="row.requestCorrectionDate != null && row.correctionReason != null">{{ row.requestCorrectionDate | date:'dd/MM/yyyy' }}</span>
+                                                    <span *ngIf="row.requestCorrectionDate != null && row.correctionReason != null">{{ row.requestCorrectionDate | date:'dd/MM/yyyy HH:mm'}}</span>
                                                     <span *ngIf="row.correctionReason == null ||  row.correctionReason == null">-</span>
                                                 </ng-template>
                                              </p-column>
