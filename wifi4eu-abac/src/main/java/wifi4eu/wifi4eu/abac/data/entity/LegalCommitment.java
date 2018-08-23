@@ -4,9 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.*;
-import javax.print.Doc;
 
-import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentWorkflowStatus;
 
 @Entity
@@ -32,8 +30,8 @@ public class LegalCommitment {
 	@JoinColumn(name = "LEGAL_ENTITY_ID")
 	private LegalEntity legalEntity;
 	
-	@Column(name = "abac_id")
-	private Long abacId;
+	@Column(name = "abac_key")
+	private Long abacKey;
 	
 	@Column(name = "wf_status")
 	@Enumerated(EnumType.STRING)
@@ -65,13 +63,13 @@ public class LegalCommitment {
 	public LegalCommitment() {
 	}
 
-	public LegalCommitment(Long id, LegalEntity legalEntity, Long abacId, LegalCommitmentWorkflowStatus wfStatus,
-			String userImported, Date dateCreated, Date dateUpdated, Date countersignatureDate,
-			Long idCountersignatureFile, String userCountersignatured) {
+	public LegalCommitment(Long id, LegalEntity legalEntity, Long abacKey, LegalCommitmentWorkflowStatus wfStatus,
+						   String userImported, Date dateCreated, Date dateUpdated, Date countersignatureDate,
+						   Long idCountersignatureFile, String userCountersignatured) {
 		super();
 		this.id = id;
 		this.legalEntity = legalEntity;
-		this.abacId = abacId;
+		this.abacKey = abacKey;
 		this.wfStatus = wfStatus;
 		this.dateCreated = dateCreated;
 		this.dateUpdated = dateUpdated;
@@ -100,12 +98,12 @@ public class LegalCommitment {
 		this.legalEntity = legalEntity;
 	}
 
-	public Long getAbacId() {
-		return abacId;
+	public Long getAbacKey() {
+		return abacKey;
 	}
 
-	public void setAbacId(Long abacId) {
-		this.abacId = abacId;
+	public void setAbacKey(Long abacKey) {
+		this.abacKey = abacKey;
 	}
 
 	public LegalCommitmentWorkflowStatus getWfStatus() {
@@ -174,7 +172,7 @@ public class LegalCommitment {
 
 	@Override
 	public String toString() {
-		return "LegalCommitment [id=" + id + ", legalEntity=" + legalEntity + ", abacId=" + abacId + ", wfStatus="
+		return "LegalCommitment [id=" + id + ", legalEntity=" + legalEntity + ", abacKey=" + abacKey + ", wfStatus="
 				+ wfStatus + ", dateCreated=" + dateCreated + ", dateUpdated=" + dateUpdated + "]";
 	}
 }
