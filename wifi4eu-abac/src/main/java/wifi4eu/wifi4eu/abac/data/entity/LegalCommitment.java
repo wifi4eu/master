@@ -1,7 +1,9 @@
 package wifi4eu.wifi4eu.abac.data.entity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -59,6 +61,10 @@ public class LegalCommitment {
 
 	@Column(name = "BATCH_REF", length = 50)
 	private String batchRef;
+
+	@OneToMany(mappedBy = "legalCommitment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OrderBy("submitDate DESC")
+	private List<LegalCommitmentAbacRequest> abacRequests = new ArrayList<LegalCommitmentAbacRequest>();
 
 	public LegalCommitment() {
 	}
@@ -168,6 +174,10 @@ public class LegalCommitment {
 
 	public void setBatchRef(String batchRef) {
 		this.batchRef = batchRef;
+	}
+
+	public String getAbacErrorMessage(){
+		return !abacRequests.isEmpty() ? abacRequests.get(0).getErrorMessage() : null;
 	}
 
 	@Override

@@ -6,6 +6,7 @@ public enum LegalCommitmentImportCSVColumn {
 	GRANT_AGREEMENT_SIGNATURE_DATE("ga_signatureDate"),
 	GRANT_AGREEMENT_COUNTERSIGNATURE_DATE("ga_counterSignatureDate"),
 	ABAC_STATUS("lc_abacStatus"),
+	ABAC_MESSAGE("abac_message"),
 	ABAC_KEY("abac_key");
 	
 	private String value;

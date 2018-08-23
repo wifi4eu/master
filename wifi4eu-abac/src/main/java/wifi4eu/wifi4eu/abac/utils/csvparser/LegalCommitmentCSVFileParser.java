@@ -43,6 +43,7 @@ public class LegalCommitmentCSVFileParser extends AbstractCSVFileParser{
 							LegalCommitmentImportCSVColumn.GRANT_AGREEMENT_SIGNATURE_DATE.toString(),
 							LegalCommitmentImportCSVColumn.GRANT_AGREEMENT_COUNTERSIGNATURE_DATE.toString(),
 							LegalCommitmentImportCSVColumn.ABAC_STATUS.toString(),
+							LegalCommitmentImportCSVColumn.ABAC_MESSAGE.toString(),
 							LegalCommitmentImportCSVColumn.ABAC_KEY.toString()
 					));
 
@@ -51,7 +52,8 @@ public class LegalCommitmentCSVFileParser extends AbstractCSVFileParser{
 						legalCommitment.getLegalEntity().getMid(),
 						DateTimeUtils.format(legalCommitment.getGrantAgreementSignatureDate(), PORTAL_CSV_DATE_FORMAT),
 						DateTimeUtils.format(legalCommitment.getGrantAgreementCounterSignatureDate(), PORTAL_CSV_DATE_FORMAT),
-						legalCommitment.getWfStatus().getTitle(),
+						legalCommitment.getWfStatus(),
+						legalCommitment.getAbacErrorMessage(),
 						legalCommitment.getAbacKey()
 				);
 			}

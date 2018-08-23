@@ -33,7 +33,7 @@ export class ApiModule {
     }
 
     importBudgetaryCommitment(file?: File): Observable<HttpEvent<ResponseDTO>> {
-      return this.importFile('budgetaryCommitment/import', file);
+      return this.importFile('legalCommitment/import', file);
     }
 
     importLegalCommitment(file?: File): Observable<HttpEvent<ResponseDTO>> {
