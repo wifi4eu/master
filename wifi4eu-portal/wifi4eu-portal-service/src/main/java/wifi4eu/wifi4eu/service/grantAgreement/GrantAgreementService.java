@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.service.grantAgreement;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.text.DateFormat;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import com.microsoft.applicationinsights.core.dependencies.apachecommons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,7 @@ import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.mapper.grantAgreement.GrantAgreementMapper;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
@@ -124,9 +127,11 @@ public class GrantAgreementService {
             grantAgreementDTO.setDocumentLanguage(inputGrantAgreement.getDocumentLanguage());
             return grantAgreementMapper.toDTO(agreementRepository.save(grantAgreementMapper.toEntity(grantAgreementDTO)));
         } else {
-        	if (inputGrantAgreement.getId() != 0) {
-        		_log.warn("Call to a create method with id set, the value has been removed ({})", inputGrantAgreement.getId());
-        		inputGrantAgreement.setId(0);	
+        	if (Validator.isNotNull(inputGrantAgreement.getId())) {
+        	    if(inputGrantAgreement.getId() != 0){
+                    _log.warn("Call to a create method with id set, the value has been removed ({})", inputGrantAgreement.getId());
+                    inputGrantAgreement.setId(0);
+                }
         	}        	
             return grantAgreementMapper.toDTO(agreementRepository.save(grantAgreementMapper.toEntity(inputGrantAgreement)));
         }
@@ -145,7 +150,9 @@ public class GrantAgreementService {
     }
 
     public ByteArrayOutputStream fillGrantAgreementDocument(GrantAgreementDTO grantAgreement, Map<String, String> mapProperties) throws Exception {
-        byte[] fileData = azureBlobStorage.getFileFromContainer("docs", "grant_agreement_template_" + grantAgreement.getDocumentLanguage() + ".docx");
+        //byte[] fileData = azureBlobStorage.getFileFromContainer("docs", "grant_agreement_template_" + grantAgreement.getDocumentLanguage() + ".docx");
+        File file = new File("C:\\grant_agreements\\CNECT-2017-00250-02-08-EN-ORI-00-1.pdf");
+        byte[] fileData = FileUtils.readFileToByteArray(file);
         return ParametrizedDocConverter.convert(fileData, mapProperties);
     }
 
@@ -177,24 +184,48 @@ public class GrantAgreementService {
         String year = df.format(cal.getTime());
 
         Map<String,String> replacementsMap = new HashMap<String,String>();
-        replacementsMap.put("[<call number>", String.valueOf(applicationDTO.getCallId()));
-        replacementsMap.put("<year>]", year);
-        replacementsMap.put("[<unique identifying number>]", formattedRegistrationID.concat("-").concat(formattedUserID));
-        replacementsMap.put("[function, forename and surname]", "Head of Department C, Andreas Boschen");
-        replacementsMap.put("[function-2, forename and surname]", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
-        replacementsMap.put("[full official name]", lauDTO.getName1());
-        replacementsMap.put("[official address in full]", municipalityDTO.getAddress().concat(", ").concat(municipalityDTO.getAddressNum()));
-        replacementsMap.put("[insert name of the municipality]", lauDTO.getName2());
-        replacementsMap.put("[insert number of the action in bold]", "INEA/CEF/WiFi4EU/" + String.valueOf(applicationDTO.getCallId()).concat(year) + "/" +  formattedRegistrationID.concat("-").concat(formattedUserID));
-        if(grantAgreement.getDocumentLanguage().equalsIgnoreCase("en")){
-            replacementsMap.put("[or in English]", "");
-        }
-        replacementsMap.put("[language]", languagesMap.get(grantAgreement.getDocumentLanguage()));
-        replacementsMap.put("[function/forename/surname]", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
-        replacementsMap.put("INEA/CEF/ICT/", "INEA/CEF/WiFi4EU/");
-        replacementsMap.put("[<M or A><year>]", String.valueOf(applicationDTO.getCallId()).concat(year));
-        replacementsMap.put("[xxxx]", formattedRegistrationID.concat("-").concat(formattedUserID));
-        replacementsMap.put("[e-signature]", "");
+//        replacementsMap.put("[<call number>", String.valueOf(applicationDTO.getCallId()));
+//        replacementsMap.put("<year>]", year);
+//        replacementsMap.put("[<unique identifying number>]", formattedRegistrationID.concat("-").concat(formattedUserID));
+//        replacementsMap.put("[function, forename and surname]", "Head of Department C, Andreas Boschen");
+//        replacementsMap.put("[function-2, forename and surname]", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
+//        replacementsMap.put("[full official name]", lauDTO.getName1());
+//        replacementsMap.put("[official address in full]", municipalityDTO.getAddress().concat(", ").concat(municipalityDTO.getAddressNum()));
+//        replacementsMap.put("[insert name of the municipality]", lauDTO.getName2());
+//        replacementsMap.put("[insert number of the action in bold]", "INEA/CEF/WiFi4EU/" + String.valueOf(applicationDTO.getCallId()).concat(year) + "/" +  formattedRegistrationID.concat("-").concat(formattedUserID));
+//        if(grantAgreement.getDocumentLanguage().equalsIgnoreCase("en")){
+//            replacementsMap.put("[or in English]", "");
+//        }
+//        replacementsMap.put("[language]", languagesMap.get(grantAgreement.getDocumentLanguage()));
+//        replacementsMap.put("[function/forename/surname]", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
+//        replacementsMap.put("INEA/CEF/ICT/", "INEA/CEF/WiFi4EU/");
+//        replacementsMap.put("[<M or A><year>]", String.valueOf(applicationDTO.getCallId()).concat(year));
+//        replacementsMap.put("[xxxx]", formattedRegistrationID.concat("-").concat(formattedUserID));
+//        replacementsMap.put("[e-signature]", "");
+
+
+        String header = String.valueOf(applicationDTO.getCallId());
+        header = header.concat(year);
+        header = header.concat("/");
+        header = header.concat(formattedRegistrationID.concat("-").concat(formattedUserID));
+
+        replacementsMap.put("header", header);
+        replacementsMap.put("field1", header);
+        replacementsMap.put("field1-1", header);
+        replacementsMap.put("field-forename-1", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
+        replacementsMap.put("field-name-commission", "Head of Department C, Andreas Boschen");
+        replacementsMap.put("field-2", lauDTO.getName1() + "\n "+ municipalityDTO.getAddress().concat(", ").concat(municipalityDTO.getAddressNum()));
+        replacementsMap.put("field-language", languagesMap.get(grantAgreement.getDocumentLanguage()));
+        replacementsMap.put("field-beneficiary-name", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
+        replacementsMap.put("field-signature", "Xavier Surname signed as Legal Representative of the\n" +
+                "Beneficiary on Tue Jul 31 18:47:07 CEST 2018\n" +
+                "(transaction id SigId-27209-\n" +
+                "O2jSYygvobI0eSiG6v2bqYLWB2zNkaxzY9JUFLD0UByjoP\n" +
+                "dQakBmZ0zPEKrCzrJBo977gK9vlHcKhngDfgSuaDKJj71zxYb8yrTT3vIUqFFIKvWttC9ug9BrVyPTnMOWmzeuvXoYovehkB0BJ8W6H8iD)");
+        replacementsMap.put("field-agency-name", "user of agency");
+        replacementsMap.put("field-signature-agency", "SIGNATURE HERE");
+        replacementsMap.put("field-action", lauDTO.getName2());
+        replacementsMap.put("field-municipality", "INEA/CEF/WiFi4EU/".concat(header));
         return fillGrantAgreementDocument(grantAgreement, replacementsMap);
     }
 

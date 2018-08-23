@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Map;
 
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 import fr.opensagres.xdocreport.itext.extension.IPdfWriterConfiguration;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.converter.pdf.PdfConverter;
@@ -28,15 +28,71 @@ public class ParametrizedDocConverter {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        XWPFDocument doc = new XWPFDocument(new ByteArrayInputStream(byteData));
+        //XWPFDocument doc = new XWPFDocument(new ByteArrayInputStream(byteData));
 
-        doc = replacePOI(doc, replacementsMap);
+        //doc = replacePOI(doc, replacementsMap);
 
-        outputStream = convertDocToPDF(doc, outputStream);
-        doc.close();
+        outputStream = replaceWithPdfForm(byteData, outputStream, replacementsMap);
+        //doc.close();
         outputStream.close();
         return outputStream;
     }
+
+    public static ByteArrayOutputStream replaceWithPdfForm(byte[] data, ByteArrayOutputStream outputStream, Map<String, String> replacementsMap ) {
+        try {
+            PdfReader reader = new PdfReader(data);
+            PdfStamper stamper = new PdfStamper(reader, outputStream);
+            AcroFields fields = stamper.getAcroFields();
+
+            for (Map.Entry<String, String> replPair : replacementsMap.entrySet()) {
+                String find = replPair.getKey();
+                String repl = replPair.getValue();
+                try{
+                    final BaseFont fontBold = BaseFont.createFont(BaseFont.TIMES_BOLD, BaseFont.CP1252, BaseFont.EMBEDDED);
+                    final BaseFont font = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.EMBEDDED);
+
+                    if(find.equalsIgnoreCase("field1")){
+                        fields.setFieldProperty(find, "textfont", fontBold, null);
+                    }else{
+                        fields.setFieldProperty(find, "textfont", font, null);
+                    }
+
+                    if(find.equalsIgnoreCase("header")){
+                        fields.setFieldProperty(find, "textsize", new Float(9), null);
+                    }
+                    else{
+                        fields.setFieldProperty(find, "textsize", new Float(12), null);
+                    }
+                    fields.setField(find, repl);
+                }
+                catch (Exception e){
+                    System.out.println("Field not found");
+                }
+            }
+
+            /**
+             * header
+             * field1 -OK
+             * field1-1 - OK
+             * field-name-commission - OK
+             * field-2 - OK
+             * field-forename-1 -OK
+             * field-language - OK
+             * field-action
+             * field-municipality
+             * field-beneficiary-name
+             * field-signature
+             * field-agency-name
+             * field-signature-agency
+             */
+
+            stamper.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return outputStream;
+    }
+
 
     private static XWPFDocument replacePOI(XWPFDocument doc, Map<String, String> replacementsMap) {
         // REPLACE ALL HEADERS
