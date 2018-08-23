@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "See stardiloendus on orienteeriv. Kui konkursikutse on avaldatud, klõpsake „Taotle“ (kui klõpsate enne, kui konkurss on ametlikult alanud, kuvatakse veateade) ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Nõustun #osalemiskutse tingimustega# ja kinnitan, et omavalitsus, keda esindan, ei ole üheski #määruse (EL, Euratom) 2018/1046# artikli 136 lõikes 1 loetletud olukorras.",
+  "benefPortal.voucher.conditionsAgreement": "Nõustun <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>osalemiskutse tingimustega</a> ja kinnitan, et omavalitsus, keda esindan, ei ole üheski <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>määruse (EL, Euratom) 2018/1046</a> artikli 136 lõikes 1 loetletud olukorras.",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",

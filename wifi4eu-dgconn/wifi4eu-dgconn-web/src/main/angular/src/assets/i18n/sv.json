@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Observera att nedräkningen bara är vägledande. Klicka på ”Ansök” när ansökningsomgången har startat (om du klickar tidigare får du ett felmeddelande) ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Jag samtycker till #villkoren för ansökningsomgången# och försäkrar att den kommun jag företräder inte befinner sig i någon av de situationer som anges i artikel 136 .1 i #förordning (EU, Euratom) 2018/1046#",
+  "benefPortal.voucher.conditionsAgreement": "Jag samtycker till <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>villkoren för ansökningsomgången</a> och försäkrar att den kommun jag företräder inte befinner sig i någon av de situationer som anges i artikel 136 .1 i <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>förordning (EU, Euratom) 2018/1046</a>",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",

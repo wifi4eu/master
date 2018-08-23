@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Hinweis: Die Angabe der Restzeit ist nicht verbindlich. Klicken Sie, wenn die Aufforderung ergeht, auf „Antrag stellen“, um mit Ihrem Antrag fortzufahren (Klicks vor dem offiziellen Start der Aufforderung führen zu einer Fehlermeldung). ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Ich bin mit den #Teilnahmebedingungen# einverstanden und erkläre hiermit, dass die von mir vertretene Gemeinde sich in keiner der in Artikel 136 Absatz 1 der #Verordnung (EU, Euratom) 2018/1046# genannten Situationen befindet.",
+  "benefPortal.voucher.conditionsAgreement": "Ich bin mit den <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>Teilnahmebedingungen</a> einverstanden und erkläre hiermit, dass die von mir vertretene Gemeinde sich in keiner der in Artikel 136 Absatz 1 der <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>Verordnung (EU, Euratom) 2018/1046</a> genannten Situationen befindet.",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",

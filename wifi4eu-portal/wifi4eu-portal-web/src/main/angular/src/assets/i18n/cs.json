@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Tento odpočet je čistě orientační. Po zahájení výzvy klikněte na tlačítko „Odeslat žádost“, čímž spustíte zpracování vaší žádosti (pokud byste na toto tlačítko kliknuli ještě před zahájením výzvy, zobrazí se chybové hlášení). ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Souhlasím s #podmínkami výzvy# a prohlašuji, že obec, kterou zastupuji, se nenachází v žádné ze situací uvedených v čl. 136 odst. 1 #nařízení (EU, Euratom) 2018/1046#",
+  "benefPortal.voucher.conditionsAgreement": "Souhlasím s <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>podmínkami výzvy</a> a prohlašuji, že obec, kterou zastupuji, se nenachází v žádné ze situací uvedených v čl. 136 odst. 1 <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>nařízení (EU, Euratom) 2018/1046</a>",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",

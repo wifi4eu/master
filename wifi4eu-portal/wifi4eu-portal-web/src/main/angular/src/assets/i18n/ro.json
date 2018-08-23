@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Menționăm că numărătoarea inversă este furnizată doar cu titlu orientativ. Pentru a participa, faceți clic pe „Trimite” când se deschide cererea de proiecte (dacă apăsați pe buton înainte de lansarea oficială a cererii de proiecte se va afișa un mesaj de eroare). ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Sunt de acord cu #condițiile aferente cererii de proiecte# și declar că municipalitatea pe care o reprezint nu este vizată de niciuna din situațiile enumerate la articolul 136 alineatul (1) din #Regulamentul (EU, Euratom) 2018/1046#",
+  "benefPortal.voucher.conditionsAgreement": "Sunt de acord cu <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>condițiile aferente cererii de proiecte</a> și declar că municipalitatea pe care o reprezint nu este vizată de niciuna din situațiile enumerate la articolul 136 alineatul (1) din <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>Regulamentul (EU, Euratom) 2018/1046</a>",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",
