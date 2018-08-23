@@ -105,7 +105,7 @@
                     <label class="label floatLeft">{{ 'shared.email.label' | translate }}</label>
                     <input class="form-control paddingInput"  type="email" [pattern]="emailPattern" 
                            [(ngModel)]="mayors[0].email" id="emailStep2" name="email"  maxlength="254" 
-                           (paste)="checkEmailsMatch()"(input)="checkEmailsMatch()" required>
+                           (paste)="checkEmailsMatch()" (input)="checkEmailsMatch()" required>
                     <label class="field-desc" style="margin-top: 10px;color: gray;">
                         {{ 'benefRegistration.email.fielddesc' | translate }}
                     </label>
@@ -115,10 +115,10 @@
             <div id="mayor-confirm-email" class="form-group ui-g">
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.confirmemail.label' | translate }}</label>
-                    <input class="form-control paddingInput {{css_class_email[0]}}" 
-                           name="confirm-email" id="confirm-emailStep2" type="email" maxlength="254"
+                    <input class="form-control paddingInput {{css_class_email[0]}}" [pattern]="emailPattern" type="email" maxlength="254"
+                           name="confirm-email" id="confirm-emailStep2"
                            (input)="checkEmailsMatch()" (paste)="preventPaste()"
-                           [(ngModel)]="emailConfirmations[0]"  required>
+                           [(ngModel)]="emailConfirmations[0]">
                 </div>
             </div>
         </ng-container>
@@ -158,9 +158,9 @@
                                     <div class="form-group">
                                         <label class="label floatLeft" for="address">
                                             {{ 'benefRegistration.townHall.address' | translate }}</label>
-                                        <input type="text" class="form-control paddingInput" min="1"
+                                        <input type="text" class="form-control paddingInput" min="1" [(ngModel)]="municipalities[i].address" 
                                                [id]="'address-'+i" [name]="'address-'+i" maxlength="254" (paste)="checkButtonEnabled($event, i)" (ngModelChange)="checkButtonEnabled($event, i)"
-                                               [(ngModel)]="municipalities[i].address" required>
+                                               required>
                                     </div>
                                 </div>
 
@@ -168,9 +168,9 @@
                                     <div class="form-group">
                                         <label class="label floatLeft" for="address">
                                             {{ 'shared.number.label' | translate }}</label>
-                                        <input type="text" class="form-control paddingInput"
+                                        <input type="text" class="form-control paddingInput"  [(ngModel)]="municipalities[i].addressNum"
                                                [id]="'addressNum-'+i" [name]="'addressNum-'+i" maxlength="254" (paste)="checkButtonEnabled($event, i)"  (ngModelChange)="checkButtonEnabled($event, i)"
-                                               [(ngModel)]="municipalities[i].addressNum" required>
+                                               required>
                                     </div>
                                 </div>
                             </div>
@@ -181,9 +181,9 @@
                                     <div class="form-group">
                                         <label class="label floatLeft" [for]="'postalCode-'+i">
                                             {{ 'shared.postal-code.label' | translate }}</label>
-                                        <input type="text" class="form-control paddingInput"
+                                        <input type="text" class="form-control paddingInput" [(ngModel)]="municipalities[i].postalCode"
                                                [id]="'postalCode-'+i" [name]="'postalCode-'+i" maxlength="254" (paste)="checkButtonEnabled($event, i)"  (ngModelChange)="checkButtonEnabled($event, i)"
-                                               [(ngModel)]="municipalities[i].postalCode"  required>
+                                                 required>
                                     </div>
                                 </div>
                                 <div class="ui-g-8"></div>
@@ -203,8 +203,8 @@
                         <div [id]="'mayor-name-'+i" class="form-group ui-g">
                             <div class="ui-g-12">
                                 <label class="label floatLeft">{{ 'shared.name.label' | translate }}</label>
-                                <input class="form-control paddingInput" [name]="'name-'+i" [id]="'name-'+i" type="text"  maxlength="254" (paste)="checkButtonEnabled($event, i)"  (ngModelChange)="checkButtonEnabled($event, i)"
-                                       [(ngModel)]="mayors[i].name" required>
+                                <input class="form-control paddingInput"  [(ngModel)]="mayors[i].name" [name]="'name-'+i" [id]="'name-'+i" type="text"  maxlength="254" (paste)="checkButtonEnabled($event, i)"  (ngModelChange)="checkButtonEnabled($event, i)"
+                                        required>
                             </div>
                         </div>
                         <!-- Mayor last name -->
@@ -213,9 +213,9 @@
                                 <label class="label floatLeft">
                                     {{ 'shared.surname.label' | translate }}
                                 </label>
-                                <input class="form-control paddingInput" type="text" [name]="'surname-'+i"  maxlength="254"
-                                       [id]="'surname-'+i" (paste)="checkButtonEnabled($event, i)"  (ngModelChange)="checkButtonEnabled($event, i)"
-                                       [(ngModel)]="mayors[i].surname" required>
+                                <input class="form-control paddingInput"  [(ngModel)]="mayors[i].surname" type="text" [name]="'surname-'+i"  maxlength="254"
+                                       [id]="'surname-'+i" (paste)="checkButtonEnabled($event, i)"   (ngModelChange)="checkButtonEnabled($event, i)"
+                                       required>
                             </div>
                         </div>
                         <!-- Mayor email -->
@@ -237,10 +237,9 @@
                                 <label class="label floatLeft">
                                     {{ 'shared.confirmemail.label' | translate }}
                                 </label>
-                                <input class="form-control paddingInput {{css_class_email[i]}}" type="email"  maxlength="254"
+                                <input class="form-control paddingInput {{css_class_email[i]}}" [pattern]="emailPattern"  type="email"  maxlength="254"
                                        [name]="'confirm-email-'+i" [id]="'confirm-email-'+i"
-                                       (input)="checkEmailsMatch()" (paste)="preventPaste()"
-                                       [(ngModel)]="emailConfirmations[i]" >
+                                       (input)="checkEmailsMatch()" (paste)="preventPaste()" [(ngModel)]="emailConfirmations[i]">
                             </div>
                         </div>
                         <div class="form-group ui-g-12 right" *ngIf="i > 0">
