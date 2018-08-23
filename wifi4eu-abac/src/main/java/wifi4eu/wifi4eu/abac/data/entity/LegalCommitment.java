@@ -66,6 +66,9 @@ public class LegalCommitment {
 	@OrderBy("submitDate DESC")
 	private List<LegalCommitmentAbacRequest> abacRequests = new ArrayList<LegalCommitmentAbacRequest>();
 
+	@Column(name = "GRANT_AGREEMENT_CNTRSIGN_USER")
+	private String grantAgreementCounterSignatureUser;
+
 	public LegalCommitment() {
 	}
 
@@ -176,8 +179,16 @@ public class LegalCommitment {
 		this.batchRef = batchRef;
 	}
 
-	public String getAbacErrorMessage(){
+	public String getAbacErrorMessage() {
 		return !abacRequests.isEmpty() ? abacRequests.get(0).getErrorMessage() : null;
+	}
+
+	public String getGrantAgreementCounterSignatureUser() {
+		return grantAgreementCounterSignatureUser;
+	}
+
+	public void setGrantAgreementCounterSignatureUser(String grantAgreementCounterSignatureUser) {
+		this.grantAgreementCounterSignatureUser = grantAgreementCounterSignatureUser;
 	}
 
 	@Override

@@ -1,5 +1,8 @@
 package wifi4eu.wifi4eu.abac.service;
 
+import eu.cec.digit.ecas.client.jaas.DetailedUser;
+import eu.cec.digit.ecas.client.jaas.SubjectNotFoundException;
+import eu.cec.digit.ecas.client.jaas.SubjectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,6 @@ import wifi4eu.wifi4eu.abac.data.dto.LegalCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentWorkflowStatus;
@@ -37,6 +39,9 @@ public class LegalCommitmentService {
 	@Autowired
 	private LegalEntityService legalEntityService;
 
+	@Autowired
+	private PropertiesService propertiesService;
+
 	@Transactional
 	public void findAndCounterSignGrantAgreements() {
 
@@ -45,7 +50,8 @@ public class LegalCommitmentService {
 			for (LegalCommitment legalCommitment : legalCommitments) {
 
 				Document grantAgreement = legalCommitment.getGrantAgreementDocument();
-				byte[] countersignedFile = essiService.signDocument(grantAgreement);
+
+				byte[] countersignedFile = essiService.signDocument(grantAgreement, createSignatureDescription(legalCommitment));
 
 				Document counterSignedGrantAgreement = new Document();
 				counterSignedGrantAgreement.setName("countersigned_"+ grantAgreement.getName());
@@ -69,6 +75,28 @@ public class LegalCommitmentService {
 		} catch (Throwable e) {
 			log.error(e.getMessage());
 		}
+	}
+
+	private String createSignatureDescription(LegalCommitment legalCommitment) {
+		String designatedOfficerUid = propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_UID");
+		String designatedOfficerName = propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_NAME");
+		String signatureDescription = "";
+		if(legalCommitment.getGrantAgreementCounterSignatureUser().equalsIgnoreCase(designatedOfficerUid)){
+            signatureDescription = "Signed by " + designatedOfficerName;
+        }else{
+            signatureDescription = "Signed on behalf of " + designatedOfficerName;
+        }
+		return signatureDescription;
+	}
+
+	private DetailedUser getCurrentUser() {
+		DetailedUser currentEcasUser = null;
+		try {
+			currentEcasUser = SubjectUtil.getCurrentEcasUser();
+		} catch (SubjectNotFoundException e) {
+			log.error("ERROR while trying to retrieve the current user", e);
+		}
+		return currentEcasUser;
 	}
 
 	public void createLegalCommitments(String batchRef) {
@@ -117,6 +145,7 @@ public class LegalCommitmentService {
 
 			if (legalCommitment != null) {
 				legalCommitment.setWfStatus(LegalCommitmentWorkflowStatus.COUNTERSIGNATURE_REQUESTED);
+				legalCommitment.setGrantAgreementCounterSignatureUser(getCurrentUser().getUid());
 				saveLegalCommitment(legalCommitment);
 			}
 		}

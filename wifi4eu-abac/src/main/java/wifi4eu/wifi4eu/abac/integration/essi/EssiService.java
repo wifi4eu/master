@@ -5,8 +5,6 @@ import eu.europa.ec.digit.essi.common.util.ConfigurationProperties;
 import eu.europa.ec.digit.essi.services.central.client.ClientConfiguration;
 import eu.europa.ec.digit.essi.services.central.client.PadesSigner;
 import eu.europa.ec.digit.essi.services.central.client.PdfSignatureField;
-import eu.europa.ec.digit.essi.services.central.client.SigningException;
-import eu.europa.ec.digit.essi.services.central.client.SigningFailedException;
 import eu.europa.ec.digit.essi.services.central.client.SigningResult;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -16,8 +14,6 @@ import wifi4eu.wifi4eu.abac.data.entity.Document;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -44,12 +40,12 @@ public class EssiService {
         }
     }
 
-    public byte[] signDocument(Document document) throws Exception {
+    public byte[] signDocument(Document document, String signatureDescription) throws Exception {
         PadesSigner psigner = new PadesSigner(essiClientConfiguration);
         PDFWidgetDescription pdfWidgetDescription = new PDFWidgetDescription();
-        PDFWidgetDescription.Text text = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(100, 100), "This is signed by Alex");
+        PDFWidgetDescription.Text text = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(100, 100), signatureDescription);
         pdfWidgetDescription.addText(text);
-        pdfWidgetDescription.setPosition(new PDFWidgetDescription.Position(/*x*/350, /*y*/150, /*width*/200, /*height*/100));
+        pdfWidgetDescription.setPosition(new PDFWidgetDescription.Position(/*x*/320, /*y*/150, /*width*/200, /*height*/100));
         psigner.setPdfSignatureField(new PdfSignatureField(PdfSignatureField.Policy.NEW_IF_NO_EXISTING, /*page*/7, "For the Agency", pdfWidgetDescription));
 
         SigningResult signingResult = psigner.signWithResult(document.getData());
