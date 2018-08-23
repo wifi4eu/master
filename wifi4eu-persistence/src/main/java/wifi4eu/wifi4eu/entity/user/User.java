@@ -68,10 +68,16 @@ public class User {
     @Column(name = "contact_phone_number")
     private String phone_number;
 
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "city")
+    private String city;
+
     public User() {
     }
 
-    public User(Integer id, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken, String phone_prefix, String phone_number) {
+    public User(Integer id, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken, String phone_prefix, String phone_number, String country, String city) {
         this.id = id;
         this.treatment = treatment;
         this.name = name;
@@ -91,6 +97,8 @@ public class User {
         this.csrfToken = csrfToken;
         this.phone_prefix = phone_prefix;
         this.phone_number = phone_number;
+        this.country = country;
+        this.city = city;
     }
 
     public Integer getId() {
@@ -243,5 +251,21 @@ public class User {
 
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

@@ -128,7 +128,7 @@ public class UserResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging in with ECAS User");
         // get registrationUsers relation pending to be approved for the user logging in
-        userService.saveInvitedUserModified(userConnected);
+        userConnected = userService.checkIfInvitedUser(userConnected);
         try {
             Cookie cookie = userService.getCSRFCookie();
             if (cookie != null) {
@@ -140,6 +140,36 @@ public class UserResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
+
+    @ApiOperation(value = "Service to do Login with a ECAS User")
+    @RequestMapping(value = "/complete-contact-details", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO completeInvitateContactDetails(HttpServletResponse response) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO responseDTO = new ResponseDTO();
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging in with ECAS User");
+        // get registrationUsers relation pending to be approved for the user logging in
+        try {
+
+            if (userService.createAddContactBeneficiary(userConnected)) {
+                responseDTO.setSuccess(true);
+                responseDTO.setData(userConnected);
+                return responseDTO;
+            }
+
+            responseDTO.setSuccess(false);
+            responseDTO.setData("-");
+
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Error filling the missing fields of contact beneficiary", e);
+            responseDTO.setSuccess(false);
+            responseDTO.setData("-");
+            responseDTO.setError(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+        return responseDTO;
+    }
+
 
     @ApiOperation(value = "Service to do Logout with a ECAS User")
     @RequestMapping(value = "/ecaslogout", method = RequestMethod.POST, produces = "application/json")

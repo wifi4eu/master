@@ -274,11 +274,15 @@ export class AppComponent {
                         this.router.navigateByUrl(String(publicRedirection));
                     }
                     this.sharedService.login(this.user);
+                    if (this.sharedService.user.userInvited){
+                        this.router.navigateByUrl('/invited-contact-details');
+                    }
                     if (this.children.length == 5) {
                         this.updateHeader();
                     } else {
                         this.childrenInitialized.subscribe(() => this.updateHeader());
                     }
+                    
                 }
             }
         );

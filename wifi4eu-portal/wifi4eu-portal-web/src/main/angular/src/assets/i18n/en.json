@@ -967,5 +967,6 @@
   "shared.editProfile.save.error": "An error ocurred while trying to update your profile data. Please, try again later.",
   "benefPortal.withdraw.existingApplication.error": "Your registrations cannot be removed because one of your registrations is applied",
   "shared.supportingDocuments.removeDocument": "Remove document",
-  "shared.supportingDocuments.removeModalAreYouSure": "Are you sure you want to remove this document?"
+  "shared.supportingDocuments.removeModalAreYouSure": "Are you sure you want to remove this document?",
+  "invitate.contact.details.title": "Please complete the form to be added as a contact"
 }

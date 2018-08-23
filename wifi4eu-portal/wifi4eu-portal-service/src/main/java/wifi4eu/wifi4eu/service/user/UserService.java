@@ -218,33 +218,35 @@ public class UserService {
     }
 
     @Transactional
-    public void saveInvitedUserModified(UserDTO userDTO){
+    public UserDTO checkIfInvitedUser(UserDTO userDTO){
         if (userDTO.getType() == 0){
-
             InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
             if (Validator.isNotNull(invitationContact)){
-
-                if (invitationContact.getIdRegistration() != null){
-                    userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
-                    createRegistrationUser(userDTO, invitationContact.getIdRegistration());
-
-                }else if (invitationContact.getIdSupplier() != null){
-                    userDTO.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
-                    createSupplierUser(userDTO, invitationContact.getIdSupplier());
-
-                }else{
-                    return; //Mister Tester
-                }
-
-                UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
-                userDTO.setLang(userDTOInvitatorDTO.getLang());
-                userRepository.save(userMapper.toEntity(userDTO));
-
-                invitationContact.setStatus(InvitationContactStatus.OK.getValue());
-                invitationContact.setLastModified(new Date());
-                invitationContactRepository.save(invitationContact);
+                userDTO.setUserInvited(true);
             }
         }
+        return userDTO;
+    }
+
+    public boolean createAddContactBeneficiary(UserDTO userDTO){
+        InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
+        if (Validator.isNotNull(invitationContact)){
+            if (invitationContact.getIdRegistration() != null){
+                userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
+                createRegistrationUser(userDTO, invitationContact.getIdRegistration());
+            } else if (invitationContact.getIdSupplier() != null){
+                userDTO.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
+                createSupplierUser(userDTO, invitationContact.getIdSupplier());
+            }
+            UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
+            userDTO.setLang(userDTOInvitatorDTO.getLang());
+            userRepository.save(userMapper.toEntity(userDTO));
+            invitationContact.setStatus(InvitationContactStatus.OK.getValue());
+            invitationContact.setLastModified(new Date());
+            invitationContactRepository.save(invitationContact);
+            return true;
+        }
+        return false;
     }
 
 
