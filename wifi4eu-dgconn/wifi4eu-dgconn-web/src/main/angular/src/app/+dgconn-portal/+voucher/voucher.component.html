@@ -279,6 +279,7 @@
                 <div class="col-md-3 offset-md-2">
                   <button type="button" class="btn btn-primary preSelection-button" [disabled]="callVoucherAssignment == null || callVoucherAssignment?.hasPreListSaved || !preSelectedEnabledButton"
                     (click)="checkPreListEnabled()">
+                    <i class="fa fa-spinner fa-spin" *ngIf="loadingPreList"></i>
                     {{'dgConn.voucherAssignment.preSelectionSave.button' | translate}}
                   </button>
                   <span class="dates-voucher-assignment" *ngIf="callVoucherAssignment?.hasPreListSaved" [innerHTML]="'dgConn.voucherAssignment.preList.date' | translate:{date:dateNumberPreList,hour:hourNumberPreList}"></span>
@@ -286,6 +287,7 @@
                 <div class="col-md-3">
                   <button type="button" class="btn btn-primary freezeList-button" [disabled]="!callVoucherAssignment?.hasPreListSaved || callVoucherAssignment?.hasFreezeListSaved || !freezeButtonEnabled"
                     (click)="freezeList()" disabled>
+                    <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i>
                     {{'dgConn.voucherAssignment.freezeList.button' | translate}}
                   </button>
                   <span class="dates-voucher-assignment" *ngIf="callVoucherAssignment?.hasFreezeListSaved" [innerHTML]="'dgConn.voucherAssignment.freezeList.date' | translate:{date:dateNumberFreeze,hour:hourNumberFreeze}"></span>
