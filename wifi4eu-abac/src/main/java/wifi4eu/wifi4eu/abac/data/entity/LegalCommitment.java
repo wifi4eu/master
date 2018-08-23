@@ -31,7 +31,7 @@ public class LegalCommitment {
 	private LegalEntity legalEntity;
 	
 	@Column(name = "abac_key")
-	private Long abacKey;
+	private String abacKey;
 	
 	@Column(name = "wf_status")
 	@Enumerated(EnumType.STRING)
@@ -63,7 +63,7 @@ public class LegalCommitment {
 	public LegalCommitment() {
 	}
 
-	public LegalCommitment(Long id, LegalEntity legalEntity, Long abacKey, LegalCommitmentWorkflowStatus wfStatus,
+	public LegalCommitment(Long id, LegalEntity legalEntity, String abacKey, LegalCommitmentWorkflowStatus wfStatus,
 						   String userImported, Date dateCreated, Date dateUpdated, Date countersignatureDate,
 						   Long idCountersignatureFile, String userCountersignatured) {
 		super();
@@ -98,11 +98,11 @@ public class LegalCommitment {
 		this.legalEntity = legalEntity;
 	}
 
-	public Long getAbacKey() {
+	public String getAbacKey() {
 		return abacKey;
 	}
 
-	public void setAbacKey(Long abacKey) {
+	public void setAbacKey(String abacKey) {
 		this.abacKey = abacKey;
 	}
 
