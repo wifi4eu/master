@@ -173,3 +173,18 @@ ALTER TABLE legal_files_correction_reason DROP COLUMN request_correction_date;
 --renaming temp column to the old ones
  EXEC sp_RENAME 'legal_files.upload_time2' , 'upload_time', 'COLUMN'
  EXEC sp_RENAME 'legal_files_correction_reason.request_correction_date2' , 'request_correction_date', 'COLUMN'
+
+create table admin_actions(
+   [id]	INT	NOT NULL IDENTITY,
+   [action] varchar(MAX) NOT NULL,
+   [is_running] bit,
+   [start_date] datetime,
+   [end_date] datetime,
+   [_user] int NOT NULL,
+   PRIMARY KEY ([id]),
+   CONSTRAINT [fk_user_action]
+   FOREIGN KEY ([_user])
+   REFERENCES dbo.users ([id])
+       ON DELETE CASCADE
+       ON UPDATE CASCADE
+);

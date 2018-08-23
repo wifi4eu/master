@@ -324,7 +324,7 @@ public class VoucherResource {
                 throw new AccessDeniedException("Access denied: sendNotificationForApplicants");
             }
             voucherService.sendNotificationForApplicants(callId);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Success on sending notification");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - The process of sending notifications has started successfully");
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to send notifications", ade.getMessage());
