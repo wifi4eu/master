@@ -41,9 +41,8 @@ public class App extends SpringBootServletInitializer implements CommandLineRunn
 			thread.start();
 			
 		} else if (Modes.commit.name().equals(this.mode)) {
-			ScheduledExecutorService schedulerExecutorService = Executors.newSingleThreadScheduledExecutor();
-			schedulerExecutorService.scheduleAtFixedRate(this.masterCommitter, 0, 60, TimeUnit.SECONDS);
-			
+			this.masterCommitter.commit();
+
 		}
 	}
 

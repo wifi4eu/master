@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.apply.committer;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -52,6 +51,7 @@ public class PageableCommitter implements ICommitter {
 	/**
 	 * 
 	 */
+	@Transactional(transactionManager="masterTransactionManager")
 	public void commit() {
 		List<ApplicationSQLite> localEntities = new ArrayList<>();
 
@@ -86,26 +86,25 @@ public class PageableCommitter implements ICommitter {
 		
 	}
 	
-	@Transactional(transactionManager="masterTransactionManager")
 	private void commitToDB(List<ApplicationSQLite> listLocalEntities, int pageSize) {
 		
 		MasterPreparedStatementSetter masterPreparedStatementSetter = new MasterPreparedStatementSetter();
 		Date dateApplication = new Date();
 		
-		Statement stmt;
-		try {
-			stmt = this.masterDataSource.getConnection().createStatement();
-			
-			this.LOGGER.info("DELETING PREVIOUS APPLICATIONS");
-			long startingDeletingTime = System.currentTimeMillis();
-
-			int deletedLines = stmt.executeUpdate("delete from applications");
-			
-			this.LOGGER.info("DELETED [{}] LINES. IT TOOK [{}]ms", deletedLines, System.currentTimeMillis() - startingDeletingTime);
-			
-		} catch (SQLException e) {
-			this.LOGGER.error("ERROR DELETING LINES", e);
-		}
+//		Statement stmt;
+//		try {
+//			stmt = this.masterDataSource.getConnection().createStatement();
+//			
+//			this.LOGGER.info("DELETING PREVIOUS APPLICATIONS");
+//			long startingDeletingTime = System.currentTimeMillis();
+//
+//			int deletedLines = stmt.executeUpdate("delete from applications");
+//			
+//			this.LOGGER.info("DELETED [{}] LINES. IT TOOK [{}]ms", deletedLines, System.currentTimeMillis() - startingDeletingTime);
+//			
+//		} catch (SQLException e) {
+//			this.LOGGER.error("ERROR DELETING LINES", e);
+//		}
 		
 		for (int i = 0; i <= listLocalEntities.size(); i += pageSize) {
 			int end = (i + pageSize) < listLocalEntities.size() ? (i + pageSize) : (listLocalEntities.size());
