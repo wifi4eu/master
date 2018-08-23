@@ -53,10 +53,7 @@ export class SupplierEditProfileComponent {
     private savingData: boolean = false;
     private isLogoUploaded: boolean = false;
     private savingDataSubscription: Subscription = new Subscription();
-    private addContact: boolean = false;
-    private addUser: boolean = false;
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
-    private newUserEmail: string = '';
     private users: UserDTOBase[] = [];
     private contactIndex: number;
     private displayAddContactModal: boolean = false;
@@ -65,6 +62,9 @@ export class SupplierEditProfileComponent {
     private buttonEnabled: boolean = false;
 //    private areRegionsSelected: boolean = false;
     private buttonRegionsEnabled: boolean = true;
+    private addContact: boolean = false;
+    private newUserEmail: string = '';
+    private addUser: boolean = false;
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
         let allow = true;
@@ -86,6 +86,7 @@ export class SupplierEditProfileComponent {
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
                     this.supplier = supplier;
+                    // this.users = this.supplier.users;
                     this.users = this.supplier.users;
                     if (this.supplier.logo != null)
                         this.isLogoUploaded = true;
@@ -256,22 +257,9 @@ export class SupplierEditProfileComponent {
 
     private closeModal() {
         this.addContact = false;
-        this.addUser = false;      
         this.displayAddContactModal = false;  
     }
 
-    private addNewContact() {
-        this.addContact = true; 
-        this.supplierApi.sendEmailToNewContact(this.newUserEmail).subscribe(
-            (responseDTO: ResponseDTOBase) => {
-                this.sharedService.growlTranslation('Email sent successfully', 'shared.email.sent', 'success');
-                this.closeModal();
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred. This contact has been added to this supplier before or has related registrations.', 'shared.email.error', 'error');
-                this.closeModal();
-            }
-        );
-    }
 
     /* New contact funciontality */
     private sendMailToUser(){
@@ -346,4 +334,41 @@ export class SupplierEditProfileComponent {
             this.buttonRegionsEnabled = false;
         }
     }
+
+    private closeAddNewContactModal(){
+        this.newUserEmail = '';
+        this.addUser = false;
+    }
+
+    private addNewContactToSupplier(){
+        this.addUser = true;
+    }
+
+    private addNewContact(){
+        if (this.newUserEmail.trim() != '' && this.supplier.id != 0){
+            this.addContact = true;
+            this.supplierApi.invitateContactSupplier(this.supplier.id, this.newUserEmail).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success){
+                        this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+                        this.addContact = false;
+                        this.addUser = false;
+                        this.closeModal();
+                    } else {
+                        this.addContact = false;
+                        this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+                        this.closeModal();
+                    }
+                }, error => {
+                    this.addContact = false;
+                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                    this.closeModal();
+                }
+            );
+            this.newUserEmail = '';
+        } else {
+            this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'supplierPortal.profile.addNewContact.empty', 'error');
+        }
+    }
+
 }

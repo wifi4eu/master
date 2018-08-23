@@ -73,9 +73,9 @@
                     <ng-template let-row="rowData" pTemplate="body">
                       <span class="badge" style="color: #000;" [class.badge-warning]="(row.warning1 && row.warning2 && !row.warning3) || row.warning1 || row.warning2" [class.badge-warning-yellow]="!row.warning1 && !row.warning2 && row.warning3" *ngIf="row.warning1 || row.warning2 || row.warning3">
                         <span>{{  'dgConn.badge.warning' | translate  }}</span>
-                        <span style="letter-spacing: 0.12em;">{{  row.warning1 ? '1' + (row.warning2 ? ',' : '' + (row.warning3 ? ',' : '' )) : '' }}</span>
-                        <span style="letter-spacing: 0.12em;">{{  row.warning2 ? '2' + (row.warning3 ? ',' : '') : '' }}</span>
-                        <span style="letter-spacing: 0.12em;">{{  row.warning3 ? '3' : '' }}</span>
+                          <span style="letter-spacing: 0.12em;" pTooltip="{{ 'dgConn.badge.warning1Info' | translate }}">{{  row.warning1 ? '1' + (row.warning2 ? ',' : '' + (row.warning3 ? ',' : '' )) : '' }}</span>
+                          <span style="letter-spacing: 0.12em;" pTooltip="{{ 'dgConn.badge.warning2Info' | translate }}">{{  row.warning2 ? '2' + (row.warning3 ? ',' : '') : '' }}</span>
+                          <span style="letter-spacing: 0.12em;" pTooltip="{{ 'dgConn.badge.warning3Info' | translate }}">{{  row.warning3 ? '3' : '' }}</span>
                       </span>
                     </ng-template>
                 </p-column>

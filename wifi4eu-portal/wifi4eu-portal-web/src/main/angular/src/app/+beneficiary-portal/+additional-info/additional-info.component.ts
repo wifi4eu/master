@@ -135,12 +135,57 @@ export class AdditionalInfoComponent {
                     type3 = true;
                 }
             }
+            if (this.documentFilesType1.length > 0 && this.legalFilesToUpload.length > 0) {
+                type1 = true;
+            }
+            if (this.documentFilesType3.length > 0 && this.legalFilesToUpload.length > 0) {
+                type3 = true;
+            }
             if (type1 && type3) {
                 this.filesUploaded = true;
             } else {
                 this.filesUploaded = false;
             }
         }
+    }
+
+    private checkFileMimeType(file: File): Promise<any> {
+        return new Promise((resolve, reject) => {
+            var blob = file;
+            var fileReader = new FileReader();
+            fileReader.onloadend = function (e: any) {
+                var arr = (new Uint8Array(e.target.result)).subarray(0, 4);
+                var header = "";
+                for (var i = 0; i < arr.length; i++) {
+                    header += arr[i].toString(16);
+                }
+                var type = "";
+                // Check the file signature against known types
+                switch (header) {
+                    case "89504e47":
+                        type = "image/png";
+                        resolve();
+                        break;
+                    case "ffd8ffe0":
+                    case "ffd8ffe1":
+                    case "ffd8ffe2":
+                    case "ffd8ffe3":
+                    case "ffd8ffe8":
+                        type = "image/jpeg";
+                        resolve();
+                        break;
+                    case "25504446":
+                        type = "application/pdf";
+                        resolve();
+                        break;
+                    default:
+                        // extension not 
+                        reject();
+                        break;
+                }
+            };
+            fileReader.readAsArrayBuffer(blob);
+        });
     }
 
     private uploadFile(event: any, type: number) {
@@ -152,41 +197,46 @@ export class AdditionalInfoComponent {
                 return;
             }
             if (event.target.files[0].type == "application/pdf" || event.target.files[0].type == "image/png" || event.target.files[0].type == "image/jpg" || event.target.files[0].type == "image/jpeg") {
-                let subscription;
-                this.reader.readAsDataURL(event.target.files[0]);
-                this.cleanFile(type);
-                subscription = Observable.interval(200).subscribe(
-                    x => {
-                        if (this.reader.result != "") {
-                            let file = new LegalFileDTOBase();
-                            file.fileData = this.reader.result;
-                            file.fileType = type;
-                            file.fileName = event.target.files[0].name;
-                            file.fileSize = event.target.files[0].size;
-                            file.registration = this.registration.id;
-                            this.legalFilesToUpload.push(file);
-                            this.checkDocuments();
-                            switch (type) {
-                                case 1:
-                                    this.documentFilesType1.push(file);
-                                    break;
-                                case 2:
-                                    this.documentFilesType2.push(file);
-                                    break;
-                                case 3:
-                                    this.documentFilesType3.push(file);
-                                    break;
-                                case 4:
-                                    this.documentFilesType4.push(file);
-                                    break;
-                                default:
-                                    break;
+                this.checkFileMimeType(event.target.files[0]).then(() => {
+                    let subscription;
+                    this.reader.readAsDataURL(event.target.files[0]);
+                    this.cleanFile(type);
+                    subscription = Observable.interval(200).subscribe(
+                        x => {
+                            if (this.reader.result != "") {
+                                let file = new LegalFileDTOBase();
+                                file.fileData = this.reader.result;
+                                file.fileType = type;
+                                file.fileName = event.target.files[0].name;
+                                file.fileSize = event.target.files[0].size;
+                                file.registration = this.registration.id;
+                                this.legalFilesToUpload.push(file);
+                                this.checkDocuments();
+                                switch (type) {
+                                    case 1:
+                                        this.documentFilesType1.push(file);
+                                        break;
+                                    case 2:
+                                        this.documentFilesType2.push(file);
+                                        break;
+                                    case 3:
+                                        this.documentFilesType3.push(file);
+                                        break;
+                                    case 4:
+                                        this.documentFilesType4.push(file);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                this.changedDocs++;
+                                subscription.unsubscribe();
                             }
-                            this.changedDocs++;
-                            subscription.unsubscribe();
                         }
-                    }
-                );
+                    );
+                }).catch(() => {
+                    this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
+                    this.filesUploaded = false;
+                });
             } else {
                 this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
                 this.filesUploaded = false;
@@ -237,7 +287,7 @@ export class AdditionalInfoComponent {
         this.removingFile = type;
     }
 
-    private removeFile(){
+    private removeFile() {
         switch (this.removingFile) {
             case 1:
                 this.document1.nativeElement.value = "";

@@ -25,6 +25,7 @@ import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;import wifi
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.entity.user.User;
+import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
@@ -37,6 +38,7 @@ import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonReposito
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
+import wifi4eu.wifi4eu.repository.user.UserContactDetailsRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -142,6 +144,9 @@ public class RegistrationService {
 
     @Autowired
     CallService callService;
+
+    @Autowired
+    UserContactDetailsRepository userContactDetailsRepository;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -265,7 +270,7 @@ public class RegistrationService {
                     legalFile.setId(0);
                     legalFile.setRegistration(registrationID);
                     legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
-                    legalFile.setUploadTime(new Date());
+                    legalFile.setUploadTime(new Date().getTime());
                     legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
                     legalFile.setFileSize(byteArray.length);
                     legalFile.setUserId(userConnected.getId());
@@ -278,7 +283,6 @@ public class RegistrationService {
                     for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
                         legalFileCorrectionReason.setCorrectionReason(null);
                         legalFileCorrectionReason.setRequestCorrection(false);
-                        legalFileCorrectionReason.setRequestCorrectionDate(null);
                     }
 
                     legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
@@ -568,6 +572,10 @@ public class RegistrationService {
             return true;
         }
         return false;
+    }
+
+    public List<UserContactDetails> findUsersContactDetailsByRegistrationId(Integer registrationId){
+        return userContactDetailsRepository.findUsersContactDetailsByRegistrationId(registrationId);
     }
 
     public List<UserDTO> getUsersFromRegistration(Integer registrationId){

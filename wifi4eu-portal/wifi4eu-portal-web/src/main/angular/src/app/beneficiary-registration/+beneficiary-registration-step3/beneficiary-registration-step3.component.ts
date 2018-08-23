@@ -76,6 +76,7 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.postalCode = '';
             this.initialUser.ecasEmail = '';
             this.repeatEmail = '';
+            this.buttonEnabled = false;
             /* this.checkEmailsMatch(); */
         }
     }
