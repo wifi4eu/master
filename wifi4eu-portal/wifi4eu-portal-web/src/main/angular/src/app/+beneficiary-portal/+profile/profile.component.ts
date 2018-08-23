@@ -73,6 +73,7 @@ export class BeneficiaryProfileComponent {
     private registrations: RegistrationDTOBase[] = [];
     private nameCookieApply: string = "hasRequested";
     private isOrganisation: boolean = false;
+    private withdrawAble: boolean = false;
 
     constructor(private cookieService: CookieService, private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
@@ -179,10 +180,22 @@ export class BeneficiaryProfileComponent {
         }
 
         this.loadLanguages();
+        this.checkIfWithdrawAble();
     }
 
     private withdrawRegistration(){
         this.withdrawingRegistrationConfirmation = true;
+    }
+
+    private checkIfWithdrawAble(){
+        this.userApi.checkIfApplied().subscribe(
+            (hasApplied : ResponseDTOBase) => {
+                this.withdrawAble = hasApplied.data;
+            }, error =>{
+                console.log(error);
+
+            }
+        );
     }
 
     private displayModal(name: string, index?: number) {
