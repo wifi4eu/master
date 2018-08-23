@@ -1,5 +1,8 @@
 package wifi4eu.wifi4eu.abac.service;
 
+import eu.cec.digit.ecas.client.jaas.DetailedUser;
+import eu.cec.digit.ecas.client.jaas.SubjectNotFoundException;
+import eu.cec.digit.ecas.client.jaas.SubjectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,6 @@ import wifi4eu.wifi4eu.abac.data.dto.LegalCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentWorkflowStatus;
@@ -37,6 +39,9 @@ public class LegalCommitmentService {
 	@Autowired
 	private LegalEntityService legalEntityService;
 
+	@Autowired
+	private PropertiesService propertiesService;
+
 	@Transactional
 	public void findAndCounterSignGrantAgreements() {
 
@@ -45,7 +50,17 @@ public class LegalCommitmentService {
 			for (LegalCommitment legalCommitment : legalCommitments) {
 
 				Document grantAgreement = legalCommitment.getGrantAgreementDocument();
-				byte[] countersignedFile = essiService.signDocument(grantAgreement);
+				DetailedUser currentUser = getCurrentUser();
+				String currentUserName = currentUser.getName();
+				String designatedOfficer = propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER");
+				String signatureDescription = "";
+				if(currentUserName.equalsIgnoreCase(designatedOfficer)){
+					signatureDescription = "Signed by " + currentUserName;
+				}else{
+					signatureDescription = "Signed on behalf of " + designatedOfficer;
+				}
+
+				byte[] countersignedFile = essiService.signDocument(grantAgreement, signatureDescription);
 
 				Document counterSignedGrantAgreement = new Document();
 				counterSignedGrantAgreement.setName("countersigned_"+ grantAgreement.getName());
@@ -69,6 +84,16 @@ public class LegalCommitmentService {
 		} catch (Throwable e) {
 			log.error(e.getMessage());
 		}
+	}
+
+	private DetailedUser getCurrentUser() {
+		DetailedUser currentEcasUser = null;
+		try {
+			currentEcasUser = SubjectUtil.getCurrentEcasUser();
+		} catch (SubjectNotFoundException e) {
+			log.error("ERROR while trying to retrieve the current user", e);
+		}
+		return currentEcasUser;
 	}
 
 	public void createLegalCommitments(String batchRef) {
