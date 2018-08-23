@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -582,4 +583,40 @@ public class UserService {
         registrationUsers.setMain(0);
         registrationUsersRepository.save(registrationUsers);
     }
+
+    public ResponseDTO deactivateRegistrationUser(Integer registrationId, Integer userId) throws Exception {
+        ResponseDTO responseDTO = new ResponseDTO();
+        //has municipality more than one user associated?
+        if(registrationUsersRepository.countRegistrationUsersByRegistrationIdAndIsActiveTrue(registrationId) > 1) {
+            //setting user as deactivated
+            RegistrationUsers registrationUsers = registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId);
+            registrationUsers.setStatus(RegistrationUsersStatus.DEACTIVATED.getValue());
+            registrationUsersRepository.save(registrationUsers);
+
+            //taking off user rights for this registration
+            Registration registration = registrationRepository.findOne(registrationId);
+            Municipality municipality = registration.getMunicipality();
+            Mayor mayor;
+            if (!Validator.isNull(municipality)) {
+                mayor = mayorRepository.findByMunicipalityId(municipality.getId());
+                if (Validator.isNull(mayor)) {
+                    throw new Exception("Inconsistency in data, mayor from municipality "+municipality.getId()+ " is null");
+                }
+            } else {
+                throw new Exception("Inconsistency in data, municipality from registration "+registrationId+" is null");
+            }
+
+            permissionChecker.dropTablePermissions(userId, Integer.toString(registrationId), RightConstants.REGISTRATIONS_TABLE );
+            permissionChecker.dropTablePermissions(userId, Integer.toString(mayor.getId()), RightConstants.MAYORS_TABLE );
+            permissionChecker.dropTablePermissions(userId, Integer.toString(municipality.getId()), RightConstants.MUNICIPALITIES_TABLE );
+            responseDTO.setSuccess(true);
+            responseDTO.setData("success");
+        } else{
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(1, "There has to be minimum 1 user per registration."));
+        }
+        return responseDTO;
+    }
+
 }

@@ -235,5 +235,29 @@ public class UserResource {
     }
 
 
+    @ApiOperation(value = "Deactivate user from registration")
+    @RequestMapping(value = "/registrationUsers/{registrationId}/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO deactivateRegistrationUser(@PathVariable("registrationId") Integer registrationId, @PathVariable("userId") Integer userId,
+                                                  HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId);
+        try {
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
+
+            return userService.deactivateRegistrationUser(registrationId, userId);
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade
+                    .getMessage());
+            response.sendError(org.springframework.http.HttpStatus.NOT_FOUND.value());
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been retrieved", e);
+            response.sendError(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return new ResponseDTO();
+    }
+
+
 
 }

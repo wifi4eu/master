@@ -551,26 +551,34 @@ public class SupplierService {
         return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
     }
 
-    public SupplierUserDTO deactivateSupplierContact(Integer userId) throws Exception {
-        List<SupplierUser> supplierUsers = supplierUserRepository.findByUserId(userId);
-        SupplierUser supplierUserToSave = null;
-        for (SupplierUser supplierUser : supplierUsers) {
-            if (supplierUser.getUserId().equals(userId)) {
-                supplierUser.setStatus(SupplierUserStatus.DEACTIVATED.getStatus());
-                supplierUserToSave = supplierUser;
-                break;
+    public ResponseDTO deactivateSupplierContact(Integer userId) throws Exception {
+        ResponseDTO responseDTO = new ResponseDTO();
+        if(supplierUserRepository.countSupplierUserBySupplierIdAndStatusNot(, SupplierUserStatus.DEACTIVATED.getStatus())> 1) {
+            List<SupplierUser> supplierUsers = supplierUserRepository.findByUserId(userId);
+            SupplierUser supplierUserToSave = null;
+            for (SupplierUser supplierUser : supplierUsers) {
+                if (supplierUser.getUserId().equals(userId)) {
+                    supplierUser.setStatus(SupplierUserStatus.DEACTIVATED.getStatus());
+                    supplierUserToSave = supplierUser;
+                    break;
+                }
             }
-        }
-        if (supplierUserToSave == null) {
-            throw new Exception("Incorrect userId");
-        } else {
-            supplierUserRepository.save(supplierUserToSave);
-            UserDTO contactDeactivated = userService.getUserById(userId);
-            contactDeactivated.setType(SupplierContactStatus.DEACTIVATED.getStatus());
-            userService.saveUserChanges(contactDeactivated);
-        }
+            if (supplierUserToSave == null) {
+                throw new Exception("Incorrect userId");
+            } else {
+                supplierUserRepository.save(supplierUserToSave);
+                UserDTO contactDeactivated = userService.getUserById(userId);
+                contactDeactivated.setType(SupplierContactStatus.DEACTIVATED.getStatus());
+                userService.saveUserChanges(contactDeactivated);
+            }
 
-        return supplierUserMapper.toDTO(supplierUserToSave);
+
+        }else{
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(1, "There has to be minimum 1 user per registration."));
+        }
+        return responseDTO;
     }
 
     public ResponseDTO invitateContactSupplier(UserDTO userConnected, int supplierId, String newContactEmail){

@@ -19,4 +19,6 @@ public interface RegistrationUsersRepository extends CrudRepository<Registration
 
     List<RegistrationUsers> findByUserId(Integer userId);
     List<RegistrationUsers> findByRegistrationId(Integer registration);
+
+    Integer countRegistrationUsersByRegistrationIdAndIsActiveTrue(Integer registrationId);
 }

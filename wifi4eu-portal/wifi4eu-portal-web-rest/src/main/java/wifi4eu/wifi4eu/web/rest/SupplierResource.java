@@ -398,10 +398,9 @@ public class SupplierResource {
                 return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
             }
 
-            SupplierUserDTO resSupplier = supplierService.deactivateSupplierContact(userId);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier contact deactivated successfully");
             _log.info("Deactivated user: " + userId + "- Supplier contact deactivated successfully");
-            return new ResponseDTO(true, resSupplier, null);
+            return new ResponseDTO(true, supplierService.deactivateSupplierContact(userId), null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to deactivate this supplier contact", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
