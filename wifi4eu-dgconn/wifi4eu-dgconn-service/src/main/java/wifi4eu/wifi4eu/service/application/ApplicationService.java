@@ -36,6 +36,7 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
@@ -66,11 +67,11 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
-import wifi4eu.wifi4eu.util.MailService;
-import wifi4eu.wifi4eu.common.helper.Validator;
 
 @Service
 public class ApplicationService {
+    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
+
     @Value("${mail.server.location}")
     private String baseUrl;
 
@@ -112,8 +113,6 @@ public class ApplicationService {
 
     @Autowired
     VoucherService voucherService;
-
-    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
 
     @Autowired
     BeneficiaryService beneficiaryService;

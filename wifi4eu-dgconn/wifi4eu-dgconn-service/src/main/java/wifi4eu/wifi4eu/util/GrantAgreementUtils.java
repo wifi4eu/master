@@ -1,15 +1,16 @@
 package wifi4eu.wifi4eu.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
-import wifi4eu.wifi4eu.service.user.UserConstants;
-import wifi4eu.wifi4eu.service.user.UserService;
-
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 @Service
 public class GrantAgreementUtils {

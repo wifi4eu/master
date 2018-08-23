@@ -1,30 +1,31 @@
-package wifi4eu.wifi4eu.util;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.helper.BeanUtil;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
-import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
-import wifi4eu.wifi4eu.service.user.UserService;
+package wifi4eu.wifi4eu.common.service.mail;
 
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
 
+import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
+import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
+
+
+@Component
+@Scope("prototype")
 public class MailAsyncService implements Runnable {
 
+	@Autowired
     private LogEmailRepository logEmailRepository;
 
-    public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
-    public final static String NO_ACTION = "NO ACTION LOGGED";
+    public static final String FROM_ADDRESS = "no-reply@wifi4eu.eu";
+    public static final String NO_ACTION = "NO ACTION LOGGED";
 
     private final Logger _log = LogManager.getLogger(MailAsyncService.class);
 
@@ -36,7 +37,8 @@ public class MailAsyncService implements Runnable {
     private Integer municipalityId = 0;
     private String action = NO_ACTION;
 
-    public MailAsyncService(String toAddress, String fromAddress, String subject, String msgBody, JavaMailSender mailSender, int municipalityId, String action) {
+    public MailAsyncService(String toAddress, String fromAddress, String subject, String msgBody, 
+    JavaMailSender mailSender, int municipalityId, String action) {
         this.toAddress = toAddress;
         this.fromAddress = fromAddress;
         this.subject = subject;
@@ -44,7 +46,6 @@ public class MailAsyncService implements Runnable {
         this.mailSender = mailSender;
         this.municipalityId = municipalityId;
         this.action = action;
-        this.logEmailRepository = BeanUtil.getBean(LogEmailRepository.class);
     }
 
     @Override
@@ -85,7 +86,12 @@ public class MailAsyncService implements Runnable {
     }
 
     private void logEmail() throws Exception {
-        if (this.toAddress != null && this.toAddress.length() > 0 && this.municipalityId > 0) {
+		_log.debug("Logging email");
+		if (toAddress == null || toAddress.isEmpty()) {
+			_log.warn("The email was not registered in db because no address was specified.");
+		} else if (municipalityId == 0) {
+			_log.warn("The email was not registered in db because municipalityId was not defined.");
+		} else {        
             String setAction = NO_ACTION;
             if (this.action != null && this.action.length() > 0) {
                 setAction = this.action;

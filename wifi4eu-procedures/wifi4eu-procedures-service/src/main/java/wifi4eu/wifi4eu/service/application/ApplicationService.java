@@ -1,34 +1,34 @@
 package wifi4eu.wifi4eu.service.application;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.entity.user.User;
+import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.MailService;
-
-import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Service
 public class ApplicationService {
+    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
+
     @Value("${mail.server.location}")
     private String baseUrl;
-
-    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
 
     @Autowired
     private MailService mailService;

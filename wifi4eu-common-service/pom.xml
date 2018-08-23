@@ -7,16 +7,13 @@
     <parent>
         <groupId>wifi4eu.wifi4eu</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <artifactId>wifi4eu-procedures</artifactId>
+        <artifactId>wifi4eu</artifactId>
     </parent>
-    <artifactId>wifi4eu-procedures-service</artifactId>
+    <artifactId>wifi4eu-common-service</artifactId>
     <packaging>jar</packaging>
 
-    <name>WiFi4EU Procedures Service module</name>
+    <name>WiFi4EU Common Service module</name>
 
-	<properties>
-		<jdk.version>1.8</jdk.version>
-	</properties>
 
     <dependencies>
         <dependency>
@@ -62,7 +59,7 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
         </dependency>
-
+        
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
@@ -81,48 +78,14 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>wifi4eu-common-service</artifactId>
+            <artifactId>wifi4eu-persistence</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.7</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.15</version>
-        </dependency>
-
-        <dependency>
-            <groupId>net.sf.supercsv</groupId>
-            <artifactId>super-csv</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>wifi4eu.wifi4eu</groupId>
-            <artifactId>wifi4eu-procedures-persistence</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.17</version>
-        </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4</version>
         </dependency>
 
     </dependencies>
@@ -157,6 +120,14 @@
                         <version>1.1.0.Beta2</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

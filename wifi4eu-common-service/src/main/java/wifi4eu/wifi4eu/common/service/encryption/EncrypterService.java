@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.common.utils;
+package wifi4eu.wifi4eu.common.service.encryption;
 
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;

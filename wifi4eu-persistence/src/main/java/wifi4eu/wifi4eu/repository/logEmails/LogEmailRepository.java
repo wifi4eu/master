@@ -13,9 +13,7 @@ public interface LogEmailRepository extends JpaRepository<LogEmail, Integer> {
     List<LogEmail> findAllByMunicipalityIdAndActionEquals(Integer municipalityId, String action);
     LogEmail findTopByMunicipalityIdAndActionOrderBySentDateDesc(Integer municipalityId, String action);
     LogEmail findTopByMunicipalityIdAndActionAndToOrderBySentDateDesc(Integer municipalityId, String action, String to);
-
     LogEmail findTopByActionOrderBySentDateDesc(String action);
-
 
     @Query(value = "select top 1 e.* from log_emails e " +
             "join registrations r on e.municipalityId=r.municipality " +
