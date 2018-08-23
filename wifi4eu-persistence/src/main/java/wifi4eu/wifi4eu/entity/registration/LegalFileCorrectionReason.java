@@ -29,12 +29,12 @@ public class LegalFileCorrectionReason {
     private Integer correctionReason;
 
     @Column(name = "request_correction_date")
-    private Date requestCorrectionDate;
+    private Long requestCorrectionDate;
 
     public LegalFileCorrectionReason() {
     }
 
-    public LegalFileCorrectionReason(Integer id, Registration registration, Integer legalFile, Integer type, Boolean requestCorrection, Integer correctionReason, Date requestCorrectionDate) {
+    public LegalFileCorrectionReason(Integer id, Registration registration, Integer legalFile, Integer type, Boolean requestCorrection, Integer correctionReason, Long requestCorrectionDate) {
         this.id = id;
         this.registration = registration;
         this.legalFile = legalFile;
@@ -84,11 +84,11 @@ public class LegalFileCorrectionReason {
         this.correctionReason = correctionReason;
     }
 
-    public Date getRequestCorrectionDate() {
+    public Long getRequestCorrectionDate() {
         return requestCorrectionDate;
     }
 
-    public void setRequestCorrectionDate(Date requestCorrectionDate) {
+    public void setRequestCorrectionDate(Long requestCorrectionDate) {
         this.requestCorrectionDate = requestCorrectionDate;
     }
 

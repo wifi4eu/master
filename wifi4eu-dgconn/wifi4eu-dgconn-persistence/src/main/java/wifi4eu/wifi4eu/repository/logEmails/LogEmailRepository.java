@@ -21,9 +21,8 @@ public interface LogEmailRepository extends JpaRepository<LogEmail, Integer> {
             "join registrations r on e.municipalityId=r.municipality " +
             "join applications a on a.registration = r.id " +
             "join legal_files_correction_reason lfc on r.id=lfc.registration " +
-            "join calls on calls.id = a.call_id " +
-            "where action = 'sendCorrectionEmails' and a.id=?1 and type not in ( " +
-            "select type from legal_files where cast(DATEDIFF(SECOND, '1970-01-01 00:00:00', upload_time) as bigint) * 1000  > e.sent_date and registration= r.id )" +
+            "where action = ?2 and a.id=?1 and lfc.request_correction= 1 and sent_date > lfc.request_correction_date " +
+            "and type not in ( select type from legal_files where upload_time > e.sent_date and registration= r.id )" +
             "order by sent_date desc", nativeQuery = true)
-    LogEmail findLastEmailsSendCorrectionNotUploadedYet(Integer applicationId);
+    LogEmail findLastEmailsSendCorrectionNotUploadedYet(Integer applicationId, String action);
 }
