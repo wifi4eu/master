@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import com.itextpdf.text.pdf.*;
 import com.microsoft.applicationinsights.core.dependencies.apachecommons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,12 +24,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorage;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
@@ -211,17 +206,12 @@ public class GrantAgreementService {
 
         replacementsMap.put("header", header);
         replacementsMap.put("field1", header);
-        replacementsMap.put("field1-1", header);
         replacementsMap.put("field-forename-1", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
         replacementsMap.put("field-name-commission", "Head of Department C, Andreas Boschen");
         replacementsMap.put("field-2", lauDTO.getName1() + "\n "+ municipalityDTO.getAddress().concat(", ").concat(municipalityDTO.getAddressNum()));
         replacementsMap.put("field-language", languagesMap.get(grantAgreement.getDocumentLanguage()));
         replacementsMap.put("field-beneficiary-name", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
-        replacementsMap.put("field-signature", "Xavier Surname signed as Legal Representative of the\n" +
-                "Beneficiary on Tue Jul 31 18:47:07 CEST 2018\n" +
-                "(transaction id SigId-27209-\n" +
-                "O2jSYygvobI0eSiG6v2bqYLWB2zNkaxzY9JUFLD0UByjoP\n" +
-                "dQakBmZ0zPEKrCzrJBo977gK9vlHcKhngDfgSuaDKJj71zxYb8yrTT3vIUqFFIKvWttC9ug9BrVyPTnMOWmzeuvXoYovehkB0BJ8W6H8iD)");
+        replacementsMap.put("field-signature", "SIGNATURE HERE");
         replacementsMap.put("field-agency-name", "user of agency");
         replacementsMap.put("field-signature-agency", "SIGNATURE HERE");
         replacementsMap.put("field-action", lauDTO.getName2());
@@ -236,23 +226,29 @@ public class GrantAgreementService {
         try {
             pdfReader = new PdfReader(generateGrantAgreementDocument(grantAgreement).toByteArray());
             pdfStamper = new PdfStamper(pdfReader, outputStream);
+            AcroFields fields = pdfStamper.getAcroFields();
 
-            int pages = pdfReader.getNumberOfPages();
-
-            for (int i = 1; i <= pages; i++) {
-                //Contain the pdf data.
-                if (i == 7) {
-                    PdfContentByte pageContentByte =
-                            pdfStamper.getOverContent(i);
-
-                    BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, "Cp1252", BaseFont.EMBEDDED);
-                    Font f = new Font(bf, 8);
-                    ColumnText ct = new ColumnText(pageContentByte);
-                    ct.setSimpleColumn(74, 0, pdfReader.getPageSize(i).getWidth() / 2, 400f);
-                    ct.addElement(new Paragraph(signString, f));
-                    ct.go();
-                }
-            }
+            final BaseFont font = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.EMBEDDED);
+            fields.setField("field-signature", signString);
+            fields.setFieldProperty("field-signature", "textfont", font, null);
+            fields.setFieldProperty("field-signature", "textsize", new Float(9), null);
+            
+//            int pages = pdfReader.getNumberOfPages();
+//
+//            for (int i = 1; i <= pages; i++) {
+//                //Contain the pdf data.
+//                if (i == 7) {
+//                    PdfContentByte pageContentByte =
+//                            pdfStamper.getOverContent(i);
+//
+//                    BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, "Cp1252", BaseFont.EMBEDDED);
+//                    Font f = new Font(bf, 8);
+//                    ColumnText ct = new ColumnText(pageContentByte);
+//                    ct.setSimpleColumn(74, 0, pdfReader.getPageSize(i).getWidth() / 2, 400f);
+//                    ct.addElement(new Paragraph(signString, f));
+//                    ct.go();
+//                }
+//            }
 
             return outputStream;
         } catch (Exception e) {
