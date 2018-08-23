@@ -303,7 +303,15 @@ export class BeneficiaryProfileComponent {
                         this.withdrawnSuccess = true;
                         this.localStorageService.remove('user');
                         var currentWindow: any = window;
-                        window.location.href = currentWindow.origin+'/wifi4eu/index.html';
+                       
+                        if (!window.location.origin) {
+                            var originCustom = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+                            window.location.href = originCustom+'/wifi4eu/index.html';
+                           } else {
+                            window.location.href = currentWindow.origin+'/wifi4eu/index.html';
+                          }
+
+                         
                     } else {
                         if(data.error != null){
                           this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', data.error.errorMessage, 'warn');  

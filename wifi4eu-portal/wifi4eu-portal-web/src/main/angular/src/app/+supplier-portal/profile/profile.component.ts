@@ -233,7 +233,13 @@ export class SupplierProfileComponent {
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
                         var currentWindow: any = window;
-                        window.location.href = currentWindow.origin+'/wifi4eu/index.html';
+                         
+                        if (!window.location.origin) {
+                            var originCustom = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+                            window.location.href = originCustom+'/wifi4eu/index.html';
+                           } else {
+                            window.location.href = currentWindow.origin+'/wifi4eu/index.html';
+                          }
                     }
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
