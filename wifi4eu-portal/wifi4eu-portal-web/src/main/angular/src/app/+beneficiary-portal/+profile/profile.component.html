@@ -234,7 +234,7 @@
                     </button>
                 </div>
             </div>
-            <div class="col-sm-12 margin-top button-content">
+            <div class="col-sm-12 margin-top button-content" *ngIf="withdrawAble">
                 <p>{{ 'shared.withdraw-registration.text' | translate }}</p>
                 <div style="text-align: center !important">
                     <button type="button" (click)="displayModal('withdraw')" class="btn btn-primary whiteButton changePassword" [disabled]="withdrawingRegistration || withdrawnSuccess">

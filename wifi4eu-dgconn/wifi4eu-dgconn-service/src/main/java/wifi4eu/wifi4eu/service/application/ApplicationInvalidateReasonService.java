@@ -263,7 +263,7 @@ public class ApplicationInvalidateReasonService {
         boolean valid = false;
         // Has the municipality been notified by email of request for changes
         // If user has uploaded all the requested documents and it's before the deadline, disable buttons
-        LogEmail logEmail = logEmailRepository.findLastEmailsSendCorrectionNotUploadedYet(applicationDTO.getId());
+        LogEmail logEmail = logEmailRepository.findLastEmailsSendCorrectionNotUploadedYet(applicationDTO.getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
         if (logEmail != null) {
             Calendar deadline = Calendar.getInstance();
             deadline.setTime(new Date(logEmail.getSentDate()));
