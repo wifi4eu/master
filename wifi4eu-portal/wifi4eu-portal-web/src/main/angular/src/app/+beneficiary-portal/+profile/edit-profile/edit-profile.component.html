@@ -409,12 +409,7 @@
         <div class="row">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8">
-                    <input id="email_user" type="text" [(ngModel)]="user.email" class="form-control" name="email"
-                        ngcontrol="email_user"
-                        #email_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event)" required>
-                    <div [hidden]="email_user.valid || email_user.pristine" class="alert alert-danger">
-                        {{ 'shared.email.required' | translate }}
-                    </div>
+                <span><b>{{user?.email}}</b></span>
                 </div>
                 <div class="col-sm-2"></div>
             </div>
