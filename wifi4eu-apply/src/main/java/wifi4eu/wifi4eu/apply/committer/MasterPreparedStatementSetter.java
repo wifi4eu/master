@@ -24,7 +24,7 @@ public class MasterPreparedStatementSetter implements BatchPreparedStatementSett
 	public void setValues(PreparedStatement ps, int i) throws SQLException {
 		ps.setLong(1, this.getListLocalEntities().get(i).getCallId());
 		ps.setLong(2, this.getListLocalEntities().get(i).getRegistrationId());
-		ps.setLong(3, this.getListLocalEntities().get(i).getDate().getTime());
+		ps.setLong(3, this.getListLocalEntities().get(i).getDate());
 	}
 
 	@Override

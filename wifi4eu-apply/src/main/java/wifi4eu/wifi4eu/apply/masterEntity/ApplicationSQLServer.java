@@ -8,12 +8,12 @@ public class ApplicationSQLServer {
 
 	public long registrationId;
 
-	public Date date;
+	public long date;
 
 	public ApplicationSQLServer() {
 	}
 
-	public ApplicationSQLServer(long callId, long registrationId, Date date) {
+	public ApplicationSQLServer(long callId, long registrationId, long date) {
 		this.callId = callId;
 		this.registrationId = registrationId;
 		this.date = date;
@@ -35,11 +35,11 @@ public class ApplicationSQLServer {
 		this.registrationId = registrationId;
 	}
 
-	public Date getDate() {
+	public long getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(long date) {
 		this.date = date;
 	}
 }

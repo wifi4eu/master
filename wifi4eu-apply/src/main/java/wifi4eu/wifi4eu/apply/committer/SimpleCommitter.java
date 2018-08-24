@@ -61,10 +61,9 @@ public class SimpleCommitter implements ICommitter {
 		//localEntities.addAll(this.createInvalidEntities(1));
 		this.LOGGER.info("Entities Found: [{}]", localEntities.size());
 		
-		Date dateApplication = new Date();
 		MasterPreparedStatementSetter masterPreparedStatementSetter = new MasterPreparedStatementSetter();
 		
-		List<ApplicationSQLServer> applications = localEntities.stream().map(l -> new ApplicationSQLServer(Long.valueOf(l.getCallId()), Long.valueOf(l.getRegistrationId()), dateApplication) ).collect(Collectors.toList());
+		List<ApplicationSQLServer> applications = localEntities.stream().map(l -> new ApplicationSQLServer(Long.valueOf(l.getCallId()), Long.valueOf(l.getRegistrationId()), Long.valueOf(l.getId().substring(0, l.getId().indexOf('-')))) ).collect(Collectors.toList());
 		masterPreparedStatementSetter.setListLocalEntities(applications);
 		
 		long start = System.currentTimeMillis();

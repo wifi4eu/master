@@ -1,8 +1,5 @@
 package wifi4eu.wifi4eu.apply.committer;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -87,9 +84,7 @@ public class PageableCommitter implements ICommitter {
 	}
 	
 	private void commitToDB(List<ApplicationSQLite> listLocalEntities, int pageSize) {
-		
 		MasterPreparedStatementSetter masterPreparedStatementSetter = new MasterPreparedStatementSetter();
-		Date dateApplication = new Date();
 		
 //		Statement stmt;
 //		try {
@@ -111,7 +106,10 @@ public class PageableCommitter implements ICommitter {
 			List<ApplicationSQLite> tempList = listLocalEntities.subList(i, end);
 			
 			//
-			List<ApplicationSQLServer> applications = tempList.stream().map(a -> new ApplicationSQLServer(Long.valueOf(a.getCallId()), Long.valueOf(a.getRegistrationId()), dateApplication) ).collect(Collectors.toList());
+			List<ApplicationSQLServer> applications = tempList.stream().map(a ->
+				new ApplicationSQLServer(Long.valueOf(a.getCallId()), Long.valueOf(a.getRegistrationId()), Long.valueOf(a.getId().substring(0, a.getId().indexOf('-'))))
+			).collect(Collectors.toList());
+			
 			masterPreparedStatementSetter.setListLocalEntities(applications);
 
 			this.LOGGER.info("COMMITTING FROM [{}] TO [{}]", i, end);
