@@ -1,19 +1,20 @@
-import {Component, enableProdMode, Output} from "@angular/core";
-import {Router} from "@angular/router";
-import {TranslateService} from "ng2-translate/ng2-translate";
-import {UxLayoutLink, UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
-import {SharedService} from "./shared/shared.service";
-import {LocalStorageService} from "angular-2-local-storage";
-import {UserDTOBase} from "./shared/swagger/model/UserDTO";
-import {UserApi} from "./shared/swagger/api/UserApi";
-import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
-import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
-import {environment} from '../environments/environment';
-import {Subject} from "rxjs/Subject";
-import {WebsockApi} from "./shared/swagger";
-import {Observable} from "rxjs/Observable";
-import {CookieService} from 'ngx-cookie-service';
+import { Component, enableProdMode, Output, HostListener } from "@angular/core";
+import { Router } from "@angular/router";
+import { TranslateService } from "ng2-translate/ng2-translate";
+import { UxLayoutLink, UxService } from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import { UxEuLanguages, UxLanguage } from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import { SharedService } from "./shared/shared.service";
+import { LocalStorageService } from "angular-2-local-storage";
+import { UserDTOBase } from "./shared/swagger/model/UserDTO";
+import { UserApi } from "./shared/swagger/api/UserApi";
+import { RegistrationApi } from "./shared/swagger/api/RegistrationApi";
+import { ResponseDTOBase } from "./shared/swagger/model/ResponseDTO";
+import { environment } from '../environments/environment';
+import { Subject } from "rxjs/Subject";
+import { WebsockApi } from "./shared/swagger";
+import { Observable } from "rxjs/Observable";
+import { CookieService } from 'ngx-cookie-service';
+import { IntervalObservable } from "../../node_modules/rxjs/observable/IntervalObservable";
 
 
 enableProdMode();
@@ -36,20 +37,22 @@ export class AppComponent {
     private stringsTranslated = new Subject<any>();
     private childrenInitialized = new Subject<any>();
 
+    private ngUnSubscribe: Subject<void> = new Subject<void>();
+    private sessionInterval: any;
     sessionExpired: Boolean = false;
 
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
 
     constructor(private translate: TranslateService,
-                private router: Router,
-                private translateService: TranslateService,
-                private localStorageService: LocalStorageService,
-                private uxService: UxService,
-                private sharedService: SharedService,
-                private userApi: UserApi,
-                private registrationApi: RegistrationApi,
-                private websockApi: WebsockApi,
-                private cookieService: CookieService) {
+        private router: Router,
+        private translateService: TranslateService,
+        private localStorageService: LocalStorageService,
+        private uxService: UxService,
+        private sharedService: SharedService,
+        private userApi: UserApi,
+        private registrationApi: RegistrationApi,
+        private websockApi: WebsockApi,
+        private cookieService: CookieService) {
         translateService.setDefaultLang('en');
         let language = this.localStorageService.get('lang');
         if (language) {
@@ -79,15 +82,27 @@ export class AppComponent {
 
         this.updateFooterDate();
 
-        const sessionPolling = 61500;
-        Observable.interval(sessionPolling)
-            .takeWhile(() => !this.sessionExpired)
+        this.sessionInterval = IntervalObservable.create(61500);
+        this.startInterval();
+    }
+
+    startInterval() {
+        this.sessionInterval
+            .takeUntil(this.ngUnSubscribe)
             .subscribe(execution => {
                 // This will be called every 10 seconds until `stopCondition` flag is set to true
                 this.isSessionExpired();
-            })
+            });
     }
 
+    @HostListener('document:keyup', ['$event'])
+    @HostListener('document:click', ['$event'])
+    @HostListener('document:wheel', ['$event'])
+    private resetInterval(newEndTime) {
+        console.log('$event');
+        this.ngUnSubscribe.next();
+        this.startInterval();
+    }
 
     private updateMenuTranslations() {
         let translatedItems = 0;
@@ -182,8 +197,8 @@ export class AppComponent {
             }
         );
     }
-	
-	private initChildren() {
+
+    private initChildren() {
         this.stringsTranslated.subscribe(() => {
             this.children[0] = [
                 new UxLayoutLink({
@@ -366,6 +381,9 @@ export class AppComponent {
         this.websockApi.isInvalidatedSession().subscribe(
             (sessionStatus: Boolean) => {
                 this.sessionExpired = (sessionStatus == null) || sessionStatus;
+                /*  if(!sessionStatus){
+ 
+                 } */
             }
         );
     }
