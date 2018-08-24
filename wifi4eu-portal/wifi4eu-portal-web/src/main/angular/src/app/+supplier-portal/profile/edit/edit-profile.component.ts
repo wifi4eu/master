@@ -65,6 +65,7 @@ export class SupplierEditProfileComponent {
     private addContact: boolean = false;
     private newUserEmail: string = '';
     private addUser: boolean = false;
+    private displayDeactivatemodal : boolean = false;
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
         let allow = true;
@@ -257,7 +258,8 @@ export class SupplierEditProfileComponent {
 
     private closeModal() {
         this.addContact = false;
-        this.displayAddContactModal = false;  
+        this.displayAddContactModal = false;
+        this.displayDeactivatemodal = false;
     }
 
 
@@ -268,22 +270,22 @@ export class SupplierEditProfileComponent {
     }
 
     private deactivateContactModal() {
-        this.closeModal();
-        this.supplierApi.deactivateSupplierContact(this.users[this.contactIndex].id).subscribe(
+        this.supplierApi.deactivateSupplierContact(this.supplier.id, this.users[this.contactIndex].id).subscribe(
             (responseDTO: ResponseDTOBase) => {
-                this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.email.sent', 'success');
+                this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.deactivate.sucess', 'success');
                 this.closeModal();
                 this.goBack();
             }, error => {
-                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.error.api.generic', 'error');
                 this.closeModal();
             }
         );
+        this.closeModal();
     }
 
     private deactivateShowModal(i) {
         this.contactIndex = i;
-        this.displayAddContactModal = true;
+        this.displayDeactivatemodal= true;
     }
 
  

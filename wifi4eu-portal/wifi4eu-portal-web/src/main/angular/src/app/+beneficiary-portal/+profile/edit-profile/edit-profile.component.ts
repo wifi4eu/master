@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, Output} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ApplicationApi} from "../../../shared/swagger/api/ApplicationApi";
 import {UserApi} from "../../../shared/swagger/api/UserApi";
-import {UserDTOBase} from "../../../shared/swagger/model/UserDTO";
+import {UserDTOBase, UserDTO} from "../../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../../shared/swagger/model/MunicipalityDTO";
 import {RegistrationDTOBase} from "../../../shared/swagger/model/RegistrationDTO";
 import {RegistrationApi} from "../../../shared/swagger/api/RegistrationApi";
@@ -32,6 +32,7 @@ import {Observable} from "rxjs/Observable";
 import { TranslateService } from "ng2-translate";
 import { CallDTO, CallDTOBase, OrganizationApi, OrganizationDTOBase } from "../../../shared/swagger";
 import { CookieService } from "ngx-cookie-service";
+import { UserContactDetailsBase } from "../../../shared/swagger";
 
 
 @Component({
@@ -53,6 +54,7 @@ export class BeneficiaryEditProfileComponent {
     private country: NutsDTOBase;
     private laus: LauDTOBase[] = [];
     private user: UserDTOBase = new UserDTOBase;
+    private users = {};
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
     private municipalitiesSelected: boolean = false;
     private municipalities: MunicipalityDTOBase[] = [];
@@ -103,6 +105,8 @@ export class BeneficiaryEditProfileComponent {
     private hasAssociation : boolean = false;
     private nameCookieApply: string = "hasRequested";
     private registrations: RegistrationDTOBase[] = [];
+    private contactIdToDeactvate : number = 0;
+    private displayDeactivatemodal: boolean = false;
 
     constructor(private cookieService: CookieService, private callApi: CallApi, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private translateService: TranslateService, private nutsApi: NutsApi, private lauApi: LauApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         this.loadDataEditProfile();
@@ -195,6 +199,11 @@ export class BeneficiaryEditProfileComponent {
                                                         }
                                                     }
                                                 );
+                                            }
+                                        );
+                                        this.userApi.getUsersFromRegistration(registration.id).subscribe(
+                                            (users: UserDTO[]) => {
+                                                this.users[registration.municipalityId] = users;
                                             }
                                         );
                                     }
@@ -431,6 +440,7 @@ export class BeneficiaryEditProfileComponent {
         this.displayDeleteMunicipality = false;
         this.addUser = false;
         this.addContact = false;
+        this.displayDeactivatemodal = false;
     }
 
     private editProfile() {
@@ -603,4 +613,26 @@ export class BeneficiaryEditProfileComponent {
             }
         }
     }
+
+
+    private deactivateContactModal() {
+        this.userApi.deactivateRegistrationUser(this.registration.id, this.contactIdToDeactvate).subscribe(
+            (responseDTO: ResponseDTOBase) => {
+                this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.deactivate.sucess', 'success');
+                this.closeModal();
+                this.goBackToProfile();
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.error.api.generic', 'error');
+                this.closeModal();
+            }
+        );
+        this.closeModal();
+    }
+
+    private deactivateShowModal(i) {
+        this.contactIdToDeactvate = i;
+        this.displayDeactivatemodal= true;
+    }
+
+
 }

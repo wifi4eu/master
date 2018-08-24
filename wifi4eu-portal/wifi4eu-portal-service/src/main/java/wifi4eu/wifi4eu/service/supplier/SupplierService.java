@@ -16,7 +16,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.InvitationContactStatus;
-import wifi4eu.wifi4eu.common.enums.SupplierContactStatus;
+import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserType;
 import wifi4eu.wifi4eu.common.helper.Validator;
@@ -24,6 +24,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
 import wifi4eu.wifi4eu.common.utils.UserValidator;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
@@ -38,6 +39,7 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
@@ -92,6 +94,10 @@ public class SupplierService {
 
     @Autowired
     RegistrationUtils registrationUtils;
+
+    @Autowired
+    PermissionChecker permissionChecker;
+
 
     private final Logger _log = LogManager.getLogger(SupplierService.class);
 
@@ -551,28 +557,32 @@ public class SupplierService {
         return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
     }
 
-    public ResponseDTO deactivateSupplierContact(Integer userId) throws Exception {
+    public ResponseDTO deactivateSupplierContact(Integer supplierId, Integer userId, String logInfo) throws Exception {
         ResponseDTO responseDTO = new ResponseDTO();
-        if(supplierUserRepository.countSupplierUserBySupplierIdAndStatusNot(, SupplierUserStatus.DEACTIVATED.getStatus())> 1) {
-            List<SupplierUser> supplierUsers = supplierUserRepository.findByUserId(userId);
-            SupplierUser supplierUserToSave = null;
-            for (SupplierUser supplierUser : supplierUsers) {
-                if (supplierUser.getUserId().equals(userId)) {
-                    supplierUser.setStatus(SupplierUserStatus.DEACTIVATED.getStatus());
-                    supplierUserToSave = supplierUser;
-                    break;
-                }
-            }
-            if (supplierUserToSave == null) {
-                throw new Exception("Incorrect userId");
-            } else {
-                supplierUserRepository.save(supplierUserToSave);
-                UserDTO contactDeactivated = userService.getUserById(userId);
-                contactDeactivated.setType(SupplierContactStatus.DEACTIVATED.getStatus());
-                userService.saveUserChanges(contactDeactivated);
-            }
+        //supplier has more than one user associated?
+        if(supplierUserRepository.countSupplierUserBySupplierIdAndStatusNot(supplierId, SupplierUserStatus.DEACTIVATED.getStatus())> 1) {
+            //supplier user status to deactivated
+            SupplierUser supplierUser = supplierUserRepository.findByUserIdAndSupplierId(userId, supplierId);
+            if(supplierUser.getStatus() != RegistrationUsersStatus.DEACTIVATED.getValue()) {
+                supplierUser.setStatus(SupplierUserStatus.DEACTIVATED.getStatus());
+                supplierUserRepository.save(supplierUser);
 
+                //user type to -1
+                userService.setUserTypeToDeactivate(userId);
 
+                //taking off user rights
+                permissionChecker.dropTablePermissions(userId, Integer.toString(userId), RightConstants.USER_TABLE);
+
+                responseDTO.setSuccess(true);
+                responseDTO.setData("success");
+                _log.info("ECAS Username: " + logInfo + "- Supplier contact deactivated successfully");
+                _log.info("Deactivated user: " + userId + "- Supplier contact deactivated successfully");
+            }else{
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(1, "User already deactivated."));
+                _log.info("ECAS Username: " + logInfo + "- User "+userId+ " already deactivated.");
+            }
         }else{
             responseDTO.setSuccess(false);
             responseDTO.setData("");

@@ -373,15 +373,19 @@ public class SupplierResource {
     }
 
     @ApiOperation(value = "Deactivate supplier contact")
-    @RequestMapping(value = "/deactivateContact", method = RequestMethod.POST)
+    @RequestMapping(value = "/deactivateContact/{supplierId}/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO deactivateSupplierContact(@RequestBody final Integer userId, HttpServletResponse response) throws IOException {
+    public ResponseDTO deactivateSupplierContact(@PathVariable("supplierId") Integer supplierId, @PathVariable("userId") Integer userIdToDeactivate,
+                                                 HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating supplier");
         try {
-            SupplierDTO supplier = supplierService.getSupplierByUserId(userConnected.getId());
+            permissionChecker.check(RightConstants.USER_TABLE + userConnected.getId());
+
+            SupplierDTO supplier = supplierService.getSupplierByUserId(userIdToDeactivate);
+            //verifying that user connected has permission on this supplier
             boolean access = false;
             for (UserDTO user : supplier.getUsers()) {
                 if (user.getId() == userConnected.getId()) {
@@ -393,14 +397,14 @@ public class SupplierResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
-            if (userConnected.getId() == userId) {
+            //user connected is not user to be deactivated
+            if (userConnected.getId() == userIdToDeactivate) {
                 response.sendError(HttpStatus.BAD_REQUEST.value());
+                _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Trying to deactive itself.");
                 return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
             }
 
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier contact deactivated successfully");
-            _log.info("Deactivated user: " + userId + "- Supplier contact deactivated successfully");
-            return new ResponseDTO(true, supplierService.deactivateSupplierContact(userId), null);
+            return new ResponseDTO(true, supplierService.deactivateSupplierContact(supplierId,userIdToDeactivate, userConnected.getEcasUsername()), null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to deactivate this supplier contact", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());

@@ -264,17 +264,23 @@ public class UserResource {
         return responseDTO;
     }
 
- @ApiOperation(value = "Deactivate user from registration")
+    @ApiOperation(value = "Deactivate user from registration")
     @RequestMapping(value = "/registrationUsers/{registrationId}/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO deactivateRegistrationUser(@PathVariable("registrationId") Integer registrationId, @PathVariable("userId") Integer userId,
                                                   HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Deactivating user "+userId+" of registration by id " + registrationId );
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
-            return userService.deactivateRegistrationUser(registrationId, userId);
+            //user connected cannot deactivate itself
+            if (userConnected.getId() == userId) {
+                _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Trying to deactive itself.");
+                response.sendError(HttpStatus.BAD_REQUEST.value());
+                return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+            }
+            return userService.deactivateRegistrationUser(registrationId, userId, userConnected.getEcasUsername());
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade
                     .getMessage());
@@ -284,4 +290,5 @@ public class UserResource {
             response.sendError(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return new ResponseDTO();
-}}
+    }
+}

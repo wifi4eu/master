@@ -324,7 +324,97 @@
     <br>
     <br>
     </div>
-    <br>
+    <br><br>
+    <!-- CONTACT DETAILS -->
+     <div class="whitePanel col-sm-12" *ngIf="multipleMunicipalities">
+            <div *ngFor="let contactPerson of users[registration?.municipalityId]; let i = index">
+                    <div *ngIf="contactPerson?.id != user.id">
+                         <div class="ui-g-12">
+                            <div class="col-sm-2"></div>
+                            <span class="ui-g-8 blueText">{{'benefPortal.profile.contactPerson' | translate}} {{municipality?.name}}</span>
+                            <p  class="edit cursorPointer right"(click)="deactivateShowModal(contactPerson.id)" *ngIf="!(contactPerson.type == -1) && !(contactPerson.id == user.id)">
+                                <i class="fa fa-ban"></i>{{ 'shared.deactivate.button' | translate}}</p>
+                        </div>
+                             <!-- Organization name -->
+                    <div class="row" *ngIf="associationName">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-8">
+                                <p>{{ 'registration.nameOrganisation' | translate }}</p>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row" *ngIf="associationName">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-8">
+                                <input id="associationName" type="text" [(ngModel)]="registration.associationName" class="form-control" name="associationName"
+                                ngcontrol="associationName" #associationName="ngModel"
+                                    (ngModelChange)="checkButtonEnabledUser($event)" required>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-8">
+                                    <p>{{ 'shared.name.label' | translate }}</p>
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-8">
+                                <input id="name_user" type="text" [(ngModel)]="contactPerson.name" class="form-control" name="name_user"
+                                    ngcontrol="name_user" #name_user="ngModel"
+                                    (ngModelChange)="checkButtonEnabledUser($event)" [disabled]="contactPerson.type == -1" required>
+                                <div [hidden]="name_user.valid || name_user.pristine" class="alert alert-danger">
+                                    {{ 'shared.name.required' | translate }}
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-8">
+                                <p>{{ 'shared.surname.label' | translate }}</p>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-8">
+                                <input id="surname_user" type="text" [(ngModel)]="contactPerson.surname" class="form-control" name="surname_user"
+                                    ngcontrol="surname_user"
+                                    #surname_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event)" [disabled]="contactPerson.type == -1" required>
+                                <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
+                                    {{ 'shared.surname.required' | translate }}
+                                </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-8">
+                                    <p>{{ 'shared.email.label' | translate }}</p>
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                        <div class="row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-8">
+                                    <input id="email_user" type="text" [(ngModel)]="contactPerson.email" class="form-control" name="email"
+                                        ngcontrol="email_user"
+                                        #email_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event)" [disabled]="contactPerson.type == -1" required>
+                                    <div [hidden]="email_user.valid || email_user.pristine" class="alert alert-danger">
+                                        {{ 'shared.email.required' | translate }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+        </div>
+        <br><br>
     <div class="whitePanel col-sm-12">
         <br>
         <br>
@@ -345,7 +435,7 @@
         </div>
         
         <!-- Organization name -->
-        <div class="row">
+        <div class="row" *ngIf="associationName">
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
                 <p>{{ 'registration.nameOrganisation' | translate }}</p>
@@ -513,3 +603,26 @@
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
+
+<!--MODAL CONFIMATION OF DEACTIVATING CONTACT-->
+<p-dialog [(visible)]="displayDeactivatemodal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
+        [closeOnEscape]="false">
+        <div class="form-group ui-g">
+            <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
+                <span>{{ 'shared.deactivate.modalTitle' | translate}}</span>
+            </div>
+            <div class="col-sm-12 center" style="padding-bottom:1em;">
+                <span style="line-height: 1.25; font-size: 16px;">{{ 'shared.deactivateContactModalAreYouSure' | translate}}</span>
+            </div>
+            <div class="col-sm-12 center">
+                <div class="offset-lg-2 col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="closeModal()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' | translate }} </button>
+                </div>
+                <div class="col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="deactivateContactModal()" type="button" class="btn btn-primary cancel-button">
+                        {{ 'shared.confirm.button' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </p-dialog>
