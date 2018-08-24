@@ -44,15 +44,15 @@ export class AppComponent {
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
 
     constructor(private translate: TranslateService,
-        private router: Router,
-        private translateService: TranslateService,
-        private localStorageService: LocalStorageService,
-        private uxService: UxService,
-        private sharedService: SharedService,
-        private userApi: UserApi,
-        private registrationApi: RegistrationApi,
-        private websockApi: WebsockApi,
-        private cookieService: CookieService) {
+                private router: Router,
+                private translateService: TranslateService,
+                private localStorageService: LocalStorageService,
+                private uxService: UxService,
+                private sharedService: SharedService,
+                private userApi: UserApi,
+                private registrationApi: RegistrationApi,
+                private websockApi: WebsockApi,
+                private cookieService: CookieService) {
         translateService.setDefaultLang('en');
         let language = this.localStorageService.get('lang');
         if (language) {
