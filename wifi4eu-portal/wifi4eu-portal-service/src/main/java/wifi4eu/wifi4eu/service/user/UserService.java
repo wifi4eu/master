@@ -223,30 +223,51 @@ public class UserService {
             InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
             if (Validator.isNotNull(invitationContact)){
                 userDTO.setUserInvited(true);
+                if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0){
+                    userDTO.setUserInvitedFor((int) Constant.ROLE_REPRESENTATIVE);
+                } else if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdSupplier() != 0){
+                    userDTO.setUserInvitedFor((int) Constant.ROLE_SUPPLIER);
+                }
+
             }
         }
         return userDTO;
     }
 
-    public boolean createAddContactBeneficiary(UserDTO userDTO){
-        InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
-        if (Validator.isNotNull(invitationContact)){
-            if (invitationContact.getIdRegistration() != null){
-                userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
-                createRegistrationUser(userDTO, invitationContact.getIdRegistration());
-            } else if (invitationContact.getIdSupplier() != null){
-                userDTO.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
-                createSupplierUser(userDTO, invitationContact.getIdSupplier());
+    public boolean createAddContactBeneficiary(UserDTO userDTO, UserDTO userConnected){
+        if (Validator.isNotNull(userDTO) && checkFieldsContactDetails(userDTO)) {
+            userConnected.setCity(userDTO.getCity());
+            userConnected.setCountry(userDTO.getCountry());
+            userConnected.setAddress(userDTO.getAddress());
+            userConnected.setAddressNum(userDTO.getAddressNum());
+            userConnected.setPostalCode(userDTO.getPostalCode());
+            InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userConnected.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
+            if (Validator.isNotNull(invitationContact)) {
+                if (invitationContact.getIdRegistration() != null) {
+                    userConnected.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
+                    createRegistrationUser(userConnected, invitationContact.getIdRegistration());
+                } else if (invitationContact.getIdSupplier() != null) {
+                    userConnected.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
+                    createSupplierUser(userConnected, invitationContact.getIdSupplier());
+                }
+                UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
+                userConnected.setLang(userDTOInvitatorDTO.getLang());
+                userRepository.save(userMapper.toEntity(userConnected));
+                invitationContact.setStatus(InvitationContactStatus.OK.getValue());
+                invitationContact.setLastModified(new Date());
+                invitationContactRepository.save(invitationContact);
+                return true;
             }
-            UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
-            userDTO.setLang(userDTOInvitatorDTO.getLang());
-            userRepository.save(userMapper.toEntity(userDTO));
-            invitationContact.setStatus(InvitationContactStatus.OK.getValue());
-            invitationContact.setLastModified(new Date());
-            invitationContactRepository.save(invitationContact);
-            return true;
         }
         return false;
+    }
+
+    private boolean checkFieldsContactDetails(UserDTO userDTO){
+        return Validator.isNotNull(userDTO.getAddress()) && Validator.isNotNull(userDTO.getAddressNum())
+                && Validator.isNotNull(userDTO.getCity()) && Validator.isNotNull(userDTO.getCountry())
+                && Validator.isNotNull(userDTO.getPostalCode()) && !userDTO.getAddress().isEmpty()
+                && !userDTO.getAddressNum().isEmpty() && !userDTO.getCity().isEmpty()
+                && !userDTO.getCountry().isEmpty() && !userDTO.getPostalCode().isEmpty();
     }
 
 

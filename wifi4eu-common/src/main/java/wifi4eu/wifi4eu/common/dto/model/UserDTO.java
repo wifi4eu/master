@@ -22,6 +22,7 @@ public class UserDTO {
     private String phone_prefix;
     private String phone_number;
     private boolean isUserInvited = false;
+    private int userInvitedFor = 0;
     private String country;
     private String city;
 
@@ -226,5 +227,13 @@ public class UserDTO {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public int getUserInvitedFor() {
+        return userInvitedFor;
+    }
+
+    public void setUserInvitedFor(int userInvitedFor) {
+        this.userInvitedFor = userInvitedFor;
     }
 }

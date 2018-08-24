@@ -144,7 +144,7 @@ public class UserResource {
     @ApiOperation(value = "Service to do Login with a ECAS User")
     @RequestMapping(value = "/complete-contact-details", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO completeInvitateContactDetails(HttpServletResponse response) {
+    public ResponseDTO completeInvitateContactDetails(@RequestBody final UserDTO userDTO, HttpServletResponse response) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         ResponseDTO responseDTO = new ResponseDTO();
@@ -152,12 +152,11 @@ public class UserResource {
         // get registrationUsers relation pending to be approved for the user logging in
         try {
 
-            if (userService.createAddContactBeneficiary(userConnected)) {
+            if (userService.createAddContactBeneficiary(userDTO, userConnected)) {
                 responseDTO.setSuccess(true);
                 responseDTO.setData(userConnected);
                 return responseDTO;
             }
-
             responseDTO.setSuccess(false);
             responseDTO.setData("-");
 
