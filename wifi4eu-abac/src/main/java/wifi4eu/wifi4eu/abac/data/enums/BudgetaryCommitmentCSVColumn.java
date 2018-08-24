@@ -1,6 +1,6 @@
 package wifi4eu.wifi4eu.abac.data.enums;
 
-public enum BudgetaryCommitmentImportCSVColumn {
+public enum BudgetaryCommitmentCSVColumn {
 
 	MUNICIPALITY_PORTAL_ID("mun_id"),
 	ABAC_GLOBAL_COMMITMENT_LEVEL1_POSITION_KEY("abac_globalCommitmentLevel1PositionKey"),
@@ -12,7 +12,7 @@ public enum BudgetaryCommitmentImportCSVColumn {
 
 	private String value;
 
-	private BudgetaryCommitmentImportCSVColumn(String value) {
+	private BudgetaryCommitmentCSVColumn(String value) {
 		this.value = value;
 	}
 

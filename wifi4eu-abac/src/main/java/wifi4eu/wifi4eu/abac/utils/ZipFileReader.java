@@ -34,7 +34,7 @@ public class ZipFileReader {
 				while ((len = zipInputStream.read(buffer)) > 0) outputStream.write(buffer, 0, len);
 				byte[] bytes = outputStream.toByteArray();
 				outputStream.close();
-				return new FileDTO(zipEntry.getName(), zipEntry.getSize(), bytes);
+				return new FileDTO(zipEntry.getName(), bytes);
 
 			} else {
 				zipInputStream.closeEntry();

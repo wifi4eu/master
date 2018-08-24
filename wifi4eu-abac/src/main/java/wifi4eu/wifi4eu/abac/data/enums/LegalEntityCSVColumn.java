@@ -1,6 +1,6 @@
 package wifi4eu.wifi4eu.abac.data.enums;
 
-public enum LegalEntityImportCSVColumn {
+public enum LegalEntityCSVColumn {
 
 	MUNICIPALITY_PORTAL_ID("mun_id"),
 	MUNICIPALITY_NAME("mun_name"),
@@ -18,7 +18,7 @@ public enum LegalEntityImportCSVColumn {
 
 	private String value;
 
-	private LegalEntityImportCSVColumn(String value) {
+	private LegalEntityCSVColumn(String value) {
 		this.value = value;
 	}
 

@@ -1,10 +1,5 @@
 package wifi4eu.wifi4eu.abac.rest;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +9,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.BudgetaryCommitmentService;
+import wifi4eu.wifi4eu.abac.service.ExportDataService;
 import wifi4eu.wifi4eu.abac.service.ImportDataService;
+
+import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping(path = "budgetaryCommitment")
@@ -29,6 +31,9 @@ public class BudgetaryCommitmentController {
 
 	@Autowired
 	private ImportDataService importDataService;
+
+	@Autowired
+	private ExportDataService exportDataService;
 
 	@Autowired
 	private BudgetaryCommitmentService budgetaryCommitmentService;
@@ -54,18 +59,15 @@ public class BudgetaryCommitmentController {
 			throws Exception {
 		log.info("exportBudgetaryCommitment");
 
+		FileDTO fileDTO = exportDataService.exportBudgetaryCommitments();
 		ResponseEntity<byte[]> responseReturn = null;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("text/csv"));
-		String filename = "exportBudgetaryCommitment.csv";
-		headers.setContentDispositionFormData(filename, filename);
+		headers.setContentDispositionFormData(fileDTO.getFileName(), fileDTO.getFileName());
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-		log.info("exportBudgetaryCommitment - generating csv file content");
-		String responseData = budgetaryCommitmentService.exportBudgetaryCommitments();
 		// getBytes(Charset.forName("UTF-8"));
-		responseReturn = new ResponseEntity<byte[]>(responseData.getBytes(StandardCharsets.UTF_8), headers,
-				HttpStatus.OK);
+		responseReturn = new ResponseEntity<byte[]>(fileDTO.getContent(), headers, HttpStatus.OK);
 
 		log.info("exportBudgetaryCommitment - csv file exported successfully");
 
