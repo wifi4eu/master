@@ -40,16 +40,26 @@ export class SupplierRegistrationStep2Component {
     }
 
     checkIfRegionsSelected() {
-        this.areRegionsSelected = false;
+        this.areRegionsSelected = true;
         for (let country of this.allCountriesSelect) {
             let countryFound = false;
-            for (let selectedCountry of this.selectedCountries) {
-                if (selectedCountry.countryCode == country.value.countryCode) {
-                    if (this.selectedRegions[country.value.label].length > 0) {
-                        this.areRegionsSelected = true;
+            if (this.selectedCountries.length > 0) {
+                for (let selectedCountry of this.selectedCountries) {
+                    if (this.selectedRegions[selectedCountry.label] != null) {
+                        if (this.selectedRegions[selectedCountry.label].length == 0) {
+                            this.areRegionsSelected = false;
+                        }
+                    } else {
+                        this.areRegionsSelected = false;
                     }
-                    countryFound = true;
+                    if (selectedCountry.countryCode == country.value.countryCode) {
+                        if (this.selectedRegions[selectedCountry.label].length > 0) {
+                            countryFound = true;
+                        }
+                    }
                 }
+            } else {
+                this.areRegionsSelected = false;
             }
             if (!countryFound) {
                 this.selectedRegions[country.value.label] = [];
@@ -93,7 +103,6 @@ export class SupplierRegistrationStep2Component {
         this.uxService.activeLanguage = language;
         this.localStorage.set('lang', language.code);
         this.updateChooseTranslation();
-
     }
 
     private updateChooseTranslation() {
