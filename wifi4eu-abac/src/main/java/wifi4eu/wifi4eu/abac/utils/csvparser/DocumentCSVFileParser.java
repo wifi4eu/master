@@ -37,22 +37,27 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 	@Override
 	protected List<LegalEntityDocumentCSVRow> mapRowsToEntities(CSVParser csvParser) {
 
-		List<LegalEntityDocumentCSVRow> documents = new ArrayList<>();
+		try {
+			List<LegalEntityDocumentCSVRow> documents = new ArrayList<>();
 
-		for (CSVRecord csvRecord : csvParser) {
-			LegalEntityDocumentCSVRow documentCSVRow = new LegalEntityDocumentCSVRow();
+			for (CSVRecord csvRecord : csvParser) {
+				LegalEntityDocumentCSVRow documentCSVRow = new LegalEntityDocumentCSVRow();
 
-			documentCSVRow.setMunicipalityPortalId(Long.parseLong(csvRecord.get(LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID)));
-			documentCSVRow.setDocumentPortalId(Long.parseLong(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID)));
-			documentCSVRow.setDocumentName(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_NAME));
-			documentCSVRow.setDocumentFileName(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME));
-			documentCSVRow.setDocumentMimeType(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE));
-			documentCSVRow.setDocumentDate(DateTimeUtils.parseDate(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_DATE), PORTAL_CSV_DATE_FORMAT));
-			documentCSVRow.setDocumentType(DocumentType.valueOf(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_TYPE)));
-			documentCSVRow.setAresReference(csvRecord.get(LegalEntityDocumentCSVColumn.ARES_REFERENCE));
-			documents.add(documentCSVRow);
+				documentCSVRow.setMunicipalityPortalId(Long.parseLong(csvRecord.get(LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID)));
+				documentCSVRow.setDocumentPortalId(Long.parseLong(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID)));
+				documentCSVRow.setDocumentName(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_NAME));
+				documentCSVRow.setDocumentFileName(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME));
+				documentCSVRow.setDocumentMimeType(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE));
+				documentCSVRow.setDocumentDate(DateTimeUtils.parseDate(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_DATE), PORTAL_CSV_DATE_FORMAT));
+				documentCSVRow.setDocumentType(DocumentType.valueOf(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_TYPE)));
+				documentCSVRow.setAresReference(csvRecord.get(LegalEntityDocumentCSVColumn.ARES_REFERENCE));
+				documents.add(documentCSVRow);
+			}
+			return documents;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return documents;
+
 	}
 
 	public String exportDocumentsToCSV(List<Document> documents) {

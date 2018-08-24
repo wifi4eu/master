@@ -32,4 +32,7 @@ public interface LegalCommitmentRepository extends CrudRepository<LegalCommitmen
 	Long countAllByWfStatusNotInAndBatchRefEquals(List<LegalCommitmentWorkflowStatus> wfStatuses, String batchRef);
 
 	List<LegalCommitment> findAllByBatchRefEquals(String batchRef);
+
+	@Query("select lc from LegalCommitment lc where lc.wfStatus = 'COUNTERSIGNED' and lc.legalEntity.budgetaryCommitment.wfStatus = 'ABAC_VALID'")
+	List<LegalCommitment> findLegalCommitmentsAvailableForCreation();
 }
