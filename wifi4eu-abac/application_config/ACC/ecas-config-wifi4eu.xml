@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<client-config xmlns="https://www.cc.cec/cas/schemas/client-config/ecas/">
+    <configurationId>eu.europa.ec.digit.wifi4eu</configurationId>
+
+	<ecasBaseUrl>https://webgate.ec.europa.eu</ecasBaseUrl>
+	<validateUrl>/cas/laxValidate</validateUrl>
+    <serverName>webgate.acceptance.ec.europa.eu</serverName>
+    <serverProtocol>https</serverProtocol>
+    <serverPort>80</serverPort>
+    <serverSSLPort>443</serverSSLPort>
+
+    <requestingUserDetails>true</requestingUserDetails>
+    <applicationServer>weblogic</applicationServer>
+
+    <acceptStrengths>
+        <strength>STRONG</strength>
+    </acceptStrengths>
+
+	<trustedCertificates>
+		<trustedCertificate>MIIHNTCCBR2gAwIBAgIBATANBgkqhkiG9w0BAQUFADCBzzELMAkGA1UEBhMCQkUxETAPBgNVBAgM CEJydXNzZWxzMREwDwYDVQQHDAhCcnVzc2VsczEcMBoGA1UECgwTRXVyb3BlYW4gQ29tbWlzc2lv bjEOMAwGA1UECwwFRElHSVQxKjAoBgkqhkiG9w0BCQEWG0ZyZWRlcmljLlBPRUxTQGVjLmV1cm9w YS5ldTFAMD4GA1UEAww3Tm9uLVBST0QgRUNBUyBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkgKFRFU1Qg YW5kIERFViBvbmx5KTAeFw0xMTA0MTAxMzQzMjRaFw00MTA0MTExMzQzMjRaMIHPMQswCQYDVQQG EwJCRTERMA8GA1UECAwIQnJ1c3NlbHMxETAPBgNVBAcMCEJydXNzZWxzMRwwGgYDVQQKDBNFdXJv cGVhbiBDb21taXNzaW9uMQ4wDAYDVQQLDAVESUdJVDEqMCgGCSqGSIb3DQEJARYbRnJlZGVyaWMu UE9FTFNAZWMuZXVyb3BhLmV1MUAwPgYDVQQDDDdOb24tUFJPRCBFQ0FTIENlcnRpZmljYXRlIEF1 dGhvcml0eSAoVEVTVCBhbmQgREVWIG9ubHkpMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKC AgEAr7ICK/8sI/WNg6a94CC0bm5PhO1+UTc0hCu10HPNo9+TpM/VlpDH7Oow54+LbAYOTk/rh1kh 2+MTna4/28P8nGlM050bKIonugbq937rP0UBoPioZ3bQEWSlnz/3aZbxI5yB+XZWOkzO2ywNIDpU u9z+8nMqz2OIO66QncUm+utad7cwvAiBRAnfHZLy6kVcNJyac1Ro3Wje3ROHsrVcqkJne0LGRcY+ uYSAqQfs6tCCk0aBRY6ZzRPwI6CmVye/VZuF3yjN2CC9pWB/mleKfh8sCaqbETWt0tPHkx0zsxet 9mUltXt98HOhmfe8oFPw09P3GQJyfTC8n6pPrmspC5rSJ5JhGPYrmeaXczgqvaZyw1Uu4Wlb0FeX FLhyfY3FhJn+KsvIHki0bljyIhhwdGrQW5FwkAOdepimrj7813ixGk0X2wMsxnI8IyJNoEer96xO BjlMaHHDKqKv0lHgLTqgFvQxfQ2r2AvxiCJzTldFBePw33+9PGOV2srmk9H9KM2shgoC7xDYeqvp g+XOtDTdTKdH5L+eQ+uEqCZKAW821ZpCdal2t4WPnw1+e4Tqu0jv6D5s24n0OKYn9KYEnLbvzg6I 4XqF6TxiHDNTmMUAyKyaO1V9vXahJHd+q9y9ztXVqQXxft9qo3ImE5eHo99t0mppL0Xilss7JgUc xa8CAwEAAaOCARgwggEUMCYGA1UdEQQfMB2BG0ZyZWRlcmljLlBPRUxTQGVjLmV1cm9wYS5ldTAR BglghkgBhvhCAQEEBAMCAPcwDgYDVR0PAQH/BAQDAgH2MB0GA1UdDgQWBBSWPUKvR7Zw02RBheh4 c9QfYHdeFjAfBgNVHSMEGDAWgBSWPUKvR7Zw02RBheh4c9QfYHdeFjASBgNVHRMBAf8ECDAGAQH/ AgEBMDsGA1UdJQQ0MDIGCCsGAQUFBwMIBggrBgEFBQcDAQYIKwYBBQUHAwIGCCsGAQUFBwMDBggr BgEFBQcDBDA2BgNVHR8ELzAtMCugKaAnhiVodHRwczovL2VjYXN0LmVjLmV1cm9wYS5ldS9jYXMv Y2EvY3JsMA0GCSqGSIb3DQEBBQUAA4ICAQBXQOEYJ6Tfj9bxZrRcDPNCTvMrW9cm3btyQCjkfSsg F3LDZkA+pMJwA+ZTJPfhHrwaqXtRwXnN8HggBeDWiGcRvjpd8aqv0D1BXW+Bf1qMSk9ZOVN98RUx HNwDNtY6bqfJwZ6Xi9uUnaid6VNDpnkyZMGPkd0Nl0kW+mqpaIdWlD7egzdFVAntZjNV2xa9Mq+N uF7liB1AbGjrUcuVNwQVD3pp70PcNBgBidFcgiu5HySIY+5nBdVPKmtfucrbFxTEEkNVNkfZ14Rg 1/B9MnyHNxWJ+TiMZNKQ12IH9jB4mRYDbrHOaYZ+diY7AUcjsm21M3gwWzm8WOoax0raytONXdHv Z6zPpryhxj+rCHbRVCgnrCbM17wR78BH6blkNYuBpX6kJLgqVzAJOEYf3XNdvZBv2xAXL0Hny0AN 8bsOgCzdDSK2XoiqyHdAT+TF7nPrzqueeMvlkk1lSuVaMnROmdAU6c5/gCGPPr2igmpj+d6TT5jx 8uP2mFg1nHcj7Wec6iEkbeea5C+coP6in2EWIzD5LyxTjwUeGQgS1PcieRXwESIgeilnAwTq1RPT E5igkpD6kKGgAj1EBNCRTcfxuTguNrCSG1g8YUMtCivLHse1squt8WLNc+QPmmm3I477aFh2rx0R rDQo1Gol6oQEHRLdOnmp2puPp3Qusbpjyg==</trustedCertificate>
+	</trustedCertificates>
+	
+	<redirectionInterceptors>
+	   <redirectionInterceptor>eu.cec.digit.ecas.client.http.robot.DefaultRobotInterceptor</redirectionInterceptor>
+       <redirectionInterceptor>eu.cec.digit.ecas.client.http.ajax.JsonAjaxRedirectionInterceptor</redirectionInterceptor>
+    </redirectionInterceptors>
+	
+	<httpRedirector>eu.cec.digit.ecas.client.http.ajax.UnauthorizedGatewayAjaxHttpRedirector</httpRedirector>
+
+</client-config>
