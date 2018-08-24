@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +41,7 @@ public class LegalEntityController {
 	@Autowired
 	private DocumentService documentService;
 
+	@PreAuthorize("hasRole('ROLE_INEA_OFFICER')")
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO importLegalEntity(@RequestParam("file") MultipartFile file) {
 		ResponseVO result = new ResponseVO();
@@ -53,6 +55,7 @@ public class LegalEntityController {
 		return result;
 	}
 
+	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
 	public ResponseEntity<byte[]> exportLegalEntity(final HttpServletResponse response, Model model) throws Exception {
 		log.info("exportLegalEntity");

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,12 +24,15 @@ public class MonitoringController {
 	public MonitoringController(MonitoringService monitoringService) {
 		this.monitoringService = monitoringService;
 	}
-	
+
+
+	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
 	@RequestMapping(value = "data", method = RequestMethod.GET, produces = "application/json")
 	public List<MonitoringRow> data() throws IOException {
 		return monitoringService.getMonitoringData();
 	}
-	
+
+	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
 	@RequestMapping(value = "countries", method = RequestMethod.GET, produces = "application/json")
 	public List<Country> countries() throws IOException {
 		return  monitoringService.getCountries();
