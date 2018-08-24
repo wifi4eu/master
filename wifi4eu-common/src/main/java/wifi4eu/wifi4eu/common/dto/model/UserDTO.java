@@ -21,11 +21,15 @@ public class UserDTO {
     private String csrfToken;
     private String phone_prefix;
     private String phone_number;
+    private boolean isUserInvited = false;
+    private int userInvitedFor = 0;
+    private String country;
+    private String city;
 
     public UserDTO() {
     }
 
-    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified, String csrfToken, String phone_prefix, String phone_number) {
+    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified, String csrfToken, String phone_prefix, String phone_number, String country, String city) {
         this.id = id;
         this.ecasUsername = ecasUsername;
         this.ecasEmail = ecasEmail;
@@ -45,6 +49,8 @@ public class UserDTO {
         this.csrfToken = csrfToken;
         this.phone_prefix = phone_prefix;
         this.phone_number = phone_number;
+        this.country = country;
+        this.city = city;
     }
 
     public int getId() {
@@ -197,5 +203,37 @@ public class UserDTO {
 
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
+    }
+
+    public boolean isUserInvited() {
+        return isUserInvited;
+    }
+
+    public void setUserInvited(boolean isUserInvited) {
+        this.isUserInvited = isUserInvited;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getUserInvitedFor() {
+        return userInvitedFor;
+    }
+
+    public void setUserInvitedFor(int userInvitedFor) {
+        this.userInvitedFor = userInvitedFor;
     }
 }

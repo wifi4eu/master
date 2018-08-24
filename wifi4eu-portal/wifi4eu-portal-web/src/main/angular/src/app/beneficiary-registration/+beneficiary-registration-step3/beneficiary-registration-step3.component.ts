@@ -4,6 +4,7 @@ import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {SharedService} from "../../shared/shared.service";
 import {LocalStorageService} from "angular-2-local-storage/dist/local-storage.service";
+import { NutsDTOBase } from "../../shared/swagger";
 
 @Component({
     selector: 'beneficiary-registration-step3',
@@ -17,6 +18,7 @@ export class BeneficiaryRegistrationStep3Component {
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
     @Input('sameDetails') private sameDetails: boolean;
     @Input('associationName') private associationName: string;
+    @Input('countries') private countries: NutsDTOBase[];
 
     private imMayor: boolean;
     private repeatEmail: string;
@@ -79,6 +81,7 @@ export class BeneficiaryRegistrationStep3Component {
             this.buttonEnabled = false;
             /* this.checkEmailsMatch(); */
         }
+        this.checkButtonEnabled();
     }
 
     private checkEmailsMatch() {
@@ -132,13 +135,23 @@ export class BeneficiaryRegistrationStep3Component {
         return false;
     }
 
-    private checkButtonEnabled(event){
+    private checkButtonEnabled(event?){
         this.buttonEnabled = false;
-        for (let i = 0; i < this.municipalities.length; i++) {
-            if(this.initialUser.surname != null && this.initialUser.name != null && this.initialUser.addressNum != null && this.initialUser.address != null  && this.initialUser.postalCode != null
-                 && this.initialUser.surname.trim() != "" && this.initialUser.name.trim() != "" && this.initialUser.addressNum.trim() != "" && this.initialUser.address.trim() != "" && this.initialUser.postalCode.trim() != ""){
-                    this.buttonEnabled = true;
-            }
+        if(this.initialUser.surname != null && 
+            this.initialUser.name != null && 
+            this.initialUser.addressNum != null && 
+            this.initialUser.address != null  && 
+            this.initialUser.postalCode != null && 
+            this.initialUser.country != null &&
+            this.initialUser.city != null &&
+            this.initialUser.surname.trim() != "" && 
+            this.initialUser.name.trim() != "" && 
+            this.initialUser.addressNum.trim() != "" && 
+            this.initialUser.address.trim() != "" && 
+            this.initialUser.postalCode.trim() != "" && 
+            this.initialUser.country.trim() != "" &&
+            this.initialUser.city.trim() != ""){
+                this.buttonEnabled = true;
         }
     }
 }
