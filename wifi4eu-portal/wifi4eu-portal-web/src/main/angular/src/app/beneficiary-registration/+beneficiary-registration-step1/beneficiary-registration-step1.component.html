@@ -53,7 +53,7 @@
                                 <option disabled selected [ngValue]="null">
                                     {{'benefRegistration.registration.selectOrganisation' |translate}}
                                 </option>
-                                <option ngValue="municipality"> {{ 'shared.municipality.label' | translate }}</option>
+                                <option *ngIf="!noMunicipalityOrganization" ngValue="municipality"> {{ 'shared.municipality.label' | translate }}</option>
                                 <option *ngFor="let currentOrganization of organizations" [ngValue]="currentOrganization">
                                     {{currentOrganization.name}}
                                 </option>
