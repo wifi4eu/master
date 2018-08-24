@@ -35,13 +35,6 @@ public class BudgetaryCommitmentService {
 	@Autowired
 	private LegalEntityService legalEntityService;
 
-	public String exportBudgetaryCommitments() {
-		log.info("exportBudgetaryCommitmentyContent");
-		List<BudgetaryCommitmentPosition> budgetaryCommitments = (List<BudgetaryCommitmentPosition>) budgetaryCommitmentyPositionRepository.findAll();
-		String csvFile = budgetaryCommitmentCSVFileParser.exportBudgetaryCommitmentToCSV(budgetaryCommitments);
-		return csvFile;
-	}
-
 	public BudgetaryCommitment save(BudgetaryCommitment budgetaryCommitment) {
 		return budgetaryCommitmentyRepository.save(budgetaryCommitment);
 	}
@@ -90,5 +83,9 @@ public class BudgetaryCommitmentService {
 
 	public List<BudgetaryCommitment> getAllByBatchRef(String batchRef){
 		return budgetaryCommitmentyRepository.findAllByBatchRefEquals(batchRef);
+	}
+
+	public List<BudgetaryCommitmentPosition> findAllBudgetaryCommitmentPositions() {
+		return (List<BudgetaryCommitmentPosition>) budgetaryCommitmentyPositionRepository.findAll();
 	}
 }

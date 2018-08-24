@@ -44,13 +44,6 @@ public class LegalEntityService {
 		return legalEntityRepository.save(legalEntity);
 	}
 
-	public String exportLegalEntityFile() {
-		log.info("exportLegalEntityFile");
-		List<LegalEntity> legalEntities = legalEntityRepository.findLegalEntitiesProcessedInAbac();
-		String csvFile = legalEntityCSVFileParser.exportLegalEntitiesToCSV(legalEntities);
-		return csvFile;
-	}
-
 	public LegalEntity mapLegalEntityCSVToEntity(LegalEntityInformationCSVRow legalEntityInformationCSVRow) {
 		LegalEntity legalEntity = new LegalEntity();
 
@@ -100,4 +93,8 @@ public class LegalEntityService {
 	public List<LegalEntity> getAllByBatchRef(String batchRef){
         return legalEntityRepository.findAllByBatchRefEquals(batchRef);
     }
+
+	public List<LegalEntity> getLegalEntitiesProcessedInAbac() {
+		return legalEntityRepository.findLegalEntitiesProcessedInAbac();
+	}
 }

@@ -7,8 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.data.enums.BudgetaryCommitmentImportCSVColumn;
-import wifi4eu.wifi4eu.abac.data.enums.LegalEntityImportCSVColumn;
+import wifi4eu.wifi4eu.abac.data.enums.LegalEntityCSVColumn;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -23,17 +22,17 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 	@Override
 	protected Boolean validateColumns(CSVParser csvParser) {
 		return super.validateColumns(csvParser,
-				LegalEntityImportCSVColumn.MUNICIPALITY_PORTAL_ID,
-				LegalEntityImportCSVColumn.MUNICIPALITY_NAME,
-				LegalEntityImportCSVColumn.MUNICIPALITY_ADDRESS,
-				LegalEntityImportCSVColumn.MUNICIPALITY_POSTAL_CODE,
-				LegalEntityImportCSVColumn.MUNICIPALITY_PORTAL_ID,
-				LegalEntityImportCSVColumn.MUNICIPALITY_CITY,
-				LegalEntityImportCSVColumn.MUNICIPALITY_COUNTRY_CODE,
-				LegalEntityImportCSVColumn.MUNICIPALITY_LANGUAGE_CODE,
-				LegalEntityImportCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER,
-				LegalEntityImportCSVColumn.MUNICIPALITY_CALL_NUMBER,
-				LegalEntityImportCSVColumn.MUNICIPALITY_ABAC_REFERENCE);
+				LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID,
+				LegalEntityCSVColumn.MUNICIPALITY_NAME,
+				LegalEntityCSVColumn.MUNICIPALITY_ADDRESS,
+				LegalEntityCSVColumn.MUNICIPALITY_POSTAL_CODE,
+				LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID,
+				LegalEntityCSVColumn.MUNICIPALITY_CITY,
+				LegalEntityCSVColumn.MUNICIPALITY_COUNTRY_CODE,
+				LegalEntityCSVColumn.MUNICIPALITY_LANGUAGE_CODE,
+				LegalEntityCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER,
+				LegalEntityCSVColumn.MUNICIPALITY_CALL_NUMBER,
+				LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE);
 	}
 
 	@Override
@@ -45,16 +44,16 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 
 			LegalEntityInformationCSVRow legalEntityInformationCSVRow = new LegalEntityInformationCSVRow();
 
-			legalEntityInformationCSVRow.setMid(Long.parseLong(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_PORTAL_ID)));
-			legalEntityInformationCSVRow.setOfficialName(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_NAME));
-			legalEntityInformationCSVRow.setOfficialAddress(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_ADDRESS));
-			legalEntityInformationCSVRow.setPostalCode(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_POSTAL_CODE));
-			legalEntityInformationCSVRow.setCity(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_CITY));
-			legalEntityInformationCSVRow.setCountryCode(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_COUNTRY_CODE));
-			legalEntityInformationCSVRow.setLanguageCode(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_LANGUAGE_CODE));
-			legalEntityInformationCSVRow.setRegistrationNumber(Long.parseLong(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER)));
-			legalEntityInformationCSVRow.setAbacReference(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_ABAC_REFERENCE));
-			legalEntityInformationCSVRow.setCallNumber(Integer.parseInt(csvRecord.get(LegalEntityImportCSVColumn.MUNICIPALITY_CALL_NUMBER)));
+			legalEntityInformationCSVRow.setMid(Long.parseLong(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID)));
+			legalEntityInformationCSVRow.setOfficialName(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_NAME));
+			legalEntityInformationCSVRow.setOfficialAddress(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ADDRESS));
+			legalEntityInformationCSVRow.setPostalCode(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_POSTAL_CODE));
+			legalEntityInformationCSVRow.setCity(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_CITY));
+			legalEntityInformationCSVRow.setCountryCode(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_COUNTRY_CODE));
+			legalEntityInformationCSVRow.setLanguageCode(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_LANGUAGE_CODE));
+			legalEntityInformationCSVRow.setRegistrationNumber(Long.parseLong(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER)));
+			legalEntityInformationCSVRow.setAbacReference(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE));
+			legalEntityInformationCSVRow.setCallNumber(Integer.parseInt(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_CALL_NUMBER)));
 
 			legalEntityRows.add(legalEntityInformationCSVRow);
 		}
@@ -71,17 +70,17 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 
 			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
 					.withHeader(
-							LegalEntityImportCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
-							LegalEntityImportCSVColumn.MUNICIPALITY_NAME.toString(),
-							LegalEntityImportCSVColumn.MUNICIPALITY_ADDRESS.toString(),
-							LegalEntityImportCSVColumn.MUNICIPALITY_POSTAL_CODE.toString(),
-							LegalEntityImportCSVColumn.MUNICIPALITY_CITY.toString(),
-							LegalEntityImportCSVColumn.MUNICIPALITY_COUNTRY_CODE.toString(),
-							LegalEntityImportCSVColumn.MUNICIPALITY_LANGUAGE_CODE.toString(),
-							LegalEntityImportCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER.toString(),
-							LegalEntityImportCSVColumn.MUNICIPALITY_ABAC_REFERENCE.toString(),
-							LegalEntityImportCSVColumn.MUNICIPALITY_ABAC_STATUS.toString(),
-							LegalEntityImportCSVColumn.MUNICIPALITY_ABAC_MESSAGE.toString()
+							LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_NAME.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_ADDRESS.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_POSTAL_CODE.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_CITY.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_COUNTRY_CODE.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_LANGUAGE_CODE.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_ABAC_STATUS.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_ABAC_MESSAGE.toString()
 					));
 
 			for (LegalEntity legalEntity : legalEntities) {

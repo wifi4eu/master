@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import wifi4eu.wifi4eu.abac.data.dto.LegalCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
-import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentImportCSVColumn;
+import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentCSVColumn;
 import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
 import java.io.BufferedWriter;
@@ -39,12 +39,12 @@ public class LegalCommitmentCSVFileParser extends AbstractCSVFileParser{
 
 			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
 					.withHeader(
-							LegalCommitmentImportCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
-							LegalCommitmentImportCSVColumn.GRANT_AGREEMENT_SIGNATURE_DATE.toString(),
-							LegalCommitmentImportCSVColumn.GRANT_AGREEMENT_COUNTERSIGNATURE_DATE.toString(),
-							LegalCommitmentImportCSVColumn.ABAC_STATUS.toString(),
-							LegalCommitmentImportCSVColumn.ABAC_MESSAGE.toString(),
-							LegalCommitmentImportCSVColumn.ABAC_KEY.toString()
+							LegalCommitmentCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
+							LegalCommitmentCSVColumn.GRANT_AGREEMENT_SIGNATURE_DATE.toString(),
+							LegalCommitmentCSVColumn.GRANT_AGREEMENT_COUNTERSIGNATURE_DATE.toString(),
+							LegalCommitmentCSVColumn.ABAC_STATUS.toString(),
+							LegalCommitmentCSVColumn.ABAC_MESSAGE.toString(),
+							LegalCommitmentCSVColumn.ABAC_KEY.toString()
 					));
 
 			for (LegalCommitment legalCommitment : legalCommitments) {

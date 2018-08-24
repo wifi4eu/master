@@ -11,9 +11,9 @@ public class FileDTO {
 
 	}
 
-	public FileDTO(String fileName, Long size, byte[] content) {
+	public FileDTO(String fileName, byte[] content) {
 		this.fileName = fileName;
-		this.size = size;
+		this.size = new Long(content.length);
 		this.content = content;
 	}
 

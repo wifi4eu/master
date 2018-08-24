@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.integration.essi.EssiService;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.DocumentService;
+import wifi4eu.wifi4eu.abac.service.ExportDataService;
 import wifi4eu.wifi4eu.abac.service.ImportDataService;
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 
@@ -36,6 +38,9 @@ public class LegalEntityController {
 
 	@Autowired
 	private ImportDataService importDataService;
+
+	@Autowired
+	private ExportDataService exportDataService;
 
 	@Autowired
 	private DocumentService documentService;
@@ -56,21 +61,16 @@ public class LegalEntityController {
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "text/csv")
 	public ResponseEntity<byte[]> exportLegalEntity(final HttpServletResponse response, Model model) throws Exception {
 		log.info("exportLegalEntity");
+
+		FileDTO fileDTO = exportDataService.exportLegalEntityFile();
+
 		ResponseEntity<byte[]> responseReturn = null;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("text/csv"));
-		String filename = "exportLegalEntity.csv";
-		headers.setContentDispositionFormData(filename, filename);
+		headers.setContentDispositionFormData(fileDTO.getFileName(), fileDTO.getFileName());
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-		log.info("exportLegalEntity - generating csv file content");
-		String responseData = legalEntityService.exportLegalEntityFile();
-		// getBytes(Charset.forName("UTF-8"));
-		responseReturn = new ResponseEntity<byte[]>(responseData.getBytes(StandardCharsets.UTF_8), headers, HttpStatus.OK);
-
-		model.addAttribute("exportResult", "File exported successfully...");
-		log.info("exportLegalEntity - csv file exported successfully");
-
+		responseReturn = new ResponseEntity<byte[]>(fileDTO.getContent(), headers, HttpStatus.OK);
 		return responseReturn;
 	}
 }

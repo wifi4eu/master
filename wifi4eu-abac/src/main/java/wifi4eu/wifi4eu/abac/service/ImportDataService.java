@@ -27,14 +27,12 @@ import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
+import javax.print.Doc;
 import javax.transaction.Transactional;
 
 import java.io.IOException;
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @SuppressWarnings("unchecked")
@@ -266,26 +264,5 @@ public class ImportDataService {
 
 		//create user notification
 		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.BC_CREATION);
-	}
-
-	public FileDTO exportLegalCommitments() throws IOException {
-		ZipFileWriter zipFileWriter = new ZipFileWriter("export.zip");
-
-		List<LegalCommitment> legalCommitments = legalCommitmentService.getAllLegalCommitments();
-
-		for (LegalCommitment legalCommitment : legalCommitments) {
-
-			Document counterSignedGrantAgreement = legalCommitment.getCounterSignedGrantAgreementDocument();
-			if (counterSignedGrantAgreement != null) {
-				FileDTO fileDTO = new FileDTO(counterSignedGrantAgreement.getFileName(), new Long(counterSignedGrantAgreement.getData().length), counterSignedGrantAgreement.getData());
-				zipFileWriter.addFile(fileDTO);
-			}
-		}
-
-		byte[] legalCommitmentsCSVbytes = legalCommitmentCSVFileParser.exportLegalCommitmentToCSV(legalCommitments).getBytes();
-		FileDTO legalCommitmentsCSVFile = new FileDTO("legalCommitments.csv", new Long(legalCommitmentsCSVbytes.length), legalCommitmentsCSVbytes);
-		zipFileWriter.addFile(legalCommitmentsCSVFile);
-
-		return zipFileWriter.finishAndReturnZipfile();
 	}
 }
