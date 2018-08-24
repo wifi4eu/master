@@ -662,7 +662,7 @@
                 <ecas.server.port>${server.pro.port}</ecas.server.port>
                 <ecas.config.strength>BASIC</ecas.config.strength>
                 <ecas.config.strength.dgconn>BASIC</ecas.config.strength.dgconn>
-                <mail.serv.enable>true</mail.serv.enable>
+                <mail.serv.enable>false</mail.serv.enable>
                 <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
