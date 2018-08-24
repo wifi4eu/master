@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +36,7 @@ public class LegalCommitmentController {
 	@Autowired
 	private LegalCommitmentService legalCommitmentService;
 
+	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
 	@RequestMapping(value = "import", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO importLegalCommitment(@RequestParam("file") MultipartFile file) {
 		log.info("importLegalCommitment");
@@ -49,6 +51,7 @@ public class LegalCommitmentController {
 		return result;
 	}
 
+	@PreAuthorize("hasRole('ROLE_INEA_OFFICER')")
 	@RequestMapping(value = "export", method = RequestMethod.GET, produces = "application/zip")
 	public ResponseEntity<byte[]> exportLegalCommitment(final HttpServletResponse response, Model model) throws Exception {
 		log.info("exportLegalCommitment");
@@ -65,6 +68,7 @@ public class LegalCommitmentController {
 		return  responseReturn;
 	}
 
+	@PreAuthorize ("hasRole('ROLE_INEA_COUNTER_SIGN')")
 	@RequestMapping(value = "countersign", method = RequestMethod.POST, produces = "application/json")
 	public ResponseVO counterSign(@RequestBody List<Long> legalEntityIds) {
 

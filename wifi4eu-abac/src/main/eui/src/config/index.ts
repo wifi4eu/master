@@ -1,7 +1,9 @@
 import { GLOBAL } from './global';
 import { MODULES } from './modules';
+import { ROUTE_HANDLERS } from './routeHandlers';
 
 export const appConfig = {
     global: GLOBAL,
-    modules: MODULES,
+    httpResponseHandlers: ROUTE_HANDLERS,
+    modules: MODULES
 };
