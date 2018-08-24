@@ -51,21 +51,14 @@ export class InvitedContactDetailsComponent {
         (response: ResponseDTOBase) => {
             if (response.success){
               this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
-              /*
-              if (this.user && this.user.userInvitedFor == 3){
-                this.router.navigateByUrl('/beneficiary-portal/profile');
-              } else {
-                this.router.navigateByUrl('/supplier-portal/profile');
-              }
-              */
-             var port = window.location.port ? ':' + window.location.port : '';
+              var port = window.location.port ? ':' + window.location.port : '';
              window.location.href = window.location.protocol + "//" + window.location.hostname + port+'/wifi4eu/index.html'
             } else {
-              this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'success');
+              this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
             }
         },
         error => {
-          this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'success');
+          this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
         }
       );
     } else {

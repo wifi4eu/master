@@ -259,6 +259,12 @@ export class AppComponent {
                     url: '#'
                 })
             ];
+            this.children[5] = [
+                new UxLayoutLink({
+                    label: 'Complete invitate contact details',
+                    url: '/invited-contact-details'
+                })
+            ];
             this.childrenInitialized.next();
         });
     }
@@ -301,8 +307,13 @@ export class AppComponent {
                     this.menuLinks = this.children[2];
                     break;
                 default:
-                    this.profileUrl = '/home';
-                    this.menuLinks = this.children[0];
+                    if (this.user.userInvited){
+                        this.profileUrl = '/invite-contact-details';
+                        this.menuLinks = this.children[5];
+                    } else {
+                        this.profileUrl = '/home';
+                        this.menuLinks = this.children[0];
+                    }
                     break;
             }
         } else {

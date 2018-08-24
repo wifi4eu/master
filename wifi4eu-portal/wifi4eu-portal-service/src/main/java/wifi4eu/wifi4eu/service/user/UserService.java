@@ -234,19 +234,19 @@ public class UserService {
         return userDTO;
     }
 
-    public boolean createAddContactBeneficiary(UserDTO userDTO, UserDTO userConnected){
+    public boolean createAddContact(UserDTO userDTO, UserDTO userConnected){
         if (Validator.isNotNull(userDTO) && checkFieldsContactDetails(userDTO)) {
-            userConnected.setCity(userDTO.getCity());
-            userConnected.setCountry(userDTO.getCountry());
-            userConnected.setAddress(userDTO.getAddress());
-            userConnected.setAddressNum(userDTO.getAddressNum());
-            userConnected.setPostalCode(userDTO.getPostalCode());
             InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userConnected.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
             if (Validator.isNotNull(invitationContact)) {
-                if (invitationContact.getIdRegistration() != null) {
+                userConnected.setCity(userDTO.getCity());
+                userConnected.setCountry(userDTO.getCountry());
+                userConnected.setAddress(userDTO.getAddress());
+                userConnected.setAddressNum(userDTO.getAddressNum());
+                userConnected.setPostalCode(userDTO.getPostalCode());
+                if (invitationContact.getIdRegistration() != null && invitationContact.getIdRegistration() != 0) {
                     userConnected.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
                     createRegistrationUser(userConnected, invitationContact.getIdRegistration());
-                } else if (invitationContact.getIdSupplier() != null) {
+                } else if (invitationContact.getIdSupplier() != null && invitationContact.getIdSupplier() != 0) {
                     userConnected.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
                     createSupplierUser(userConnected, invitationContact.getIdSupplier());
                 }

@@ -149,10 +149,9 @@ public class UserResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         ResponseDTO responseDTO = new ResponseDTO();
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging in with ECAS User");
-        // get registrationUsers relation pending to be approved for the user logging in
         try {
 
-            if (userService.createAddContactBeneficiary(userDTO, userConnected)) {
+            if (userService.createAddContact(userDTO, userConnected)) {
                 responseDTO.setSuccess(true);
                 responseDTO.setData(userConnected);
                 return responseDTO;
