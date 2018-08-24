@@ -584,7 +584,11 @@ public class UserService {
         registrationUsersRepository.save(registrationUsers);
     }
 
-    public ResponseDTO deactivateRegistrationUser(Integer registrationId, Integer userId) throws Exception {
+    public boolean checkIfApplied(UserDTO userDTO) {
+       return applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0;
+    }
+
+public ResponseDTO deactivateRegistrationUser(Integer registrationId, Integer userId) throws Exception {
         ResponseDTO responseDTO = new ResponseDTO();
         //has municipality more than one user associated?
         if(registrationUsersRepository.countRegistrationUsersByRegistrationIdAndIsActiveTrue(registrationId) > 1) {

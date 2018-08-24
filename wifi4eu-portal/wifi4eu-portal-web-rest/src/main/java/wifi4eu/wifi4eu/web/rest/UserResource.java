@@ -14,7 +14,6 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
@@ -25,12 +24,13 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.Response;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -117,7 +117,6 @@ public class UserResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
-
 
 
     @ApiOperation(value = "Service to do Login with a ECAS User")
@@ -235,7 +234,37 @@ public class UserResource {
     }
 
 
-    @ApiOperation(value = "Deactivate user from registration")
+    @ApiOperation(value = "Update new language for user")
+    @RequestMapping(value = "/checkIfApplied", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO checkIfApplied() {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            if (Validator.isNotNull(userConnected)) {
+                if (userConnected.getType() != 3) {
+                    throw new AccessDeniedException("");
+                }
+                responseDTO.setSuccess(true);
+                responseDTO.setData(userService.checkIfApplied(userConnected));
+            } else {
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(400, "User not found"));
+            }
+
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been checked", e);
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(400, "Bad Request"));
+        }
+
+        return responseDTO;
+    }
+
+ @ApiOperation(value = "Deactivate user from registration")
     @RequestMapping(value = "/registrationUsers/{registrationId}/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO deactivateRegistrationUser(@PathVariable("registrationId") Integer registrationId, @PathVariable("userId") Integer userId,
@@ -245,7 +274,6 @@ public class UserResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId);
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
-
             return userService.deactivateRegistrationUser(registrationId, userId);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade
@@ -256,8 +284,4 @@ public class UserResource {
             response.sendError(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return new ResponseDTO();
-    }
-
-
-
-}
+}}
