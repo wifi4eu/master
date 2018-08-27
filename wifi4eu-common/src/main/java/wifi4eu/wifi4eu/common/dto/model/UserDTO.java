@@ -19,8 +19,8 @@ public class UserDTO {
     private int type;
     private boolean verified;
     private String csrfToken;
-    private String phone_prefix;
-    private String phone_number;
+    private String phonePrefix;
+    private String phoneNumber;
     private boolean isUserInvited = false;
     private int userInvitedFor = 0;
     private String country;
@@ -29,7 +29,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified, String csrfToken, String phone_prefix, String phone_number, String country, String city) {
+    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified, String csrfToken, String phonePrefix, String phoneNumber, String country, String city) {
         this.id = id;
         this.ecasUsername = ecasUsername;
         this.ecasEmail = ecasEmail;
@@ -47,8 +47,8 @@ public class UserDTO {
         this.type = type;
         this.verified = verified;
         this.csrfToken = csrfToken;
-        this.phone_prefix = phone_prefix;
-        this.phone_number = phone_number;
+        this.phonePrefix = phonePrefix;
+        this.phoneNumber = phoneNumber;
         this.country = country;
         this.city = city;
     }
@@ -189,20 +189,20 @@ public class UserDTO {
         this.csrfToken = csrfToken;
     }
 
-    public String getPhone_prefix() {
-        return phone_prefix;
+    public String getPhonePrefix() {
+        return phonePrefix;
     }
 
-    public void setPhone_prefix(String phone_prefix) {
-        this.phone_prefix = phone_prefix;
+    public void setPhonePrefix(String phonePrefix) {
+        this.phonePrefix = phonePrefix;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public boolean isUserInvited() {

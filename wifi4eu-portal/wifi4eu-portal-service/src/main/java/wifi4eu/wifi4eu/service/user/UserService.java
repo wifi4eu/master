@@ -225,7 +225,7 @@ public class UserService {
                 userDTO.setUserInvited(true);
                 if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0){
                     userDTO.setUserInvitedFor((int) Constant.ROLE_REPRESENTATIVE);
-                } else if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdSupplier() != 0){
+                } else if (Validator.isNotNull(invitationContact.getIdSupplier()) && invitationContact.getIdSupplier() != 0){
                     userDTO.setUserInvitedFor((int) Constant.ROLE_SUPPLIER);
                 }
 
@@ -235,20 +235,26 @@ public class UserService {
     }
 
     public boolean createAddContact(UserDTO userDTO, UserDTO userConnected){
-        if (Validator.isNotNull(userDTO) && checkFieldsContactDetails(userDTO)) {
+        if (Validator.isNotNull(userDTO)) {
             InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userConnected.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
-            if (Validator.isNotNull(invitationContact)) {
-                userConnected.setCity(userDTO.getCity());
-                userConnected.setCountry(userDTO.getCountry());
-                userConnected.setAddress(userDTO.getAddress());
-                userConnected.setAddressNum(userDTO.getAddressNum());
-                userConnected.setPostalCode(userDTO.getPostalCode());
+            if (Validator.isNotNull(invitationContact) && checkFieldsContactDetails(userDTO, invitationContact.getType())) {
+                userConnected.setName(userDTO.getName());
+                userConnected.setSurname(userDTO.getSurname());
                 if (invitationContact.getIdRegistration() != null && invitationContact.getIdRegistration() != 0) {
+                    userConnected.setCity(userDTO.getCity());
+                    userConnected.setCountry(userDTO.getCountry());
+                    userConnected.setAddress(userDTO.getAddress());
+                    userConnected.setAddressNum(userDTO.getAddressNum());
+                    userConnected.setPostalCode(userDTO.getPostalCode());
                     userConnected.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
                     createRegistrationUser(userConnected, invitationContact.getIdRegistration());
                 } else if (invitationContact.getIdSupplier() != null && invitationContact.getIdSupplier() != 0) {
+                    userConnected.setPhonePrefix(userDTO.getPhonePrefix());
+                    userConnected.setPhoneNumber(userDTO.getPhoneNumber());
                     userConnected.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
                     createSupplierUser(userConnected, invitationContact.getIdSupplier());
+                } else {
+                    return false;
                 }
                 UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
                 userConnected.setLang(userDTOInvitatorDTO.getLang());
@@ -262,12 +268,23 @@ public class UserService {
         return false;
     }
 
-    private boolean checkFieldsContactDetails(UserDTO userDTO){
-        return Validator.isNotNull(userDTO.getAddress()) && Validator.isNotNull(userDTO.getAddressNum())
-                && Validator.isNotNull(userDTO.getCity()) && Validator.isNotNull(userDTO.getCountry())
-                && Validator.isNotNull(userDTO.getPostalCode()) && !userDTO.getAddress().isEmpty()
-                && !userDTO.getAddressNum().isEmpty() && !userDTO.getCity().isEmpty()
-                && !userDTO.getCountry().isEmpty() && !userDTO.getPostalCode().isEmpty();
+    private boolean checkFieldsContactDetails(UserDTO userDTO, int type){
+        if (type == ((Long) Constant.ROLE_REPRESENTATIVE).intValue()) {
+            return Validator.isNotNull(userDTO.getName()) && Validator.isNotNull(userDTO.getSurname())
+                    && Validator.isNotNull(userDTO.getAddress()) && Validator.isNotNull(userDTO.getAddressNum())
+                    && Validator.isNotNull(userDTO.getCity()) && Validator.isNotNull(userDTO.getCountry())
+                    && Validator.isNotNull(userDTO.getPostalCode()) && !userDTO.getAddress().isEmpty()
+                    && !userDTO.getAddressNum().isEmpty() && !userDTO.getCity().isEmpty()
+                    && !userDTO.getCountry().isEmpty() && !userDTO.getPostalCode().isEmpty()
+                    && !userDTO.getName().isEmpty() && !userDTO.getSurname().isEmpty();
+        } else if (type == ((Long) Constant.ROLE_SUPPLIER).intValue()) {
+            return Validator.isNotNull(userDTO.getName()) && Validator.isNotNull(userDTO.getSurname())
+                    && Validator.isNotNull(userDTO.getPhoneNumber()) && Validator.isNotNull(userDTO.getPhonePrefix())
+                    && !userDTO.getName().isEmpty() && !userDTO.getSurname().isEmpty()
+                    && !userDTO.getPhoneNumber().isEmpty() && !userDTO.getPhonePrefix().isEmpty();
+        }
+
+        return false;
     }
 
 

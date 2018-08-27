@@ -83,10 +83,10 @@
                 <br>
                 <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
                     <label>{{ 'suppRegistration.phone.number' | translate }}</label><br>
-                    <input [id]="'phone-prefix-'+i" type="text" [name]="'phone-prefix-'+i" class="form-control ui-g-2 ui-sm-4"
-                        style="margin-right: 1em;" [(ngModel)]="users[i].phone_prefix" (ngModelChange)="enableButtonUser($event, i)" required [disabled]="user.type == -1">
-                    <input [id]="'phone-number-'+i" type="text" [name]="'phone-number-'+i" class="form-control ui-g-3 ui-sm-7"
-                        [(ngModel)]="users[i].phone_number" required (ngModelChange)="enableButtonUser($event, i)" [disabled]="user.type == -1">
+                    <input [id]="'phone-prefix-'+i" type="text" [name]="'phonePrefix-'+i" class="form-control ui-g-2 ui-sm-4"
+                        style="margin-right: 1em;" [(ngModel)]="users[i].phonePrefix" (ngModelChange)="enableButtonUser($event, i)" required [disabled]="user.type == -1">
+                    <input [id]="'phone-number-'+i" type="text" [name]="'phoneNumber-'+i" class="form-control ui-g-3 ui-sm-7"
+                        [(ngModel)]="users[i].phoneNumber" required (ngModelChange)="enableButtonUser($event, i)" [disabled]="user.type == -1">
                     <br>
                     <label class="ui-g-2 ui-sm-4" style="font-size: 70%;color: #8f8f8f;">
                         {{ 'suppRegistration.prefix.number' | translate }}

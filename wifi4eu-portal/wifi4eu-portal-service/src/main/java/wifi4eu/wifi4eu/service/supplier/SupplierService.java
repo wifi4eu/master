@@ -155,8 +155,8 @@ public class SupplierService {
                 if (userSupplier.getId() == user.getId()) {
                     user.setName(userSupplier.getName());
                     user.setSurname(userSupplier.getSurname());
-                    user.setPhone_number(userSupplier.getPhone_number());
-                    user.setPhone_prefix(userSupplier.getPhone_prefix());
+                    user.setPhoneNumber(userSupplier.getPhoneNumber());
+                    user.setPhonePrefix(userSupplier.getPhonePrefix());
                     UserValidator.validateUserContact(user);
                     break;
                 }
@@ -228,14 +228,14 @@ public class SupplierService {
                 userDTO.setName(userSupplier.getName());
                 userDTO.setSurname(userSupplier.getSurname());
                 userDTO.setEmail(userSupplier.getEmail());
-                userDTO.setPhone_number(userSupplier.getPhone_number());
-                userDTO.setPhone_prefix(userSupplier.getPhone_prefix());
+                userDTO.setPhoneNumber(userSupplier.getPhoneNumber());
+                userDTO.setPhonePrefix(userSupplier.getPhonePrefix());
                 userDTO.setCreateDate(new Date().getTime());
                 userDTO.setType(1);
                 userDTO.setVerified(false);
                 userDTO.setLang(supplierDTO.getLang());
-                userDTO.setPhone_number(supplierDTO.getContactNumber());
-                userDTO.setPhone_prefix(supplierDTO.getContactPrefix());
+                userDTO.setPhoneNumber(supplierDTO.getContactNumber());
+                userDTO.setPhonePrefix(supplierDTO.getContactPrefix());
                 userDTO.setEmail(supplierDTO.getContactEmail());
                 if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()) {
                     userDTO.setEcasEmail(supplierDTO.getContactEmail());
