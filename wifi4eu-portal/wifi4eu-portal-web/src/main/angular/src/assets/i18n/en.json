@@ -971,5 +971,5 @@
   "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
   "shared.deactivate.modalTitle": "Deactivating Contact Person",
   "shared.deactivate.sucess": "Contact deactivated successfully",
-  "benefPortal.profile.contactPerson": "Contact person details of Municipality"
+  "benefPortal.profile.contactPerson": "Contact person details"
 }

@@ -123,6 +123,7 @@ export class BeneficiaryProfileComponent {
                                         this.userApi.getUsersFromRegistration(registration.id).subscribe(
                                             (users: UserContactDetailsBase[]) => {
                                                 this.users[registration.municipalityId] = users;
+                                                this.userMain = users.find(x => x.main === 1);
                                             }
                                             // work here!
                                             /*

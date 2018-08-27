@@ -1,34 +1,34 @@
-import {Component, Input, OnChanges, Output} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {ApplicationApi} from "../../../shared/swagger/api/ApplicationApi";
-import {UserApi} from "../../../shared/swagger/api/UserApi";
-import {UserDTOBase, UserDTO} from "../../../shared/swagger/model/UserDTO";
-import {MunicipalityDTOBase} from "../../../shared/swagger/model/MunicipalityDTO";
-import {RegistrationDTOBase} from "../../../shared/swagger/model/RegistrationDTO";
-import {RegistrationApi} from "../../../shared/swagger/api/RegistrationApi";
-import {MunicipalityApi} from "../../../shared/swagger/api/MunicipalityApi";
-import {BeneficiaryDTOBase} from "../../../shared/swagger/model/BeneficiaryDTO";
-import {ResponseDTOBase} from "../../../shared/swagger/model/ResponseDTO";
-import {ApplicationDTOBase} from "../../../shared/swagger/model/ApplicationDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {SharedService} from "../../../shared/shared.service";
-import {UserThreadsApi} from "../../../shared/swagger/api/UserThreadsApi";
-import {UserThreadsDTOBase} from "../../../shared/swagger/model/UserThreadsDTO";
-import {MayorApi} from "../../../shared/swagger/api/MayorApi";
-import {CallApi} from "../../../shared/swagger/api/CallApi";
-import {MayorDTOBase} from "../../../shared/swagger/model/MayorDTO";
-import {ThreadApi} from "../../../shared/swagger/api/ThreadApi";
-import {NutsApi} from "../../../shared/swagger/api/NutsApi";
-import {BeneficiaryApi} from "../../../shared/swagger/api/BeneficiaryApi";
-import {ThreadDTOBase} from "../../../shared/swagger/model/ThreadDTO";
-import {UserRegistrationDTO, UserRegistrationDTOBase} from "../../../shared/swagger/model/UserRegistrationDTO";
-import {Logs} from "selenium-webdriver";
-import {LauDTOBase, LauDTO} from "../../../shared/swagger/model/LauDTO";
-import {NutsDTOBase} from "../../../shared/swagger/model/NutsDTO";
-import {LauApi} from "../../../shared/swagger/api/LauApi";
-import {ViewChild} from "@angular/core";
-import {NgForm} from "@angular/forms";
-import {Observable} from "rxjs/Observable";
+import { Component, Input, OnChanges, Output } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ApplicationApi } from "../../../shared/swagger/api/ApplicationApi";
+import { UserApi } from "../../../shared/swagger/api/UserApi";
+import { UserDTOBase, UserDTO } from "../../../shared/swagger/model/UserDTO";
+import { MunicipalityDTOBase } from "../../../shared/swagger/model/MunicipalityDTO";
+import { RegistrationDTOBase } from "../../../shared/swagger/model/RegistrationDTO";
+import { RegistrationApi } from "../../../shared/swagger/api/RegistrationApi";
+import { MunicipalityApi } from "../../../shared/swagger/api/MunicipalityApi";
+import { BeneficiaryDTOBase } from "../../../shared/swagger/model/BeneficiaryDTO";
+import { ResponseDTOBase } from "../../../shared/swagger/model/ResponseDTO";
+import { ApplicationDTOBase } from "../../../shared/swagger/model/ApplicationDTO";
+import { LocalStorageService } from "angular-2-local-storage";
+import { SharedService } from "../../../shared/shared.service";
+import { UserThreadsApi } from "../../../shared/swagger/api/UserThreadsApi";
+import { UserThreadsDTOBase } from "../../../shared/swagger/model/UserThreadsDTO";
+import { MayorApi } from "../../../shared/swagger/api/MayorApi";
+import { CallApi } from "../../../shared/swagger/api/CallApi";
+import { MayorDTOBase } from "../../../shared/swagger/model/MayorDTO";
+import { ThreadApi } from "../../../shared/swagger/api/ThreadApi";
+import { NutsApi } from "../../../shared/swagger/api/NutsApi";
+import { BeneficiaryApi } from "../../../shared/swagger/api/BeneficiaryApi";
+import { ThreadDTOBase } from "../../../shared/swagger/model/ThreadDTO";
+import { UserRegistrationDTO, UserRegistrationDTOBase } from "../../../shared/swagger/model/UserRegistrationDTO";
+import { Logs } from "selenium-webdriver";
+import { LauDTOBase, LauDTO } from "../../../shared/swagger/model/LauDTO";
+import { NutsDTOBase } from "../../../shared/swagger/model/NutsDTO";
+import { LauApi } from "../../../shared/swagger/api/LauApi";
+import { ViewChild } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { Observable } from "rxjs/Observable";
 import { TranslateService } from "ng2-translate";
 import { CallDTO, CallDTOBase, OrganizationApi, OrganizationDTOBase } from "../../../shared/swagger";
 import { CookieService } from "ngx-cookie-service";
@@ -54,7 +54,8 @@ export class BeneficiaryEditProfileComponent {
     private country: NutsDTOBase;
     private laus: LauDTOBase[] = [];
     private user: UserDTOBase = new UserDTOBase;
-    private users = {};
+    private users: UserContactDetailsBase[][] = [];
+    private userMain: UserContactDetailsBase;
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
     private municipalitiesSelected: boolean = false;
     private municipalities: MunicipalityDTOBase[] = [];
@@ -72,18 +73,18 @@ export class BeneficiaryEditProfileComponent {
     private withdrawingRegistration: boolean = false;
     private withdrawnSuccess: boolean = false;
     private threadId: number;
-    private hasDiscussion: boolean []= [];
+    private hasDiscussion: boolean[] = [];
     private discussionThreads: ThreadDTOBase[] = [];
-    private allDocumentsUploaded: boolean [] = [];
+    private allDocumentsUploaded: boolean[] = [];
     private documentUploaded: boolean = false;
     private oneRegsitration: boolean = false;
     private oneRegistrationNumber: number = 0;
-    private threadsByUser : UserThreadsDTOBase[] = [];
-    private userThreads: ThreadDTOBase [] = [];
+    private threadsByUser: UserThreadsDTOBase[] = [];
+    private userThreads: ThreadDTOBase[] = [];
     private municipalityFinish: boolean = false;
     private mayorFinish: boolean = false;
     private userFinish: boolean = false;
-    private buttonEnabled: boolean =  false;
+    private buttonEnabled: boolean = false;
     private displayDeleteMunicipality: boolean = false;
     private deleteMunicipalityId: number = 0;
     private emailConfirmations: string[] = [''];
@@ -100,19 +101,19 @@ export class BeneficiaryEditProfileComponent {
     private newUserEmail: string = '';
     private registrationIndex: number = null;
     private associationName: String = '';
-    private registration: RegistrationDTOBase ;
+    private registration: RegistrationDTOBase;
     private registrationFinish: boolean = false;
-    private hasAssociation : boolean = false;
+    private hasAssociation: boolean = false;
     private nameCookieApply: string = "hasRequested";
     private registrations: RegistrationDTOBase[] = [];
-    private contactIdToDeactvate : number = 0;
+    private contactIdToDeactvate: number = 0;
     private displayDeactivatemodal: boolean = false;
 
     constructor(private cookieService: CookieService, private callApi: CallApi, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private translateService: TranslateService, private nutsApi: NutsApi, private lauApi: LauApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         this.loadDataEditProfile();
     }
 
-    private loadDataEditProfile(){
+    private loadDataEditProfile() {
         this.user = new UserDTOBase;
         this.municipalities = [];
         this.mayors = [];
@@ -120,8 +121,8 @@ export class BeneficiaryEditProfileComponent {
         this.emailConfirmations = [''];
         this.css_class_municipalities = ['notValid'];
         this.css_class_email = ['notValid'];
-        if (this.newMayors.length > 0){
-            for (let a = 0; a < this.newMayors.length; a++){
+        if (this.newMayors.length > 0) {
+            for (let a = 0; a < this.newMayors.length; a++) {
                 this.laus[a] = null;
             }
         }
@@ -166,7 +167,7 @@ export class BeneficiaryEditProfileComponent {
                                     } else {
                                         this.oneRegsitration = false;
                                     }
-                                    if (registrations[0].organisationId != 0){
+                                    if (registrations[0].organisationId != 0) {
                                         this.isOrganisation = true;
                                         this.finalBeneficiary.organisationId = registrations[0].organisationId;
                                         this.organizationId = registrations[0].organisationId;
@@ -174,7 +175,7 @@ export class BeneficiaryEditProfileComponent {
                                         this.registration = registrations[0];
                                     }
                                     for (let registration of registrations) {
-                                        if (registration.municipalityId == 0){
+                                        if (registration.municipalityId == 0) {
                                             continue;
                                         }
                                         this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
@@ -186,13 +187,13 @@ export class BeneficiaryEditProfileComponent {
                                                         this.municipalities.push(municipality);
                                                         this.checkEditPermissionMunicipality(municipality.id);
                                                         this.mayors.push(mayor);
-                                                        if (this.municipalities.length > 0 && this.municipalities.length < 2){
-                                                            if (this.country == null){
+                                                        if (this.municipalities.length > 0 && this.municipalities.length < 2) {
+                                                            if (this.country == null) {
                                                                 this.lauApi.getLauById(this.municipalities[0].lauId).subscribe(
                                                                     (country: LauDTO) => {
-                                                                      this.country = country;
+                                                                        this.country = country;
                                                                     }, error => {
-                                                                      console.log(error);
+                                                                        console.log(error);
                                                                     }
                                                                 );
                                                             }
@@ -202,8 +203,9 @@ export class BeneficiaryEditProfileComponent {
                                             }
                                         );
                                         this.userApi.getUsersFromRegistration(registration.id).subscribe(
-                                            (users: UserDTO[]) => {
+                                            (users: UserContactDetailsBase[]) => {
                                                 this.users[registration.municipalityId] = users;
+                                                this.userMain = users.find(x => x.main === 1);
                                             }
                                         );
                                     }
@@ -230,11 +232,11 @@ export class BeneficiaryEditProfileComponent {
                                         (utsByThread: UserThreadsDTOBase[]) => {
                                             this.discussionThreads.push(thread);
                                             if (utsByThread.length > 1) {
-                                                 for (let i = 0; i < utsByThread.length; ++i) {
+                                                for (let i = 0; i < utsByThread.length; ++i) {
                                                     if (utsByThread[i].userId != this.user.id) {
                                                         this.threadsByUser.push(utsByThread[i]);
                                                         this.hasDiscussion.push(true);
-                                                        
+
                                                     }
                                                 }
                                             }
@@ -255,24 +257,24 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
-    private isVoucherApplied(idRegistration:number){
-      if (this.cookieService.check(this.nameCookieApply+"_"+idRegistration)){
-          if (this.cookieService.get(this.nameCookieApply+"_"+idRegistration) == "true"){
-              return true;
-          }
-      }
-      return false;
+    private isVoucherApplied(idRegistration: number) {
+        if (this.cookieService.check(this.nameCookieApply + "_" + idRegistration)) {
+            if (this.cookieService.get(this.nameCookieApply + "_" + idRegistration) == "true") {
+                return true;
+            }
+        }
+        return false;
     }
 
-    private checkEditPermissionMunicipality(municipalityId: number){
+    private checkEditPermissionMunicipality(municipalityId: number) {
         this.applicationApi.isMunicipalityEditable(municipalityId).subscribe(
             (response: ResponseDTOBase) => {
-                if (response.success){
+                if (response.success) {
                     this.isMunicipalityEditable[municipalityId] = response.data;
-                    if(response.data){
-                      //Check if municipality have applied cookie and then disable input fields
-                      var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
-                      this.isMunicipalityEditable[municipalityId] = !appliedExist;
+                    if (response.data) {
+                        //Check if municipality have applied cookie and then disable input fields
+                        var appliedExist = this.registrations.some(registration => this.isVoucherApplied(registration.id) === true);
+                        this.isMunicipalityEditable[municipalityId] = !appliedExist;
                     }
                 }
             }
@@ -286,16 +288,16 @@ export class BeneficiaryEditProfileComponent {
             this.emailConfirmations.push('');
             this.css_class_email.push('notValid');
             this.css_class_municipalities.push('notValid');
-            setTimeout(()=>{            
+            setTimeout(() => {
                 let i = this.newMunicipalities.length - 1;
-                var element = document.getElementById("scrollMunicipality-"+i);
-                element.scrollIntoView({behavior: "smooth"});
-            },200);
+                var element = document.getElementById("scrollMunicipality-" + i);
+                element.scrollIntoView({ behavior: "smooth" });
+            }, 200);
         }
         this.checkMunicipalitiesSelected();
     }
 
-    private removeExtraMunicipality(index: number, deleteCount: number = 1){
+    private removeExtraMunicipality(index: number, deleteCount: number = 1) {
         this.newMunicipalities.splice(index, deleteCount);
         this.laus.splice(index, deleteCount);
         this.newMayors.splice(index, deleteCount);
@@ -339,17 +341,17 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
-    private openModal(idMunicipality: number){
-        if (this.buttonEnabled){
+    private openModal(idMunicipality: number) {
+        if (this.buttonEnabled) {
             this.sharedService.growlTranslation('Error, you can\'t delete a municipality if there are changes to save. Please confirm the changes or cancel them before deleting municipaliies', 'benefPortal.beneficiary.deleteMunicipality.changesNotSaved', 'warn');
-        }else{
+        } else {
             this.deleteMunicipalityId = idMunicipality;
             this.displayDeleteMunicipality = true;
-        } 
+        }
     }
 
-    private deleteMunicipality(){
-        if (this.deleteMunicipalityId != 0){
+    private deleteMunicipality() {
+        if (this.deleteMunicipalityId != 0) {
             this.municipalityApi.deleteMunicipalityFromId(this.deleteMunicipalityId).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
@@ -359,7 +361,7 @@ export class BeneficiaryEditProfileComponent {
                         this.sharedService.growlTranslation('Error. You can\'t delete this municipality. At least one municipality should remain in the registration', 'benefPortal.beneficiary.deleteMunicipality.Error', 'warn');
                     }
                     this.closeModal();
-                }, error =>{
+                }, error => {
                     this.sharedService.growlTranslation('Error, you can\'t delete this municipality', 'benefPortal.beneficiary.deleteMunicipality.ErrorMunicipality', 'warn');
                     this.closeModal();
                 }
@@ -376,7 +378,7 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
-    private checkEmailsMatch(){
+    private checkEmailsMatch() {
         this.emailsMatch = false;
         for (let i = 0; i < this.newMayors.length; i++) {
             if (this.newMayors[i].email != this.emailConfirmations[i] || this.emailConfirmations[i].length < 1) {
@@ -389,7 +391,7 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
-    private submitNewMunicipalities(){
+    private submitNewMunicipalities() {
         for (let i = 0; i < this.newMunicipalities.length; i++) {
             this.newMunicipalities[i].name = this.laus[i].name1;
             this.newMunicipalities[i].country = this.municipalities[0].country;
@@ -399,7 +401,7 @@ export class BeneficiaryEditProfileComponent {
         for (let municipality of this.newMunicipalities) {
             this.finalBeneficiary.municipalities.push(municipality);
         }
-        
+
         let language = this.translateService.currentLang;
         if (!language) {
             language = 'en';
@@ -434,7 +436,7 @@ export class BeneficiaryEditProfileComponent {
         return false;
     }
 
-    private closeModal(){
+    private closeModal() {
         this.registrationIndex = null;
         this.deleteMunicipalityId = 0;
         this.displayDeleteMunicipality = false;
@@ -447,15 +449,15 @@ export class BeneficiaryEditProfileComponent {
         this.submittingData = true;
         let hasBeenAnError = false;
 
-        for(let i = 0; i < this.municipalities.length; i++){
-            if (this.isMunicipalityEditable[this.municipalities[i].id]){
+        for (let i = 0; i < this.municipalities.length; i++) {
+            if (this.isMunicipalityEditable[this.municipalities[i].id]) {
                 this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
                     (response: ResponseDTOBase) => {
                         if (response.success) {
                             this.municipalityFinish = true;
                             this.checkFinishedCalls();
                             this.municipalities[this.currentEditIndex] = response.data;
-                        }else{
+                        } else {
                             hasBeenAnError = true;
                         }
                         this.municipalityFinish = true;
@@ -469,80 +471,83 @@ export class BeneficiaryEditProfileComponent {
                         this.mayorFinish = true;
                         this.checkFinishedCalls();
                         this.mayors[this.currentEditIndex] = response.data;
-                    }else{
+                    } else {
                         hasBeenAnError = true;
                     }
                     this.municipalityFinish = true;
-                        this.checkFinishedCalls();                    
+                    this.checkFinishedCalls();
                 }
-             
+
             );
         }
-
-
-        this.userApi.updateUserDetails(this.user).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.userFinish = true;
-                    this.checkFinishedCalls();
-                    this.user = response.data;
-                }else{
-                    hasBeenAnError = true
-                }
+        for (let index = 0; index < this.registrations.length; index++) {
+            let userArray = this.users[this.registrations[index].municipalityId];
+            for (let z = 0; z < userArray.length; z++) {
+                this.userApi.updateUserDetails(this.user).subscribe(
+                    (response: ResponseDTOBase) => {
+                        if (response.success) {
+                            this.userFinish = true;
+                            this.checkFinishedCalls();
+                            this.user = response.data;
+                        } else {
+                            hasBeenAnError = true
+                        }
+                    }
+                );
             }
-        );
+        }
 
-        if (this.newMunicipalities.length > 0){
+        if (this.newMunicipalities.length > 0) {
             this.submitNewMunicipalities();
         }
-        if(this.registration.associationName != null && this.registration.associationName != ""){
+        if (this.registration.associationName != null && this.registration.associationName != "") {
             this.registrationApi.updateAssociationName(this.registration).subscribe(
-            (response: ResponseDTOBase) =>{
-                if (response.success) {
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        this.registrationFinish = true;
+                        this.checkFinishedCalls();
+                    } else {
+                        hasBeenAnError = true
+                    }
+                }, error => {
+                    console.log(error);
                     this.registrationFinish = true;
                     this.checkFinishedCalls();
-                }else{
                     hasBeenAnError = true
                 }
-            },error =>{
-                console.log(error);
-                this.registrationFinish = true;
-                this.checkFinishedCalls();
-                hasBeenAnError = true
-            }
             );
         } else {
             this.registrationFinish = true;
             this.checkFinishedCalls();
         }
 
-        if (hasBeenAnError){
+        if (hasBeenAnError) {
             this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
-        }else{
+        } else {
             this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success', 'success');
             this.goBackToProfile();
         }
     }
 
-    private goBackToProfile(){
-        this.router.navigate(['../'], {relativeTo: this.route});
+    private goBackToProfile() {
+        this.router.navigate(['../'], { relativeTo: this.route });
     }
 
-    private checkFinishedCalls(){
-        if(this.municipalityFinish && this.mayorFinish && this.userFinish && this.registrationFinish){
+    private checkFinishedCalls() {
+        if (this.municipalityFinish && this.mayorFinish && this.userFinish && this.registrationFinish) {
             this.submittingData = false;
         }
     }
 
-    private checkButtonEnabled(event, i){
+    private checkButtonEnabled(event, i) {
         this.buttonEnabled = false;
-        if(this.municipalities[i].address != null && this.municipalities[i].addressNum != null && this.municipalities[i].postalCode != null && this.mayors[i].name != null  && this.mayors[i].surname != null  && this.mayors[i].email != null
-         && this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != ""  && this.mayors[i].surname.trim() != ""  && this.mayors[i].email.trim() != ""){
+        if (this.municipalities[i].address != null && this.municipalities[i].addressNum != null && this.municipalities[i].postalCode != null && this.mayors[i].name != null && this.mayors[i].surname != null && this.mayors[i].email != null
+            && this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != "" && this.mayors[i].surname.trim() != "" && this.mayors[i].email.trim() != "") {
             this.buttonEnabled = true;
-            if(this.registration.associationName != null && this.registration.associationName.trim() != ""){
-                if (this.newMunicipalities.length > 0){
-                    for(let j = 0; j < this.newMunicipalities.length; j++){
-                        if (this.newMunicipalities[j].address != null && this.newMunicipalities[j].addressNum != null && this.newMunicipalities[j].postalCode != null && this.newMayors[j].name != null  && this.newMayors[j].surname != null && (this.newMunicipalities[j].address.trim() == "" || this.newMunicipalities[j].addressNum.trim() == "" || this.newMunicipalities[j].postalCode.trim() == "" || this.newMayors[j].name.trim() == "" || this.newMayors[j].surname.trim() == "")){
+            if (this.registration.associationName != null && this.registration.associationName.trim() != "") {
+                if (this.newMunicipalities.length > 0) {
+                    for (let j = 0; j < this.newMunicipalities.length; j++) {
+                        if (this.newMunicipalities[j].address != null && this.newMunicipalities[j].addressNum != null && this.newMunicipalities[j].postalCode != null && this.newMayors[j].name != null && this.newMayors[j].surname != null && (this.newMunicipalities[j].address.trim() == "" || this.newMunicipalities[j].addressNum.trim() == "" || this.newMunicipalities[j].postalCode.trim() == "" || this.newMayors[j].name.trim() == "" || this.newMayors[j].surname.trim() == "")) {
                             this.buttonEnabled = false;
                             break;
                         }
@@ -558,22 +563,22 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
-    private addNewContactToMunicipality(municipalityId: number){
+    private addNewContactToMunicipality(municipalityId: number) {
         this.idMunicipalityNewContactUser = municipalityId;
         this.addUser = true;
     }
 
-    private closeAddNewContactModal(){
+    private closeAddNewContactModal() {
         this.newUserEmail = '';
         this.addUser = false;
     }
 
-    private addNewContact(){
-        if (this.newUserEmail.trim() != '' && this.idMunicipalityNewContactUser != 0){
+    private addNewContact() {
+        if (this.newUserEmail.trim() != '' && this.idMunicipalityNewContactUser != 0) {
             this.addContact = true;
             this.beneficiaryApi.invitateContactBeneficiary(this.idMunicipalityNewContactUser, this.newUserEmail).subscribe(
                 (response: ResponseDTOBase) => {
-                    if (response.success){
+                    if (response.success) {
                         this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
                         this.addContact = false;
                         this.addUser = false;
@@ -596,12 +601,12 @@ export class BeneficiaryEditProfileComponent {
     }
 
 
-    private checkButtonEnabledUser(event){
+    private checkButtonEnabledUser(event) {
         this.buttonEnabled = false;
-        if(this.user.name != null && this.user.surname != null && this.user.email !=null && (this.user.name.trim() != "" && this.user.surname.trim() != "" && this.user.email.trim() != "")){
-            if (this.newMunicipalities.length > 0){
-                for(let j = 0; j < this.newMunicipalities.length; j++){
-                    if (this.newMunicipalities[j].address != null && this.newMunicipalities[j].addressNum != null && this.newMunicipalities[j].postalCode != null && this.newMayors[j].name != null  && this.newMayors[j].surname != null && (this.newMunicipalities[j].address.trim() == "" || this.newMunicipalities[j].addressNum.trim() == "" || this.newMunicipalities[j].postalCode.trim() == "" || this.newMayors[j].name.trim() == "" || this.newMayors[j].surname.trim() == "")){
+        if (this.user.name != null && this.user.surname != null && this.user.email != null && (this.user.name.trim() != "" && this.user.surname.trim() != "" && this.user.email.trim() != "")) {
+            if (this.newMunicipalities.length > 0) {
+                for (let j = 0; j < this.newMunicipalities.length; j++) {
+                    if (this.newMunicipalities[j].address != null && this.newMunicipalities[j].addressNum != null && this.newMunicipalities[j].postalCode != null && this.newMayors[j].name != null && this.newMayors[j].surname != null && (this.newMunicipalities[j].address.trim() == "" || this.newMunicipalities[j].addressNum.trim() == "" || this.newMunicipalities[j].postalCode.trim() == "" || this.newMayors[j].name.trim() == "" || this.newMayors[j].surname.trim() == "")) {
                         this.buttonEnabled = false;
                         break;
                     }
@@ -631,7 +636,7 @@ export class BeneficiaryEditProfileComponent {
 
     private deactivateShowModal(i) {
         this.contactIdToDeactvate = i;
-        this.displayDeactivatemodal= true;
+        this.displayDeactivatemodal = true;
     }
 
 
