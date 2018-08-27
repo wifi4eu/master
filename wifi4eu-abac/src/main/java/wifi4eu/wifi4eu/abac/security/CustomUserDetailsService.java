@@ -35,6 +35,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         User user = userRepository.findFirstByUserNameEquals(username);
 
+        if(user == null){
+            return new org.springframework.security.core.userdetails.User(
+                    username, "", false, true, true,
+                    true, new ArrayList<>());
+        }
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUserName(), "", user.isEnabled(), true, true,
