@@ -99,7 +99,6 @@ export class AppComponent {
     @HostListener('document:click', ['$event'])
     @HostListener('document:wheel', ['$event'])
     private resetInterval(newEndTime) {
-        console.log("WORKING")
         this.ngUnSubscribe.next();
         this.startInterval();
     }
