@@ -108,7 +108,7 @@ public class AbacIntegrationService {
 
     public void findAndSendLegalCommitmentsReadyToABAC() {
 
-        List<LegalCommitment> legalCommitments = legalCommitmentRepository.findByWfStatus(LegalCommitmentWorkflowStatus.COUNTERSIGNED);
+        List<LegalCommitment> legalCommitments = legalCommitmentRepository.findLegalCommitmentsAvailableForCreation();
 
         for (LegalCommitment legalCommitment : legalCommitments) {
             legalCommitmentRepository.createLegalCommitmentInABAC(legalCommitment.getId());

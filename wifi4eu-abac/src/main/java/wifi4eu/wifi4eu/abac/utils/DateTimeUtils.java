@@ -27,13 +27,20 @@ public class DateTimeUtils {
 
 	}
 
-	public static Date parseDate(String date, String format) {
+	public static Date parseDate(String date, String format) throws ParseException {
 		DateFormat dateFormat = new SimpleDateFormat(format);
 		Date parsedDate = null;
 		try {
 			parsedDate = dateFormat.parse(date);
 		} catch (ParseException e) {
-			log.error("ERROR parsing date {}",date,e);
+			//try an alternative format just in case the user has edited the file via MS Excel and it has altered the date format
+			try {
+				dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+				parsedDate = dateFormat.parse(date);
+			} catch (ParseException e2) {
+				log.error("ERROR parsing date {}",date,e);
+				throw e2;
+			}
 		}
 		return parsedDate;
 	}
