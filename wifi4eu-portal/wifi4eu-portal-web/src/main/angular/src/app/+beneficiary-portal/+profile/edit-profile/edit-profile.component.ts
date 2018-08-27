@@ -411,7 +411,8 @@ export class BeneficiaryEditProfileComponent {
                     this.submittingData = false;
                 }
             }, error => {
-                this.sharedService.growlTranslation('An error ocurred while trying to add the municipalities. Please try again latern', 'benefPortal.beneficiary.addMunicipalities.Error', 'error');
+                this.sharedService.growlTranslation('You are trying to add a municipality already existing.', 'benefPortal.beneficiary.addMunicipalities.duplicated', 'warn');
+                this.loadDataEditProfile();
                 this.submittingData = false;
             }
         );
