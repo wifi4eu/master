@@ -256,9 +256,9 @@ public class UserResource {
     }
 
     @ApiOperation(value = "Get all users from registration")
-    @RequestMapping(value = "/registrationUsersToEdit/{registrationId}/{isOrganization}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/registrationUsersToEdit/{id}/{isOrganization}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserContactDetails> getUsersToEditFromRegistration(@PathVariable("id") Integer id, @PathVariable("boolean") Boolean isOrganization) {
+    public List<UserContactDetails> getUsersToEditFromRegistration(@PathVariable("id") Integer id, @PathVariable("isOrganization") boolean isOrganization) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");

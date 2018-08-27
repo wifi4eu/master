@@ -583,7 +583,7 @@ public class RegistrationService {
     }
 
     public List<Registration> findRegistrationsByOrganizationId(Integer organizationId){
-        return registrationRepository.findByOrganizationId(organizationId);
+        return registrationRepository.findByOrganisationId(organizationId);
     }
 
 
