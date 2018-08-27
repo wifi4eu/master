@@ -284,7 +284,7 @@ public class UserResource {
                 responseDTO.setError(new ErrorDTO(400, "User not found"));
             }
         }catch(Exception e){
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been0 checked", e);
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- User cannot been checked", e);
             responseDTO.setSuccess(false);
             responseDTO.setData("");
             responseDTO.setError(new ErrorDTO(400, "Bad Request"));
