@@ -108,7 +108,7 @@
                         {{ 'shared.country.label' | translate }}
                     </label>
                     <select [(ngModel)]="initialUser.country" id="country" (ngModelChange)="checkButtonEnabled($event)" name="country" class="form-control" 
-                        [disabled]="countries.length < 1" style="height: auto; padding: 0.9rem 1rem;" required>
+                        [disabled]="countries.length < 1 || imMayor" style="height: auto; padding: 0.9rem 1rem;" required>
                         <option disabled selected [ngValue]="null">
                             {{ 'benefRegistration.registration.selectCountry' | translate }}
                         </option>
@@ -121,7 +121,7 @@
                     <label class="label floatLeft" for="city">
                         {{ 'suppRegistration.city.label' | translate }}
                     </label>
-                    <input type="text" class="form-control paddingInput" id="cityStep3" maxlength="255" name="city" [(ngModel)]="initialUser.city" (ngModelChange)="checkButtonEnabled($event)"
+                    <input type="text" class="form-control paddingInput" id="cityStep3" [disabled]="imMayor" maxlength="255" name="city" [(ngModel)]="initialUser.city" (ngModelChange)="checkButtonEnabled($event)"
                         required>
                 </div>
                 <div class="ui-g-2"></div>

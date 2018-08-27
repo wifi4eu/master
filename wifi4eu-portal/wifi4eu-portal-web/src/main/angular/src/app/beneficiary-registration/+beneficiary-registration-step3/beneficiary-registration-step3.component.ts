@@ -68,6 +68,8 @@ export class BeneficiaryRegistrationStep3Component {
             this.repeatEmail = this.mayors[0].email;
             this.userEmailMatches = true;
             this.css_class_email = '';
+            this.initialUser.country = this.municipalities[0].country;
+            this.initialUser.city = this.municipalities[0].name;
         } else {
             this.imMayor = false;
             this.initialUser.name = '';
@@ -78,6 +80,8 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.postalCode = '';
             this.initialUser.ecasEmail = '';
             this.repeatEmail = '';
+            this.initialUser.country = '';
+            this.initialUser.city = '';
             this.buttonEnabled = false;
             /* this.checkEmailsMatch(); */
         }
