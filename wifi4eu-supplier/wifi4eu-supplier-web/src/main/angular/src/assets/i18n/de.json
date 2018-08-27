@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "Die Aufforderung zur Einreichung von Anträgen ist nun ergangen!",
   "benefPortal.voucher.call.label2": "Sobald die Ausschreibung ergeht, können Sie Ihren Antrag stellen.",
   "benefPortal.voucher.competition.timeleft.title": "Die nächste Ausschreibung zur Einreichung von Anträgen ergeht in",
-  "benefPortal.voucher.counterSubtitle": "Die Aufforderung zur Einreichung von Anträgen erging am {{date}} um {{hour}} (MESZ). Sie können Ihren Antrag bis zum {{date}} um {{hour}} (MESZ) einreichen.",
+  "benefPortal.voucher.counterSubtitle": "Die Aufforderung zur Einreichung von Anträgen erging am {{date}} um {{hour}} (MESZ). Sie können Ihren Antrag bis zum {{endDate}} um {{endHour}} (MESZ) einreichen.",
   "benefPortal.voucher.municipalitySuccessApply.title": "Sie haben einen Gutschein beantragt!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Wir halten Sie auf dem Laufenden: WiFi4EU wird bekannt geben, welche Bewerber einen Gutschein erhalten.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Bitte beachten Sie, dass die Auswahl nach dem Windhundverfahren (Datum und Uhrzeit des Antrags) sowie nach Kriterien zur Gewährleistung einer geografischen Ausgewogenheit erfolgt (gemäß dem CEF-Arbeitsprogramm).",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Sind Sie sicher, dass Sie diese Kontaktperson deaktivieren möchten?",
   "shared.download.grantAgreementPDF": "Bitte laden Sie die PDF-Datei herunter und lesen Sie die Finanzhilfevereinbarung sorgfältig durch, bevor Sie bestätigen, dass Sie mit deren Bedingungen einverstanden sind. Zur Unterzeichnung klicken Sie unten auf „Finanzhilfevereinbarung unterzeichnen“.",
   "benefPortal.grantAgreement.sign.title": "Bestätigung der Unterzeichnung der Finanzhilfevereinbarung",
-  "benefPortal.grantAgreement.sign.desciption": "Durch Anklicken von „Unterzeichnen“ bestätigen Sie, dass Sie die Bestimmungen der Finanzhilfevereinbarung verstehen und dass Sie die damit verbundenen Bedingungen und Verpflichtungen akzeptieren.",
+  "benefPortal.grantAgreement.sign.description": "Durch Anklicken von „Unterzeichnen“ bestätigen Sie, dass Sie die Bestimmungen der Finanzhilfevereinbarung verstehen und dass Sie die damit verbundenen Bedingungen und Verpflichtungen akzeptieren.",
   "benefPortal.grantAgreement.sign.button": "Unterzeichnen",
   "benefPortal.myVoucher.datatable.action1": "1. Schritt",
   "benefPortal.myVoucher.datatable.action2": "2. Schritt",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Hinweis: Sie haben die Einreichung noch nicht bestätigt. Wenn Sie diese Seite verlassen, verwerfen Sie bereits hochgeladene Dokumente. Um hochgeladene Dokumente zu speichern, kehren Sie bitte zur entsprechenden Seite zurück und klicken Sie auf „Bestätigen“. Sind Sie sicher, dass Sie Ihre Dokumente verwerfen möchten?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

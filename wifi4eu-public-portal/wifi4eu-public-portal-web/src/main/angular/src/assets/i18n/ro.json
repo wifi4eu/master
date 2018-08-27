@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "Cererea de proiecte este acum deschisă!",
   "benefPortal.voucher.call.label2": "Odată publicată cererea de proiecte, vă puteți depune candidatura.",
   "benefPortal.voucher.competition.timeleft.title": "Cererea de proiecte va fi lansată la ",
-  "benefPortal.voucher.counterSubtitle": "Cererea de proiecte a fost lansată în ziua de {{date}}, la ora {{hour}} (ora de vară a Europei Centrale). Vă puteți înscrie până la data de {{date}}, ora {{hour}} (ora de vară a Europei Centrale).",
+  "benefPortal.voucher.counterSubtitle": "Cererea de proiecte a fost lansată în ziua de {{date}}, la ora {{hour}} (ora de vară a Europei Centrale). Vă puteți înscrie până la data de {{endDate}}, ora {{endHour}} (ora de vară a Europei Centrale).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Ați solicitat un cupon valoric.",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Rămâneți pe recepție! WiFi4EU va transmite numele solicitanților selectați.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Notă: Selecția se realizează pe baza principiului „primul venit, primul servit” (data și ora la care s-a trimis solicitarea), precum și pe criterii menite să asigure o reprezentare geografică echilibrată, după cum se precizează în programul de lucru al MIE.",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Sunteți sigur că doriți să dezactivați această persoană de contact?",
   "shared.download.grantAgreementPDF": "Vă rugăm să descărcați versiunea PDF și să citiți cu atenție acordul de finanțare înainte de a confirma faptul că sunteți de acord cu termenii și condițiile. Pentru a semna acordul, faceți clic pe butonul „Semnați acordul de finanțare” de mai jos.",
   "benefPortal.grantAgreement.sign.title": "Confirmarea semnării acordului de finanțare",
-  "benefPortal.grantAgreement.sign.desciption": "Făcând clic pe „Semnați”, confirmați faptul că înțelegeți termenii și condițiile aferente acordului de finanțare și că acceptați obligațiile care decurg din acesta.",
+  "benefPortal.grantAgreement.sign.description": "Făcând clic pe „Semnați”, confirmați faptul că înțelegeți termenii și condițiile aferente acordului de finanțare și că acceptați obligațiile care decurg din acesta.",
   "benefPortal.grantAgreement.sign.button": "Semnați",
   "benefPortal.myVoucher.datatable.action1": "Acțiunea 1",
   "benefPortal.myVoucher.datatable.action2": "Acțiunea 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Atenție: Nu ați confirmat încă trimiterea documentelor, iar dacă părăsiți această pagină se vor pierde toate documentele încărcate. Dacă doriți să salvați documentele pe care le-ați încărcat, întoarceți-vă la pagină și apăsați pe butonul „Confirmați”. Sunteți sigur că doriți să renunțați la documente?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

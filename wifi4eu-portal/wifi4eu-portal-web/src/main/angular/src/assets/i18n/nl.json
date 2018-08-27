@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "De aanvraagronde is nu geopend!",
   "benefPortal.voucher.call.label2": "Zodra de aanvraagronde van start gaat, kunt u uw aanvraag indienen.",
   "benefPortal.voucher.competition.timeleft.title": "U kunt een aanvraag indienen over ",
-  "benefPortal.voucher.counterSubtitle": "U kunt een aanvraag indienen sinds {{date}} om {{hour}} (Midden-Europese zomertijd). U kunt nog een aanvraag indienen tot {{date}} om {{hour}} (Midden-Europese zomertijd).",
+  "benefPortal.voucher.counterSubtitle": "U kunt een aanvraag indienen sinds {{date}} om {{hour}} (Midden-Europese zomertijd). U kunt nog een aanvraag indienen tot {{endDate}} om {{endHour}} (Midden-Europese zomertijd).",
   "benefPortal.voucher.municipalitySuccessApply.title": "We hebben uw aanvraag voor een voucher ontvangen!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Binnenkort meer! WiFi4EU zal meedelen welke gemeenten zijn geselecteerd voor een voucher.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Let op: We hanteren de regel \"Wie het eerst komt, het eerst maalt\" (op basis van datum en tijdstip van aanvraag) en criteria voor een evenwichtige geografische spreiding als beschreven in het CEF-werkprogramma.",
@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Let op: De termijn kan nog veranderen. Klik op \"Voucher aanvragen\" zodra de aanvraagronde officieel geopend is. Klikt u voor die datum, dan krijgt u een foutmelding. ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Ik ga <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>akkoord met de voorwaarden</a> voor deelname en ik verklaar dat de gemeente die ik vertegenwoordig, zich niet bevindt in een van de situaties van artikel 136, lid 1) van <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>Verordening (EU, Euratom) 2018/1046</a>",
+  "benefPortal.voucher.conditionsAgreement": "Ik ga akkoord met de voorwaarden voor deelname en ik verklaar dat de gemeente die ik vertegenwoordig, zich niet bevindt in een van de situaties van artikel 136, lid 1) van  #Verordening (EU, Euratom) 2018/1046#",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Weet u zeker dat u deze contactpersoon wilt deactiveren?",
   "shared.download.grantAgreementPDF": "Download het pdf-bestand en lees het zorgvuldig voordat u bevestigt dat u instemt met de voorwaarden. U kunt het document ondertekenen door hieronder op de knop \"Subsidieovereenkomst tekenen\" te klikken.",
   "benefPortal.grantAgreement.sign.title": "Weet u zeker dat u de subsidieovereenkomst wilt ondertekenen?",
-  "benefPortal.grantAgreement.sign.desciption": "Door op \"Ondertekenen\" te klikken, bevestigt u dat u de voorwaarden en verplichtingen in de WiFi4EU-subsidieovereenkomst begrijpt en dat u ermee akkoord gaat.",
+  "benefPortal.grantAgreement.sign.description": "Door op \"Ondertekenen\" te klikken, bevestigt u dat u de voorwaarden en verplichtingen in de WiFi4EU-subsidieovereenkomst begrijpt en dat u ermee akkoord gaat.",
   "benefPortal.grantAgreement.sign.button": "Ondertekenen",
   "benefPortal.myVoucher.datatable.action1": "Actie 1",
   "benefPortal.myVoucher.datatable.action2": "Actie 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Let op: U heeft nog niet bevestigd dat alle geüploade documenten correct, compleet en waar nodig ondertekend zijn. Als u de pagina nu verlaat, worden de documenten verwijderd. Wilt u de geüploade documenten bewaren, keer dan terug naar de pagina en klik op \"Bevestigen\". Weet u zeker dat u al uw documenten wilt verwijderen?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }
