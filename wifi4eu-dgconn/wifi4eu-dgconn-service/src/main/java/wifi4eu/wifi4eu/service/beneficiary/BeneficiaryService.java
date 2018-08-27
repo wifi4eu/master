@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,6 +21,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import wifi4eu.wifi4eu.common.Constant;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryFinalListItemDTO;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryListItemDTO;
@@ -35,6 +35,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
@@ -216,13 +217,12 @@ public class BeneficiaryService {
                 if (userDTO.getLang() != null) {
                     locale = new Locale(userDTO.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.discussionMunicipality.subject");
-                String msgBody = bundle.getString("mail.discussionMunicipality.body");
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
-                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userDTO.getEcasEmail());
-                }
+
+                MailData mailData = MailHelper.buildMailMultipleRegistrations(
+                		userDTO.getEcasEmail(), MailService.FROM_ADDRESS, municipalityDTO.getId(), "checkDuplicates", locale);
+            	mailService.sendMail(mailData, true);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userDTO.getEcasEmail());
+
 
                 if (municipalitiesWithSameLau.size() <= 10) {
                     for (MunicipalityDTO municipality : municipalitiesWithSameLau) {
@@ -237,36 +237,11 @@ public class BeneficiaryService {
                             continue;
                         }
                         locale = new Locale(userRegistration.getLang());
-                        bundle = ResourceBundle.getBundle("MailBundle", locale);
-                        subject = bundle.getString("mail.discussionMunicipality.subject");
-                        msgBody = bundle.getString("mail.discussionMunicipality.body");
-                        if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "checkDuplicates");
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
-                        }
-                    }
-                }
-
-                if (municipalitiesWithSameLau.size() <= 10) {
-                    for (MunicipalityDTO municipality : municipalitiesWithSameLau) {
-                        RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipality.getId());
-                        if (registrationDTO == null) {
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
-                            continue;
-                        }
-                        UserDTO userRegistration = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-                        if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
-                            continue;
-                        }
-                        locale = new Locale(userRegistration.getLang());
-                        bundle = ResourceBundle.getBundle("MailBundle", locale);
-                        subject = bundle.getString("mail.discussionMunicipality.subject");
-                        msgBody = bundle.getString("mail.discussionMunicipality.body");
-                        if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "checkDuplicates");
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
-                        }
+                        
+                        MailData mailDataIn = MailHelper.buildMailMultipleRegistrations(
+                        		userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, municipalityDTO.getId(), "checkDuplicates", locale);
+                    	mailService.sendMail(mailDataIn, true);
+                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
                     }
                 }
 

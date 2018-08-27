@@ -1,13 +1,11 @@
 package wifi4eu.wifi4eu.service.supplier;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 
 import wifi4eu.wifi4eu.common.Constant;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
@@ -35,6 +34,7 @@ import wifi4eu.wifi4eu.common.enums.SupplierContactStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserType;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
@@ -295,14 +295,12 @@ public class SupplierService {
                 if (user.getLang() != null) {
                     locale = new Locale(user.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
+                
                 String additionalInfoUrl = userService.getBaseUrl() + "supplier-portal/additional-info";
-                msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                }
+                MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(
+                		user.getEcasEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, locale);
+                mailService.sendMail(mailData, false);
+                
                 return true;
             }
         }
@@ -374,12 +372,11 @@ public class SupplierService {
             if (user.getLang() != null) {
                 locale = new Locale(user.getLang());
             }
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            String subject = bundle.getString("mail.dgConn.invalidateSupplier.subject");
-            String msgBody = bundle.getString("mail.dgConn.invalidateSupplier.body");
-            if (!userService.isLocalHost()) {
-                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
+            String company = supplierDTO.getName(); 
+            
+            MailData mailData = MailHelper.buildMailInvalidRegistration(
+            		user.getEcasEmail(), MailService.FROM_ADDRESS, company, locale);
+            mailService.sendMail(mailData, false);
         }
         return supplierDTO;
     }
@@ -544,13 +541,13 @@ public class SupplierService {
         } else { // ALL OK
             String urlSent = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=" + newUserEmail.trim();
 
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            String subject = bundle.getString("mail.sendNewUserSupplier.subject");
-            String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
-            msgBody = MessageFormat.format(msgBody, urlSent);
-            if (!userService.isLocalHost()) {
-                mailService.sendEmail(newUserEmail.trim(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
+            // TODO maybe is not the correct mail data, 
+            // originally was recovering message from 'sendNewUserSupplier' tag without replacing all the values
+            MailData mailData = MailHelper.buildMailNewUserSupplier(
+            		newUserEmail.trim(), MailService.FROM_ADDRESS, 
+            		"", "", urlSent, "",  locale);
+            mailService.sendMail(mailData, false);
+
             return true;
         }
     }
@@ -612,17 +609,13 @@ public class SupplierService {
                 Locale locale = userConnected.getLang() == null ? new Locale(UserConstants.DEFAULT_LANG) : new Locale(userConnected.getLang());
                 String supplierName = getSupplierById(supplierId).getName();
                 String userName = userConnected.getName() + ' ' + userConnected.getSurname();
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.sendNewUserSupplier.subject");
-                String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
                 String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
-                msgBody = MessageFormat.format(msgBody, userName, supplierName, additionalInfoUrl, newContactEmail);
-                _log.debug("TESTING msgBody => "+msgBody);
-
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(newContactEmail, MailService.FROM_ADDRESS, subject, msgBody);
-                }
-
+                
+                MailData mailData = MailHelper.buildMailNewUserSupplier(
+                		newContactEmail, MailService.FROM_ADDRESS, 
+                		userName, supplierName, additionalInfoUrl, newContactEmail, locale);
+                mailService.sendMail(mailData, false);
+                
                 invitationContactRepository.save(invitationContact);
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");
                 responseDTO.setSuccess(true);

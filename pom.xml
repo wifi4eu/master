@@ -166,16 +166,19 @@
         <enable.login.start></enable.login.start>
         <enable.login.end></enable.login.end>
         <enable.appinsights.start></enable.appinsights.start>
-        <enable.appinsights.end></enable.appinsights.end>
-        <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
+        <enable.appinsights.end></enable.appinsights.end>        
 
+        <!-- MailService for notifications -->
+        <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
+        <mail.serv.enable>true</mail.serv.enable>
+        <mail.serv.using.smtp>false</mail.serv.using.smtp>
+        <mail.serv.using.cns>true</mail.serv.using.cns>
         <!-- CNS -->
-        <cns.client.system.key>KEY-WiFi4EU-B49nLE82Cx</cns.client.system.key>
+        <cns.client.system.key>KEY-WiFi4EU-HK7hK38a0D</cns.client.system.key>
         <cns.client.system.password>secret</cns.client.system.password>
+        <cns.notification.group.code>WiFi4EU_NOTIF</cns.notification.group.code>
         <cns.notification.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/NotificationWebService</cns.notification.service.url>
         <cns.user.preferences.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/UserPreferencesWebService</cns.user.preferences.service.url>
-        <cns.notification.group.code>WiFi4EU_OP</cns.notification.group.code>
-
         <!-- SMTP -->
         <encrypted.azure.smtp.password>EXdNJgAGhKHJNcH3M9F2XuFcjyY0vx4dsvGcOkv8Bkt5HjXq5uvc6fvMP1/jqDo2</encrypted.azure.smtp.password>
         <encrypted.smtp.password>rAVMaF9Tq672wijgk9LxfA==</encrypted.smtp.password>
@@ -187,7 +190,6 @@
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
         <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
-        <mail.serv.enable>true</mail.serv.enable>
 
         <!-- RabbitMQ -->
         <rabbitmq.host>localhost</rabbitmq.host>

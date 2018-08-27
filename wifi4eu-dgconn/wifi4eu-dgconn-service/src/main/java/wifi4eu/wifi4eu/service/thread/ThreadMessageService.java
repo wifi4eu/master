@@ -2,17 +2,18 @@ package wifi4eu.wifi4eu.service.thread;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.ThreadMessageDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.mapper.thread.ThreadMessageMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
@@ -72,10 +73,11 @@ public class ThreadMessageService {
                             if (user.getLang() != null) {
                                 locale = new Locale(user.getLang());
                             }
-                            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                            String subject = bundle.getString("mail.thread.subject");
-                            String msgBody = bundle.getString("mail.thread.body");
-                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipality.getId(), "createThreadMessage");
+
+                            MailData mailData = MailHelper.buildMailNewThreadMessage(
+                            		user.getEcasEmail(), MailService.FROM_ADDRESS, 
+                            		municipality.getId(), "createThreadMessage", locale);
+                        	mailService.sendMail(mailData, false);
                         }
                     }
                 }

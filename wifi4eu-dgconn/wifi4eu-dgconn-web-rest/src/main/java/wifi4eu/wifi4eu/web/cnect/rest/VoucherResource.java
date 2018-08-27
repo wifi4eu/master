@@ -37,34 +37,26 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
-import wifi4eu.wifi4eu.service.voucher.util.ScenariosService;
 
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/voucher", description = "Application object REST API services")
 @RequestMapping("voucher")
 public class VoucherResource {
-    @Autowired
-    VoucherService voucherService;
+    Logger _log = LogManager.getLogger(VoucherResource.class);
 
     @Autowired
-    ScenariosService scenariosService;
+    VoucherService voucherService;
 
     @Autowired
     UserService userService;
 
     @Autowired
     PermissionChecker permissionChecker;	
-
-    @Autowired
-    MailService mailService;
-
-    Logger _log = LogManager.getLogger(VoucherResource.class);
 
     @ApiOperation(value = "Get if application is in freeze list")
     @RequestMapping(value = "/in-freeze/application/{applicationId}", method = RequestMethod.GET, produces = "application/json")

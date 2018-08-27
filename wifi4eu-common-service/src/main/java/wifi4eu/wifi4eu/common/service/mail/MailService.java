@@ -1,12 +1,6 @@
 package wifi4eu.wifi4eu.common.service.mail;
 
-import java.nio.charset.StandardCharsets;
-
-import javax.annotation.PostConstruct;
-import javax.mail.Multipart;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import java.util.Locale;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,133 +9,172 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import wifi4eu.wifi4eu.common.service.encryption.EncrypterService;
-import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
-import wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository;
+import eu.europa.ec.digit.cns.client.service.notification.ContentTranslation.Language;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 
-
-/**
- * Created by rgarcita on 11/02/2017.
- */
 @Configuration
 @PropertySource("classpath:env.properties")
 @Service
 public class MailService {
+	private final Logger _log = LogManager.getLogger(MailService.class);
 
-    public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
-    public final static String NO_ACTION = "NO ACTION LOGGED";
+	public static final String FROM_ADDRESS = "no-reply@wifi4eu.eu";
+	public static final String NO_ACTION = "NO ACTION LOGGED";
 
-    @Value("${mail.serv.enable}")
-    private boolean enableMail;
+	/** Default language for the mail. */
+	public static final Language DEFAULT_LANGUAGE = Language.EN;
 
-    @Value("${mail.smtp.password}")
-    private String passwordEncrypted;
+	@Value("${mail.serv.enable}")
+	private boolean enableMail;
 
-    @Autowired
-    private EncrypterService encrypterService;
+	@Value("${mail.serv.using.smtp}")
+	private boolean useSMTP;
 
-    @Autowired
-    private JavaMailSender mailSender;
+	@Value("${mail.serv.using.cns}")
+	private boolean useCNS;
 
-    @Autowired
-    private LogEmailRepository logEmailRepository;
+	@Autowired
+	ApplicationContext context;
 
-    @Autowired
-    ApplicationContext context;    
+	/** Task executor for async tasks. */
+	@Autowired
+	TaskExecutor taskExecutor;
 
-    @Autowired
-    TaskExecutor taskExecutor;    
+	/** Task executor for sync tasks. */
+	@Autowired
+	SyncTaskExecutor syncTaskExecutor;
 
-    private final Logger _log = LogManager.getLogger(MailService.class);
+	/**
+	 * Send email using the configured method (SMTP or CNS) and register a log
+	 * entry. By default this mail is sent synchronously.
+	 * 
+	 * @param toAddress
+	 *            Destination address
+	 * @param fromAddress
+	 *            Origin address
+	 * @param subject
+	 *            Subject of the email
+	 * @param msgBody
+	 *            Body of the email
+	 * @param locale
+	 *            Locale of the mail content
+	 * @param municipalityId
+	 *            Related municipality id
+	 * @param action
+	 *            Action executed
+	 * 
+	 */
+	public void sendEmailWithLog(String toAddress, String fromAddress, String subject, String msgBody, Locale locale,
+			int municipalityId, String action) {
+		sendEmailWithLog(toAddress, fromAddress, subject, msgBody, locale, false, municipalityId, action);
+	}
 
-    @PostConstruct
-    public void init() throws Exception{
-        if(mailSender != null){
-        	String dPassword = encrypterService.getDecodedValue(passwordEncrypted);
-            ((JavaMailSenderImpl) mailSender).setPassword(dPassword);
-        }
-    }
+	/**
+	 * Send email using the configured method (SMTP or CNS) and register a log
+	 * entry.
+	 * 
+	 * @param toAddress
+	 *            Destination address
+	 * @param fromAddress
+	 *            Origin address
+	 * @param subject
+	 *            Subject of the email
+	 * @param msgBody
+	 *            Body of the email
+	 * @param locale
+	 *            Locale of the mail content
+	 * @param async
+	 *            Send the mail asynchronously if true, synchronously otherwise.
+	 * @param municipalityId
+	 *            Related municipality id
+	 * @param action
+	 *            Action executed
+	 * 
+	 */
+	public void sendEmailWithLog(String toAddress, String fromAddress, String subject, String msgBody, Locale locale,
+			boolean async, int municipalityId, String action) {
+		MailData mailData = new MailData(toAddress, fromAddress, subject, msgBody, locale, municipalityId, action,
+				true);
+		sendMail(mailData, async);
+	}
 
-    public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
-        sendEmail(toAddress, fromAddress, subject, msgBody, 0, NO_ACTION);
-    }
+	/**
+	 * Send email using the configured method (SMTP or CNS). By default this mail is
+	 * sent synchronously.
+	 * 
+	 * @param toAddress
+	 *            Destination address
+	 * @param fromAddress
+	 *            Origin address
+	 * @param subject
+	 *            Subject of the email
+	 * @param msgBody
+	 *            Body of the email
+	 */
+	public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
+		sendEmail(toAddress, fromAddress, subject, msgBody, false);
+	}
 
-    public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
-        _log.debug("Sending synchronous mail: {} {} {}", fromAddress, subject, msgBody);
-        if (enableMail) {
-            try {
-                MimeMessage message = mailSender.createMimeMessage();
-                message.setSubject(subject, "UTF-8");
-                MimeMessageHelper helper = new MimeMessageHelper(message);
-                String encodingOptions = "text/html; charset=UTF-8";
+	/**
+	 * Send email using the configured method (SMTP or CNS).
+	 * 
+	 * @param toAddress
+	 *            Destination address
+	 * @param fromAddress
+	 *            Origin address
+	 * @param subject
+	 *            Subject of the email
+	 * @param msgBody
+	 *            Body of the email
+	 * @param async
+	 *            Send the mail asynchronously if true, synchronously otherwise.
+	 */
+	public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody, boolean async) {
+		MailData mailData = new MailData(toAddress, fromAddress, subject, msgBody);
+		sendMail(mailData, async);
+	}
 
-                byte[] mgsBody64 = msgBody.getBytes("UTF-8");
-                message.setHeader("Content-Type", encodingOptions);
-                message.setHeader("Content-Type", "multipart/mixed");
+	/**
+	 * Send mail asynchronously
+	 * 
+	 * @param mailData
+	 *            Mail data
+	 * @param async
+	 *            Send the mail asynchronously if true, synchronously otherwise.
+	 */
+	public void sendMail(MailData mailData, boolean async) {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Sending mail from[{}] with subject [{}] - async? {}", mailData.getFromAddress(),
+					mailData.getSubject(), async);
+			_log.debug("Content of the mail: {}", mailData.getBody());
+		}
 
-                MimeBodyPart bodyPart = new MimeBodyPart();
-                bodyPart.setHeader("Content-Type", "text/html; charset=utf-8");
-                bodyPart.setContent(new String(mgsBody64, "UTF-8"), "text/html; charset=utf-8");
+		if (enableMail) {
+			// Let the proper task executor manage the execution of the task to send the
+			// mail
+			if (async) {
+				taskExecutor.execute(getMailTaskRunnable(mailData));
+			} else {
+				syncTaskExecutor.execute(getMailTaskRunnable(mailData));
+			}
+		} else {
+			_log.warn("Mail is no enabled, no emails were sent");
+		}
+	}
 
-                Multipart multipart = new MimeMultipart();
-                multipart.addBodyPart(bodyPart);
+	private Runnable getMailTaskRunnable(MailData mailData) {
+		if (useSMTP) {
+			return context.getBean(SendMailBySMTPTask.class, mailData);
+		} else if (useCNS) {
+			return context.getBean(SendMailByCNSTask.class, mailData);
+		}
 
-                message.setContent(multipart);
-                helper.setSubject(subject);
-                helper.setTo(toAddress);
-                helper.setFrom(fromAddress);
-                mailSender.send(message);
+		_log.warn("The system to send mails was not defined but the mailing is enabled. Using SMTP by default");
+		return context.getBean(SendMailBySMTPTask.class, mailData);
+	}
 
-                //-- Log email
-                logEmail(toAddress, fromAddress, subject, msgBody, municipalityId, action);
-                _log.debug("Email sent to {}", toAddress);
-            } catch (Exception ex) {
-                _log.error("Cannot send the message", ex);
-            }
-        } else {
-        	_log.warn("Mail is no enabled, no emails were sent");
-        }
-    }
-
-    public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody) {
-        sendEmailAsync(toAddress, fromAddress, subject, msgBody, 0, NO_ACTION);
-    }
-
-    public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId) {
-        sendEmailAsync(toAddress, fromAddress, subject, msgBody, municipalityId, NO_ACTION);
-    }
-
-    public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
-        _log.debug("Sending asynchronous mail: {} {} {}", fromAddress, subject, msgBody);
-    	
-        if (enableMail) {
-        	_log.info("Launching send mail thread...");        
-            // Let the task executor manage the execution of the new thread to send the mails
-        	taskExecutor.execute(context.getBean(MailAsyncService.class, toAddress, fromAddress, subject, msgBody, this.mailSender, municipalityId, action));
-        } else {
-        	_log.warn("Mail is no enabled, no emails were sent");
-        }
-    }
-
-    private void logEmail(String toAddress, String fromAddress, String subject, String msgBody, int municipalityId, String action) {
-    	_log.debug("Logging email");
-    	if (toAddress == null || toAddress.isEmpty()) {
-    		_log.warn("The email was not registered in db because no address was specified.");
-    	} else if (municipalityId == 0) {
-    		_log.warn("The email was not registered in db because municipalityId was not defined.");
-    	} else {
-            String setAction = NO_ACTION;
-            if (action != null && action.length() > 0) {
-                setAction = action;
-            }
-            LogEmail logEmail = new LogEmail(toAddress, fromAddress, subject, msgBody, municipalityId, setAction);
-            logEmailRepository.save(logEmail);
-        }
-    }
 }

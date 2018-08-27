@@ -40,22 +40,17 @@ import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
-import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherSimulationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentAuxiliarRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
-import wifi4eu.wifi4eu.service.location.LauService;
-import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -109,12 +104,6 @@ public class VoucherService {
     ApplicationMapper applicationMapper;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    MailService mailService;
-
-    @Autowired
     private SimpleRegistrationService simpleRegistrationService;
 
     @Autowired
@@ -130,16 +119,7 @@ public class VoucherService {
     MunicipalityService municipalityService;
 
     @Autowired
-    LauService lauService;
-
-    @Autowired
     ApplicationRepository applicationRepository;
-
-    @Autowired
-    NutsService nutsService;
-
-    @Autowired
-    UserMapper userMapper;
 
     @Autowired
     ApplicationContext context;    

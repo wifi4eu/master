@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @EnableCaching
@@ -37,6 +38,11 @@ public class AppConfig {
 		//pool.setMaxPoolSize(10);
 		//pool.setWaitForTasksToCompleteOnShutdown(true);
 		return pool;
+    }
+    
+    @Bean
+    public SyncTaskExecutor syncTaskExecutor() {
+    	return new SyncTaskExecutor();
     }
 
 }

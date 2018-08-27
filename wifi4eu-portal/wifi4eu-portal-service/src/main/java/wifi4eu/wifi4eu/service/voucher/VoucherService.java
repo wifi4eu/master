@@ -109,9 +109,6 @@ public class VoucherService {
     UserRepository userRepository;
 
     @Autowired
-    MailService mailService;
-
-    @Autowired
     private SimpleRegistrationService simpleRegistrationService;
 
     @Autowired

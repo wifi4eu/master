@@ -81,7 +81,13 @@
             <artifactId>wifi4eu-persistence</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        
+        <dependency>
+            <groupId>eu.europa.ec.digit.cns</groupId>
+            <artifactId>cns-client</artifactId>
+            <version>1.1</version>
+        </dependency>
+        
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

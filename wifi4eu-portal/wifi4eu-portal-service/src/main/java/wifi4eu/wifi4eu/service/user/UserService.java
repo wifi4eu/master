@@ -4,7 +4,6 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +24,7 @@ import org.springframework.util.StringUtils;
 import com.google.common.collect.Lists;
 
 import wifi4eu.wifi4eu.common.Constant;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
@@ -41,6 +41,7 @@ import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
@@ -455,13 +456,9 @@ public class UserService {
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
         }
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.subject");
-        String msgBody = bundle.getString("mail.body");
-
-        if (!isLocalHost()) {
-            mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-        }
+        
+        MailData mailData = MailHelper.buildMailBeneficiaryRegistration(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, locale);
+    	mailService.sendMail(mailData, false);
     }
 
     @Transactional
@@ -470,13 +467,9 @@ public class UserService {
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
         }
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.supplierRegistration.subject");
-        String msgBody = bundle.getString("mail.supplierRegistration.body");
-
-        if (!isLocalHost()) {
-            mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-        }
+        
+        MailData mailData = MailHelper.buildMailSupplierRegistration(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, locale);
+    	mailService.sendMail(mailData, false);
     }
 
 
@@ -502,6 +495,11 @@ public class UserService {
                 UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
                 /* validate if user exist in wifi4eu portal */
                 if (userDTO != null) {
+                    Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                    if (userDTO.getLang() != null) {
+                        locale = new Locale(userDTO.getLang());
+                    }
+
                     /* Create a temporal key for activation and reset password functionalities */
                     TempTokenDTO tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.findByEmail(email));
                     if (tempTokenDTO == null) {
@@ -517,13 +515,10 @@ public class UserService {
                     tempTokenDTO.setToken(token);
 
                     tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO));
-
-                    /* Send email with */
-                    String fromAddress = MailService.FROM_ADDRESS;
-                    //TODO: translate subject and msgBody
-                    String subject = "wifi4eu portal Forgot Password";
-                    String msgBody = "you can access to the next link and reset your password " + baseUrl + UserConstants.RESET_PASS_URL + tempTokenDTO.getToken();
-                    mailService.sendEmail(email, fromAddress, subject, msgBody);
+                    
+                    String url = baseUrl + UserConstants.RESET_PASS_URL + tempTokenDTO.getToken();
+                    MailData mailData = MailHelper.buildMailForgotPassword(email, MailService.FROM_ADDRESS, url, locale);
+                	mailService.sendMail(mailData, false);
                 } else {
                     throw new Exception("trying to forgetPassword with an unregistered user");
                 }

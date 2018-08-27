@@ -38,22 +38,13 @@ import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
-import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
-import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
-import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
-import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
-import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
-import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
-import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 @Configuration
@@ -61,42 +52,28 @@ import wifi4eu.wifi4eu.service.user.UserService;
 @EnableScheduling
 @Controller
 public class ScheduledTasks {
+	
+    private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
-    @Autowired
-    private MailService mailService;
+    private final static String QUEUE_NAME = "wifi4eu_apply";
+
+    @Value("${rabbitmq.host}")
+    private String rabbitMQHost;
+
+    @Value("${rabbitmq.username}")
+    private String rabbitUsername;
+
+    @Value("${rabbitmq.password}")
+    private String rabbitPassword;
 
     @Autowired
     private HelpdeskService helpdeskService;
 
     @Autowired
-    private HelpdeskIssueMapper helpdeskIssueMapper;
-
-    @Autowired
-    private RegistrationService registrationService;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
-    private ApplicationMapper applicationMapper;
-
-    @Autowired
     private ApplicationService applicationService;
-
-    @Autowired
-    private CallService callService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private CorrectionRequestEmailRepository correctionRequestEmailRepository;
-
-    @Autowired
-    private CorrectionRequestEmailMapper correctionRequestEmailMapper;
 
     @Autowired
     private VoucherAssignmentRepository voucherAssignmentRepository;
@@ -115,19 +92,6 @@ public class ScheduledTasks {
 
     @Autowired
     DateUtils dateUtils;
-
-    private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
-
-    private final static String QUEUE_NAME = "wifi4eu_apply";
-
-    @Value("${rabbitmq.host}")
-    private String rabbitMQHost;
-
-    @Value("${rabbitmq.username}")
-    private String rabbitUsername;
-
-    @Value("${rabbitmq.password}")
-    private String rabbitPassword;
 
     /**
      * This cron method consumes the messages from the RabbitMQ
