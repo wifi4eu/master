@@ -241,6 +241,10 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
     }
 
+    public ApplicationDTO getVoucherApplicationByCallIdAndRegistrationId(int callId, int registrationId) {
+        return applicationMapper.toDTO(applicationRepository.findVoucherApplicationByCallIdAndRegistrationId(callId, registrationId));
+    }
+
     public ApplicationDTO getApplicationByCallIdAndMunicipalityId(int callId, int municipalityId) {
         if (municipalityId != 0 && callId != 0) {
             int registrationId = registrationRepository.findByMunicipalityId(municipalityId).getId();
