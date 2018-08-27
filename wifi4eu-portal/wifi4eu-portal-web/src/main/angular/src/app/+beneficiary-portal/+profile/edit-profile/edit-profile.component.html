@@ -592,12 +592,8 @@
         </div>
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
-                <input id="email_user" type="text" [(ngModel)]="userMain.email" class="form-control" name="email" ngcontrol="email_user"
-                    #email_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" required>
-                <div [hidden]="email_user.valid || email_user.pristine" class="alert alert-danger">
-                    {{ 'shared.email.required' | translate }}
+                <span><b>{{user?.email}}</b></span>
                 </div>
-            </div>
         </div>
         <br>
         <br>
