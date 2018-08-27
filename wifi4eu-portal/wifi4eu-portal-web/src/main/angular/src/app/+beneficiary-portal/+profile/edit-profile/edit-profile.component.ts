@@ -55,6 +55,7 @@ export class BeneficiaryEditProfileComponent {
     private laus: LauDTOBase[] = [];
     private user: UserDTOBase = new UserDTOBase;
     private users: UserContactDetailsBase[][] = [];
+    private usersModified: number[] = [];
     private userMain: UserContactDetailsBase;
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
     private municipalitiesSelected: boolean = false;
@@ -480,21 +481,32 @@ export class BeneficiaryEditProfileComponent {
 
             );
         }
+
+        let usersToSubmit: UserContactDetailsBase[] = [];
         for (let index = 0; index < this.registrations.length; index++) {
-            let userArray = this.users[this.registrations[index].municipalityId];
-            for (let z = 0; z < userArray.length; z++) {
-                this.userApi.updateUserDetails(this.user).subscribe(
-                    (response: ResponseDTOBase) => {
-                        if (response.success) {
-                            this.userFinish = true;
-                            this.checkFinishedCalls();
-                            this.user = response.data;
-                        } else {
-                            hasBeenAnError = true
-                        }
-                    }
-                );
+            for (let z = 0; z < this.users[this.registrations[index].municipalityId].length; z++) {
+                let user = this.users[this.registrations[index].municipalityId][z];
+                if (user.main === 1) {
+                    user = this.userMain;
+                }
+                if (this.usersModified.indexOf(user.id) != -1) {
+                    usersToSubmit.push(user);
+                }
             }
+        }
+
+        if (usersToSubmit.length > 0) {
+            // this.userApi.updateUserDetails(this.user).subscribe(
+            //     (response: ResponseDTOBase) => {
+            //         if (response.success) {
+            //             this.userFinish = true;
+            //             this.checkFinishedCalls();
+            //             this.user = response.data;
+            //         } else {
+            //             hasBeenAnError = true
+            //         }
+            //     }
+            // );
         }
 
         if (this.newMunicipalities.length > 0) {
@@ -601,21 +613,38 @@ export class BeneficiaryEditProfileComponent {
     }
 
 
-    private checkButtonEnabledUser(event) {
-        this.buttonEnabled = false;
-        if (this.user.name != null && this.user.surname != null && this.user.email != null && (this.user.name.trim() != "" && this.user.surname.trim() != "" && this.user.email.trim() != "")) {
-            if (this.newMunicipalities.length > 0) {
-                for (let j = 0; j < this.newMunicipalities.length; j++) {
-                    if (this.newMunicipalities[j].address != null && this.newMunicipalities[j].addressNum != null && this.newMunicipalities[j].postalCode != null && this.newMayors[j].name != null && this.newMayors[j].surname != null && (this.newMunicipalities[j].address.trim() == "" || this.newMunicipalities[j].addressNum.trim() == "" || this.newMunicipalities[j].postalCode.trim() == "" || this.newMayors[j].name.trim() == "" || this.newMayors[j].surname.trim() == "")) {
-                        this.buttonEnabled = false;
-                        break;
-                    }
+    private checkButtonEnabledUser(event, id) {
+        this.buttonEnabled = true;
+        if (this.usersModified.indexOf(id) == -1) {
+            this.usersModified.push(id);
+        }
+        for (let index = 0; index < this.registrations.length; index++) {
+            for (let z = 0; z < this.users[this.registrations[index].municipalityId].length; z++) {
+                let user = this.users[this.registrations[index].municipalityId][z];
+                if (user.main === 1) {
+                    user = this.userMain;
                 }
-            } else {
-                this.buttonEnabled = true;
-                this.emailsMatch = true;
-                this.municipalitiesSelected = true;
+                let addressValid = user.address != null && user.addressNum != null && user.postalCode != null && user.city != null && user.country != null &&
+                    (user.address.trim() != "" && user.addressNum.trim() != "" && user.postalCode.trim() != "" && user.city.trim() != "" && user.country.trim() != "");
+                let userDetailsValid = user.name != null && user.surname != null && user.email != null && (user.name.trim() != "" && user.surname.trim() != "" && user.email.trim() != "");
+
+                if (!addressValid || !userDetailsValid) {
+                    this.buttonEnabled = false;
+                }
             }
+        }
+
+        if (this.newMunicipalities.length > 0) {
+            for (let j = 0; j < this.newMunicipalities.length; j++) {
+                if (this.newMunicipalities[j].address != null && this.newMunicipalities[j].addressNum != null && this.newMunicipalities[j].postalCode != null && this.newMayors[j].name != null && this.newMayors[j].surname != null && (this.newMunicipalities[j].address.trim() == "" || this.newMunicipalities[j].addressNum.trim() == "" || this.newMunicipalities[j].postalCode.trim() == "" || this.newMayors[j].name.trim() == "" || this.newMayors[j].surname.trim() == "")) {
+                    this.buttonEnabled = false;
+                    break;
+                }
+            }
+        } else if (this.buttonEnabled) {
+            this.buttonEnabled = true;
+            this.emailsMatch = true;
+            this.municipalitiesSelected = true;
         }
     }
 

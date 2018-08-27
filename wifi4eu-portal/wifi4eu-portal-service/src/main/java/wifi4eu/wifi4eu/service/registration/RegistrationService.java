@@ -578,6 +578,15 @@ public class RegistrationService {
         return userContactDetailsRepository.findUsersContactDetailsByRegistrationId(registrationId);
     }
 
+    public List<UserContactDetails> findUsersContactDetailsByOrganizationId(Integer organizationId){
+        return userContactDetailsRepository.findUsersContactDetailsByOrganizationId(organizationId);
+    }
+
+    public List<Registration> findRegistrationsByOrganizationId(Integer organizationId){
+        return registrationRepository.findByOrganizationId(organizationId);
+    }
+
+
     public List<UserDTO> getUsersFromRegistration(Integer registrationId){
         List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersByRegistrationId(registrationId));
         return users;

@@ -18,6 +18,7 @@ import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -31,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.ws.Response;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -70,8 +72,7 @@ public class UserResource {
     @ApiOperation(value = "Update user details")
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseDTO updateUserDetails(@RequestBody final UserDTO userDTO,
-                                         HttpServletResponse response) throws IOException {
+    public ResponseDTO updateUserDetails(@RequestBody final UserDTO userDTO, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating user details by id " + userDTO.getId());
@@ -96,8 +97,7 @@ public class UserResource {
     @ApiOperation(value = "Delete user by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseDTO deleteUser(@RequestBody final Integer userId,
-                                  HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public ResponseDTO deleteUser(@RequestBody final Integer userId, HttpServletResponse response, HttpServletRequest request) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Removing user by id " + userId);
@@ -105,7 +105,8 @@ public class UserResource {
             //check permission
             permissionChecker.check(RightConstants.USER_TABLE + userId);
             ResponseDTO serviceResponse = userService.deleteUser(userId, request);
-            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
+            _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername
+                    () + " - Deleted user information from the database");
             return serviceResponse;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to remove this user", ade.getMessage());
@@ -198,39 +199,64 @@ public class UserResource {
     @RequestMapping(value = "/updateLanguage", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO updateLanguage(@RequestBody final String language, HttpServletResponse response) throws IOException {
-       UserContext userContext = UserHolder.getUser();
-       UserDTO userDTO = userService.getUserByUserContext(userContext);
-       _log.debug("ECAS Username: " + userDTO.getEcasUsername() + " - Updating user language notification emails by id " + userDTO.getId());
-       try {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userDTO = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userDTO.getEcasUsername() + " - Updating user language notification emails by id " + userDTO.getId());
+        try {
             userDTO = userService.updateLanguage(userDTO, language);
             return new ResponseDTO(true, userDTO, null);
-       } catch (Exception e) {
+        } catch (Exception e) {
             _log.error("ECAS Username: " + userDTO.getEcasUsername() + " - Cannot change notifications language", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-       }
-   }
+        }
+    }
 
     @ApiOperation(value = "Get all users from registration")
-    @RequestMapping (value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserContactDetails> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId){
+    public List<UserContactDetails> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
         try {
             return registrationService.findUsersContactDetailsByRegistrationId(registrationId);
             // return registrationService.getUsersFromRegistration(registrationId);
-        } catch (Exception e){
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
+            return null;
+        }
+    }
+
+    @ApiOperation(value = "Get all users from registration")
+    @RequestMapping(value = "/registrationUsersToEdit/{registrationId}/{isOrganization}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<UserContactDetails> getUsersToEditFromRegistration(@PathVariable("id") Integer id, @PathVariable("boolean") Boolean isOrganization) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
+        try {
+            if (isOrganization) {
+                List<Registration> registrations = registrationService.findRegistrationsByOrganizationId(id);
+                for (int i = 0; i < registrations.size(); i++) {
+                    permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrations.get(i).getId());
+                }
+                return registrationService.findUsersContactDetailsByOrganizationId(id);
+            } else {
+                permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + id);
+                return registrationService.findUsersContactDetailsByRegistrationId(id);
+            }
+            // return registrationService.getUsersFromRegistration(registrationId);
+        } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
             return null;
         }
     }
 
     @ApiOperation(value = "Edit method")
-    @RequestMapping (value  = "/edit", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/edit", method = RequestMethod.PUT, produces = "application/json")
     @ResponseBody
-    public ResponseDTO editDummy(@RequestBody UserContactDetails userContactDetails){
-        return new ResponseDTO(true,"not implemented", new ErrorDTO());
+    public ResponseDTO editDummy(@RequestBody UserContactDetails userContactDetails) {
+        return new ResponseDTO(true, "not implemented", new ErrorDTO());
     }
 
 
@@ -271,7 +297,8 @@ public class UserResource {
                                                   HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Deactivating user "+userId+" of registration by id " + registrationId );
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Deactivating user " + userId + " of registration by id " +
+                registrationId);
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
             //user connected cannot deactivate itself
