@@ -31,4 +31,7 @@ public interface SupplierUserRepository extends CrudRepository<SupplierUser, Int
 
     List<SupplierUser> findByUserId(@Param("status") Integer userId);
 
+    Integer countSupplierUserBySupplierIdAndStatusNot(Integer supplierId, Integer notStatus);
+
+    SupplierUser findByUserIdAndSupplierId(Integer userId, Integer supplierId);
 }

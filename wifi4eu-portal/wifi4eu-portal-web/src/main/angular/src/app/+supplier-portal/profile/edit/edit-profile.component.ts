@@ -65,6 +65,7 @@ export class SupplierEditProfileComponent {
     private addContact: boolean = false;
     private newUserEmail: string = '';
     private addUser: boolean = false;
+    private displayDeactivatemodal : boolean = false;
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
         let allow = true;
@@ -170,9 +171,9 @@ export class SupplierEditProfileComponent {
                 }
             );
             if (imageStatus = 'correct') {
-                this.enableButton(event);
+                this.enableButton();
                 for (let i = 0; i < this.users.length; i++)
-                    this.enableButtonUser(event, i);
+                    this.enableButtonUser(i);
             }
         }
         return null;
@@ -257,7 +258,8 @@ export class SupplierEditProfileComponent {
 
     private closeModal() {
         this.addContact = false;
-        this.displayAddContactModal = false;  
+        this.displayAddContactModal = false;
+        this.displayDeactivatemodal = false;
     }
 
 
@@ -268,26 +270,26 @@ export class SupplierEditProfileComponent {
     }
 
     private deactivateContactModal() {
-        this.closeModal();
-        this.supplierApi.deactivateSupplierContact(this.users[this.contactIndex].id).subscribe(
+        this.supplierApi.deactivateSupplierContact(this.supplier.id, this.users[this.contactIndex].id).subscribe(
             (responseDTO: ResponseDTOBase) => {
-                this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.email.sent', 'success');
+                this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.deactivate.sucess', 'success');
                 this.closeModal();
                 this.goBack();
             }, error => {
-                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.error.api.generic', 'error');
                 this.closeModal();
             }
         );
+        this.closeModal();
     }
 
     private deactivateShowModal(i) {
         this.contactIndex = i;
-        this.displayAddContactModal = true;
+        this.displayDeactivatemodal= true;
     }
 
  
-    private enableButton(event) {
+    private enableButton() {
         this.buttonEnabled = false;
         if (this.supplier.name != null && this.supplier.address != null
             && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != ""
@@ -305,7 +307,7 @@ export class SupplierEditProfileComponent {
             this.buttonEnabled = true;
     }
 
-    private enableButtonUser(event, i) {
+    private enableButtonUser(i) {
         this.buttonEnabled = false;
         if (this.users[i]['phone_number'] != null && this.users[i]['phone_prefix'] != null
             && this.users[i]['surname'] != null  && this.users[i]['name'] != null
@@ -318,21 +320,24 @@ export class SupplierEditProfileComponent {
             this.buttonEnabled = true;
     }
 
-    private checkRegions(event) {
+    private checkRegions(event: any) {
         this.buttonRegionsEnabled = true;
         if (this.selectedCountries.length > 0) {
-        for (let selectedCountry of this.selectedCountries) {
-            if (this.selectedRegions[selectedCountry.label] != null) {
-                if (this.selectedRegions[selectedCountry.label].length == 0) {
+            for (let selectedCountry of this.selectedCountries) {
+                if (this.selectedRegions[selectedCountry.label] != null) {
+                    if (this.selectedRegions[selectedCountry.label].length == 0) {
+                        this.buttonRegionsEnabled = false;
+                    }
+                } else {
                     this.buttonRegionsEnabled = false;
                 }
-            } else {
-                this.buttonRegionsEnabled = false;
             }
-        }
         } else {
             this.buttonRegionsEnabled = false;
         }
+        this.enableButton();
+        for (let i = 0; i < this.users.length; i++)
+            this.enableButtonUser(i);
     }
 
     private closeAddNewContactModal(){

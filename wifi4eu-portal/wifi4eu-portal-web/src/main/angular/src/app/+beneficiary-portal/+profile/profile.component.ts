@@ -73,6 +73,7 @@ export class BeneficiaryProfileComponent {
     private registrations: RegistrationDTOBase[] = [];
     private nameCookieApply: string = "hasRequested";
     private isOrganisation: boolean = false;
+    private withdrawAble: boolean = false;
 
     constructor(private cookieService: CookieService, private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
@@ -123,7 +124,6 @@ export class BeneficiaryProfileComponent {
                                             (users: UserContactDetailsBase[]) => {
                                                 this.users[registration.municipalityId] = users;
                                                 this.userMain = users.find(x => x.main === 1);
-                                                console.log(this.userMain);
                                             }
                                             // work here!
                                             /*
@@ -179,10 +179,22 @@ export class BeneficiaryProfileComponent {
         }
 
         this.loadLanguages();
+        this.checkIfWithdrawAble();
     }
 
     private withdrawRegistration(){
         this.withdrawingRegistrationConfirmation = true;
+    }
+
+    private checkIfWithdrawAble(){
+        this.userApi.checkIfApplied().subscribe(
+            (hasApplied : ResponseDTOBase) => {
+                this.withdrawAble = hasApplied.data;
+            }, error =>{
+                console.log(error);
+
+            }
+        );
     }
 
     private displayModal(name: string, index?: number) {
@@ -302,8 +314,8 @@ export class BeneficiaryProfileComponent {
                         this.withdrawingRegistration = false;
                         this.withdrawnSuccess = true;
                         this.localStorageService.remove('user');
-                        var currentWindow: any = window;
-                        window.location.href = currentWindow.origin+'/wifi4eu/index.html';
+                        var port = window.location.port ? ':' + window.location.port : '';
+                        window.location.href = window.location.protocol + "//" + window.location.hostname + port+'/wifi4eu/index.html';
                     } else {
                         if(data.error != null){
                           this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', data.error.errorMessage, 'warn');  
@@ -439,5 +451,4 @@ export class BeneficiaryProfileComponent {
             this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
         }
     }
-
 }

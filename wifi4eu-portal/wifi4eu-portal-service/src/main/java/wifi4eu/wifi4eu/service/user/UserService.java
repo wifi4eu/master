@@ -30,12 +30,12 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
-import wifi4eu.wifi4eu.entity.registration.ConditionsAgreement;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
 import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
+import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
@@ -63,8 +63,10 @@ import wifi4eu.wifi4eu.util.MailService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -622,4 +624,64 @@ public class UserService {
         registrationUsers.setMain(0);
         registrationUsersRepository.save(registrationUsers);
     }
+
+    public boolean checkIfApplied(UserDTO userDTO) {
+       return applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0;
+    }
+
+    public ResponseDTO deactivateRegistrationUser(Integer registrationId, Integer userId, String logInfo) throws Exception {
+        ResponseDTO responseDTO = new ResponseDTO();
+        //has municipality more than one user associated?
+        if (registrationUsersRepository.countRegistrationUsersByRegistrationIdAndStatusNot(registrationId,RegistrationUsersStatus.DEACTIVATED.getValue()) > 1) {
+            //setting user as deactivated
+            RegistrationUsers registrationUsers = registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId);
+            if(registrationUsers.getStatus() != RegistrationUsersStatus.DEACTIVATED.getValue()) {
+                registrationUsers.setStatus(RegistrationUsersStatus.DEACTIVATED.getValue());
+                registrationUsersRepository.save(registrationUsers);
+
+                //if user doesn't have more registrations associated we put type to deactivated
+                if (registrationUsersRepository.countRegistrationUsersByUserIdAndStatusNot(userId, RegistrationUsersStatus.DEACTIVATED.getValue()) <= 1) {
+                    setUserTypeToDeactivate(userId);
+                }
+
+                //taking off user rights for this registration
+                Registration registration = registrationRepository.findOne(registrationId);
+                Municipality municipality = registration.getMunicipality();
+                Mayor mayor;
+                if (!Validator.isNull(municipality)) {
+                    mayor = mayorRepository.findByMunicipalityId(municipality.getId());
+                    if (Validator.isNull(mayor)) {
+                        throw new Exception("Inconsistency in data, mayor from municipality " + municipality.getId() + " is null");
+                    }
+                } else {
+                    throw new Exception("Inconsistency in data, municipality from registration " + registrationId + " is null");
+                }
+
+                permissionChecker.dropTablePermissions(userId, Integer.toString(registrationId), RightConstants.REGISTRATIONS_TABLE);
+                permissionChecker.dropTablePermissions(userId, Integer.toString(mayor.getId()), RightConstants.MAYORS_TABLE);
+                permissionChecker.dropTablePermissions(userId, Integer.toString(municipality.getId()), RightConstants.MUNICIPALITIES_TABLE);
+                responseDTO.setSuccess(true);
+                responseDTO.setData("success");
+                _log.info("ECAS Username: " + logInfo + "- Registration contact with the id "+userId+" deactivated successfully");
+            } else{
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(1, "User already deactivated."));
+                _log.info("ECAS Username: " + logInfo + "- User "+userId+ " already deactivated.");
+            }
+        } else {
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(1, "There has to be minimum 1 user per registration."));
+            _log.info("ECAS Username: " + logInfo + "- Registration " + registrationId + " has to have minimum 1 user per registration. Could not " +
+                    "deactive user " + userId + ".");
+        } return responseDTO;
+    }
+
+    public void setUserTypeToDeactivate(Integer userId){
+        User contactToDeactivate = userRepository.findOne(userId);
+        contactToDeactivate.setType((int) Constant.ROLE_DEACTIVATED);
+        userRepository.save(contactToDeactivate);
+    }
+
 }

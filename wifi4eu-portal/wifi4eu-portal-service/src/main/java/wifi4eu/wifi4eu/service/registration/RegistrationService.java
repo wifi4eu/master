@@ -270,7 +270,7 @@ public class RegistrationService {
                     legalFile.setId(0);
                     legalFile.setRegistration(registrationID);
                     legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
-                    legalFile.setUploadTime(new Date());
+                    legalFile.setUploadTime(new Date().getTime());
                     legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
                     legalFile.setFileSize(byteArray.length);
                     legalFile.setUserId(userConnected.getId());
@@ -283,7 +283,6 @@ public class RegistrationService {
                     for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
                         legalFileCorrectionReason.setCorrectionReason(null);
                         legalFileCorrectionReason.setRequestCorrection(false);
-                        legalFileCorrectionReason.setRequestCorrectionDate(null);
                     }
 
                     legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
@@ -578,6 +577,15 @@ public class RegistrationService {
     public List<UserContactDetails> findUsersContactDetailsByRegistrationId(Integer registrationId){
         return userContactDetailsRepository.findUsersContactDetailsByRegistrationId(registrationId);
     }
+
+    public List<UserContactDetails> findUsersContactDetailsByOrganizationId(Integer organizationId){
+        return userContactDetailsRepository.findUsersContactDetailsByOrganizationId(organizationId);
+    }
+
+    public List<Registration> findRegistrationsByOrganizationId(Integer organizationId){
+        return registrationRepository.findByOrganizationId(organizationId);
+    }
+
 
     public List<UserDTO> getUsersFromRegistration(Integer registrationId){
         List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersByRegistrationId(registrationId));

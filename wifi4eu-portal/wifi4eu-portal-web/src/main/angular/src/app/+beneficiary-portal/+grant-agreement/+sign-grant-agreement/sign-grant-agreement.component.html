@@ -162,12 +162,12 @@
             <div class="col-sm-8">
                 <p class="profileData">{{ 'benefPortal.grantAgreement.document' | translate}}</p>
                 <p class="smallCharacters">{{ 'benefPortal.grantAgreement.documentDownload' | translate}}</p>
-                <a class="smallCharacters" (click)="downladPDF()"><i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download.grantAgreementPDF' | translate}} {{language}}</a> 
+                <a class="smallCharacters" (click)="downladPDF()"><i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate}} {{language}}</a> 
             </div>   
         </div>
     </div>
     <div class="col-sm-12">
-        <p class="smallCharacters">{{ 'benefPortal.grantAgreement.downloadText' | translate}}</p>
+        <p class="smallCharacters">{{ 'shared.download.grantAgreementPDF' | translate}}</p>
         <p class="smallCharacters"><input type="checkbox" (click)="enableButton()">{{ 'benefPortal.grantAgreement.confirmCheckbox' | translate}}</p>
         <br>
         <button class="btn btn-primary smallCharacters" (click)="openModal()" [disabled]="!enableButtonFront || inputGrantAgreement?.dateSignature">{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>

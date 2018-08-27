@@ -4,8 +4,8 @@ alter table [dbo].[applications] ADD cancel_reason VARCHAR(255) NULL;
 CREATE TABLE authorized_person_application (id INT IDENTITY NOT NULL, authorized_person INT, application_id INT, PRIMARY KEY (id)) ;
 ALTER TABLE users ADD contact_phone_prefix NVARCHAR(255);
 ALTER TABLE users ADD contact_phone_number NVARCHAR(255);
-update users set users.contact_phone_number = (SELECT s.contact_phone_number from suppliers s inner join users u on s._user = u.id where users.id = u.id);
-update users set users.contact_phone_prefix = (SELECT s.contact_phone_prefix from suppliers s inner join users u on s._user = u.id where users.id = u.id);
+UPDATE users SET users.contact_phone_number = SUP.contact_phone_number FROM users US INNER JOIN suppliers SUP ON US.id = SUP._user;
+UPDATE users SET users.contact_phone_prefix = SUP.contact_phone_prefix FROM users US INNER JOIN suppliers SUP ON US.id = SUP._user;
 ALTER TABLE suppliers DROP COLUMN contact_phone_prefix;
 ALTER TABLE suppliers DROP COLUMN contact_phone_number;
 ALTER TABLE suppliers DROP COLUMN contact_name;
@@ -33,8 +33,25 @@ create table grant_agreement(
        ON UPDATE CASCADE
 ); 
 
-ALTER TABLE log_emails ALTER COLUMN body NTEXT;
-ALTER TABLE log_emails ALTER COLUMN subject NTEXT;
+--ALTER TABLE log_emails ALTER COLUMN body NTEXT;
+--ALTER TABLE log_emails ALTER COLUMN subject NTEXT;
+CREATE TABLE dbo.log_emails(
+	[id]               	INT           NOT NULL IDENTITY,
+	[municipalityId]   	INT          NOT NULL,
+	[sent_date]  		BIGINT       NOT NULL,
+	[action]  			NVARCHAR(255)       NOT NULL,
+	[fromAddress]   	NVARCHAR(255) NULL,
+	[toAddress]   		NVARCHAR(255) NOT NULL,
+	[subject]   		NTEXT NULL,
+	[body]   			NTEXT NULL,
+	PRIMARY KEY ([id]),
+	CONSTRAINT [fk_registrations_municipalities]
+  	FOREIGN KEY ([municipalityId])
+  	REFERENCES dbo.municipalities ([id])
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE
+);
+
 
 -- 27/07/2018 -  populate table supplier_users with supplier table values. ONLY on db where supplier_users is empty and you have supplier's table with information.
 INSERT INTO [dbo].[supplier_users]
@@ -156,3 +173,38 @@ ALTER TABLE application_comment ALTER COLUMN [comment] NVARCHAR(256) NOT NULL;
 -- addContact - to follow the good way to create new contact emails, need to create two extra fields on users table
 ALTER TABLE users ADD country nvarchar(256) NULL;
 ALTER TABLE users ADD city nvarchar(256) NULL;
+
+--WIFIFOREU-2939 because of time zones problems we are changing date field to long
+ --New temporary columns
+alter table legal_files ADD upload_time2 bigint NULL;
+alter table legal_files_correction_reason ADD request_correction_date2 bigint NULL;
+
+--updating dates to long
+update legal_files set upload_time2 = DATEDIFF(second, '1970-01-01 00:00:00', upload_time)
+update legal_files_correction_reason set request_correction_date2 = DATEDIFF(second, '1970-01-01 00:00:00', request_correction_date)
+
+update legal_files set upload_time2 = upload_time2 * 1000
+update legal_files_correction_reason set request_correction_date2 = request_correction_date2 * 1000
+
+ --drop old columns with the wrong type
+ALTER TABLE legal_files DROP COLUMN upload_time;
+ALTER TABLE legal_files_correction_reason DROP COLUMN request_correction_date;
+
+--renaming temp column to the old ones
+ EXEC sp_RENAME 'legal_files.upload_time2' , 'upload_time', 'COLUMN'
+ EXEC sp_RENAME 'legal_files_correction_reason.request_correction_date2' , 'request_correction_date', 'COLUMN'
+
+create table admin_actions(
+   [id]	INT	NOT NULL IDENTITY,
+   [action] varchar(MAX) NOT NULL,
+   [is_running] bit,
+   [start_date] datetime,
+   [end_date] datetime,
+   [_user] int NOT NULL,
+   PRIMARY KEY ([id]),
+   CONSTRAINT [fk_user_action]
+   FOREIGN KEY ([_user])
+   REFERENCES dbo.users ([id])
+       ON DELETE CASCADE
+       ON UPDATE CASCADE
+);
