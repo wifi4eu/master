@@ -171,8 +171,8 @@
         <!-- MailService for notifications -->
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
         <mail.serv.enable>true</mail.serv.enable>
-        <mail.serv.using.smtp>false</mail.serv.using.smtp>
-        <mail.serv.using.cns>true</mail.serv.using.cns>
+        <mail.serv.using.smtp>true</mail.serv.using.smtp>
+        <mail.serv.using.cns>false</mail.serv.using.cns>
         <!-- CNS -->
         <cns.client.system.key>KEY-WiFi4EU-HK7hK38a0D</cns.client.system.key>
         <cns.client.system.password>secret</cns.client.system.password>
@@ -305,6 +305,9 @@
                 <ecas.server.address>${server.test.address}</ecas.server.address>
                 <ecas.server.port>8080</ecas.server.port>
                 <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
+                <mail.serv.enable>true</mail.serv.enable>
+                <mail.serv.using.smtp>true</mail.serv.using.smtp>
+                <mail.serv.using.cns>false</mail.serv.using.cns>                
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
@@ -450,6 +453,8 @@
                 <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
                 <mail.serv.enable>true</mail.serv.enable>
                 <mail.serv.location>https://${server.azure.devpg.address}/wifi4eu/#/</mail.serv.location>
+                <mail.serv.using.smtp>false</mail.serv.using.smtp>
+                <mail.serv.using.cns>true</mail.serv.using.cns>                
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
