@@ -101,6 +101,31 @@
                 </div>
                 <div class="ui-g-2"></div>
             </div>
+            <div class="ui-g-12">
+                <div class="ui-g-2"></div>
+                <div class="ui-g-4">
+                    <label class="label floatLeft" for="country">
+                        {{ 'shared.country.label' | translate }}
+                    </label>
+                    <select [(ngModel)]="initialUser.country" id="country" (ngModelChange)="checkButtonEnabled($event)" name="country" class="form-control" 
+                        [disabled]="countries.length < 1 || imMayor" style="height: auto; padding: 0.9rem 1rem;" required>
+                        <option disabled selected [ngValue]="null">
+                            {{ 'benefRegistration.registration.selectCountry' | translate }}
+                        </option>
+                        <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry.label">
+                            {{currentCountry.label}}
+                        </option>
+                    </select>
+                </div>
+                <div class="ui-g-2">
+                    <label class="label floatLeft" for="city">
+                        {{ 'suppRegistration.city.label' | translate }}
+                    </label>
+                    <input type="text" class="form-control paddingInput" id="cityStep3" [disabled]="imMayor" maxlength="255" name="city" [(ngModel)]="initialUser.city" (ngModelChange)="checkButtonEnabled($event)"
+                        required>
+                </div>
+                <div class="ui-g-2"></div>
+            </div>
             <div class="ui-g-12" *ngIf="!hasEcasEmail">
                 <div id="contact-email" class="form-group ui-g">
                     <div class="ui-g-2"></div>
@@ -137,7 +162,7 @@
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button type="submit" id="navigate-step4" class="btn btn-primary publish-button" [disabled]="!imMayor && (!buttonEnabled || !userEmailMatches || !hasEcasEmail)">
+                <button type="submit" id="navigate-step4" class="btn btn-primary publish-button" [disabled]="(!buttonEnabled || !userEmailMatches || !hasEcasEmail)">
                     {{ 'shared.next.button' | translate }}
                 </button>
             </div>

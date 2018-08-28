@@ -5,7 +5,7 @@ import { LocalStorageService } from "angular-2-local-storage";
 import { Router, ActivatedRoute } from '@angular/router';
 
 // DTO's & API imports
-import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi, GrantAgreementApi, GrantAgreementDTOBase, GrantAgreementDTO } from "../../shared/swagger";
+import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi, GrantAgreementApi, GrantAgreementDTOBase, GrantAgreementDTO, ResponseDTO } from "../../shared/swagger";
 import { HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
 import { SharedService } from "../../shared/shared.service";
 
@@ -99,14 +99,14 @@ export class MyVoucherComponent {
                         (calls: CallDTOBase[]) => {
                             this.calls = calls;
                             for(let i = 0; i < registrations.length; i++) {
-                                this.applicationApi.getApplicationByCallIdAndRegistrationId(this.calls[(this.calls.length)-1].id, registrations[i].id).subscribe(
-                                    (application : ApplicationDTOBase) => {
-                                        if (application.id != 0) {
+                                this.applicationApi.getVoucherApplicationByCallIdAndRegistrationId(this.calls[(this.calls.length)-1].id, registrations[i].id).subscribe(
+                                    (response : ResponseDTO) => {
+                                        if (response.data.id != 0) {
                                             
                                             this.municipalityApi.getMunicipalityById(registrations[i].municipalityId).subscribe(
                                                 (municipality : MunicipalityDTOBase) => {
-                                                    this.applications.push(application);
-                                                    this.grantAgreementApi.getGrantAgreementByApplicationId(application.id).subscribe(
+                                                    this.applications.push(response.data);
+                                                    this.grantAgreementApi.getGrantAgreementByApplicationId(response.data.id).subscribe(
                                                         (grantAgreement: GrantAgreementDTOBase)=>{
                                                           if(grantAgreement != null && grantAgreement.dateSignature != null){
                                                               grantAgreement.dateSignature = new Date(grantAgreement.dateSignature);

@@ -1976,3 +1976,18 @@ li.panel .panel-header .label-wrapper .label {
   text-align: center;
   margin-top: 3em;
 }
+
+.timer-height-block {
+  height: 19rem;
+}
+
+@-moz-document url-prefix() {
+  .timer-height-block {
+    @media screen and (max-width: 750px) {
+      height: 19.50rem;
+    }
+    @media screen and (max-width: 450px) {
+      height: 25rem;
+    }
+  }
+}

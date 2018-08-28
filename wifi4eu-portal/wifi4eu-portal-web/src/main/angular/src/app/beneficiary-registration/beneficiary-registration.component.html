@@ -24,7 +24,7 @@
     <ux-wizard-step label="{{ 'benefRegistration.registration.entity.title' | translate }}" [isCompleted]="completed[2]"
                     [isActive]="active[2]">
         <uxWizardStepCustomContent>
-            <beneficiary-registration-step3 [(initialUser)]="initialUser" [mayors]="mayors"
+            <beneficiary-registration-step3 [(initialUser)]="initialUser" [mayors]="mayors" [countries]="countries" 
                                             [multipleMunicipalities]="multipleMunicipalities"
                                             [municipalities]="municipalities" [(associationName)]="associationName"
                                             (onNext)="navigate(4)" (onBack)="navigate(2)"></beneficiary-registration-step3>

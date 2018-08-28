@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
                     <span class="beneficiaryTitle">{{ 'benefPortal.profile.title' | translate }}</span>
-                    <span class="link-label right editRegistrationsLabel" (click)="goToEditProfile()">
+                    <span class="link-label right editRegistrationsLabel" (click)="goToEditProfile()" *ngIf="!fetchingData">
                         <i class="fa fa-pencil" aria-hidden="true"></i> {{'discussionForum.editRegistration' | translate}}
                     </span>
                 </div>
@@ -16,7 +16,8 @@
                     <hr class="beneficiaryHr">
                 </div>
             </div>
-            <div class="row" *ngIf="municipalities.length > 0 && municipalities.length == mayors.length">
+            <i *ngIf="fetchingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+            <div class="row" *ngIf="municipalities.length > 0 && municipalities.length == mayors.length && !fetchingData">
                 <div class="col-sm-12" *ngFor="let municipality of municipalities; let i = index">
                     <div *ngIf = "i >= 1" class="row">
                         <br>
