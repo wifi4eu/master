@@ -99,7 +99,6 @@ export class AppComponent {
     @HostListener('document:click', ['$event'])
     @HostListener('document:wheel', ['$event'])
     private resetInterval(newEndTime) {
-        console.log("WORKING")
         this.ngUnSubscribe.next();
         this.startInterval();
     }
@@ -280,6 +279,8 @@ export class AppComponent {
                     url: '/invited-contact-details'
                 })
             ];
+            this.children[6] = [
+            ];
             this.childrenInitialized.next();
         });
     }
@@ -297,6 +298,9 @@ export class AppComponent {
                     this.sharedService.login(this.user);
                     if (this.sharedService.user.userInvited){
                         this.router.navigateByUrl('/invited-contact-details');
+                    } else if (this.sharedService.user.type == -1){
+                        //deactivated user
+                        this.router.navigateByUrl('/deactivated-user');
                     }
                     if (this.children.length == 5) {
                         this.updateHeader();
@@ -312,6 +316,10 @@ export class AppComponent {
     private updateHeader() {
         if (this.user) {
             switch (this.user.type) {
+                case -1:
+                    this.profileUrl = '/deactivated-user';
+                    this.menuLinks = this.children[6];
+                break;
                 case 1:
                     this.profileUrl = '/supplier-portal/profile';
                     this.menuLinks = this.children[1];

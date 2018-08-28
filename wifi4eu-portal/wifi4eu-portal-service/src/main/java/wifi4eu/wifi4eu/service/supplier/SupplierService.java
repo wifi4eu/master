@@ -8,6 +8,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
@@ -148,6 +150,18 @@ public class SupplierService {
         }
         finalSupplier.setSuppliedRegions(correctRegions);
         return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(finalSupplier)));
+    }
+
+    public boolean isSupplierEditable(UserDTO userConnected){
+        SupplierDTO supplier = getSupplierByUserId(userConnected.getId());
+        boolean access = false;
+        for (UserDTO user : supplier.getUsers()) {
+            if (user.getId() == userConnected.getId()) {
+                return true;
+            }
+
+        }
+        return false;
     }
 
 

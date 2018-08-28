@@ -28,6 +28,7 @@ import { ListSuppliersComponent } from './list-suppliers/list-suppliers.componen
 import { DataGridModule, PaginatorModule } from "primeng/primeng";
 import {CookieService} from 'ngx-cookie-service';
 import { InvitedContactDetailsComponent } from './invited-contact-details/invited-contact-details.component';
+import { DeactivatedUserComponent } from './deactivated-user/deactivated-user.component';
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -43,7 +44,8 @@ export function translateFactory(http: Http) {
         // EcasComponent,
         NotFoundComponent,
         ListSuppliersComponent,
-        InvitedContactDetailsComponent
+        InvitedContactDetailsComponent,
+        DeactivatedUserComponent
     ],
     exports: [
         // MapComponent,
