@@ -340,7 +340,7 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="name_user" type="text" [(ngModel)]="contactPerson.name" class="form-control" name="name_user" ngcontrol="name_user"
+                        <input id="name_user" type="text" maxlength="254" [(ngModel)]="contactPerson.name" class="form-control" name="name_user" ngcontrol="name_user"
                             #name_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
                             required>
                         <div [hidden]="name_user.valid || name_user.pristine" class="alert alert-danger">
@@ -355,7 +355,7 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="surname_user" type="text" [(ngModel)]="contactPerson.surname" class="form-control" name="surname_user" ngcontrol="surname_user"
+                        <input id="surname_user" type="text" maxlength="254" [(ngModel)]="contactPerson.surname" class="form-control" name="surname_user" ngcontrol="surname_user"
                             #surname_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
                             required>
                         <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
@@ -370,7 +370,7 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="address_user" type="text" [(ngModel)]="contactPerson.address" class="form-control" name="address_user" ngcontrol="address_user"
+                        <input id="address_user" type="text" maxlength="254" [(ngModel)]="contactPerson.address" class="form-control" name="address_user" ngcontrol="address_user"
                             #address_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
                             required>
                         <div [hidden]="address_user.valid || address_user.pristine" class="alert alert-danger">
@@ -385,7 +385,7 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="addressNum_user" type="text" [(ngModel)]="contactPerson.addressNum" class="form-control" name="addressNum_user" ngcontrol="addressNum_user"
+                        <input id="addressNum_user" type="text" maxlength="254" [(ngModel)]="contactPerson.addressNum" class="form-control" name="addressNum_user" ngcontrol="addressNum_user"
                             #addressNum_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
                             required>
                         <div [hidden]="addressNum_user.valid || addressNum_user.pristine" class="alert alert-danger">
@@ -400,7 +400,7 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="postalCode_user" type="text" [(ngModel)]="contactPerson.postalCode" class="form-control" name="postalCode_user" ngcontrol="postalCode_user"
+                        <input id="postalCode_user" type="text" maxlength="254" [(ngModel)]="contactPerson.postalCode" class="form-control" name="postalCode_user" ngcontrol="postalCode_user"
                             #postalCode_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
                             required>
                         <div [hidden]="postalCode_user.valid || postalCode_user.pristine" class="alert alert-danger">
@@ -415,7 +415,7 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="city_user" type="text" [(ngModel)]="contactPerson.city" class="form-control" name="city_user" ngcontrol="city_user"
+                        <input id="city_user" type="text" maxlength="254" [(ngModel)]="contactPerson.city" class="form-control" name="city_user" ngcontrol="city_user"
                             #city_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
                             required>
                         <div [hidden]="city_user.valid || city_user.pristine" class="alert alert-danger">
@@ -430,7 +430,7 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="country_user" type="text" [(ngModel)]="contactPerson.country" class="form-control" name="country_user" ngcontrol="country_user"
+                        <input id="country_user" type="text" maxlength="254" [(ngModel)]="contactPerson.country" class="form-control" name="country_user" ngcontrol="country_user"
                             #country_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
                             required>
                         <div [hidden]="country_user.valid || country_user.pristine" class="alert alert-danger">
@@ -519,7 +519,7 @@
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
                 <input id="address_user" type="text" [(ngModel)]="userMain.address" class="form-control" name="address_user" ngcontrol="address_user"
-                    #address_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
+                    #address_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
                     required>
                 <div [hidden]="address_user.valid || address_user.pristine" class="alert alert-danger">
                     {{ 'shared.address.required' | translate }}
@@ -534,7 +534,7 @@
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
                 <input id="addressNum_user" type="text" [(ngModel)]="userMain.addressNum" class="form-control" name="addressNum_user" ngcontrol="addressNum_user"
-                    #addressNum_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
+                    #addressNum_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
                     required>
                 <div [hidden]="addressNum_user.valid || addressNum_user.pristine" class="alert alert-danger">
                     {{ 'shared.address.required' | translate }}
@@ -549,7 +549,7 @@
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
                 <input id="postalCode_user" type="text" [(ngModel)]="userMain.postalCode" class="form-control" name="postalCode_user" ngcontrol="postalCode_user"
-                    #postalCode_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
+                    #postalCode_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
                     required>
                 <div [hidden]="postalCode_user.valid || postalCode_user.pristine" class="alert alert-danger">
                     {{ 'shared.address.required' | translate }}
@@ -564,7 +564,7 @@
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
                 <input id="city_user" type="text" [(ngModel)]="userMain.city" class="form-control" name="city_user" ngcontrol="city_user"
-                    #city_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
+                    #city_user="ngModel" maxlength="254"  (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
                     required>
                 <div [hidden]="city_user.valid || city_user.pristine" class="alert alert-danger">
                     {{ 'shared.address.required' | translate }}
@@ -579,7 +579,7 @@
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
                 <input id="country_user" type="text" [(ngModel)]="userMain.country" class="form-control" name="country_user" ngcontrol="country_user"
-                    #country_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
+                    #country_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
                     required>
                 <div [hidden]="country_user.valid || country_user.pristine" class="alert alert-danger">
                     {{ 'shared.address.required' | translate }}

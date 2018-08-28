@@ -83,8 +83,8 @@ export class AppComponent {
 
         this.updateFooterDate();
 
-        this.sessionInterval = IntervalObservable.create(61500);
-        this.startInterval();
+         this.sessionInterval = IntervalObservable.create(61500);
+         this.startInterval();
     }
 
     startInterval() {
@@ -297,7 +297,8 @@ export class AppComponent {
                     label: this.menuTranslations.get('benefPortal.myHistory.title'),
                     url: '/beneficiary-portal/my-history'
                 })
-            ];            this.childrenInitialized.next();
+            ]; 
+            this.childrenInitialized.next();
         });
     }
 
@@ -328,7 +329,6 @@ export class AppComponent {
     }
 
     private checkIfVoucher(){
-        console.log("checking");
         this.userApi.checkIfVoucherAwarded().subscribe(
             (response: ResponseDTOBase) => {
                 if(response.success){

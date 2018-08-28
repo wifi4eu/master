@@ -367,7 +367,7 @@ public class UserResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Deactivating user " + userId + " of registration by id " +
                 registrationId);
         try {
-            permissi
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
             //user connected cannot deactivate itself
             if (userConnected.getId() == userId) {
                 _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Trying to deactive itself.");
