@@ -25,7 +25,7 @@
             {{ 'benefPortal.voucher.step2' | translate }}
         </p>
         <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="offset-lg-3 ui-lg-6" [innerHTML]="
-            'benefPortal.voucher.counterSubtitle' | translate:{date:startDate, hour:startHour, date:endDate, hour:endHour}">
+            'benefPortal.voucher.counterSubtitle' | translate:{date:startDate, hour:startHour, endDate:endDate, endHour:endHour}">
         </p>
         <timer-component *ngIf="voucherCompetitionState == 1" class="ui-g-12 center" (timerEvent)="openApplyForVoucher()"
             [expirationTimestamp]="currentCall.startDate" [baseURLApi] ="baseURI">

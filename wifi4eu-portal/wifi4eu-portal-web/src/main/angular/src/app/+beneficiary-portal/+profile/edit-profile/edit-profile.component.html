@@ -433,7 +433,7 @@
                     <div class="offset-sm-2 col-sm-8">
                             <select [(ngModel)]="contactPerson.country" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" id="country_user" name="country_user"
                             class="form-control" ng-options="option.value as option.name for option in typeOptions" #country_user="ngModel"
-                            [disabled]="countries.length < 1" [disabled]="userMain.type == -1">
+                            [disabled]="countries.length < 1 || contactPerson.type == -1">
                             <option disabled selected [ngValue]="null">
                                 {{ 'benefRegistration.registration.selectCountry' | translate }}
                             </option>
@@ -590,7 +590,7 @@
             <div class="offset-sm-2 col-sm-8">
                 <select [(ngModel)]="userMain.country" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" id="country_user" name="country_user"
                     class="form-control" ng-options="option.value as option.name for option in typeOptions" #country_user="ngModel"
-                    [disabled]="countries.length < 1" [disabled]="userMain.type == -1">
+                    [disabled]="countries.length < 1 || userMain.type == -1">
                     <option disabled selected [ngValue]="null">
                         {{ 'benefRegistration.registration.selectCountry' | translate }}
                     </option>

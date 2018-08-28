@@ -134,16 +134,18 @@
         <i *ngIf="!geographicalScopeLoaded" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
         <div class="ui-g-12">
             <hr class="genericHr" />
-            <div class="form-group" style="text-align: center;">
-                <button type="button" (click)="goBack()"
-                        class="btn btn-primary whiteButton" style="margin-right: 0.5em;">
+            <div class="col-lg-2"></div>
+            <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+                <button type="button" class="btn btn-primary cancel-button" (click)="goBack()">
                     {{ 'shared.cancel.button' | translate }}
                 </button>
-                <button type="button" (click)="saveSupplierData()" [disabled]="savingData || !buttonEnabled || !buttonRegionsEnabled"
-                        class="btn btn-primary blueButton" style="margin-left: 0.5em;">
-                    {{ 'shared.save' | translate }} <i *ngIf="savingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+            </div>
+            <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+                <button (click)="saveSupplierData()" class="btn btn-primary publish-button" [disabled]="savingData || !buttonEnabled || !buttonRegionsEnabled">
+                        {{ 'shared.save' | translate }} <i *ngIf="savingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
                 </button>
             </div>
+            <div class="col-lg-2"></div>
             <br style="margin-bottom: 2em;">
         </div>
     </form>
