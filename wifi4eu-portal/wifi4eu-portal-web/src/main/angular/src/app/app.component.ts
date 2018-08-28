@@ -30,6 +30,7 @@ export class AppComponent {
     private actualDate: string;
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
     private user: UserDTOBase;
+    private voucherAwarded: Boolean = false;
     private profileUrl: string;
     private menuLinks: Array<UxLayoutLink>;
     private children: UxLayoutLink[][];
@@ -82,8 +83,8 @@ export class AppComponent {
 
         this.updateFooterDate();
 
-        this.sessionInterval = IntervalObservable.create(61500);
-        this.startInterval();
+         this.sessionInterval = IntervalObservable.create(61500);
+         this.startInterval();
     }
 
     startInterval() {
@@ -280,6 +281,25 @@ export class AppComponent {
                 })
             ];
             this.children[6] = [
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('itemMenu.myAccount'),
+                    url: '/beneficiary-portal/profile'
+                }),
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('itemMenu.appPortal'),
+                    url: '/beneficiary-portal/voucher'
+                }),
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                    url: 'list-suppliers'
+                }),
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('benefPortal.myHistory.title'),
+                    url: '/beneficiary-portal/my-history'
+                })
+            ];
+
+            this.children[7] = [
             ];
             this.childrenInitialized.next();
         });
@@ -291,17 +311,18 @@ export class AppComponent {
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.user = response.data;
+                    if (this.user.type == -1){
+                        //deactivated user
+                        this.router.navigateByUrl('/deactivated-user');
+                    } else if (this.user.userInvited){
+                        this.router.navigateByUrl('/invited-contact-details');
+                    }
                     this.localStorageService.set('user', JSON.stringify(response.data));
+                    this.checkIfVoucher();
                     if (this.user.type == 0 && publicRedirection) {
                         this.router.navigateByUrl(String(publicRedirection));
                     }
                     this.sharedService.login(this.user);
-                    if (this.sharedService.user.userInvited){
-                        this.router.navigateByUrl('/invited-contact-details');
-                    } else if (this.sharedService.user.type == -1){
-                        //deactivated user
-                        this.router.navigateByUrl('/deactivated-user');
-                    }
                     if (this.children.length == 5) {
                         this.updateHeader();
                     } else {
@@ -313,12 +334,24 @@ export class AppComponent {
         );
     }
 
+    private checkIfVoucher(){
+        this.userApi.checkIfVoucherAwarded().subscribe(
+            (response: ResponseDTOBase) => {
+                if(response.success){
+                    this.voucherAwarded = response.data;
+                    /* console.log(response.data); */
+                    this.updateHeader();
+                }
+            }
+        );
+    }
+
     private updateHeader() {
         if (this.user) {
             switch (this.user.type) {
                 case -1:
                     this.profileUrl = '/deactivated-user';
-                    this.menuLinks = this.children[6];
+                    this.menuLinks = this.children[7];
                 break;
                 case 1:
                     this.profileUrl = '/supplier-portal/profile';
@@ -327,7 +360,11 @@ export class AppComponent {
                 case 2:
                 case 3:
                     this.profileUrl = '/beneficiary-portal/profile';
+                    if(this.voucherAwarded){
                     this.menuLinks = this.children[2];
+                    } else {
+                        this.menuLinks = this.children[6];
+                    }
                     break;
                 default:
                     if (this.user.userInvited){

@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "Právě byla zahájena výzva k podávání žádostí!",
   "benefPortal.voucher.call.label2": "Žádost lze podat až po zahájení samotné výzvy k podávání žádostí.",
   "benefPortal.voucher.competition.timeleft.title": "Další výzva k předkládání žádostí bude zahájena dne",
-  "benefPortal.voucher.counterSubtitle": "Výzva k podávání žádostí zahájená dne {{date}} v {{hour}} hod (SELČ). Žádosti můžete podávat do dne {{date}}, {{hour}} hod (SELČ).",
+  "benefPortal.voucher.counterSubtitle": "Výzva k podávání žádostí zahájená dne {{date}} v {{hour}} hod (SELČ). Žádosti můžete podávat do dne {{endDate}}, {{endHour}} hod (SELČ).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Úspěšně jste zažádali o poukaz.",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Sledujte tyto stránky. Pracovníci týmu WiFi4EU se s žadateli, jimž bude poukázka udělena, spojí.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Přednost budou mít při výběru ti, kteří zažádají dříve. Rozhodovat bude datum a čas podání žádosti. Dále Komise dodrží zeměpisnou vyváženost, jak je podrobně uvedeno v pracovním programu pro Nástroj pro propojení Evropy.",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Opravdu chcete tuto kontaktní osobu deaktivovat?",
   "shared.download.grantAgreementPDF": "Dohoda je ke stažení ve formátu PDF. Doporučujeme vám si ji pečlivě projít, abyste si byli jisti, že souhlasíte se všeobecnými podmínkami. Podepsat ji můžete kliknutím na možnost „Podepsat grantovou dohodu“ níže.",
   "benefPortal.grantAgreement.sign.title": "Potvrzení podpisu grantové dohody",
-  "benefPortal.grantAgreement.sign.desciption": "Kliknutím na možnost „podepsat“ stvrzujete, že jste srozuměn(a) s podmínkami dohody a souhlasíte s podmínkami a závazky, které vám z této dohody vyplývají.",
+  "benefPortal.grantAgreement.sign.description": "Kliknutím na možnost „podepsat“ stvrzujete, že jste srozuměn(a) s podmínkami dohody a souhlasíte s podmínkami a závazky, které vám z této dohody vyplývají.",
   "benefPortal.grantAgreement.sign.button": "Podepsat",
   "benefPortal.myVoucher.datatable.action1": "Krok 1",
   "benefPortal.myVoucher.datatable.action2": "Krok 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Zatím jste odeslání vašich dokumentů nepotvrdili. Pokud tuto stránku uzavřete, budou všechny nahrané dokumenty odstraněny. Chcete-li dokumenty, které jste nahráli, uložit, vraťte se na předchozí stránku a klikněte na tlačítko „Potvrdit“. Opravdu chcete dokumenty odstranit?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

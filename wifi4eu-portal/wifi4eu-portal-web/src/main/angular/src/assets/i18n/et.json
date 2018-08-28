@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "Projektikonkurss on nüüd avatud!",
   "benefPortal.voucher.call.label2": "Saate taotleda, kui osalemiskutse on avaldatud.",
   "benefPortal.voucher.competition.timeleft.title": "Osalemiskutse avaldamiseni on jäänud",
-  "benefPortal.voucher.counterSubtitle": "Osalemiskutse avaldati {{date}} kl {{hour}} (Kesk-Euroopa suveaja järgi). Taotlusi saab esitada kuni {{date}} kl {{hour}} (Kesk-Euroopa suveaja järgi).",
+  "benefPortal.voucher.counterSubtitle": "Osalemiskutse avaldati {{date}} kl {{hour}} (Kesk-Euroopa suveaja järgi). Taotlusi saab esitada kuni {{endDate}} kl {{endHour}} (Kesk-Euroopa suveaja järgi).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Vautšeri taotlus on saadetud!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Jääge tulemuste ootele! WiFi4EU annab teada, millised kandidaadid vautšeri jaoks välja valiti.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Vautšeri saajad valitakse välja taotluse esitamise järjekorra alusel (taotluse esitamise kuupäev ja kellaaeg), võttes arvesse ka vajadust tagada ühtlane geograafiline jaotus, nagu on märgitud Euroopa ühendamise rahastu tööprogrammis.",
@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "See stardiloendus on orienteeriv. Kui konkursikutse on avaldatud, klõpsake „Taotle“ (kui klõpsate enne, kui konkurss on ametlikult alanud, kuvatakse veateade) ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Nõustun <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>osalemiskutse tingimustega</a> ja kinnitan, et omavalitsus, keda esindan, ei ole üheski <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>määruse (EL, Euratom) 2018/1046</a> artikli 136 lõikes 1 loetletud olukorras.",
+  "benefPortal.voucher.conditionsAgreement": "Nõustun #osalemiskutse tingimustega# ja kinnitan, et omavalitsus, keda esindan, ei ole üheski #määruse (EL, Euratom) 2018/1046# artikli 136 lõikes 1 loetletud olukorras.",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Kas olete kindel, et soovite selle kontaktisiku deaktiveerida?",
   "shared.download.grantAgreementPDF": "Laadige PDF-dokument alla ja lugege hoolikalt läbi enne, kui nõustute toetuslepingu tingimustega. Allkirjastamiseks klõpsake allpool nupul „Allkirjasta toetusleping“.",
   "benefPortal.grantAgreement.sign.title": "Toetuslepingu allkirjastamise kinnitamine",
-  "benefPortal.grantAgreement.sign.desciption": "Kui klõpsate nupul „Allkirjasta“, kinnitate, et tingimused on teile arusaadavad ning nõustute toetuslepingu tingimuste ja kohustustega.",
+  "benefPortal.grantAgreement.sign.description": "Kui klõpsate nupul „Allkirjasta“, kinnitate, et tingimused on teile arusaadavad ning nõustute toetuslepingu tingimuste ja kohustustega.",
   "benefPortal.grantAgreement.sign.button": "Allkirjasta",
   "benefPortal.myVoucher.datatable.action1": "Toiming 1",
   "benefPortal.myVoucher.datatable.action2": "Toiming 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Te pole dokumentide esitamist veel kinnitanud ja lehelt lahkumise tagajärjel lähevad kõik üleslaaditud dokumendid kaduma. Kui soovite üleslaaditud dokumendid salvestada, minge palun tagasi ja klõpsake nuppu „Kinnita“. Kas olete kindel, et soovite dokumendid kustutada?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

@@ -36,6 +36,7 @@ import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
 import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 import wifi4eu.wifi4eu.entity.user.User;
+import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
@@ -63,10 +64,7 @@ import wifi4eu.wifi4eu.util.MailService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -398,12 +396,32 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO updateUserDetails(UserDTO userDTO, String name, String surname) {
+    public ResponseDTO updateUserDetails(UserDTO userConnected, List<UserContactDetails> users) {
+        //verifying data
+        List<UserDTO> usersToSave = new ArrayList<UserDTO>();
+        for (UserContactDetails userDetails : users) {
+            UserDTO user = getUserById(userDetails.getId());
+            user.setName(userDetails.getName());
+            user.setSurname(userDetails.getSurname());
+            user.setAddress(userDetails.getAddress());
+            user.setAddressNum(userDetails.getAddressNum());
+            user.setPostalCode(userDetails.getPostalCode());
+            user.setCity(userDetails.getCity());
+            user.setCountry(userDetails.getCountry());
+            if (Validator.isNull(userDetails) || !checkFieldsContactDetails(user, userDetails.getType())) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user details cannot been updated");
+                return new ResponseDTO(false, null, new ErrorDTO(org.springframework.http.HttpStatus.BAD_REQUEST.value(), org.springframework.http
+                        .HttpStatus.BAD_REQUEST.getReasonPhrase()));
+            } else {
+                usersToSave.add(user);
+            }
+        }
 
-        userDTO.setName(name);
-        userDTO.setSurname(surname);
+        for (UserDTO user : usersToSave) {
+            userRepository.save(userMapper.toEntity(user));
+        }
 
-        return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
+        return new ResponseDTO(true, "sucess", null);
     }
 
     public List<UserDTO> getUsersByType(int type) {
@@ -626,7 +644,19 @@ public class UserService {
     }
 
     public boolean checkIfApplied(UserDTO userDTO) {
-       return applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0;
+        return applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0;
+    }
+
+    public boolean checkIfVoucherAwarded(UserDTO userDTO) {
+        List<Integer> voucherAwarded = userRepository.getIfUserHasVouchersAwarded(userDTO.getId());
+        if (Validator.isNotNull(voucherAwarded)) {
+            for (int vouch : voucherAwarded) {
+                if (vouch == 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public ResponseDTO deactivateRegistrationUser(Integer registrationId, Integer userId, String logInfo) throws Exception {

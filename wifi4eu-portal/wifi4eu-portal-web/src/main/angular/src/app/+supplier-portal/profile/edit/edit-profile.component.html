@@ -13,25 +13,25 @@
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'suppPortal.companyInformation' | translate }}</p>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="name">{{ 'suppRegistration.company.name' | translate }}</label><br>
-                <input id="name" type="text" name="name" class="form-control"
+                <input id="name" type="text" name="name" class="form-control" maxlength="254"
                        [(ngModel)]="supplier.name" (ngModelChange)="enableButton()" required>
             </div>
             <br>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="address">{{ 'suppRegistration.legal.address' | translate }}</label><br>
-                <input id="address" type="text" name="address" class="form-control"
+                <input id="address" type="text" name="address" class="form-control" maxlength="254"
                        [(ngModel)]="supplier.address" (ngModelChange)="enableButton()" required>
             </div>
             <br>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="vat">{{ 'suppRegistration.vat.label' | translate }}</label><br>
-                <input id="vat" type="text" name="vat" class="form-control"
+                <input id="vat" type="text" name="vat" class="form-control" maxlength="254"
                        [(ngModel)]="supplier.vat" (ngModelChange)="enableButton()" required>
             </div>
             <br>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="website">{{ 'suppRegistration.company.web' | translate }}</label><br>
-                <input id="website" type="text" name="website" class="form-control"
+                <input id="website" type="text" name="website" class="form-control" maxlength="254"
                        [(ngModel)]="supplier.website"  (ngModelChange)="enableButton()">
             </div>
             <br>
@@ -73,21 +73,21 @@
                 <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                     <label>{{ 'shared.name.label' | translate }}</label><br>
                     <input [id]="'name-'+i" type="text" [name]="'name-'+i" class="form-control"
-                        [(ngModel)]="users[i].name" required  (ngModelChange)="enableButtonUser(i)" [disabled]="user.type == -1">
+                        [(ngModel)]="users[i].name" maxlength="254" required  (ngModelChange)="enableButtonUser(i)" [disabled]="user.type == -1">
                 </div>
                 <br>
                 <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                     <label>{{ 'shared.surname.label' | translate }}</label><br>
                     <input [id]="'surname-'+i" type="text" [name]="'surname-'+i" class="form-control"
-                        [(ngModel)]="users[i].surname" required (ngModelChange)="enableButtonUser(i)" [disabled]="user.type == -1">
+                        [(ngModel)]="users[i].surname" maxlength="254" required (ngModelChange)="enableButtonUser(i)" [disabled]="user.type == -1">
                 </div>
                 <br>
                 <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
                     <label>{{ 'suppRegistration.phone.number' | translate }}</label><br>
                     <input [id]="'phone-prefix-'+i" type="text" [name]="'phonePrefix-'+i" class="form-control ui-g-2 ui-sm-4"
-                        style="margin-right: 1em;" [(ngModel)]="users[i].phonePrefix" (ngModelChange)="enableButtonUser(i)" required [disabled]="user.type == -1">
+                        style="margin-right: 1em;" [(ngModel)]="users[i].phonePrefix" (ngModelChange)="enableButtonUser(i)" required pattern="[0-9]{1,4}" [disabled]="user.type == -1">
                     <input [id]="'phone-number-'+i" type="text" [name]="'phoneNumber-'+i" class="form-control ui-g-3 ui-sm-7"
-                        [(ngModel)]="users[i].phoneNumber" required (ngModelChange)="enableButtonUser(i)" [disabled]="user.type == -1">
+                        [(ngModel)]="users[i].phoneNumber" required (ngModelChange)="enableButtonUser(i)" pattern="[0-9]{1,}" [disabled]="user.type == -1">
                     <br>
                     <label class="ui-g-2 ui-sm-4" style="font-size: 70%;color: #8f8f8f;">
                         {{ 'suppRegistration.prefix.number' | translate }}

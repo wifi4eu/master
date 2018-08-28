@@ -578,11 +578,11 @@ public class RegistrationService {
         return userContactDetailsRepository.findUsersContactDetailsByRegistrationId(registrationId);
     }
 
-    public List<UserContactDetails> findUsersContactDetailsByOrganizationId(Integer organizationId){
-        return userContactDetailsRepository.findUsersContactDetailsByOrganizationId(organizationId);
+    public List<UserContactDetails> findUsersContactDetailsByOrganisationId(Integer organizationId){
+        return userContactDetailsRepository.findUsersContactDetailsByOrganisationId(organizationId);
     }
 
-    public List<Registration> findRegistrationsByOrganizationId(Integer organizationId){
+    public List<Registration> findRegistrationsByOrganisationId(Integer organizationId){
         return registrationRepository.findByOrganisationId(organizationId);
     }
 

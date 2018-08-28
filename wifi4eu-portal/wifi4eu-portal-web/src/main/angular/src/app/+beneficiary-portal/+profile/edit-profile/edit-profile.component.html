@@ -31,7 +31,7 @@
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-4">
-                        <span class="profileData">{{municipality.name}}</span>
+                        <span class="profileData">{{municipality.name}} - #{{ i + 1 }} </span>
                     </div>
                     <div class="col-sm-5">
                         <div class="row">
@@ -70,7 +70,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="address_municipality" type="text" [(ngModel)]="municipality.address" class="form-control" name="address_municipality"
-                            ngcontrol="address_municipality" #address_municipality="ngModel" (ngModelChange)="checkButtonEnabled($event, i)"
+                            ngcontrol="address_municipality" #address_municipality="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabled($event, i)"
                             [disabled]="!isMunicipalityEditable[municipality.id]" required>
                         <div [hidden]="address_municipality.valid || address_municipality.pristine" class="alert alert-danger">
                         </div>
@@ -88,7 +88,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="number_municipality" type="text" [(ngModel)]="municipality.addressNum" class="form-control" name="number_municipality"
-                            ngcontrol="number_municipality" #number_municipality="ngModel" (ngModelChange)="checkButtonEnabled($event, i)"
+                            ngcontrol="number_municipality" #number_municipality="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabled($event, i)"
                             [disabled]="!isMunicipalityEditable[municipality.id]" required>
                         <div [hidden]="number_municipality.valid || number_municipality.pristine" class="alert alert-danger">
                             {{ 'suppRegistration.address.required' | translate }}
@@ -107,7 +107,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="postalCode_municipality" type="text" [(ngModel)]="municipality.postalCode" class="form-control" name="postalCode_municipality"
-                            ngcontrol="postalCode_municipality" #postalCode_municipality="ngModel" (ngModelChange)="checkButtonEnabled($event, i)"
+                            ngcontrol="postalCode_municipality" #postalCode_municipality="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabled($event, i)"
                             [disabled]="!isMunicipalityEditable[municipality.id]" required>
                         <div [hidden]="postalCode_municipality.valid || postalCode_municipality.pristine" class="alert alert-danger">
                             {{ 'suppRegistration.address.required' | translate }}
@@ -126,7 +126,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="name_mayor" type="text" [(ngModel)]="mayors[i].name" class="form-control" name="name_mayor" ngcontrol="name_mayor"
-                            #name_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]"
+                            #name_mayor="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]"
                             required>
                         <div [hidden]="name_mayor.valid || name_mayor.pristine" class="alert alert-danger">
                             {{ 'shared.name.required' | translate }}
@@ -145,7 +145,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="surname_mayor" type="text" [(ngModel)]="mayors[i].surname" class="form-control" name="surname_mayor" ngcontrol="surname_mayor"
-                            #surname_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]"
+                            #surname_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" maxlength="254" [disabled]="!isMunicipalityEditable[municipality.id]"
                             required>
                         <div [hidden]="surname_mayor.valid || surname_mayor.pristine" class="alert alert-danger">
                             {{ 'shared.surname.required' | translate }}
@@ -164,7 +164,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="email_mayor" type="text" [(ngModel)]="mayors[i].email" class="form-control" name="email_mayor" ngcontrol="email_mayor"
-                            #email_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]"
+                            #email_mayor="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]"
                             required>
                     </div>
                     <div class="col-sm-2"></div>
@@ -173,7 +173,7 @@
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <p class="edit" (click)="addNewContactToMunicipality(municipality.id)">{{ 'benefPortal.beneficary.addMunicipality' | translate}}</p>
+                        <p class="edit cursorPointer" (click)="addNewContactToMunicipality(municipality.id)">+ {{ 'benefPortal.beneficary.addMunicipality' | translate}}</p>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
@@ -257,7 +257,7 @@
                                 <div [id]="'mayor-name-'+i" class="form-group ui-g">
                                     <div class="ui-g-12">
                                         <label class="label floatLeft">{{ 'shared.name.label' | translate }}</label>
-                                        <input class="form-control paddingInput" [name]="'name-'+i" [id]="'name-'+i" type="text" [(ngModel)]="newMayors[i].name"
+                                        <input class="form-control paddingInput" [name]="'name-'+i" [id]="'name-'+i" type="text" maxlength="254" [(ngModel)]="newMayors[i].name"
                                             (ngModelChange)="checkButtonEnabled($event, i)" required>
                                     </div>
                                 </div>
@@ -267,7 +267,7 @@
                                         <label class="label floatLeft">
                                             {{ 'shared.surname.label' | translate }}
                                         </label>
-                                        <input class="form-control paddingInput" type="text" [name]="'surname-'+i" [id]="'surname-'+i" [(ngModel)]="newMayors[i].surname"
+                                        <input class="form-control paddingInput" type="text" [name]="'surname-'+i" [id]="'surname-'+i" maxlength="254" [(ngModel)]="newMayors[i].surname"
                                             (ngModelChange)="checkButtonEnabled($event, i)" required>
                                     </div>
                                 </div>
@@ -277,8 +277,9 @@
                                         <label class="label floatLeft">
                                             {{ 'shared.email.label' | translate }}
                                         </label>
-                                        <input class="form-control paddingInput" type="email" [pattern]="emailPattern" [(ngModel)]="newMayors[i].email" [id]="'email-'+i"
-                                            [name]="'email-'+i" (input)="checkEmailsMatch()" maxlength="254" required>
+                                        <input class="form-control paddingInput" maxlength="254" type="email" [pattern]="emailPattern" [(ngModel)]="newMayors[i].email"
+                                            [id]="'email-'+i" [name]="'email-'+i" (input)="checkEmailsMatch()" maxlength="254"
+                                            required>
                                         <label class="field-desc" style="margin-top: 10px;color: gray;">
                                             {{ 'benefRegistration.email.fielddesc' | translate }}</label>
                                     </div>
@@ -290,7 +291,7 @@
                                             {{ 'shared.confirmemail.label' | translate }}
                                         </label>
                                         <input class="form-control paddingInput {{css_class_email[i]}}" type="email" [name]="'confirm-email-'+i" [id]="'confirm-email-'+i"
-                                            (input)="checkEmailsMatch()" (paste)="preventPaste()" [(ngModel)]="emailConfirmations[i]"
+                                            maxlength="254" (input)="checkEmailsMatch()" (paste)="preventPaste()" [(ngModel)]="emailConfirmations[i]"
                                             maxlength="254">
                                     </div>
                                 </div>
@@ -340,9 +341,9 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="name_user" type="text" [(ngModel)]="contactPerson.name" class="form-control" name="name_user" ngcontrol="name_user"
-                            #name_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
-                            required>
+                        <input id="name_user" type="text" maxlength="254" [(ngModel)]="contactPerson.name" class="form-control" name="name_user"
+                            ngcontrol="name_user" #name_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
+                            [disabled]="contactPerson.type == -1" required>
                         <div [hidden]="name_user.valid || name_user.pristine" class="alert alert-danger">
                             {{ 'shared.name.required' | translate }}
                         </div>
@@ -355,9 +356,9 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="surname_user" type="text" [(ngModel)]="contactPerson.surname" class="form-control" name="surname_user" ngcontrol="surname_user"
-                            #surname_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
-                            required>
+                        <input id="surname_user" type="text" maxlength="254" [(ngModel)]="contactPerson.surname" class="form-control" name="surname_user"
+                            ngcontrol="surname_user" #surname_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
+                            [disabled]="contactPerson.type == -1" required>
                         <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
                             {{ 'shared.surname.required' | translate }}
                         </div>
@@ -370,9 +371,9 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="address_user" type="text" [(ngModel)]="contactPerson.address" class="form-control" name="address_user" ngcontrol="address_user"
-                            #address_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
-                            required>
+                        <input id="address_user" type="text" maxlength="254" [(ngModel)]="contactPerson.address" class="form-control" name="address_user"
+                            ngcontrol="address_user" #address_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
+                            [disabled]="contactPerson.type == -1" required>
                         <div [hidden]="address_user.valid || address_user.pristine" class="alert alert-danger">
                             {{ 'shared.address.required' | translate }}
                         </div>
@@ -385,9 +386,9 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="addressNum_user" type="text" [(ngModel)]="contactPerson.addressNum" class="form-control" name="addressNum_user" ngcontrol="addressNum_user"
-                            #addressNum_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
-                            required>
+                        <input id="addressNum_user" type="text" maxlength="254" [(ngModel)]="contactPerson.addressNum" class="form-control" name="addressNum_user"
+                            ngcontrol="addressNum_user" #addressNum_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
+                            [disabled]="contactPerson.type == -1" required>
                         <div [hidden]="addressNum_user.valid || addressNum_user.pristine" class="alert alert-danger">
                             {{ 'shared.address.required' | translate }}
                         </div>
@@ -400,9 +401,9 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="postalCode_user" type="text" [(ngModel)]="contactPerson.postalCode" class="form-control" name="postalCode_user" ngcontrol="postalCode_user"
-                            #postalCode_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
-                            required>
+                        <input id="postalCode_user" type="text" maxlength="254" [(ngModel)]="contactPerson.postalCode" class="form-control" name="postalCode_user"
+                            ngcontrol="postalCode_user" #postalCode_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
+                            [disabled]="contactPerson.type == -1" required>
                         <div [hidden]="postalCode_user.valid || postalCode_user.pristine" class="alert alert-danger">
                             {{ 'shared.address.required' | translate }}
                         </div>
@@ -415,9 +416,9 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="city_user" type="text" [(ngModel)]="contactPerson.city" class="form-control" name="city_user" ngcontrol="city_user"
-                            #city_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
-                            required>
+                        <input id="city_user" type="text" maxlength="254" [(ngModel)]="contactPerson.city" class="form-control" name="city_user"
+                            ngcontrol="city_user" #city_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
+                            [disabled]="contactPerson.type == -1" required>
                         <div [hidden]="city_user.valid || city_user.pristine" class="alert alert-danger">
                             {{ 'shared.address.required' | translate }}
                         </div>
@@ -430,9 +431,16 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <input id="country_user" type="text" [(ngModel)]="contactPerson.country" class="form-control" name="country_user" ngcontrol="country_user"
-                            #country_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" [disabled]="contactPerson.type == -1"
-                            required>
+                            <select [(ngModel)]="contactPerson.country" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" id="country_user" name="country_user"
+                            class="form-control" ng-options="option.value as option.name for option in typeOptions" #country_user="ngModel"
+                            [disabled]="countries.length < 1" [disabled]="userMain.type == -1">
+                            <option disabled selected [ngValue]="null">
+                                {{ 'benefRegistration.registration.selectCountry' | translate }}
+                            </option>
+                            <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry.label">
+                                {{currentCountry.label}}
+                            </option>
+                        </select>
                         <div [hidden]="country_user.valid || country_user.pristine" class="alert alert-danger">
                             {{ 'shared.address.required' | translate }}
                         </div>
@@ -445,7 +453,9 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                        <span><b>{{contactPerson?.email}}</b></span>
+                        <span>
+                            <b>{{contactPerson?.email}}</b>
+                        </span>
                     </div>
                 </div>
                 <br>
@@ -479,7 +489,8 @@
         <div class="row" *ngIf="associationName">
             <div class="offset-sm-2 col-sm-8">
                 <input id="associationName" type="text" [(ngModel)]="registration.associationName" class="form-control" name="associationName"
-                    ngcontrol="associationName" #associationName="ngModel" (ngModelChange)="checkButtonEnabledUser($event)" required>
+                    ngcontrol="associationName" #associationName="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event)"
+                    required>
             </div>
         </div>
         <div class="row">
@@ -490,7 +501,7 @@
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
                 <input id="name_user" type="text" [(ngModel)]="userMain.name" class="form-control" name="name_user" ngcontrol="name_user"
-                    #name_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" required>
+                    #name_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" required>
                 <div [hidden]="name_user.valid || name_user.pristine" class="alert alert-danger">
                     {{ 'shared.name.required' | translate }}
                 </div>
@@ -504,7 +515,7 @@
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
                 <input id="surname_user" type="text" [(ngModel)]="userMain.surname" class="form-control" name="surname_user" ngcontrol="surname_user"
-                    #surname_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" required>
+                    #surname_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" required>
                 <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
                     {{ 'shared.surname.required' | translate }}
                 </div>
@@ -518,7 +529,7 @@
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
                 <input id="address_user" type="text" [(ngModel)]="userMain.address" class="form-control" name="address_user" ngcontrol="address_user"
-                    #address_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
+                    #address_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
                     required>
                 <div [hidden]="address_user.valid || address_user.pristine" class="alert alert-danger">
                     {{ 'shared.address.required' | translate }}
@@ -533,8 +544,8 @@
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
                 <input id="addressNum_user" type="text" [(ngModel)]="userMain.addressNum" class="form-control" name="addressNum_user" ngcontrol="addressNum_user"
-                    #addressNum_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
-                    required>
+                    #addressNum_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)"
+                    [disabled]="userMain.type == -1" required>
                 <div [hidden]="addressNum_user.valid || addressNum_user.pristine" class="alert alert-danger">
                     {{ 'shared.address.required' | translate }}
                 </div>
@@ -548,8 +559,8 @@
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
                 <input id="postalCode_user" type="text" [(ngModel)]="userMain.postalCode" class="form-control" name="postalCode_user" ngcontrol="postalCode_user"
-                    #postalCode_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
-                    required>
+                    #postalCode_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)"
+                    [disabled]="userMain.type == -1" required>
                 <div [hidden]="postalCode_user.valid || postalCode_user.pristine" class="alert alert-danger">
                     {{ 'shared.address.required' | translate }}
                 </div>
@@ -563,7 +574,7 @@
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
                 <input id="city_user" type="text" [(ngModel)]="userMain.city" class="form-control" name="city_user" ngcontrol="city_user"
-                    #city_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
+                    #city_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
                     required>
                 <div [hidden]="city_user.valid || city_user.pristine" class="alert alert-danger">
                     {{ 'shared.address.required' | translate }}
@@ -577,9 +588,16 @@
         </div>
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
-                <input id="country_user" type="text" [(ngModel)]="userMain.country" class="form-control" name="country_user" ngcontrol="country_user"
-                    #country_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
-                    required>
+                <select [(ngModel)]="userMain.country" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" id="country_user" name="country_user"
+                    class="form-control" ng-options="option.value as option.name for option in typeOptions" #country_user="ngModel"
+                    [disabled]="countries.length < 1" [disabled]="userMain.type == -1">
+                    <option disabled selected [ngValue]="null">
+                        {{ 'benefRegistration.registration.selectCountry' | translate }}
+                    </option>
+                    <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry.label">
+                        {{currentCountry.label}}
+                    </option>
+                </select>
                 <div [hidden]="country_user.valid || country_user.pristine" class="alert alert-danger">
                     {{ 'shared.address.required' | translate }}
                 </div>
@@ -592,8 +610,10 @@
         </div>
         <div class="row">
             <div class="offset-sm-2 col-sm-8">
-                <span><b>{{user?.email}}</b></span>
-                </div>
+                <span>
+                    <b>{{user?.email}}</b>
+                </span>
+            </div>
         </div>
         <br>
         <br>
@@ -608,7 +628,7 @@
                 {{ 'shared.cancel.button' | translate }}
             </button>
         </div>
-         <!-- {{ !municipalitiesSelected }} - {{!emailsMatch}} - {{!profileEditForm.form.valid}} - {{!buttonEnabled}}  -->
+        <!-- {{ !municipalitiesSelected }} - {{!emailsMatch}} - {{!profileEditForm.form.valid}} - {{!buttonEnabled}}  -->
         <div class="col-sm-6 col-lg-4" style="text-align: center !important">
             <button (click)="editProfile()" class="btn btn-primary publish-button" [disabled]="!municipalitiesSelected || !emailsMatch || !profileEditForm.form.valid || !buttonEnabled">
                 {{ 'shared.confirm.button' | translate }}
