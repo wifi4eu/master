@@ -1,3 +1,6 @@
+-----------------------------------
+-- populateUpdated.sql
+-----------------------------------
 DELETE FROM representations
 DELETE FROM municipalities
 DELETE FROM supplied_regions
@@ -8,6 +11,8 @@ DELETE FROM application_comment
 DELETE FROM voucher_simulations 
 DELETE FROM voucher_assignments
 DELETE FROM registration_users
+DELETE FROM rights
+DELETE FROM conditions_agreement
 DELETE FROM users
 DELETE FROM legal_files
 DELETE FROM registrations
@@ -15,7 +20,6 @@ DELETE FROM mayors
 DELETE FROM application_invalidate_reason
 DELETE FROM authorized_person_application
 DELETE FROM applications
-DELETE FROM rights
 DELETE FROM temp_tokens
 DELETE FROM suppliers
 DELETE FROM helpdesk_issues
@@ -65,20 +69,16 @@ BEGIN
   SET @r_id = (SELECT TOP 1 id FROM registrations ORDER BY ID DESC)
   -- Add legal file #1
   INSERT INTO legal_files
-    (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-  VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0)
+    (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+  VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0, 1)
   -- Add legal file #1 link
   SET @f_id1 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
   -- Add legal file #3
   INSERT INTO legal_files
-    (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-  VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0)
+    (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+  VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0, 3)
   -- Add legal file #3 link
   SET @f_id3 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
-  -- Add registration files (legal_files <-> registration)
-  INSERT INTO registration_files 
-    (legal_file1, legal_file3, registrationId)
-  VALUES(@f_id1, @f_id3, @r_id)
   -- Add temp_tokens
   INSERT INTO temp_tokens
     (token, email, create_date, expiry_date, _user)
@@ -123,20 +123,16 @@ VALUES(@u_id, @m_id, 'Representative', 0, '127.0.0.1', 0, '', 1, 0)
 SET @r_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 -- Add legal file #1
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0, 1)
 -- Add legal file #1 link
 SET @f_id1 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
 -- Add legal file #3
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0, 3)
 -- Add legal file #3 link
 SET @f_id3 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
--- Add registration files (legal_files <-> registration)
-INSERT INTO registration_files 
-  (legal_file1, legal_file3, registrationId)
-VALUES(@f_id1, @f_id3, @r_id)
 -- Add temp_tokens
 INSERT INTO temp_tokens
   (token, email, create_date, expiry_date, _user)
@@ -179,20 +175,16 @@ VALUES(@u_id, @m_id, 'Representative', 0, '127.0.0.1', 0, '', 1, 0)
 SET @r_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 -- Add legal file #1
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0, 1)
 -- Add legal file #1 link
 SET @f_id1 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
 -- Add legal file #3
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0, 3)
 -- Add legal file #3 link
 SET @f_id3 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
--- Add registration files (legal_files <-> registration)
-INSERT INTO registration_files 
-  (legal_file1, legal_file3, registrationId)
-VALUES(@f_id1, @f_id3, @r_id)
 -- Add temp_tokens
 INSERT INTO temp_tokens
   (token, email, create_date, expiry_date, _user)
@@ -235,20 +227,16 @@ VALUES(@u_id, @m_id, 'Representative', 0, '127.0.0.1', 0, '', 1, 0)
 SET @r_id = (SELECT TOP 1 id FROM registrations ORDER BY ID DESC)
 -- Add legal file #1
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0, 1)
 -- Add legal file #1 link
 SET @f_id1 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
 -- Add legal file #3
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0, 3)
 -- Add legal file #3 link
 SET @f_id3 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
--- Add registration files (legal_files <-> registration)
-INSERT INTO registration_files 
-  (legal_file1, legal_file3, registrationId)
-VALUES(@f_id1, @f_id3, @r_id)
 -- Add temp_tokens
 INSERT INTO temp_tokens
   (token, email, create_date, expiry_date, _user)
@@ -291,20 +279,16 @@ VALUES(@u_id, @m_id, 'Representative', 0, '127.0.0.1', 0, '', 1, 0)
 SET @r_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 -- Add legal file #1
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0, 1)
 -- Add legal file #1 link
 SET @f_id1 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
 -- Add legal file #3
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0, 3)
 -- Add legal file #3 link
 SET @f_id3 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
--- Add registration files (legal_files <-> registration)
-INSERT INTO registration_files 
-  (legal_file1, legal_file3, registrationId)
-VALUES(@f_id1, @f_id3, @r_id)
 -- Add temp_tokens
 INSERT INTO temp_tokens
   (token, email, create_date, expiry_date, _user)
@@ -347,20 +331,16 @@ VALUES(@u_id, @m_id, 'Representative', 0, '127.0.0.1', 0, '', 1, 0)
 SET @r_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 -- Add legal file #1
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0, 1)
 -- Add legal file #1 link
 SET @f_id1 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
 -- Add legal file #3
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0, 3)
 -- Add legal file #3 link
 SET @f_id3 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
--- Add registration files (legal_files <-> registration)
-INSERT INTO registration_files 
-  (legal_file1, legal_file3, registrationId)
-VALUES(@f_id1, @f_id3, @r_id)
 -- Add temp_tokens
 INSERT INTO temp_tokens
   (token, email, create_date, expiry_date, _user)
@@ -403,20 +383,16 @@ VALUES(@u_id, @m_id, 'Representative', 0, '127.0.0.1', 0, '', 1, 0)
 SET @r_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 -- Add legal file #1
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0, 1)
 -- Add legal file #1 link
 SET @f_id1 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
 -- Add legal file #3
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0, 3)
 -- Add legal file #3 link
 SET @f_id3 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
--- Add registration files (legal_files <-> registration)
-INSERT INTO registration_files 
-  (legal_file1, legal_file3, registrationId)
-VALUES(@f_id1, @f_id3, @r_id)
 -- Add temp_tokens
 INSERT INTO temp_tokens
   (token, email, create_date, expiry_date, _user)
@@ -459,20 +435,16 @@ VALUES(@u_id, @m_id, 'Representative', 0, '127.0.0.1', 0, '', 1, 0)
 SET @r_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 -- Add legal file #1
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0, 1)
 -- Add legal file #1 link
 SET @f_id1 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
 -- Add legal file #3
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0, 3)
 -- Add legal file #3 link
 SET @f_id3 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
--- Add registration files (legal_files <-> registration)
-INSERT INTO registration_files 
-  (legal_file1, legal_file3, registrationId)
-VALUES(@f_id1, @f_id3, @r_id)
 -- Add temp_tokens
 INSERT INTO temp_tokens
   (token, email, create_date, expiry_date, _user)
@@ -515,20 +487,16 @@ VALUES(@u_id, @m_id, 'Representative', 0, '127.0.0.1', 0, '', 1, 0)
 SET @r_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 -- Add legal file #1
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0, 1)
 -- Add legal file #1 link
 SET @f_id1 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
 -- Add legal file #3
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0, 1)
 -- Add legal file #3 link
 SET @f_id3 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
--- Add registration files (legal_files <-> registration)
-INSERT INTO registration_files 
-  (legal_file1, legal_file3, registrationId)
-VALUES(@f_id1, @f_id3, @r_id)
 -- Add temp_tokens
 INSERT INTO temp_tokens
   (token, email, create_date, expiry_date, _user)
@@ -571,20 +539,16 @@ VALUES(@u_id, @m_id, 'Representative', 0, '127.0.0.1', 0, '', 1, 0)
 SET @r_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 -- Add legal file #1
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0, 1)
 -- Add legal file #1 link
 SET @f_id1 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
 -- Add legal file #3
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0, 3)
 -- Add legal file #3 link
 SET @f_id3 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
--- Add registration files (legal_files <-> registration)
-INSERT INTO registration_files 
-  (legal_file1, legal_file3, registrationId)
-VALUES(@f_id1, @f_id3, @r_id)
 -- Add temp_tokens
 INSERT INTO temp_tokens
   (token, email, create_date, expiry_date, _user)
@@ -627,20 +591,16 @@ VALUES(@u_id, @m_id, 'Representative', 0, '127.0.0.1', 0, '', 1, 0)
 SET @r_id = (SELECT TOP 1 id FROM users ORDER BY ID DESC)
 -- Add legal file #1
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile1', 0, 1)
 -- Add legal file #1 link
 SET @f_id1 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
 -- Add legal file #3
 INSERT INTO legal_files
-  (registration, id_user, data, file_size, file_mime, file_name, upload_time)
-VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0)
+  (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
+VALUES(@r_id, @u_id, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', 18, 'application/pdf', 'sampleFile3', 0, 3)
 -- Add legal file #3 link
 SET @f_id3 = (SELECT TOP 1 id FROM legal_files ORDER BY ID DESC)
--- Add registration files (legal_files <-> registration)
-INSERT INTO registration_files 
-  (legal_file1, legal_file3, registrationId)
-VALUES(@f_id1, @f_id3, @r_id)
 -- Add temp_tokens
 INSERT INTO temp_tokens
   (token, email, create_date, expiry_date, _user)
