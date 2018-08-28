@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from "@angular/animations";
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UserApi } from "../../shared/swagger/api/UserApi";
@@ -29,14 +30,28 @@ import { UserContactDetailsBase } from "../../shared/swagger";
     selector: 'beneficiary-profile',
     templateUrl: 'profile.component.html',
     styleUrls: ['profile.component.scss'],
-    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi, BeneficiaryApi]
+    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi, BeneficiaryApi],
+    animations: [
+        trigger(
+            'enterSpinner', [
+                transition(':enter', [
+                    style({opacity: 0}),
+                    animate('200ms', style({opacity: 1}))
+                ]),
+                transition(':leave', [
+                    style({opacity: 1}),
+                    animate('200ms', style({opacity: 0}))
+                ])
+            ]
+        )
+    ]
 })
 
 export class BeneficiaryProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
     // private users: UserDTOBase[] = [];
     private userMain;
-    private users = {};
+    private users = [];
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
     private addUser: boolean = false;
@@ -74,113 +89,68 @@ export class BeneficiaryProfileComponent {
     private nameCookieApply: string = "hasRequested";
     private isOrganisation: boolean = false;
     private withdrawAble: boolean = false;
+    private fetchingData: boolean = false;
 
     constructor(private cookieService: CookieService, private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
-        let storedUser = this.localStorageService.get('user');
-        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-        if (this.user != null) {
-            this.userApi.getUserById(this.user.id).subscribe(
-                (user: UserDTOBase) => {
-                    if (this.user != null) {
-                        this.user = user;
-                        if (this.user.type == 2 || this.user.type == 3) {
-                            Object.assign(this.editedUser, this.user);
-                            this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
-                                (registrations: RegistrationDTOBase[]) => {
-                                    this.registrations = registrations;
-                                    for (let registration of registrations) {
-                                        if (registration.municipalityId == 0){
-                                            continue;
+        this.fetchingData = true;
+        if (this.sharedService.user) {
+            this.user = this.sharedService.user;
+            this.fetchData();
+            this.loadLanguages();
+            this.checkIfWithdrawAble();
+        } else {
+            this.sharedService.loginEmitter.map(() => {
+                this.user = this.sharedService.user;
+                this.fetchData();
+                this.loadLanguages();
+                this.checkIfWithdrawAble();
+            });
+        }
+    }
+
+    private fetchData() {
+        this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
+            (registrations: RegistrationDTOBase[]) => {
+                this.registrations = registrations;
+                for (let registration of registrations) {
+                    if (registration.municipalityId == 0)
+                        continue;
+                    if (!this.isOrganisation && registration.organisationId > 0)
+                        this.isOrganisation = true;
+                    this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
+                    this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
+                    this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
+                        (municipality: MunicipalityDTOBase) => {
+                            this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
+                                (mayor: MayorDTOBase) => {
+                                    this.municipalities.push(municipality);
+                                    this.mayors.push(mayor);
+                                    // Order the threads array with the municipalities
+                                    if (this.municipalities.length == registrations.length) {
+                                        let indexedThreads = this.userThreads.map(function(element) {return element.title});
+                                        for(let municipality of this.municipalities) {
+                                            let exists = indexedThreads.indexOf(municipality.name);
+                                            if (exists != -1)
+                                                this.orderedUserThreads.push(this.userThreads[exists]);
+                                            else
+                                                this.orderedUserThreads.push(null);
                                         }
-                                        if (!this.isOrganisation && registration.organisationId > 0){
-                                            this.isOrganisation = true;
-                                        }
-                                        this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
-                                        this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
-                                        this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
-                                            (municipality: MunicipalityDTOBase) => {
-                                                this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
-                                                    (mayor: MayorDTOBase) => {
-                                                        this.municipalities.push(municipality);
-                                                        this.mayors.push(mayor);
-                                                        // Order the threads array with the municipalities
-                                                        if(this.municipalities.length == registrations.length) {
-                                                            let indexedThreads = this.userThreads.map(function(element) { return element.title});
-                                                            for(let municipality of this.municipalities) {
-                                                                let exists = indexedThreads.indexOf(municipality.name);
-                                                                if(exists != -1) {
-                                                                    this.orderedUserThreads.push(this.userThreads[exists]);
-                                                                }
-                                                                else {
-                                                                    this.orderedUserThreads.push(null);
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                );
-                                            }
-                                        );
-                                        this.userApi.getUsersFromRegistration(registration.id).subscribe(
-                                            (users: UserContactDetailsBase[]) => {
-                                                this.users[registration.municipalityId] = users;
-                                                this.userMain = users.find(x => x.main === 1);
-                                                console.log(this.userMain);
-                                            }
-                                            // work here!
-                                            /*
-                                            (users: UserDTOBase[]) => {
-                                                this.users[registration.municipalityId] = users;
-                                            }
-                                            */
-                                        );
                                     }
                                 }
                             );
-                        } else {
-                            this.sharedService.growlTranslation('You are not allowed to view this page.', 'shared.error.notallowed', 'warn');
-                            this.router.navigateByUrl('/home');
                         }
-                    }
-                }, error => {
-                    this.localStorageService.remove('user');
-                    this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'shared.error.api.generic', 'error');
+                    );
+                    this.userApi.getUsersFromRegistration(registration.id).subscribe(
+                        (users: UserContactDetailsBase[]) => {
+                            this.users[registration.municipalityId] = users;
+                            if (users != null)
+                                this.userMain = users.find(x => x.main === 1);
+                        }
+                    );
                 }
-            );
-            this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(
-                (utsByUser: UserThreadsDTOBase[]) => {
-                    for (let utByUser of utsByUser) {
-                        this.threadApi.getThreadById(utByUser.threadId).subscribe(
-                            (thread: ThreadDTOBase) => {
-                                if (thread != null) {
-                                    this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
-                                        (utsByThread: UserThreadsDTOBase[]) => {
-                                            this.discussionThreads.push(thread);
-                                            if (utsByThread.length > 1) {
-                                                this.userThreads.push(thread);
-                                                 for (let i = 0; i < utsByThread.length; ++i) {
-                                                    if (utsByThread[i].userId != this.user.id) {
-                                                        this.threadsByUser.push(utsByThread[i]);
-                                                        
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    );
-                                }
-                            }
-                        );
-                    }
-                }, error => {
-                    console.log("service error: ", error);
-                }
-            );
-        } else {
-            this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
-            this.router.navigateByUrl('/home');
-        }
-
-        this.loadLanguages();
-        this.checkIfWithdrawAble();
+                this.fetchingData = false;
+            }
+        );
     }
 
     private withdrawRegistration(){
@@ -193,7 +163,6 @@ export class BeneficiaryProfileComponent {
                 this.withdrawAble = hasApplied.data;
             }, error =>{
                 console.log(error);
-
             }
         );
     }
@@ -365,7 +334,6 @@ export class BeneficiaryProfileComponent {
             this.languages = UxEuLanguages.getLanguages();
         }
         this.languageRows = this.prepareLanguageRows();
-
         const userLang = this.languages.find(language => language.code === this.user.lang);
         this.selectedLanguage = userLang;
     }
@@ -393,23 +361,25 @@ export class BeneficiaryProfileComponent {
     /* Language modal */
     private changeLanguage() {
         this.displayLanguageModal = true;
-       }
+    }
 
     private selectLanguage(lang) {
         this.userApi.updateLanguage(lang).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
                     this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                    this.selectedLanguage = this.languages.find(language => language.code === lang);
+                    this.sharedService.update();
+                    this.closeModal();
                 } else {
                     this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                    this.closeModal();
                 }
             }, error => {
                 this.sharedService.growlTranslation('shared.registration.update.error', 'An error occurred and your registration could not be updated.', 'error');
+                this.closeModal();
             }
         );
-        const newSelectedLang = this.languages.find(language => language.code === lang);
-        this.selectedLanguage = newSelectedLang;
-        this.displayLanguageModal = false;
     }
 
     private goToEditProfile() {
