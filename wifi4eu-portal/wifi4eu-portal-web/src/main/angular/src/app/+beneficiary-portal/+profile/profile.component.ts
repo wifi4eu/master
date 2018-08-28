@@ -179,8 +179,8 @@ export class BeneficiaryProfileComponent {
                             console.log("service error: ", error);
                         }
                     );
-                }
     }
+    
 
     private withdrawRegistration(){
         this.withdrawingRegistrationConfirmation = true;
