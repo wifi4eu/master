@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.apply.committer;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -128,7 +127,7 @@ public class PageableCommitter implements ICommitter {
 					this.commitToDB(tempList, 1);
 					
 				}
-				
+
 			} catch (Exception e) {
 				this.LOGGER.error("Error inserting a page", e);
 
