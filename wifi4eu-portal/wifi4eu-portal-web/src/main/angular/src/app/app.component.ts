@@ -1,19 +1,20 @@
-import {Component, enableProdMode, Output} from "@angular/core";
-import {Router} from "@angular/router";
-import {TranslateService} from "ng2-translate/ng2-translate";
-import {UxLayoutLink, UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
-import {SharedService} from "./shared/shared.service";
-import {LocalStorageService} from "angular-2-local-storage";
-import {UserDTOBase} from "./shared/swagger/model/UserDTO";
-import {UserApi} from "./shared/swagger/api/UserApi";
-import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
-import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
-import {environment} from '../environments/environment';
-import {Subject} from "rxjs/Subject";
-import {WebsockApi} from "./shared/swagger";
-import {Observable} from "rxjs/Observable";
-import {CookieService} from 'ngx-cookie-service';
+import { Component, enableProdMode, Output, HostListener } from "@angular/core";
+import { Router } from "@angular/router";
+import { TranslateService } from "ng2-translate/ng2-translate";
+import { UxLayoutLink, UxService } from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import { UxEuLanguages, UxLanguage } from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import { SharedService } from "./shared/shared.service";
+import { LocalStorageService } from "angular-2-local-storage";
+import { UserDTOBase } from "./shared/swagger/model/UserDTO";
+import { UserApi } from "./shared/swagger/api/UserApi";
+import { RegistrationApi } from "./shared/swagger/api/RegistrationApi";
+import { ResponseDTOBase } from "./shared/swagger/model/ResponseDTO";
+import { environment } from '../environments/environment';
+import { Subject } from "rxjs/Subject";
+import { WebsockApi } from "./shared/swagger";
+import { Observable } from "rxjs/Observable";
+import { CookieService } from 'ngx-cookie-service';
+import { IntervalObservable } from "../../node_modules/rxjs/observable/IntervalObservable";
 
 
 enableProdMode();
@@ -29,6 +30,7 @@ export class AppComponent {
     private actualDate: string;
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
     private user: UserDTOBase;
+    private voucherAwarded: Boolean = false;
     private profileUrl: string;
     private menuLinks: Array<UxLayoutLink>;
     private children: UxLayoutLink[][];
@@ -36,6 +38,8 @@ export class AppComponent {
     private stringsTranslated = new Subject<any>();
     private childrenInitialized = new Subject<any>();
 
+    private ngUnSubscribe: Subject<void> = new Subject<void>();
+    private sessionInterval: any;
     sessionExpired: Boolean = false;
 
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
@@ -79,15 +83,26 @@ export class AppComponent {
 
         this.updateFooterDate();
 
-        const sessionPolling = 61500;
-        Observable.interval(sessionPolling)
-            .takeWhile(() => !this.sessionExpired)
+        this.sessionInterval = IntervalObservable.create(61500);
+        this.startInterval();
+    }
+
+    startInterval() {
+        this.sessionInterval
+            .takeUntil(this.ngUnSubscribe)
             .subscribe(execution => {
                 // This will be called every 10 seconds until `stopCondition` flag is set to true
                 this.isSessionExpired();
-            })
+            });
     }
 
+    @HostListener('document:keyup', ['$event'])
+    @HostListener('document:click', ['$event'])
+    @HostListener('document:wheel', ['$event'])
+    private resetInterval(newEndTime) {
+        this.ngUnSubscribe.next();
+        this.startInterval();
+    }
 
     private updateMenuTranslations() {
         let translatedItems = 0;
@@ -182,8 +197,8 @@ export class AppComponent {
             }
         );
     }
-	
-	private initChildren() {
+
+    private initChildren() {
         this.stringsTranslated.subscribe(() => {
             this.children[0] = [
                 new UxLayoutLink({
@@ -259,6 +274,24 @@ export class AppComponent {
                     url: '#'
                 })
             ];
+            this.children[6] = [
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('itemMenu.myAccount'),
+                    url: '/beneficiary-portal/profile'
+                }),
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('itemMenu.appPortal'),
+                    url: '/beneficiary-portal/voucher'
+                }),
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                    url: 'list-suppliers'
+                }),
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('benefPortal.myHistory.title'),
+                    url: '/beneficiary-portal/my-history'
+                })
+            ];
             this.childrenInitialized.next();
         });
     }
@@ -270,6 +303,7 @@ export class AppComponent {
                 if (response.success) {
                     this.user = response.data;
                     this.localStorageService.set('user', JSON.stringify(response.data));
+                    this.checkIfVoucher();
                     if (this.user.type == 0 && publicRedirection) {
                         this.router.navigateByUrl(String(publicRedirection));
                     }
@@ -279,6 +313,19 @@ export class AppComponent {
                     } else {
                         this.childrenInitialized.subscribe(() => this.updateHeader());
                     }
+                }
+            }
+        );
+    }
+
+    private checkIfVoucher(){
+        console.log("checking");
+        this.userApi.checkIfVoucherAwarded().subscribe(
+            (response: ResponseDTOBase) => {
+                if(response.success){
+                    this.voucherAwarded = response.data;
+                    /* console.log(response.data); */
+                    this.updateHeader();
                 }
             }
         );
@@ -294,7 +341,11 @@ export class AppComponent {
                 case 2:
                 case 3:
                     this.profileUrl = '/beneficiary-portal/profile';
-                    this.menuLinks = this.children[2];
+                    if(this.voucherAwarded){
+                        this.menuLinks = this.children[2];
+                    } else {
+                        this.menuLinks = this.children[6];
+                    }
                     break;
                 default:
                     this.profileUrl = '/home';

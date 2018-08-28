@@ -357,7 +357,7 @@
   "benefPortal.voucher.call.label1": "Ya se ha publicado la convocatoria de solicitudes.",
   "benefPortal.voucher.call.label2": "Una vez abierta la convocatoria, podrá presentar su solicitud.",
   "benefPortal.voucher.competition.timeleft.title": "La convocatoria se publicará el ",
-  "benefPortal.voucher.counterSubtitle": "La convocatoria de solicitudes se publicó el {{date}} a la(s) {{hour}} (hora central europea de verano). Puede presentar su solicitud hasta el {{date}} a la(s) {{hour}} (hora central europea de verano).",
+  "benefPortal.voucher.counterSubtitle": "La convocatoria de solicitudes se publicó el {{date}} a la(s) {{hour}} (hora central europea de verano). Puede presentar su solicitud hasta el {{endDate}} a la(s) {{endHour}} (hora central europea de verano).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Ha solicitado un bono correctamente.",
   "benefPortal.voucher.municipalitySuccessApply.part1": "¡Esté atento! WiFi4EU anunciará los solicitantes seleccionados para un bono.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Tenga en cuenta que el proceso de selección se realiza por orden de llegada de las solicitudes (fecha y hora de la solicitud) y de acuerdo con criterios para garantizar el equilibrio geográfico, tal como se indica en el programa de trabajo del MCE.",
@@ -897,7 +897,7 @@
   "shared.deactivateContactModalAreYouSure": "¿Confirma que desea desactivar a esta persona de contacto?",
   "shared.download.grantAgreementPDF": "Descargue el PDF y lea atentamente el acuerdo de subvención antes de confirmar que está de acuerdo con las condiciones del mismo. Para firmarlo, haga clic en el botón \"Firmar el acuerdo de subvención\" que figura más abajo.",
   "benefPortal.grantAgreement.sign.title": "Confirmación de la firma del acuerdo de subvención",
-  "benefPortal.grantAgreement.sign.desciption": "Al hacer clic en \"firmar\", confirma que entiende las condiciones y que está de acuerdo con las obligaciones del acuerdo de subvención.",
+  "benefPortal.grantAgreement.sign.description": "Al hacer clic en \"firmar\", confirma que entiende las condiciones y que está de acuerdo con las obligaciones del acuerdo de subvención.",
   "benefPortal.grantAgreement.sign.button": "Firmar",
   "benefPortal.myVoucher.datatable.action1": "Acción 1",
   "benefPortal.myVoucher.datatable.action2": "Acción 2",
@@ -911,5 +911,6 @@
   "shared.supportingDocuments.leavePage.body": "Le rogamos tome nota de que aún no se ha confirmado la presentación y si sale de esta página se descartarán todos los documentos que haya cargado. Si desea guardar los documentos cargados, vuelva a la página y pulse el botón \"Confirmar\". ¿Confirma que desea descartar sus documentos?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

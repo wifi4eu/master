@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "Indkaldelsen af ansøgninger er nu åben!",
   "benefPortal.voucher.call.label2": "Du kan ansøge, så snart indkaldelsen af ansøgninger er åben.",
   "benefPortal.voucher.competition.timeleft.title": "Indkaldelsen af ansøgninger åbner om",
-  "benefPortal.voucher.counterSubtitle": "Indkaldelsen af ansøgninger åbnede den {{date}} kl. {{hour}} (dansk sommertid). Du kan ansøge indtil den {{date}} kl. {{hour}} (dansk sommertid).",
+  "benefPortal.voucher.counterSubtitle": "Indkaldelsen af ansøgninger åbnede den {{date}} kl. {{hour}} (dansk sommertid). Du kan ansøge indtil den {{endDate}} kl. {{endHour}} (dansk sommertid).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Din ansøgning om en kupon er gennemført!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Du får snart besked! WiFi4EU vil meddele, hvilke ansøgere der er blevet udvalgt til at få en kupon.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Bemærk, at udvælgelsen foretages efter først til mølle-princippet (dato og tid for ansøgningen) og efter kriterier, der sikrer en geografisk balance, som beskrevet i CEF-arbejdsprogrammet.",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Er du sikker på, at du vil deaktivere denne kontaktperson?",
   "shared.download.grantAgreementPDF": "Download pdf-filen og gennemlæs tilskudsaftalen grundigt, før du bekræfter, at du er enig i aftalens betingelser og vilkår. For at underskrive aftalen skal du trykke på knappen \"Underskriv tilskudsaftalen\" nedenfor.",
   "benefPortal.grantAgreement.sign.title": "Tilskudsaftalen er nu underskrevet.",
-  "benefPortal.grantAgreement.sign.desciption": "Ved at klikke på \"underskriv\" bekræfter du, at du forstår betingelserne, og du godkender tilskudsaftalens betingelser og vilkår.",
+  "benefPortal.grantAgreement.sign.description": "Ved at klikke på \"underskriv\" bekræfter du, at du forstår betingelserne, og du godkender tilskudsaftalens betingelser og vilkår.",
   "benefPortal.grantAgreement.sign.button": "Underskriv",
   "benefPortal.myVoucher.datatable.action1": "Handling 1",
   "benefPortal.myVoucher.datatable.action2": "Handling 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Bemærk, at du endnu ikke har bekræftet indsendelsen, og at du ved at forlade denne side vil slette de dokumenter, du har uploadet. Hvis du ønsker at gemme de dokumenter, du har uploadet, skal du gå tilbage og klikke på \"Bekræft\". Er du sikker på, at du vil slette dokumenterne?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "Hakuaika on nyt alkanut!",
   "benefPortal.voucher.call.label2": "Voit tehdä hakemuksen hakuajan alettua.",
   "benefPortal.voucher.competition.timeleft.title": "Aikaa seuraavan hakukierroksen alkuun",
-  "benefPortal.voucher.counterSubtitle": "Haku alkoi {{date}} klo {{hour}} (Keski-Euroopan kesäaikaa). Haku päättyy {{date}} klo {{hour}} (Keski-Euroopan kesäaikaa).",
+  "benefPortal.voucher.counterSubtitle": "Haku alkoi {{date}} klo {{hour}} (Keski-Euroopan kesäaikaa). Haku päättyy {{endDate}} klo {{endHour}} (Keski-Euroopan kesäaikaa).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Maksusetelihakemuksesi on lähetetty.",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Pysy kuulolla – WiFi4EU julkistaa rahoituksen saajien nimet.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Huomaa, että rahoituksen saajat valitaan hakemusten saapumisjärjestyksen sekä alueellisen tasapuolisuuden varmistavien kriteerien mukaan. Kriteerit on esitetty Verkkojen Eurooppa -välineen työohjelmassa.",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Haluatko varmasti deaktivoida tämän yhteyshenkilön?",
   "shared.download.grantAgreementPDF": "Lataa pdf-tiedosto, lue avustussopimus huolellisesti ja vahvista, että hyväksyt sen ehdot. Allekirjoita sopimus napsauttamalla alla olevaa ”Allekirjoita avustussopimus” -painiketta.",
   "benefPortal.grantAgreement.sign.title": "Avustussopimuksen allekirjoittamisen vahvistus",
-  "benefPortal.grantAgreement.sign.desciption": "Napsauttamalla allekirjoituspainiketta vahvistat, että ymmärrät ehdot ja hyväksyt avustussopimuksen ehdot ja velvoitteet.",
+  "benefPortal.grantAgreement.sign.description": "Napsauttamalla allekirjoituspainiketta vahvistat, että ymmärrät ehdot ja hyväksyt avustussopimuksen ehdot ja velvoitteet.",
   "benefPortal.grantAgreement.sign.button": "Allekirjoita",
   "benefPortal.myVoucher.datatable.action1": "Vaihe 1",
   "benefPortal.myVoucher.datatable.action2": "Vaihe 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Et ole vielä vahvistanut asiakirjojen lähettämistä. Jos poistut tältä sivulta, lataamiasi asiakirjoja ei tallenneta. Jos haluat tallentaa lataamasi asiakirjat, palaa sivulle ja napsauta Vahvista-painiketta. Haluatko varmasti jättää asiakirjat toimittamatta?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

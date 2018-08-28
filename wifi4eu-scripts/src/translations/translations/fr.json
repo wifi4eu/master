@@ -353,7 +353,7 @@
   "benefPortal.voucher.call.label1": "L’appel à candidatures est lancé!",
   "benefPortal.voucher.call.label2": "Vous pourrez soumettre votre candidature une fois que l’appel à candidatures aura été lancé.",
   "benefPortal.voucher.competition.timeleft.title": "L’appel à candidatures sera lancé dans ",
-  "benefPortal.voucher.counterSubtitle": "L’appel à candidatures a été lancé le {{date}} à {{hour}} (heure d’été de l’Europe centrale). Vous pouvez poser votre candidature jusqu’au {{date}} à {{hour}} (heure d’été de l’Europe centrale).",
+  "benefPortal.voucher.counterSubtitle": "L’appel à candidatures a été lancé le {{date}} à {{hour}} (heure d’été de l’Europe centrale). Vous pouvez poser votre candidature jusqu’au {{endDate}} à {{endHour}} (heure d’été de l’Europe centrale).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Votre demande de coupon est confirmée.",
   "benefPortal.voucher.municipalitySuccessApply.part1": "À suivre! WiFi4EU indiquera quels candidats pourront bénéficier d'un coupon.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Veuillez noter que la sélection repose sur le principe du «premier arrivé, premier servi» (en fonction de la date et de l’heure de la soumission de la demande de coupon), ainsi que sur des critères visant à garantir l’équilibre géographique, comme expliqué dans le programme de travail du MIE.",
@@ -874,7 +874,7 @@
   "shared.deactivateContactModalAreYouSure": "Êtes-vous sûr(e) de vouloir désactiver cette personne de contact?",
   "shared.download.grantAgreementPDF": "Veuillez télécharger le fichier PDF et lire attentivement la convention de subvention avant de confirmer que vous acceptez ses dispositions. Pour la signer, cliquez sur le bouton «Signer la convention de subvention» ci-dessous.",
   "benefPortal.grantAgreement.sign.title": "Confirmation de signature de la convention de subvention",
-  "benefPortal.grantAgreement.sign.desciption": "En cliquant sur «Signer», vous confirmez que vous comprenez les dispositions de la convention de subvention et que vous acceptez les obligations qui y sont liées.",
+  "benefPortal.grantAgreement.sign.description": "En cliquant sur «Signer», vous confirmez que vous comprenez les dispositions de la convention de subvention et que vous acceptez les obligations qui y sont liées.",
   "benefPortal.grantAgreement.sign.button": "Signer",
   "benefPortal.myVoucher.datatable.action1": "Action nº 1",
   "benefPortal.myVoucher.datatable.action2": "Action nº 2",
@@ -888,5 +888,6 @@
   "shared.supportingDocuments.leavePage.body": "Veuillez noter que vous n’avez pas encore confirmé la soumission des documents et que, si vous quittez cette page, tous les documents que vous avez téléchargés seront supprimés. Si vous souhaitez sauvegarder les documents que vous avez téléchargés, veuillez retourner à la page, puis cliquer sur «Confirmer». Êtes-vous sûr(e) de vouloir supprimer vos documents?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

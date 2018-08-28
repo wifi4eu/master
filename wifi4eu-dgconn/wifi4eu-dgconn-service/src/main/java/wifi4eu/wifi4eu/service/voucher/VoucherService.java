@@ -427,7 +427,7 @@ public class VoucherService {
             VoucherAssignmentDTO voucherAssignment = getVoucherAssignmentByCall(call.getId());
             boolean hasPreList = getVoucherAssignmentByCallAndStatus(callId, VoucherAssignmentStatus.PRE_LIST.getValue()) != null;
 
-            if (voucherAssignment != null) {
+            if (voucherAssignment != null && hasPreList) {
                 for (VoucherSimulationDTO simulationDTO : voucherAssignment.getVoucherSimulations()) {
                     voucherSimulationDTOHashMap.put(simulationDTO.getApplication().getId(), simulationDTO);
                 }
@@ -512,7 +512,7 @@ public class VoucherService {
                             removeFromLOA(supportLOAlist, applicationDTO);
                             continue;
                         }
-                        if (applicationDTO.getRejected()) {
+                        if (applicationDTO.getRejected() && hasPreList) {
                             rejectedApplications.add(applicationDTO);
                             removeFromLOA(supportLOAlist, applicationDTO);
                             continue;
@@ -556,7 +556,7 @@ public class VoucherService {
                         removeFromLOA(supportLOAlist, applicationDTO);
                         continue;
                     }
-                    if (applicationDTO.getRejected()) {
+                    if (applicationDTO.getRejected() && hasPreList) {
                         rejectedApplications.add(applicationDTO);
                         removeFromLOA(supportLOAlist, applicationDTO);
                         continue;
@@ -626,7 +626,7 @@ public class VoucherService {
                                 removeFromLOA(supportLOAlist, application);
                                 continue;
                             }
-                            if (application.getRejected()) {
+                            if (application.getRejected() && hasPreList) {
                                 rejectedApplications.add(application);
                                 removeFromLOA(supportLOAlist, application);
                                 continue;

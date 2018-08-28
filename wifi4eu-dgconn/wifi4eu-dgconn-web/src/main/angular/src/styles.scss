@@ -388,6 +388,7 @@ body {
   font-size: 25px;
   font-weight: bold;
   color: $dark-blue;
+  overflow-wrap: break-word;
 }
 
 .beneficiaryMayor {
@@ -1348,6 +1349,8 @@ discussion-component .expanded .content, discussion-component .expanded .header,
     /*  padding: 1.25rem 0.75rem; */
     padding: 1.25rem 0rem;
     text-align: center;
+    overflow-wrap: break-word;
+    padding-left: 1em;
   }
 
   .padding-cell{
@@ -1407,6 +1410,7 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   margin-right: 0em;
   background-color: white;
   padding: 1em;
+  word-break: break-all;
 }
 
 .municipality-name {
