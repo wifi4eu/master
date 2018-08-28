@@ -10,25 +10,27 @@
 </div>
 <!-- Timer & "Apply For Voucher" -->
 <div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
-    <div class="ui-g-12 right">
-        <a routerLink="../profile">
-            <i class="fa fa-share"></i> {{'benefPortal.profile.title' | translate }}</a>
+    <div class="timer-height-block">
+        <div class="ui-g-12 right">
+            <a routerLink="../profile">
+                <i class="fa fa-share"></i> {{'benefPortal.profile.title' | translate }}</a>
+        </div>
+        <h2 *ngIf="voucherCompetitionState == 1" class="beneficiaryTitle marginTop">
+            {{ 'home.part3.text4' | translate }}
+        </h2>
+        <h2 *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="beneficiaryTitle marginTop">
+            {{ 'benefPortal.voucher.statusmessage4' | translate }}
+        </h2>
+        <p *ngIf="voucherCompetitionState == 0">
+            {{ 'benefPortal.voucher.step2' | translate }}
+        </p>
+        <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="offset-lg-3 ui-lg-6" [innerHTML]="
+            'benefPortal.voucher.counterSubtitle' | translate:{date:startDate, hour:startHour, date:endDate, hour:endHour}">
+        </p>
+        <timer-component *ngIf="voucherCompetitionState == 1" class="ui-g-12 center" (timerEvent)="openApplyForVoucher()"
+            [expirationTimestamp]="currentCall.startDate" [baseURLApi] ="baseURI">
+        </timer-component>
     </div>
-    <h2 *ngIf="voucherCompetitionState == 1" class="beneficiaryTitle marginTop">
-        {{ 'home.part3.text4' | translate }}
-    </h2>
-    <h2 *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="beneficiaryTitle marginTop">
-        {{ 'benefPortal.voucher.statusmessage4' | translate }}
-    </h2>
-    <p *ngIf="voucherCompetitionState == 0">
-        {{ 'benefPortal.voucher.step2' | translate }}
-    </p>
-    <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3" class="offset-lg-3 ui-lg-6" [innerHTML]="
-        'benefPortal.voucher.counterSubtitle' | translate:{date:startDate, hour:startHour, endDate:endDate, endHour:endHour}">
-    </p>
-    <timer-component *ngIf="voucherCompetitionState == 1" class="ui-g-12 center" (timerEvent)="openApplyForVoucher()"
-        [expirationTimestamp]="currentCall.startDate" [baseURLApi] ="baseURI">
-    </timer-component>
     <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
             <p-dataTable [value]="applyVouchersData" [expandableRows]="true" [expandedRows]="applyVouchersData" [class.table-disabled]="!allRequestCompleted">
