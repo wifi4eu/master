@@ -50,6 +50,11 @@ import wifi4eu.wifi4eu.util.ParametrizedDocConverter;
 public class GrantAgreementService {
     Logger _log = LogManager.getLogger(GrantAgreementService.class);
 
+    private final static String FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX = "grant_agreement_template_";
+    
+    private final static String FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION = ".pdf";
+    
+    
     @Autowired
     ApplicationService applicationService;
 
@@ -143,11 +148,21 @@ public class GrantAgreementService {
     public GrantAgreementDTO initializeGrantAgreement(GrantAgreementDTO inputGrandAgreement) {
         return createGrantAgreement(inputGrandAgreement);
     }
+    
+    private byte[] getGrantAgreementTemplate(String language) throws IOException {
+    	StringBuilder fileName = new StringBuilder();
+    	fileName.append(FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX).append(language).append(FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION);        
+    	// TODO should recover the template from Azure
+    	// return azureBlobStorage.getFileFromContainer("docs", fileName.toString());
+    	
+    	File file = new File("C:\\grant_agreements\\CNECT-2017-00250-02-08-EN-ORI-00-1.pdf");
+        return FileUtils.readFileToByteArray(file); 
+    }
 
-    public ByteArrayOutputStream fillGrantAgreementDocument(GrantAgreementDTO grantAgreement, Map<String, String> mapProperties) throws Exception {
-        //byte[] fileData = azureBlobStorage.getFileFromContainer("docs", "grant_agreement_template_" + grantAgreement.getDocumentLanguage() + ".docx");
-        File file = new File("C:\\grant_agreements\\CNECT-2017-00250-02-08-EN-ORI-00-1.pdf");
-        byte[] fileData = FileUtils.readFileToByteArray(file);
+    public ByteArrayOutputStream fillGrantAgreementDocument(GrantAgreementDTO grantAgreement, Map<String, String> mapProperties) throws IOException {
+    	// Get template in the correspondent language
+        byte[] fileData = getGrantAgreementTemplate(grantAgreement.getDocumentLanguage());
+        // Replace placeholders in the template for the user's values
         return ParametrizedDocConverter.convert(fileData, mapProperties);
     }
 
