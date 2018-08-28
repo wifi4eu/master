@@ -15,5 +15,5 @@ public interface UserContactDetailsRepository extends CrudRepository<UserContact
     @Query(value = "select u.id as id, u.name, u.surname, u.address, u.address_num, u.postal_code, u.city, u.country, u.ecas_email as email, ru" +
             ".main as main, u.type from users u inner join registration_users ru on ru._user = u.id where ru.registration in (select r2.id from " +
             "registrations r2 right join organizations o on r2.organisation_id = o.id where o.id = ?#{[0]}))", nativeQuery = true)
-    List<UserContactDetails> findUsersContactDetailsByOrganizationId(Integer organizationId);
+    List<UserContactDetails> findUsersContactDetailsByOrganisationId(Integer organizationId);
 }

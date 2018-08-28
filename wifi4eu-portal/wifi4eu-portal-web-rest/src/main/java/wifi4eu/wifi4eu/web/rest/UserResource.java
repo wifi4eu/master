@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.web.rest;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.Level;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -20,6 +23,7 @@ import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -34,6 +38,7 @@ import javax.xml.ws.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -70,28 +75,34 @@ public class UserResource {
     }
 
     @ApiOperation(value = "Update user details")
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(value = "/update-user-details" , method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO updateUserDetails(@RequestBody final UserDTO userDTO, HttpServletResponse response) throws IOException {
+    public ResponseDTO updateUserDetails(@RequestBody final Map<String,Object> users, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating user details by id " + userDTO.getId());
-        try {
-            int userId = userDTO.getId();
-            permissionChecker.check(RightConstants.USER_TABLE + userId);
-            if (userDTO.getId() != userConnected.getId()) {
-                throw new AccessDeniedException("");
+        //Permissions
+        ObjectMapper mapper = new ObjectMapper();
+        List<UserContactDetails> usersList = mapper.convertValue(users.get("users"), new TypeReference<ArrayList<UserContactDetails>>(){});
+        for (UserContactDetails user : usersList) {
+            try {
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating user details by id " + user.getId());
+                List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(user.getId());
+                for (RegistrationDTO registration : registrations) {
+                    permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registration.getId());
+                }
+            } catch (AccessDeniedException ade) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to update user details", ade.getMessage
+                        ());
+                response.sendError(HttpStatus.NOT_FOUND.value());
+                return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+            } catch (Exception e) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user details cannot been updated", e);
+                response.sendError(HttpStatus.BAD_REQUEST.value());
+                return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
             }
-            return new ResponseDTO(true, userService.updateUserDetails(userConnected, userDTO.getName(), userDTO.getSurname()), null);
-        } catch (AccessDeniedException ade) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to update user details", ade.getMessage());
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        } catch (Exception e) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user details cannot been updated", e);
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+            return userService.updateUserDetails(userConnected, usersList);
         }
+        return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
     }
 
     @ApiOperation(value = "Delete user by specific id")
@@ -256,19 +267,19 @@ public class UserResource {
     }
 
     @ApiOperation(value = "Get all users from registration")
-    @RequestMapping(value = "/registrationUsersToEdit/{registrationId}/{isOrganization}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/registrationUsersToEdit/{id}/{isOrganization}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserContactDetails> getUsersToEditFromRegistration(@PathVariable("id") Integer id, @PathVariable("boolean") Boolean isOrganization) {
+    public List<UserContactDetails> getUsersToEditFromRegistration(@PathVariable("id") Integer id, @PathVariable("isOrganization") boolean isOrganization) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
         try {
             if (isOrganization) {
-                List<Registration> registrations = registrationService.findRegistrationsByOrganizationId(id);
+                List<Registration> registrations = registrationService.findRegistrationsByOrganisationId(id);
                 for (int i = 0; i < registrations.size(); i++) {
                     permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrations.get(i).getId());
                 }
-                return registrationService.findUsersContactDetailsByOrganizationId(id);
+                return registrationService.findUsersContactDetailsByOrganisationId(id);
             } else {
                 permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + id);
                 return registrationService.findUsersContactDetailsByRegistrationId(id);

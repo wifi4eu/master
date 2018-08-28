@@ -496,17 +496,19 @@ export class BeneficiaryEditProfileComponent {
         }
 
         if (usersToSubmit.length > 0) {
-            // this.userApi.updateUserDetails(this.user).subscribe(
-            //     (response: ResponseDTOBase) => {
-            //         if (response.success) {
-            //             this.userFinish = true;
-            //             this.checkFinishedCalls();
-            //             this.user = response.data;
-            //         } else {
-            //             hasBeenAnError = true
-            //         }
-            //     }
-            // );
+            let update ={};
+            update['users']  = usersToSubmit;
+            this.userApi.updateUserDetails(update).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        this.userFinish = true;
+                        this.checkFinishedCalls();
+                        this.user = response.data;
+                    } else {
+                        hasBeenAnError = true
+                    }
+                }
+            );
         }
 
         if (this.newMunicipalities.length > 0) {
