@@ -32,11 +32,11 @@ public class EncrypterService {
 	private String azureCredentials;
 
 	public byte[] encrypt(String textValue) throws GeneralSecurityException {
-		return encryptAES(textValue);
+		return encryptAESCBC(textValue);
 	}
 
 	public String decrypt(byte[] bytes) throws GeneralSecurityException {
-		return decryptAES(bytes);
+		return decryptAESCBC(bytes);
 	}
 
 	@Deprecated
@@ -160,7 +160,7 @@ public class EncrypterService {
 		try {
 			_log.debug("Decrypting azure blob storage credentials");
 			byte[] b = azureCredentials.getBytes(StandardCharsets.UTF_8);
-			return decryptAES(b);
+			return decrypt(b);
 		} catch (Exception e) {
 			_log.error("Failed in Decryption " + e.getMessage(), e);
 			return null;

@@ -55,10 +55,6 @@
                         <span class="ui-g-5">{{ 'suppRegistration.vat.label' | translate }}</span>
                         <span class="ui-g-7 profileData">{{ supplier.vat }}</span>
                     </p>
-                    <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
-                        <span class="ui-g-5">{{ 'suppRegistration.bank.account' | translate }}</span>
-                        <span class="ui-g-7 profileData">{{ supplier.accountNumber }}</span>
-                    </p>
                     <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;" *ngIf="supplier.website">
                         <span class="ui-g-5">{{ 'suppRegistration.company.web' | translate }}</span>
                         <span class="ui-g-7 profileData">{{ supplier.website }}</span>
@@ -68,26 +64,40 @@
                         <span class="ui-g-7 profileData"><img [src]="supplier.logo" height="50"></span>
                     </p>
                 </div>
+
+
                 <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
-                    <p class="applicantDetailsNoMargin municipality-name profileData">
-                        <span class="ui-g-12">{{ 'suppRegistration.contact.person' | translate }}</span>
-                    </p>
-                    <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
-                        <span class="ui-g-6">{{ 'suppRegistration.name.label' | translate }}</span>
-                        <span class="ui-g-6 profileData">{{ supplier.contactName }}</span>
-                    </p>
-                    <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
-                        <span class="ui-g-6">{{ 'suppRegistration.surname.label' | translate }}</span>
-                        <span class="ui-g-6 profileData">{{ supplier.contactSurname }}</span>
-                    </p>
-                    <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
-                        <span class="ui-g-6">{{ 'suppRegistration.email.label' | translate }}</span>
-                        <span class="ui-g-6 profileData">{{ supplier.contactEmail }}</span>
-                    </p>
+                    <div *ngFor="let user of supplier.users; let i = index">
+                        <p class="applicantDetailsNoMargin municipality-name profileData">
+                            <span class="ui-g-12">{{ 'suppRegistration.contact.person' | translate }}  {{i+1}}</span>
+                        </p>
+                        <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
+                            <span class="ui-g-6">{{ 'suppRegistration.name.label' | translate }}</span>
+                            <span class="ui-g-6 profileData">{{ user.name }}</span>
+                        </p>
+                        <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
+                            <span class="ui-g-6">{{ 'suppRegistration.surname.label' | translate }}</span>
+                            <span class="ui-g-6 profileData">{{ user.surname }}</span>
+                        </p>
+                        <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
+                            <span class="ui-g-6">{{ 'suppRegistration.email.label' | translate }}</span>
+                            <span class="ui-g-6 profileData">{{ user.email }}</span>
+                        </p>
+                        <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
+                            <span class="ui-g-6">{{ 'suppRegistration.phone.number' | translate }}</span>
+                            <span class="ui-g-6 profileData">{{ user.phone_prefix }}{{ user.phone_number }}</span>
+                        </p>
+                        <br><br>
+                    </div>  
                 </div>
+
+
+
+
             </div>
             <br>
         </div>
+        
         <div *ngIf="similarSuppliers.length > 0">
             <hr class="ui-g-12 dgConnDetailsHr">
             <div class="ui-g-12">
