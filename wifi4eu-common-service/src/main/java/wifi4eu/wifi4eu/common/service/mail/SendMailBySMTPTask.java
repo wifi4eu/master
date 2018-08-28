@@ -30,7 +30,7 @@ import wifi4eu.wifi4eu.common.service.encryption.EncrypterService;
 @Scope("prototype")
 public class SendMailBySMTPTask extends SendMailTask {
 
-	private final Logger _log = LogManager.getLogger(SendMailBySMTPTask.class);
+	private static final Logger _log = LogManager.getLogger(SendMailBySMTPTask.class);
 
 	@Value("${mail.smtp.password}")
 	private String passwordEncrypted;

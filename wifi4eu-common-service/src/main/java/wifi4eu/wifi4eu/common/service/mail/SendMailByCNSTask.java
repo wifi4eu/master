@@ -23,6 +23,7 @@ import wifi4eu.wifi4eu.common.dto.mail.MailData;
 
 @Configuration
 @PropertySource("classpath:env.properties")
+@PropertySource("classpath:cns-client.properties")
 @Component
 @Scope("prototype")
 public class SendMailByCNSTask extends SendMailTask {

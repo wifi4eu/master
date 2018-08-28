@@ -171,8 +171,8 @@
         <!-- MailService for notifications -->
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
         <mail.serv.enable>true</mail.serv.enable>
-        <mail.serv.using.smtp>true</mail.serv.using.smtp>
-        <mail.serv.using.cns>false</mail.serv.using.cns>
+        <mail.serv.using.smtp>false</mail.serv.using.smtp>
+        <mail.serv.using.cns>true</mail.serv.using.cns>
         <!-- CNS -->
         <cns.client.system.key>KEY-WiFi4EU-HK7hK38a0D</cns.client.system.key>
         <cns.client.system.password>secret</cns.client.system.password>
