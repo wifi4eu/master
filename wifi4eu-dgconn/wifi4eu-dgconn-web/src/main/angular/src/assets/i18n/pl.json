@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "Zaproszenie do składania wniosków jest już otwarte!",
   "benefPortal.voucher.call.label2": "Gdy tylko zaproszenie do składania wniosków zostanie ogłoszone, będziesz mógł złożyć wniosek.",
   "benefPortal.voucher.competition.timeleft.title": "Zaproszenie do składania wniosków zostanie ogłoszone za ",
-  "benefPortal.voucher.counterSubtitle": "Zaproszenie do składania wniosków ogłoszono w dniu {{date}} r. o godz. {{hour}} (czasu letniego środkowoeuropejskiego). Wnioski można składać do dnia {{date}} r. do godz. {{hour}} (czasu letniego środkowoeuropejskiego).",
+  "benefPortal.voucher.counterSubtitle": "Zaproszenie do składania wniosków ogłoszono w dniu {{date}} r. o godz. {{hour}} (czasu letniego środkowoeuropejskiego). Wnioski można składać do dnia {{endDate}} r. do godz. {{endHour}} (czasu letniego środkowoeuropejskiego).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Wniosek o bon został złożony.",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Bądź na bieżąco! Zespół ds. WiFi4EU poinformuje, którzy wnioskodawcy otrzymają bon.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Beneficjenci będą wybierani zgodnie z kolejnością zgłoszeń (według daty i godziny) oraz z zachowaniem kryteriów zapewniających równomierne rozłożenie geograficzne, zgodnie z zasadami określonymi w programie prac instrumentu „Łącząc Europę”.",
@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Podany czas jest orientacyjny. Jak tylko zaproszenie do składania wniosków zostanie ogłoszone, będziesz mógł kliknąć na przycisk „Złóż wniosek” (jeśli klikniesz na ten przycisk przed formalnym otwarciem zaproszenia do składania wniosków, wyświetli się komunikat o błędzie). ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Zgadzam się z <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>warunkami zaproszenia do składania wniosków</a> i oświadczam, że gmina, którą reprezentuję, nie znajduje się w żadnej z sytuacji wymienionych w art. 136 ust. 1 <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>rozporządzenia (UE, Euratom) nr 2018/1046</a>.",
+  "benefPortal.voucher.conditionsAgreement": "Zgadzam się z #warunkami zaproszenia do składania wniosków# i oświadczam, że gmina, którą reprezentuję, nie znajduje się w żadnej z sytuacji wymienionych w art. 136 ust. 1 # rozporządzenia (UE, Euratom) nr 2018/1046#.",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Czy na pewno chcesz dezaktywować tę osobę do kontaktów?",
   "shared.download.grantAgreementPDF": "Zanim potwierdzisz, że zgadzasz się z warunkami umowy, pobierz plik PDF i dokładnie przeczytaj umowę. Aby ją podpisać, kliknij na przycisk „Podpisz umowę o udzielenie dotacji”.",
   "benefPortal.grantAgreement.sign.title": "Potwierdzenie podpisania umowy o udzielenie dotacji",
-  "benefPortal.grantAgreement.sign.desciption": "Klikając na przycisk „Podpisz”, potwierdzasz, że przeczytałeś(-aś) i zrozumiałeś(-aś) warunki zawarte w umowie o udzielenie dotacji i informacje o obowiązkach, jakie z niej wynikają.",
+  "benefPortal.grantAgreement.sign.description": "Klikając na przycisk „Podpisz”, potwierdzasz, że przeczytałeś(-aś) i zrozumiałeś(-aś) warunki zawarte w umowie o udzielenie dotacji i informacje o obowiązkach, jakie z niej wynikają.",
   "benefPortal.grantAgreement.sign.button": "Podpisz",
   "benefPortal.myVoucher.datatable.action1": "Działanie 1",
   "benefPortal.myVoucher.datatable.action2": "Działanie 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Nie potwierdziłeś jeszcze przesłania załączonych dokumentów. Jeśli opuścisz teraz tę stronę, wszystkie dokumenty, które załadowałeś, zostaną usunięte. Jeśli chcesz zapisać dokumenty, które załadowałeś, przejdź na stronę i kliknij na przycisk „Potwierdź”. Czy na pewno chcesz usunąć swoje dokumenty?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

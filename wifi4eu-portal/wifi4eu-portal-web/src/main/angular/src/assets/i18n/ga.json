@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "Tá an glao ar iarratais oscailte anois!",
   "benefPortal.voucher.call.label2": "A luaithe agus a osclófar an glao ar iarratais, beidh tú in ann iarratas a dhéanamh.",
   "benefPortal.voucher.competition.timeleft.title": "Osclófar an glao ar iarratais i gceann",
-  "benefPortal.voucher.counterSubtitle": "Osclaíodh an glao ar iarratais ar an {{date}} ag {{hour}} (Am Samhraidh Lár na hEorpa). Is féidir leat iarratas a dhéanamh go dtí an {{date}} ag {{hour}} (Am Samhraidh Lár na hEorpa).",
+  "benefPortal.voucher.counterSubtitle": "Osclaíodh an glao ar iarratais ar an {{date}} ag {{hour}} (Am Samhraidh Lár na hEorpa). Is féidir leat iarratas a dhéanamh go dtí an {{endDate}} ag {{endHour}} (Am Samhraidh Lár na hEorpa).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Tá an t-iarratas ar dhearbhán déanta agat!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Tuilleadh eolais le teacht! Cuirfidh WiFi4EU in iúl cé na hiarratasóirí a roghnaíodh chun dearbhán a fháil.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Tabhair do d'aire go ndéanfar an roghnú ar bhonn \"tús freastail ar an gceann is túisce\" (dáta agus am an iarratais) agus ar bhonn critéar ar leith d'fhonn cothromaíocht gheografach a chinntiú, mar atá leagtha síos i gClár Oibre na Saoráide um Chónascadh na hEorpa.",
@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Tabhair do d'aire gur comhaireamh síos táscach é seo. Nuair a bheidh an glao oscailte, cliceáil ar “Déan iarratas” le dul ar aghaidh le d’iarratas (má chliceáiltear an cnaipe sula mbeidh an glao oscailte go foirmiúil, feicfear teachtaireacht earráide) ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Aontaím le <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>coinníollacha an ghlao</a> agus dearbhaím nach bhfuil an bardas a dhéanaim ionadaíocht air in aon cheann de na staideanna atá liostaithe in Airteagal 136(1) de <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>Rialachán (AE, Euratom) 2018/1046</a>",
+  "benefPortal.voucher.conditionsAgreement": "Aontaím le #coinníollacha an ghlao# agus dearbhaím nach bhfuil an bardas a dhéanaim ionadaíocht air in aon cheann de na staideanna atá liostaithe in Airteagal 136(1) de #Rialachán (AE, Euratom) 2018/1046#",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "An bhfuil tú cinnte go dteastaíonn uait an duine teagmhála seo a bhaint?",
   "shared.download.grantAgreementPDF": "Iarrtar ort an PDF a íoslódáil agus an Comhaontú Deontais a léamh go cúramach sula ndearbhóidh tú go n‑aontaíonn tú leis na téarmaí agus na coinníollacha a luaitear ann. Leis an gComhaontú a shíniú, cliceáil an cnaipe “An Comhaontú Deontais a shíniú” thíos.",
   "benefPortal.grantAgreement.sign.title": "Síniú an Chomhaontaithe Deontais a dhearbhú",
-  "benefPortal.grantAgreement.sign.desciption": "Trí chliceáil ar an gcnaipe ‘Sínigh’, dearbhaíonn tú gur thuig tú na coinníollacha agus go gcomhaontaíonn tú le téarmaí agus oibleagáidí an Chomhaontaithe Deontais.",
+  "benefPortal.grantAgreement.sign.description": "Trí chliceáil ar an gcnaipe ‘Sínigh’, dearbhaíonn tú gur thuig tú na coinníollacha agus go gcomhaontaíonn tú le téarmaí agus oibleagáidí an Chomhaontaithe Deontais.",
   "benefPortal.grantAgreement.sign.button": "Sínigh",
   "benefPortal.myVoucher.datatable.action1": "Gníomhaíocht 1",
   "benefPortal.myVoucher.datatable.action2": "Gníomhaíocht 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Tabhair do d’aire nár dheimhnigh tú gur cuireadh isteach na doiciméid agus má imíonn tú ón leathanach seo cuileálfar aon doiciméad atá uaslódáilte agat. Más mian leat na doiciméid atá uaslódáilte agat a shábháil, téigh ar ais chuig an leathanach agus cliceáil ar \"Deimhnigh\". An bhfuil tú cinnte gur mian leat do dhoiciméid a chuileáil?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

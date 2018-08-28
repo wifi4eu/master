@@ -23,4 +23,9 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Query(value = "select u.* from users u inner join supplier_users su on su.user_id = u.id where su.supplier_id= ?#{[0]}", nativeQuery = true)
     List<User> findUsersBySupplierId(Integer supplierId);
+
+    @Query(value = "SELECT a.voucher_awarded FROM applications a " +
+            "INNER JOIN registration_users ru ON a.registration = ru.registration " +
+            "WHERE ru._user = ?#{[0]}", nativeQuery = true)
+    List<Integer> getIfUserHasVouchersAwarded(Integer userId);
 }

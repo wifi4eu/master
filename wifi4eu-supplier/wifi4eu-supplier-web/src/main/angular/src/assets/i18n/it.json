@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "L’invito a presentare candidature è aperto!",
   "benefPortal.voucher.call.label2": "Potrai candidarti dopo l'apertura dell'invito a presentare candidature.",
   "benefPortal.voucher.competition.timeleft.title": "L'invito a presentare candidature sarà pubblicato il ",
-  "benefPortal.voucher.counterSubtitle": "L’invito a presentare candidature è stato aperto il {{data}} alle {{ora}} (orario estivo dell’Europa centrale). È possibile candidarsi fino al {data}} alle {{ora}} (orario estivo dell’Europa centrale).",
+  "benefPortal.voucher.counterSubtitle": "L’invito a presentare candidature è stato aperto il {{date}} alle {{hour}} (orario estivo dell’Europa centrale). È possibile candidarsi fino al {{endDate}} alle {{endHour}} (orario estivo dell’Europa centrale).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Hai richiesto un buono!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Continua a seguirci! WiFi4EU comunicherà quali candidati sono stati selezionati per ottenere un buono.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Attenzione: la selezione avviene in base al principio \"primo arrivato, primo servito\" (data e ora di presentazione della candidatura) e secondo determinati criteri per assicurare un equilibrio geografico, come indicato nel programma di lavoro del CEF.",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Sei sicuro di voler disattivare questa persona di contatto?",
   "shared.download.grantAgreementPDF": "Si prega di scaricare il file in formato PDF e di leggere attentamente la convenzione di sovvenzione prima di accettarne i termini e le condizioni. Per firmare, cliccare su “Firmare la convenzione di sovvenzione” qui di seguito.",
   "benefPortal.grantAgreement.sign.title": "La firma della convenzione di sovvenzione è confermata.",
-  "benefPortal.grantAgreement.sign.desciption": "Cliccando su “firmare” confermate di avere compreso le condizioni e confermate la vostra approvazione dei termini e degli obblighi della convenzione di sovvenzione.",
+  "benefPortal.grantAgreement.sign.description": "Cliccando su “firmare” confermate di avere compreso le condizioni e confermate la vostra approvazione dei termini e degli obblighi della convenzione di sovvenzione.",
   "benefPortal.grantAgreement.sign.button": "Firmare",
   "benefPortal.myVoucher.datatable.action1": "Azione 1",
   "benefPortal.myVoucher.datatable.action2": "Azione 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Non hai ancora confermato la tua candidatura: abbandonando questa pagina si eliminano i documenti caricati. Se desideri salvare i documenti caricati, ritorna alla pagina e clicca su “Conferma”. Sei sicuro di voler eliminare i documenti?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }
