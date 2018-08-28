@@ -658,7 +658,7 @@
   "dgConn.voucherAssignment.table.countryRank": "Country ranking",
   "benefProtal.grantAgreement.description": "Congratulations! Your municipality has been selected to receive a voucher under this WiFi4EU call. The information you have provided in your registration will be used to sign the Grant Agreement with your municipality and for correspondence with your municipality for the duration of the contract. ",
   "dgConn.voucherAssignment.table.selectionStatus": "Selection status",
-  "shared.deactivate.button": "DEACTIVATE",
+  "shared.deactivate.button": "De-activate contact person",
   "dgConn.voucherAssignment.table.country": "Country",
   "benefPortal.grantAgreement.languageButton": "Language of the Grant Agreement",
   "dgConn.voucherAssignment.table.municipality": "Municipality",
@@ -970,5 +970,10 @@
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
   "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
   "benefPortal.grantAgreement.confirmCheckbox": "I confirm that I have read and understood the conditions in the WiFi4EU Grant Agreement.",
-  "dgconn.dashboard.card.reporting": "Reporting page"
+  "dgconn.dashboard.card.reporting": "Reporting page",
+  "shared.deactivate.modalTitle": "Deactivating Contact Person",
+  "shared.deactivate.sucess": "Contact deactivated successfully",
+  "benefPortal.profile.contactPerson": "Contact person details",
+  "invitate.contact.details.title": "Please complete the form to be added as a contact",
+  "portal.deactivateduser.page.title": "Your user has been deactivated"
 }

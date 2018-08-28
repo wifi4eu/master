@@ -6,6 +6,7 @@ public abstract class Constant {
 	public static final String USER = "edu.yale.its.tp.cas.client.filter.user";
 	public static final String FORM = "FORM";
 
+	public static final long ROLE_DEACTIVATED = -1;
 	public static final long ROLE_SUPPLIER = 1;
 	public static final long ROLE_SUPPLIER_CONTACT = 2;
 	public static final long ROLE_REPRESENTATIVE = 3;

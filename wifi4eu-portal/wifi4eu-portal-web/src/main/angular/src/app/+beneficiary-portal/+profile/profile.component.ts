@@ -151,6 +151,35 @@ export class BeneficiaryProfileComponent {
                 this.fetchingData = false;
             }
         );
+        this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(
+                        (utsByUser: UserThreadsDTOBase[]) => {
+                            for (let utByUser of utsByUser) {
+                                this.threadApi.getThreadById(utByUser.threadId).subscribe(
+                                    (thread: ThreadDTOBase) => {
+                                        if (thread != null) {
+                                            this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
+                                                (utsByThread: UserThreadsDTOBase[]) => {
+                                                    this.discussionThreads.push(thread);
+                                                    if (utsByThread.length > 1) {
+                                                        this.userThreads.push(thread);
+                                                         for (let i = 0; i < utsByThread.length; ++i) {
+                                                            if (utsByThread[i].userId != this.user.id) {
+                                                                this.threadsByUser.push(utsByThread[i]);
+
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            );
+                                        }
+                                    }
+                                );
+                            }
+                        }, error => {
+                            console.log("service error: ", error);
+                        }
+                    );
+                }
     }
 
     private withdrawRegistration(){
@@ -334,6 +363,7 @@ export class BeneficiaryProfileComponent {
             this.languages = UxEuLanguages.getLanguages();
         }
         this.languageRows = this.prepareLanguageRows();
+
         const userLang = this.languages.find(language => language.code === this.user.lang);
         this.selectedLanguage = userLang;
     }

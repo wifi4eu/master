@@ -8,6 +8,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
@@ -16,7 +18,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.InvitationContactStatus;
-import wifi4eu.wifi4eu.common.enums.SupplierContactStatus;
+import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserType;
 import wifi4eu.wifi4eu.common.helper.Validator;
@@ -24,6 +26,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
 import wifi4eu.wifi4eu.common.utils.UserValidator;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
@@ -38,6 +41,7 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
@@ -93,6 +97,10 @@ public class SupplierService {
     @Autowired
     RegistrationUtils registrationUtils;
 
+    @Autowired
+    PermissionChecker permissionChecker;
+
+
     private final Logger _log = LogManager.getLogger(SupplierService.class);
 
     public List<SupplierDTO> getAllSuppliers() {
@@ -144,6 +152,18 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(finalSupplier)));
     }
 
+    public boolean isSupplierEditable(UserDTO userConnected){
+        SupplierDTO supplier = getSupplierByUserId(userConnected.getId());
+        boolean access = false;
+        for (UserDTO user : supplier.getUsers()) {
+            if (user.getId() == userConnected.getId()) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
 
     @Transactional
     public List<UserDTO> updateContactDetails(SupplierDTO supplierDTO) throws Exception {
@@ -155,8 +175,8 @@ public class SupplierService {
                 if (userSupplier.getId() == user.getId()) {
                     user.setName(userSupplier.getName());
                     user.setSurname(userSupplier.getSurname());
-                    user.setPhone_number(userSupplier.getPhone_number());
-                    user.setPhone_prefix(userSupplier.getPhone_prefix());
+                    user.setPhoneNumber(userSupplier.getPhoneNumber());
+                    user.setPhonePrefix(userSupplier.getPhonePrefix());
                     UserValidator.validateUserContact(user);
                     break;
                 }
@@ -228,14 +248,14 @@ public class SupplierService {
                 userDTO.setName(userSupplier.getName());
                 userDTO.setSurname(userSupplier.getSurname());
                 userDTO.setEmail(userSupplier.getEmail());
-                userDTO.setPhone_number(userSupplier.getPhone_number());
-                userDTO.setPhone_prefix(userSupplier.getPhone_prefix());
+                userDTO.setPhoneNumber(userSupplier.getPhoneNumber());
+                userDTO.setPhonePrefix(userSupplier.getPhonePrefix());
                 userDTO.setCreateDate(new Date().getTime());
                 userDTO.setType(1);
                 userDTO.setVerified(false);
                 userDTO.setLang(supplierDTO.getLang());
-                userDTO.setPhone_number(supplierDTO.getContactNumber());
-                userDTO.setPhone_prefix(supplierDTO.getContactPrefix());
+                userDTO.setPhoneNumber(supplierDTO.getContactNumber());
+                userDTO.setPhonePrefix(supplierDTO.getContactPrefix());
                 userDTO.setEmail(supplierDTO.getContactEmail());
                 if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()) {
                     userDTO.setEcasEmail(supplierDTO.getContactEmail());
@@ -551,26 +571,38 @@ public class SupplierService {
         return supplierUserRepository.findByEmailAndSupplierId(userEmail, supplierId).isEmpty();
     }
 
-    public SupplierUserDTO deactivateSupplierContact(Integer userId) throws Exception {
-        List<SupplierUser> supplierUsers = supplierUserRepository.findByUserId(userId);
-        SupplierUser supplierUserToSave = null;
-        for (SupplierUser supplierUser : supplierUsers) {
-            if (supplierUser.getUserId().equals(userId)) {
+    public ResponseDTO deactivateSupplierContact(Integer supplierId, Integer userId, String logInfo) throws Exception {
+        ResponseDTO responseDTO = new ResponseDTO();
+        //supplier has more than one user associated?
+        if(supplierUserRepository.countSupplierUserBySupplierIdAndStatusNot(supplierId, SupplierUserStatus.DEACTIVATED.getStatus())> 1) {
+            //supplier user status to deactivated
+            SupplierUser supplierUser = supplierUserRepository.findByUserIdAndSupplierId(userId, supplierId);
+            if(supplierUser.getStatus() != RegistrationUsersStatus.DEACTIVATED.getValue()) {
                 supplierUser.setStatus(SupplierUserStatus.DEACTIVATED.getStatus());
-                supplierUserToSave = supplierUser;
-                break;
-            }
-        }
-        if (supplierUserToSave == null) {
-            throw new Exception("Incorrect userId");
-        } else {
-            supplierUserRepository.save(supplierUserToSave);
-            UserDTO contactDeactivated = userService.getUserById(userId);
-            contactDeactivated.setType(SupplierContactStatus.DEACTIVATED.getStatus());
-            userService.saveUserChanges(contactDeactivated);
-        }
+                supplierUserRepository.save(supplierUser);
 
-        return supplierUserMapper.toDTO(supplierUserToSave);
+                //user type to -1
+                userService.setUserTypeToDeactivate(userId);
+
+                //taking off user rights
+                permissionChecker.dropTablePermissions(userId, Integer.toString(userId), RightConstants.USER_TABLE);
+
+                responseDTO.setSuccess(true);
+                responseDTO.setData("success");
+                _log.info("ECAS Username: " + logInfo + "- Supplier contact deactivated successfully");
+                _log.info("Deactivated user: " + userId + "- Supplier contact deactivated successfully");
+            }else{
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(1, "User already deactivated."));
+                _log.info("ECAS Username: " + logInfo + "- User "+userId+ " already deactivated.");
+            }
+        }else{
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(1, "There has to be minimum 1 user per registration."));
+        }
+        return responseDTO;
     }
 
     public ResponseDTO invitateContactSupplier(UserDTO userConnected, int supplierId, String newContactEmail){

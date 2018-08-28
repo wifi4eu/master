@@ -37,11 +37,14 @@ public class UserContactDetails {
     @Column(name = "main")
     private Integer main;
 
+    @Column(name = "type")
+    private Integer type;
+
     public UserContactDetails(){
 
     }
 
-    public UserContactDetails(String name, String surname, String address, String addressNum, String postalCode, String city, String country, String email, Integer main) {
+    public UserContactDetails(String name, String surname, String address, String addressNum, String postalCode, String city, String country, String email, Integer main, Integer type) {
         this.name = name;
         this.surname = surname;
         this.address = address;
@@ -51,6 +54,7 @@ public class UserContactDetails {
         this.country = country;
         this.email = email;
         this.main = main;
+        this.type = type;
     }
 
     public Integer getId() {
@@ -131,5 +135,13 @@ public class UserContactDetails {
 
     public void setMain(Integer main) {
         this.main = main;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

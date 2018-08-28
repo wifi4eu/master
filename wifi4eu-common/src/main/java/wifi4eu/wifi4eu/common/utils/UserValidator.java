@@ -22,8 +22,8 @@ public class UserValidator {
         }
         if ((Validator.isNull(userDTO.getName()) || userDTO.getName().trim().isEmpty() || userDTO.getName().length() > 255)
                 || (Validator.isNull(userDTO.getSurname()) || userDTO.getSurname().trim().isEmpty() || userDTO.getSurname().length() > 255)
-                || (Validator.isNull(userDTO.getPhone_prefix()) || userDTO.getPhone_prefix().trim().isEmpty() || userDTO.getPhone_prefix().length() > 255)
-                || (Validator.isNull(userDTO.getPhone_number()) || userDTO.getPhone_number().trim().isEmpty() || userDTO.getPhone_number().length() > 255)) {
+                || (Validator.isNull(userDTO.getPhonePrefix()) || userDTO.getPhonePrefix().trim().isEmpty() || userDTO.getPhonePrefix().length() > 255)
+                || (Validator.isNull(userDTO.getPhoneNumber()) || userDTO.getPhoneNumber().trim().isEmpty() || userDTO.getPhoneNumber().length() > 255)) {
             throw new Exception("Incorrect data in some field!");
         }
     }

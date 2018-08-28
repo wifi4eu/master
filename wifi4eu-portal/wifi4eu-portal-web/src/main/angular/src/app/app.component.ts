@@ -83,8 +83,8 @@ export class AppComponent {
 
         this.updateFooterDate();
 
-        this.sessionInterval = IntervalObservable.create(61500);
-        this.startInterval();
+         this.sessionInterval = IntervalObservable.create(61500);
+         this.startInterval();
     }
 
     startInterval() {
@@ -274,6 +274,12 @@ export class AppComponent {
                     url: '#'
                 })
             ];
+            this.children[5] = [
+                new UxLayoutLink({
+                    label: 'Complete invitate contact details',
+                    url: '/invited-contact-details'
+                })
+            ];
             this.children[6] = [
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.myAccount'),
@@ -292,6 +298,9 @@ export class AppComponent {
                     url: '/beneficiary-portal/my-history'
                 })
             ];
+
+            this.children[7] = [
+            ];
             this.childrenInitialized.next();
         });
     }
@@ -302,6 +311,12 @@ export class AppComponent {
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.user = response.data;
+                    if (this.user.type == -1){
+                        //deactivated user
+                        this.router.navigateByUrl('/deactivated-user');
+                    } else if (this.user.userInvited){
+                        this.router.navigateByUrl('/invited-contact-details');
+                    }
                     this.localStorageService.set('user', JSON.stringify(response.data));
                     this.checkIfVoucher();
                     if (this.user.type == 0 && publicRedirection) {
@@ -313,13 +328,13 @@ export class AppComponent {
                     } else {
                         this.childrenInitialized.subscribe(() => this.updateHeader());
                     }
+                    
                 }
             }
         );
     }
 
     private checkIfVoucher(){
-        console.log("checking");
         this.userApi.checkIfVoucherAwarded().subscribe(
             (response: ResponseDTOBase) => {
                 if(response.success){
@@ -334,6 +349,10 @@ export class AppComponent {
     private updateHeader() {
         if (this.user) {
             switch (this.user.type) {
+                case -1:
+                    this.profileUrl = '/deactivated-user';
+                    this.menuLinks = this.children[7];
+                break;
                 case 1:
                     this.profileUrl = '/supplier-portal/profile';
                     this.menuLinks = this.children[1];
@@ -342,14 +361,19 @@ export class AppComponent {
                 case 3:
                     this.profileUrl = '/beneficiary-portal/profile';
                     if(this.voucherAwarded){
-                        this.menuLinks = this.children[2];
+                    this.menuLinks = this.children[2];
                     } else {
                         this.menuLinks = this.children[6];
                     }
                     break;
                 default:
-                    this.profileUrl = '/home';
-                    this.menuLinks = this.children[0];
+                    if (this.user.userInvited){
+                        this.profileUrl = '/invite-contact-details';
+                        this.menuLinks = this.children[5];
+                    } else {
+                        this.profileUrl = '/home';
+                        this.menuLinks = this.children[0];
+                    }
                     break;
             }
         } else {
