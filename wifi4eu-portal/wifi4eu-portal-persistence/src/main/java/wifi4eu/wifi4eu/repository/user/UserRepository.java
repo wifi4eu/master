@@ -28,4 +28,20 @@ public interface UserRepository extends CrudRepository<User, Integer> {
             "INNER JOIN registration_users ru ON a.registration = ru.registration " +
             "WHERE ru._user = ?#{[0]}", nativeQuery = true)
     List<Integer> getIfUserHasVouchersAwarded(Integer userId);
+
+    @Query(value = "SELECT  \n" +
+            "    u.id AS userId,\n" +
+            "    u.csrf_token AS csrfToken,\n" +
+            "    CASE WHEN ca.status IS NULL THEN 0 ELSE 1 END AS acceptStatus,\n" +
+            "    reg.id AS regId,\n" +
+            "    mun.id AS munId,\n" +
+            "    reg.allFiles_flag as docStatus \n" +
+            "FROM users u \n" +
+            "INNER JOIN registration_users ru ON u.id = ru._user\n" +
+            "INNER JOIN registrations reg ON reg.id = ru.registration\n" +
+            "OUTER APPLY \n" +
+            "    (SELECT TOP 1 * FROM conditions_agreement WHERE user_id=u.id AND registration_id = reg.id ORDER BY change_status_date DESC) ca\n" +
+            "INNER JOIN  municipalities mun ON mun.id = reg.municipality\n" +
+            "WHERE u.id = ?#{[0]}", nativeQuery = true)
+    List<Object[]> updateRedisInfo(Long userId);
 }

@@ -18,23 +18,21 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.util.RedisUtil;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
-import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +51,9 @@ public class UserResource {
 
     @Autowired
     private PermissionChecker permissionChecker;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     Logger _log = LogManager.getLogger(UserResource.class);
 
@@ -142,6 +143,7 @@ public class UserResource {
         userConnected = userService.checkIfInvitedUser(userConnected);
         try {
             Cookie cookie = userService.getCSRFCookie();
+            redisUtil.sync(userConnected.getId());
             if (cookie != null) {
                 response.addCookie(cookie);
             }
