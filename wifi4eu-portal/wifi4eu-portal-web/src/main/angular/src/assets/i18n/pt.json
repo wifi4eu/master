@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "O convite à apresentação de candidaturas já foi lançado!",
   "benefPortal.voucher.call.label2": "Poderá candidatar-se assim que o convite à apresentação de candidaturas for lançado.",
   "benefPortal.voucher.competition.timeleft.title": "O convite à apresentação de candidaturas será lançado em ",
-  "benefPortal.voucher.counterSubtitle": "O convite à apresentação de candidaturas foi lançado às {{hora}} (hora de verão da Europa Central) de {{data}}. Pode candidatar-se até às {{hora}} (hora de verão da Europa Central) de {{data}}.",
+  "benefPortal.voucher.counterSubtitle": "O convite à apresentação de candidaturas foi lançado às {{hour}} (hora de verão da Europa Central) de {{date}}. Pode candidatar-se até às {{endHour}} (hora de verão da Europa Central) de {{endDate}}.",
   "benefPortal.voucher.municipalitySuccessApply.title": "A sua candidatura a um vale está concluída.",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Esteja atento! A WiFi4EU anunciará os candidatos selecionados para a atribuição dos vales.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Tenha em conta que a seleção dos candidatos é feita por ordem de chegada, com base na data e na hora das candidaturas, e de acordo com critérios para garantir o equilíbrio geográfico, conforme especificado no programa de trabalho do Mecanismo Interligar a Europa.",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Tem a certeza de querer desativar esta pessoa de contacto?",
   "shared.download.grantAgreementPDF": "Descarregue o ficheiro PDF e leia atentamente o acordo de subvenção antes de confirmar que está de acordo com as suas condições. Para assinar o acordo de convenção, clique no botão «Assinar acordo de subvenção» abaixo.",
   "benefPortal.grantAgreement.sign.title": "Confirmação da assinatura do acordo de subvenção",
-  "benefPortal.grantAgreement.sign.desciption": "Ao clicar em «Assinar», confirma que percebe e aceita as condições do acordo de subvenção e as obrigações decorrentes do mesmo.",
+  "benefPortal.grantAgreement.sign.description": "Ao clicar em «Assinar», confirma que percebe e aceita as condições do acordo de subvenção e as obrigações decorrentes do mesmo.",
   "benefPortal.grantAgreement.sign.button": "Assinar",
   "benefPortal.myVoucher.datatable.action1": "Ação 1",
   "benefPortal.myVoucher.datatable.action2": "Ação 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Ainda não confirmou a ação e, se sair desta página, perderá os documentos carregados. Se pretende guardar os documentos que carregou, volte à página e clique em Confirmar. Tem a certeza de querer apagar os documentos?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

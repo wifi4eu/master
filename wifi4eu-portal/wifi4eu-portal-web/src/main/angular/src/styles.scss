@@ -476,7 +476,7 @@ body {
 
 .changePassword {
   margin-top: 0.5em;
-  width: 71%;
+  width: 85%;
   padding-top: 15px;
   padding-bottom: 15px;
   font-size: 1.2em;
@@ -1520,7 +1520,7 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   background-color: #ffffff;
   color: #004494;
   border: solid 2px #004494;
-  height: 50px;
+  height: 6em;
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
@@ -1844,6 +1844,7 @@ input.email_profile::-ms-clear{
 .whitePanel {
   background-color: white;
   border: 2px solid #d2d2d2;
+  word-break: break-word;
 }
 
 .whitePanelBeneficiary{
@@ -1928,6 +1929,7 @@ input.email_profile::-ms-clear{
 
 .panelMunicipality{
   font-size: 14px !important;
+  word-break: break-word;
 }
 
 .panel-header{

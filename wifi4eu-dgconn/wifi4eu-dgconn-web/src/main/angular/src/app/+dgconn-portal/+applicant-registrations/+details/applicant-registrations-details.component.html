@@ -58,8 +58,7 @@
                         <br>
                         <br>
                         <span class="entity-subtitle">
-                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date/1000000 | date:'yyyy-MM-dd'}} {{ applications[i].date/1000000
-                            | date:'shortTime'}}
+                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date | date:'dd-MM-yyyy h:mm a'}}
                         </span>
                     </span>
                     <!-- Validate & Invalidate application buttons -->
@@ -117,15 +116,35 @@
                                     <p class="applicantDetailsNoMargin municipality-name profileData">
                                         <span class="ui-g-12">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
                                     </p>
-                                    <p class="applicantDetailsNoMargin">
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.name">
                                         <span class="ui-g-3 ui-sm-6">{{ 'shared.name.label' | translate }}</span>
                                         <span class="ui-g-9 ui-sm-6 profileData">{{ users?.name }}</span>
                                     </p>
-                                    <p class="applicantDetailsNoMargin">
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.surname">
                                         <span class="ui-g-3 ui-sm-6">{{ 'shared.surname.label' | translate }}</span>
                                         <span class="ui-g-9 ui-sm-6 profileData">{{ users?.surname }}</span>
                                     </p>
-                                    <p class="applicantDetailsNoMargin">
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.address">
+                                        <span class="ui-g-3 ui-sm-6">{{ 'benefPortal.granAgreement.addressLabel' | translate }}</span>
+                                        <span class="ui-g-9 ui-sm-6 profileData">{{ users?.address }}</span>
+                                    </p>
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.addressNum">
+                                        <span class="ui-g-3 ui-sm-6">{{ 'shared.number.label' | translate }}</span>
+                                        <span class="ui-g-9 ui-sm-6 profileData">{{ users?.addressNum }}</span>
+                                    </p>
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.postalCode">
+                                        <span class="ui-g-3 ui-sm-6">{{ 'shared.postal-code.label' | translate }}</span>
+                                        <span class="ui-g-9 ui-sm-6 profileData">{{ users?.postalCode }}</span>
+                                    </p>
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.city">
+                                        <span class="ui-g-3 ui-sm-6">{{ 'suppRegistration.city.label' | translate }}</span>
+                                        <span class="ui-g-9 ui-sm-6 profileData">{{ users?.city }}</span>
+                                    </p>
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.country">
+                                        <span class="ui-g-3 ui-sm-6">{{ 'dgConn.beneficiaries.country' | translate }}</span>
+                                        <span class="ui-g-9 ui-sm-6 profileData">{{ users?.country }}</span>
+                                    </p>
+                                    <p class="applicantDetailsNoMargin" *ngIf="users?.ecasEmail">
                                         <span class="ui-g-3 ui-sm-6">{{ 'shared.email.label' | translate }}</span>
                                         <span class="ui-g-9 ui-sm-6 profileData">{{ users?.ecasEmail }}</span>
                                     </p>

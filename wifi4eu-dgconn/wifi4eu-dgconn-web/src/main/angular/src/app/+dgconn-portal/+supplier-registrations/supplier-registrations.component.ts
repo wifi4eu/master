@@ -30,7 +30,7 @@ export class DgConnSupplierRegistrationsComponent {
     private page: number = 0;
     private itemsPerPage: number = 5;
     private totalPages: number = 1;
-    private rowsPerPageOptions: number[] = [5, 10, 20];
+    private rowsPerPageOptions: number[] = [10, 50, 100];
     private sortField: string = 'name';
     private sortOrder: number = 1;
     private loadingData: boolean = false;

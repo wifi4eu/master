@@ -20,6 +20,7 @@ export class BeneficiaryRegistrationStep1Component {
     private countrySelected: boolean = false;
     private singleMunicipalityCheckbox: boolean = false;
     private multipleMunicipalityCheckbox: boolean = false;
+    private noMunicipalityOrganization: boolean = false;
 
     @Input('organization') private organization: OrganizationDTOBase;
     @Output() private organizationChange: EventEmitter<OrganizationDTOBase>;
@@ -34,13 +35,18 @@ export class BeneficiaryRegistrationStep1Component {
 
     private selectCountry(event: any) {
         this.singleMunicipalityCheckbox = false;
-				this.multipleMunicipalityCheckbox = false;
+        this.multipleMunicipalityCheckbox = false;
         if (this.country != null) {
-					this.organization = null;
-					this.organizationSelected = false;
-					this.countrySelected = true;
-					this.countryChange.emit(this.country);
-					this.sharedService.clean();
+            this.organization = null;
+            this.organizationSelected = false;
+            this.countrySelected = true;
+            this.countryChange.emit(this.country);
+            if (this.country.countryCode == 'IE') {
+                this.noMunicipalityOrganization = true;
+            } else {
+                this.noMunicipalityOrganization = false;
+            }
+            this.sharedService.clean();
         }
     }
 
@@ -75,11 +81,11 @@ export class BeneficiaryRegistrationStep1Component {
     private selectOrganization(event: any) {
         if (this.organization != null) {
             this.organizationSelected = true;
-            if(this.organization == "municipality"){
+            if (this.organization == "municipality") {
                 this.chooseSingleMunicipality(true);
                 this.organizationChange.emit(this.organization);
             }
-            else{
+            else {
                 this.chooseMultipleMunicipality(true);
             }
         }
