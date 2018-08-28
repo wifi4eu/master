@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "Výzva na podávanie žiadostí je teraz otvorená!",
   "benefPortal.voucher.call.label2": "Podať žiadosť budete môcť hneď, ako sa zverejní výzva na podávanie žiadostí.",
   "benefPortal.voucher.competition.timeleft.title": "Zostávajúci čas do otvorenia výzvy na podávanie žiadostí – dni",
-  "benefPortal.voucher.counterSubtitle": "Výzva na podávanie žiadostí bola otvorená {{dňa}} o {{hodine}} (letného stredoeurópskeho času). Žiadosti môžete podávať do {{dňa}} o {{hodine}} (letného stredoeurópskeho času).",
+  "benefPortal.voucher.counterSubtitle": "Výzva na podávanie žiadostí bola otvorená {{date}} o {{hour}} (letného stredoeurópskeho času). Žiadosti môžete podávať do {{endDate}} o {{endHour}} (letného stredoeurópskeho času).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Žiadosť o poukaz úspešne podaná!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Sledujte nás! V rámci iniciatívy WiFi4EU oznámime, ktorým žiadateľom sa poskytne poukaz.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Upozorňujeme, že výber sa uskutoční podľa poradia, v akom boli žiadosti predložené (dátum a čas podania), pričom sa zohľadnia kritériá na zaručenie zemepisnej vyváženosti. Podrobnosti nájdete v pracovnom programe NPE.",
@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Upozorňujeme, že odpočítavanie je orientačné. Po otvorení výzvy kliknite na ikonu pre podanie žiadosti (ak tak urobíte pred formálnym otvorením výzvy, zobrazí sa chybové hlásenie) ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Súhlasím s <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>podmienkami výzvy</a> a vyhlasujem, že obec, ktorú zastupujem, sa nenachádza v žiadnej zo situácií uvedených v článku 136 ods. 1 <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>nariadenia (EÚ, Euratom) 2018/1046</a>",
+  "benefPortal.voucher.conditionsAgreement": "Súhlasím s #podmienkami výzvy# a vyhlasujem, že obec, ktorú zastupujem, sa nenachádza v žiadnej zo situácií uvedených v článku 136 ods. 1 #nariadenia (EÚ, Euratom) 2018/1046#",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Naozaj chcete deaktivovať túto kontaktnú osobu?",
   "shared.download.grantAgreementPDF": "Dohodu o grante si stiahnite vo formáte PDF a pozorne si ju prečítajte predtým, než potvrdíte súhlas s jej podmienkami. Podpíšte ju kliknutím na ikonu „Podpísať dohodu o grante“ v dolnej časti stránky.",
   "benefPortal.grantAgreement.sign.title": "Potvrdenie o podpise dohody o grante",
-  "benefPortal.grantAgreement.sign.desciption": "Kliknutím na ikonu „Podpísať“ potvrdzujete, že ste porozumeli  podmienkam dohody o grante, a potvrdzujete váš súhlas s nimi.",
+  "benefPortal.grantAgreement.sign.description": "Kliknutím na ikonu „Podpísať“ potvrdzujete, že ste porozumeli  podmienkam dohody o grante, a potvrdzujete váš súhlas s nimi.",
   "benefPortal.grantAgreement.sign.button": "Podpísať",
   "benefPortal.myVoucher.datatable.action1": "Krok 1",
   "benefPortal.myVoucher.datatable.action2": "Krok 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Upozorňujeme, že ste ešte nepotvrdili predloženie dokumentov a po opustení tejto stránky prídete o všetky nahraté dokumenty. Ak chcete uložiť dokumenty, ktoré ste nahrali, vráťte sa na stránku a kliknite na „Potvrdiť“. Naozaj chcete odstrániť vaše dokumenty?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

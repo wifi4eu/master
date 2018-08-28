@@ -644,7 +644,19 @@ public class UserService {
     }
 
     public boolean checkIfApplied(UserDTO userDTO) {
-       return applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0;
+        return applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0;
+    }
+
+    public boolean checkIfVoucherAwarded(UserDTO userDTO) {
+        List<Integer> voucherAwarded = userRepository.getIfUserHasVouchersAwarded(userDTO.getId());
+        if (Validator.isNotNull(voucherAwarded)) {
+            for (int vouch : voucherAwarded) {
+                if (vouch == 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public ResponseDTO deactivateRegistrationUser(Integer registrationId, Integer userId, String logInfo) throws Exception {

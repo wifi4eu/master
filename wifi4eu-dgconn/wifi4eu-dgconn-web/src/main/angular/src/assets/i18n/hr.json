@@ -352,7 +352,7 @@
   "benefPortal.voucher.call.label1": "Poziv na podnošenje prijava je otvoren!",
   "benefPortal.voucher.call.label2": "Prijavu ćete moći podnijeti kada se otvori poziv.",
   "benefPortal.voucher.competition.timeleft.title": "Poziv na podnošenje prijava otvorit će se za",
-  "benefPortal.voucher.counterSubtitle": "Poziv na podnošenje prijava otvoren je {{date}} u {{hour}} (prema srednjoeuropskom ljetnom vremenu). Možete se prijaviti do {{date}} u {{hour}} (prema srednjoeuropskom ljetnom vremenu).",
+  "benefPortal.voucher.counterSubtitle": "Poziv na podnošenje prijava otvoren je {{date}} u {{hour}} (prema srednjoeuropskom ljetnom vremenu). Možete se prijaviti do {{endDate}} u {{endHour}} (prema srednjoeuropskom ljetnom vremenu).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Uspješno ste podnijeli prijavu za kupon.",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Pratite najnovije vijesti. WiFi4EU će obavijestiti o tome koji su podnositelji prijave dobili kupon.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Imajte na umu da se odabir provodi prema redoslijedu podnošenja prijava (u obzir se uzima datum i sat podnošenja) i na temelju kriterija kojima se osigurava zemljopisna ravnoteža, kako je opisano u radnom programu CEF-a.",
@@ -617,7 +617,7 @@
   "dgConn.voucherAssignment.table.duplicate": "Duplicate",
   "benefPortal.voucher.disclaimer": "Napominjemo da ovo odbrojavanje služi samo za orijentaciju. Da biste se prijavili, kliknite „prijava” nakon otvaranja poziva (ako to učinite prije službenog otvaranja, prikazat će se poruka o pogrešci). ",
   "dgConn.voucherAssignment.table.applicationStatus": "Application status",
-  "benefPortal.voucher.conditionsAgreement": "Prihvaćam <a href='https://ec.europa.eu/inea/en/connecting-europe-facility/cef-telecom/wifi4eu'>uvjete poziva</a> i izjavljujem da općina koju zastupam nije u situaciji iz članka 136. stavka 1. <a href='https://myintracomm.ec.europa.eu/budgweb/EN/leg/finrules/Documents/financial-regulation-2018-en.pdf'>Uredbe (EU, Euratom) 2018/1046</a>",
+  "benefPortal.voucher.conditionsAgreement": "Prihvaćam #uvjete poziva# i izjavljujem da općina koju zastupam nije u situaciji iz članka 136. stavka 1. #Uredbe (EU, Euratom) 2018/1046#",
   "dgConn.voucherAssignment.table.applicationChange": "Changes",
   "dgConn.voucherAssignment.table.applicationChangeNew": "New",
   "dgConn.voucherAssignment.table.action": "Action",
@@ -873,7 +873,7 @@
   "shared.deactivateContactModalAreYouSure": "Jeste li sigurni da želite deaktivirati ovu osobu za kontakt?",
   "shared.download.grantAgreementPDF": "Preuzmite PDF dokument i pažljivo pročitajte sporazum o dodjeli bespovratnih sredstava prije nego što potvrdite da ste suglasni s njegovim uvjetima. Za potpis kliknite na „Potpis sporazuma o dodjeli bespovratnih sredstava” u nastavku.",
   "benefPortal.grantAgreement.sign.title": "Potvrda o potpisivanju sporazuma o dodjeli bespovratnih sredstava.",
-  "benefPortal.grantAgreement.sign.desciption": "Klikom na „Potpis” potvrđujete da razumijete uvjete i da ste suglasni s uvjetima sporazuma o dodjeli bespovratnih sredstava.",
+  "benefPortal.grantAgreement.sign.description": "Klikom na „Potpis” potvrđujete da razumijete uvjete i da ste suglasni s uvjetima sporazuma o dodjeli bespovratnih sredstava.",
   "benefPortal.grantAgreement.sign.button": "Potpis",
   "benefPortal.myVoucher.datatable.action1": "Radnja 1",
   "benefPortal.myVoucher.datatable.action2": "Radnja 2",
@@ -887,5 +887,6 @@
   "shared.supportingDocuments.leavePage.body": "Napominjemo da još niste potvrdili unos. Ako odete sa stranice, dokumenti koje ste učitali neće biti pohranjeni. Ako želite pohraniti dokumente koje ste učitali, vratite se na stranicu i kliknite „Potvrdi”. Jeste li sigurni da ne želite pohraniti dokumente?",
   "dgConn.voucherAssignment.success.sendingNotifications": "The process of sending notifications has started",
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
-  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}"
+  "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
+  "dgconn.dashboard.card.reporting": "Reporting page"
 }

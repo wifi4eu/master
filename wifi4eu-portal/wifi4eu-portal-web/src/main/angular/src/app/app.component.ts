@@ -30,6 +30,7 @@ export class AppComponent {
     private actualDate: string;
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
     private user: UserDTOBase;
+    private voucherAwarded: Boolean = false;
     private profileUrl: string;
     private menuLinks: Array<UxLayoutLink>;
     private children: UxLayoutLink[][];
@@ -99,7 +100,6 @@ export class AppComponent {
     @HostListener('document:click', ['$event'])
     @HostListener('document:wheel', ['$event'])
     private resetInterval(newEndTime) {
-        console.log("WORKING")
         this.ngUnSubscribe.next();
         this.startInterval();
     }
@@ -280,7 +280,24 @@ export class AppComponent {
                     url: '/invited-contact-details'
                 })
             ];
-            this.childrenInitialized.next();
+            this.children[6] = [
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('itemMenu.myAccount'),
+                    url: '/beneficiary-portal/profile'
+                }),
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('itemMenu.appPortal'),
+                    url: '/beneficiary-portal/voucher'
+                }),
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                    url: 'list-suppliers'
+                }),
+                new UxLayoutLink({
+                    label: this.menuTranslations.get('benefPortal.myHistory.title'),
+                    url: '/beneficiary-portal/my-history'
+                })
+            ];            this.childrenInitialized.next();
         });
     }
 
@@ -291,6 +308,7 @@ export class AppComponent {
                 if (response.success) {
                     this.user = response.data;
                     this.localStorageService.set('user', JSON.stringify(response.data));
+                    this.checkIfVoucher();
                     if (this.user.type == 0 && publicRedirection) {
                         this.router.navigateByUrl(String(publicRedirection));
                     }
@@ -309,6 +327,19 @@ export class AppComponent {
         );
     }
 
+    private checkIfVoucher(){
+        console.log("checking");
+        this.userApi.checkIfVoucherAwarded().subscribe(
+            (response: ResponseDTOBase) => {
+                if(response.success){
+                    this.voucherAwarded = response.data;
+                    /* console.log(response.data); */
+                    this.updateHeader();
+                }
+            }
+        );
+    }
+
     private updateHeader() {
         if (this.user) {
             switch (this.user.type) {
@@ -319,7 +350,11 @@ export class AppComponent {
                 case 2:
                 case 3:
                     this.profileUrl = '/beneficiary-portal/profile';
+                    if(this.voucherAwarded){
                     this.menuLinks = this.children[2];
+                    } else {
+                        this.menuLinks = this.children[6];
+                    }
                     break;
                 default:
                     if (this.user.userInvited){

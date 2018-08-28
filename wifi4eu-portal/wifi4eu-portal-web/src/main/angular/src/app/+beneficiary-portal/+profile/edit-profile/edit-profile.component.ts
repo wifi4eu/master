@@ -82,9 +82,6 @@ export class BeneficiaryEditProfileComponent {
     private oneRegistrationNumber: number = 0;
     private threadsByUser: UserThreadsDTOBase[] = [];
     private userThreads: ThreadDTOBase[] = [];
-    private municipalityFinish: boolean = false;
-    private mayorFinish: boolean = false;
-    private userFinish: boolean = false;
     private buttonEnabled: boolean = false;
     private displayDeleteMunicipality: boolean = false;
     private deleteMunicipalityId: number = 0;
@@ -103,7 +100,6 @@ export class BeneficiaryEditProfileComponent {
     private registrationIndex: number = null;
     private associationName: String = '';
     private registration: RegistrationDTOBase;
-    private registrationFinish: boolean = false;
     private hasAssociation: boolean = false;
     private nameCookieApply: string = "hasRequested";
     private registrations: RegistrationDTOBase[] = [];
@@ -419,16 +415,17 @@ export class BeneficiaryEditProfileComponent {
                     this.successRegistration = true;
                     this.sharedService.growlTranslation('Your municipality has been added successfully.', 'benefPortal.beneficiary.addMunicipalities.Success', 'success');
                     this.loadDataEditProfile();
-                    this.checkFinishedCalls();
+                    this.submittingData = false;
+                    this.goBackToProfile();
 
                 } else {
                     this.sharedService.growlTranslation('An error ocurred while trying to add the municipalities. Please try again latern', 'benefPortal.beneficiary.addMunicipalities.Error', 'error');
-                    this.successRegistration = true;
-                    this.checkFinishedCalls();
+                    this.submittingData = false;
                 }
             }, error => {
-                this.successRegistration = true;
-                this.checkFinishedCalls();
+                this.sharedService.growlTranslation('You are trying to add a municipality already existing.', 'benefPortal.beneficiary.addMunicipalities.duplicated', 'warn');
+                this.loadDataEditProfile();
+                this.submittingData = false;
             }
         );
     }
@@ -448,39 +445,32 @@ export class BeneficiaryEditProfileComponent {
 
     private editProfile() {
         this.submittingData = true;
-        let hasBeenAnError = false;
 
         for (let i = 0; i < this.municipalities.length; i++) {
             if (this.isMunicipalityEditable[this.municipalities[i].id]) {
                 this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
                     (response: ResponseDTOBase) => {
                         if (response.success) {
-                            this.municipalityFinish = true;
-                            this.checkFinishedCalls();
-                            this.municipalities[this.currentEditIndex] = response.data;
-                        } else {
-                            hasBeenAnError = true;
-                        }
-                        this.municipalityFinish = true;
-                        this.checkFinishedCalls();
-                    }
-                );
-            }
             this.mayorApi.updateMayorDetails(this.mayors[i]).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
-                        this.mayorFinish = true;
-                        this.checkFinishedCalls();
                         this.mayors[this.currentEditIndex] = response.data;
+                                        this.userApi.updateUserDetails(this.user).subscribe(
+                                            (response: ResponseDTOBase) => {
+                                                if (response.success) {
+                                                    this.user = response.data;
+                                                    if (this.newMunicipalities.length > 0){
+                                                        this.submitNewMunicipalities();
                     } else {
-                        hasBeenAnError = true;
+                                                        this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success', 'success');
+                                                        this.goBackToProfile();
                     }
-                    this.municipalityFinish = true;
-                    this.checkFinishedCalls();
+                                                   
+                                                }else{
+                                                    this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
                 }
-
+                                            }
             );
-        }
 
         let usersToSubmit: UserContactDetailsBase[] = [];
         for (let index = 0; index < this.registrations.length; index++) {
@@ -505,16 +495,22 @@ export class BeneficiaryEditProfileComponent {
                         this.checkFinishedCalls();
                         this.user = response.data;
                     } else {
-                        hasBeenAnError = true
+                                        this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                                    }            
+                                }
+                            );
+                            this.municipalities[this.currentEditIndex] = response.data;
+                        }else{
+                            this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                        }
                     }
-                }
-            );
+                );
+            }
+
         }
 
-        if (this.newMunicipalities.length > 0) {
-            this.submitNewMunicipalities();
-        }
-        if (this.registration.associationName != null && this.registration.associationName != "") {
+
+        /* if(this.registration.associationName != null && this.registration.associationName != ""){
             this.registrationApi.updateAssociationName(this.registration).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
@@ -533,24 +529,19 @@ export class BeneficiaryEditProfileComponent {
         } else {
             this.registrationFinish = true;
             this.checkFinishedCalls();
-        }
+        } */
 
+/* 
         if (hasBeenAnError) {
             this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
         } else {
             this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success', 'success');
             this.goBackToProfile();
+        } */
         }
-    }
 
     private goBackToProfile() {
         this.router.navigate(['../'], { relativeTo: this.route });
-    }
-
-    private checkFinishedCalls() {
-        if (this.municipalityFinish && this.mayorFinish && this.userFinish && this.registrationFinish) {
-            this.submittingData = false;
-        }
     }
 
     private checkButtonEnabled(event, i) {

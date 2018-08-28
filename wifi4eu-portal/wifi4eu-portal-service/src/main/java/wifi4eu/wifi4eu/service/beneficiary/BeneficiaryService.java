@@ -175,16 +175,26 @@ public class BeneficiaryService {
 
     @Transactional
     public List<RegistrationDTO> submitNewMunicipalities(BeneficiaryDTO beneficiaryDTO, String ip, HttpServletRequest request) throws Exception {
+        /* Get user from ECAS */
+        UserDTO user = new UserDTO();
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        boolean isEcasUser = false;
+
         /* Validate municipalities */
         for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
             MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
                     nutsService.getNutsByLevel(0));
-        }
 
-        /* Get user from ECAS */
-        UserDTO user = new UserDTO();
-        UserContext userContext = UserHolder.getUser();
-        boolean isEcasUser = false;
+            List<RegistrationDTO> registrationDTOList = registrationService.getRegistrationsByUserId(userConnected.getId());
+            for (RegistrationDTO registration : registrationDTOList) {
+                MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+                if (municipality.getLauId() == municipalityDTO.getLauId()) {
+                    throw new Exception("");
+                }
+
+            }
+        }
 
         if (userContext != null) {
             /* user from ECAS */
@@ -644,14 +654,14 @@ public class BeneficiaryService {
         return userRegistrationDTO;
     }
 
-    public ResponseDTO invitateContactBeneficiary(UserDTO userConnected, int idMunicipality, String newContactEmail){
+    public ResponseDTO invitateContactBeneficiary(UserDTO userConnected, int idMunicipality, String newContactEmail) {
         ResponseDTO responseDTO = new ResponseDTO();
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - START");
-        if (Validator.isNotNull(idMunicipality) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && Validator.isNotNull(registrationRepository.findByMunicipalityId(idMunicipality))){
-            if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail,userConnected.getId())) && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)){
-                InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndIdUserRequest(newContactEmail,userConnected.getId());
+        if (Validator.isNotNull(idMunicipality) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && Validator.isNotNull(registrationRepository.findByMunicipalityId(idMunicipality))) {
+            if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail, userConnected.getId())) && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)) {
+                InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndIdUserRequest(newContactEmail, userConnected.getId());
                 Date today = new Date();
-                if (Validator.isNull(invitationContact)){
+                if (Validator.isNull(invitationContact)) {
                     invitationContact = new InvitationContact();
                     invitationContact.setEmailInvited(newContactEmail);
                     invitationContact.setIdRegistration(registrationRepository.findByMunicipalityId(idMunicipality).getId());
@@ -659,7 +669,7 @@ public class BeneficiaryService {
                     invitationContact.setType((int) Constant.ROLE_REPRESENTATIVE);
                     invitationContact.setStatus(InvitationContactStatus.PENDING.getValue());
                     invitationContact.setCreateDate(today);
-                } else if (invitationContact.getIdRegistration().intValue() != registrationRepository.findByMunicipalityId(idMunicipality).getId().intValue()){
+                } else if (invitationContact.getIdRegistration().intValue() != registrationRepository.findByMunicipalityId(idMunicipality).getId().intValue()) {
                     // same user, same email invited, different municipality
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - This user has already been invitated. Please, try another user email");
                     responseDTO.setSuccess(false);
@@ -678,7 +688,7 @@ public class BeneficiaryService {
                 String msgBody = bundle.getString("mail.sendUserEmail.beneficiary.body");
                 String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
                 msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, newContactEmail);
-                _log.debug("TESTING msgBody => "+msgBody);
+                _log.debug("TESTING msgBody => " + msgBody);
 
                 if (!userService.isLocalHost()) {
                     mailService.sendEmail(newContactEmail, MailService.FROM_ADDRESS, subject, msgBody);
@@ -704,7 +714,7 @@ public class BeneficiaryService {
         return responseDTO;
     }
 
-    public boolean checkContactEmailWithMunicipality(String email, Integer municipalityId){
+    public boolean checkContactEmailWithMunicipality(String email, Integer municipalityId) {
         return registrationUsersRepository.findByContactEmailAndMunicipality(email, municipalityId) != null;
     }
 

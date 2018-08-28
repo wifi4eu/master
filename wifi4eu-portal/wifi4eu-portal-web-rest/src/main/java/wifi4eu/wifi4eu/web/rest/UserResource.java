@@ -329,6 +329,34 @@ public class UserResource {
         return responseDTO;
     }
 
+    @ApiOperation(value = "Check if user has voucher assigned applications")
+    @RequestMapping(value = "/checkIfVoucher", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO checkIfVoucherAwarded() {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            if(Validator.isNotNull(userConnected)){
+                if(userConnected.getType() != 3){
+                    throw new AccessDeniedException("");
+                }
+                responseDTO.setSuccess(true);
+                responseDTO.setData(userService.checkIfVoucherAwarded(userConnected));
+            } else {
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(400, "User not found"));
+            }
+        }catch(Exception e){
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- User cannot been checked", e);
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(400, "Bad Request"));
+        }
+        return responseDTO;
+    }
+
     @ApiOperation(value = "Deactivate user from registration")
     @RequestMapping(value = "/registrationUsers/{registrationId}/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -339,7 +367,7 @@ public class UserResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Deactivating user " + userId + " of registration by id " +
                 registrationId);
         try {
-            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
+            permissi
             //user connected cannot deactivate itself
             if (userConnected.getId() == userId) {
                 _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Trying to deactive itself.");
