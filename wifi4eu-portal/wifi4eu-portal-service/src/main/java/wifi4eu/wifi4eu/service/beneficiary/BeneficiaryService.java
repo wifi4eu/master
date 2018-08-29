@@ -635,27 +635,6 @@ public class BeneficiaryService {
         return sb.toString();
     }
 
-    public UserRegistrationDTO sendEmailToContacts(UserRegistrationDTO userRegistrationDTO) {
-        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-
-        UserContext userContext = UserHolder.getUser();
-        UserDTO user = userService.getUserByUserContext(userContext);
-        String userName = user.getName() + ' ' + user.getSurname();
-
-        MunicipalityDTO municipality = municipalityService.getMunicipalityById(userRegistrationDTO.getMunicipalityId());
-        String municipalityName = municipality.getName();
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
-        String msgBody = bundle.getString("mail.sendUserEmail.beneficiary.body");
-        String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
-        msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, userRegistrationDTO.getEmail());
-        if (!userService.isLocalHost()) {
-            mailService.sendEmail(userRegistrationDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            userService.createNewRegistrationUser(userRegistrationDTO);
-        }
-        return userRegistrationDTO;
-    }
-
     public ResponseDTO invitateContactBeneficiary(UserDTO userConnected, int idMunicipality, String newContactEmail) {
         ResponseDTO responseDTO = new ResponseDTO();
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - START");

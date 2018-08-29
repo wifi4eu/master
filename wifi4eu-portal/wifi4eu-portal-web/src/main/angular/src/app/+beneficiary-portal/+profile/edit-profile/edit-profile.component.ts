@@ -474,18 +474,14 @@ export class BeneficiaryEditProfileComponent {
                                                 (response: ResponseDTOBase) => {
                                                     if (response.success) {
                                                         this.user = response.data;
-                                                        if (this.newMunicipalities.length > 0) {
-                                                            this.submitNewMunicipalities();
-                                                        } else {
-                                                            this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success', 'success');
-                                                            this.goBackToProfile();
-                                                        }
-
+                                                        this.createMultipleMunicipalities();
                                                     } else {
                                                         this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
                                                     }
                                                 }
                                             );
+                                        } else {
+                                            this.createMultipleMunicipalities();
                                         }
                                     }
                                 }
@@ -495,7 +491,6 @@ export class BeneficiaryEditProfileComponent {
                 );
             }
         }
-
 
 
         /* if(this.registration.associationName != null && this.registration.associationName != ""){
@@ -526,6 +521,15 @@ export class BeneficiaryEditProfileComponent {
                     this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success', 'success');
                     this.goBackToProfile();
                 } */
+    }
+
+    private createMultipleMunicipalities(){
+        if (this.newMunicipalities.length > 0) {
+            this.submitNewMunicipalities();
+        } else {
+            this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success', 'success');
+            this.goBackToProfile();
+        }
     }
 
     private goBackToProfile() {
