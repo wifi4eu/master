@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Location } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
 import { DomSanitizer } from "@angular/platform-browser";
 import { SharedService } from "../../../shared/shared.service";
@@ -43,7 +44,7 @@ export class DgConnSupplierRegistrationsDetailsComponent {
     private totalRecords = 0;
     private supplierId;    
 
-    constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private sharedService: SharedService, private supplierApi: SupplierApi) {
+    constructor(private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer, private sharedService: SharedService, private supplierApi: SupplierApi) {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
@@ -198,5 +199,9 @@ export class DgConnSupplierRegistrationsDetailsComponent {
                 }
             }
         }
+    }
+
+    private goBack() {
+        this.location.back();
     }
 }
