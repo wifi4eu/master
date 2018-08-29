@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
@@ -424,5 +425,39 @@ public class ApplicationResource {
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, null);
         }
+    }
+
+    @ApiOperation(value = "Select validated applications")
+    @RequestMapping(value = "/valid-applications/{callId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO countValidatedApplications(@PathVariable("callId") final Integer callId) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO responseDTO = new ResponseDTO();
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Selecting validated applications");
+        try {
+            if(Validator.isNotNull(userConnected)){
+                if (permissionChecker.checkIfDashboardUser()) {
+                    responseDTO.setSuccess(true);
+                    responseDTO.setData(applicationService.getNumberOfValidatedApplications(callId));
+                    _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Validated applications retrieved correctly");
+                }else{
+                    responseDTO.setSuccess(false);
+                    responseDTO.setData("");
+                    responseDTO.setError(new ErrorDTO(401, "Access denied"));
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found");
+                }
+            } else {
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(404, "User not found"));
+            }
+        } catch (Exception e) {
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(404, "Application not found"));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Validated applications cannot been retrieved", e);
+        }
+        return responseDTO;
     }
 }
