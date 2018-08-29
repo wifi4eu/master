@@ -60,6 +60,7 @@ import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.util.RedisUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -146,6 +147,9 @@ public class UserService {
 
     @Autowired
     RightRepository rightRepository;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
@@ -304,7 +308,11 @@ public class UserService {
                 RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipality().getId());
         permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getMunicipality().getId()),
                 RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + registration.getMunicipality().getId() + " - Country: " + registration.getMunicipality().getCountry() + " - Lau Id: " + registration.getMunicipality().getLau().getId());
-        registrationUsersRepository.save(registrationUsers);
+        registrationUsers = registrationUsersRepository.save(registrationUsers);
+
+        if (Validator.isNotNull(registrationUsers)) {
+            redisUtil.sync(userDTO.getId());
+        }
     }
 
     private void createSupplierUser(UserDTO userDTO, Integer supplierId){
@@ -351,6 +359,8 @@ public class UserService {
 
                         userDTO.setType(0);
                         userRepository.save(userMapper.toEntity(userDTO));
+
+                        redisUtil.sync(userId);
                     }else{
                         // Application detected for this user id
                         _log.warn("ECAS Username: " + userDTO.getEcasUsername() + " - User registrations cannot be deleted due to one registration is applied");
@@ -667,7 +677,11 @@ public class UserService {
             RegistrationUsers registrationUsers = registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId);
             if(registrationUsers.getStatus() != RegistrationUsersStatus.DEACTIVATED.getValue()) {
                 registrationUsers.setStatus(RegistrationUsersStatus.DEACTIVATED.getValue());
-                registrationUsersRepository.save(registrationUsers);
+                registrationUsers = registrationUsersRepository.save(registrationUsers);
+
+                if (Validator.isNotNull(registrationUsers)) {
+                    redisUtil.sync(userId.longValue());
+                }
 
                 //if user doesn't have more registrations associated we put type to deactivated
                 if (registrationUsersRepository.countRegistrationUsersByUserIdAndStatusNot(userId, RegistrationUsersStatus.DEACTIVATED.getValue()) <= 1) {
