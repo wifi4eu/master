@@ -72,7 +72,7 @@ public class RedisUtil {
                     .withSentinel(sentinelUri2, sentinelPort)
                     .withSentinel(sentinelUri3, sentinelPort)
                     .build();
-
+            redis = RedisClient.create(redisUri);
         } else {
             _log.info("***************** REDIS ******************************");
             _log.info(" > REDIS SYNC IS DISABLED");
