@@ -32,10 +32,10 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     @Query(value = "SELECT  \n" +
             "    u.id AS userId,\n" +
             "    u.csrf_token AS csrfToken,\n" +
-            "    CASE WHEN ca.status IS NULL THEN 0 ELSE 1 END AS acceptStatus,\n" +
+            "    CASE WHEN ca.status IS NULL THEN CAST(0 As Bit) ELSE CAST(ca.status As Bit) END AS acceptStatus,\n" +
             "    reg.id AS regId,\n" +
             "    mun.id AS munId,\n" +
-            "    reg.allFiles_flag as docStatus \n" +
+            "    CAST(reg.allFiles_flag AS Bit) as docStatus  \n" +
             "FROM users u \n" +
             "INNER JOIN registration_users ru ON u.id = ru._user\n" +
             "INNER JOIN registrations reg ON reg.id = ru.registration\n" +

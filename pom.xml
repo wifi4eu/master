@@ -194,6 +194,10 @@
         <rabbitmq.username>guest</rabbitmq.username>
         <rabbitmq.password>guest</rabbitmq.password>
 
+        <!-- Redis -->
+        <redis.enabled>false</redis.enabled>
+        <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
+
         <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
         <!--<war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>-->
     </properties>
@@ -338,6 +342,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <redis.enabled>false</redis.enabled>
+                <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
             </properties>
         </profile>
         <profile>
