@@ -47,26 +47,24 @@ public class ExcelExportGenerator<T> {
                 for (int i = 0; i < fieldNames.size(); i++) {
                     Cell cell = row.createCell(i);
                     Field field;
-
-                    if(fieldNames.get(i).equalsIgnoreCase("issueStatus")){
+                    if (fieldNames.get(i).equalsIgnoreCase("issueStatus")) {
                         ApplicantListItemDTO applicationListItem = (ApplicantListItemDTO) obj;
                         List<String> wList = new ArrayList<String>();
-                        if(applicationListItem.getWarning1()){
+                        if (applicationListItem.getWarning1()) {
                             wList.add("WARNING 1");
                         }
-                        if(applicationListItem.getWarning2()){
+                        if (applicationListItem.getWarning2()) {
                             wList.add("WARNING 2");
                         }
-                        if(applicationListItem.getWarning3()){
+                        if (applicationListItem.getWarning3()) {
                             wList.add("WARNING 3");
                         }
-                      cell.setCellValue(String.join(", ", wList));
-                    }else{
+                        cell.setCellValue(String.join(", ", wList));
+                    } else {
                         field = obj.getClass().getDeclaredField(fieldNames.get(i));
                         field.setAccessible(true);
                         cell.setCellValue(generateCellValue(field, obj));
                     }
-
                 }
                 rowIndex++;
             }
@@ -117,8 +115,8 @@ public class ExcelExportGenerator<T> {
             displayedFieldNames.add("Issue Status");
             fieldNames.add("applicationDate");
             displayedFieldNames.add("Date/Time of Application");
-            fieldNames.add("invalidateReason");
-            displayedFieldNames.add("Invalidate Reason");
+//            fieldNames.add("invalidateReason");
+//            displayedFieldNames.add("Invalidate Reason");
         } else {
             for (Field field : dataClass.getDeclaredFields()) {
                 String fieldName = field.getName();
