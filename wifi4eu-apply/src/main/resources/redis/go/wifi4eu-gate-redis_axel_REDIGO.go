@@ -9,44 +9,45 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
+	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"runtime"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/garyburd/redigo/redis"
+	"github.com/FZambia/sentinel"
+	"github.com/gomodule/redigo/redis"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/labstack/gommon/log"
+	log "github.com/sirupsen/logrus"
 	_ "github.com/tomasen/realip"
 
 	_ "github.com/denisenkom/go-mssqldb"
 )
 
-const MAX_POOL_RETRIES = 100
-const HAPROXY_URI = "127.0.0.1:6379"
+const MAX_POOL_RETRIES = 1000
+
 const APPLY_QUEUE = "wifi4eu-apply"
 const COOKIE_NAME = "hasRequested"
 
-//-- DEV ENVIRONMENT
-const (
-	dbUserName = "taqof2g1aamcdvf"
-	dbPassword = "TFpKzD@8RkK1Be-/yV2D.QbC3lRzTL*H$EN"
-	dbHost     = "wifi4eu-dbserver.database.windows.net"
-	dbPort     = 1433
-	dbName     = "wifi4eudb-prod_01_2018-05-28T08-30Z"
-)
-
-// UID -> MID Mapping
-/*type UserMunicipalityTuple struct {
-	uID int64
-	mID int64
+// GateConfig - environment specific configuration read from external json file
+type GateConfig struct {
+	DbUserName   string
+	DbPassword   string
+	DbHost       string
+	DbPort       int
+	DbName       string
+	HaproxyURI   string
+	SentinelUris []string
 }
-*/
+
 // RegInfo - registration info struct for cache
 type RegInfo struct {
 	MID  int64
@@ -61,30 +62,40 @@ type UserInfo struct {
 	Registrations map[int64]RegInfo
 }
 
-// RefreshData - live updates from portal
-type RefreshData struct {
-	UID  int64
-	RID  int64
-	MID  int64
-	Csrf string
-	Docs bool
-	Flag bool
-	Data string
-}
-
-//var userMap map[int64]string
+// GLOBALS
+var gateConfig GateConfig
 var userInfoMap map[int64]UserInfo
+
+// readConfig() read config from external JSON file
+func readConfig() GateConfig {
+
+	cfgFile := flag.String("conf", "./gate-config.json", "Path to config file")
+
+	log.Debugf("Reading config from %s", *cfgFile)
+
+	data, err := ioutil.ReadFile(*cfgFile)
+
+	if err != nil {
+		panic(err)
+	}
+
+	json.Unmarshal(data, &gateConfig)
+
+	log.Debugf("CONFIG: %s", gateConfig)
+
+	return gateConfig
+}
 
 // Open connection to SQL database
 func openDB() *sql.DB {
 
 	u := &url.URL{
 		Scheme: "sqlserver",
-		User:   url.UserPassword(dbUserName, dbPassword),
-		Host:   fmt.Sprintf("%s:%d", dbHost, dbPort),
+		User:   url.UserPassword(gateConfig.DbUserName, gateConfig.DbPassword),
+		Host:   fmt.Sprintf("%s:%d", gateConfig.DbHost, gateConfig.DbPort),
 	}
 
-	db, err := sql.Open("sqlserver", u.String()+"?database="+dbName)
+	db, err := sql.Open("sqlserver", u.String()+"?database="+gateConfig.DbName)
 
 	if err != nil {
 		log.Fatal(err)
@@ -99,7 +110,6 @@ func openDB() *sql.DB {
 //
 func initUsersMap() map[int64]UserInfo {
 
-	fmt.Println("[I] Initializing users map")
 	start := time.Now()
 
 	userInfoMap = make(map[int64]UserInfo)
@@ -111,7 +121,7 @@ func initUsersMap() map[int64]UserInfo {
 	rows, err := db.Query(`SELECT  
 								u.id AS userId,
 								u.csrf_token AS csrfToken,
-								CASE WHEN ca.status IS NULL THEN 0 ELSE 1 END AS acceptStatus,
+								CASE WHEN ca.status IS NULL THEN 0 ELSE ca.status END AS acceptStatus,
 								reg.id AS regId,
 								mun.id AS munId,
 								reg.allFiles_flag as docStatus 
@@ -124,10 +134,7 @@ func initUsersMap() map[int64]UserInfo {
 							INNER JOIN  municipalities mun ON mun.id = reg.municipality
 							WHERE 
 								u.csrf_token IS NOT NULL`)
-	/*WHERE
-	u.csrf_token IS NOT NULL AND
-	ca.status = 1`)
-	*/
+
 	defer rows.Close()
 
 	if err != nil {
@@ -154,79 +161,20 @@ func initUsersMap() map[int64]UserInfo {
 			uInfoNode = uInfo
 		}
 
-		//fmt.Printf("MINFO: u=%d r=%d m=%d accept=%t docs=%t\n", uInfo.UID, rID, mInfo.MID, mInfo.Flag, mInfo.Docs)
-
 		uInfoNode.Registrations[rID] = mInfo
-
-		//fmt.Println(uInfoNode)
-		//userInfoMap[u.UID] = u
-
 	}
 
-	fmt.Println("-- Loaded ", len(userInfoMap), " items into usermap. Took: ", time.Now().Sub(start).String())
-	fmt.Println("[F] Finished users map initialization")
+	log.Infof("-- Loaded %d items into usermap. Took: %s", len(userInfoMap), time.Now().Sub(start).String())
+
 	return userInfoMap
 }
 
-/*
-func initRegistrationsMap() map[int64]UserMunicipalityTuple {
-	fmt.Println("[I] Fetching registrations")
-	start := time.Now()
-
-	const queryCall = "SELECT ru._user as user_id, ru.registration as reg_id, m.id as mun_id FROM registration_users ru INNER JOIN registrations r ON r.id = ru.registration INNER JOIN municipalities m ON m.id = r.municipality WHERE r.allFiles_flag = 1"
-	var regsMap = make(map[int64]UserMunicipalityTuple)
-
-	u := &url.URL{
-		Scheme: "sqlserver",
-		User:   url.UserPassword(dbUserName, dbPassword),
-		Host:   fmt.Sprintf("%s:%d", dbHost, dbPort),
-	}
-
-	db, err := sql.Open("sqlserver", u.String()+"?database="+dbName)
-
-	if err != nil {
-		log.Fatal(err)
-		panic(err)
-	}
-
-	defer db.Close()
-
-	rows, err := db.Query(queryCall)
-
-	if err != nil {
-		log.Fatal(err)
-		panic(err)
-	}
-
-	defer rows.Close()
-
-	for rows.Next() {
-		var (
-			uID int64
-			rID int64
-			mID int64
-		)
-
-		if err := rows.Scan(&uID, &rID, &mID); err != nil {
-			fmt.Printf("Something went wrong: (%d,%d) of user %d\n", rID, mID, uID) //-- For testing purposes
-			//log.Fatal(err)
-			continue
-		}
-
-		tupl := UserMunicipalityTuple{uID: uID, mID: mID}
-
-		//fmt.Printf("Added registration: (%d,%d) of user %d\n", rId, mId, uId) //-- For testing purposes
-		regsMap[rID] = tupl
-	}
-
-	fmt.Println("-- Loaded ", len(regsMap), " items into registrationsMap. Took: ", time.Now().Sub(start).String())
-	fmt.Println("[F] Fetching registrations")
-	return regsMap
-}
-*/
 func getCallOpen() (int64, time.Time, time.Time) {
-	fmt.Println("[I] Fetching open call")
+	log.Infof("[I] Fetching open call")
 	start := time.Now()
+
+	db := openDB()
+	defer db.Close()
 
 	const queryCall = "SELECT id, start_date, end_date FROM calls WHERE cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 BETWEEN start_date AND end_date"
 	const nextCall = "SELECT TOP 1 id, start_date, end_date FROM calls WHERE start_date > cast(Datediff(s, '1970-01-01', GETUTCDATE()) AS bigint)*1000 ORDER BY start_date ASC "
@@ -235,21 +183,6 @@ func getCallOpen() (int64, time.Time, time.Time) {
 		callOpen  int64
 		callClose int64
 	)
-
-	u := &url.URL{
-		Scheme: "sqlserver",
-		User:   url.UserPassword(dbUserName, dbPassword),
-		Host:   fmt.Sprintf("%s:%d", dbHost, dbPort),
-	}
-
-	db, err := sql.Open("sqlserver", u.String()+"?database="+dbName)
-
-	if err != nil {
-		log.Fatal(err)
-		panic(err)
-	}
-
-	defer db.Close()
 
 	rows, err := db.Query(queryCall)
 
@@ -267,12 +200,12 @@ func getCallOpen() (int64, time.Time, time.Time) {
 			continue
 		}
 
-		fmt.Printf("-- Call: %d => [From: %s; To: %s]\n", cID, time.Unix(callOpen/1000, 0).String(), time.Unix(callClose/1000, 0).String())
+		log.Infof("Call: %d => [From: %s; To: %s]\n", cID, time.Unix(callOpen/1000, 0).String(), time.Unix(callClose/1000, 0).String())
 	}
 
 	if callOpen == 0 || callClose == 0 {
-		fmt.Println("-- No call open found. Took: ", time.Now().Sub(start).String())
-		fmt.Println("Get NEXT call")
+		log.Warn("-- No call open found. Took: ", time.Now().Sub(start).String())
+		log.Warn("Get NEXT call")
 
 		rows, err := db.Query(nextCall)
 
@@ -290,24 +223,81 @@ func getCallOpen() (int64, time.Time, time.Time) {
 				continue
 			}
 
-			fmt.Printf("-- Call: %d => [From: %s; To: %s]\n", cID, time.Unix(callOpen/1000, 0).String(), time.Unix(callClose/1000, 0).String())
+			log.Warn("-- Call: %d => [From: %s; To: %s]\n", cID, time.Unix(callOpen/1000, 0).String(), time.Unix(callClose/1000, 0).String())
 		}
 
 	} else {
-		fmt.Println("-- Loaded call. Took: ", time.Now().Sub(start).String())
+		log.Info("-- Loaded call. Took: ", time.Now().Sub(start).String())
 	}
-	fmt.Println("[F] Fetching open call")
+
 	return cID, time.Unix(callOpen/1000, 0), time.Unix(callClose/1000, 0)
 }
 
-func newPool(addr string) *redis.Pool {
+// newPool() - initialise main redis connection pool
+// Main pool writes to master via haproxy
+func newPool() *redis.Pool {
 	return &redis.Pool{
 		MaxIdle:     500,
 		MaxActive:   12000,
 		Wait:        true,
 		IdleTimeout: 2 * time.Second,
-		Dial:        func() (redis.Conn, error) { return redis.Dial("tcp", addr) },
+		Dial:        func() (redis.Conn, error) { return redis.Dial("tcp", gateConfig.HaproxyURI) },
 		TestOnBorrow: func(c redis.Conn, t time.Time) error {
+			if time.Since(t) < time.Minute {
+				return nil
+			}
+			_, err := c.Do("PING")
+			return err
+		},
+	}
+}
+
+// newPool2() - initialise secondary pool
+// Secondary pool reads from cluster via sentinel (for pub/sub notifications)
+func newPool2() *redis.Pool {
+
+	sntnl := &sentinel.Sentinel{
+		Addrs:      gateConfig.SentinelUris, //[]string{"10.0.2.31:5000", "10.0.2.32:5000", "10.0.2.33:5000"},
+		MasterName: "master1",
+		Dial: func(addr string) (redis.Conn, error) {
+
+			//fmt.Println("***** DIAL1: ADDR=%s", addr)
+
+			timeout := 500 * time.Millisecond
+			c, err := redis.DialTimeout("tcp", addr, timeout, timeout, timeout)
+			if err != nil {
+
+				log.Warnf("Error connecting to sentinel: %s", err)
+				return nil, err
+			}
+			return c, nil
+		},
+	}
+	return &redis.Pool{
+		MaxIdle:     100,
+		MaxActive:   1000,
+		Wait:        true,
+		IdleTimeout: 2 * time.Second,
+		Dial: func() (redis.Conn, error) {
+			masterAddr, err := sntnl.MasterAddr()
+
+			//fmt.Println("***** DIAL2: ADDR=%s", masterAddr)
+
+			if err != nil {
+				//log.Error("ERROR CONNECTING SENTINEL: %s", err)
+				return nil, err
+			}
+			c, err := redis.Dial("tcp", masterAddr)
+			if err != nil {
+				//log.Warnf("Error connecting to sentinel: %s", err)
+				return nil, err
+			}
+			return c, nil
+		},
+		TestOnBorrow: func(c redis.Conn, t time.Time) error {
+			if !sentinel.TestRole(c, "master") {
+				return errors.New("Role check failed")
+			}
 			if time.Since(t) < time.Minute {
 				return nil
 			}
@@ -335,62 +325,65 @@ func subscribeChanges(pool *redis.Pool) {
 		for c.Err() == nil {
 			switch v := psc.Receive().(type) {
 			case redis.Message:
-				fmt.Printf("%s: message: %s\n", v.Channel, v.Data)
 
-				/*var msg RefreshData
+				var uInfo UserInfo
 
-				err := json.Unmarshal(v.Data, &msg)
+				log.Infof("%s: message: %s\n", v.Channel, v.Data)
+
+				err := json.Unmarshal(v.Data, &uInfo)
 
 				if err != nil {
 					log.Warn(err)
 					continue
 				}
-				*/
-				fmt.Printf("%s: csrf: %s", v.Channel, v.Data)
-				//fmt.Println(msg)
+
+				log.Debugf("%s: csrf: %s", v.Channel, v.Data)
+
+				log.Debug(uInfo)
+
+				updateCache(uInfo)
 
 			case redis.Subscription:
-				fmt.Printf("%s: %s %d\n", v.Channel, v.Kind, v.Count)
+				log.Debugf("%s: %s %d\n", v.Channel, v.Kind, v.Count)
 			case error:
 				continue
 			}
 		}
 		c.Close()
 
-		fmt.Printf("Error: %s", c.Err())
+		log.Warnf("Error: %s", c.Err())
 	}
 }
 
 //
 // Refresh the in-memory RUM / XSRF token cache
 //
-/*func updateCache(refData RefreshData) {
+func updateCache(msg UserInfo) {
 
-	// Update XSRF token for user
-	userMap[refData.UID] = refData.Csrf
+	log.Info(userInfoMap[msg.UID])
 
-	// Update rest of data
+	log.Info("Updating usermap entry for uid=%d", msg.UID)
 
+	userInfoMap[msg.UID] = msg
+
+	log.Info(userInfoMap[msg.UID])
 }
-*/
+
 func main() {
 	start := time.Now()
 
 	//-- GLobal vars
 	var totalRetries int = 0
 
+	log.SetLevel(log.DebugLevel)
+
+	// Config
+	readConfig()
+
 	//-- Initialization
 	initUsersMap()
 
-	tmp, err := json.MarshalIndent(userInfoMap, "", "")
-	if err == nil {
-		fmt.Print(string(tmp))
-	} else {
-		fmt.Println("error:", err)
-	}
 	callID, callOpen, callClose := getCallOpen()
-	//var regsMap = initRegistrationsMap()
-	//-- TODO Pending registrations
 
 	if userInfoMap == nil || len(userInfoMap) == 0 {
 		log.Warn("No users were pre-fetched on server startup")
@@ -400,17 +393,16 @@ func main() {
 		log.Warn("No call is open")
 	}
 
-	/*if regsMap == nil || len(regsMap) == 0 {
-		log.Warn("No registrations were pre-fetched on server startup")
-	}
-	*/
-
 	//-- CONFIGURE GOLANG
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	//-- Set up redis
-	redisPool := newPool(HAPROXY_URI)
+
+	redisPool := newPool2()
+	redisPool1 := newPool()
+
 	defer redisPool.Close()
+	defer redisPool1.Close()
 
 	go subscribeChanges(redisPool)
 
@@ -418,14 +410,15 @@ func main() {
 	e := echo.New()
 
 	//-- Logging
-	//e.Use(middleware.Logger())
+	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 
 	e.GET("/", func(c echo.Context) error {
 
-		return c.String(http.StatusOK, "Gate Controller is UP") //TODO return machine name
+		name, _ := os.Hostname()
 
+		return c.String(http.StatusOK, fmt.Sprintf("Gate Controller is UP [%s]", name))
 	})
 
 	e.GET("/time", func(c echo.Context) error {
@@ -447,9 +440,25 @@ func main() {
 
 	//-- FIXME: Will secure. Internal use only.
 	e.GET("/is-call-open", func(c echo.Context) error {
-
 		return c.String(http.StatusOK, strconv.FormatBool(time.Now().After(callOpen) && time.Now().Before(callClose)))
+	})
 
+	e.GET("/sys/map/:u", func(c echo.Context) error {
+
+		uid, err := strconv.ParseInt(c.Param("u"), 10, 64)
+		if err != nil {
+			return c.String(http.StatusBadRequest, "")
+		}
+
+		data, found := userInfoMap[uid]
+
+		if !found {
+			return c.String(http.StatusNotFound, "User not found")
+		}
+
+		ujson, err := json.Marshal(data)
+
+		return c.String(http.StatusOK, string(ujson))
 	})
 
 	e.GET("/calls/:callId/apply/:r/:u/:m", func(c echo.Context) error {
@@ -499,10 +508,11 @@ func main() {
 		//-- fmt.Printf("-- Municipality Received: %d. Found: %d \n", mToken, tupl.mId)
 		//-- fmt.Printf("-- User Received: %d. Found: %d \n", uToken, tupl.uId)
 		rInfo, rFound := uInfo.Registrations[rToken]
+
 		if !rFound || // Registration ID not found...
 			rInfo.MID != mToken || // Registration + Municipality do not match
 			!rInfo.Flag || // T&C for this registration not accepted
-			rInfo.Docs { // Supporting documents not uploaded for this R/M combo
+			!rInfo.Docs { // Supporting documents not uploaded for this R/M combo
 
 			return c.String(http.StatusBadRequest, "Application does not meet the requirements")
 		}
@@ -513,8 +523,12 @@ func main() {
 		retries := 0
 
 	retry:
-		conn := redisPool.Get()
+		conn := redisPool1.Get()
 		defer conn.Close()
+
+		if conn == nil {
+			goto retry
+		}
 
 		resp, err := conn.Do("XADD", APPLY_QUEUE, "*",
 			"r", rToken,
@@ -527,10 +541,10 @@ func main() {
 			if err == io.EOF {
 				retries++
 				totalRetries++
-				log.Info("Retrying!!")
-				if retries < MAX_POOL_RETRIES {
-					goto retry
-				}
+				log.Debug("Bad redis connection, retrying")
+				//if retries < MAX_POOL_RETRIES {
+				goto retry
+				//}
 			}
 
 			log.Error(err.Error())
@@ -553,7 +567,7 @@ func main() {
 		return c.String(http.StatusOK, resp.(string))
 	})
 
-	fmt.Println("\n\n-- Server startup time: ", time.Now().Sub(start).String())
+	log.Infof("Server startup time: %s", time.Now().Sub(start).String())
 
 	e.Logger.Fatal(e.Start(":7777"))
 }
