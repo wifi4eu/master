@@ -1,0 +1,2210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://ec.europa.eu/sg/hrs/types" elementFormDefault="qualified" xmlns:tns="http://ec.europa.eu/sg/hrs/types" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <include schemaLocation="DocumentWebServicePS_1.xsd"/>
+  <!--Element definitions-->
+  <element name="fileDocument">
+    <annotation>
+      <documentation>Request and header for the operation fileDocument</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Internal repository ID of a document</documentation>
+          </annotation>
+        </element>
+        <group ref="tns:FilingRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="fileDocumentResponse">
+    <annotation>
+      <documentation>Response for the operation fileDocument</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="result" type="tns:OperationResponse">
+          <annotation>
+            <documentation>The invocation result</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="unfileDocument">
+    <annotation>
+      <documentation>Request and header for the operation unfileDocument</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Internal repository ID of a document</documentation>
+          </annotation>
+        </element>
+        <group ref="tns:FilingRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="unfileDocumentResponse">
+    <annotation>
+      <documentation>Response for the operation unfileDocument</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="result" type="tns:OperationResponse">
+          <annotation>
+            <documentation>The invocation result</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="registerDocument">
+    <annotation>
+      <documentation>Request and header for the operation registerDocument</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:DocumentRegistrationRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="registerDocumentResponse">
+    <annotation>
+      <documentation>Response for the operation registerDocument</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="document" type="tns:RegistrationSummary">
+          <annotation>
+            <documentation>The registration summary, which includes generated information like the save number and registration number</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="registerDocumentById">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId"/>
+        <element name="sendNotifications" type="boolean" minOccurs="0">
+          <annotation>
+            <documentation>Indicates that application wants to send/stop notifications to the document recipients. However it will
+                            depend on whether application client has an approval from SG for using this feature. If no approval, then application would not
+                            be able to use this flag and will be shown an exception.</documentation>
+          </annotation>
+        </element>
+        <group ref="tns:FilingRequest" minOccurs="0"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="registerDocumentByIdResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="result" type="tns:RegistrationByIdSummary">
+          <annotation>
+            <documentation>The registration summary, which includes generated information like the registration number</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="createDocument">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:DocumentCreationRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="createDocumentResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="result" type="tns:DocumentCreationSummary">
+          <annotation>
+            <documentation>The creation summary, which includes generated information like the save number.
+                        If filing was requested then the result of the filing operation will be present.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateDocument">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:DocumentUpdateRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateDocumentResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as failures. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="trashDocument">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="trashDocumentResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as failures. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="checkoutItem">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="itemId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Repository id of the item to be checked out</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="checkoutItemResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as failures. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="cancelItemCheckout">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="itemId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Repository id of the item to cancel the checkout for</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="cancelItemCheckoutResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as failures. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="checkinItem">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:ItemCheckinRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="checkinItemResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="itemId" type="tns:ObjectId">
+          <annotation>
+            <documentation>The repository id for the item's new version.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="addTranslations">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="itemId" type="tns:ObjectId">
+          <annotation>
+            <documentation>The id of the item to which the translations should be
+                            added.</documentation>
+          </annotation>
+        </element>
+        <element name="translations" type="tns:TranslationsToAdd"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="addTranslationsResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as failures. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="searchDocumentsByExpression">
+    <annotation>
+      <documentation>Request and header for the operation searchDocumentsByExpression</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:DocumentSearchByExpressionRequest"/>
+        <element name="documentRetrievalOptions" type="tns:DocumentRetrievalOptions" minOccurs="0"/>
+        <element name="sortOptions" type="tns:SortOptions" minOccurs="0"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="searchDocumentsByExpressionResponse">
+    <annotation>
+      <documentation>Response for the operation searchDocumentsByExpression</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="return" type="tns:DocumentSearchResponse"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="linkDocuments">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:LinkDocumentsRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="linkDocumentsResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as failures. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="addExternalSignature">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:AddExternalSignatureRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="addExternalSignatureResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as failures. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="unlinkDocuments">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:UnlinkDocumentsRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="unlinkDocumentsResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean">
+          <annotation>
+            <documentation>True if the link was removed, false if no such link exists.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="findPotentialRegisteredDuplicates">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:DocumentRegistrationRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="findPotentialRegisteredDuplicatesResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="potentialDuplicateRegisteredDocuments" minOccurs="0">
+          <annotation>
+            <documentation>List of potential registered duplicates</documentation>
+          </annotation>
+          <complexType>
+            <sequence>
+              <element name="potentialDuplicateRegisteredDocumentInfo" minOccurs="0" maxOccurs="unbounded">
+                <annotation>
+                  <documentation>Information about the potential duplicate registered document</documentation>
+                </annotation>
+                <complexType>
+                  <sequence>
+                    <element name="documentId" type="tns:ObjectId">
+                      <annotation>
+                        <documentation>Repository ID that uniquely identifies the document</documentation>
+                      </annotation>
+                    </element>
+                    <element name="registrationDate" type="date">
+                      <annotation>
+                        <documentation>Date the potential duplicate was registered</documentation>
+                      </annotation>
+                    </element>
+                    <element name="registrationNumber" type="string">
+                      <annotation>
+                        <documentation>Unique registration number of the document</documentation>
+                      </annotation>
+                    </element>
+                    <element name="registrationAuthor">
+                      <annotation>
+                        <documentation>Registration author of the document</documentation>
+                      </annotation>
+                      <complexType>
+                        <sequence>
+                          <element name="ecasId" type="string">
+                            <annotation>
+                              <documentation>ECAS user id of the registration author</documentation>
+                            </annotation>
+                          </element>
+                          <element name="fullName" type="string" minOccurs="0">
+                            <annotation>
+                              <documentation>The registration's author full name (or a part of it)</documentation>
+                            </annotation>
+                          </element>
+                          <element name="dg" type="string" minOccurs="0">
+                            <annotation>
+                              <documentation>DG to which the registration author belongs</documentation>
+                            </annotation>
+                          </element>
+                          <element name="service" type="string" minOccurs="0">
+                            <annotation>
+                              <documentation>Service to which the registration author belongs</documentation>
+                            </annotation>
+                          </element>
+                          <element name="phone" type="string" minOccurs="0">
+                            <annotation>
+                              <documentation>Telephone number to contact the registration author</documentation>
+                            </annotation>
+                          </element>
+                          <element name="email" type="string" minOccurs="0">
+                            <annotation>
+                              <documentation>Email address of the registration author</documentation>
+                            </annotation>
+                          </element>
+                        </sequence>
+                      </complexType>
+                    </element>
+                    <element name="visible" type="boolean">
+                      <annotation>
+                        <documentation>Indicates if the document is visible to the operating user.
+                                                If the document is visible to the operating user, the user may retrieve the document
+                                                and all the information of it to find out if it's a real duplicate.
+                                                If the document is not visible, the user should contact the registration author
+                                                to find out if the document to be registered is a duplicate.</documentation>
+                      </annotation>
+                    </element>
+                    <element name="score" type="tns:DecimalPercentage" minOccurs="0">
+                      <annotation>
+                        <documentation>The matching score. A percentage that indicates how much this potential duplicate matches the
+                                                document for registration.</documentation>
+                      </annotation>
+                    </element>
+                  </sequence>
+                </complexType>
+              </element>
+            </sequence>
+          </complexType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="findPotentialRegisteredDuplicatesById">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Repository ID that uniquely identifies a saved document that should be registered.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="encryptItems">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Repository id of the document of which the items should be encrypted</documentation>
+          </annotation>
+        </element>
+        <element name="deadline" type="date" minOccurs="0">
+          <annotation>
+            <documentation>Date when the encryption of the document's items expires.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="encryptItemsResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as faults. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="decryptItems">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Repository id of the document of which the items should be decrypted</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="decryptItemsResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as faults. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="findDocumentNotifications">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentRetrievalOptions" type="tns:DocumentRetrievalOptions" minOccurs="0">
+          <annotation>
+            <documentation>Specify what document metadata to fetch. If absent, only basic document metadata
+                            are returned.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="findDocumentNotificationsResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="return" type="tns:DocumentNotificationsResponse"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="markDocumentNotifications">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="notificationId" type="xsd:string" minOccurs="1" maxOccurs="unbounded">
+          <annotation>
+            <documentation>List of document notifications</documentation>
+          </annotation>
+        </element>
+        <element name="read" type="xsd:boolean">
+          <annotation>
+            <documentation>Mark all notifications as read (read=true) or unread (read=false).</documentation>
+          </annotation>
+        </element>
+        <!--NOTE: in the future, we may have more flags besides 'read', like for example 'followUp'.
+                            Adding more flags is backwards compatible, so we will add them on an 'as needed' basis.-->
+      </sequence>
+    </complexType>
+  </element>
+  <element name="markDocumentNotificationsResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as faults. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="deleteDocumentNotifications">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="notificationId" type="xsd:string" minOccurs="1" maxOccurs="unbounded">
+          <annotation>
+            <documentation>Document notification to delete</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="deleteDocumentNotificationsResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as faults. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="externalizeDocument">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="externalizationRequest" type="tns:ExternalizationRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="externalizeDocumentResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as faults. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="revokeExternalization">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Document to revoke</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="revokeExternalizationResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as faults. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="createOrUpdateSpecificMetadata">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Document for which the specific metadata should be added / updated</documentation>
+          </annotation>
+        </element>
+        <element name="specificMetadata" type="tns:SpecificMetadata"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="createOrUpdateSpecificMetadataResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as faults. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="deleteAllSpecificMetadata">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Document for which the specific metadata should be deleted</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="deleteAllSpecificMetadataResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as faults. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="createSpecificMetadataItems">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Document for which the specific metadata items/attachments should be added</documentation>
+          </annotation>
+        </element>
+        <element name="specificMetadataItems" type="tns:SpecificMetadataItemsToAdd"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="createSpecificMetadataItemsResponse">
+    <annotation>
+      <documentation>Response for the creation of bussiness specific metadata items.
+
+                The item IDs will appear in the same order as they were set in the create request.</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="itemId" type="tns:ObjectId" minOccurs="1" maxOccurs="10">
+          <annotation>
+            <documentation>Internal repository ID to uniquely identify a specific metadata attachment</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateSpecificMetadataItems">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Document for which the specific metadata items/attachments  should be updated</documentation>
+          </annotation>
+        </element>
+        <element name="specificMetadataItems" type="tns:SpecificMetadataItemsToUpdate"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateSpecificMetadataItemsResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as faults. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="deleteSpecificMetadataItems">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Document for which the specific metadata items/attachments should be deleted</documentation>
+          </annotation>
+        </element>
+        <element name="specificMetadataItems" type="tns:SpecificMetadataItemsToDelete"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="deleteSpecificMetadataItemsResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as faults. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <!--Type definitions-->
+  <complexType name="ExternalizationRequest">
+    <annotation>
+      <documentation>Specifies what has to be externalized.</documentation>
+    </annotation>
+    <sequence>
+      <element name="documentId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Document to be externalized. Specify which items should be externalized
+                        together with the document by using the 'partial' and 'itemId' elements below.</documentation>
+        </annotation>
+      </element>
+      <element name="ersPartitionId" type="int">
+        <annotation>
+          <documentation>Target ERS partition where the document should be externalized. The client
+                        application needs to have externalization rights on the target partition
+                        (see also ReferenceDataService::getAllERSPartitions).</documentation>
+        </annotation>
+      </element>
+      <element name="externalizationTitle" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Optional - The externalization title to be used for ERS, if different than the one in Hermes.</documentation>
+        </annotation>
+      </element>
+      <element name="partial" type="xsd:boolean">
+        <annotation>
+          <documentation>Specifies if the externalization is partial or complete (i.e. if some items or all items
+                        should be externalized). This applies only to normal items and not to business
+                        specific metadata items.
+
+                        If the externalization is partial, the list of items to be externalized can be specified
+                        (if no items are specified, only basic document metadata is externalized).
+
+                        If set to false, ALL normal items/attachments will be externalized (regardless
+                        whether they are also listed below or not).</documentation>
+        </annotation>
+      </element>
+      <element name="eraseRenditionMetadata" type="xsd:boolean" minOccurs="0">
+        <annotation>
+          <documentation>Specifies if the PDF rendition metadata such as info dictionary
+                        (e.g. author, subject, ...) and XMP (Extensible Metadata Platform) metadata
+                        should be erased (for anonymization reasons) from all renditions that will
+                        be externalized.
+                        This setting applies to the rendition of all items/attachments (will be
+                        overridden if also explicitly specified at item/attachment level).
+                        By default rendition metadata is not erased.</documentation>
+        </annotation>
+      </element>
+      <element name="item" minOccurs="0" maxOccurs="unbounded">
+        <annotation>
+          <documentation>Items to be externalized.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="itemId" type="tns:ObjectId"/>
+            <element name="eraseRenditionMetadata" type="xsd:boolean" minOccurs="0">
+              <annotation>
+                <documentation>Specifies if the PDF rendition metadata should be erased for the
+                                    rendition linked to this particular item/attachment.
+                                    In case the global setting has been set, it will override it.</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <!--<element name="itemId" type="tns:ObjectId" minOccurs="0" maxOccurs="unbounded">
+                <annotation>
+                    <documentation>
+                        Items to be externalized (should be specified only in case of partial externalization).
+                    </documentation>
+                </annotation>
+            </element>-->
+      <element name="specificMetadataItems" minOccurs="0">
+        <annotation>
+          <documentation>The business specific metadata items/attachments to be externalized.
+                        If these attachments must be externalized, it's mandatory to list them even
+                        if the externalization is considered as full (partial = false).
+                        Therefore the partial settings only apply to normal items.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="itemId" type="tns:ObjectId" minOccurs="1" maxOccurs="10">
+              <annotation>
+                <documentation>Repository IDs of business specific attachments to be externalized</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="DocumentSearchByExpressionRequest">
+    <annotation>
+      <documentation>Request for searching documents.</documentation>
+    </annotation>
+    <sequence>
+      <element name="searchExpression" type="xsd:string" minOccurs="1">
+        <annotation>
+          <documentation>Expression to be used for searching</documentation>
+        </annotation>
+      </element>
+      <element name="skip" type="tns:int0To2000" minOccurs="0" default="0">
+        <annotation>
+          <documentation>Skip N documents. This field is used to implement a mechanism of
+                        pagination.</documentation>
+        </annotation>
+      </element>
+      <element name="max" type="tns:int0To2000" minOccurs="0" default="10">
+        <annotation>
+          <documentation>Maximum number of documents to be retrieved by the search.
+                        If this value is greater than 300, only basic metadata of the document
+                        can be retrieved for performance reasons, so specifying any options in
+                        DocumentRetrievalOptions is not allowed.</documentation>
+        </annotation>
+      </element>
+      <element name="additionalPartitions" minOccurs="0">
+        <annotation>
+          <documentation>If omitted the search will be executed in the partition to which the application
+                    belongs.
+                    If present it indicates that the search should also be executed in the given
+                    list of additional partitions. The search will always be executed in the
+                    partition to which the application belongs and extended to the other partitions.
+
+                    When specifying additional partitions they must be public. A SOAPFault will be
+                    thrown if this condition is not met.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="partitionId" type="xsd:int" minOccurs="1" maxOccurs="unbounded"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="excludeDefaultPartition" type="xsd:boolean" minOccurs="0">
+        <annotation>
+          <documentation>Exclude the default partition from the search.
+                    This flag will have no effect if no additional partition has been listed.</documentation>
+        </annotation>
+      </element>
+      <element name="useIndexServer" type="xsd:boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates if the search should be executed against the repository
+                    database or against the indexed data.
+                    Searching against the database will give accurate results while searching against
+                    the index might not always be accurate because the document was not indexed yet.
+                    When performing "contains" searches, e.g. title contains 'test', you should
+                    use the index server, while searches like documentId = '[id]' should target
+                    the database.
+                    If you include a fulltext condition (e.g. FULLTEXT('test')), the only option is
+                    to use the index server.</documentation>
+        </annotation>
+      </element>
+      <element name="indexServerOptions" type="tns:IndexServerOptions" minOccurs="0">
+        <annotation>
+          <documentation>Options specific to the index server. Ignored if not using the index server.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ItemCheckinRequest">
+    <annotation>
+      <documentation>Request for the operation checkinItem</documentation>
+    </annotation>
+    <sequence>
+      <element name="itemId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Repository id of the item whose content is checked in</documentation>
+        </annotation>
+      </element>
+      <element name="contentId" type="tns:ContentIdType">
+        <annotation>
+          <documentation>Content id that was obtained by uploading the content
+                        using the data transfer service</documentation>
+        </annotation>
+      </element>
+      <element name="name" type="string">
+        <annotation>
+          <documentation>New item name (name of attachment, including extension)</documentation>
+        </annotation>
+      </element>
+      <element name="versioningStrategy">
+        <annotation>
+          <documentation>Specifies whether the checkin operation should create a
+                        new major version (e.g.  new version is 2.0), a new minor version
+                        (e.g. new version is 1.1), or should overwrite the existing version
+                        (e.g. version remains at 1.0).&lt;br/>
+
+                        If you overwrite the existing version, the previous content and attributes
+                        cannot be recovered anymore, because they have been overwritten.</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <enumeration value="NEW_MAJOR_VERSION"/>
+            <enumeration value="NEW_MINOR_VERSION"/>
+            <enumeration value="OVERWRITE_CURRENT_VERSION"/>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="comments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Description of the change</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="DocumentRegistrationRequest">
+    <annotation>
+      <documentation>Request for the operation registerDocument</documentation>
+    </annotation>
+    <sequence>
+      <element name="title" type="string">
+        <annotation>
+          <documentation>Title/subject of the document</documentation>
+        </annotation>
+      </element>
+      <element name="documentDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Date of the document</documentation>
+        </annotation>
+      </element>
+      <element name="sentDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Transmission date.
+                    Date at which the document has been sent for internal and outgoing mail.
+                    Date at which the document was received for incoming mail.</documentation>
+        </annotation>
+      </element>
+      <element name="securityClassification" type="tns:SecurityClassification" default="NORMAL">
+        <annotation>
+          <documentation>Security classification to be applied to the document
+                        In ARES UI, 'Security Classification' is displayed/referred as 'Level Of Sensitivity'.
+                        'Level Of Sensitivity' is just an alias for Security Classification.</documentation>
+        </annotation>
+      </element>
+      <element name="encryptItems" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates whether the content of the items should be stored encrypted. The
+                    encryption is done automatically when the content is inserted into the
+                    repository. No special action is required. Only users having a dedicated role
+                    are allowed to encrypt items.</documentation>
+        </annotation>
+      </element>
+      <element name="encryptItemsDeadline" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Date when the encryption of the document's items expires.</documentation>
+        </annotation>
+      </element>
+      <element name="marking" type="tns:Marking" minOccurs="0">
+        <annotation>
+          <documentation>Marker to be applied to the document according to the security classification</documentation>
+        </annotation>
+      </element>
+      <element name="classification" type="tns:Classification" minOccurs="0">
+        <annotation>
+          <documentation>Classification to be applied to the document according to the security classification</documentation>
+        </annotation>
+      </element>
+      <element name="comments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Comments</documentation>
+        </annotation>
+      </element>
+      <element name="procedureId" type="int" minOccurs="0">
+        <annotation>
+          <documentation>ID of the procedure to be applied to the new document</documentation>
+        </annotation>
+      </element>
+      <element name="senders" type="tns:SendersToAdd">
+        <annotation>
+          <documentation>Senders of the document</documentation>
+        </annotation>
+      </element>
+      <element name="recipients" type="tns:RecipientsToAdd" minOccurs="0">
+        <annotation>
+          <documentation>Recipients of the document</documentation>
+        </annotation>
+      </element>
+      <element name="replyTo" type="tns:ObjectId" minOccurs="0">
+        <annotation>
+          <documentation>Contains the id of the document that is replied to</documentation>
+        </annotation>
+      </element>
+      <element name="fileReply" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>If true the reply will be filed in the same file as the document being replied to</documentation>
+        </annotation>
+      </element>
+      <element name="items" minOccurs="0">
+        <annotation>
+          <documentation>List of attachments</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="uploadedItem" type="tns:UploadedItemToAdd" minOccurs="1" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Uploaded attachments</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="externalSignatures" type="tns:ExternalSignaturesToAdd" minOccurs="0">
+        <annotation>
+          <documentation>Signatures of the document performed outside Hermes</documentation>
+        </annotation>
+      </element>
+      <element name="saveNumberPrefix" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Used if the job user needs to create/register on behalf of another entity with another save number prefix</documentation>
+        </annotation>
+      </element>
+      <element name="sendNotifications" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates that application wants to send/stop notifications to the document recipients. However it will
+                        depend on whether application client has an approval from SG for using this feature. If no approval, then application would not
+                        be able to use this flag and will be shown an exception.</documentation>
+        </annotation>
+      </element>
+      <group ref="tns:FilingRequest" minOccurs="0"/>
+    </sequence>
+  </complexType>
+  <complexType name="DocumentCreationRequest">
+    <annotation>
+      <documentation>Request for the operation createDocument</documentation>
+    </annotation>
+    <sequence>
+      <element name="title" type="string">
+        <annotation>
+          <documentation>Title/subject of the document</documentation>
+        </annotation>
+      </element>
+      <element name="documentDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Date of the document</documentation>
+        </annotation>
+      </element>
+      <element name="sentDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Date at which the document has been sent</documentation>
+        </annotation>
+      </element>
+      <element name="securityClassification" type="tns:SecurityClassification" default="NORMAL">
+        <annotation>
+          <documentation>Security classification to be applied to the document.
+                        In ARES UI, 'Security Classification' is displayed/referred as 'Level Of Sensitivity'.
+                        'Level Of Sensitivity' is just an alias for Security Classification.</documentation>
+        </annotation>
+      </element>
+      <element name="marking" type="tns:Marking" minOccurs="0">
+        <annotation>
+          <documentation>Marker to be applied to the document according to the security classification</documentation>
+        </annotation>
+      </element>
+      <element name="classification" type="tns:Classification" minOccurs="0">
+        <annotation>
+          <documentation>Classification to be applied to the document according to the security classification</documentation>
+        </annotation>
+      </element>
+      <element name="replyTo" type="tns:ObjectId" minOccurs="0">
+        <annotation>
+          <documentation>Contains the id of the document that is replied to</documentation>
+        </annotation>
+      </element>
+      <element name="fileReply" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>If true the reply will be filed in the same file as the document being replied to</documentation>
+        </annotation>
+      </element>
+      <element name="encryptItems" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates whether the content of the items should be stored encrypted. The
+                    encryption is done automatically when the content is inserted into the
+                    repository. No special action is required. Only users having a dedicated role
+                    are allowed to encrypt items.</documentation>
+        </annotation>
+      </element>
+      <element name="encryptItemsDeadline" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Date when the encryption of the docuemnt's items expires.</documentation>
+        </annotation>
+      </element>
+      <element name="comments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Comments</documentation>
+        </annotation>
+      </element>
+      <element name="procedureId" type="int" minOccurs="0">
+        <annotation>
+          <documentation>ID of the procedure to be applied to the new document</documentation>
+        </annotation>
+      </element>
+      <element name="senders" type="tns:SendersToAdd" minOccurs="0">
+        <annotation>
+          <documentation>Senders of the document</documentation>
+        </annotation>
+      </element>
+      <element name="recipients" type="tns:RecipientsToAdd" minOccurs="0">
+        <annotation>
+          <documentation>Recipients of the document</documentation>
+        </annotation>
+      </element>
+      <element name="items" type="tns:ItemsToAdd" minOccurs="0">
+        <annotation>
+          <documentation>List of attachments</documentation>
+        </annotation>
+      </element>
+      <element name="externalSignatures" type="tns:ExternalSignaturesToAdd" minOccurs="0">
+        <annotation>
+          <documentation>Signatures of the document performed outside Hermes</documentation>
+        </annotation>
+      </element>
+      <element name="saveNumberPrefix" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Used if the job user needs to create/register on behalf of another entity with another save number prefix</documentation>
+        </annotation>
+      </element>
+      <group ref="tns:FilingRequest" minOccurs="0"/>
+    </sequence>
+  </complexType>
+  <complexType name="DocumentUpdateRequest">
+    <annotation>
+      <documentation>Request for updating a saved (but unregistered) document</documentation>
+    </annotation>
+    <sequence>
+      <element name="documentId" type="tns:ObjectId">
+        <annotation>
+          <documentation>The repository id of the document to update</documentation>
+        </annotation>
+      </element>
+      <element name="updateDocumentDetails" minOccurs="0">
+        <annotation>
+          <documentation><![CDATA[Update fields on the document. This works as follows:
+                    <ul>
+                        <li>To update a field, set the corresponding element below to the updated value.</li>
+                        <li>To leave a field unchanged omit the corresponding element.</li>
+                    </ul>]]></documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="title" type="string" minOccurs="0">
+              <annotation>
+                <documentation>Updated title of the document</documentation>
+              </annotation>
+            </element>
+            <element name="documentDate" type="date" minOccurs="0">
+              <annotation>
+                <documentation>Updated document date</documentation>
+              </annotation>
+            </element>
+            <element name="sentDate" type="date" minOccurs="0">
+              <annotation>
+                <documentation>Updated document sent date</documentation>
+              </annotation>
+            </element>
+            <element name="securityClassification" type="tns:SecurityClassification" minOccurs="0">
+              <annotation>
+                <documentation>Updated document security classification. When specifying 'EU_RESTREINED', you also need to remove all items if any.
+                                    In ARES UI, 'Security Classification' is displayed/referred as 'Level Of Sensitivity'.
+                                    'Level Of Sensitivity' is just an alias for Security Classification.</documentation>
+              </annotation>
+            </element>
+            <element name="marking" type="tns:Marking" minOccurs="0">
+              <annotation>
+                <documentation>Updated marker. When specifying COMP or OLAF markings, you also need to remove all items.</documentation>
+              </annotation>
+            </element>
+            <element name="removeMarking" type="boolean" minOccurs="0">
+              <annotation>
+                <documentation>Set this element to true if you want to remove the marking associated with the document. This has precedence over the marking element.</documentation>
+              </annotation>
+            </element>
+            <element name="classification" type="tns:Classification" minOccurs="0">
+              <annotation>
+                <documentation>Updated classification.</documentation>
+              </annotation>
+            </element>
+            <element name="encryptItems" type="boolean" minOccurs="0">
+              <annotation>
+                <documentation>Indicates if the items' content should be encrypted or decrypted</documentation>
+              </annotation>
+            </element>
+            <element name="encryptItemsDeadline" type="date" minOccurs="0">
+              <annotation>
+                <documentation>Date when the encryption of the docuemnt's items expires.</documentation>
+              </annotation>
+            </element>
+            <element name="comments" type="string" minOccurs="0">
+              <annotation>
+                <documentation>Updated comments</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="updateSenders" minOccurs="0">
+        <annotation>
+          <documentation>Add or remove document senders</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="remove" type="tns:ObjectId" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Remove the specified entity from senders</documentation>
+              </annotation>
+            </element>
+            <element name="add" minOccurs="0" maxOccurs="unbounded" type="tns:CurrentEntityToAdd">
+              <annotation>
+                <documentation>Add the specified current entity as a sender</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="updateRecipients" minOccurs="0">
+        <annotation>
+          <documentation>Add or remove document recipients</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="remove" type="tns:ObjectId" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Remove the specified entity from recipients</documentation>
+              </annotation>
+            </element>
+            <element name="add" minOccurs="0" maxOccurs="unbounded" type="tns:RecipientToAdd">
+              <annotation>
+                <documentation>Add the specified current entity as a recipient</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="updateItems" minOccurs="0">
+        <annotation>
+          <documentation>Add/remove items or modify item metadata (including translations)</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="remove" type="tns:ObjectId" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Remove all versions of the specified item from the document and the repository. If the item is not found, it is silently ignored.</documentation>
+              </annotation>
+            </element>
+            <element name="add" type="tns:ItemsToAdd" minOccurs="0">
+              <annotation>
+                <documentation>Add these items to the document</documentation>
+              </annotation>
+            </element>
+            <element name="updateDetails" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation><![CDATA[Update the metadata of the specified item (or translation). If the item is not found,
+                                a failure is raised. <br/>
+
+                                The update works as follows:
+                                <ul>
+                                    <li>To update a field, set the corresponding element below to the updated value.</li>
+                                    <li>To leave a field unchanged omit the corresponding element.</li>
+                                </ul>]]></documentation>
+              </annotation>
+              <complexType>
+                <sequence>
+                  <element name="itemId" type="tns:ObjectId">
+                    <annotation>
+                      <documentation>Repository id of the item to update</documentation>
+                    </annotation>
+                  </element>
+                  <element name="name" type="string" minOccurs="0">
+                    <annotation>
+                      <documentation>Updated item name.</documentation>
+                    </annotation>
+                  </element>
+                  <element name="language" type="tns:LanguageCode" minOccurs="0">
+                    <annotation>
+                      <documentation>Updated item language</documentation>
+                    </annotation>
+                  </element>
+                  <element name="kind" type="tns:ItemKind" minOccurs="0">
+                    <annotation>
+                      <documentation>Updated item kind. Changing from TRANSLATION to any of the other item kinds or viceversa is not allowed.</documentation>
+                    </annotation>
+                  </element>
+                  <element name="attachmentType" type="tns:AttachmentType" minOccurs="0">
+                    <annotation>
+                      <documentation>Updated attachment type. Changing from ARES_SCANNED to any of the other types or viceversa is not allowed.</documentation>
+                    </annotation>
+                  </element>
+                  <element name="externalReference" type="string" minOccurs="0">
+                    <annotation>
+                      <documentation>Updated external reference</documentation>
+                    </annotation>
+                  </element>
+                  <element name="toStamp" type="boolean" default="true" minOccurs="0">
+                    <annotation>
+                      <documentation>If false, the ARES Stamp will not be applied on the first page of the rendition</documentation>
+                    </annotation>
+                  </element>
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="updateExternalSignatures" minOccurs="0">
+        <annotation>
+          <documentation>Update external document signatures, currently we only support adding new ones.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="add" type="tns:ExternalSignaturesToAdd" minOccurs="0">
+              <annotation>
+                <documentation>Add an external document signature</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="RegistrationSummary">
+    <sequence>
+      <element name="documentId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID of a document</documentation>
+        </annotation>
+      </element>
+      <element name="encodingDate" type="xsd:date">
+        <annotation>
+          <documentation>Date at which the document has been encoded in the common repository</documentation>
+        </annotation>
+      </element>
+      <element name="registrationDate" type="xsd:date">
+        <annotation>
+          <documentation>Date at which the document has been registered</documentation>
+        </annotation>
+      </element>
+      <element name="registrationNumber" type="xsd:string">
+        <annotation>
+          <documentation>Official document number</documentation>
+        </annotation>
+      </element>
+      <element name="saveNumber" type="xsd:string">
+        <annotation>
+          <documentation>Internal document number</documentation>
+        </annotation>
+      </element>
+      <element name="filingResult" type="tns:OperationResponse" minOccurs="0">
+        <annotation>
+          <documentation>If filing was requested, here is the result of the filing operation.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="RegistrationByIdSummary">
+    <sequence>
+      <element name="registrationDate" type="xsd:date">
+        <annotation>
+          <documentation>Date at which the document has been registered</documentation>
+        </annotation>
+      </element>
+      <element name="registrationNumber" type="xsd:string">
+        <annotation>
+          <documentation>Official document number</documentation>
+        </annotation>
+      </element>
+      <element name="filingResult" type="tns:OperationResponse" minOccurs="0">
+        <annotation>
+          <documentation>If filing was requested, here is the result of the filing operation.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="DocumentCreationSummary">
+    <sequence>
+      <element name="documentId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Repository id of the document</documentation>
+        </annotation>
+      </element>
+      <element name="encodingDate" type="xsd:date">
+        <annotation>
+          <documentation>Date at which the document has been encoded in the repository</documentation>
+        </annotation>
+      </element>
+      <element name="saveNumber" type="xsd:string">
+        <annotation>
+          <documentation>Internal document number</documentation>
+        </annotation>
+      </element>
+      <element name="filingResult" type="tns:OperationResponse" minOccurs="0">
+        <annotation>
+          <documentation>If filing was requested, here is the result of the filing operation.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="DocumentSearchResponse">
+    <annotation>
+      <documentation>Common response for the operations searching for documents</documentation>
+    </annotation>
+    <sequence>
+      <element name="totalRetrievable" type="tns:int0To2000">
+        <annotation>
+          <documentation>If computed, the total number of (accessible) documents that can be retrieved.
+                        For performance reasons this is limited to 2000 (even if there are
+                        more documents in the repository to match the expression).</documentation>
+        </annotation>
+      </element>
+      <element name="document" type="tns:Document" minOccurs="0" maxOccurs="2000">
+        <annotation>
+          <documentation>List of documents</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="DocumentNotificationsResponse">
+    <annotation>
+      <documentation>Response for operations that return a list of document notifications.</documentation>
+    </annotation>
+    <sequence>
+      <element name="total" type="tns:int0To300">
+        <annotation>
+          <documentation>Number of results returned.</documentation>
+        </annotation>
+      </element>
+      <element name="documentNotification" type="tns:DocumentNotification" minOccurs="0" maxOccurs="300">
+        <annotation>
+          <documentation>List of document notifications</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="LinkDocumentsRequest">
+    <annotation>
+      <documentation>Request for creating a link between 2 documents.</documentation>
+    </annotation>
+    <sequence>
+      <element name="sourceDocumentId" type="tns:ObjectId"/>
+      <element name="targetDocumentId" type="tns:ObjectId"/>
+      <element name="linkType">
+        <simpleType>
+          <annotation>
+            <documentation>Link types allowed when creating a link between 2 documents.</documentation>
+          </annotation>
+          <restriction base="string">
+            <enumeration value="RESPONSE"/>
+            <enumeration value="GENERAL"/>
+            <enumeration value="DUPLICATE"/>
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="UnlinkDocumentsRequest">
+    <annotation>
+      <documentation>Request for removing a link between 2 documents.</documentation>
+    </annotation>
+    <sequence>
+      <element name="sourceDocumentId" type="tns:ObjectId"/>
+      <element name="targetDocumentId" type="tns:ObjectId"/>
+      <element name="linkType" type="tns:LinkType"/>
+    </sequence>
+  </complexType>
+  <complexType name="AddExternalSignatureRequest">
+    <annotation>
+      <documentation>Request for adding an external EU Login / ECAS signature to multiple documents</documentation>
+    </annotation>
+    <sequence>
+      <element name="documentId" type="tns:ObjectId" minOccurs="1" maxOccurs="10"/>
+      <element name="ecasSignature" type="base64Binary">
+        <annotation>
+          <documentation>An ECAS/EU Login digital XML signature. Once added, the document
+                        will become signed and locked in Hermes.</documentation>
+        </annotation>
+      </element>
+      <element name="application" type="string">
+        <annotation>
+          <documentation>Application in which the documents were signed.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <element name="applyProcedure">
+    <annotation>
+      <documentation>Wrapper element for the operation's parameters</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="documentId" type="tns:ObjectId">
+          <annotation>
+            <documentation>The repository id of the document to update</documentation>
+          </annotation>
+        </element>
+        <element name="procedureId" type="int" nillable="true">
+          <annotation>
+            <documentation>ID of the procedure to be applied to the document</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="applyProcedureResponse">
+    <annotation>
+      <documentation>Wrapper element for the operation's response</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as faults. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <complexType name="AbstractSpecificMetadataItem" abstract="true">
+    <sequence>
+      <element name="namespace" type="xsd:anyURI" minOccurs="0">
+        <annotation>
+          <documentation>Serves as an identifier for the type specific metadata.
+                        Good namespaces are e.g. the URL of the application, the URL of the wiki, ...
+                        For example it could identify all specific metadata items added by a given application.
+
+                        Max size: 255 bytes.</documentation>
+        </annotation>
+      </element>
+      <element name="name" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The name of the attachment, must have extension .xml
+
+                        The characters 'newline' 'carriage return', 'null character', 'tab', \, /, :,
+                         *, ?, ", &lt;, >, |, ', % are not allowed.
+
+                       Max size: 255 bytes.</documentation>
+        </annotation>
+      </element>
+      <element name="contentId" type="tns:ContentIdType" minOccurs="0">
+        <annotation>
+          <documentation>Content id that was obtained by uploading the content using
+                        the data transfer service</documentation>
+        </annotation>
+      </element>
+      <element name="externalReference" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Optional external reference associated with the item/attachment
+
+                        Max size: 255 bytes.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="SpecificMetadataItemsToDelete">
+    <annotation>
+      <documentation>Business specific metadata items/attachments to be deleted</documentation>
+    </annotation>
+    <sequence>
+      <element name="itemId" type="tns:ObjectId" minOccurs="1" maxOccurs="10"/>
+    </sequence>
+  </complexType>
+  <complexType name="SpecificMetadataItemsToAdd">
+    <annotation>
+      <documentation>Business specific metadata items/attachments to be added</documentation>
+    </annotation>
+    <sequence>
+      <element name="specificMetadataItem" type="tns:SpecificMetadataItemToAdd" minOccurs="1" maxOccurs="10"/>
+    </sequence>
+  </complexType>
+  <complexType name="SpecificMetadataItemToAdd">
+    <complexContent>
+      <restriction base="tns:AbstractSpecificMetadataItem">
+        <sequence>
+          <element name="namespace" type="xsd:anyURI" minOccurs="1"/>
+          <element name="name" type="string" minOccurs="1"/>
+          <element name="contentId" type="tns:ContentIdType" minOccurs="1"/>
+          <element name="externalReference" type="string" minOccurs="0"/>
+        </sequence>
+      </restriction>
+    </complexContent>
+  </complexType>
+  <complexType name="SpecificMetadataItemsToUpdate">
+    <annotation>
+      <documentation>Business specific metadata items/attachments to be updated</documentation>
+    </annotation>
+    <sequence>
+      <element name="specificMetadataItem" type="tns:SpecificMetadataItemToUpdate" minOccurs="1" maxOccurs="10"/>
+    </sequence>
+  </complexType>
+  <complexType name="SpecificMetadataItemToUpdate">
+    <complexContent>
+      <extension base="tns:AbstractSpecificMetadataItem">
+        <sequence>
+          <element name="itemId" type="tns:ObjectId"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="DocumentNotification">
+    <annotation>
+      <documentation>A notification about a document</documentation>
+    </annotation>
+    <sequence>
+      <element name="notificationId" type="xsd:string">
+        <annotation>
+          <documentation>Unique notification id</documentation>
+        </annotation>
+      </element>
+      <element name="read" type="xsd:boolean">
+        <annotation>
+          <documentation>Is the notification read?</documentation>
+        </annotation>
+      </element>
+      <element name="followUp" type="xsd:boolean">
+        <annotation>
+          <documentation>Has it been been marked for followup?</documentation>
+        </annotation>
+      </element>
+      <element name="document" type="tns:Document">
+        <annotation>
+          <documentation>The document</documentation>
+        </annotation>
+      </element>
+      <element name="readOn" type="xsd:date" minOccurs="0">
+        <annotation>
+          <documentation>Date when the notification has been read</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="SendersToAdd">
+    <sequence>
+      <element name="sender" minOccurs="1" maxOccurs="unbounded" type="tns:CurrentEntityToAdd"/>
+    </sequence>
+  </complexType>
+  <complexType name="RecipientsToAdd">
+    <sequence>
+      <element name="recipient" minOccurs="1" maxOccurs="unbounded" type="tns:RecipientToAdd"/>
+    </sequence>
+  </complexType>
+  <complexType name="CurrentEntityToAdd">
+    <choice>
+      <element name="currentEntityId" type="tns:CurrentEntityId">
+        <annotation>
+          <documentation>Internal repository ID of the entity in the current base.</documentation>
+        </annotation>
+      </element>
+      <element name="currentInternalEntitySearchExpression" type="string">
+        <annotation>
+          <documentation>Search for internal entity in the current base. Must return 1 result.</documentation>
+        </annotation>
+      </element>
+      <element name="currentExternalEntitySearchExpression" type="string">
+        <annotation>
+          <documentation>Search for external entity in the current base. Must return 1 result.</documentation>
+        </annotation>
+      </element>
+    </choice>
+  </complexType>
+  <complexType name="RecipientToAdd">
+    <complexContent>
+      <extension base="tns:CurrentEntityToAdd">
+        <sequence>
+          <element name="code" type="tns:RecipientCode" default="TO">
+            <annotation>
+              <documentation>Recipient code indicating if the recipient was
+                                directly addressed or not</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ExternalSignaturesToAdd">
+    <annotation>
+      <documentation>The signature information for a document in case the document was externally signed.
+
+                This information is provided only for information purposes and Hermes will not
+                validate or guarantee that the actual signing took place.</documentation>
+    </annotation>
+    <sequence>
+      <element name="signature" minOccurs="1" maxOccurs="unbounded">
+        <complexType>
+          <sequence>
+            <choice>
+              <sequence>
+                <choice>
+                  <element name="signedBy" type="tns:CurrentEntityId">
+                    <annotation>
+                      <documentation>Internal repository ID of the entity in the current
+                                                base that signed the document</documentation>
+                    </annotation>
+                  </element>
+                  <element name="signedBySearchExpression" type="string">
+                    <annotation>
+                      <documentation>Search for internal entity in the current base. Must return 1 result.</documentation>
+                    </annotation>
+                  </element>
+                </choice>
+                <element name="dateSigned" type="dateTime">
+                  <annotation>
+                    <documentation>Date (and time) on which the document was signed.</documentation>
+                  </annotation>
+                </element>
+              </sequence>
+              <element name="ecasSignature" type="base64Binary">
+                <annotation>
+                  <documentation>An ECAS/EU Login digital XML signature. When using this option the document
+                                        will become signed and locked in Hermes.</documentation>
+                </annotation>
+              </element>
+            </choice>
+            <element name="application" type="string">
+              <annotation>
+                <documentation>Application in which the document was signed.</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ItemsToAdd">
+    <sequence>
+      <choice minOccurs="1" maxOccurs="unbounded">
+        <element name="scannedItem" type="tns:ScannedItemToAdd">
+          <annotation>
+            <documentation>Scanned attachments</documentation>
+          </annotation>
+        </element>
+        <element name="uploadedItem" type="tns:UploadedItemToAdd">
+          <annotation>
+            <documentation>Uploaded attachments</documentation>
+          </annotation>
+        </element>
+      </choice>
+    </sequence>
+  </complexType>
+  <complexType name="ScannedItemToAdd">
+    <sequence>
+      <element name="name" type="string">
+        <annotation>
+          <documentation>Name of the item</documentation>
+        </annotation>
+      </element>
+      <element name="language" type="tns:LanguageCode" default="NS">
+        <annotation>
+          <documentation>Language of the item (e.g. : EN, FR)</documentation>
+        </annotation>
+      </element>
+      <element name="kind" type="tns:ItemKindToAdd" default="MAIN" minOccurs="0">
+        <annotation>
+          <documentation>Item kind such as MAIN, ANNEX etc.</documentation>
+        </annotation>
+      </element>
+      <element name="externalReference" type="string" minOccurs="0">
+        <annotation>
+          <documentation>External reference associated with the item</documentation>
+        </annotation>
+      </element>
+      <element name="translations" type="tns:TranslationsToAdd" minOccurs="0">
+        <annotation>
+          <documentation>List of translations for the item</documentation>
+        </annotation>
+      </element>
+      <element name="toStamp" type="boolean" default="true" minOccurs="0">
+        <annotation>
+          <documentation>If false, the ARES Stamp will not be applied on the first page of the rendition</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="UploadedItemToAdd">
+    <sequence>
+      <element name="name" type="string">
+        <annotation>
+          <documentation>Name of the item</documentation>
+        </annotation>
+      </element>
+      <element name="contentId" type="tns:ContentIdType">
+        <annotation>
+          <documentation>Content id that was obtained by uploading the content using
+                        the data transfer service</documentation>
+        </annotation>
+      </element>
+      <element name="attachmentType" type="tns:AttachmentTypeToAdd">
+        <annotation>
+          <documentation>Attachment type (e.g. NATIVE_ELECTRONIC)</documentation>
+        </annotation>
+      </element>
+      <element name="language" type="tns:LanguageCode" default="NS">
+        <annotation>
+          <documentation>Language of the item (e.g. : EN, FR)</documentation>
+        </annotation>
+      </element>
+      <element name="kind" type="tns:ItemKindToAdd" default="MAIN" minOccurs="0">
+        <annotation>
+          <documentation>Item kind such as MAIN, ANNEX etc.</documentation>
+        </annotation>
+      </element>
+      <element name="externalReference" type="string" minOccurs="0">
+        <annotation>
+          <documentation>External reference associated with the attachment</documentation>
+        </annotation>
+      </element>
+      <element name="translations" type="tns:TranslationsToAdd" minOccurs="0">
+        <annotation>
+          <documentation>List of translations for the item</documentation>
+        </annotation>
+      </element>
+      <element name="toStamp" type="boolean" default="true" minOccurs="0">
+        <annotation>
+          <documentation>If false, the ARES Stamp will not be applied on the first page of the rendition</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="TranslationsToAdd">
+    <sequence>
+      <element name="translation" minOccurs="1" maxOccurs="unbounded">
+        <annotation>
+          <documentation>An uploaded attachment (cannot be a scan)</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="name" type="string">
+              <annotation>
+                <documentation>Name of the translation</documentation>
+              </annotation>
+            </element>
+            <element name="contentId" type="tns:ContentIdType">
+              <annotation>
+                <documentation>Content id that was obtained by uploading the content using the
+                                    data transfer service</documentation>
+              </annotation>
+            </element>
+            <element name="attachmentType" type="tns:AttachmentTypeToAdd">
+              <annotation>
+                <documentation>Attachment type (e.g. NATIVE_ELECTRONIC)</documentation>
+              </annotation>
+            </element>
+            <element name="language" type="tns:LanguageCode" default="NS">
+              <annotation>
+                <documentation>Language of the translation (e.g. : EN, FR)</documentation>
+              </annotation>
+            </element>
+            <element name="externalReference" type="string" minOccurs="0">
+              <annotation>
+                <documentation>External reference associated with the translation</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <simpleType name="ItemKindToAdd">
+    <restriction base="string">
+      <enumeration value="MAIN"/>
+      <enumeration value="COVER_LETTER"/>
+      <enumeration value="ANNEX"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="AttachmentTypeToAdd">
+    <restriction base="string">
+      <enumeration value="NATIVE_ELECTRONIC"/>
+      <enumeration value="SCANNED"/>
+      <enumeration value="EMAIL"/>
+    </restriction>
+  </simpleType>
+  <complexType name="Marking">
+    <sequence>
+      <element name="value" type="tns:MarkerType">
+        <annotation>
+          <documentation>Type of marker</documentation>
+        </annotation>
+      </element>
+      <element name="deadline" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Marker deadline date at which the marker expires</documentation>
+        </annotation>
+      </element>
+      <element name="expiryEvent" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Marker expiry event. This is optional and is treated as a comment field.</documentation>
+        </annotation>
+      </element>
+      <element name="personConcerned" minOccurs="0" type="tns:CurrentEntityToAdd">
+        <annotation>
+          <documentation>A recipient of the document to which this document is addressed.
+                        This person
+                        is considered the 'person concerned' and can only be specified using a
+                        marker.
+                        This is element is valid if there is a marker of type personal, staff
+                        matter, medical matter and personal data.
+                        It can be an internal or external person entity, not an organization entity.
+                        It should not be a virtual entity.</documentation>
+        </annotation>
+      </element>
+      <element name="service" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Specifies the service (e.g. digit.b.1) when applying the LIMITED_SERVICE
+                        markings. If ommitted, by default the service of the user is used.&lt;br/>
+
+                        It has to be a valid service (i.e. organization).</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="IndexServerOptions">
+    <annotation>
+      <documentation>When searching against the index server, certain options can be specified which
+                are specific to the index server.</documentation>
+    </annotation>
+    <sequence>
+      <element name="collection" minOccurs="0">
+        <annotation>
+          <documentation>On the index server, the Ares partition (partitionId == 1) is sub-partitioned in
+                    collections per year (according to the document's creation date).
+                    This is mainly to improve the search performance.
+                    Other partitions are not subdivided and for them this option is ignored.
+                    It's up to the caller to ensure that the specified collection year matches with
+                    any date criteria provided in the expression. If there's a mismatch, the search
+                    will return no (or truncated) results.
+                    If this option is omitted, the search will be done across all collections.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="year" type="tns:CollectionYear" minOccurs="1" maxOccurs="unbounded"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="includeItemSummary" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>It specifies that the document search response should include a summary (if any)
+                        for its items that matched the search criteria.
+                        Only applicable when document retrieval option includeItemsMetadata has been set.
+                        This option is only useful when your expression contains item criteria or fulltext criteria.
+                        For performance reasons disable this option if you don't need a summary.</documentation>
+        </annotation>
+      </element>
+      <element name="limitToMatchingItemsMetadata" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Specifies that the document search response will contain the metadata of
+                        only the attachments that matched the search criteria. Attachments that do
+                        not match (or where the matching score was very low) will not be part
+                        of the response.
+                        Only applicable when document retrieval option includeItemsMetadata has been set.
+                        This option is only useful when your expression contains item criteria or fulltext criteria.</documentation>
+        </annotation>
+      </element>
+      <element name="computeTotalRetrievable" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Specifies that the total number of documents (accessible by the user), that
+                        match the search criteria, should be computed.
+                        If not computed, totalRetrievable will be equal to the number of documents
+                        fetched.
+                        This can have a significant impact on performance if a user has limited
+                        accessibility on documents in the repository.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <simpleType name="CollectionYear">
+    <restriction base="int">
+      <minInclusive value="2008"/>
+    </restriction>
+  </simpleType>
+  <complexType name="Classification">
+    <annotation>
+      <documentation>Classification info associated to a document whose security classification is either EU_RESTRAINED or EURA_RESTRICTED</documentation>
+    </annotation>
+    <choice>
+      <element name="deadline" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Classification deadline date at which the classification expires.</documentation>
+        </annotation>
+      </element>
+      <element name="expiryEvent" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Classification expiration event. This is optional and is treated as a comment field.</documentation>
+        </annotation>
+      </element>
+    </choice>
+  </complexType>
+</schema>

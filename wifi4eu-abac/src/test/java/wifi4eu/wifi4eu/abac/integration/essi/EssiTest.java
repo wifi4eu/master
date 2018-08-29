@@ -14,6 +14,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,10 +34,17 @@ public class EssiTest {
 
 
         PadesSigner psigner = new PadesSigner(essiClientConfiguration);
+
+        PDFWidgetDescription.Text officerNameText = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(0, -50, 70, 150), "ANDREI\nAlexandru");
+        officerNameText.setFont(new Font("Arial", Font.BOLD, 15));
+
+        PDFWidgetDescription.Text officerDetailsText = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(70, -50, 100, 150), "Digitally signed by ANDREI Alexandru\nDN:\nemail=Alexandru.ANDREI@ext.ec.europa.eu\no=European Commission\nDate: 2018.08.29 13:58:01");
+        officerDetailsText.setFont(new Font("Verdana", Font.ITALIC, 6));
+
         PDFWidgetDescription pdfWidgetDescription = new PDFWidgetDescription();
-        PDFWidgetDescription.Text text = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(100, 100), "Visible signature test");
-        pdfWidgetDescription.addText(text);
-        pdfWidgetDescription.setPosition(new PDFWidgetDescription.Position(/*x*/50, /*y*/50, /*width*/200, /*height*/100));
+        pdfWidgetDescription.addText(officerNameText);
+        pdfWidgetDescription.addText(officerDetailsText);
+        pdfWidgetDescription.setPosition(new PDFWidgetDescription.Position(/*x*/320, /*y*/150, /*width*/200, /*height*/100));
         psigner.setPdfSignatureField(new PdfSignatureField(PdfSignatureField.Policy.NEW_IF_NO_EXISTING, /*page*/7, "For the Agency", pdfWidgetDescription));
 
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("grant_agreement_signed_example_2018.07.30.pdf");
