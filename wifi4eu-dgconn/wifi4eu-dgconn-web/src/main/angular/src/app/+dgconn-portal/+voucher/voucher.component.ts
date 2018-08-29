@@ -254,8 +254,8 @@ export class DgConnVoucherComponent {
                   this.sharedService.growlTranslation('Voucher assignment list not found for this call', 'dgConn.voucherAssignment.warning.noVoucherForCall', 'warn');
                 }     
               })
-              this.applicationApi.getApplicationsNotInvalidated(this.callSelected.id).subscribe((data) => {
-                this.validApplications = data;
+              this.applicationApi.countValidatedApplications(this.callSelected.id).subscribe((ResponseDTO: ResponseDTOBase) => {
+                this.validApplications = ResponseDTO.data;
               })
           })
         }
