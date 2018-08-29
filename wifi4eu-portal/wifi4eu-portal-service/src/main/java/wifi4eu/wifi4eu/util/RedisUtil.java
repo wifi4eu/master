@@ -29,7 +29,7 @@ public class RedisUtil {
     private String[] redisUris;
 
     @Value("${redis.enabled}")*/
-    private boolean enableSync = true;
+    private boolean enableSync = false;
 
     private final Logger _log = LogManager.getLogger(RedisUtil.class);
     private final String channel = "refresh";
