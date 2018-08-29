@@ -311,6 +311,7 @@ export class AppComponent {
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.user = response.data;
+                    // NEED WORK
                     if (this.user.type == -1){
                         //deactivated user
                         this.router.navigateByUrl('/deactivated-user');
@@ -318,7 +319,10 @@ export class AppComponent {
                         this.router.navigateByUrl('/invited-contact-details');
                     }
                     this.localStorageService.set('user', JSON.stringify(response.data));
-                    this.checkIfVoucher();
+                    if (this.user.type == 3){
+                        // check menu
+                        this.checkIfVoucher();
+                    }
                     if (this.user.type == 0 && publicRedirection) {
                         this.router.navigateByUrl(String(publicRedirection));
                     }
