@@ -640,6 +640,7 @@
                 <rabbitmq.host></rabbitmq.host>
                 <rabbitmq.username></rabbitmq.username>
                 <rabbitmq.password></rabbitmq.password>
+                <redis.sentinel.uris>202.3.2.4,202.3.2.5,202.3.2.6</redis.sentinel.uris>
             </properties>
         </profile>
         <profile>
@@ -677,6 +678,7 @@
                 <rabbitmq.host></rabbitmq.host>
                 <rabbitmq.username></rabbitmq.username>
                 <rabbitmq.password></rabbitmq.password>
+                <redis.sentinel.uris>202.3.2.11,202.3.2.12,202.3.2.13</redis.sentinel.uris>
             </properties>
         </profile>
         <profile>
