@@ -226,10 +226,8 @@ public class UserService {
             InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
             if (Validator.isNotNull(invitationContact)){
                 userDTO.setUserInvited(true);
-                // check 24h max
                 long hours = Utils.getHoursBetweenDates(invitationContact.getLastModified(), new Date());
                 if (hours >= 24){
-                    // more than 24 hours (-1 day)
                     userDTO.setUserInvitedFor(0);
                 } else {
                     if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0){

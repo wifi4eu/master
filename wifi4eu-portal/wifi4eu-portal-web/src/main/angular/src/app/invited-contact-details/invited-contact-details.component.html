@@ -1,4 +1,4 @@
-<div *ngIf="user" class="container">
+<div *ngIf="user && user.userInvitedFor != 0 " class="container">
   <div id="step2-title" class="ui-g">
       <div class="ui-g-12 center">
           <div id="component-title">
@@ -131,4 +131,16 @@
           </button>
       </div>
   </form>
+</div>
+
+<div *ngIf="user && user.userInvitedFor == 0" class="container">
+    <div id="step2-title" class="ui-g">
+        <div class="ui-g-12 center">
+            <div id="component-title">
+                <h3 class="beneficiaryTitle labelModal">
+                    {{ 'invitate.contact.details.expired' | translate }}
+                </h3>
+            </div>
+        </div>
+    </div>
 </div>
