@@ -567,7 +567,7 @@ export class BeneficiaryEditProfileComponent {
         this.addUser = true;
     }
 
-    private closeAddNewContactModal() {
+   private closeAddNewContactModal() {
         this.newUserEmail = '';
         this.addUser = false;
     }
@@ -637,7 +637,7 @@ export class BeneficiaryEditProfileComponent {
 
 
     private deactivateContactModal() {
-        this.userApi.deactivateRegistrationUser(this.registration.id, this.contactIdToDeactvate).subscribe(
+        this.userApi.deactivateRegistrationUser(this.contactIdToDeactvate).subscribe(
             (responseDTO: ResponseDTOBase) => {
                 this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.deactivate.sucess', 'success');
                 this.closeModal();

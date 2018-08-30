@@ -22,12 +22,13 @@ import wifi4eu.wifi4eu.util.RedisUtil;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
-import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.user.UserContactDetails;
+import wifi4eu.wifi4eu.repository.organization.OrganizationUsersRepository;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.RegistrationUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -54,6 +55,12 @@ public class UserResource {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private RegistrationUtils registrationUtils;
+
+    @Autowired
+    private OrganizationUsersRepository organizationUsersRepository;
 
     Logger _log = LogManager.getLogger(UserResource.class);
 
@@ -268,24 +275,16 @@ public class UserResource {
         }
     }
 
-    @ApiOperation(value = "Get all users from registration")
-    @RequestMapping(value = "/registrationUsersToEdit/{id}/{isOrganization}", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "Get all users from organization")
+    @RequestMapping(value = "/registrationUsers-from-organization/{organizationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserContactDetails> getUsersToEditFromRegistration(@PathVariable("id") Integer id, @PathVariable("isOrganization") boolean isOrganization) {
+    public List<UserContactDetails> getUsersFromOrganization(@PathVariable("organizationId") Integer organizationId, boolean isOrganization) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
         try {
-            if (isOrganization) {
-                List<Registration> registrations = registrationService.findRegistrationsByOrganisationId(id);
-                for (int i = 0; i < registrations.size(); i++) {
-                    permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrations.get(i).getId());
-                }
-                return registrationService.findUsersContactDetailsByOrganisationId(id);
-            } else {
-                permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + id);
-                return registrationService.findUsersContactDetailsByRegistrationId(id);
-            }
+            registrationUtils.checkOrganizationPermissions(organizationId);
+            return registrationService.findUsersContactDetailsByOrganisationId(organizationId);
             // return registrationService.getUsersFromRegistration(registrationId);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
@@ -360,23 +359,33 @@ public class UserResource {
     }
 
     @ApiOperation(value = "Deactivate user from registration")
-    @RequestMapping(value = "/registrationUsers/{registrationId}/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/registrationUsers/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO deactivateRegistrationUser(@PathVariable("registrationId") Integer registrationId, @PathVariable("userId") Integer userId,
+    public ResponseDTO deactivateRegistrationUser(@PathVariable("userId") Integer userId,
                                                   HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Deactivating user " + userId + " of registration by id " +
-                registrationId);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Deactivating user " + userId );
         try {
-            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
             //user connected cannot deactivate itself
             if (userConnected.getId() == userId) {
                 _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Trying to deactive itself.");
                 response.sendError(HttpStatus.BAD_REQUEST.value());
                 return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
             }
-            return userService.deactivateRegistrationUser(registrationId, userId, userConnected.getEcasUsername());
+            //user connected has to have permission for all registrations related to this user
+            List<RegistrationDTO> registrationDTOS = registrationService.getRegistrationsByUserId(userId);
+            if (registrationDTOS.isEmpty()) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Cannot been retrieved user's registrations");
+                response.sendError(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR.value());
+                return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+            } else {
+                for (RegistrationDTO registrationDTO :registrationDTOS) {
+                    permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+                }
+            }
+
+            return userService.deactivateRegistrationUser(registrationDTOS, userId, userConnected.getEcasUsername());
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade
                     .getMessage());

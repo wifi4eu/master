@@ -208,3 +208,24 @@ create table admin_actions(
        ON DELETE CASCADE
        ON UPDATE CASCADE
 );
+
+
+--ORGANIZATIONS USERS CHANGES
+  ALTER TABLE invitation_contacts
+    ADD id_organization INTEGER,
+    FOREIGN KEY (id_organization) REFERENCES organizations(id)
+    ON DELETE CASCADE
+   ON UPDATE CASCADE;
+
+   create table organization_users (
+   	id INTEGER not null identity,
+   	id_organization INTEGER not null,
+   	id_user integer not null,
+   	FOREIGN KEY (id_organization) REFERENCES organizations(id)
+       ON DELETE CASCADE
+       ON UPDATE CASCADE,
+   		FOREIGN KEY (id_user) REFERENCES users(id)
+       ON DELETE CASCADE
+       ON UPDATE CASCADE,
+   	);
+

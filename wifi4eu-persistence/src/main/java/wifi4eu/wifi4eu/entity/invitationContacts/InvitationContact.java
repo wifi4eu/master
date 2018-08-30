@@ -36,11 +36,14 @@ public class InvitationContact {
     @Column(name = "last_modified")
     private Date lastModified;
 
+    @Column(name = "id_organization")
+    private Integer idOrganization;
+
     public InvitationContact(){
 
     }
 
-    public InvitationContact(Integer type, Integer idRegistration, Integer idSupplier, Integer idUserRequest, String emailInvited, Integer status, Date createDate, Date lastModified) {
+    public InvitationContact(Integer type, Integer idRegistration, Integer idSupplier, Integer idUserRequest, String emailInvited, Integer status, Date createDate, Date lastModified, Integer idOrganization) {
         this.type = type;
         this.idRegistration = idRegistration;
         this.idSupplier = idSupplier;
@@ -49,6 +52,7 @@ public class InvitationContact {
         this.status = status;
         this.createDate = createDate;
         this.lastModified = lastModified;
+        this.idOrganization = idOrganization;
     }
 
     public Integer getId() {
@@ -121,5 +125,13 @@ public class InvitationContact {
 
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
+    }
+
+    public Integer getIdOrganization() {
+        return idOrganization;
+    }
+
+    public void setIdOrganization(Integer idOrganization) {
+        this.idOrganization = idOrganization;
     }
 }

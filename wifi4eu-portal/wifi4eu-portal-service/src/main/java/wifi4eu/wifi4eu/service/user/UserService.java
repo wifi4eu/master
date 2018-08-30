@@ -30,6 +30,8 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
+import wifi4eu.wifi4eu.entity.organization.Organization;
+import wifi4eu.wifi4eu.entity.organization.OrganizationUsers;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
@@ -45,6 +47,7 @@ import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.organization.OrganizationUsersRepository;
 import wifi4eu.wifi4eu.repository.registration.ConditionsAgreementRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
@@ -126,6 +129,9 @@ public class UserService {
 
     @Autowired
     RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    OrganizationUsersRepository organizationUsersRepository;
 
     @Autowired
     RegistrationRepository registrationRepository;
@@ -227,7 +233,8 @@ public class UserService {
             InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
             if (Validator.isNotNull(invitationContact)){
                 userDTO.setUserInvited(true);
-                if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0){
+                if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0 ||
+                        (Validator.isNotNull(invitationContact.getIdOrganization()) && invitationContact.getIdOrganization() != 0)){
                     userDTO.setUserInvitedFor((int) Constant.ROLE_REPRESENTATIVE);
                 } else if (Validator.isNotNull(invitationContact.getIdSupplier()) && invitationContact.getIdSupplier() != 0){
                     userDTO.setUserInvitedFor((int) Constant.ROLE_SUPPLIER);
@@ -244,14 +251,23 @@ public class UserService {
             if (Validator.isNotNull(invitationContact) && checkFieldsContactDetails(userDTO, invitationContact.getType())) {
                 userConnected.setName(userDTO.getName());
                 userConnected.setSurname(userDTO.getSurname());
-                if (invitationContact.getIdRegistration() != null && invitationContact.getIdRegistration() != 0) {
+                boolean isOrganization = Validator.isNotNull(invitationContact.getIdOrganization()) && invitationContact.getIdOrganization() != 0;
+                if ((Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0) || isOrganization) {
                     userConnected.setCity(userDTO.getCity());
                     userConnected.setCountry(userDTO.getCountry());
                     userConnected.setAddress(userDTO.getAddress());
                     userConnected.setAddressNum(userDTO.getAddressNum());
                     userConnected.setPostalCode(userDTO.getPostalCode());
                     userConnected.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
-                    createRegistrationUser(userConnected, invitationContact.getIdRegistration());
+                    if(isOrganization){
+                        createOrganizationUser(userConnected, invitationContact.getIdOrganization());
+                        List<Registration> registrations = registrationRepository.findByOrganisationId(invitationContact.getIdOrganization());
+                        for (Registration registration: registrations) {
+                            createRegistrationUser(userConnected, registration.getId());
+                        }
+                    } else {
+                        createRegistrationUser(userConnected, invitationContact.getIdRegistration());
+                    }
                 } else if (invitationContact.getIdSupplier() != null && invitationContact.getIdSupplier() != 0) {
                     userConnected.setPhonePrefix(userDTO.getPhonePrefix());
                     userConnected.setPhoneNumber(userDTO.getPhoneNumber());
@@ -291,6 +307,13 @@ public class UserService {
         return false;
     }
 
+
+    private void createOrganizationUser(UserDTO userDTO, Integer idOrganization){
+        OrganizationUsers organizationUser = new OrganizationUsers();
+        organizationUser.setIdOrganization(idOrganization);
+        organizationUser.setIdUser(userDTO.getId());
+        organizationUsersRepository.save(organizationUser);
+    }
 
     private void createRegistrationUser(UserDTO userDTO, Integer registrationId){
         RegistrationUsers registrationUsers = new RegistrationUsers();
@@ -669,13 +692,30 @@ public class UserService {
         return false;
     }
 
-    public ResponseDTO deactivateRegistrationUser(Integer registrationId, Integer userId, String logInfo) throws Exception {
+    public ResponseDTO deactivateRegistrationUser(List<RegistrationDTO> registrationDTOS, Integer userId, String logInfo) throws Exception {
         ResponseDTO responseDTO = new ResponseDTO();
-        //has municipality more than one user associated?
-        if (registrationUsersRepository.countRegistrationUsersByRegistrationIdAndStatusNot(registrationId,RegistrationUsersStatus.DEACTIVATED.getValue()) > 1) {
-            //setting user as deactivated
+
+        //verifying user can be deactivated
+        //every registration associated to this user has to have at least 1 other user activated
+        for (RegistrationDTO registrationDTO : registrationDTOS) {
+            int registrationId = registrationDTO.getId();
+            //has municipality more than one user associated?
+            if (registrationUsersRepository.countRegistrationUsersByRegistrationIdAndStatusNot(registrationId, RegistrationUsersStatus.DEACTIVATED
+                    .getValue()) <= 1) {
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(1, "There has to be minimum 1 user per registration."));
+                _log.info("ECAS Username: " + logInfo + "- Registration " + registrationId + " has to have minimum 1 user per registration. Could " +
+                        "not " + "deactive user " + userId + ".");
+                return responseDTO;
+            }
+        }
+
+        for (RegistrationDTO registrationDTO : registrationDTOS) {
+            int registrationId = registrationDTO.getId();
             RegistrationUsers registrationUsers = registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId);
-            if(registrationUsers.getStatus() != RegistrationUsersStatus.DEACTIVATED.getValue()) {
+            if (registrationUsers.getStatus() != RegistrationUsersStatus.DEACTIVATED.getValue()) {
+                //setting user as deactivated
                 registrationUsers.setStatus(RegistrationUsersStatus.DEACTIVATED.getValue());
                 registrationUsers = registrationUsersRepository.save(registrationUsers);
 
@@ -684,7 +724,8 @@ public class UserService {
                 }
 
                 //if user doesn't have more registrations associated we put type to deactivated
-                if (registrationUsersRepository.countRegistrationUsersByUserIdAndStatusNot(userId, RegistrationUsersStatus.DEACTIVATED.getValue()) <= 1) {
+                if (registrationUsersRepository.countRegistrationUsersByUserIdAndStatusNot(userId, RegistrationUsersStatus.DEACTIVATED.getValue())
+                        <= 1) {
                     setUserTypeToDeactivate(userId);
                 }
 
@@ -706,20 +747,15 @@ public class UserService {
                 permissionChecker.dropTablePermissions(userId, Integer.toString(municipality.getId()), RightConstants.MUNICIPALITIES_TABLE);
                 responseDTO.setSuccess(true);
                 responseDTO.setData("success");
-                _log.info("ECAS Username: " + logInfo + "- Registration contact with the id "+userId+" deactivated successfully");
-            } else{
+                _log.info("ECAS Username: " + logInfo + "- Registration contact with the id " + userId + " deactivated successfully");
+            } else {
                 responseDTO.setSuccess(false);
                 responseDTO.setData("");
                 responseDTO.setError(new ErrorDTO(1, "User already deactivated."));
-                _log.info("ECAS Username: " + logInfo + "- User "+userId+ " already deactivated.");
+                _log.info("ECAS Username: " + logInfo + "- User " + userId + " already deactivated for registration "+ registrationId);
             }
-        } else {
-            responseDTO.setSuccess(false);
-            responseDTO.setData("");
-            responseDTO.setError(new ErrorDTO(1, "There has to be minimum 1 user per registration."));
-            _log.info("ECAS Username: " + logInfo + "- Registration " + registrationId + " has to have minimum 1 user per registration. Could not " +
-                    "deactive user " + userId + ".");
-        } return responseDTO;
+        }
+        return responseDTO;
     }
 
     public void setUserTypeToDeactivate(Integer userId){

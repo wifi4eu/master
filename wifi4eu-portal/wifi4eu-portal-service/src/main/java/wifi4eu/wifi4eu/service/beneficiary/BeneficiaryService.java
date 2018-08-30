@@ -23,6 +23,7 @@ import wifi4eu.wifi4eu.mapper.history_action.UserHistoryActionMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
 import wifi4eu.wifi4eu.repository.history_action.UserHistoryActionRepository;
+import wifi4eu.wifi4eu.repository.organization.OrganizationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
@@ -113,6 +114,9 @@ public class BeneficiaryService {
 
     @Autowired
     RegistrationUtils registrationUtils;
+
+    @Autowired
+    OrganizationRepository organizationRepository;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
@@ -656,17 +660,23 @@ public class BeneficiaryService {
         return userRegistrationDTO;
     }
 
-    public ResponseDTO invitateContactBeneficiary(UserDTO userConnected, int idMunicipality, String newContactEmail) {
+    public ResponseDTO invitateContactBeneficiary(UserDTO userConnected, Integer idMunicipality, String newContactEmail, Integer idOrganization) {
         ResponseDTO responseDTO = new ResponseDTO();
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - START");
-        if (Validator.isNotNull(idMunicipality) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && Validator.isNotNull(registrationRepository.findByMunicipalityId(idMunicipality))) {
+        boolean isOrganization =  Validator.isNotNull(idOrganization) && idOrganization != 0 && Validator.isNotNull(organizationRepository.findOne(idOrganization));
+        boolean isRegistration =  Validator.isNotNull(idMunicipality) && idMunicipality != 0 && Validator.isNotNull(registrationRepository.findByMunicipalityId(idMunicipality));
+        if (Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && (isRegistration || isOrganization)) {
             if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail, userConnected.getId())) && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)) {
                 InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndIdUserRequest(newContactEmail, userConnected.getId());
                 Date today = new Date();
                 if (Validator.isNull(invitationContact)) {
                     invitationContact = new InvitationContact();
                     invitationContact.setEmailInvited(newContactEmail);
-                    invitationContact.setIdRegistration(registrationRepository.findByMunicipalityId(idMunicipality).getId());
+                    if (isRegistration) {
+                        invitationContact.setIdRegistration(registrationRepository.findByMunicipalityId(idMunicipality).getId());
+                    } else if(isOrganization){
+                        invitationContact.setIdOrganization(idOrganization);
+                    }
                     invitationContact.setIdUserRequest(userConnected.getId());
                     invitationContact.setType((int) Constant.ROLE_REPRESENTATIVE);
                     invitationContact.setStatus(InvitationContactStatus.PENDING.getValue());

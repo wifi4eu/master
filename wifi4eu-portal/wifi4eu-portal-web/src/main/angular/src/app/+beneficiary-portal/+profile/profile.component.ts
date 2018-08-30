@@ -52,6 +52,7 @@ export class BeneficiaryProfileComponent {
     // private users: UserDTOBase[] = [];
     private userMain;
     private users = [];
+    private usersOrganization = [];
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
     private addUser: boolean = false;
@@ -115,8 +116,16 @@ export class BeneficiaryProfileComponent {
                 for (let registration of registrations) {
                     if (registration.municipalityId == 0)
                         continue;
-                    if (!this.isOrganisation && registration.organisationId > 0)
+                    if (!this.isOrganisation && registration.organisationId > 0){
                         this.isOrganisation = true;
+                        this.userApi.getUsersFromOrganization(registration.organisationId).subscribe(
+                            (users: UserContactDetailsBase[]) => {
+                                this.usersOrganization = users;
+                                if (users != null)
+                                    this.userMain = users.find(x => x.main === 1);
+                            }
+                        );
+                    }
                     this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                     this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(

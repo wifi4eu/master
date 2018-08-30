@@ -24,9 +24,11 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.BeneficiaryValidator;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.RegistrationUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,6 +49,12 @@ public class BeneficiaryResource {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RegistrationUtils registrationUtils;
+
+    @Autowired
+    private RegistrationRepository registrationRepository;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryResource.class);
 
@@ -318,7 +326,29 @@ public class BeneficiaryResource {
             if (Validator.isNull(userConnected) || userConnected.getType() != 3){
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            return beneficiaryService.invitateContactBeneficiary(userConnected,idMunicipality,newContactEmail.trim());
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationRepository.findByMunicipalityId(idMunicipality));
+
+            return beneficiaryService.invitateContactBeneficiary(userConnected,idMunicipality,newContactEmail.trim(), null);
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Incorrect request when adding contacts for beneficiaries", e.getMessage());
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
+    @ApiOperation(value = "Generate invitation to be a organization contact")
+    @RequestMapping(value = "/invitation-contact-organization", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO invitateContactOrganization(@RequestParam("idOrganization") final int idOrganization, @RequestParam("newContactEmail") final String newContactEmail, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (Validator.isNull(userConnected) || userConnected.getType() != 3){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+             registrationUtils.checkOrganizationPermissions(idOrganization);
+
+            return beneficiaryService.invitateContactBeneficiary(userConnected,null,newContactEmail.trim(), idOrganization);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Incorrect request when adding contacts for beneficiaries", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
