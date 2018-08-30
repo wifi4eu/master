@@ -51,7 +51,7 @@ export class DgConnSupplierRegistrationsDetailsComponent {
                 this.supplierApi.getSupplierById(supplierId).subscribe(
                     (supplier: SupplierDTOBase) => {
                         if (supplier != null) {
-                            this.loadSimilarSuppliers();
+                            this.loadSimilarSuppliers(supplier.id);
                             this.supplier = supplier;
                         } else {
                             this.loadingData = false;
@@ -62,16 +62,16 @@ export class DgConnSupplierRegistrationsDetailsComponent {
         );
     }
 
-    private paginateSimilarSuppliers(event){
-      this.page = event.page;
-      this.pageSize = event.rows;
-      this.loadSimilarSuppliers();
+    private paginateSimilarSuppliers(event) {
+        this.page = event.page;
+        this.pageSize = event.rows;
+        this.loadSimilarSuppliers();
     }
 
-    private loadSimilarSuppliers(){
+    private loadSimilarSuppliers(supplierId) {
         if (this.findSimilarSupplier != null && this.findSimilarSupplier['destination']['closed'] === false)
             this.findSimilarSupplier.unsubscribe();
-        this.findSimilarSupplier = this.supplierApi.findSimilarSuppliersPaged(this.supplier.id, this.page, this.pageSize).subscribe(
+        this.findSimilarSupplier = this.supplierApi.findSimilarSuppliersPaged(supplierId, this.page, this.pageSize).subscribe(
             (response: ResponseDTO) => {
                 let suppliers = response.data;
                 this.totalRecords = response.xtotalCount;
