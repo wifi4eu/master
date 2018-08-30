@@ -17,7 +17,8 @@
             <beneficiary-registration-step2 [country]="country"
                                             [multipleMunicipalities]="multipleMunicipalities"
                                             [(municipalities)]="municipalities"
-                                            [(laus)]="laus" [(mayors)]="mayors"
+                                            [(laus)]="laus" [(mayors)]="mayors" [buttonEnabledStep2]="buttonEnabledStep2"
+                                            [(emailConfirmations)]= "emailConfirmations" [(css_class_email)]= "css_class_email"
                                             (onNext)="navigate(3)" (onBack)="navigate(1)"></beneficiary-registration-step2>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
@@ -30,6 +31,7 @@
                                             (onNext)="navigate(4)" (onBack)="navigate(2)"></beneficiary-registration-step3>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
+    <p>{{buttonEnabledStep3}}</p>
     <ux-wizard-step label="{{ 'benefRegistration.registration.review.title' | translate }}" [isCompleted]="completed[3]"
                     [isActive]="active[3]">
         <uxWizardStepCustomContent>

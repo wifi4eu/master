@@ -1,4 +1,5 @@
 <!-- Title -->
+<p>INN: {{buttonEnabledStep3}}</p>
 <div id="step2-title" class="ui-g">
     <div class="ui-g-12 center">
         <div id="component-title">
@@ -37,7 +38,7 @@
                     <div>
                         <label class="label floatLeft" for="associationName">{{ 'benefRegistration.associationName' | translate }}
                         </label>
-                        <input id="associationName" type="text" class="form-control paddingInput" maxlength="255" name="associationName" [(ngModel)]="associationName" (ngModelChange)="checkButtonEnabled($event)"
+                        <input id="associationName" type="text" class="form-control paddingInput" maxlength="255" name="associationName" [(ngModel)]="associationName" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
                          required>
                     </div>
                 </div>
@@ -56,7 +57,7 @@
                 <div class="ui-g-8">
                     <div>
                         <label class="label floatLeft" for="name">{{ 'shared.name.label' | translate }}</label>
-                        <input id="nameStep3" type="text" class="form-control paddingInput" name="name" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.name" (ngModelChange)="checkButtonEnabled($event)"
+                        <input id="nameStep3" type="text" class="form-control paddingInput" name="name" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.name" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
                         required>
                     </div>
                 </div>
@@ -67,7 +68,7 @@
                 <div class="ui-g-8">
                     <div class="form-group">
                         <label class="label floatLeft" for="surname">{{ 'shared.surname.label' | translate }}</label>
-                        <input id="surnameStep3" type="text" class="form-control paddingInput" name="surname" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.surname" (ngModelChange)="checkButtonEnabled($event)"
+                        <input id="surnameStep3" type="text" class="form-control paddingInput" name="surname" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.surname" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
                         required>
                     </div>
                 </div>
@@ -78,14 +79,14 @@
                 <div class="ui-g-4">
                     <label class="label floatLeft" for="address">{{ 'benefRegistration.address.label' | translate }}
                     </label>
-                    <input id="addressStep3" type="text" class="form-control paddingInput" name="address" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.address" (ngModelChange)="checkButtonEnabled($event)"
+                    <input id="addressStep3" type="text" class="form-control paddingInput" name="address" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.address" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
                      required>
                 </div>
                 <div class="ui-g-2">
                     <label class="label floatLeft" for="addressNum">
                         {{ 'shared.number.label' | translate }}
                     </label>
-                    <input type="text" class="form-control paddingInput" id="addressNumStep3" name="addressNum" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.addressNum" (ngModelChange)="checkButtonEnabled($event)"
+                    <input type="text" class="form-control paddingInput" id="addressNumStep3" name="addressNum" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.addressNum" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
                         required>
                 </div>
                 <div class="ui-g-2"></div>
@@ -96,7 +97,7 @@
                     <label class="label floatLeft" for="postalCode">
                         {{ 'shared.postal-code.label' | translate }}
                     </label>
-                    <input type="text" class="form-control paddingInput" id="postalCodeStep3" maxlength="255" name="postalCode" [disabled]="imMayor" [(ngModel)]="initialUser.postalCode" (ngModelChange)="checkButtonEnabled($event)"
+                    <input type="text" class="form-control paddingInput" id="postalCodeStep3" maxlength="255" name="postalCode" [disabled]="imMayor" [(ngModel)]="initialUser.postalCode" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
                     required>
                 </div>
                 <div class="ui-g-2"></div>
@@ -121,7 +122,7 @@
                     <label class="label floatLeft" for="city">
                         {{ 'suppRegistration.city.label' | translate }}
                     </label>
-                    <input type="text" class="form-control paddingInput" id="cityStep3" [disabled]="imMayor" maxlength="255" name="city" [(ngModel)]="initialUser.city" (ngModelChange)="checkButtonEnabled($event)"
+                    <input type="text" class="form-control paddingInput" id="cityStep3" [disabled]="imMayor" maxlength="255" name="city" [(ngModel)]="initialUser.city" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
                         required>
                 </div>
                 <div class="ui-g-2"></div>
@@ -162,7 +163,7 @@
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button type="submit" id="navigate-step4" class="btn btn-primary publish-button" [disabled]="(!buttonEnabled || !userEmailMatches || !hasEcasEmail)">
+                <button type="submit" id="navigate-step4" class="btn btn-primary publish-button" [disabled]="(!checkButtonEnabled() || !userEmailMatches || !hasEcasEmail)">
                     {{ 'shared.next.button' | translate }}
                 </button>
             </div>
