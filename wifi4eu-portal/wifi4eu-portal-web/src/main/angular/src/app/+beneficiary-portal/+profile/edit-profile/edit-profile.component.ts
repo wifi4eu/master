@@ -495,7 +495,6 @@ export class BeneficiaryEditProfileComponent {
         }
 
 
-
         /* if(this.registration.associationName != null && this.registration.associationName != ""){
             this.registrationApi.updateAssociationName(this.registration).subscribe(
                 (response: ResponseDTOBase) => {
