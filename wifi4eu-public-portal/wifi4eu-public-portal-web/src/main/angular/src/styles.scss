@@ -1227,7 +1227,12 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 }
 
 .benefLandingList {
-  list-style: circle;
+  list-style: square;
+  color: $darkish-blue;
+
+  span {
+    color: black;
+  }
 }
 
 .timelineBenefLanding {
