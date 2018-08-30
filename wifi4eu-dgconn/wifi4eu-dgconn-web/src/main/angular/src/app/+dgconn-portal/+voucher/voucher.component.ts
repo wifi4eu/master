@@ -531,6 +531,7 @@ export class DgConnVoucherComponent {
       if(response.success){
         this.pressedNotificationButton = true;
         this.sharedService.growlTranslation('The process of sending notifications has started.', 'dgConn.voucherAssignment.success.sendingNotifications', 'success');
+        this.router.navigate(['../voucher'], {relativeTo: this.route});
       }
       else{
         this.pressedNotificationButton = false;
