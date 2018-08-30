@@ -50,10 +50,9 @@ import wifi4eu.wifi4eu.util.ParametrizedDocConverter;
 public class GrantAgreementService {
     Logger _log = LogManager.getLogger(GrantAgreementService.class);
 
-    private final static String FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX = "grant_agreement_template_";
+    private final static String FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX = "grant_agreement_template_dummy_";
     
-    private final static String FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION = ".pdf";
-    
+    private final static String FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION = ".pdf";    
     
     @Autowired
     ApplicationService applicationService;
@@ -82,7 +81,7 @@ public class GrantAgreementService {
     @Autowired
     ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
 
-    final static HashMap<String, String> languagesMap = new HashMap<>();
+    static final HashMap<String, String> languagesMap = new HashMap<>();
 
     @PostConstruct
     public void initIt() throws Exception {
@@ -151,17 +150,19 @@ public class GrantAgreementService {
     
     private byte[] getGrantAgreementTemplate(String language) throws IOException {
     	StringBuilder fileName = new StringBuilder();
-    	fileName.append(FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX).append(language).append(FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION);        
-    	// TODO should recover the template from Azure
-    	// return azureBlobStorage.getFileFromContainer("docs", fileName.toString());
+    	fileName.append(FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX).append(language).append(FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION);
+    	    	
+    	// Template files are stored in Azure: wifi4eustoredocuments - Storage Explorer
+    	return azureBlobStorage.getFileFromContainer("docs", fileName.toString());
     	
-    	File file = new File("C:\\grant_agreements\\CNECT-2017-00250-02-08-EN-ORI-00-1.pdf");
-        return FileUtils.readFileToByteArray(file); 
+    	// TODO FIXME remove local reference
+    	//File file = new File("C:\\grant_agreements\\CNECT-2017-00250-02-08-EN-ORI-00-1.pdf");
+        //return FileUtils.readFileToByteArray(file); 
     }
 
     public ByteArrayOutputStream fillGrantAgreementDocument(GrantAgreementDTO grantAgreement, Map<String, String> mapProperties) throws IOException {
     	// Get template in the correspondent language
-        byte[] fileData = getGrantAgreementTemplate(grantAgreement.getDocumentLanguage());
+        byte[] fileData = getGrantAgreementTemplate(grantAgreement.getDocumentLanguage().toLowerCase());
         // Replace placeholders in the template for the user's values
         return ParametrizedDocConverter.convert(fileData, mapProperties);
     }
@@ -194,6 +195,7 @@ public class GrantAgreementService {
         String year = df.format(cal.getTime());
 
         Map<String,String> replacementsMap = new HashMap<String,String>();
+        // TODO FIXME remove old placeholders names
 //        replacementsMap.put("[<call number>", String.valueOf(applicationDTO.getCallId()));
 //        replacementsMap.put("<year>]", year);
 //        replacementsMap.put("[<unique identifying number>]", formattedRegistrationID.concat("-").concat(formattedUserID));
