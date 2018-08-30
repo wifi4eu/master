@@ -38,6 +38,7 @@ import { UserContactDetailsBase } from "../../../shared/swagger";
 @Component({
     selector: 'edit-beneficiary-profile',
     templateUrl: 'edit-profile.component.html',
+    styleUrls: ['../profile.component.scss'],
     providers: [OrganizationApi, CallApi, ApplicationApi, BeneficiaryApi, NutsApi, LauApi, UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi]
 })
 

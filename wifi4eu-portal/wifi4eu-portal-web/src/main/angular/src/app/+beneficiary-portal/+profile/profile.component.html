@@ -144,7 +144,9 @@
                                     </div>
                                 </div>
                                 <div class="ui-g-12">
-                                    <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToMunicipality(municipality.id)">+ {{ 'benefPortal.beneficary.addMunicipality' | translate}}</p>
+                                    <a class="edit ui-g-12 cursorPointer" (click)="addNewContactToMunicipality(municipality.id)">
+                                        + <span class="addContactLink">{{ 'benefPortal.beneficary.addMunicipality' | translate}}</span>
+                                    </a>
                                 </div>
                             </div>
                         </ux-panel>
