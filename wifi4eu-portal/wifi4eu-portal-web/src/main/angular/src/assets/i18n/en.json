@@ -80,7 +80,7 @@
   "shared.number.label": "Number",
   "registration.contactInformation": "Please provide your contact information below. ",
   "benefRegistration.beneficiaryRegistration.sameDetails": "I am the legal representative ",
-  "benefRegistration.yourDetails.title": "Your contact details",
+  "benefRegistration.yourDetails.title": "Contact person details",
   "registration.nameOrganisation": "Name of the organisation",
   "benefRegistration.address.label": "Address",
   "benefRegistration.registration.reviewInformation": "Please, review all the information provided before you complete your registration.",
@@ -973,7 +973,8 @@
   "dgconn.dashboard.card.reporting": "Reporting page",
   "shared.deactivate.modalTitle": "Deactivating Contact Person",
   "shared.deactivate.sucess": "Contact deactivated successfully",
-  "benefPortal.profile.contactPerson": "Contact person details",
+  "benefPortal.profile.contactPerson": "Contact person details of Municipality",
   "invitate.contact.details.title": "Please complete the form to be added as a contact",
-  "portal.deactivateduser.page.title": "Your user has been deactivated"
+  "portal.deactivateduser.page.title": "Your user has been deactivated",
+  "benefPortal.profile.organizationPerson": "Contact person details of Organization"
 }
