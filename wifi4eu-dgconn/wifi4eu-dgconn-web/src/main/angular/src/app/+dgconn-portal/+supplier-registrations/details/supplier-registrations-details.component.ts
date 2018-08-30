@@ -42,14 +42,12 @@ export class DgConnSupplierRegistrationsDetailsComponent {
     private itemsPerPageSelector = [10,20,50];
     private pageSize = this.itemsPerPageSelector[0];
     private totalRecords = 0;
-    private supplierId;    
 
     constructor(private route: ActivatedRoute, private location: Location, private sanitizer: DomSanitizer, private sharedService: SharedService, private supplierApi: SupplierApi) {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
                 let supplierId = params['id'];
-                this.supplierId = supplierId;
                 this.supplierApi.getSupplierById(supplierId).subscribe(
                     (supplier: SupplierDTOBase) => {
                         if (supplier != null) {
@@ -71,20 +69,17 @@ export class DgConnSupplierRegistrationsDetailsComponent {
     }
 
     private loadSimilarSuppliers(){
-      if(this.findSimilarSupplier != null && this.findSimilarSupplier['destination']['closed'] === false){
-        this.findSimilarSupplier.unsubscribe();
-      }
-      
-      this.findSimilarSupplier = this.supplierApi.findSimilarSuppliersPaged(this.supplierId, this.page, this.pageSize).subscribe(
-        (response: ResponseDTO) => {
-            var suppliers = response.data;
-            this.totalRecords = response.xtotalCount;
-            if (suppliers.length != 0) {
-                this.similarSuppliers = suppliers;
-            }            
-            this.loadingData = false;
-        }
-      );
+        if (this.findSimilarSupplier != null && this.findSimilarSupplier['destination']['closed'] === false)
+            this.findSimilarSupplier.unsubscribe();
+        this.findSimilarSupplier = this.supplierApi.findSimilarSuppliersPaged(this.supplier.id, this.page, this.pageSize).subscribe(
+            (response: ResponseDTO) => {
+                let suppliers = response.data;
+                this.totalRecords = response.xtotalCount;
+                if (suppliers.length != 0)
+                    this.similarSuppliers = suppliers;
+                this.loadingData = false;
+            }
+        );
     }
 
     private getLegalFileUrl(mainSupplier: boolean, fileNumber: number, index?: number) {
