@@ -638,7 +638,7 @@ public class BeneficiaryService {
     public ResponseDTO invitateContactBeneficiary(UserDTO userConnected, int idMunicipality, String newContactEmail) {
         ResponseDTO responseDTO = new ResponseDTO();
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - START");
-        if (Validator.isNotNull(idMunicipality) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && Validator.isNotNull(registrationRepository.findByMunicipalityId(idMunicipality))) {
+        if (Validator.isNotNull(idMunicipality) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && Validator.isNotNull(registrationRepository.findByMunicipalityId(idMunicipality)) && Validator.isNotNull(registrationService.getRegistrationByUserAndMunicipality(userConnected.getId(), idMunicipality))) {
             if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail, userConnected.getId())) && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)) {
                 InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndIdUserRequest(newContactEmail, userConnected.getId());
                 Date today = new Date();
