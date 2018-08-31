@@ -131,12 +131,6 @@
             <version>1.4</version>
         </dependency>
 
-        <dependency>
-            <groupId>fr.opensagres.xdocreport</groupId>
-            <artifactId>org.apache.poi.xwpf.converter.pdf</artifactId>
-            <version>1.0.6</version>
-        </dependency>
-
     </dependencies>
 
     <build>
