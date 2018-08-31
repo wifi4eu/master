@@ -675,7 +675,6 @@ public class BeneficiaryService {
                 if (!userService.isLocalHost()) {
                     mailService.sendEmail(newContactEmail, MailService.FROM_ADDRESS, subject, msgBody);
                 }
-
                 invitationContactRepository.save(invitationContact);
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");
                 responseDTO.setSuccess(true);

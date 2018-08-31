@@ -637,7 +637,8 @@ public class SupplierService {
                 String subject = bundle.getString("mail.sendNewUserSupplier.subject");
                 String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
                 String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
-                msgBody = MessageFormat.format(msgBody, userName, supplierName, additionalInfoUrl, newContactEmail);
+                String registrationUrl = userService.getServerAddress() + "/wifi4eu/#/supplier-portal/profile";
+                msgBody = MessageFormat.format(msgBody, userName, supplierName, additionalInfoUrl, newContactEmail, registrationUrl);
                 _log.debug("TESTING msgBody => "+msgBody);
 
                 if (!userService.isLocalHost()) {

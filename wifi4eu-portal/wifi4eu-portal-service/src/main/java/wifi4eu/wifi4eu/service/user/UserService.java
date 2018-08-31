@@ -82,7 +82,7 @@ public class UserService {
     @Value("${ecas.location}")
     private String ecasUrl;
 
-    @Value("{server.address}")
+    @Value("${server.address}")
     private String serverAddress;
 
     @Autowired
