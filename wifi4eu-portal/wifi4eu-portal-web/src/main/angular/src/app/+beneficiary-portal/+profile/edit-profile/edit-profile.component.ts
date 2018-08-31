@@ -99,9 +99,8 @@ export class BeneficiaryEditProfileComponent {
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private newUserEmail: string = '';
     private registrationIndex: number = null;
-    private associationName: String = '';
+    private associationName: string = null;
     private registration: RegistrationDTOBase;
-    private hasAssociation: boolean = false;
     private nameCookieApply: string = "hasRequested";
     private registrations: RegistrationDTOBase[] = [];
     private contactIdToDeactvate: number = 0;
@@ -173,9 +172,10 @@ export class BeneficiaryEditProfileComponent {
                                         this.registration = registrations[0];
                                     }
                                     for (let registration of registrations) {
-                                        if (registration.municipalityId == 0) {
+                                        if (registration.municipalityId == 0)
                                             continue;
-                                        }
+                                        if (!this.associationName && registration.organisationId > 0)
+                                            this.associationName = registration.associationName;
                                         this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                                         this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                                         this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
@@ -446,7 +446,34 @@ export class BeneficiaryEditProfileComponent {
 
     private editProfile() {
         this.submittingData = true;
+        if (this.associationName != this.registrations[0].associationName) {
+            let newAssociationName = this.registrations[0].associationName;
+            let numRegistrations = this.registrations.length;
+            let successCount = 0;
+            for (let i = 0; i < this.registrations.length; i++) {
+                let registration = this.registrations[i];
+                registration.associationName = newAssociationName;
+                this.registrationApi.updateAssociationName(registration).subscribe(
+                    (response: ResponseDTOBase) => {
+                        if (response.success) {
+                            this.registrations[i] = response.data;
+                            successCount++;
+                        } else {
+                            this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                            this.submittingData = false;
+                        }
+                        if (successCount == numRegistrations) {
+                            this.editProfileData();
+                        }
+                    }
+                );
+            }
+        } else {
+            this.editProfileData();
+        }
+    }
 
+    private editProfileData() {
         for (let i = 0; i < this.municipalities.length; i++) {
             if (this.isMunicipalityEditable[this.municipalities[i].id]) {
                 this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
@@ -493,39 +520,9 @@ export class BeneficiaryEditProfileComponent {
                 );
             }
         }
-
-
-        /* if(this.registration.associationName != null && this.registration.associationName != ""){
-            this.registrationApi.updateAssociationName(this.registration).subscribe(
-                (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        this.registrationFinish = true;
-                        this.checkFinishedCalls();
-                    } else {
-                        hasBeenAnError = true
-                    }
-                }, error => {
-                    console.log(error);
-                    this.registrationFinish = true;
-                    this.checkFinishedCalls();
-                    hasBeenAnError = true
-                }
-            );
-        } else {
-            this.registrationFinish = true;
-            this.checkFinishedCalls();
-        } */
-
-        /* 
-                if (hasBeenAnError) {
-                    this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
-                } else {
-                    this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success', 'success');
-                    this.goBackToProfile();
-                } */
     }
 
-    private createMultipleMunicipalities(){
+    private createMultipleMunicipalities() {
         if (this.newMunicipalities.length > 0) {
             this.submitNewMunicipalities();
         } else {
