@@ -33,6 +33,8 @@ import { TranslateService } from "ng2-translate";
 import { CallDTO, CallDTOBase, OrganizationApi, OrganizationDTOBase } from "../../../shared/swagger";
 import { CookieService } from "ngx-cookie-service";
 import { UserContactDetailsBase } from "../../../shared/swagger";
+import { SIGTSTP } from "constants";
+import { SIGTTOU } from "constants";
 
 
 @Component({
@@ -49,6 +51,7 @@ export class BeneficiaryEditProfileComponent {
     private css_class_email: string[] = ['notValid'];
     private countries: NutsDTOBase[] = [];
     private addUser: boolean = false;
+    private addUserToOrganization: boolean = false;
     private addContact: boolean = false;
     private idMunicipalityNewContactUser: number = 0;
     private country: NutsDTOBase;
@@ -56,6 +59,7 @@ export class BeneficiaryEditProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
     private users: UserContactDetailsBase[][] = [];
     private usersModified: number[] = [];
+    private usersOrganization = [];
     private userMain: UserContactDetailsBase;
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
     private municipalitiesSelected: boolean = false;
@@ -143,7 +147,6 @@ export class BeneficiaryEditProfileComponent {
                 this.currentCall = call;
             }
         );
-
         if (this.user != null) {
             this.userApi.getUserById(this.user.id).subscribe(
                 (user: UserDTOBase) => {
@@ -170,6 +173,14 @@ export class BeneficiaryEditProfileComponent {
                                         this.organizationId = registrations[0].organisationId;
                                         this.finalBeneficiary.associationName = registrations[0].associationName;
                                         this.registration = registrations[0];
+                                        this.userApi.getUsersFromOrganization(registrations[0].organisationId).subscribe(
+                                            (users: UserContactDetailsBase[]) => {
+                                                this.usersOrganization = users;
+                                                if (users != null)
+                                                    this.userMain = users.find(x => x.main === 1);
+                                            }
+                                        );
+
                                     }
                                     for (let registration of registrations) {
                                         if (registration.municipalityId == 0) {
@@ -202,7 +213,8 @@ export class BeneficiaryEditProfileComponent {
                                         this.userApi.getUsersFromRegistration(registration.id).subscribe(
                                             (users: UserContactDetailsBase[]) => {
                                                 this.users[registration.municipalityId] = users;
-                                                this.userMain = users.find(x => x.main === 1);
+                                                if (users != null)
+                                                    this.userMain = users.find(x => x.main === 1);
                                             }
                                         );
                                     }
@@ -435,10 +447,12 @@ export class BeneficiaryEditProfileComponent {
     }
 
     private closeModal() {
+        this.idMunicipalityNewContactUser = 0;
         this.registrationIndex = null;
         this.deleteMunicipalityId = 0;
         this.displayDeleteMunicipality = false;
         this.addUser = false;
+        this.addUserToOrganization = false;
         this.addContact = false;
         this.displayDeactivatemodal = false;
     }
@@ -456,6 +470,7 @@ export class BeneficiaryEditProfileComponent {
                                     if (response.success) {
                                         this.mayors[this.currentEditIndex] = response.data;
                                         let usersToSubmit: UserContactDetailsBase[] = [];
+
                                         for (let index = 0; index < this.registrations.length; index++) {
                                             for (let z = 0; z < this.users[this.registrations[index].municipalityId].length; z++) {
                                                 let user = this.users[this.registrations[index].municipalityId][z];
@@ -467,26 +482,39 @@ export class BeneficiaryEditProfileComponent {
                                                 }
                                             }
                                         }
+                                        for (let z = 0; z < this.usersOrganization.length; z++) {
+                                            if (this.usersModified.indexOf(this.usersOrganization[z].id) != -1) {
+                                                usersToSubmit.push(this.usersOrganization[z]);
+                                            }
+                                        }
                                         if (usersToSubmit.length > 0) {
                                             let update = {};
                                             update['users'] = usersToSubmit;
                                             this.userApi.updateUserDetails(update).subscribe(
                                                 (response: ResponseDTOBase) => {
                                                     if (response.success) {
-                                                        this.user = response.data;
                                                         this.createMultipleMunicipalities();
                                                     } else {
                                                         this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
                                                         this.submittingData = false;
                                                     }
+                                                }, error => {
+                                                    this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                                                    this.submittingData = false;
                                                 }
                                             );
                                         } else {
                                             this.createMultipleMunicipalities();
                                         }
+                                    } else {
+                                        this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                                        this.submittingData = false;
                                     }
                                 }
                             );
+                        } else {
+                            this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                            this.submittingData = false;
                         }
                     }
                 );
@@ -525,7 +553,7 @@ export class BeneficiaryEditProfileComponent {
                 } */
     }
 
-    private createMultipleMunicipalities(){
+    private createMultipleMunicipalities() {
         if (this.newMunicipalities.length > 0) {
             this.submitNewMunicipalities();
         } else {
@@ -562,62 +590,90 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
+
     private addNewContactToMunicipality(municipalityId: number) {
         this.idMunicipalityNewContactUser = municipalityId;
         this.addUser = true;
     }
 
-   private closeAddNewContactModal() {
+    private addNewContactToOrganization() {
+        this.newUserEmail = '';
+        this.addUserToOrganization = true;
+        this.addUser = true;
+    }
+
+    private closeAddNewContactModal() {
         this.newUserEmail = '';
         this.addUser = false;
+        this.addUserToOrganization = false;
     }
 
     private addNewContact() {
-        if (this.newUserEmail.trim() != '' && this.idMunicipalityNewContactUser != 0) {
-            this.addContact = true;
-            this.beneficiaryApi.invitateContactBeneficiary(this.idMunicipalityNewContactUser, this.newUserEmail).subscribe(
-                (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+        if (this.newUserEmail.trim() != '') {
+            if (this.addUserToOrganization) {
+                this.addContact = true;
+                this.beneficiaryApi.invitateContactOrganization(this.organizationId, this.newUserEmail).subscribe(
+                    (response: ResponseDTOBase) => {
+                        if (response.success) {
+                            this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+                            this.addContact = false;
+                            this.closeModal();
+                        } else {
+                            this.addContact = false;
+                            this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+                            this.closeModal();
+                        }
+                    }, error => {
                         this.addContact = false;
-                        this.addUser = false;
-                        this.closeModal();
-                    } else {
-                        this.addContact = false;
-                        this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+                        this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
                         this.closeModal();
                     }
-                }, error => {
-                    this.addContact = false;
-                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
-                    this.closeModal();
+                );
+                this.newUserEmail = '';
+            } else if (this.idMunicipalityNewContactUser != 0) {
+                    this.addContact = true;
+                    this.beneficiaryApi.invitateContactBeneficiary(this.idMunicipalityNewContactUser, this.newUserEmail).subscribe(
+                        (response: ResponseDTOBase) => {
+                            if (response.success) {
+                                this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+                                this.addContact = false;
+                                this.closeModal();
+                            } else {
+                                this.addContact = false;
+                                this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+                                this.closeModal();
+                            }
+                        }, error => {
+                            this.addContact = false;
+                            this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+                            this.closeModal();
+                        }
+                    );
+                    this.newUserEmail = '';
                 }
-            );
-            this.newUserEmail = '';
         } else {
             this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
         }
+
     }
 
 
     private checkButtonEnabledUser(event, id) {
-        this.buttonEnabled = true;
         if (this.usersModified.indexOf(id) == -1) {
             this.usersModified.push(id);
         }
         for (let index = 0; index < this.registrations.length; index++) {
             for (let z = 0; z < this.users[this.registrations[index].municipalityId].length; z++) {
-                let user = this.users[this.registrations[index].municipalityId][z];
-                if (user.main === 1) {
-                    user = this.userMain;
+                this.buttonEnabled = this.validateUser(this.users[this.registrations[index].municipalityId][z]);
+                if (!this.buttonEnabled) {
+                    break;
                 }
-                let addressValid = user.address != null && user.addressNum != null && user.postalCode != null && user.city != null && user.country != null &&
-                    (user.address.trim() != "" && user.addressNum.trim() != "" && user.postalCode.trim() != "" && user.city.trim() != "" && user.country.trim() != "");
-                let userDetailsValid = user.name != null && user.surname != null && user.email != null && (user.name.trim() != "" && user.surname.trim() != "" && user.email.trim() != "");
-
-                if (!addressValid || !userDetailsValid) {
-                    this.buttonEnabled = false;
-                }
+            }
+        }
+        for (let z = 0; z < this.usersOrganization.length; z++) {
+            this.buttonEnabled = this.validateUser(this.usersOrganization[z]);
+            if (!this.buttonEnabled) {
+                break;
             }
         }
 
@@ -633,6 +689,20 @@ export class BeneficiaryEditProfileComponent {
             this.emailsMatch = true;
             this.municipalitiesSelected = true;
         }
+    }
+
+    private validateUser(user) {
+        if (user.main === 1) {
+            user = this.userMain;
+        }
+        let addressValid = user.address != null && user.addressNum != null && user.postalCode != null && user.city != null && user.country != null &&
+            (user.address.trim() != "" && user.addressNum.trim() != "" && user.postalCode.trim() != "" && user.city.trim() != "" && user.country.trim() != "");
+        let userDetailsValid = user.name != null && user.surname != null && user.email != null && (user.name.trim() != "" && user.surname.trim() != "" && user.email.trim() != "");
+
+        if (!addressValid || !userDetailsValid) {
+            return false;
+        }
+        return true;
     }
 
 
@@ -654,6 +724,5 @@ export class BeneficiaryEditProfileComponent {
         this.contactIdToDeactvate = i;
         this.displayDeactivatemodal = true;
     }
-
 
 }

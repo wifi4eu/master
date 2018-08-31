@@ -692,8 +692,11 @@ public class BeneficiaryService {
 
                 invitationContact.setLastModified(today);
                 Locale locale = userConnected.getLang() == null ? new Locale(UserConstants.DEFAULT_LANG) : new Locale(userConnected.getLang());
-                MunicipalityDTO municipality = municipalityService.getMunicipalityById(idMunicipality);
-                String municipalityName = municipality.getName();
+                String municipalityName = "";
+                if (isRegistration) {
+                    MunicipalityDTO municipality = municipalityService.getMunicipalityById(idMunicipality);
+                    municipalityName = municipality.getName();
+                }
                 String userName = userConnected.getName() + ' ' + userConnected.getSurname();
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
@@ -702,9 +705,9 @@ public class BeneficiaryService {
                 msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, newContactEmail);
                 _log.debug("TESTING msgBody => " + msgBody);
 
-                if (!userService.isLocalHost()) {
+                //if (!userService.isLocalHost()) {
                     mailService.sendEmail(newContactEmail, MailService.FROM_ADDRESS, subject, msgBody);
-                }
+                //}
 
                 invitationContactRepository.save(invitationContact);
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");

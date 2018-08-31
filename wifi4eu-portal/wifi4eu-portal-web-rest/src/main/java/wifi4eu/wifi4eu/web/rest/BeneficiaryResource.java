@@ -326,7 +326,7 @@ public class BeneficiaryResource {
             if (Validator.isNull(userConnected) || userConnected.getType() != 3){
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationRepository.findByMunicipalityId(idMunicipality));
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationRepository.findByMunicipalityId(idMunicipality).getId());
 
             return beneficiaryService.invitateContactBeneficiary(userConnected,idMunicipality,newContactEmail.trim(), null);
         } catch (Exception e) {

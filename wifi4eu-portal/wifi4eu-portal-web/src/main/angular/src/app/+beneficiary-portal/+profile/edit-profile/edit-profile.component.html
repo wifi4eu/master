@@ -174,10 +174,39 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <p class="edit cursorPointer" (click)="addNewContactToMunicipality(municipality.id)">+ {{ 'benefPortal.beneficary.addMunicipality' | translate}}</p>
+                        <hr class="genericHr">
                     </div>
-                    <div class="col-sm-2"></div>
+                    <div class=" col-sm-2"></div>
                 </div>
-
+                <!-- CONTACT DETAILS OF MUNICIPALITY-->
+                <div class="row" *ngIf="users[municipality?.id].length > 0">
+                    <div *ngFor="let contactPerson of users[municipality?.id]; let i = index">
+                        <div *ngIf="!contactPerson?.main" class="ui-g-12">
+                            <div class="offset-sm-2 col-sm-8">
+                                <hr class="genericHr" *ngIf="i != 0">
+                                <span class="blueText">{{'benefPortal.profile.contactPerson' | translate}} {{municipality.name}} </span>
+                                <span class="edit cursorPointer right " (click)="deactivateShowModal(contactPerson.id)" *ngIf="contactPerson.type != -1 && contactPerson.id != user.id">
+                                    <i class="fa fa-ban"></i>{{ 'shared.deactivate.button' | translate}}</span>
+                            </div>
+                            <!-- Organization name -->
+                            <div class="row" *ngIf="associationName">
+                                <div class="offset-sm-2 col-sm-8">
+                                    <p>{{ 'registration.nameOrganisation' | translate }}</p>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="associationName">
+                                <div class="offset-sm-2 col-sm-8">
+                                    <input id="associationName" type="text" [(ngModel)]="registration.associationName" class="form-control" name="associationName"
+                                        ngcontrol="associationName" #associationName="ngModel" (ngModelChange)="checkButtonEnabledUser($event)"
+                                        required>
+                                </div>
+                            </div>
+                            <beneficiary-user [user]="contactPerson" [isEdit]="true" [countries]="countries" (onUserChange)="users[registration?.municipalityId][i] = $event;checkButtonEnabledUser($event, contactPerson.id)"></beneficiary-user>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <br>
@@ -314,157 +343,6 @@
     </div>
     <br>
     <br>
-    <!-- CONTACT DETAILS -->
-    <div class="whitePanel col-sm-12" *ngIf="multipleMunicipalities">
-        <div *ngFor="let contactPerson of users[registration?.municipalityId]; let i = index">
-            <div *ngIf="!contactPerson?.main" class="ui-g-12">
-                <span class="offset-sm-2 ui-g-8 blueText">{{'benefPortal.profile.contactPerson' | translate}}</span>
-                <p class="edit cursorPointer right" (click)="deactivateShowModal(contactPerson.id)" *ngIf="!(contactPerson.type == -1) && !(contactPerson.id == user.id)">
-                    <i class="fa fa-ban"></i>{{ 'shared.deactivate.button' | translate}}</p>
-                <!-- Organization name -->
-                <div class="row" *ngIf="associationName">
-                    <div class="offset-sm-2 col-sm-8">
-                        <p>{{ 'registration.nameOrganisation' | translate }}</p>
-                    </div>
-                </div>
-                <div class="row" *ngIf="associationName">
-                    <div class="offset-sm-2 col-sm-8">
-                        <input id="associationName" type="text" [(ngModel)]="registration.associationName" class="form-control" name="associationName"
-                            ngcontrol="associationName" #associationName="ngModel" (ngModelChange)="checkButtonEnabledUser($event)"
-                            required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <p>{{ 'shared.name.label' | translate }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <input id="name_user" type="text" maxlength="254" [(ngModel)]="contactPerson.name" class="form-control" name="name_user"
-                            ngcontrol="name_user" #name_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
-                            [disabled]="contactPerson.type == -1" required>
-                        <div [hidden]="name_user.valid || name_user.pristine" class="alert alert-danger">
-                            {{ 'shared.name.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <p>{{ 'shared.surname.label' | translate }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <input id="surname_user" type="text" maxlength="254" [(ngModel)]="contactPerson.surname" class="form-control" name="surname_user"
-                            ngcontrol="surname_user" #surname_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
-                            [disabled]="contactPerson.type == -1" required>
-                        <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
-                            {{ 'shared.surname.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <p>{{ 'benefRegistration.townHall.address' | translate }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <input id="address_user" type="text" maxlength="254" [(ngModel)]="contactPerson.address" class="form-control" name="address_user"
-                            ngcontrol="address_user" #address_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
-                            [disabled]="contactPerson.type == -1" required>
-                        <div [hidden]="address_user.valid || address_user.pristine" class="alert alert-danger">
-                            {{ 'shared.address.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <p>{{ 'benefRegistration.number.label' | translate }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <input id="addressNum_user" type="text" maxlength="254" [(ngModel)]="contactPerson.addressNum" class="form-control" name="addressNum_user"
-                            ngcontrol="addressNum_user" #addressNum_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
-                            [disabled]="contactPerson.type == -1" required>
-                        <div [hidden]="addressNum_user.valid || addressNum_user.pristine" class="alert alert-danger">
-                            {{ 'shared.address.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <p>{{ 'shared.postal-code.label' | translate }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <input id="postalCode_user" type="text" maxlength="254" [(ngModel)]="contactPerson.postalCode" class="form-control" name="postalCode_user"
-                            ngcontrol="postalCode_user" #postalCode_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
-                            [disabled]="contactPerson.type == -1" required>
-                        <div [hidden]="postalCode_user.valid || postalCode_user.pristine" class="alert alert-danger">
-                            {{ 'shared.address.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <p>{{ 'suppRegistration.city.label' | translate }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <input id="city_user" type="text" maxlength="254" [(ngModel)]="contactPerson.city" class="form-control" name="city_user"
-                            ngcontrol="city_user" #city_user="ngModel" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)"
-                            [disabled]="contactPerson.type == -1" required>
-                        <div [hidden]="city_user.valid || city_user.pristine" class="alert alert-danger">
-                            {{ 'shared.address.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <p>{{ 'dgConn.beneficiaries.country' | translate }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                            <select [(ngModel)]="contactPerson.country" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" id="country_user" name="country_user"
-                            class="form-control" ng-options="option.value as option.name for option in typeOptions" #country_user="ngModel"
-                            [disabled]="countries.length < 1 || contactPerson.type == -1">
-                            <option disabled selected [ngValue]="null">
-                                {{ 'benefRegistration.registration.selectCountry' | translate }}
-                            </option>
-                            <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry.label">
-                                {{currentCountry.label}}
-                            </option>
-                        </select>
-                        <div [hidden]="country_user.valid || country_user.pristine" class="alert alert-danger">
-                            {{ 'shared.address.required' | translate }}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <p>{{ 'shared.email.label' | translate }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="offset-sm-2 col-sm-8">
-                        <span>
-                            <b>{{contactPerson?.email}}</b>
-                        </span>
-                    </div>
-                </div>
-                <br>
-                <br>
-            </div>
-        </div>
-    </div>
-    <br>
-    <br>
     <div class="whitePanel col-sm-12" *ngIf="userMain && userMain?.main">
         <br>
         <br>
@@ -493,131 +371,45 @@
                     required>
             </div>
         </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <p>{{ 'shared.name.label' | translate }}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <input id="name_user" type="text" [(ngModel)]="userMain.name" class="form-control" name="name_user" ngcontrol="name_user"
-                    #name_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" required>
-                <div [hidden]="name_user.valid || name_user.pristine" class="alert alert-danger">
-                    {{ 'shared.name.required' | translate }}
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <p>{{ 'shared.surname.label' | translate }}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <input id="surname_user" type="text" [(ngModel)]="userMain.surname" class="form-control" name="surname_user" ngcontrol="surname_user"
-                    #surname_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" required>
-                <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
-                    {{ 'shared.surname.required' | translate }}
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <p>{{ 'benefRegistration.townHall.address' | translate }}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <input id="address_user" type="text" [(ngModel)]="userMain.address" class="form-control" name="address_user" ngcontrol="address_user"
-                    #address_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
-                    required>
-                <div [hidden]="address_user.valid || address_user.pristine" class="alert alert-danger">
-                    {{ 'shared.address.required' | translate }}
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <p>{{ 'benefRegistration.number.label' | translate }}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <input id="addressNum_user" type="text" [(ngModel)]="userMain.addressNum" class="form-control" name="addressNum_user" ngcontrol="addressNum_user"
-                    #addressNum_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)"
-                    [disabled]="userMain.type == -1" required>
-                <div [hidden]="addressNum_user.valid || addressNum_user.pristine" class="alert alert-danger">
-                    {{ 'shared.address.required' | translate }}
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <p>{{ 'shared.postal-code.label' | translate }}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <input id="postalCode_user" type="text" [(ngModel)]="userMain.postalCode" class="form-control" name="postalCode_user" ngcontrol="postalCode_user"
-                    #postalCode_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)"
-                    [disabled]="userMain.type == -1" required>
-                <div [hidden]="postalCode_user.valid || postalCode_user.pristine" class="alert alert-danger">
-                    {{ 'shared.address.required' | translate }}
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <p>{{ 'suppRegistration.city.label' | translate }}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <input id="city_user" type="text" [(ngModel)]="userMain.city" class="form-control" name="city_user" ngcontrol="city_user"
-                    #city_user="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" [disabled]="userMain.type == -1"
-                    required>
-                <div [hidden]="city_user.valid || city_user.pristine" class="alert alert-danger">
-                    {{ 'shared.address.required' | translate }}
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <p>{{ 'dgConn.beneficiaries.country' | translate }}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <select [(ngModel)]="userMain.country" (ngModelChange)="checkButtonEnabledUser($event, userMain.id)" id="country_user" name="country_user"
-                    class="form-control" ng-options="option.value as option.name for option in typeOptions" #country_user="ngModel"
-                    [disabled]="countries.length < 1 || userMain.type == -1">
-                    <option disabled selected [ngValue]="null">
-                        {{ 'benefRegistration.registration.selectCountry' | translate }}
-                    </option>
-                    <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry.label">
-                        {{currentCountry.label}}
-                    </option>
-                </select>
-                <div [hidden]="country_user.valid || country_user.pristine" class="alert alert-danger">
-                    {{ 'shared.address.required' | translate }}
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <p>{{ 'shared.email.label' | translate }}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-sm-2 col-sm-8">
-                <span>
-                    <b>{{user?.email}}</b>
-                </span>
-            </div>
-        </div>
+        <beneficiary-user [user]="userMain" [isEdit]="true" [countries]="countries" (onUserChange)="userMain = $event;checkButtonEnabledUser($event, userMain.id)"></beneficiary-user>
         <br>
         <br>
     </div>
+    <br>
+    <br>
+    <div class="whitePanel col-sm-12" *ngIf="usersOrganization?.length > 0">
+        <br>
+        <br>
+        <div *ngFor="let contactPerson of usersOrganization; let i = index">
+            <div *ngIf="!contactPerson?.main">
+                <div class="offset-sm-2 ui-g-8">
+                    <div *ngIf="i >= 1" class="">
+                        <div class="ui-g-12">
+                            <hr class="beneficiaryHr sizeBeneficiaryHr">
+                        </div>
+                    </div>
+                    <span class="blueText">{{'benefPortal.profile.organizationPerson' | translate}}</span>
+                    <span class="edit cursorPointer right " (click)="deactivateShowModal(contactPerson.id)" *ngIf="contactPerson.type != -1 && contactPerson.id != user.id">
+                        <i class="fa fa-ban"></i>{{ 'shared.deactivate.button' | translate}}</span>
+
+                </div>
+                <beneficiary-user [user]="contactPerson" [isEdit]="true" [countries]="countries" (onUserChange)="usersOrganization[i] = $event;checkButtonEnabledUser($event, contactPerson.id)"></beneficiary-user>
+                <div class="row">
+                    <br>
+                    <br>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <hr class="genericHr" *ngIf="i != 0">
+                        <p class="edit cursorPointer" (click)="addNewContactToOrganization()">+ {{ 'benefPortal.beneficary.addMunicipality' | translate}}</p>
+                    </div>
+                    <div class=" col-sm-2"></div>
+                </div>
+            </div>
+            <br>
+            <br>
+        </div>
+    </div>
+
     <br>
     <br>
 
@@ -636,7 +428,6 @@
         </div>
         <div class="col-lg-2"></div>
     </div>
-    <br>
     <br>
     <br>
 </div>

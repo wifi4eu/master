@@ -433,20 +433,22 @@ public class UserService {
         //verifying data
         List<UserDTO> usersToSave = new ArrayList<UserDTO>();
         for (UserContactDetails userDetails : users) {
-            UserDTO user = getUserById(userDetails.getId());
-            user.setName(userDetails.getName());
-            user.setSurname(userDetails.getSurname());
-            user.setAddress(userDetails.getAddress());
-            user.setAddressNum(userDetails.getAddressNum());
-            user.setPostalCode(userDetails.getPostalCode());
-            user.setCity(userDetails.getCity());
-            user.setCountry(userDetails.getCountry());
-            if (Validator.isNull(userDetails) || !checkFieldsContactDetails(user, userDetails.getType())) {
-                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user details cannot been updated");
-                return new ResponseDTO(false, null, new ErrorDTO(org.springframework.http.HttpStatus.BAD_REQUEST.value(), org.springframework.http
-                        .HttpStatus.BAD_REQUEST.getReasonPhrase()));
-            } else {
-                usersToSave.add(user);
+            if(userDetails.getType() != Constant.ROLE_DEACTIVATED) {
+                UserDTO user = getUserById(userDetails.getId());
+                user.setName(userDetails.getName());
+                user.setSurname(userDetails.getSurname());
+                user.setAddress(userDetails.getAddress());
+                user.setAddressNum(userDetails.getAddressNum());
+                user.setPostalCode(userDetails.getPostalCode());
+                user.setCity(userDetails.getCity());
+                user.setCountry(userDetails.getCountry());
+                if (Validator.isNull(userDetails) || !checkFieldsContactDetails(user, userDetails.getType())) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user details cannot been updated");
+                    return new ResponseDTO(false, null, new ErrorDTO(org.springframework.http.HttpStatus.BAD_REQUEST.value(), org.springframework.http.HttpStatus.BAD_REQUEST.getReasonPhrase()));
+
+                } else {
+                    usersToSave.add(user);
+                }
             }
         }
 

@@ -11,11 +11,6 @@
                     </span>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <hr class="beneficiaryHr">
-                </div>
-            </div>
             <i *ngIf="fetchingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
             <div class="row" *ngIf="municipalities.length > 0 && municipalities.length == mayors.length && !fetchingData">
                 <div class="col-sm-12" *ngFor="let municipality of municipalities; let i = index">
@@ -37,21 +32,21 @@
                                 [isExpanded]="i == 0" tagLabel="show">
                                 <div class="container whitePanelBeneficiary">
                                     <div class="ui-g-12" *ngIf="checkHasDiscussion(municipality)">
-                                            <div *ngIf="orderedUserThreads[i]" class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
-                                                <div class="row">
-                                                    <div class="ui-g-2">
-                                                        <i class="fa fa-exclamation-triangle"></i>
-                                                    </div>
-                                                    <div class="ui-g-10 discussionWarning">
-                                                        <p>{{ 'benefPortal.beneficiary.goDiscussionText' | translate }}</p>
-                                                    </div>
+                                        <div *ngIf="orderedUserThreads[i]" class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
+                                            <div class="row">
+                                                <div class="ui-g-2">
+                                                    <i class="fa fa-exclamation-triangle"></i>
+                                                </div>
+                                                <div class="ui-g-10 discussionWarning">
+                                                    <p>{{ 'benefPortal.beneficiary.goDiscussionText' | translate }}</p>
                                                 </div>
                                             </div>
-                                            <div style="text-align: center !important">
-                                                <button *ngIf="orderedUserThreads[i]" class="btn btn-primary discussionWarnigButton" id="muncicipalityButton" (click)="goToDiscussion(i)">
-                                                    {{'discussionForum.beneficiary.goDiscussion' | translate }}
-                                                </button>
-                                            </div>
+                                        </div>
+                                        <div style="text-align: center !important">
+                                            <button *ngIf="orderedUserThreads[i]" class="btn btn-primary discussionWarnigButton" id="muncicipalityButton" (click)="goToDiscussion(i)">
+                                                {{'discussionForum.beneficiary.goDiscussion' | translate }}
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="ui-g-12">
                                         <span class="ui-g-4 ui-sm-12">{{ 'benefRegistration.townHall.address' | translate }}</span>
@@ -72,10 +67,10 @@
                                         </span>
                                     </div>
                                     <div class="ui-g-12">
-                                            <span class="ui-g-4 ui-sm-12">{{ 'shared.country.label' | translate }}</span>
-                                            <span class="ui-g-8 ui-sm-12">
-                                                <b>{{municipality?.country}}</b>
-                                            </span>
+                                        <span class="ui-g-4 ui-sm-12">{{ 'shared.country.label' | translate }}</span>
+                                        <span class="ui-g-8 ui-sm-12">
+                                            <b>{{municipality?.country}}</b>
+                                        </span>
                                     </div>
                                     <div class="ui-g-12">
                                         <hr class="beneficiaryHr sizeBeneficiaryHr">
@@ -103,15 +98,15 @@
                                     </div>
                                     <div *ngFor="let contactPerson of users[municipality.id]; let i = index">
                                         <div *ngIf="!contactPerson?.main">
+                                            <div *ngIf="i >= 1" class="">
+                                                <div class="ui-g-12">
+                                                    <!-- <hr class="beneficiaryHr sizeBeneficiaryHr"> -->
+                                                </div>
+                                            </div>
                                             <div class="ui-g-12">
                                                 <span class="ui-g-12 blueText">{{'benefPortal.profile.contactPerson' | translate}} {{ municipality.name}}</span>
                                             </div>
-                                            <beneficiary-user [user]="contactPerson"></beneficiary-user>
-                                            <div *ngIf="i >= 1" class="">
-                                                <div class="ui-g-12">
-                                                    <hr class="beneficiaryHr sizeBeneficiaryHr">
-                                                </div>
-                                            </div>
+                                            <beneficiary-user [user]="contactPerson" [isEdit]="false" (onUserChange)="return;"></beneficiary-user>
                                         </div>
                                     </div>
                                     <div class="ui-g-12">
@@ -131,7 +126,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="row whitePanelBeneficiary">
-                            <beneficiary-user [user]="userMain"></beneficiary-user>
+                            <beneficiary-user [user]="userMain" [isEdit]="false" (onUserChange)="return;"></beneficiary-user>
                         </div>
                     </div>
                 </div>
@@ -140,15 +135,15 @@
                         <div class="row whitePanelBeneficiary">
                             <div *ngFor="let contactPerson of usersOrganization; let i = index">
                                 <div *ngIf="!contactPerson?.main">
-                                    <div class="ui-g-12">
-                                        <span class="ui-g-12 blueText">{{'benefPortal.profile.organizationPerson' | translate}}</span>
-                                    </div>
-                                    <beneficiary-user [user]="contactPerson"></beneficiary-user>
                                     <div *ngIf="i >= 1" class="">
                                         <div class="ui-g-12">
                                             <hr class="beneficiaryHr sizeBeneficiaryHr">
                                         </div>
                                     </div>
+                                    <div class="ui-g-12">
+                                        <span class="ui-g-12 blueText">{{'benefPortal.profile.organizationPerson' | translate}}</span>
+                                    </div>
+                                    <beneficiary-user [user]="contactPerson" [isEdit]="false" (onUserChange)="return;"></beneficiary-user>
                                 </div>
                             </div>
                         </div>
