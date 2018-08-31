@@ -14,6 +14,15 @@
         </div>
     </div>
 </div>
+<!-- Title -->
+<div id="step2-instructions" class="ui-g">
+    <div class="ui-lg-3"></div>
+    <div class="ui-g-12 ui-md-12 ui-lg-6">
+        <div class="beneficiaryMayor label">
+            {{ 'suppPortal.companyInformation' | translate }}
+        </div>
+    </div>
+</div>
 <!-- Supplier Form -->
 <form #supplierForm="ngForm" (ngSubmit)="submit()">
     <div class="ui-g">
@@ -30,7 +39,7 @@
             </div>
         </div>
     </div>
-    <div class="ui-g">
+    <!-- <div class="ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
@@ -43,7 +52,7 @@
                 <div class="ui-lg-3"></div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
@@ -105,7 +114,10 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="uploadBtn">{{ 'suppRegistration.company.logo' | translate }}</label>
+                <label class="label" for="uploadBtn">
+                    <span>{{ 'suppRegistration.company.logo' | translate }}</span>
+                    <span>({{ 'shared.optional' | translate }})</span>    
+                </label>
                 <br>
                 <div class="ui-g-12 left">
                     <div class="fileUpload btn btn-primary">
@@ -130,6 +142,91 @@
             </div>
         </div>
     </div>
+    <!-- Title -->
+    <div id="step2-instructions" class="ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="beneficiaryMayor label">
+                {{ 'suppRegistration.company.address' | translate }}
+            </div>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+                <label class="label" for="streetName">{{ 'benefPortal.granAgreement.addressLabel' | translate }}</label>
+                <input class="form-control paddingInput" maxlength="255" type="text" id="streetName" name="streetName"
+                        [(ngModel)]="officialAddress.streetName" #streetName="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                <div class="alert alert-danger" [hidden]="streetName.valid || streetName.pristine">
+                    {{'shared.address.required' | translate}}
+                </div>
+                <div class="ui-lg-3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+                <label class="label" for="streetNumber">{{ 'shared.number.label' | translate }}</label>
+                <input class="form-control paddingInput" maxlength="255" type="text" id="streetNumber" name="streetNumber"
+                        [(ngModel)]="officialAddress.streetNumber" #streetNumber="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                <div class="alert alert-danger" [hidden]="streetNumber.valid || streetNumber.pristine">
+                    {{'shared.address.required' | translate}}
+                </div>
+                <div class="ui-lg-3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+                <label class="label" for="postalCode">{{ 'shared.postal-code.label' | translate }}</label>
+                <input class="form-control paddingInput" maxlength="255" type="text" id="postalCode" name="postalCode"
+                        [(ngModel)]="officialAddress.postalCode" #postalCode="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                <div class="alert alert-danger" [hidden]="postalCode.valid || postalCode.pristine">
+                    {{'shared.address.required' | translate}}
+                </div>
+                <div class="ui-lg-3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+                <label class="label" for="city">{{ 'suppRegistration.city.label' | translate }}</label>
+                <input class="form-control paddingInput" maxlength="255" type="text" id="city" name="city"
+                        [(ngModel)]="officialAddress.city" #city="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                <div class="alert alert-danger" [hidden]="city.valid || city.pristine">
+                    {{'shared.address.required' | translate}}
+                </div>
+                <div class="ui-lg-3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <!-- Country selection -->
+            <div class="form-group">
+                <label class="label" for="country">{{ 'shared.country.label' | translate }}</label>
+                <select [(ngModel)]="country" (ngModelChange)="selectCountry($event)" id="country" name="country" class="form-control" ng-options="option.value as option.name for option in typeOptions"
+                    [disabled]="countries.length < 1">
+                <option disabled selected [ngValue]="null">
+                    {{ 'benefRegistration.registration.selectCountry' | translate }}
+                </option>
+                <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry">
+                    {{currentCountry.label}}
+                </option>
+                </select>
+                <div class="ui-lg-3"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Back & Next buttons -->
     <div class="form-group ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
@@ -140,7 +237,7 @@
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button" [disabled]="!supplierForm.form.valid || !buttonEnabled">
+            <button type="submit" class="btn btn-primary publish-button" [disabled]="!supplierForm.form.valid || !buttonEnabled || !countrySelected">
                 {{ 'shared.next.button' | translate }}
             </button>
         </div>

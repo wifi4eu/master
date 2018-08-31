@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from "@angular/core";
 import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
+import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {Observable} from "rxjs/Rx";
 import {SharedService} from "../../shared/shared.service";
 import { NgForm } from "@angular/forms";
@@ -20,13 +21,23 @@ export class SupplierRegistrationStep1Component {
     private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
     private buttonEnabled: boolean = false;
 
+    private countrySelected: boolean = false;
+    private officialAddress: any = {};
+
+    @Input('countries') private countries: NutsDTOBase[];
+    @Input('country') private country: NutsDTOBase;
+    @Output() private countryChange: EventEmitter<NutsDTOBase>;
+
     constructor(private sharedService: SharedService) {
         this.supplierChange = new EventEmitter<SupplierDTOBase>();
         this.logoUrlChange = new EventEmitter<FileReader>();
         this.onNext = new EventEmitter<any>();
+        this.countryChange = new EventEmitter<NutsDTOBase>();
     }
 
     private submit() {
+        // Wrap address first
+        this.supplier.address = this.officialAddress.streetName.trim() + " " + this.officialAddress.streetNumber.trim() + " " + this.officialAddress.postalCode.trim() + " " +  this.officialAddress.city.trim() + " " + this.country.label;
         this.supplierChange.emit(this.supplier);
         this.logoUrlChange.emit(this.logoUrl);
         this.onNext.emit();
@@ -93,45 +104,81 @@ export class SupplierRegistrationStep1Component {
         this.supplier.logo = null;
     }
 
+    private selectCountry(event: any) {
+        if (this.country != null) {
+            this.countrySelected = true;
+            this.countryChange.emit(this.country);
+            this.sharedService.clean();
+        }
+    }
+
     private checkButtonEnabled(event){
       /*  && this.supplier.accountNumber != null && this.supplier.bic != null &&
-      this.supplier.accountNumber.trim() != "" && this.supplier.bic.trim() != "" */
-            if(this.supplier.name != null && this.supplier.address != null 
-            && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != "" 
-                &&  this.supplier.vat.trim() != ""){
-                    this.buttonEnabled = true;
-            }
-            //custom name validator
-            if(this.supplier.name != null && this.supplier.name.trim() != ""){
-                setTimeout(()=>{this.supplierForm.controls['name'].setErrors(null);} ,5);
-            }else {
-                setTimeout(()=>{this.supplierForm.controls['name'].setErrors({'invalid': true});} ,5);
-            }
-            //custom address validator
-            if(this.supplier.address != null && this.supplier.address.trim() != ""){
-                setTimeout(()=>{this.supplierForm.controls['address'].setErrors(null);} ,5);
-            }else {
-                setTimeout(()=>{this.supplierForm.controls['address'].setErrors({'invalid': true});} ,5);
-            }
-             //custom accountNumber validator
-             /* if(this.supplier.accountNumber != null && this.supplier.accountNumber.trim() != ""){
-                setTimeout(()=>{this.supplierForm.controls['accountNumber'].setErrors(null);} ,5);
-            }else {
-                setTimeout(()=>{this.supplierForm.controls['accountNumber'].setErrors({'invalid': true});} ,5);
-            }
-              //custom bic validator
-              if(this.supplier.bic != null && this.supplier.bic.trim() != ""){
-                setTimeout(()=>{this.supplierForm.controls['bic'].setErrors(null);} ,5);
-            }else {
-                setTimeout(()=>{this.supplierForm.controls['bic'].setErrors({'invalid': true});} ,5);
-            } */
-              //custom vat validator
-            if(this.supplier.vat != null && this.supplier.vat.trim() != "" && this.supplier.vat.trim().slice(0, 2).match(/[A-z][A-z]/) && this.supplier.vat.trim().length > 3 && this.supplier.vat.trim().match(/[1-9][1-9][1-9]/)){
-                setTimeout(()=>{this.supplierForm.controls['vat'].setErrors(null);} ,5);
-            }else {
-                setTimeout(()=>{this.supplierForm.controls['vat'].setErrors({'invalid': true});} ,5);
-            }
-
-
+      this.supplier.accountNumber.trim() != "" && this.supplier.bic.trim() != "" 
+      && this.supplier.address != null && this.supplier.address.trim() != ""
+      */
+        if(this.supplier.name != null && this.supplier.name.trim() != "" 
+        && this.supplier.vat != null  &&  this.supplier.vat.trim() != ""
+        && this.officialAddress.streetName != null && this.officialAddress.streetName.trim() != ""
+        && this.officialAddress.streetNumber != null && this.officialAddress.streetNumber.trim() != ""
+        && this.officialAddress.postalCode != null && this.officialAddress.postalCode.trim() != ""
+        && this.officialAddress.city != null && this.officialAddress.city.trim() != ""
+        ){
+            this.buttonEnabled = true;
+        }
+        //custom name validator
+        if(this.supplier.name != null && this.supplier.name.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['name'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['name'].setErrors({'invalid': true});} ,5);
+        }
+        //custom accountNumber validator
+        /* if(this.supplier.accountNumber != null && this.supplier.accountNumber.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['accountNumber'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['accountNumber'].setErrors({'invalid': true});} ,5);
+        }
+        //custom bic validator
+        if(this.supplier.bic != null && this.supplier.bic.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['bic'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['bic'].setErrors({'invalid': true});} ,5);
+        } */
+        //custom vat validator
+        if(this.supplier.vat != null && this.supplier.vat.trim() != "" && this.supplier.vat.trim().slice(0, 2).match(/[A-z][A-z]/) && this.supplier.vat.trim().length > 3 && this.supplier.vat.trim().match(/[1-9][1-9][1-9]/)){
+            setTimeout(()=>{this.supplierForm.controls['vat'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['vat'].setErrors({'invalid': true});} ,5);
+        }
+        //custom address validator
+        /* if(this.supplier.address != null && this.supplier.address.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['address'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['address'].setErrors({'invalid': true});} ,5);
+        } */
+        // custom street name validator
+        if(this.officialAddress.streetName != null && this.officialAddress.streetName.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['streetName'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['streetName'].setErrors({'invalid': true});} ,5);
+        }
+        // custom streetNumber validator
+        if(this.officialAddress.streetNumber != null && this.officialAddress.streetNumber.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['streetNumber'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['streetNumber'].setErrors({'invalid': true});} ,5);
+        }
+        // custom postal code validator
+        if(this.officialAddress.postalCode != null && this.officialAddress.postalCode.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['postalCode'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['postalCode'].setErrors({'invalid': true});} ,5);
+        }
+        // custom city validator
+        if(this.officialAddress.city != null && this.officialAddress.city.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['city'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['city'].setErrors({'invalid': true});} ,5);
+        }
     }
 }
