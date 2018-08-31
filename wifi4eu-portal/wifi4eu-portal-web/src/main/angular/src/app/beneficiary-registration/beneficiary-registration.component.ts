@@ -126,7 +126,7 @@ export class BeneficiaryRegistrationComponent {
                 if (data.success) {
                     this.successRegistration = true;
                     this.sharedService.update();
-                    this.router.navigateByUrl('/beneficiary-portal');
+                    this.router.navigateByUrl('/beneficiary-portal/profile');
                 } else {
                     this.failureRegistration = true;
                     this.alreadyRegistered = (data.error.errorMessage === "User already registered.");
