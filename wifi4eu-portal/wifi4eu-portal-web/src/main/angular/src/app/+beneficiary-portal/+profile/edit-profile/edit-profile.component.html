@@ -62,7 +62,7 @@
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <p>{{ 'benefRegistration.address.label' | translate }}</p>
+                        <p>{{ 'benefPortal.granAgreement.addressLabel' | translate }}</p>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
@@ -118,7 +118,7 @@
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <p>{{ 'shared.name.label' | translate }}</p>
+                        <p>{{'benefRegistration.nameMayor.label' | translate }}</p>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
@@ -129,7 +129,7 @@
                             #name_mayor="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]"
                             required>
                         <div [hidden]="name_mayor.valid || name_mayor.pristine" class="alert alert-danger">
-                            {{ 'shared.name.required' | translate }}
+                            {{'benefRegistration.surnameMayor.label' | translate }}
                         </div>
                     </div>
                     <div class="col-sm-2"></div>
@@ -137,7 +137,7 @@
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <p>{{ 'shared.surname.label' | translate }}</p>
+                        <p>{{'benefRegistration.surnameMayor.label' | translate }}</p>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
@@ -156,7 +156,7 @@
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <p>{{ 'shared.email.label' | translate }}</p>
+                        <p>{{'benefRegistration.emailMayor.label' | translate}}</p>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
@@ -380,6 +380,12 @@
     <div class="whitePanel col-sm-12" *ngIf="usersOrganization?.length > 0">
         <br>
         <br>
+        <div class="row">
+                <div class="offset-sm-2 col-sm-8">
+                    <p class="edit cursorPointer right" (click)="addNewContactToOrganization()">+ {{ 'benefPortal.beneficary.addtoOrganization' | translate}}</p>
+                    <hr class="genericHr">
+                </div>
+            </div>
         <div *ngFor="let contactPerson of usersOrganization; let i = index">
             <div *ngIf="!contactPerson?.main">
                 <div class="offset-sm-2 ui-g-8">
@@ -394,16 +400,6 @@
 
                 </div>
                 <beneficiary-user [user]="contactPerson" [isEdit]="true" [countries]="countries" (onUserChange)="usersOrganization[i] = $event;checkButtonEnabledUser($event, contactPerson.id)"></beneficiary-user>
-                <div class="row">
-                    <br>
-                    <br>
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-8">
-                        <hr class="genericHr" *ngIf="i != 0">
-                        <p class="edit cursorPointer" (click)="addNewContactToOrganization()">+ {{ 'benefPortal.beneficary.addMunicipality' | translate}}</p>
-                    </div>
-                    <div class=" col-sm-2"></div>
-                </div>
             </div>
             <br>
             <br>

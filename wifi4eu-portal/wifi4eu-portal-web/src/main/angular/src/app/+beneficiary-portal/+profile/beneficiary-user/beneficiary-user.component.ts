@@ -5,16 +5,21 @@ import { UserDTOBase, NutsDTOBase } from '../../../shared/swagger';
 
 @Component({ selector: 'beneficiary-user', templateUrl: 'beneficiary-user.component.html' })
 export class BeneficiaryUserComponent {
-    @Input() user: UserDTOBase;
-    @Input() countries: NutsDTOBase[] = [];
-    @Input() isEdit: boolean = false;
-    @Output() onUserChange = new EventEmitter();
+  @Input() user: UserDTOBase;
+  @Input() countries: NutsDTOBase[] = [];
+  @Input() isEdit: boolean = false;
+  @Input() organizationName: string;
+  @Output() onUserChange = new EventEmitter();
+  @Output() onOrganizationChange = new EventEmitter();
 
+  constructor(private uxService: UxService, private translateService: TranslateService) {
+  }
 
-    constructor(private uxService: UxService, private translateService: TranslateService) {
-    }
+  onChangesUser() {
+    this.onUserChange.emit(this.user);
+  }
 
-    onChangesUser() {
-      this.onUserChange.emit(this.user);
-    }
+  onChangesOrganization() {
+    this.onOrganizationChange.emit(this.organizationName);
+  }
 }

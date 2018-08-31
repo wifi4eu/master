@@ -1,10 +1,12 @@
 <div *ngIf="!isEdit">
-    <!--
-            <div *ngIf="isOrganisation" class="ui-g-12">
-                <span class="ui-g-4 ui-sm-12">Organisations name</span>
-                <span class="ui-g-8 ui-sm-12"><b>-</b></span>
-            </div>
-            -->
+
+    <div *ngIf="organizationName" class="ui-g-12">
+        <span class="ui-g-4 ui-sm-12">{{'registration.nameOrganisation' | translate}}</span>
+        <span class="ui-g-8 ui-sm-12">
+            <b>{{organizationName}}</b>
+        </span>
+    </div>
+
     <div class="ui-g-12">
         <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
         <span class="ui-g-8 ui-sm-12">
@@ -55,6 +57,17 @@
     </div>
 </div>
 <div *ngIf="isEdit">
+    <div class="row" *ngIf="organizationName">
+        <div class="offset-sm-2 col-sm-8">
+            <p>{{ 'registration.nameOrganisation' | translate }}</p>
+        </div>
+    </div>
+    <div class="row" *ngIf="organizationName">
+        <div class="offset-sm-2 col-sm-8">
+            <input id="organizationName" type="text" [(ngModel)]="organizationName" class="form-control" name="organizationName"
+                ngcontrol="organizationName" #associationName="ngModel" (ngModelChange)="onOrganizationChange($event)" required>
+        </div>
+    </div>
     <div class="row">
         <div class="offset-sm-2 col-sm-8">
             <p>{{ 'shared.name.label' | translate }}</p>
@@ -107,8 +120,8 @@
     <div class="row">
         <div class="offset-sm-2 col-sm-8">
             <input id="addressNum_user" type="text" maxlength="254" [(ngModel)]="user.addressNum" class="form-control" name="addressNum_user"
-                ngcontrol="addressNum_user" #addressNum_user="ngModel" (ngModelChange)="onChangesUser()"
-                [disabled]="user.type == -1" required>
+                ngcontrol="addressNum_user" #addressNum_user="ngModel" (ngModelChange)="onChangesUser()" [disabled]="user.type == -1"
+                required>
             <div [hidden]="addressNum_user.valid || addressNum_user.pristine" class="alert alert-danger">
                 {{ 'shared.address.required' | translate }}
             </div>
@@ -122,8 +135,8 @@
     <div class="row">
         <div class="offset-sm-2 col-sm-8">
             <input id="postalCode_user" type="text" maxlength="254" [(ngModel)]="user.postalCode" class="form-control" name="postalCode_user"
-                ngcontrol="postalCode_user" #postalCode_user="ngModel" (ngModelChange)="onChangesUser()"
-                [disabled]="user.type == -1" required>
+                ngcontrol="postalCode_user" #postalCode_user="ngModel" (ngModelChange)="onChangesUser()" [disabled]="user.type == -1"
+                required>
             <div [hidden]="postalCode_user.valid || postalCode_user.pristine" class="alert alert-danger">
                 {{ 'shared.address.required' | translate }}
             </div>
@@ -150,9 +163,8 @@
     </div>
     <div class="row">
         <div class="offset-sm-2 col-sm-8">
-            <select [(ngModel)]="user.country" (ngModelChange)="onChangesUser()" id="country_user" name="country_user"
-                class="form-control" ng-options="option.value as option.name for option in typeOptions" #country_user="ngModel"
-                [disabled]="countries.length < 1 || user.type == -1">
+            <select [(ngModel)]="user.country" (ngModelChange)="onChangesUser()" id="country_user" name="country_user" class="form-control"
+                ng-options="option.value as option.name for option in typeOptions" #country_user="ngModel" [disabled]="countries.length < 1 || user.type == -1">
                 <option disabled selected [ngValue]="null">
                     {{ 'benefRegistration.registration.selectCountry' | translate }}
                 </option>

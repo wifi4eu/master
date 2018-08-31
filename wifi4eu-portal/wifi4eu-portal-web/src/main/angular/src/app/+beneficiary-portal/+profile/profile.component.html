@@ -67,6 +67,12 @@
                                         </span>
                                     </div>
                                     <div class="ui-g-12">
+                                            <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.city.label' | translate }}</span>
+                                            <span class="ui-g-8 ui-sm-12">
+                                                <b>{{municipality?.name}}</b>
+                                            </span>
+                                        </div>
+                                    <div class="ui-g-12">
                                         <span class="ui-g-4 ui-sm-12">{{ 'shared.country.label' | translate }}</span>
                                         <span class="ui-g-8 ui-sm-12">
                                             <b>{{municipality?.country}}</b>
@@ -76,19 +82,19 @@
                                         <hr class="beneficiaryHr sizeBeneficiaryHr">
                                     </div>
                                     <div class="ui-g-12">
-                                        <span class="ui-g-4 ui-sm-12">Legal representative name</span>
+                                        <span class="ui-g-4 ui-sm-12">{{'benefRegistration.nameMayor.label' | translate }}</span>
                                         <span class="ui-g-8 ui-sm-12">
                                             <b>{{mayors[i]?.name}}</b>
                                         </span>
                                     </div>
                                     <div class="ui-g-12">
-                                        <span class="ui-g-4 ui-sm-12">Legal representative surname</span>
+                                        <span class="ui-g-4 ui-sm-12">{{'benefRegistration.surnameMayor.label' | translate }}</span>
                                         <span class="ui-g-8 ui-sm-12">
                                             <b>{{mayors[i]?.surname}}</b>
                                         </span>
                                     </div>
                                     <div class="ui-g-12">
-                                        <span class="ui-g-4 ui-sm-12">Legal representative e-mail</span>
+                                        <span class="ui-g-4 ui-sm-12">{{'benefRegistration.emailMayor.label' | translate}}</span>
                                         <span class="ui-g-8 ui-sm-12">
                                             <b>{{mayors[i]?.email}}</b>
                                         </span>
@@ -131,20 +137,18 @@
                     </div>
                 </div>
                 <div class="container mt-3">
-                    <div *ngIf="isOrganisation" class="">
-                        <div class="row whitePanelBeneficiary">
-                            <div *ngFor="let contactPerson of usersOrganization; let i = index">
-                                <div *ngIf="!contactPerson?.main">
-                                    <div *ngIf="i >= 1" class="">
-                                        <div class="ui-g-12">
-                                            <hr class="beneficiaryHr sizeBeneficiaryHr">
-                                        </div>
-                                    </div>
+                    <div *ngIf="isOrganisation" class="row whitePanelBeneficiary">
+                        <div *ngFor="let contactPerson of usersOrganization; let i = index">
+                            <div *ngIf="!contactPerson?.main">
+                                <div *ngIf="i >= 1" class="">
                                     <div class="ui-g-12">
-                                        <span class="ui-g-12 blueText">{{'benefPortal.profile.organizationPerson' | translate}}</span>
+                                        <hr class="beneficiaryHr sizeBeneficiaryHr">
                                     </div>
-                                    <beneficiary-user [user]="contactPerson" [isEdit]="false" (onUserChange)="return;"></beneficiary-user>
                                 </div>
+                                <div class="ui-g-12">
+                                    <span class="ui-g-12 blueText">{{'benefPortal.profile.organizationPerson' | translate}}</span>
+                                </div>
+                                <beneficiary-user [user]="contactPerson" [isEdit]="false" (onUserChange)="return;"></beneficiary-user>
                             </div>
                         </div>
                     </div>
