@@ -327,11 +327,9 @@
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-4" style="text-align: center !important">
-                <a routerLink="../.." routerLinkActive="active">
-                    <button type="button" class="btn btn-primary cancel-button">
-                        {{ 'shared.yes' | translate }}
-                    </button>
-                </a>
+                <button type="button" class="btn btn-primary cancel-button" (click)="goBack()">
+                    {{ 'shared.yes' | translate }}
+                </button>
             </div>
 
             <div class="ui-lg-2"></div>
