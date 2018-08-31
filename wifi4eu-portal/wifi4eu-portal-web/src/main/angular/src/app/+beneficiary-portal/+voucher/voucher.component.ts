@@ -222,7 +222,7 @@ export class VoucherComponent {
                             break;
                         }
                     }
-                    this.sharedService.growlTranslation('Your registration was successfully saved.', 'shared.registration.update.success', 'success');
+                    this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
                 } else {
                     this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
                 }
