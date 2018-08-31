@@ -251,14 +251,15 @@ public class SupplierService {
                 userDTO.setPhoneNumber(userSupplier.getPhoneNumber());
                 userDTO.setPhonePrefix(userSupplier.getPhonePrefix());
                 userDTO.setCreateDate(new Date().getTime());
-                userDTO.setType(1);
+                userDTO.setType((int) Constant.ROLE_SUPPLIER);
                 userDTO.setVerified(false);
                 userDTO.setLang(supplierDTO.getLang());
                 userDTO.setPhoneNumber(supplierDTO.getContactNumber());
                 userDTO.setPhonePrefix(supplierDTO.getContactPrefix());
                 userDTO.setEmail(supplierDTO.getContactEmail());
-                if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()) {
+                if (Validator.isNull(userDTO.getEcasEmail()) || userDTO.getEcasEmail().trim().isEmpty()) {
                     userDTO.setEcasEmail(supplierDTO.getContactEmail());
+                    userDTO.setEmail(supplierDTO.getContactEmail());
                 }
                 break;
             }
