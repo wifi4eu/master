@@ -199,6 +199,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
                     this.buttonEnabledStep2 = false;
                 }
             }
+            this.checkMunicipalitiesSelected();
             this.checkEmailsMatch();
         }
     }
