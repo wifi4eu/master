@@ -29,7 +29,7 @@ public class RedisUtil {
     private String[] redisUris;
 
     @Value("${redis.enabled}")*/
-    private boolean enableSync = false;
+    private boolean enableSync = true;
 
     private final Logger _log = LogManager.getLogger(RedisUtil.class);
     private final String channel = "refresh";
@@ -37,9 +37,21 @@ public class RedisUtil {
     private static RedisClient redis = null;
     private static int sentinelPort = 5000;
 
+    /*DEV*/
     private static final String sentinelUri1 = "10.0.2.31";
     private static final String sentinelUri2 = "10.0.2.32";
     private static final String sentinelUri3 = "10.0.2.33";
+
+    /*ACC*/
+    /*private static final String sentinelUri1 = "202.3.2.4";
+    private static final String sentinelUri2 = "202.3.2.5";
+    private static final String sentinelUri3 = "202.3.2.6";*/
+
+    /*ACC-HF*/
+    /*private static final String sentinelUri1 = "202.3.2.11";
+    private static final String sentinelUri2 = "202.3.2.12";
+    private static final String sentinelUri3 = "202.3.2.13";*/
+
 
     @Autowired
     UserRepository userRepository;
@@ -47,6 +59,10 @@ public class RedisUtil {
     public RedisUtil() {
 
         if (this.enableSync) {
+            _log.info("***************** REDIS ******************************");
+            _log.info(" > REDIS SYNC IS ENABLED");
+            _log.info("******************************************************");
+
             /*_log.info("***************** REDIS ******************************");
             _log.info(" > Hosts: " + Arrays.toString(this.redisUris));
             _log.info("******************************************************");

@@ -27,6 +27,7 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.Utils;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
@@ -65,6 +66,8 @@ import wifi4eu.wifi4eu.util.RedisUtil;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Configuration
@@ -227,12 +230,16 @@ public class UserService {
             InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
             if (Validator.isNotNull(invitationContact)){
                 userDTO.setUserInvited(true);
-                if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0){
-                    userDTO.setUserInvitedFor((int) Constant.ROLE_REPRESENTATIVE);
-                } else if (Validator.isNotNull(invitationContact.getIdSupplier()) && invitationContact.getIdSupplier() != 0){
-                    userDTO.setUserInvitedFor((int) Constant.ROLE_SUPPLIER);
+                long hours = Utils.getHoursBetweenDates(invitationContact.getLastModified(), new Date());
+                if (hours >= 24){
+                    userDTO.setUserInvitedFor(0);
+                } else {
+                    if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0){
+                        userDTO.setUserInvitedFor((int) Constant.ROLE_REPRESENTATIVE);
+                    } else if (Validator.isNotNull(invitationContact.getIdSupplier()) && invitationContact.getIdSupplier() != 0){
+                        userDTO.setUserInvitedFor((int) Constant.ROLE_SUPPLIER);
+                    }
                 }
-
             }
         }
         return userDTO;
@@ -640,17 +647,6 @@ public class UserService {
     public UserDTO updateLanguage(UserDTO userDTO, String lang) {
         userDTO.setLang(lang);
         return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
-    }
-
-    public void createNewRegistrationUser(UserRegistrationDTO userRegistrationDTO) {
-        RegistrationUsers registrationUsers = new RegistrationUsers();
-        Integer registrationId = registrationRepository.findByMunicipalityId(userRegistrationDTO.getMunicipalityId()).getId();
-        registrationUsers.setContactEmail(userRegistrationDTO.getEmail());
-        registrationUsers.setCreationDate(new Date());
-        registrationUsers.setRegistrationId(registrationId);
-        registrationUsers.setStatus(0);
-        registrationUsers.setMain(0);
-        registrationUsersRepository.save(registrationUsers);
     }
 
     public boolean checkIfApplied(UserDTO userDTO) {

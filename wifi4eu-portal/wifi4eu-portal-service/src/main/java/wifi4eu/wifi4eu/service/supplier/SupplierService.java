@@ -608,7 +608,7 @@ public class SupplierService {
     public ResponseDTO invitateContactSupplier(UserDTO userConnected, int supplierId, String newContactEmail){
         ResponseDTO responseDTO = new ResponseDTO();
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new supplier contact - START");
-        if (Validator.isNotNull(supplierId) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty()){
+        if (Validator.isNotNull(supplierId) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && Validator.isNotNull(supplierRepository.findByUserIdAndSupplierId(userConnected.getId(), supplierId))){
             if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail,userConnected.getId())) && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)){
                 InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndIdUserRequest(newContactEmail,userConnected.getId());
                 Date today = new Date();
