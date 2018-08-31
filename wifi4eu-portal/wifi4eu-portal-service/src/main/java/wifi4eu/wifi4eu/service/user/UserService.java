@@ -82,6 +82,9 @@ public class UserService {
     @Value("${ecas.location}")
     private String ecasUrl;
 
+    @Value("{server.address}")
+    private String serverAddress;
+
     @Autowired
     UserMapper userMapper;
 
@@ -628,6 +631,10 @@ public class UserService {
 
     public String getEcasUrl() {
         return ecasUrl;
+    }
+
+    public String getServerAddress(){
+        return serverAddress;
     }
 
     private void removeTempToken(UserDTO userDTO) {
