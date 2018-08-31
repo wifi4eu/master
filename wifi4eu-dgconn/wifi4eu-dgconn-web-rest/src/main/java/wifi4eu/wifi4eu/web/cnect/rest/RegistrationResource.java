@@ -31,6 +31,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -360,12 +361,12 @@ public class RegistrationResource {
         String fileMime = legalFile.getFileMime();
         String fileExtension = legalFilesService.getExtensionFromMime(fileMime);
         //if fileMime is null or has lenght 0 fileExtension is null
-        if (fileName != null && fileName.length() != 0 && !legalFile.getFileData().isEmpty() && fileExtension != null) {
+        if (fileName != null && fileName.length() != 0 && legalFile.getFileData() != null && legalFile.getFileData().length != 0 && fileExtension != null) {
             try {
                 response.setContentType(fileMime);
                 response.setHeader("Content-disposition", "inline; filename=\"" + fileName + fileExtension + "\"");
 
-                byte[] fileBytes = Base64Utils.decodeFromString(legalFile.getFileData());
+                byte[] fileBytes = Base64Utils.decodeFromString(new String(legalFile.getFileData(), StandardCharsets.UTF_8));
                 response.getOutputStream().write(fileBytes);
                 response.getOutputStream().close();
                 response.getOutputStream().flush();

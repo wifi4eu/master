@@ -16,7 +16,11 @@ public class LegalFile {
 	private int registration;
 
 	@Column(name = "data")
-	private String fileData;
+	private String originalFileData;
+
+	@Lob
+	@Column(name = "encrypted_data")
+	private byte[] fileData;
 
 	@Column(name = "type")
 	private int fileType;
@@ -40,7 +44,7 @@ public class LegalFile {
 	public LegalFile() {
 	}
 
-    public LegalFile(int registration, String fileData, int fileType, Long uploadTime, Integer userId, int fileSize, String fileMime, String fileName) {
+    public LegalFile(int registration, byte[] fileData, int fileType, Long uploadTime, Integer userId, int fileSize, String fileMime, String fileName) {
         this.registration = registration;
         this.fileData = fileData;
         this.fileType = fileType;
@@ -67,11 +71,11 @@ public class LegalFile {
 		this.registration = registration;
 	}
 
-	public String getFileData() {
+	public byte[] getFileData() {
 		return fileData;
 	}
 
-	public void setFileData(String fileData) {
+	public void setFileData(byte[] fileData) {
 		this.fileData = fileData;
 	}
 
