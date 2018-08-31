@@ -126,7 +126,7 @@ export class SupplierRegistrationStep1Component {
                 setTimeout(()=>{this.supplierForm.controls['bic'].setErrors({'invalid': true});} ,5);
             } */
               //custom vat validator
-              if(this.supplier.vat != null && this.supplier.vat.trim() != ""){
+            if(this.supplier.vat != null && this.supplier.vat.trim() != "" && this.supplier.vat.trim().slice(0, 2).match(/[A-z][A-z]/) && this.supplier.vat.trim().length > 3 && this.supplier.vat.trim().match(/[1-9][1-9][1-9]/)){
                 setTimeout(()=>{this.supplierForm.controls['vat'].setErrors(null);} ,5);
             }else {
                 setTimeout(()=>{this.supplierForm.controls['vat'].setErrors({'invalid': true});} ,5);
