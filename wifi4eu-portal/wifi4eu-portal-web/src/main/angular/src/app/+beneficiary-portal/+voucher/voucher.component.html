@@ -74,7 +74,7 @@
                           </span>
                     </template>
                 </p-column>
-                <template let-data pTemplate="rowexpansion" let-i="rowIndex">
+                <template let-data pTemplate="rowexpansion" let-i="rowIndex" *ngIf="voucherCompetitionState != null && voucherCompetitionState != 0" >
                     <div class="ui-grid ui-grid-responsive ui-fluid">
                         <div class="row conditions-agreement">
                             <div class="col-sm-1 col-md-1 col-lg-1">
