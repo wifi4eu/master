@@ -188,19 +188,6 @@
                                 <span class="edit cursorPointer right " (click)="deactivateShowModal(contactPerson.id)" *ngIf="contactPerson.type != -1 && contactPerson.id != user.id">
                                     <i class="fa fa-ban"></i>{{ 'shared.deactivate.button' | translate}}</span>
                             </div>
-                            <!-- Organization name -->
-                            <div class="row" *ngIf="associationName">
-                                <div class="offset-sm-2 col-sm-8">
-                                    <p>{{ 'registration.nameOrganisation' | translate }}</p>
-                                </div>
-                            </div>
-                            <div class="row" *ngIf="associationName">
-                                <div class="offset-sm-2 col-sm-8">
-                                    <input id="associationName" type="text" [(ngModel)]="registration.associationName" class="form-control" name="associationName"
-                                        ngcontrol="associationName" #associationName="ngModel" (ngModelChange)="checkButtonEnabledUser($event)"
-                                        required>
-                                </div>
-                            </div>
                             <beneficiary-user [user]="contactPerson" [isEdit]="true" [countries]="countries" (onUserChange)="users[registration?.municipalityId][i] = $event;checkButtonEnabledUser($event, contactPerson.id)"></beneficiary-user>
                             <br>
                             <br>
@@ -357,36 +344,22 @@
                 <hr class="beneficiaryHr">
             </div>
         </div>
-
-        <!-- Organization name -->
-        <div class="row" *ngIf="associationName">
-            <div class="offset-sm-2 col-sm-8">
-                <p>{{ 'registration.nameOrganisation' | translate }}</p>
-            </div>
-        </div>
-        <div class="row" *ngIf="associationName">
-            <div class="offset-sm-2 col-sm-8">
-                <input id="associationName" type="text" [(ngModel)]="registration.associationName" class="form-control" name="associationName"
-                    ngcontrol="associationName" #associationName="ngModel" maxlength="254" (ngModelChange)="checkButtonEnabledUser($event)"
-                    required>
-            </div>
-        </div>
         <beneficiary-user [user]="userMain" [isEdit]="true" [countries]="countries" (onUserChange)="userMain = $event;checkButtonEnabledUser($event, userMain.id)"></beneficiary-user>
         <br>
         <br>
     </div>
     <br>
     <br>
-    <div class="whitePanel col-sm-12" *ngIf="usersOrganization?.length > 0">
+    <div class="whitePanel col-sm-12" *ngIf="usersAssociation?.length > 0">
         <br>
         <br>
         <div class="row">
                 <div class="offset-sm-2 col-sm-8">
-                    <p class="edit cursorPointer right" (click)="addNewContactToOrganization()">+ {{ 'benefPortal.beneficary.addtoOrganization' | translate}}</p>
+                    <p class="edit cursorPointer right" (click)="addNewContactToAssociation()">+ {{ 'benefPortal.beneficary.addtoAssociation' | translate}}</p>
                     <hr class="genericHr">
                 </div>
             </div>
-        <div *ngFor="let contactPerson of usersOrganization; let i = index">
+        <div *ngFor="let contactPerson of usersAssociation; let i = index">
             <div *ngIf="!contactPerson?.main">
                 <div class="offset-sm-2 ui-g-8">
                     <div *ngIf="i >= 1" class="">
@@ -394,12 +367,12 @@
                             <hr class="beneficiaryHr sizeBeneficiaryHr">
                         </div>
                     </div>
-                    <span class="blueText">{{'benefPortal.profile.organizationPerson' | translate}}</span>
+                    <span class="blueText">{{'benefPortal.profile.associationPerson' | translate}}</span>
                     <span class="edit cursorPointer right " (click)="deactivateShowModal(contactPerson.id)" *ngIf="contactPerson.type != -1 && contactPerson.id != user.id">
                         <i class="fa fa-ban"></i>{{ 'shared.deactivate.button' | translate}}</span>
 
                 </div>
-                <beneficiary-user [user]="contactPerson" [isEdit]="true" [countries]="countries" (onUserChange)="usersOrganization[i] = $event;checkButtonEnabledUser($event, contactPerson.id)"></beneficiary-user>
+                <beneficiary-user [user]="contactPerson" [isEdit]="true" [countries]="countries" (onUserChange)="usersAssociation[i] = $event;checkButtonEnabledUser($event, contactPerson.id)"></beneficiary-user>
             </div>
             <br>
             <br>

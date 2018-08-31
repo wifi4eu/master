@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface LegalFileCorrectionReasonMapper {
     @Mapping(source = "entity.registration.id", target = "registrationId")
-    LegalFileCorrectionReasonDTO toDTO(LegalFileCorrectionReason entity);
+LegalFileCorrectionReasonDTO toDTO(LegalFileCorrectionReason entity);
     @Mapping(source = "vo.registrationId", target = "registration.id")
     LegalFileCorrectionReason toEntity(LegalFileCorrectionReasonDTO vo);
     List<LegalFileCorrectionReasonDTO> toDTOList(List<LegalFileCorrectionReason> list);

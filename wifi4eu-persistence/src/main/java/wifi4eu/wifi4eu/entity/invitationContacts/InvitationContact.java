@@ -37,13 +37,13 @@ public class InvitationContact {
     private Date lastModified;
 
     @Column(name = "id_organization")
-    private Integer idOrganization;
+    private Integer idAssociation;
 
     public InvitationContact(){
 
     }
 
-    public InvitationContact(Integer type, Integer idRegistration, Integer idSupplier, Integer idUserRequest, String emailInvited, Integer status, Date createDate, Date lastModified, Integer idOrganization) {
+    public InvitationContact(Integer type, Integer idRegistration, Integer idSupplier, Integer idUserRequest, String emailInvited, Integer status, Date createDate, Date lastModified, Integer idAssociation) {
         this.type = type;
         this.idRegistration = idRegistration;
         this.idSupplier = idSupplier;
@@ -52,7 +52,7 @@ public class InvitationContact {
         this.status = status;
         this.createDate = createDate;
         this.lastModified = lastModified;
-        this.idOrganization = idOrganization;
+        this.idAssociation = idAssociation;
     }
 
     public Integer getId() {
@@ -127,11 +127,11 @@ public class InvitationContact {
         this.lastModified = lastModified;
     }
 
-    public Integer getIdOrganization() {
-        return idOrganization;
+    public Integer getIdAssociation() {
+        return idAssociation;
     }
 
-    public void setIdOrganization(Integer idOrganization) {
-        this.idOrganization = idOrganization;
+    public void setIdAssociation(Integer idAssociation) {
+        this.idAssociation = idAssociation;
     }
 }

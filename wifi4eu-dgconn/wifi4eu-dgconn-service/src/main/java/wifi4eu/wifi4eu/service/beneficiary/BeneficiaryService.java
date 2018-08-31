@@ -23,6 +23,7 @@ import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.association.Association;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryFinalListItem;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
@@ -31,6 +32,7 @@ import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryFinalListItemMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.association.AssociationRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryFinalListItemRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
@@ -105,6 +107,9 @@ public class BeneficiaryService {
 
     @Autowired
     BeneficiaryFinalListItemMapper beneficiaryFinalListItemMapper;
+
+    @Autowired
+    AssociationRepository associationRepository;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
@@ -182,7 +187,9 @@ public class BeneficiaryService {
             /* create registration */
             RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, userDTO.getId());
             registration.setIpRegistration(ip);
-            registration.setAssociationName(beneficiaryDTO.getAssociationName());
+            Association association = new Association(beneficiaryDTO.getAssociationName());
+            associationRepository.save(association);
+            registration.setIdAssociation(associationRepository.findTopByNameOrderByIdDesc(beneficiaryDTO.getAssociationName()).getId());
             registration.setOrganisationId(beneficiaryDTO.getOrganisationId());
             RegistrationDTO registrationDtoOutput = registrationService.createRegistration(registration);
             registrations.add(registrationDtoOutput);

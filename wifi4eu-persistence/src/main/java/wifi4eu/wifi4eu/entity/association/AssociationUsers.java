@@ -1,29 +1,29 @@
-package wifi4eu.wifi4eu.entity.organization;
+package wifi4eu.wifi4eu.entity.association;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "organization_users")
-public class OrganizationUsers {
+@Table(name = "association_users")
+public class AssociationUsers {
 
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "id_organization")
-    private Integer idOrganization;
+    @Column(name = "id_Association")
+    private Integer idAssociation;
 
     @Column(name = "id_user")
     private Integer idUser;
 
-    public OrganizationUsers() {
+    public AssociationUsers() {
 
     }
 
-    public OrganizationUsers(Integer id, Integer idOrganization, Integer idUser) {
+    public AssociationUsers(Integer id, Integer idAssociation, Integer idUser) {
         this.id = id;
-        this.idOrganization = idOrganization;
+        this.idAssociation = idAssociation;
         this.idUser = idUser;
     }
 
@@ -35,12 +35,12 @@ public class OrganizationUsers {
         this.id = id;
     }
 
-    public Integer getIdOrganization() {
-        return idOrganization;
+    public Integer getIdAssociation() {
+        return idAssociation;
     }
 
-    public void setIdOrganization(Integer idOrganization) {
-        this.idOrganization = idOrganization;
+    public void setIdAssociation(Integer idAssociation) {
+        this.idAssociation = idAssociation;
     }
 
     public Integer getIdUser() {

@@ -336,19 +336,19 @@ public class BeneficiaryResource {
         }
     }
 
-    @ApiOperation(value = "Generate invitation to be a organization contact")
-    @RequestMapping(value = "/invitation-contact-organization", method = RequestMethod.POST)
+    @ApiOperation(value = "Generate invitation to be a association contact")
+    @RequestMapping(value = "/invitation-contact-association", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO invitateContactOrganization(@RequestParam("idOrganization") final int idOrganization, @RequestParam("newContactEmail") final String newContactEmail, HttpServletResponse response) throws IOException {
+    public ResponseDTO invitateContactAssociation(@RequestParam("idAssociation") final int idAssociation, @RequestParam("newContactEmail") final String newContactEmail, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
             if (Validator.isNull(userConnected) || userConnected.getType() != 3){
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-             registrationUtils.checkOrganizationPermissions(idOrganization);
+             registrationUtils.checkAssociationPermissions(idAssociation);
 
-            return beneficiaryService.invitateContactBeneficiary(userConnected,null,newContactEmail.trim(), idOrganization);
+            return beneficiaryService.invitateContactBeneficiary(userConnected,null,newContactEmail.trim(), idAssociation);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Incorrect request when adding contacts for beneficiaries", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());

@@ -138,7 +138,7 @@
                 </div>
                 <div class="container mt-3">
                     <div *ngIf="isOrganisation" class="row whitePanelBeneficiary">
-                        <div *ngFor="let contactPerson of usersOrganization; let i = index">
+                        <div *ngFor="let contactPerson of usersAssociation; let i = index">
                             <div *ngIf="!contactPerson?.main">
                                 <div *ngIf="i >= 1" class="">
                                     <div class="ui-g-12">
@@ -146,7 +146,7 @@
                                     </div>
                                 </div>
                                 <div class="ui-g-12">
-                                    <span class="ui-g-12 blueText">{{'benefPortal.profile.organizationPerson' | translate}}</span>
+                                    <span class="ui-g-12 blueText">{{'benefPortal.profile.associationPerson' | translate}}</span>
                                 </div>
                                 <beneficiary-user [user]="contactPerson" [isEdit]="false" (onUserChange)="return;"></beneficiary-user>
                             </div>

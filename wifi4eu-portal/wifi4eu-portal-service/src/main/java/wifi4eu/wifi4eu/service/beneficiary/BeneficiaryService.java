@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.common.enums.UserHistoryActionList;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
+import wifi4eu.wifi4eu.entity.association.Association;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
@@ -21,6 +22,8 @@ import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
 import wifi4eu.wifi4eu.mapper.history_action.UserHistoryActionMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.association.AssociationRepository;
+import wifi4eu.wifi4eu.repository.association.AssociationUsersRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
 import wifi4eu.wifi4eu.repository.history_action.UserHistoryActionRepository;
 import wifi4eu.wifi4eu.repository.organization.OrganizationRepository;
@@ -117,6 +120,9 @@ public class BeneficiaryService {
 
     @Autowired
     OrganizationRepository organizationRepository;
+
+    @Autowired
+    AssociationRepository associationRepository;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
@@ -256,6 +262,9 @@ public class BeneficiaryService {
             /* create registration */
             RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, userDTO.getId());
             registration.setIpRegistration(ip);
+            Association association = new Association(beneficiaryDTO.getAssociationName());
+            associationRepository.save(association);
+            registration.setIdAssociation(associationRepository.findTopByNameOrderByIdDesc(beneficiaryDTO.getAssociationName()).getId());
             registration.setAssociationName(beneficiaryDTO.getAssociationName());
             registration.setOrganisationId(beneficiaryDTO.getOrganisationId());
             RegistrationDTO registrationDtoOutput = registrationService.createRegistration(registration);
@@ -660,12 +669,12 @@ public class BeneficiaryService {
         return userRegistrationDTO;
     }
 
-    public ResponseDTO invitateContactBeneficiary(UserDTO userConnected, Integer idMunicipality, String newContactEmail, Integer idOrganization) {
+    public ResponseDTO invitateContactBeneficiary(UserDTO userConnected, Integer idMunicipality, String newContactEmail, Integer idAssociation) {
         ResponseDTO responseDTO = new ResponseDTO();
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - START");
-        boolean isOrganization =  Validator.isNotNull(idOrganization) && idOrganization != 0 && Validator.isNotNull(organizationRepository.findOne(idOrganization));
+        boolean isAssociation =  Validator.isNotNull(idAssociation) && idAssociation != 0 && Validator.isNotNull(organizationRepository.findOne(idAssociation));
         boolean isRegistration =  Validator.isNotNull(idMunicipality) && idMunicipality != 0 && Validator.isNotNull(registrationRepository.findByMunicipalityId(idMunicipality));
-        if (Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && (isRegistration || isOrganization)) {
+        if (Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && (isRegistration || isAssociation)) {
             if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail, userConnected.getId())) && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)) {
                 InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndIdUserRequest(newContactEmail, userConnected.getId());
                 Date today = new Date();
@@ -674,8 +683,8 @@ public class BeneficiaryService {
                     invitationContact.setEmailInvited(newContactEmail);
                     if (isRegistration) {
                         invitationContact.setIdRegistration(registrationRepository.findByMunicipalityId(idMunicipality).getId());
-                    } else if(isOrganization){
-                        invitationContact.setIdOrganization(idOrganization);
+                    } else if(isAssociation){
+                        invitationContact.setIdAssociation(idAssociation);
                     }
                     invitationContact.setIdUserRequest(userConnected.getId());
                     invitationContact.setType((int) Constant.ROLE_REPRESENTATIVE);
@@ -705,9 +714,9 @@ public class BeneficiaryService {
                 msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, newContactEmail);
                 _log.debug("TESTING msgBody => " + msgBody);
 
-                //if (!userService.isLocalHost()) {
+                if (!userService.isLocalHost()) {
                     mailService.sendEmail(newContactEmail, MailService.FROM_ADDRESS, subject, msgBody);
-                //}
+                }
 
                 invitationContactRepository.save(invitationContact);
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");

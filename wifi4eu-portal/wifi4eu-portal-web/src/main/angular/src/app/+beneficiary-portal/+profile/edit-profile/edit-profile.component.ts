@@ -33,8 +33,6 @@ import { TranslateService } from "ng2-translate";
 import { CallDTO, CallDTOBase, OrganizationApi, OrganizationDTOBase } from "../../../shared/swagger";
 import { CookieService } from "ngx-cookie-service";
 import { UserContactDetailsBase } from "../../../shared/swagger";
-import { SIGTSTP } from "constants";
-import { SIGTTOU } from "constants";
 
 
 @Component({
@@ -51,7 +49,7 @@ export class BeneficiaryEditProfileComponent {
     private css_class_email: string[] = ['notValid'];
     private countries: NutsDTOBase[] = [];
     private addUser: boolean = false;
-    private addUserToOrganization: boolean = false;
+    private addUserToAssociation: boolean = false;
     private addContact: boolean = false;
     private idMunicipalityNewContactUser: number = 0;
     private country: NutsDTOBase;
@@ -59,7 +57,7 @@ export class BeneficiaryEditProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
     private users: UserContactDetailsBase[][] = [];
     private usersModified: number[] = [];
-    private usersOrganization = [];
+    private usersAssociation = [];
     private userMain: UserContactDetailsBase;
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
     private municipalitiesSelected: boolean = false;
@@ -173,9 +171,9 @@ export class BeneficiaryEditProfileComponent {
                                         this.organizationId = registrations[0].organisationId;
                                         this.finalBeneficiary.associationName = registrations[0].associationName;
                                         this.registration = registrations[0];
-                                        this.userApi.getUsersFromOrganization(registrations[0].organisationId).subscribe(
+                                        this.userApi.getUsersFromAssociation(registrations[0].idAssociation).subscribe(
                                             (users: UserContactDetailsBase[]) => {
-                                                this.usersOrganization = users;
+                                                this.usersAssociation = users;
                                                 if (users != null)
                                                     this.userMain = users.find(x => x.main === 1);
                                             }
@@ -452,7 +450,7 @@ export class BeneficiaryEditProfileComponent {
         this.deleteMunicipalityId = 0;
         this.displayDeleteMunicipality = false;
         this.addUser = false;
-        this.addUserToOrganization = false;
+        this.addUserToAssociation = false;
         this.addContact = false;
         this.displayDeactivatemodal = false;
     }
@@ -482,9 +480,9 @@ export class BeneficiaryEditProfileComponent {
                                                 }
                                             }
                                         }
-                                        for (let z = 0; z < this.usersOrganization.length; z++) {
-                                            if (this.usersModified.indexOf(this.usersOrganization[z].id) != -1) {
-                                                usersToSubmit.push(this.usersOrganization[z]);
+                                        for (let z = 0; z < this.usersAssociation.length; z++) {
+                                            if (this.usersModified.indexOf(this.usersAssociation[z].id) != -1) {
+                                                usersToSubmit.push(this.usersAssociation[z]);
                                             }
                                         }
                                         if (usersToSubmit.length > 0) {
@@ -596,23 +594,23 @@ export class BeneficiaryEditProfileComponent {
         this.addUser = true;
     }
 
-    private addNewContactToOrganization() {
+    private addNewContactToAssociation() {
         this.newUserEmail = '';
-        this.addUserToOrganization = true;
+        this.addUserToAssociation = true;
         this.addUser = true;
     }
 
     private closeAddNewContactModal() {
         this.newUserEmail = '';
         this.addUser = false;
-        this.addUserToOrganization = false;
+        this.addUserToAssociation = false;
     }
 
     private addNewContact() {
         if (this.newUserEmail.trim() != '') {
-            if (this.addUserToOrganization) {
+            if (this.addUserToAssociation) {
                 this.addContact = true;
-                this.beneficiaryApi.invitateContactOrganization(this.organizationId, this.newUserEmail).subscribe(
+                this.beneficiaryApi.invitateContactAssociation(this.idAssociation, this.newUserEmail).subscribe(
                     (response: ResponseDTOBase) => {
                         if (response.success) {
                             this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
@@ -670,8 +668,8 @@ export class BeneficiaryEditProfileComponent {
                 }
             }
         }
-        for (let z = 0; z < this.usersOrganization.length; z++) {
-            this.buttonEnabled = this.validateUser(this.usersOrganization[z]);
+        for (let z = 0; z < this.usersAssociation.length; z++) {
+            this.buttonEnabled = this.validateUser(this.usersAssociation[z]);
             if (!this.buttonEnabled) {
                 break;
             }

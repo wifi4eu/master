@@ -6,7 +6,7 @@ import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
-import wifi4eu.wifi4eu.repository.organization.OrganizationRepository;
+import wifi4eu.wifi4eu.repository.association.AssociationUsersRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
@@ -31,7 +31,7 @@ public class RegistrationUtils {
     RegistrationRepository registrationRepository;
 
     @Autowired
-    OrganizationRepository organizationRepository;
+    AssociationUsersRepository associationUsersRepository;
 
     @Autowired
     PermissionChecker permissionChecker;
@@ -40,9 +40,9 @@ public class RegistrationUtils {
         return !(registrationUsersRepository.findByContactEmail(email).size() > 0) && !(supplierUserRepository.findByEmail(email).size() > 0) && Validator.isNull(userRepository.findByEcasEmail(email));
     }
 
-    public boolean checkOrganizationPermissions(Integer idOrganization){
-        if( Validator.isNotNull(idOrganization) && idOrganization != 0 &&Validator.isNotNull(organizationRepository.findOne(idOrganization)) ) {
-            List<Registration> registrations = registrationRepository.findByOrganisationId(idOrganization);
+    public boolean checkAssociationPermissions(Integer idAssociation){
+        if( Validator.isNotNull(idAssociation) && idAssociation != 0 &&Validator.isNotNull(associationUsersRepository.findOne(idAssociation)) ) {
+            List<Registration> registrations = registrationRepository.findByOrganisationId(idAssociation);
             for (Registration registration : registrations) {
                 permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registration.getId());
             }

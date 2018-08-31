@@ -27,11 +27,10 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.association.AssociationUsers;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
-import wifi4eu.wifi4eu.entity.organization.Organization;
-import wifi4eu.wifi4eu.entity.organization.OrganizationUsers;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
@@ -44,10 +43,10 @@ import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierUserMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.association.AssociationUsersRepository;
 import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
-import wifi4eu.wifi4eu.repository.organization.OrganizationUsersRepository;
 import wifi4eu.wifi4eu.repository.registration.ConditionsAgreementRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
@@ -131,7 +130,7 @@ public class UserService {
     RegistrationUsersRepository registrationUsersRepository;
 
     @Autowired
-    OrganizationUsersRepository organizationUsersRepository;
+    AssociationUsersRepository associationUsersRepository;
 
     @Autowired
     RegistrationRepository registrationRepository;
@@ -234,7 +233,7 @@ public class UserService {
             if (Validator.isNotNull(invitationContact)){
                 userDTO.setUserInvited(true);
                 if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0 ||
-                        (Validator.isNotNull(invitationContact.getIdOrganization()) && invitationContact.getIdOrganization() != 0)){
+                        (Validator.isNotNull(invitationContact.getIdAssociation()) && invitationContact.getIdAssociation() != 0)){
                     userDTO.setUserInvitedFor((int) Constant.ROLE_REPRESENTATIVE);
                 } else if (Validator.isNotNull(invitationContact.getIdSupplier()) && invitationContact.getIdSupplier() != 0){
                     userDTO.setUserInvitedFor((int) Constant.ROLE_SUPPLIER);
@@ -251,7 +250,7 @@ public class UserService {
             if (Validator.isNotNull(invitationContact) && checkFieldsContactDetails(userDTO, invitationContact.getType())) {
                 userConnected.setName(userDTO.getName());
                 userConnected.setSurname(userDTO.getSurname());
-                boolean isOrganization = Validator.isNotNull(invitationContact.getIdOrganization()) && invitationContact.getIdOrganization() != 0;
+                boolean isOrganization = Validator.isNotNull(invitationContact.getIdAssociation()) && invitationContact.getIdAssociation() != 0;
                 if ((Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0) || isOrganization) {
                     userConnected.setCity(userDTO.getCity());
                     userConnected.setCountry(userDTO.getCountry());
@@ -260,8 +259,8 @@ public class UserService {
                     userConnected.setPostalCode(userDTO.getPostalCode());
                     userConnected.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
                     if(isOrganization){
-                        createOrganizationUser(userConnected, invitationContact.getIdOrganization());
-                        List<Registration> registrations = registrationRepository.findByOrganisationId(invitationContact.getIdOrganization());
+                        createOrganizationUser(userConnected, invitationContact.getIdAssociation());
+                        List<Registration> registrations = registrationRepository.findByAssociation(invitationContact.getIdAssociation());
                         for (Registration registration: registrations) {
                             createRegistrationUser(userConnected, registration.getId());
                         }
@@ -308,11 +307,11 @@ public class UserService {
     }
 
 
-    private void createOrganizationUser(UserDTO userDTO, Integer idOrganization){
-        OrganizationUsers organizationUser = new OrganizationUsers();
-        organizationUser.setIdOrganization(idOrganization);
+    private void createOrganizationUser(UserDTO userDTO, Integer idAssociation){
+        AssociationUsers organizationUser = new AssociationUsers();
+        organizationUser.setIdAssociation(idAssociation);
         organizationUser.setIdUser(userDTO.getId());
-        organizationUsersRepository.save(organizationUser);
+        associationUsersRepository.save(organizationUser);
     }
 
     private void createRegistrationUser(UserDTO userDTO, Integer registrationId){

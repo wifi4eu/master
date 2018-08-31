@@ -24,7 +24,7 @@ import wifi4eu.wifi4eu.common.session.RecoverHttpSession;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.user.UserContactDetails;
-import wifi4eu.wifi4eu.repository.organization.OrganizationUsersRepository;
+import wifi4eu.wifi4eu.repository.association.AssociationUsersRepository;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -60,7 +60,7 @@ public class UserResource {
     private RegistrationUtils registrationUtils;
 
     @Autowired
-    private OrganizationUsersRepository organizationUsersRepository;
+    private AssociationUsersRepository associationUsersRepository;
 
     Logger _log = LogManager.getLogger(UserResource.class);
 
@@ -275,16 +275,16 @@ public class UserResource {
         }
     }
 
-    @ApiOperation(value = "Get all users from organization")
-    @RequestMapping(value = "/registrationUsers-from-organization/{organizationId}", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "Get all users from association")
+    @RequestMapping(value = "/registrationUsers-from-association/{idAssociation}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserContactDetails> getUsersFromOrganization(@PathVariable("organizationId") Integer organizationId, boolean isOrganization) {
+    public List<UserContactDetails> getUsersFromAssociation(@PathVariable("idAssociation") Integer idAssociation, boolean isOrganization) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
         try {
-            registrationUtils.checkOrganizationPermissions(organizationId);
-            return registrationService.findUsersContactDetailsByOrganisationId(organizationId);
+            registrationUtils.checkAssociationPermissions(idAssociation);
+            return registrationService.findUsersContactDetailsByAssociationId(idAssociation);
             // return registrationService.getUsersFromRegistration(registrationId);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);

@@ -14,14 +14,12 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
-import wifi4eu.wifi4eu.common.enums.FileTypes;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
@@ -592,8 +590,8 @@ public class RegistrationService {
         return userContactDetailsRepository.findUsersContactDetailsByRegistrationId(registrationId);
     }
 
-    public List<UserContactDetails> findUsersContactDetailsByOrganisationId(Integer organizationId){
-        return userContactDetailsRepository.findUsersContactDetailsByOrganizationId(organizationId);
+    public List<UserContactDetails> findUsersContactDetailsByAssociationId(Integer associationId){
+        return userContactDetailsRepository.findUsersContactDetailsByAssociationId(associationId);
     }
 
     public List<UserDTO> getUsersFromRegistration(Integer registrationId){

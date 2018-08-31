@@ -18,4 +18,5 @@ public interface RegistrationRepository extends CrudRepository<Registration, Int
     Iterable<Registration> findByIpRegistration(String ipRegistration);
 
     List<Registration> findByOrganisationId(Integer organisationId);
+    List<Registration> findByAssociation(Integer association);
 }

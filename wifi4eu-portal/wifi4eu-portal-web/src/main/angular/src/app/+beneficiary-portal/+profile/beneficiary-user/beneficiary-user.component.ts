@@ -8,9 +8,9 @@ export class BeneficiaryUserComponent {
   @Input() user: UserDTOBase;
   @Input() countries: NutsDTOBase[] = [];
   @Input() isEdit: boolean = false;
-  @Input() organizationName: string;
+  @Input() associationName: string;
   @Output() onUserChange = new EventEmitter();
-  @Output() onOrganizationChange = new EventEmitter();
+  @Output() onAssociationChange = new EventEmitter();
 
   constructor(private uxService: UxService, private translateService: TranslateService) {
   }
@@ -19,7 +19,7 @@ export class BeneficiaryUserComponent {
     this.onUserChange.emit(this.user);
   }
 
-  onChangesOrganization() {
-    this.onOrganizationChange.emit(this.organizationName);
+  onChangesAssociation() {
+    this.onAssociationChange.emit(this.associationName);
   }
 }

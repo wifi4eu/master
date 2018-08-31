@@ -52,7 +52,7 @@ export class BeneficiaryProfileComponent {
     // private users: UserDTOBase[] = [];
     private userMain;
     private users = [];
-    private usersOrganization = [];
+    private usersAssociation = [];
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
     private addUser: boolean = false;
@@ -118,9 +118,9 @@ export class BeneficiaryProfileComponent {
                         continue;
                     if (!this.isOrganisation && registration.organisationId > 0){
                         this.isOrganisation = true;
-                        this.userApi.getUsersFromOrganization(registration.organisationId).subscribe(
+                        this.userApi.getUsersFromAssociation(registration.idAssociation).subscribe(
                             (users: UserContactDetailsBase[]) => {
-                                this.usersOrganization = users;
+                                this.usersAssociation = users;
                                 if (users != null)
                                     this.userMain = users.find(x => x.main === 1);
                             }

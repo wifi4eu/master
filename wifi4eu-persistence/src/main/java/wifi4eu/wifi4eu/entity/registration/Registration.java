@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.entity.registration;
 
+import wifi4eu.wifi4eu.entity.association.Association;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
@@ -31,9 +32,6 @@ public class Registration {
 
     @Column(name = "ip_registration")
     private String ipRegistration;
-
-    @Column(name = "association_name")
-    private String associationName;
 
     @Column(name = "organisation_id")
     private int organisationId;
@@ -90,15 +88,20 @@ public class Registration {
           inverseJoinColumns = @JoinColumn( name="_user", referencedColumnName = "id"))
     private List<User> users;
 
+
+    @Column(name = "id_association")
+    private int idAssociation;
+
+
     public Registration() {
     }
 
-    public Registration(Municipality municipality, String role, int status, String ipRegistration, String associationName, int organisationId, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, List<User> users) {
+    public Registration(Municipality municipality, String role, int status, String ipRegistration, Integer idAssociation, int organisationId, int allFilesFlag, int mailCounter, List<RegistrationWarning> registrationWarningList, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, List<User> users) {
         this.municipality = municipality;
         this.role = role;
         this.status = status;
         this.ipRegistration = ipRegistration;
-        this.associationName = associationName;
+        this.idAssociation = idAssociation;
         this.organisationId = organisationId;
         this.allFilesFlag = allFilesFlag;
         this.mailCounter = mailCounter;
@@ -156,14 +159,6 @@ public class Registration {
 
     public void setIpRegistration(String ipRegistration) {
         this.ipRegistration = ipRegistration;
-    }
-
-    public String getAssociationName() {
-        return associationName;
-    }
-
-    public void setAssociationName(String associationName) {
-        this.associationName = associationName;
     }
 
     public int getOrganisationId() {
@@ -300,5 +295,13 @@ public class Registration {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public Integer getIdAssociation() {
+        return idAssociation;
+    }
+
+    public void setIdAssociation(Integer idAssociation) {
+        this.idAssociation = idAssociation;
     }
 }
