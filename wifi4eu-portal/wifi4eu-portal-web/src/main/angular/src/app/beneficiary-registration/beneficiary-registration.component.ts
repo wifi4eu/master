@@ -39,6 +39,9 @@ export class BeneficiaryRegistrationComponent {
     private alreadyRegistered: boolean = false;
     private organization: OrganizationDTOBase = null;
     private associationName: string = null;
+    private emailConfirmations: string[] = [''];
+    private css_class_email: string[] = ['notValid'];
+    private buttonEnabledStep2: boolean = false;
 
     constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
@@ -76,6 +79,9 @@ export class BeneficiaryRegistrationComponent {
         this.municipalities = [new MunicipalityDTOBase()];
         this.mayors = [new MayorDTOBase()];
         this.initialUser = new UserDTOBase();
+        this.emailConfirmations = [];
+        this.css_class_email = ['notValid'];
+        this.buttonEnabledStep2 = false;
     }
 
     private navigate(step: number) {
