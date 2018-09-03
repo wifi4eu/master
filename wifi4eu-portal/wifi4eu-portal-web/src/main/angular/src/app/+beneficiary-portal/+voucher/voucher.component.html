@@ -76,8 +76,8 @@
                           </span>
                     </template>
                 </p-column>
-                <template let-data pTemplate="rowexpansion" let-i="rowIndex" *ngIf="voucherCompetitionState != null && voucherCompetitionState != 0" >
-                    <div class="ui-grid ui-grid-responsive ui-fluid">
+                <template let-data pTemplate="rowexpansion" let-i="rowIndex">
+                    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="voucherCompetitionState != null && voucherCompetitionState != 0" >
                         <div class="row conditions-agreement">
                             <div class="col-sm-1 col-md-1 col-lg-1">
                                 <i *ngIf="!data.conditionAgreement && !(data.numberApplicant || isVoucherApplied(data.idRegistration))" class="fa fa-square-o" aria-hidden="true" (click)="changeConditionsAgreement(data)"></i>
