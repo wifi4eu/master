@@ -976,5 +976,6 @@
   "benefPortal.profile.contactPerson": "Contact person details",
   "invitate.contact.details.title": "Please complete the form to be added as a contact",
   "portal.deactivateduser.page.title": "Your user has been deactivated",
-  "invitate.contact.details.expired" : "The contact's invitation has expired. Please proceed to contact who initially invited you"
+  "invitate.contact.details.expired" : "The contact's invitation has expired. Please proceed to contact who initially invited you",
+  "benefPortal.voucher.applied.callEnded": "Applied on {{date}} at {{hour}}"
 }
