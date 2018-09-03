@@ -210,3 +210,6 @@ create table admin_actions(
 );
 
 alter table voucher_assignments ADD notified_date bigint NULL;
+
+// 2018-09-03 Convert the date of the applications from nanos to millis (10 digits)
+UPDATE applications set date = LEFT(date, 10) where LEN(date) > 10
