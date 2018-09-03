@@ -354,7 +354,7 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
-                <redis.enabled>false</redis.enabled>
+                <redis.enabled>true</redis.enabled>
                 <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
             </properties>
         </profile>
