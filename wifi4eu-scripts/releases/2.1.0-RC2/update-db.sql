@@ -217,3 +217,7 @@ where region in
 (select id from nuts where label like 'EXTRA%')
 
 delete from nuts where label like 'EXTRA%'
+
+-- 2018-09-03 Convert the date of the applications from nanos to millis (10 digits)
+UPDATE applications set date = LEFT(date, 10) where LEN(date) > 10
+

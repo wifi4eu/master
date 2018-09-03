@@ -1,11 +1,9 @@
 package wifi4eu.wifi4eu.util;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.CallDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
@@ -22,6 +21,8 @@ import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.admin.AdminActions;
@@ -44,7 +45,6 @@ import javax.validation.Valid;
 /**
  * Created by rgarcita on 11/02/2017.
  */
-
 @Component
 @Scope("prototype")
 public class SendNotificationsAsync implements Runnable {
@@ -174,17 +174,15 @@ public class SendNotificationsAsync implements Runnable {
                             locale = new Locale(userDTO.getLang());
                         }
 
-                        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                        subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-                        msgBody = bundle.getString("mail.dgConn.voucherAssignment.successfulApplicant.body");
                         String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/my-voucher";
-                        // subject = MessageFormat.format(subject, successfulApplicant.getCallId());
-                        subject = MessageFormat.format(subject, callDTO.getEvent());
-                        msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-                        // TODO: Change it to work with CNS
-                        mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId(), "send_notification");
+                        MailData mailData = MailHelper.buildMailVoucherApplySuccessful(
+                            userDTO.getEmail(), MailService.FROM_ADDRESS, 
+                            callDTO.getEvent(), additionalInfoUrl, registrationDTO.getMunicipalityId(), "send_notification", locale);
+                        mailService.sendMail(mailData, true);
+
                     }
 				}
+				
 			}
 			_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to "
 					+ successfulApplicants.size() + " successful applicants");
@@ -201,14 +199,11 @@ public class SendNotificationsAsync implements Runnable {
                         if (Validator.isNotNull(userDTO.getLang())) {
                             locale = new Locale(userDTO.getLang());
                         }
-                        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                        subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-                        msgBody = bundle.getString("mail.dgConn.voucherAssignment.reserveApplicant.body");
                         String additionalInfoUrl = userService.getBaseUrl();
-                        subject = MessageFormat.format(subject, callDTO.getEvent());
-                        msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-                        // TODO: Change it to work with CNS
-                        mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId(), "send_notification");
+                        MailData mailData = MailHelper.buildMailVoucherApplyReserved(
+                            userDTO.getEmail(), MailService.FROM_ADDRESS, 
+                            callDTO.getEvent(), additionalInfoUrl, registrationDTO.getMunicipalityId(), "send_notification", locale);
+                        mailService.sendMail(mailData, true);
                     }
 				}
 			}
@@ -227,25 +222,16 @@ public class SendNotificationsAsync implements Runnable {
                         if (Validator.isNotNull(userDTO.getLang())) {
                             locale = new Locale(userDTO.getLang());
                         }
-                        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                        subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-                        msgBody = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.body");
-                        String option;
+                        
+                        boolean invalidSupportingDocuments = (unsuccessfulApplicant.getInvalidateReason() != null 
+                            && !unsuccessfulApplicant.getInvalidateReason().isEmpty());
 
-                        if (Validator.isNotNull(unsuccessfulApplicant.getInvalidateReason())
-                                && !unsuccessfulApplicant.getInvalidateReason().isEmpty()) {
-                            option = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.option1");
-                        } else {
-                            option = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.option2");
-                        }
-
-                        msgBody = MessageFormat.format(msgBody, option);
-                        subject = MessageFormat.format(subject, callDTO.getEvent());
-                        // TODO: Change it to work with CNS
-                        mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody, registrationDTO.getMunicipalityId(), "send_notification");
+                        MailData mailData = MailHelper.buildMailVoucherApplyUnsuccessful(
+                            userDTO.getEmail(), MailService.FROM_ADDRESS, 
+                            callDTO.getEvent(), invalidSupportingDocuments, registrationDTO.getMunicipalityId(), "send_notification", locale);
+                        mailService.sendMail(mailData, true);
                     }
 				}
-
 			}
 			_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to "
 					+ unsuccessfulApplicants.size() + " unsuccessful applicants");
@@ -258,11 +244,9 @@ public class SendNotificationsAsync implements Runnable {
 			adminActions.setRunning(false);
 			adminActions.setEndDate(date);
 			adminActionsRepository.save(adminActions);
-		}
-		catch (FatalBeanException fbe){
+		} catch (FatalBeanException fbe){
             _log.error("It seems that Spring context is not available", fbe.getMessage());
-        }
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			_log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message",
 					ex.getMessage());
             if(Validator.isNotNull(adminActions)){
