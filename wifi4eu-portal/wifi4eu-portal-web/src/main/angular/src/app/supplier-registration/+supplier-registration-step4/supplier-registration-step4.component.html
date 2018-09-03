@@ -176,7 +176,8 @@
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn  btn-primary publish-button" (click)="submit()"
-                    [disabled]=" !legalChecks[1]|| !legalChecks[2] || !legalChecks[3] || !legalChecks[4]">
+                    [disabled]=" !legalChecks[1]|| !legalChecks[2] || !legalChecks[3]">
+                    <!-- removed "!legalChecks[4]" from disabled in issue WIFIFOREU-3347 -->
                 {{ 'shared.confirm.button' | translate}}
             </button>
         </div>
