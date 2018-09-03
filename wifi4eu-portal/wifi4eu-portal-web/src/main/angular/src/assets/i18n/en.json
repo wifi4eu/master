@@ -409,7 +409,7 @@
   "benefPortal.request.additionalInfo.doc3.label": "3) The <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624099\" target=\"_blank\">authorised person form</a>, signed by both the legal representative (mayor/head of municipality) and the person to be authorised.",
   "benefPortal.request.additionalInfo.doc4.label": "4) A copy of the authorised person’s identity document (ID card, passport)",
   "suppPortal.button.addInstallationInfo": "Add installation information",
-  "shared.registration.update.success": "Your registration was successfully updated.",
+  "shared.registration.update.success": "Your registration was successfully saved.",
   "shared.registration.update.error": "An error occurred and your registration could not be updated.",
   "benefPortal.file.toobig.maxsize": "The file you uploaded is too big. Max file size allowed is {{size}}.",
   "suppPortal.request.additionalInfo.supplier.instructions": "The system has detected other companies as duplicate registrations. The dedicated discussion area did not allow you to resolve this issue.<br><br>We therefore need to request the documentation detailed below.",
@@ -658,7 +658,7 @@
   "dgConn.voucherAssignment.table.countryRank": "Country ranking",
   "benefProtal.grantAgreement.description": "Congratulations! Your municipality has been selected to receive a voucher under this WiFi4EU call. The information you have provided in your registration will be used to sign the Grant Agreement with your municipality and for correspondence with your municipality for the duration of the contract. ",
   "dgConn.voucherAssignment.table.selectionStatus": "Selection status",
-  "shared.deactivate.button": "DEACTIVATE",
+  "shared.deactivate.button": "De-activate contact person",
   "dgConn.voucherAssignment.table.country": "Country",
   "benefPortal.grantAgreement.languageButton": "Language of the Grant Agreement",
   "dgConn.voucherAssignment.table.municipality": "Municipality",
@@ -970,5 +970,11 @@
   "dgConn.voucherAssignment.sendNotifications.date": "Notifications sended on {{date}} at {{hour}}.",
   "dgConn.voucherAssignment.sendingNotifications.process.startDate": "Started on {{date}} at {{time}}",
   "benefPortal.grantAgreement.confirmCheckbox": "I confirm that I have read and understood the conditions in the WiFi4EU Grant Agreement.",
-  "dgconn.dashboard.card.reporting": "Reporting page"
+  "dgconn.dashboard.card.reporting": "Reporting page",
+  "shared.deactivate.modalTitle": "Deactivating Contact Person",
+  "shared.deactivate.sucess": "Contact deactivated successfully",
+  "benefPortal.profile.contactPerson": "Contact person details",
+  "invitate.contact.details.title": "Please complete the form to be added as a contact",
+  "portal.deactivateduser.page.title": "Your user has been deactivated",
+  "invitate.contact.details.expired" : "The contact's invitation has expired. Please proceed to contact who initially invited you"
 }

@@ -659,4 +659,8 @@ public class ApplicationService {
     private Long getDateOfLogEmail(LogEmail logEmail){
         return logEmail == null ? 0 : logEmail.getSentDate();
     }
+
+    public Integer getNumberOfValidatedApplications(Integer callId){
+        return applicationRepository.countValidatedApplicationsByCall(callId);
+    }
 }

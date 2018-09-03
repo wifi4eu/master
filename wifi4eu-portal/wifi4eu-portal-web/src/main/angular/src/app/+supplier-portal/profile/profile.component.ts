@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from "@angular/animations";
 import { Component, ViewChild } from "@angular/core";
 import { LocalStorageService } from "angular-2-local-storage";
 import { Observable } from "rxjs/Observable";
@@ -18,7 +19,21 @@ import { UserDetailsService } from "../../core/services/user-details.service";
     selector: 'supplier-profile',
     templateUrl: 'profile.component.html',
     styleUrls: ['profile.component.scss'],
-    providers: [UserApi, SupplierApi, NutsApi]
+    providers: [UserApi, SupplierApi, NutsApi],
+    animations: [
+        trigger(
+            'enterSpinner', [
+                transition(':enter', [
+                    style({opacity: 0}),
+                    animate('200ms', style({opacity: 1}))
+                ]),
+                transition(':leave', [
+                    style({opacity: 1}),
+                    animate('200ms', style({opacity: 0}))
+                ])
+            ]
+        )
+    ]
 })
 
 export class SupplierProfileComponent {
@@ -34,6 +49,7 @@ export class SupplierProfileComponent {
     private submittingData: boolean = false;
     private isLogoUploaded: boolean = false;
     private deletingLogo: boolean = false;
+    private fetchingData: boolean = false;
     private displayLanguageModal: boolean = false;
     private logoUrl: FileReader = new FileReader();
     private logoFile: File;
@@ -55,37 +71,47 @@ export class SupplierProfileComponent {
     private addUser: boolean = false;
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private userApi: UserApi) {
-        let storedUser = this.localStorageService.get('user');
-        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-        if (this.user != null) {
-            this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
-                (supplier: SupplierDTOBase) => {
-                    if (supplier != null) {
-                        this.supplier = supplier;
-                        Object.assign(this.editedSupplier, this.supplier);
-                        this.nutsApi.getNutsByLevel(0).subscribe(
-                            (countries: NutsDTOBase[]) => {
-                                this.supplier.suppliedRegions;
-                                for(let country of countries) {
-                                    let regions = this.supplier.suppliedRegions.filter(x => x.regionId.countryCode == country.countryCode );
-                                    regions.map((filtered) => {
-                                        if (!this.supportedRegions[country.label]) {
-                                            this.selectedCountriesNames.push(country.label);
-                                            this.supportedRegions[country.label] = [];
-                                        }
-                                        this.supportedRegions[country.label].push(filtered.regionId);
-                                    });
-                                }
-                                this.regionsToRender = this.supportedRegions[this.selectedCountriesNames[0]];
-                                this.users = this.supplier.users;
-                            }
-                        );
-                    }
-                }
-            );
+        this.fetchingData = true;
+        if (this.sharedService.user) {
+            this.user = this.sharedService.user;
+            this.fetchData();
+            this.loadLanguages();
+        } else {
+            this.sharedService.loginEmitter.map(() => {
+                this.user = this.sharedService.user;
+                this.fetchData();
+                this.loadLanguages();
+            });
         }
+    }
 
-        this.loadLanguages();
+    private fetchData() {
+        this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
+            (supplier: SupplierDTOBase) => {
+                if (supplier != null) {
+                    this.supplier = supplier;
+                    Object.assign(this.editedSupplier, this.supplier);
+                    this.nutsApi.getNutsByLevel(0).subscribe(
+                        (countries: NutsDTOBase[]) => {
+                            this.supplier.suppliedRegions;
+                            for (let country of countries) {
+                                let regions = this.supplier.suppliedRegions.filter(x => x.regionId.countryCode == country.countryCode);
+                                regions.map((filtered) => {
+                                    if (!this.supportedRegions[country.label]) {
+                                        this.selectedCountriesNames.push(country.label);
+                                        this.supportedRegions[country.label] = [];
+                                    }
+                                    this.supportedRegions[country.label].push(filtered.regionId);
+                                });
+                            }
+                            this.regionsToRender = this.supportedRegions[this.selectedCountriesNames[0]];
+                            this.users = this.supplier.users;
+                            this.fetchingData = false;
+                        }
+                    );
+                }
+            }
+        );
     }
 
     private selectCountry(event, tableReference) {
@@ -254,10 +280,8 @@ export class SupplierProfileComponent {
             this.languages = UxEuLanguages.getLanguages();
         }
         this.languageRows = this.prepareLanguageRows();
-
         const userLang = this.languages.find(language => language.code === this.user.lang);
         this.selectedLanguage = userLang;
-
     }
 
     private prepareLanguageRows(): UxLanguage [] [] {
@@ -292,16 +316,17 @@ export class SupplierProfileComponent {
                 if (response.success) {
                     this.sharedService.growlTranslation('Your notification languaguage was succesfully changed.', 'shared.registration.update.success', 'success');
                     this.selectedLanguage = this.languages.find(language => language.code === lang);
+                    this.sharedService.update();
                     this.closeModal();
                 } else {
                     this.sharedService.growlTranslation('An error occurred and your notification language change.', 'shared.registration.update.error', 'error');
+                    this.closeModal();
                 }
             }, error => {
                 this.sharedService.growlTranslation('An error occurred and your notification language change.', 'shared.registration.update.error', 'error');
+                this.closeModal();
             }
        );
-
-       this.displayLanguageModal = false;
     }
 
     private deleteLogo() {
@@ -314,6 +339,7 @@ export class SupplierProfileComponent {
         this.displayCompany = false;
         this.deletingLogo = false;
         this.clearLogoFile();
+        this.displayLanguageModal = false;
         Object.assign(this.editedSupplier, this.supplier);
     }
 

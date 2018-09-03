@@ -37,11 +37,11 @@
                         </span>
                         <span *ngIf="applications[i].status == 1" class="entity-subtitle" style="margin-left: 0.5em;">
                             <i class="fa fa-times" style="color: red;"></i>
-                            <i>{{ 'dgConn.status.invalid' | translate }}</i>
+                            <i>{{ 'dgConn.status.invalidated' | translate }}</i>
                         </span>
                         <span *ngIf="applications[i].status == 2" class="entity-subtitle" style="margin-left: 0.5em;">
                             <i class="fa fa-check" style="color: green;"></i>
-                            <i>{{ 'dgConn.status.valid' | translate }}</i>
+                            <i>{{ 'dgConn.status.validated' | translate }}</i>
                         </span>
                         <span *ngIf="applications[i].status == 3" class="entity-subtitle" style="margin-left: 0.5em;">
                             <i class="fa fa-info"></i>

@@ -85,6 +85,21 @@ public class PermissionChecker {
         }
     }
 
+    @Transactional
+    public void dropTablePermissions(final Integer userId, final String rowId, final String destTable) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + "- Deleting table permissions");
+
+        Iterable<Right> rightsFound = rightRepository.findByRightdescAndUserId(destTable + rowId, userId);
+        if (!Iterables.isEmpty(rightsFound)) {
+            for (Right right : rightsFound) {
+                rightRepository.delete(right);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + "- deleted table permissions ["+destTable+"]- id: +"+rowId+ " for userId " + userId );
+            }
+        }
+    }
+
     public boolean checkIfDashboardUser() {
         UserContext userContext = UserHolder.getUser();
         UserDTO currentUserDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));

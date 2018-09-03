@@ -45,7 +45,8 @@
 
 
     <properties>
-
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
         <!-- DEPENDENCIES VERSIONS -->
 
         <jdk.version>1.7</jdk.version>
@@ -195,6 +196,10 @@
         <rabbitmq.host>localhost</rabbitmq.host>
         <rabbitmq.username>guest</rabbitmq.username>
         <rabbitmq.password>guest</rabbitmq.password>
+
+        <!-- Redis -->
+        <redis.enabled>false</redis.enabled>
+        <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
 
         <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
         <!--<war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>-->
@@ -349,6 +354,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <redis.enabled>false</redis.enabled>
+                <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
             </properties>
         </profile>
         <profile>
@@ -647,6 +654,7 @@
                 <rabbitmq.host></rabbitmq.host>
                 <rabbitmq.username></rabbitmq.username>
                 <rabbitmq.password></rabbitmq.password>
+                <redis.sentinel.uris>202.3.2.4,202.3.2.5,202.3.2.6</redis.sentinel.uris>
             </properties>
         </profile>
         <profile>
@@ -684,6 +692,7 @@
                 <rabbitmq.host></rabbitmq.host>
                 <rabbitmq.username></rabbitmq.username>
                 <rabbitmq.password></rabbitmq.password>
+                <redis.sentinel.uris>202.3.2.11,202.3.2.12,202.3.2.13</redis.sentinel.uris>
             </properties>
         </profile>
         <profile>

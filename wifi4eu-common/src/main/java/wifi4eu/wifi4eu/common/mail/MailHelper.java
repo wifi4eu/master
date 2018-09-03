@@ -374,11 +374,12 @@ public class MailHelper {
 	 * @return
 	 */
 	public static MailData buildMailNewUserSupplier(String toAddress, String fromAddress, String userName,
-			String supplierName, String additionalInfoUrl, String newContactEmail, Locale locale) {
+			String supplierName, String additionalInfoUrl, String newContactEmail, String registrationUrl,
+			Locale locale) {
 		ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
 		String subject = bundle.getString("mail.sendNewUserSupplier.subject");
 		String body = bundle.getString("mail.sendNewUserSupplier.body");
-		body = MessageFormat.format(body, userName, supplierName, additionalInfoUrl, newContactEmail);
+		body = MessageFormat.format(body, userName, supplierName, additionalInfoUrl, newContactEmail, registrationUrl);
 		MailData mailData = new MailData(toAddress, fromAddress, subject, body, locale);
 
 		return mailData;
@@ -417,11 +418,12 @@ public class MailHelper {
 	 * @return
 	 */
 	public static MailData buildMailNewUserBeneficiary(String toAddress, String fromAddress, String userName,
-			String municipalityName, String additionalInfoUrl, String newContactEmail, Locale locale) {
+			String municipalityName, String additionalInfoUrl, String newContactEmail, String registrationUrl, 
+			Locale locale) {
 		ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
 		String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
 		String body = bundle.getString("mail.sendUserEmail.beneficiary.body");
-		body = MessageFormat.format(body, userName, municipalityName, additionalInfoUrl, newContactEmail);
+		body = MessageFormat.format(body, userName, municipalityName, additionalInfoUrl, newContactEmail, registrationUrl);
 		MailData mailData = new MailData(toAddress, fromAddress, subject, body, locale);
 
 		return mailData;

@@ -3,14 +3,15 @@
         <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
             <p class="beneficiaryTitle">
                 <span>{{ 'benefPortal.profile.title' | translate }}</span>
-                <span class="link-label right" routerLink="./edit" routerLinkActive="active">
+                <span class="link-label right" routerLink="./edit" routerLinkActive="active" *ngIf="!fetchingData">
                     <i class="fa fa-pencil" aria-hidden="true"></i> {{'discussionForum.editRegistration' | translate}}
                 </span>
             </p>
             <hr class="beneficiaryHr">
+            <i *ngIf="fetchingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
         </div>
     </div>
-    <div class="ui-g-12" style="padding-top: 0;">
+    <div *ngIf="!fetchingData" class="ui-g-12" style="padding-top: 0;">
         <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12" style="margin-top: 1em;">
             <p class="beneficiaryMayor">{{ 'suppPortal.companyInformation' | translate }}</p>
             <div class="ui-g-12 whitePanel">
@@ -61,11 +62,11 @@
                         </div>
                         <div class="ui-g-12">
                             <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.phone.number' | translate }}</span>
-                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.phone_prefix }} {{ user?.phone_number }}</b></span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.phonePrefix }} {{ user?.phoneNumber }}</b></span>
                         </div>
                         <div class="ui-g-12">
                             <span class="ui-g-4 ui-sm-12">{{ 'shared.email.label' | translate }}</span>
-                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.email }}</b></span>
+                            <span class="ui-g-8 ui-sm-12"><b>{{ user?.ecasEmail }}</b></span>
                         </div>
                     </div>
                 </div>
@@ -116,7 +117,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <!--MODALS BELOW-->
@@ -161,10 +161,7 @@
         </div>
     </div>
 </p-dialog>
-<!--MODALS ABOVE-->
-
-<helpdesk-form-component portal="supplier-profile"></helpdesk-form-component>
-
+<!-- -->
 <p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <form #addNewUser="ngForm">
@@ -199,12 +196,14 @@
         <div class="col-lg-2"></div>
     </div>
 </p-dialog>
+<!-- -->
 <p-dialog [(visible)]="addContact" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
+<!-- -->
 <p-dialog [(visible)]="displayAddContactModal">
     <div class="form-group ui-g">
         <h1 class="Modalh1Confirmation">{{ 'shared.deactivateContactModalAreYouSure' | translate}}</h1>
@@ -223,3 +222,6 @@
         <div class="ui-lg-3"></div>
     </div>
 </p-dialog>
+<!--MODALS ABOVE-->
+
+<helpdesk-form-component portal="supplier-profile"></helpdesk-form-component>

@@ -25,7 +25,7 @@
                 <br> {{ 'home.part1.date' | translate }}</p>
             <a class="btn btn-primary video-button changePassword"
                href="http://ec.europa.eu/avservices/video/player.cfm?ref=I152883" target="_blank">{{
-                'home.whatch.video' | translate }}</a>
+                'home.watch.video' | translate }}</a>
         </div>
         <div id="img-europeans">
             <img src="assets/images/copy-2.png" alt="">
@@ -43,9 +43,9 @@
                [innerHTML]="'benefPortal.voucher.call.label1' | translate">
             </p>
             <p class="europeans-text">{{ 'home.part2.subtitle4' | translate}}</p>
-            <ul class="europeans-text benefLandingList">
-                <li>{{ 'home.part2.list1' | translate}}</li>
-                <li>{{ 'home.part2.list2' | translate}}</li>
+            <ul class="europeans-text">
+                <li class="benefLandingList"><span>{{ 'home.part2.list1' | translate}}</span></li>
+                <li class="benefLandingList"><span>{{ 'home.part2.list2' | translate}}</span></li>
             </ul>
             <a href="https://ec.europa.eu/digital-single-market/news-redirect/613784">
                 <p class="europeans-text underline" [innerHTML]="'home.part2.subtitle5' | translate"></p>
@@ -70,10 +70,11 @@
         <div class="col-xl-6">
             <h2 class="apply">{{ 'home.part3.title' | translate }} </h2>
             <p class="apply-text">{{ 'home.part3.text1' | translate }}</p>
-            <ul class="europeans-text benefLandingList">
-                <li>{{ 'home.part3.list1' | translate}}</li>
-                <li>{{ 'home.part3.list2' | translate}}</li>
+            <ul class="europeans-text">
+                <li class="benefLandingList"><span>{{ 'home.part3.list1' | translate}}</span></li>
+                <li class="benefLandingList"><span>{{ 'home.part3.list2' | translate}}</span></li>
             </ul>
+            <p>{{ 'home.part3.text3' | translate }}</p>
             <div *ngIf="showTimer">
                 <p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
                 <p class="apply-text">{{ 'home.part3.text4' | translate }}</p>
@@ -84,8 +85,9 @@
         <div class="col-xl-6">
             <h2 class="apply">{{ 'home.part3.title.1' | translate }} </h2>
             <p class="apply-text">{{ 'home.part3.text2' | translate }}</p>
-
+            <p>{{ 'home.part3.text5' | translate }}</p>
         </div>
+
     </div>
 
 

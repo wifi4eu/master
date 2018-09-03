@@ -1,9 +1,11 @@
-import {Component, EventEmitter, Input, Output, OnInit} from "@angular/core";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {SharedService} from "../../shared/shared.service";
-import {LocalStorageService} from "angular-2-local-storage/dist/local-storage.service";
+import { Component, EventEmitter, Input, Output, OnInit } from "@angular/core";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { SharedService } from "../../shared/shared.service";
+import { LocalStorageService } from "angular-2-local-storage/dist/local-storage.service";
+import { NutsDTOBase } from "../../shared/swagger";
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 @Component({
     selector: 'beneficiary-registration-step3',
@@ -17,16 +19,17 @@ export class BeneficiaryRegistrationStep3Component {
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
     @Input('sameDetails') private sameDetails: boolean;
     @Input('associationName') private associationName: string;
+    @Input('countries') private countries: NutsDTOBase[];
+    @Input('buttonEnabledStep3') buttonEnabledStep3;
 
     private imMayor: boolean;
     private repeatEmail: string;
     private userEmailMatches: boolean;
-    private buttonEnabled: boolean = false;
     private hasEcasEmail: boolean = false;
     private storedUser;
     private userEcas;
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
-    
+
 
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
@@ -40,16 +43,17 @@ export class BeneficiaryRegistrationStep3Component {
         this.associationNameChange = new EventEmitter<string>();
         this.imMayor = false;
         this.sameDetails = false;
-        this.sharedService.cleanEmitter.subscribe(() => {     
-            if (!this.imMayor){
+        this.sharedService.cleanEmitter.subscribe(() => {
+            if (!this.imMayor) {
                 this.repeatEmail = '';
-            }    
+            }
         });
         this.storedUser = this.localStorage.get('user');
         this.userEcas = this.storedUser ? JSON.parse(this.storedUser.toString()) : null;
-        if (this.userEcas.ecasEmail){
+        if (this.userEcas.ecasEmail) {
             this.hasEcasEmail = true;
             this.userEmailMatches = true;
+
         }
     }
 
@@ -66,6 +70,8 @@ export class BeneficiaryRegistrationStep3Component {
             this.repeatEmail = this.mayors[0].email;
             this.userEmailMatches = true;
             this.css_class_email = '';
+            this.initialUser.country = this.municipalities[0].country;
+            this.initialUser.city = this.municipalities[0].name;
         } else {
             this.imMayor = false;
             this.initialUser.name = '';
@@ -76,9 +82,11 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.postalCode = '';
             this.initialUser.ecasEmail = '';
             this.repeatEmail = '';
-            this.buttonEnabled = false;
+            this.initialUser.country = '';
+            this.initialUser.city = '';
             /* this.checkEmailsMatch(); */
         }
+        this.checkButtonEnabled();
     }
 
     private checkEmailsMatch() {
@@ -90,7 +98,7 @@ export class BeneficiaryRegistrationStep3Component {
             this.css_class_email = 'notValid';
         }
     }
-    
+
 
     private back() {
         this.onBack.emit();
@@ -114,11 +122,12 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.ecasUsername = '';
             this.userEmailMatches = true;
             this.associationName = '';
+            this.buttonEnabledStep3 = false;
         }
     }
 
     private submit() {
-        if (this.userEcas.ecasEmail){
+        if (this.userEcas.ecasEmail) {
             this.initialUser.ecasEmail = this.userEcas.ecasEmail;
             this.initialUser.email = this.userEcas.ecasEmail;
         } else {
@@ -132,13 +141,25 @@ export class BeneficiaryRegistrationStep3Component {
         return false;
     }
 
-    private checkButtonEnabled(event){
-        this.buttonEnabled = false;
-        for (let i = 0; i < this.municipalities.length; i++) {
-            if(this.initialUser.surname != null && this.initialUser.name != null && this.initialUser.addressNum != null && this.initialUser.address != null  && this.initialUser.postalCode != null
-                 && this.initialUser.surname.trim() != "" && this.initialUser.name.trim() != "" && this.initialUser.addressNum.trim() != "" && this.initialUser.address.trim() != "" && this.initialUser.postalCode.trim() != ""){
-                    this.buttonEnabled = true;
+    private checkButtonEnabled(event?) {
+        if (this.initialUser) {
+            if (this.initialUser.surname != null &&
+                this.initialUser.name != null &&
+                this.initialUser.addressNum != null &&
+                this.initialUser.address != null &&
+                this.initialUser.postalCode != null &&
+                this.initialUser.country != null &&
+                this.initialUser.city != null &&
+                this.initialUser.surname.trim() != "" &&
+                this.initialUser.name.trim() != "" &&
+                this.initialUser.addressNum.trim() != "" &&
+                this.initialUser.address.trim() != "" &&
+                this.initialUser.postalCode.trim() != "" &&
+                this.initialUser.country.trim() != "" &&
+                this.initialUser.city.trim() != "") {
+                return true;
             }
         }
+        return false;
     }
 }

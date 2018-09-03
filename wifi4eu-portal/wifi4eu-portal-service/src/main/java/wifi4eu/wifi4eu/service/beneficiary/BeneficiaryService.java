@@ -159,6 +159,8 @@ public class BeneficiaryService {
             user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
             user.setEmail(beneficiaryDTO.getUser().getEmail());
             user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
+            user.setCity(beneficiaryDTO.getUser().getCity());
+            user.setCountry(beneficiaryDTO.getUser().getCountry());
             user.setType(3);
             isEcasUser = true;
         }
@@ -622,31 +624,14 @@ public class BeneficiaryService {
         return sb.toString();
     }
 
-    public UserRegistrationDTO sendEmailToContacts(UserRegistrationDTO userRegistrationDTO) {
-        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-
-        UserContext userContext = UserHolder.getUser();
-        UserDTO user = userService.getUserByUserContext(userContext);
-        String userName = user.getName() + ' ' + user.getSurname();
-
-        MunicipalityDTO municipality = municipalityService.getMunicipalityById(userRegistrationDTO.getMunicipalityId());
-        String municipalityName = municipality.getName();
-        String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
-        
-        MailData mailData = MailHelper.buildMailNewUserBeneficiary(
-        		userRegistrationDTO.getEmail(), MailService.FROM_ADDRESS, 
-        		userName, municipalityName, additionalInfoUrl, userRegistrationDTO.getEmail(), locale);
-    	mailService.sendMail(mailData, false);
-    	userService.createNewRegistrationUser(userRegistrationDTO);
-
-        return userRegistrationDTO;
-    }
-
     public ResponseDTO invitateContactBeneficiary(UserDTO userConnected, int idMunicipality, String newContactEmail) {
         ResponseDTO responseDTO = new ResponseDTO();
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - START");
-        if (Validator.isNotNull(idMunicipality) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() && Validator.isNotNull(registrationRepository.findByMunicipalityId(idMunicipality))) {
-            if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail, userConnected.getId())) && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)) {
+        if (Validator.isNotNull(idMunicipality) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() 
+          && Validator.isNotNull(registrationRepository.findByMunicipalityId(idMunicipality)) 
+          && Validator.isNotNull(registrationService.getRegistrationByUserAndMunicipality(userConnected.getId(), idMunicipality))) {
+            if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail, userConnected.getId())) 
+              && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)) {
                 InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndIdUserRequest(newContactEmail, userConnected.getId());
                 Date today = new Date();
                 if (Validator.isNull(invitationContact)) {
@@ -672,9 +657,10 @@ public class BeneficiaryService {
                 String municipalityName = municipality.getName();
                 String userName = userConnected.getName() + ' ' + userConnected.getSurname();
                 String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
+                String registrationUrl = userService.getServerAddress() + "/wifi4eu/#/beneficiary-portal/profile";
                 MailData mailData = MailHelper.buildMailNewUserBeneficiary(
                 		newContactEmail, MailService.FROM_ADDRESS, 
-                		userName, municipalityName, additionalInfoUrl, newContactEmail, locale);
+                		userName, municipalityName, additionalInfoUrl, newContactEmail, registrationUrl, locale);
                 mailService.sendMail(mailData, false);
 
                 invitationContactRepository.save(invitationContact);

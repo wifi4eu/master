@@ -36,6 +36,7 @@ import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
@@ -73,6 +74,7 @@ import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
+import wifi4eu.wifi4eu.util.RedisUtil;
 import wifi4eu.wifi4eu.util.UserUtils;
 
 @Service("portalRegistrationService")
@@ -160,6 +162,9 @@ public class RegistrationService {
     @Autowired
     UserContactDetailsRepository userContactDetailsRepository;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
     }
@@ -187,7 +192,11 @@ public class RegistrationService {
         registrationUsers.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
         registrationUsers.setCreationDate(new Date());
         registrationUsers.setContactEmail(userConnected.getEcasEmail());
-        registrationUsersRepository.save(registrationUsers);
+        registrationUsers = registrationUsersRepository.save(registrationUsers);
+        if (Validator.isNotNull(registrationUsers)) {
+            redisUtil.sync(userConnected.getId());
+        }
+
         registrationWarningService.createWarningsByRegistration(registrationCreated);
         return registrationCreated;
     }
@@ -209,7 +218,11 @@ public class RegistrationService {
         } else {
             registration.setAllFilesFlag(0);
         }
-        registrationRepository.save(registration);
+        registration = registrationRepository.save(registration);
+
+        if (Validator.isNotNull(registration)) {
+            redisUtil.sync(userConnected.getId());
+        }
 
         //if user doesn't have any documents as requested for correction we put its status on HOLD
         //this is only relevant if the registration has applied to a call!
@@ -287,6 +300,7 @@ public class RegistrationService {
                     legalFile.setFileSize(byteArray.length);
                     legalFile.setUserId(userConnected.getId());
                     legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
+
                     _log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
                             "document number type:" + legalFile.getFileType());
 
@@ -593,6 +607,15 @@ public class RegistrationService {
     public List<UserContactDetails> findUsersContactDetailsByRegistrationId(Integer registrationId){
         return userContactDetailsRepository.findUsersContactDetailsByRegistrationId(registrationId);
     }
+
+    public List<UserContactDetails> findUsersContactDetailsByOrganisationId(Integer organizationId){
+        return userContactDetailsRepository.findUsersContactDetailsByOrganisationId(organizationId);
+    }
+
+    public List<Registration> findRegistrationsByOrganisationId(Integer organizationId){
+        return registrationRepository.findByOrganisationId(organizationId);
+    }
+
 
     public List<UserDTO> getUsersFromRegistration(Integer registrationId){
         List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersByRegistrationId(registrationId));

@@ -15,24 +15,32 @@ export class SupplierRegistrationStep3Component {
     @Output() private onBack: EventEmitter<number>;
     @ViewChild('supplierForm') private supplierForm: NgForm;
     private confirmEmailField: string = '';
-    private emailMatches: boolean = false;
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private css_class_email: string = 'notValid';
     private buttonEnabled: boolean = false;
-    private  userForSUpplier: UserDTO;
+    private userForSUpplier: UserDTO;
     private user: UserDTO;
+    private hasEcasEmail: boolean = false;
 
     constructor(private localStorageService: LocalStorageService) {
         this.supplierChange = new EventEmitter<SupplierDTOBase>();
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
+        let storedUser = this.localStorageService.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        
+        if (this.user.ecasEmail && this.user.ecasEmail.trim() != ""){
+            this.hasEcasEmail = true;
+        }
     }
 
     private submit() {
-
-        let storedUser = this.localStorageService.get('user');
-        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-        this.user.email = this.supplier.contactEmail;
+        if (!this.hasEcasEmail){
+            this.user.email = this.supplier.contactEmail;
+            this.user.ecasEmail = this.supplier.contactEmail;
+        } else {
+            this.supplier.contactEmail = this.user.ecasEmail;
+        }
         this.user.name = this.supplier['contactName'];
         this.user.surname = this.supplier['contactSurname'];
         this.supplier.contactPrefix = this.supplier['contactPhonePrefix'];
@@ -41,35 +49,52 @@ export class SupplierRegistrationStep3Component {
         this.supplier.users.push(this.user);
         this.supplierChange.emit(this.supplier);
         this.onNext.emit();
-        this.confirmEmailField = '';
-        this.emailMatches = false;
     }
 
     private back() {
-        this.onBack.emit();
-        this.confirmEmailField = '';      
+        this.onBack.emit();  
     }
 
     private checkIfEmailMatches() {
-        this.emailMatches = false;
         this.css_class_email = 'notValid';
         if (this.supplier.contactEmail === this.confirmEmailField && this.confirmEmailField.length > 0) {
-            this.emailMatches = true;
             this.css_class_email = 'isValid';
+            return true;
         }
+        return false;
     }
 
     private preventPaste(event: any) {
         return false;
     }
 
-     private checkButtonEnabled(event){
-         this.buttonEnabled = false;
-         if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
+    private checkButtonEnabled(event){
+        this.buttonEnabled = false;
+        if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
           && this.supplier['contactPhoneNumber'] != null && this.supplier['contactPhonePrefix'] != null
               && this.supplier['contactSurname'].trim() != "" && this.supplier['contactName'].trim() != "" && this.supplier['contactPhoneNumber'].trim() != "" && this.supplier['contactPhonePrefix'].trim() != ""){
                  this.buttonEnabled = true;
         }
+    }
+
+    private isButtonEnabled(){
+        if (this.hasEcasEmail){
+            if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
+            && this.supplier['contactPhoneNumber'] != null && this.supplier['contactPhonePrefix'] != null
+                && this.supplier['contactSurname'].trim() != "" && this.supplier['contactName'].trim() != "" && this.supplier['contactPhoneNumber'].trim() != "" && this.supplier['contactPhonePrefix'].trim() != ""){
+                    return true;
+                    
+            }
+        } else {
+            if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
+            && this.supplier['contactPhoneNumber'] != null && this.supplier['contactPhonePrefix'] != null
+            && this.supplier['contactSurname'].trim() != "" && this.supplier['contactName'].trim() != "" && this.supplier['contactPhoneNumber'].trim() != "" 
+            && this.supplier['contactPhonePrefix'].trim() != "" && this.supplier.contactEmail === this.confirmEmailField && this.confirmEmailField.length > 0){
+                    this.css_class_email = 'isValid';
+                    return true; 
+            }  
+        }
+        return false;
     }
     //      //¡custom name validator
     //     if(this.supplier.contactName != null && this.supplier.contactName.trim() != ""){

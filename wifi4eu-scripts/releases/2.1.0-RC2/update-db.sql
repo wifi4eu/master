@@ -208,3 +208,5 @@ create table admin_actions(
        ON DELETE CASCADE
        ON UPDATE CASCADE
 );
+
+alter table voucher_assignments ADD notified_date bigint NULL;

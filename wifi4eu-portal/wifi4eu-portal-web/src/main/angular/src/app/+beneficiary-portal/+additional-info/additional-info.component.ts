@@ -341,4 +341,8 @@ export class AdditionalInfoComponent {
         this.displayConfirmDelete = false;
         this.removingFile = null;
     }
+
+    goBack(){
+        window.history.back();
+    }
 }
