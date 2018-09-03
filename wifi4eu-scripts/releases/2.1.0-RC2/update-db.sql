@@ -210,3 +210,10 @@ create table admin_actions(
 );
 
 alter table voucher_assignments ADD notified_date bigint NULL;
+
+-- NUTS modifications
+delete from supplied_regions
+where region in
+(select id from nuts where label like 'EXTRA%')
+
+delete from nuts where label like 'EXTRA%'
