@@ -29,6 +29,7 @@ public class RegistrationDTO implements Serializable {
     private Date installationSiteRejection;
     private Date installationSiteConfirmation;
     private List<UserDTO> users;
+    private int idAssociation;
 
     public RegistrationDTO() {
     }
@@ -36,7 +37,7 @@ public class RegistrationDTO implements Serializable {
     public RegistrationDTO(int municipalityId, String role, int status, String ipRegistration, String associationName, int organisationId, int allFilesFlag,int
             mailCounter, List<RegistrationWarningDTO> registrationWarningDTOList, int idUserPM, int idUserBPM, int idStatusBeneficiary, boolean
             compliance, int actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, Date
-            installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, List<UserDTO> users) {
+            installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, List<UserDTO> users, Integer idAssociation) {
         this.municipalityId = municipalityId;
         this.role = role;
         this.status = status;
@@ -59,6 +60,7 @@ public class RegistrationDTO implements Serializable {
         this.installationSiteRejection = installationSiteRejection;
         this.installationSiteConfirmation = installationSiteConfirmation;
         this.users = users;
+        this.idAssociation = idAssociation;
     }
 
     public Date getInstallationSiteSubmission() {
@@ -245,4 +247,11 @@ public class RegistrationDTO implements Serializable {
         this.users = users;
     }
 
+    public int getIdAssociation() {
+        return idAssociation;
+    }
+
+    public void setIdAssociation(int idAssociation) {
+        this.idAssociation = idAssociation;
+    }
 }

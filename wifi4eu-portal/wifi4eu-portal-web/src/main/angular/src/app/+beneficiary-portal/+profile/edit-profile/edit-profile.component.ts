@@ -610,7 +610,7 @@ export class BeneficiaryEditProfileComponent {
         if (this.newUserEmail.trim() != '') {
             if (this.addUserToAssociation) {
                 this.addContact = true;
-                this.beneficiaryApi.invitateContactAssociation(this.idAssociation, this.newUserEmail).subscribe(
+                this.beneficiaryApi.invitateContactAssociation(this.finalBeneficiary.organisationId, this.newUserEmail).subscribe(
                     (response: ResponseDTOBase) => {
                         if (response.success) {
                             this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');

@@ -4,7 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "associations")
-public class Association {
+public class
+Association {
 
     @Column(name = "id")
     @Id
@@ -13,6 +14,10 @@ public class Association {
 
     @Column(name = "name")
     private String name;
+
+    public Association(){
+
+    }
 
     public Association(String name) {
         this.name = name;
