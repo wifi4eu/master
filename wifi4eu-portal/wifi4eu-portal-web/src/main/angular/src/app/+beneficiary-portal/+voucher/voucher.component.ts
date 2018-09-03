@@ -13,7 +13,6 @@ import { Http, RequestOptions, Headers } from "@angular/http";
 import { ApplyVoucherBase } from '../../shared/swagger/model/ApplyVoucher'
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../environments/environment';
-import { ApplicationDTOBase } from '../../shared/swagger';
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -51,7 +50,6 @@ export class VoucherComponent {
     private csrfTokenCookieName: string = "XSRF-TOKEN";
     private nameCookieApply: string = "hasRequested";
     private allRequestCompleted = false;
-    private application: ApplicationDTOBase;
 
     private httpOptions = {
         headers: new Headers({
