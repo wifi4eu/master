@@ -65,7 +65,7 @@ export class DgConnSupplierRegistrationsDetailsComponent {
     private paginateSimilarSuppliers(event) {
         this.page = event.page;
         this.pageSize = event.rows;
-        this.loadSimilarSuppliers();
+        this.loadSimilarSuppliers(this.supplier.id);
     }
 
     private loadSimilarSuppliers(supplierId) {

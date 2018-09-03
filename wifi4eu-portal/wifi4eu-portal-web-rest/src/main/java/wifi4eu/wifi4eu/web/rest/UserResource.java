@@ -254,13 +254,13 @@ public class UserResource {
     @ApiOperation(value = "Get all users from registration")
     @RequestMapping(value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserContactDetails> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId) {
+    public List<UserContactDetails> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
         try {
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
             return registrationService.findUsersContactDetailsByRegistrationId(registrationId);
-            // return registrationService.getUsersFromRegistration(registrationId);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
             return null;
@@ -285,7 +285,6 @@ public class UserResource {
                 permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + id);
                 return registrationService.findUsersContactDetailsByRegistrationId(id);
             }
-            // return registrationService.getUsersFromRegistration(registrationId);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
             return null;

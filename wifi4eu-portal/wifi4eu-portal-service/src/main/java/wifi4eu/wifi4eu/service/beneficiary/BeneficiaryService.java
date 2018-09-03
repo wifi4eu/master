@@ -668,13 +668,13 @@ public class BeneficiaryService {
                 String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
                 String msgBody = bundle.getString("mail.sendUserEmail.beneficiary.body");
                 String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
-                msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, newContactEmail);
+                String registrationUrl = userService.getServerAddress() + "/wifi4eu/#/beneficiary-portal/profile";
+                msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, newContactEmail, registrationUrl);
                 _log.debug("TESTING msgBody => " + msgBody);
 
                 if (!userService.isLocalHost()) {
                     mailService.sendEmail(newContactEmail, MailService.FROM_ADDRESS, subject, msgBody);
                 }
-
                 invitationContactRepository.save(invitationContact);
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");
                 responseDTO.setSuccess(true);

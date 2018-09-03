@@ -251,14 +251,15 @@ public class SupplierService {
                 userDTO.setPhoneNumber(userSupplier.getPhoneNumber());
                 userDTO.setPhonePrefix(userSupplier.getPhonePrefix());
                 userDTO.setCreateDate(new Date().getTime());
-                userDTO.setType(1);
+                userDTO.setType((int) Constant.ROLE_SUPPLIER);
                 userDTO.setVerified(false);
                 userDTO.setLang(supplierDTO.getLang());
                 userDTO.setPhoneNumber(supplierDTO.getContactNumber());
                 userDTO.setPhonePrefix(supplierDTO.getContactPrefix());
                 userDTO.setEmail(supplierDTO.getContactEmail());
-                if (userDTO.getEcasEmail() == null || userDTO.getEcasEmail().isEmpty()) {
+                if (Validator.isNull(userDTO.getEcasEmail()) || userDTO.getEcasEmail().trim().isEmpty()) {
                     userDTO.setEcasEmail(supplierDTO.getContactEmail());
+                    userDTO.setEmail(supplierDTO.getContactEmail());
                 }
                 break;
             }
@@ -636,7 +637,8 @@ public class SupplierService {
                 String subject = bundle.getString("mail.sendNewUserSupplier.subject");
                 String msgBody = bundle.getString("mail.sendNewUserSupplier.body");
                 String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
-                msgBody = MessageFormat.format(msgBody, userName, supplierName, additionalInfoUrl, newContactEmail);
+                String registrationUrl = userService.getServerAddress() + "/wifi4eu/#/supplier-portal/profile";
+                msgBody = MessageFormat.format(msgBody, userName, supplierName, additionalInfoUrl, newContactEmail, registrationUrl);
                 _log.debug("TESTING msgBody => "+msgBody);
 
                 if (!userService.isLocalHost()) {
