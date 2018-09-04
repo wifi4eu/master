@@ -957,7 +957,7 @@
   "dgConn.requestCorrectionDate": "Request date",
   "benefPortal.grantAgreement.permissionsWarning.description": "You are not authorized to sign the Grant Agreement because your documents are not yet validated",
   "summary.success": "SUCCESS",
-  "shared.profile.addContact.exists": "This user has already been invitated. Please, try another user email",
+  "shared.profile.addContact.exists": "This user has already been invited. Please, try another user email",
   "shared.profile.addContact.emptyOrNull": "Some fields are null or empty. Please, complete all the fields",
   "benefPortal.beneficiary.deleteMunicipality.changesNotSaved": "Error, you cannot delete a municipality if there are changes to save. Please confirm the changes or cancel them before deleting municipalities",
   "summary.error": "ERROR",
