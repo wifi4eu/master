@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.common.azureblobstorage;
+package wifi4eu.wifi4eu.common.service.azureblobstorage;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.*;
 import wifi4eu.wifi4eu.common.helper.Validator;
-import wifi4eu.wifi4eu.common.utils.EncrypterService;
+import wifi4eu.wifi4eu.common.service.encryption.EncrypterService;
 
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayOutputStream;
@@ -135,7 +135,7 @@ public class AzureBlobStorage {
                     sourceFile.delete();
                 */
                 // System.out.println("Final URL => " + downloadUrl);
-                return downloadUrl;
+                //return downloadUrl;
             }
         }
         return downloadUrl;

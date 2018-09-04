@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.common.azureblobstorage;
+package wifi4eu.wifi4eu.common.service.azureblobstorage;
 
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageException;
