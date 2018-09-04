@@ -214,39 +214,17 @@ public class BeneficiaryService {
             }
         }
 
-        if (userContext != null) {
-            /* user from ECAS */
-            user = userService.getUserByUserContext(userContext);
-            user.setName(beneficiaryDTO.getUser().getName());
-            user.setSurname(beneficiaryDTO.getUser().getSurname());
-            user.setAddress(beneficiaryDTO.getUser().getAddress());
-            user.setAddressNum(beneficiaryDTO.getUser().getAddressNum());
-            user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
-            user.setEmail(beneficiaryDTO.getUser().getEmail());
-            user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
-            user.setType(3);
-            isEcasUser = true;
-        }
-
-        user.setCreateDate(new Date().getTime());
-        user.setLang(beneficiaryDTO.getLang());
-
-        UserDTO resUser = new UserDTO();
-        if (isEcasUser) {
-            resUser = userService.saveUserChanges(user);
-        }
-
         /* create municipalities and check duplicates */
         List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
 
         /* create registrations between user and municipality */
-        List<RegistrationDTO> registrations = getRegistrationsList(resUser, beneficiaryDTO, resMunicipalities, ip, request);
+        List<RegistrationDTO> registrations = getRegistrationsList(userConnected, beneficiaryDTO, resMunicipalities, ip, request);
 
         /*send request for documents email*/
         registrationService.requestLegalDocuments(registrations.get(0).getId());
 
         /* check Duplicates and crate Threads if apply */
-        checkDuplicates(resUser, resMunicipalities);
+        checkDuplicates(userConnected, resMunicipalities);
 
         return registrations;
     }

@@ -406,10 +406,10 @@ export class BeneficiaryEditProfileComponent {
         }
         this.finalBeneficiary.lang = language;
         this.finalBeneficiary.mayors = [];
+        
         for (let mayor of this.newMayors) {
             this.finalBeneficiary.mayors.push(mayor);
         }
-        this.finalBeneficiary.user = this.user;
         this.beneficiaryApi.submitNewMunicipalities(this.finalBeneficiary).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
@@ -466,14 +466,12 @@ export class BeneficiaryEditProfileComponent {
                                                     }
                                                 }
                                             }
-                                            console.log(usersToSubmit)
                                             if (usersToSubmit.length > 0) {
                                                 let update = {};
                                                 update['users'] = usersToSubmit;
                                                 this.userApi.updateUserDetails(update).subscribe(
                                                     (response: ResponseDTOBase) => {
                                                         if (response.success) {
-                                                            this.user = response.data;
                                                             this.createMultipleMunicipalities();
                                                         } else {
                                                             this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
@@ -487,10 +485,10 @@ export class BeneficiaryEditProfileComponent {
                                             } else {
                                                 this.createMultipleMunicipalities();
                                             }
-                                        } else {
-                                            this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
-                                            this.submittingData = false;
-                                        }
+                                        } 
+                                    }else {
+                                        this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                                        this.submittingData = false;
                                     }
                                 }
                             );
