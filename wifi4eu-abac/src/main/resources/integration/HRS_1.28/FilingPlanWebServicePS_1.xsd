@@ -1,0 +1,3160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://ec.europa.eu/sg/hrs/types" elementFormDefault="qualified" xmlns:tns="http://ec.europa.eu/sg/hrs/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/2001/XMLSchema">
+  <!--Element definitions-->
+  <element name="header" type="tns:Header">
+    <annotation>
+      <documentation>The header allows HRS to authenticate and authorize users and applications calling the web services</documentation>
+    </annotation>
+  </element>
+  <element name="hrsFault" type="tns:HrsFault"/>
+  <simpleType name="ContentIdType">
+    <annotation>
+      <documentation>An unique Content id string which is obtained while uploading the content.</documentation>
+    </annotation>
+    <restriction base="string">
+      <pattern value="ci-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"/>
+    </restriction>
+  </simpleType>
+  <xsd:simpleType name="JobUserName">
+    <annotation>
+      <documentation>The user name/id a job account can use to authenticate</documentation>
+    </annotation>
+    <restriction base="string">
+      <pattern value="je\_[a-z0-9]{4,17}"/>
+    </restriction>
+  </xsd:simpleType>
+  <!--Type definitions-->
+  <complexType name="HrsFault">
+    <sequence>
+      <element name="id" type="string">
+        <annotation>
+          <documentation>An ID that identifies the fault. This ID will be unique for each fault.</documentation>
+        </annotation>
+      </element>
+      <element name="code">
+        <annotation>
+          <documentation>The code associated with the fault.</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="xsd:string">
+            <enumeration value="HRS_INTERNAL_FAULT">
+              <annotation>
+                <documentation>Indicates an HRS internal fault, please report this issue to
+                                    the HRS support team</documentation>
+              </annotation>
+            </enumeration>
+            <enumeration value="HRS_NO_OBJECT_FAULT">
+              <annotation>
+                <documentation>Indicates that the request object (e.g. document, file, ...)
+                                    was not found. It's possible that it does not exist or that it's not visible (no
+                                    access rights) to the operation user</documentation>
+              </annotation>
+            </enumeration>
+            <enumeration value="HRS_LOCK_FAULT">
+              <annotation>
+                <documentation>Indicates that an object was locked while trying to access it.
+                                    This could indicate that there is concurrent access to a given object or that
+                                    an attachment of a document has been checked out.</documentation>
+              </annotation>
+            </enumeration>
+            <enumeration value="HRS_PERMISSION_FAULT">
+              <annotation>
+                <documentation>Indicates that the operating user does not have the
+                                    permission to perform a given action (e.g. not allowed to register a document)</documentation>
+              </annotation>
+            </enumeration>
+            <enumeration value="HRS_BUSINESS_FAULT">
+              <annotation>
+                <documentation>Indicates a generic, uncategorized business fault due to a
+                                    business requirement not met.</documentation>
+              </annotation>
+            </enumeration>
+            <enumeration value="HRS_CONCURRENT_MODIFICATION_FAULT">
+              <annotation>
+                <documentation>Indicates a concurrent modification of an object where optimistic locking is
+                                    applied. For example concurrently linking a given Document with other documents.</documentation>
+              </annotation>
+            </enumeration>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="key" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The key associated with the exception. HRS uses this key internally for
+                        retrieving messages associated with exceptions. Clients could also use this to have
+                        fine grained error messages.</documentation>
+        </annotation>
+      </element>
+      <element name="stackTrace" minOccurs="0">
+        <annotation>
+          <documentation>String representation of the exception stacktrace. This element is mainly
+                        for HRS internal usage and debugging purposes.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="line" type="string" minOccurs="0" maxOccurs="unbounded"/>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <!--Type definitions-->
+  <complexType name="Header">
+    <sequence>
+      <element name="userName" type="string">
+        <annotation>
+          <documentation>ECAS user name of the user / job that authenticates with HRS.
+
+                        For job users, you should use the ECAS job user name (e.g. j00x000) and not
+                        the internal job user name (e.g. je_xxxx).</documentation>
+        </annotation>
+      </element>
+      <element name="mappedJobUser" type="tns:JobUserName" minOccurs="0">
+        <annotation>
+          <documentation>In order to have a single ECAS user mapped to multiple Hermes Job users, this element depicts
+                         the mapped Hermes job user.
+                         To facilitate the management of job users and certificates, we allow a single
+                         ECAS job user to be mapped to multiple Hermes job users. e.g if a single application is possessing all the
+                         Hermes jobs.
+                         Element 'userName' will have ECAS user and this element will have corresponding mapped Hermes
+                         job user and request will be considered as triggered by this mapped Hermes job user.</documentation>
+        </annotation>
+      </element>
+      <element name="onBehalfOf" type="string" minOccurs="0">
+        <annotation>
+          <documentation>User name of the user on which behalf the operation should be performed.
+                        Currently only delegations from normal users to virtual entities are supported.</documentation>
+        </annotation>
+      </element>
+      <element name="ticket" type="string">
+        <annotation>
+          <documentation>ECAS ticket for the HRS service used for authentication. The ticket should
+                        belong to the user provided in userName.</documentation>
+        </annotation>
+      </element>
+      <element name="applicationId" type="string">
+        <annotation>
+          <documentation>Application ID associated to the an application invoking HRS.
+                        The application ID is used to identify and authorize the calling application</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="OperationResponse">
+    <annotation>
+      <documentation>Generic response type for operations that do not require a specific result</documentation>
+    </annotation>
+    <sequence>
+      <element name="success" type="boolean" default="true">
+        <annotation>
+          <documentation>Status of the operation invocation</documentation>
+        </annotation>
+      </element>
+      <element name="message" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Message providing extra information regarding the invocation</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="DocumentRetrievalOptions">
+    <annotation>
+      <documentation>Options allowing to precise the parts of a document we need to retrieve. It allows client applications to define which metadata to retrieve for a document.</documentation>
+    </annotation>
+    <sequence>
+      <choice>
+        <element name="includeItemsMetadata" type="boolean" minOccurs="0" default="false">
+          <annotation>
+            <documentation>Specifies that the document search response will contain the metadata of the latest attachments</documentation>
+          </annotation>
+        </element>
+        <element name="includeItemsAndVersionsMetadata" type="boolean" minOccurs="0" default="false">
+          <annotation>
+            <documentation>Specifies that the document search response will contain the metadata of the latest attachments and their previous versions.
+                            If the document is registered, only the creator and e-Signatory assignees can see the versions metadata.</documentation>
+          </annotation>
+        </element>
+      </choice>
+      <choice>
+        <element name="includeSendersAndRecipientsMetadata" type="boolean" minOccurs="0" default="false">
+          <annotation>
+            <documentation>Specifies that the document search response will contain the metadata of senders/receivers.
+                            Equivalent to specifying both includeSenders and includeRecipients.</documentation>
+          </annotation>
+        </element>
+        <sequence>
+          <element name="includeSenders" type="boolean" minOccurs="0" default="false">
+            <annotation>
+              <documentation>Specifies that the document search response will contain the metadata of senders</documentation>
+            </annotation>
+          </element>
+          <element name="includeRecipients" type="boolean" minOccurs="0" default="false">
+            <annotation>
+              <documentation>Specifies that the document search response will contain the metadata of recipients</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </choice>
+      <element name="includeSendersRecipientsValidationForRegistration" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that a flag will be included indicating that the sender/recipient is valid to be used in a document
+                        registration. The flag will only be present for the senders/recipients of non-registered documents and
+                        will only apply if the retrieval option includeSenders, includeRecipients or includeSendersAndRecipientsMetadata
+                        was set.
+                        This flag for senders/recipients can be useful if you create a document at a given moment and you register
+                        it at a later moment in time. During the registration process there's a validation that the senders and
+                        recipients are still valid according their current assignment. For internal entities it could be that they
+                        changed service, DG, ... or that they left the EC. In those cases they are considered invalid. External
+                        entities could have been deleted (e.g. because of a consolidation).</documentation>
+        </annotation>
+      </element>
+      <element name="includeFilingInfo" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>It specifies that the document search response will contain filing information</documentation>
+        </annotation>
+      </element>
+      <element name="includeLinks" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>It specifies that the document search response will contain the links of the document</documentation>
+        </annotation>
+      </element>
+      <element name="includeAssignmentWorkflow" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>It specifies that the document search response should contain the Assignment workflow if existing</documentation>
+        </annotation>
+      </element>
+      <element name="includeSignatoryWorkflow" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>It specifies that the document search response should contain the Signatory Paper or e-Signatory workflow if existing</documentation>
+        </annotation>
+      </element>
+      <element name="limitTasksToCurrentUser" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>When retrieving the workflow (Assignment or Signatory) limit returned tasks to those
+                        assigned to the current user.
+                        This can be used as a performance optimization, since the Assignment workflow of a document
+                        (and to a lesser extent the Signatory workflow) can include hundreds of tasks in Production.</documentation>
+        </annotation>
+      </element>
+      <element name="limitTasksToActiveTasks" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>When retrieving the workflow of a document (Assignment or Signatory) limit
+                        returned tasks to those that are active.
+                        This can be used as a performance optimization, since the Assignment workflow of a document
+                        (and to a lesser extent the Signatory workflow) can include hundreds of tasks in Production.</documentation>
+        </annotation>
+      </element>
+      <element name="includeProcedure" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>It specifies that the document search response should include the procedure (if any) linked to the document</documentation>
+        </annotation>
+      </element>
+      <element name="includeSignedBy" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Include the users that have signed the document (applies only to registered documents).</documentation>
+        </annotation>
+      </element>
+      <element name="includeExternalizationDetails" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Include information about the externalization process of the document to the ERS repository.</documentation>
+        </annotation>
+      </element>
+      <element name="includeSpecificMetadata" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Include (business) specific metadata.</documentation>
+        </annotation>
+      </element>
+      <element name="includeSpecificMetadataItemsMetadata" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Include the metadata (business) specific metadata items/attachments.</documentation>
+        </annotation>
+      </element>
+      <element name="includeExternalSignatures" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Include information related to external signatures.</documentation>
+        </annotation>
+      </element>
+      <element name="includeAccessibilityInfo" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Include additional information related to accessibility (e.g. in Hermes, A-REP, ...) of documents.
+                        In case the document is not accessible to the current user, next to this accessibility information,
+                        limited (non-sensitive) metadata for the documents will be returned.
+                        Can only be used in combination with certain search expressions like registrationNumber = 'Ares(2017)123'
+                        and is not applicable for the index server searches.</documentation>
+        </annotation>
+      </element>
+      <element name="includeSignatoryWorkflowSupportingItems" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>A flag to indicate if supporting-items need to be retrieved or not, while fetching document information.
+                        If there are any supporting-item(s) associated with document's e-signatory workflow, then these item(s) can be
+                        retrieved by setting this flag to true.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="SortOptions">
+    <annotation>
+      <documentation>Options allowing to sort the result of a search</documentation>
+    </annotation>
+    <sequence>
+      <element name="sortBy" minOccurs="1" maxOccurs="2">
+        <complexType>
+          <sequence>
+            <element name="fieldName" type="string">
+              <annotation>
+                <documentation>The name of the field to sort on</documentation>
+              </annotation>
+            </element>
+            <element name="order">
+              <annotation>
+                <documentation>The sort order</documentation>
+              </annotation>
+              <simpleType>
+                <restriction base="xsd:string">
+                  <enumeration value="ASC">
+                    <annotation>
+                      <documentation>ascending order</documentation>
+                    </annotation>
+                  </enumeration>
+                  <enumeration value="DESC">
+                    <annotation>
+                      <documentation>descending order</documentation>
+                    </annotation>
+                  </enumeration>
+                </restriction>
+              </simpleType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="FileRetrievalOptions">
+    <annotation>
+      <documentation>Options allowing to precise the information of a file we need to retrieve. If less information is required, the operation can result in better response times.</documentation>
+    </annotation>
+    <sequence>
+      <element name="includeDocumentFilingAllowed" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the file will contain information if the current user can file a document into it</documentation>
+        </annotation>
+      </element>
+      <element name="includeUserFileRole" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the file will contain information about the current user's role on the file</documentation>
+        </annotation>
+      </element>
+      <element name="includeHasSubfiles" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the file will contain information whether it has subfiles to which the current user has access</documentation>
+        </annotation>
+      </element>
+      <element name="includeRoles" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the file will contain the roles (file readers, file users, file editors) of the file</documentation>
+        </annotation>
+      </element>
+      <element name="includeCategory" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the file will contain the linked category (if there's one linked)</documentation>
+        </annotation>
+      </element>
+      <element name="includeAssociatedLeadDepartments" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the file will contain the associated lead departments (if any)</documentation>
+        </annotation>
+      </element>
+      <element name="includeSystemContainsDocuments" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the file will contain information whether it has documents or not, regardless of user access</documentation>
+        </annotation>
+      </element>
+      <element name="includeSystemHasSubfiles" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the file will contain information whether it has subfiles or not, regardless of user access</documentation>
+        </annotation>
+      </element>
+      <element name="includeFullPreservationMetadata" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the file will contain full preservation metadata information (information like shelf, cupboard and office
+                        is always returned, if available)</documentation>
+        </annotation>
+      </element>
+      <element name="includeTransparencyMetadata" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the file will contain transparency metadata information</documentation>
+        </annotation>
+      </element>
+      <element name="includeSystemDocumentCount" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies the count of documents which are visible to the logged in user in a given file</documentation>
+        </annotation>
+      </element>
+      <element name="includeAccessibleDocumentCount" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies the total number of documents which are filed in a given file</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="File">
+    <annotation>
+      <documentation>A file (dossier)</documentation>
+    </annotation>
+    <sequence>
+      <element name="fileId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID that uniquely identifies the file</documentation>
+        </annotation>
+      </element>
+      <element name="isSubFile" type="xsd:boolean">
+        <annotation>
+          <documentation>It indicates if the file is a subfile</documentation>
+        </annotation>
+      </element>
+      <element name="isDocumentFilingAllowed" type="xsd:boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates if a user has rights to file documents into this file.
+                    If the file is ACTIVE, not special and the user is file user (directly or
+                    indirectly), the user has the right the filing right.
+                    Note that the user must also have sufficient permissions on the document(s) (s)he
+                    wants to file into this file.</documentation>
+        </annotation>
+      </element>
+      <element name="path" type="xsd:string">
+        <annotation>
+          <documentation>Logical path to the file</documentation>
+        </annotation>
+      </element>
+      <element name="chefDeFile" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Name of 'main lead department' / 'chef de file'</documentation>
+        </annotation>
+      </element>
+      <element name="associatedLeadDepartments" type="tns:AssociatedLeadDepartments" minOccurs="0">
+        <annotation>
+          <documentation>The list of associated lead departments</documentation>
+        </annotation>
+      </element>
+      <element name="headingCode" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>The file's heading code</documentation>
+        </annotation>
+      </element>
+      <element name="fileCode" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>The file's code</documentation>
+        </annotation>
+      </element>
+      <element name="specificCode" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>The file's specific code</documentation>
+        </annotation>
+      </element>
+      <element name="status" type="tns:FileStatus" minOccurs="0">
+        <annotation>
+          <documentation>The file's status</documentation>
+        </annotation>
+      </element>
+      <element name="parentId" type="tns:ObjectId" minOccurs="0">
+        <annotation>
+          <documentation>Internal repository ID of the parent file or heading</documentation>
+        </annotation>
+      </element>
+      <element name="englishName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the file in English</documentation>
+        </annotation>
+      </element>
+      <element name="frenchName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the file in French</documentation>
+        </annotation>
+      </element>
+      <element name="germanName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the file in German</documentation>
+        </annotation>
+      </element>
+      <element name="userFileRoles" minOccurs="0">
+        <annotation>
+          <documentation>The roles the operating user has on the file</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="userFileRole" minOccurs="0" maxOccurs="unbounded">
+              <simpleType>
+                <restriction base="xsd:string">
+                  <enumeration value="NOMCOM_MANAGER"/>
+                  <enumeration value="FILE_EDITOR"/>
+                  <enumeration value="FILE_USER"/>
+                  <enumeration value="FILE_READER"/>
+                </restriction>
+              </simpleType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="hasSubFiles" type="xsd:boolean" minOccurs="0">
+        <annotation>
+          <documentation>It indicates if the file has sub files, to which the current user has access</documentation>
+        </annotation>
+      </element>
+      <element name="readers" minOccurs="0">
+        <annotation>
+          <documentation>Collection of file readers</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="reader" minOccurs="0" maxOccurs="unbounded" type="string">
+              <annotation>
+                <documentation>The user or group name of the file reader</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="users" minOccurs="0">
+        <annotation>
+          <documentation>Collection of file readers</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="user" minOccurs="0" maxOccurs="unbounded" type="string">
+              <annotation>
+                <documentation>The user or group name of the file user</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="editors" minOccurs="0">
+        <annotation>
+          <documentation>Collection of file readers</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="editor" minOccurs="0" maxOccurs="unbounded" type="string">
+              <annotation>
+                <documentation>The user or group name of the file editor</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="englishComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Comments in English</documentation>
+        </annotation>
+      </element>
+      <element name="frenchComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Comments in French</documentation>
+        </annotation>
+      </element>
+      <element name="germanComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Comments in German</documentation>
+        </annotation>
+      </element>
+      <element name="deskOfficer" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The desk officer's user name</documentation>
+        </annotation>
+      </element>
+      <element name="visibility" type="tns:FileVisibilityType" minOccurs="0">
+        <annotation>
+          <documentation>Indicates the visibility level of the File (and its contents)</documentation>
+        </annotation>
+      </element>
+      <element name="special" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>True if this file is special - PMO Document ('blue'). False or missing otherwise.</documentation>
+        </annotation>
+      </element>
+      <element name="creationDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Lifecyle information: date when the file was created</documentation>
+        </annotation>
+      </element>
+      <element name="activationDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Lifecyle information: date when the file was activated</documentation>
+        </annotation>
+      </element>
+      <element name="closingDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Lifecyle information: date when the file was closed</documentation>
+        </annotation>
+      </element>
+      <element name="transferDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Lifecyle information: date when the file was transfered</documentation>
+        </annotation>
+      </element>
+      <element name="destroyDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Lifecyle information: date when the file was destroyed</documentation>
+        </annotation>
+      </element>
+      <element name="restoreDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Lifecyle information: date when the file was restored</documentation>
+        </annotation>
+      </element>
+      <element name="category" type="tns:Category" minOccurs="0">
+        <annotation>
+          <documentation>The category linked to the file</documentation>
+        </annotation>
+      </element>
+      <element name="systemHasSubFiles" type="xsd:boolean" minOccurs="0">
+        <annotation>
+          <documentation>It indicates if the file has sub files, regardless of user access</documentation>
+        </annotation>
+      </element>
+      <element name="systemContainsDocuments" type="xsd:boolean" minOccurs="0">
+        <annotation>
+          <documentation>It indicates if the file has documents, regardless of user access</documentation>
+        </annotation>
+      </element>
+      <element name="preservationMetadata" type="tns:FilePreservationMetadata" minOccurs="0">
+        <annotation>
+          <documentation>Information about the preservation metadata associated to the file</documentation>
+        </annotation>
+      </element>
+      <element name="transparencyMetadata" type="tns:FileTransparencyMetadata" minOccurs="0">
+        <annotation>
+          <documentation>Information about the transparency metadata associated to the file</documentation>
+        </annotation>
+      </element>
+      <element name="systemDocumentCount" type="xsd:int" minOccurs="0">
+        <annotation>
+          <documentation>Count of total documents filed in a given file</documentation>
+        </annotation>
+      </element>
+      <element name="accessibleDocumentCount" type="xsd:int" minOccurs="0">
+        <annotation>
+          <documentation>Count of documents which are accessible to the user, in a given file</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="Heading">
+    <annotation>
+      <documentation>A heading (rubrique)</documentation>
+    </annotation>
+    <sequence>
+      <element name="headingId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID to uniquely identify the heading</documentation>
+        </annotation>
+      </element>
+      <element name="type" type="tns:HeadingType">
+        <annotation>
+          <documentation>The type of the heading (COMMON or SPECIFIC)</documentation>
+        </annotation>
+      </element>
+      <element name="path" type="xsd:string">
+        <annotation>
+          <documentation>Logical path to the heading</documentation>
+        </annotation>
+      </element>
+      <element name="headingCode" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>The heading's code</documentation>
+        </annotation>
+      </element>
+      <element name="specificCode" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>The heading's specific code</documentation>
+        </annotation>
+      </element>
+      <element name="status" type="tns:HeadingStatus" minOccurs="0">
+        <annotation>
+          <documentation>The heading's status</documentation>
+        </annotation>
+      </element>
+      <element name="levelCode" type="xsd:string">
+        <annotation>
+          <documentation>The heading's level code</documentation>
+        </annotation>
+      </element>
+      <element name="headingCodeStep" type="xsd:string">
+        <annotation>
+          <documentation>The heading's code step</documentation>
+        </annotation>
+      </element>
+      <element name="parentId" type="tns:ObjectId" minOccurs="0">
+        <annotation>
+          <documentation>Internal repository ID of the parent heading or filing plan</documentation>
+        </annotation>
+      </element>
+      <element name="creationDate" type="date">
+        <annotation>
+          <documentation>Date when the heading was created</documentation>
+        </annotation>
+      </element>
+      <element name="englishName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the heading in English</documentation>
+        </annotation>
+      </element>
+      <element name="frenchName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the heading in French</documentation>
+        </annotation>
+      </element>
+      <element name="germanName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the heading in German</documentation>
+        </annotation>
+      </element>
+      <element name="serviceOwners" minOccurs="0">
+        <annotation>
+          <documentation>Collection of service owners</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="serviceOwner" minOccurs="0" maxOccurs="unbounded" type="string">
+              <annotation>
+                <documentation>The user or group name of the service owner</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="headingReaders" minOccurs="0">
+        <annotation>
+          <documentation>Collection of heading readers</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="reader" minOccurs="0" maxOccurs="unbounded" type="string">
+              <annotation>
+                <documentation>The user or group name of the heading reader</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="headingEditors" minOccurs="0">
+        <annotation>
+          <documentation>Collection of heading editors</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="editor" minOccurs="0" maxOccurs="unbounded" type="string">
+              <annotation>
+                <documentation>The user or group name of the heading editor</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="fileCreators" minOccurs="0">
+        <annotation>
+          <documentation>Collection of file creators</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="creator" minOccurs="0" maxOccurs="unbounded" type="string">
+              <annotation>
+                <documentation>The user or group name of the file creators</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="englishDescription" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Description of the heading in English</documentation>
+        </annotation>
+      </element>
+      <element name="frenchDescription" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Description of the heading in French</documentation>
+        </annotation>
+      </element>
+      <element name="germanDescription" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Description of the heading in German</documentation>
+        </annotation>
+      </element>
+      <element name="englishComments" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Comments of the heading in English</documentation>
+        </annotation>
+      </element>
+      <element name="frenchComments" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Comments of the heading in French</documentation>
+        </annotation>
+      </element>
+      <element name="germanComments" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Description of the heading in German</documentation>
+        </annotation>
+      </element>
+      <element name="categories" minOccurs="0">
+        <annotation>
+          <documentation>Categories linked to this heading.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="category" maxOccurs="unbounded" type="tns:Category">
+              <annotation>
+                <documentation>The category</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="Category">
+    <annotation>
+      <documentation>A category</documentation>
+    </annotation>
+    <sequence>
+      <element name="categoryId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID to uniquely identify the category</documentation>
+        </annotation>
+      </element>
+      <element name="categoryKey" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID to identify the version tree of a category. For the first
+                    version, the categoryId will be equal to the categoryKey.</documentation>
+        </annotation>
+      </element>
+      <element name="code" type="xsd:string">
+        <annotation>
+          <documentation>The hierarchical code e.g. 1.5.2</documentation>
+        </annotation>
+      </element>
+      <element name="englishName" type="xsd:string">
+        <annotation>
+          <documentation>The category name in English</documentation>
+        </annotation>
+      </element>
+      <element name="frenchName" type="xsd:string">
+        <annotation>
+          <documentation>The category name in French</documentation>
+        </annotation>
+      </element>
+      <element name="version" type="xsd:int">
+        <annotation>
+          <documentation>The version number. The first version is  version 1.</documentation>
+        </annotation>
+      </element>
+      <element name="type" type="tns:CategoryType" minOccurs="0">
+        <annotation>
+          <documentation>Coordination / Contribution</documentation>
+        </annotation>
+      </element>
+      <element name="status" type="tns:CategoryStatus">
+        <annotation>
+          <documentation>The category status</documentation>
+        </annotation>
+      </element>
+      <element name="englishDescription" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>English description</documentation>
+        </annotation>
+      </element>
+      <element name="frenchDescription" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>French description</documentation>
+        </annotation>
+      </element>
+      <element name="englishObservations" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>English observations</documentation>
+        </annotation>
+      </element>
+      <element name="frenchObservations" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>French observations</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="Document">
+    <annotation>
+      <documentation>A document</documentation>
+    </annotation>
+    <sequence>
+      <element name="documentId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID of a document</documentation>
+        </annotation>
+      </element>
+      <element name="title" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Title/subject of the document</documentation>
+        </annotation>
+      </element>
+      <element name="mailType" type="tns:MailType" minOccurs="0">
+        <annotation>
+          <documentation>Mail type</documentation>
+        </annotation>
+      </element>
+      <element name="documentDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Date of the document</documentation>
+        </annotation>
+      </element>
+      <element name="sentDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Date at which the document has been sent</documentation>
+        </annotation>
+      </element>
+      <element name="encodingDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Date at which the document has been encoded in the
+                        common repository</documentation>
+        </annotation>
+      </element>
+      <element name="modificationDate" type="dateTime" minOccurs="0">
+        <annotation>
+          <documentation>Date+Time when the document was last modified. A
+                        modification is considered to be any change to the document's
+                        metadata, filing, items, senders or recipients.</documentation>
+        </annotation>
+      </element>
+      <element name="registrationDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Date at which the document has been registered in
+                        the common repository</documentation>
+        </annotation>
+      </element>
+      <element name="saveNumber" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Internal reference of a document</documentation>
+        </annotation>
+      </element>
+      <element name="registrationNumber" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Official reference of a document</documentation>
+        </annotation>
+      </element>
+      <element name="saverEcasId" type="string" minOccurs="0">
+        <annotation>
+          <documentation>ECAS user name of the user that encoded the document
+                        in the
+                        common repository. If the user was acting on behalf of somebody else
+                        (i.e. by using delegations in Ares), this field
+                        contains the real user, not the on-behalf-of user (e.g. if a secretary
+                        acts
+                        on behalf of a head of unit, this field contains the ecas id of the
+                        secretary).</documentation>
+        </annotation>
+      </element>
+      <element name="registererEcasId" type="string" minOccurs="0">
+        <annotation>
+          <documentation>ECAS user name of the user that registered the
+                        document in the
+                        common repository. If the user was acting on behalf of somebody else,
+                        this
+                        field contains the real user, not the on-behalf-of user (e.g. if a
+                        secretary acts
+                        on behalf of a head of unit, this field contains the ecas id of the
+                        secretary, not of the head of unit).</documentation>
+        </annotation>
+      </element>
+      <element name="createdOnBehalfOf" type="string" minOccurs="0">
+        <annotation>
+          <documentation>User name of the user on whose behalf the document
+                        was encoded in the
+                        common repository. For a user that doesn't use a delegation in Ares when
+                        creating the document, this
+                        field will be the same as saverEcasId. For a user that acts on behalf
+                        of somebody else,
+                        the two fields will be different (e.g if a secretary acts in Ares
+                        on behalf of a head of unit, this field will contain the ecas id of
+                        the head of unit).</documentation>
+        </annotation>
+      </element>
+      <element name="comments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Comments</documentation>
+        </annotation>
+      </element>
+      <element name="securityClassification" type="tns:SecurityClassification" minOccurs="0">
+        <annotation>
+          <documentation>Security classification to be applied to the
+                        document</documentation>
+        </annotation>
+      </element>
+      <element name="markerType" type="tns:MarkerType" minOccurs="0">
+        <annotation>
+          <documentation>Marker to be applied to the document according to
+                        the security classification</documentation>
+        </annotation>
+      </element>
+      <element name="markerDeadline" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Deadline associated to the marker. The marker will
+                        expire at this date.</documentation>
+        </annotation>
+      </element>
+      <element name="markerExpiryEvent" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Marking expiry event. This is optional and is
+                        treated as a comment field.</documentation>
+        </annotation>
+      </element>
+      <element name="classificationDeadline" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Deadline associated to the classification. The
+                        classification will expire at this date.</documentation>
+        </annotation>
+      </element>
+      <element name="classificationExpiryEvent" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Classification expiration event. This is optional
+                        and is treated as a comment field.</documentation>
+        </annotation>
+      </element>
+      <element name="personConcerned" minOccurs="0">
+        <annotation>
+          <documentation>A recipient of the document to which this document
+                        is addressed. This person
+                        is considered the 'person concerned' and can only be specified using
+                        a marker.
+                        This is element is valid if there is a marker of type personal, staff
+                        matter, medical matter and personal data.
+                        It can be an internal or external person entity, not an organization
+                        entity. It should not be a virtual entity.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <choice>
+              <element name="internalEntity" type="tns:InternalEntity">
+                <annotation>
+                  <documentation>Internal entity</documentation>
+                </annotation>
+              </element>
+              <element name="externalEntity" type="tns:ExternalEntity">
+                <annotation>
+                  <documentation>External entity</documentation>
+                </annotation>
+              </element>
+            </choice>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="markerService" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The service specified when the LIMITED_SERVICE
+                        marking was
+                        applied (may be missing for older documents).</documentation>
+        </annotation>
+      </element>
+      <element name="encryptItems" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates whether the content of the items is stored encrypted in
+                        the repository. In case the content is stored encrypted, the
+                        decryption will be done automatically when downloading the
+                        content.</documentation>
+        </annotation>
+      </element>
+      <element name="encryptItemsDeadline" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Date when the encryption of the document's items
+                        expires.</documentation>
+        </annotation>
+      </element>
+      <element name="frozen" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates if the document is frozen.
+                        A frozen document cannot be updated any more (even if it's not
+                        registered).
+                        A document becomes frozen when it was filed in a file that has been
+                        closed.</documentation>
+        </annotation>
+      </element>
+      <element name="noteToTheFile" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates if the document is a "note to the file" /
+                        "note au dossier"</documentation>
+        </annotation>
+      </element>
+      <element name="senders" minOccurs="0">
+        <annotation>
+          <documentation>List of senders</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="sender" minOccurs="0" maxOccurs="unbounded">
+              <complexType>
+                <sequence>
+                  <choice>
+                    <element name="internalEntity" type="tns:InternalEntity">
+                      <annotation>
+                        <documentation>Internal entity</documentation>
+                      </annotation>
+                    </element>
+                    <element name="externalEntity" type="tns:ExternalEntity">
+                      <annotation>
+                        <documentation>External entity</documentation>
+                      </annotation>
+                    </element>
+                  </choice>
+                  <element name="validForRegistration" type="boolean" minOccurs="0">
+                    <annotation>
+                      <documentation>Flag that indicates if the sender is valid in order the document
+                                                can be registered.
+                                                Internal entities can become invalid if the person changed
+                                                service/DG or left the
+                                                EC between the document was created and the time of
+                                                validation/registration.
+                                                External entities can be updated or deleted.</documentation>
+                    </annotation>
+                  </element>
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="recipients" minOccurs="0">
+        <annotation>
+          <documentation>List of recipients</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="recipient" minOccurs="0" maxOccurs="unbounded">
+              <complexType>
+                <sequence>
+                  <choice>
+                    <element name="internalEntity" type="tns:InternalEntity">
+                      <annotation>
+                        <documentation>Internal entity</documentation>
+                      </annotation>
+                    </element>
+                    <element name="externalEntity" type="tns:ExternalEntity">
+                      <annotation>
+                        <documentation>External entity</documentation>
+                      </annotation>
+                    </element>
+                  </choice>
+                  <element name="code" type="tns:RecipientCode">
+                    <annotation>
+                      <documentation>The recipient code</documentation>
+                    </annotation>
+                  </element>
+                  <element name="validForRegistration" type="boolean" minOccurs="0">
+                    <annotation>
+                      <documentation>Flag that indicates if the recipient is valid in order the
+                                                document can be registered.
+                                                Internal entities can become invalid if the person changed
+                                                service/DG or left the
+                                                EC between the document was created and the time of
+                                                validation/registration.
+                                                External entities can be updated or deleted.</documentation>
+                    </annotation>
+                  </element>
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="items" minOccurs="0">
+        <annotation>
+          <documentation>List of attachments</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="item" type="tns:Item" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>An attachment (the most recent version)</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="filedIn" minOccurs="0">
+        <annotation>
+          <documentation>List of files where the document has been filed</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="file" minOccurs="0" maxOccurs="unbounded">
+              <complexType>
+                <sequence>
+                  <element name="fileId" type="tns:ObjectId">
+                    <annotation>
+                      <documentation>Internal repository ID to uniquely identify
+                                                the file</documentation>
+                    </annotation>
+                  </element>
+                  <element name="path" type="xsd:string">
+                    <annotation>
+                      <documentation>Logical path to the file</documentation>
+                    </annotation>
+                  </element>
+                  <element name="chefDeFile" type="xsd:string" minOccurs="0">
+                    <annotation>
+                      <documentation>Name of 'main lead department' / 'chef de
+                                                file'</documentation>
+                    </annotation>
+                  </element>
+                  <element name="fileCode" type="xsd:string" minOccurs="0">
+                    <annotation>
+                      <documentation>The file's code</documentation>
+                    </annotation>
+                  </element>
+                  <element name="specificCode" type="xsd:string" minOccurs="0">
+                    <annotation>
+                      <documentation>The file's specific code</documentation>
+                    </annotation>
+                  </element>
+                  <element name="status" type="tns:FileStatus" minOccurs="0">
+                    <annotation>
+                      <documentation>The file's status</documentation>
+                    </annotation>
+                  </element>
+                  <element name="englishName" type="string" minOccurs="0">
+                    <annotation>
+                      <documentation>Name of the file in English</documentation>
+                    </annotation>
+                  </element>
+                  <element name="frenchName" type="string" minOccurs="0">
+                    <annotation>
+                      <documentation>Name of the file in French</documentation>
+                    </annotation>
+                  </element>
+                  <element name="germanName" type="string" minOccurs="0">
+                    <annotation>
+                      <documentation>Name of the file in German</documentation>
+                    </annotation>
+                  </element>
+                  <element name="filingDate" type="xsd:dateTime" minOccurs="0">
+                    <annotation>
+                      <documentation>Date the document was filed in the file</documentation>
+                    </annotation>
+                  </element>
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="links" minOccurs="0">
+        <annotation>
+          <documentation>List of linked documents</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="link" type="tns:Link" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>A link</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="assignmentWorkflow" minOccurs="0" type="tns:AssignmentWorkflow">
+        <annotation>
+          <documentation>Assignment workflow assigned to the document</documentation>
+        </annotation>
+      </element>
+      <element name="signatoryWorkflow" minOccurs="0" type="tns:SignatoryWorkflow">
+        <annotation>
+          <documentation>Paper Signatory or e-Signatory workflow assigned to
+                        the document</documentation>
+        </annotation>
+      </element>
+      <element name="supportingItems" type="tns:SupportingItems" minOccurs="0">
+        <annotation>
+          <documentation>Wrapper element for listing all supporting Items associated with document's e-signatory workflow</documentation>
+        </annotation>
+      </element>
+      <element name="procedure" minOccurs="0" type="tns:Procedure">
+        <annotation>
+          <documentation>Procedure linked to the document</documentation>
+        </annotation>
+      </element>
+      <xsd:element name="signedBy" minOccurs="0" maxOccurs="unbounded">
+        <annotation>
+          <documentation>A list of users that have 'signed' a registered document (i.e.
+                        they had a SIGN task in the eSignatory workflow and have closed it).
+                        The list is in reverse order compared to the eSignatory order
+                        (i.e. the last
+                        user who signed is first in the list).
+                        For an unregistered document, the list is empty even if some users
+                        have
+                        already closed their SIGN tasks.</documentation>
+        </annotation>
+        <xsd:complexType>
+          <sequence>
+            <xsd:element name="user" type="tns:WorkflowUser">
+              <annotation>
+                <documentation>The user that signed</documentation>
+              </annotation>
+            </xsd:element>
+            <xsd:element name="on" type="xsd:date">
+              <annotation>
+                <documentation>The date when the user signed</documentation>
+              </annotation>
+            </xsd:element>
+          </sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <element name="externalizationDetails" type="tns:ExternalizationDetails" minOccurs="0">
+        <annotation>
+          <documentation>Contains details about the externalization process of the document. This
+                        element is present
+                        only if requested through the corresponding document retrieval option.</documentation>
+        </annotation>
+      </element>
+      <element name="specificMetadata" type="tns:SpecificMetadata" minOccurs="0">
+        <annotation>
+          <documentation>Contains (business) specific metadata added by client applications. This
+                        metadata
+                        will only be fetched when explicitly requested using a retrieval
+                        option.</documentation>
+        </annotation>
+      </element>
+      <element name="signAndLock" type="xsd:boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates that the action 'sign and lock' was used on the document. The
+                        attachments
+                        cannot be modified anymore (with some exceptions such as translations
+                        and courtesy copy)</documentation>
+        </annotation>
+      </element>
+      <element name="partitionId" type="int" minOccurs="0">
+        <annotation>
+          <documentation>Partition ID which document belongs to.
+                        Each document should be associated with one partition.</documentation>
+        </annotation>
+      </element>
+      <element name="specificMetadataItems" minOccurs="0">
+        <annotation>
+          <documentation>List of business specific metadata items/attachments</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="specificMetadataItem" type="tns:SpecificMetadataItem" minOccurs="1" maxOccurs="10">
+              <annotation>
+                <documentation>A specific metadata item/attachment</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="externalSignatures" minOccurs="0">
+        <annotation>
+          <documentation>List of external signatures</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="externalSignature" type="tns:ExternalSignature" minOccurs="1" maxOccurs="unbounded">
+              <annotation>
+                <documentation>An external signature</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="accessibilityInfo" type="tns:AccessibilityInfo" minOccurs="0">
+        <annotation>
+          <documentation>Information regarding the accessibility of the document
+                        (if requested using the dedicated retrieval option).</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="Workflow" abstract="true">
+    <annotation>
+      <documentation>A workflow</documentation>
+    </annotation>
+    <sequence>
+      <element name="workflowId" type="int">
+        <annotation>
+          <documentation>Internal ID to uniquely identify a workflow</documentation>
+        </annotation>
+      </element>
+      <element name="documentId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID of the document for which this workflow exists</documentation>
+        </annotation>
+      </element>
+      <element name="active" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates if the workflow is currently active. A workflow is considered active if it has active/launched tasks.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="AssignmentWorkflow">
+    <annotation>
+      <documentation>A workflow of type Assignment</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="tns:Workflow">
+        <sequence>
+          <element name="tasks" minOccurs="0">
+            <annotation>
+              <documentation>The collection of tasks of the Assignment workflow</documentation>
+            </annotation>
+            <complexType>
+              <sequence>
+                <element name="task" type="tns:AssignmentTask" minOccurs="0" maxOccurs="unbounded">
+                  <annotation>
+                    <documentation>An Assignment workflow task</documentation>
+                  </annotation>
+                </element>
+              </sequence>
+            </complexType>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SignatoryWorkflow">
+    <annotation>
+      <documentation>A workflow of type Signatory, can be a Paper or e-Signatory workflow</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="tns:Workflow">
+        <sequence>
+          <element name="managers" type="tns:WorkflowManagers">
+            <annotation>
+              <documentation>Managers involved in the workflow</documentation>
+            </annotation>
+          </element>
+          <element name="launcher" type="tns:WorkflowUser" minOccurs="0">
+            <annotation>
+              <documentation>User that launched the workflow</documentation>
+            </annotation>
+          </element>
+          <element name="launchDate" type="date" minOccurs="0">
+            <annotation>
+              <documentation>Day when the workflow has been launched</documentation>
+            </annotation>
+          </element>
+          <element name="signatoryType" type="tns:SignatoryType">
+            <annotation>
+              <documentation>Type of workflow (paper or eSignatory)</documentation>
+            </annotation>
+          </element>
+          <xsd:element name="lastESignatoryTaskId" type="xsd:int" minOccurs="0">
+            <annotation>
+              <documentation>Id of the last eSignatory task in the workflow. The field is present only if the
+                                workflow type is eSignatory.</documentation>
+            </annotation>
+          </xsd:element>
+          <element name="tasks" minOccurs="0">
+            <annotation>
+              <documentation>The collection of tasks of the Signatory workflow</documentation>
+            </annotation>
+            <complexType>
+              <sequence>
+                <element name="task" type="tns:SignatoryTask" minOccurs="0" maxOccurs="unbounded">
+                  <annotation>
+                    <documentation>An Signatory workflow task</documentation>
+                  </annotation>
+                </element>
+              </sequence>
+            </complexType>
+          </element>
+          <xsd:element name="parallelPaperSignatory" type="xsd:boolean">
+            <annotation>
+              <xsd:documentation>TRUE if there is a parallel paper signatory.</xsd:documentation>
+            </annotation>
+          </xsd:element>
+          <element name="afterRegistrationAccess" type="tns:AfterRegistrationAccess"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <simpleType name="SignatoryType">
+    <annotation>
+      <documentation>Type of signatory workflow: either paper or eSignatory</documentation>
+    </annotation>
+    <restriction base="xsd:string">
+      <enumeration value="PAPER"/>
+      <enumeration value="ESIGNATORY"/>
+    </restriction>
+  </simpleType>
+  <complexType name="WorkflowUser">
+    <annotation>
+      <documentation>A user that is a participant in a workflow</documentation>
+    </annotation>
+    <sequence>
+      <element name="userName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Identifier for the user</documentation>
+        </annotation>
+      </element>
+      <element name="fullName" type="string">
+        <annotation>
+          <documentation>The user's full name (or a part of it)</documentation>
+        </annotation>
+      </element>
+      <element name="organizationCode" type="string">
+        <annotation>
+          <documentation>Organization to which the user belongs</documentation>
+        </annotation>
+      </element>
+      <element name="phone" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Telephone number to contact the user</documentation>
+        </annotation>
+      </element>
+      <element name="address" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Address of the user</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="Task" abstract="true">
+    <annotation>
+      <documentation>A workflow task</documentation>
+    </annotation>
+    <sequence>
+      <element name="taskId" type="int">
+        <annotation>
+          <documentation>Internal ID to uniquely identify a workflow task</documentation>
+        </annotation>
+      </element>
+      <element name="workflowId" type="int">
+        <annotation>
+          <documentation>Internal ID of the workflow to which the task belongs</documentation>
+        </annotation>
+      </element>
+      <element name="status">
+        <annotation>
+          <documentation>Current state of the workflow task</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="xsd:string">
+            <enumeration value="DRAFT"/>
+            <enumeration value="LAUNCHED"/>
+            <enumeration value="ACTIVE"/>
+            <enumeration value="CLOSED"/>
+            <enumeration value="BYPASSED"/>
+            <enumeration value="MANUAL"/>
+            <enumeration value="DECLINED"/>
+            <enumeration value="DELEGATED"/>
+            <enumeration value="RETURNED_TO_SENDER"/>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="assignee" type="tns:WorkflowUser">
+        <annotation>
+          <documentation>User to whom the task is assigned</documentation>
+        </annotation>
+      </element>
+      <element name="sender" type="tns:WorkflowUser">
+        <annotation>
+          <documentation>User that sent the task to the assignee</documentation>
+        </annotation>
+      </element>
+      <element name="sentDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Day on which the task was sent to the assignee</documentation>
+        </annotation>
+      </element>
+      <element name="closer" type="tns:WorkflowUser" minOccurs="0">
+        <annotation>
+          <documentation>User that closed the task</documentation>
+        </annotation>
+      </element>
+      <element name="closeDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Day on which the task was closed</documentation>
+        </annotation>
+      </element>
+      <element name="reader" type="tns:WorkflowUser" minOccurs="0">
+        <annotation>
+          <documentation>User that has read the task first</documentation>
+        </annotation>
+      </element>
+      <element name="readDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Day on which the task was first read</documentation>
+        </annotation>
+      </element>
+      <element name="deadlineDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Deadline day for this task, it should be closed by then</documentation>
+        </annotation>
+      </element>
+      <element name="instructions" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Instructions given by the sender of the task</documentation>
+        </annotation>
+      </element>
+      <element name="comments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Comments given by the user that closed the task</documentation>
+        </annotation>
+      </element>
+      <element name="critical" type="boolean">
+        <annotation>
+          <documentation>Indicates if the task is critical</documentation>
+        </annotation>
+      </element>
+      <element name="deleted" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates that the task has been marked as deleted</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="AssignmentTask">
+    <annotation>
+      <documentation>A task used in a Assignment workflow</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="tns:Task">
+        <sequence>
+          <element name="code">
+            <annotation>
+              <documentation>The task's code</documentation>
+            </annotation>
+            <simpleType>
+              <restriction base="xsd:string">
+                <enumeration value="CF"/>
+                <enumeration value="ASOC"/>
+                <enumeration value="INFO"/>
+                <enumeration value="CLASS"/>
+                <!--legacy codes-->
+                <enumeration value="CF (CBC)"/>
+                <enumeration value="CF (CDP)"/>
+                <enumeration value="CF (DAD)"/>
+                <enumeration value="CF (QP)"/>
+                <enumeration value="CF (CIS)"/>
+                <enumeration value="CF (CAB)"/>
+                <enumeration value="CF (PET)"/>
+                <enumeration value="CONTR"/>
+                <enumeration value="VALID"/>
+                <enumeration value="EMET"/>
+                <enumeration value="RET"/>
+                <enumeration value="AUT"/>
+                <enumeration value="SIGNAT"/>
+              </restriction>
+            </simpleType>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SignatoryTask">
+    <annotation>
+      <documentation>A task used in a Signatory workflow</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="tns:Task">
+        <sequence>
+          <element name="code">
+            <annotation>
+              <documentation>The task's code</documentation>
+            </annotation>
+            <simpleType>
+              <restriction base="xsd:string">
+                <enumeration value="RED"/>
+                <enumeration value="CONTRIB"/>
+                <enumeration value="VISA"/>
+                <enumeration value="SIGN"/>
+                <enumeration value="EXP"/>
+                <!--legacy codes-->
+                <enumeration value="CF (CBC)"/>
+                <enumeration value="CF (CDP)"/>
+                <enumeration value="CF (DAD)"/>
+                <enumeration value="CF (QP)"/>
+                <enumeration value="CF (CIS)"/>
+                <enumeration value="CF (CAB)"/>
+                <enumeration value="CF (PET)"/>
+                <enumeration value="CONTR"/>
+                <enumeration value="VALID"/>
+                <enumeration value="EMET"/>
+                <enumeration value="RET"/>
+                <enumeration value="INFO"/>
+                <enumeration value="CLASS"/>
+                <enumeration value="AUT"/>
+                <enumeration value="SIGNAT"/>
+              </restriction>
+            </simpleType>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="Item">
+    <annotation>
+      <documentation>An item/attachment</documentation>
+    </annotation>
+    <sequence>
+      <element name="itemId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID to uniquely identify an item</documentation>
+        </annotation>
+      </element>
+      <element name="name" type="string">
+        <annotation>
+          <documentation>The item's name</documentation>
+        </annotation>
+      </element>
+      <element name="language" type="tns:LanguageCode">
+        <annotation>
+          <documentation>The item's language</documentation>
+        </annotation>
+      </element>
+      <element name="attachmentType" type="tns:AttachmentType">
+        <annotation>
+          <documentation>Type of the item such as NATIVE_ELECTRONIC, ARES_SCANNED etc.</documentation>
+        </annotation>
+      </element>
+      <element name="kind" type="tns:ItemKind">
+        <annotation>
+          <documentation>Kind of item such as MAIN, ANNEX, TRANSLATION etc.</documentation>
+        </annotation>
+      </element>
+      <element name="isScanWithoutContent" type="boolean">
+        <annotation>
+          <documentation>Is true for items of type ARES_SCANNED (i.e. scans) where the content hasn't been scanned yet. Is false in all other cases.</documentation>
+        </annotation>
+      </element>
+      <element name="modificationDate" type="dateTime">
+        <annotation>
+          <documentation>Date+Time when the item was last modified. A modification is considered to be any change to the item's metadata or to the item's content such as a checkin or scan operation.</documentation>
+        </annotation>
+      </element>
+      <element name="externalReference" type="string" minOccurs="0">
+        <annotation>
+          <documentation>External reference associated with the item</documentation>
+        </annotation>
+      </element>
+      <element name="contentType" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Content type of item/attachment content (e.g. pdf, doc, msg, etc.)</documentation>
+        </annotation>
+      </element>
+      <element name="pageNo" type="int" minOccurs="0">
+        <annotation>
+          <documentation>Number of pages that exist for the attachment's content</documentation>
+        </annotation>
+      </element>
+      <element name="renditionStatus" type="tns:RenditionStatus" minOccurs="0">
+        <annotation>
+          <documentation>Status of the rendition of the item's content. In case the rendition is successful
+                        you can download the rendition PDF. In case of failure, you can download an HTML
+                        containing a description of the failure.</documentation>
+        </annotation>
+      </element>
+      <element name="checkedOut" minOccurs="0">
+        <annotation>
+          <documentation>If the item is checked out, this element holds checkout
+                        information</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="userName" type="string">
+              <annotation>
+                <documentation>Username that performed the checkout operation</documentation>
+              </annotation>
+            </element>
+            <element name="date" type="dateTime">
+              <annotation>
+                <documentation>Date+Time when the checkout was performed</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="translations" minOccurs="0">
+        <annotation>
+          <documentation>This item's translations</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="translation" type="tns:Item" minOccurs="1" maxOccurs="unbounded">
+              <annotation>
+                <documentation>A translation is an uploaded item (i.e. type ARES_SCANNED
+                                    is not valid for a translation), its item kind is
+                                    always 'TRANSLATION', it cannot have other translations
+                                    (i.e the 'translations' field is absent), and it cannot be
+                                    checked out.</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="contentSize" type="int" minOccurs="0">
+        <annotation>
+          <documentation>Size of item/attachment content in bytes</documentation>
+        </annotation>
+      </element>
+      <element name="versioned" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates if more than one version of this item exist. Using checkout /
+                        checkin an item can be versioned and becomes part of a version tree.</documentation>
+        </annotation>
+      </element>
+      <element name="versionLabel" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The version label of this item. For example 1.0, 1.1, 2.0, ...</documentation>
+        </annotation>
+      </element>
+      <element name="mimeType" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Mime type of item/attachment content (e.g. text/html, application/vnd.ms-excel, etc.)</documentation>
+        </annotation>
+      </element>
+      <element name="contentId" type="tns:ContentIdType" minOccurs="0">
+        <annotation>
+          <documentation>Content id that was obtained by uploading the content using
+                        the data transfer service.
+                        (Note: This value does not exist for items uploaded in the past and it will not exist for items uploaded using Ares, AresLook, ...)</documentation>
+        </annotation>
+      </element>
+      <element name="sha256" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The SHA-256 checksum in hexadecimal format.
+                        Can be used for verification or as input for EU Login / ECAS XML signatures.
+                        Does not exist for old items or items that might have been ingested through other sources than HRS.</documentation>
+        </annotation>
+      </element>
+      <element name="searchSummary" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Summary of this item and its content. Only present if there was a search
+                        executed against the index server and summary was requested.</documentation>
+        </annotation>
+      </element>
+      <element name="versions" minOccurs="0">
+        <annotation>
+          <documentation>Previous versions of an attachment</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="item" type="tns:Item" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>A previous version of an attachment</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="SpecificMetadataItem">
+    <annotation>
+      <documentation>An item/attachment</documentation>
+    </annotation>
+    <sequence>
+      <element name="itemId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID to uniquely identify a specific metadata attachment</documentation>
+        </annotation>
+      </element>
+      <element name="namespace" type="xsd:anyURI">
+        <annotation>
+          <documentation>Serves as an identifier for the type specific metadata, e.g. identify all
+                        specific metadata items added by a given application.</documentation>
+        </annotation>
+      </element>
+      <element name="name" type="string">
+        <annotation>
+          <documentation>The item's name</documentation>
+        </annotation>
+      </element>
+      <element name="contentSize" type="int">
+        <annotation>
+          <documentation>Size of item/attachment content in bytes</documentation>
+        </annotation>
+      </element>
+      <element name="externalReference" type="string" minOccurs="0">
+        <annotation>
+          <documentation>External reference associated with the item</documentation>
+        </annotation>
+      </element>
+      <element name="creationDate" type="dateTime">
+        <annotation>
+          <documentation>Date and time when the business specific metadata item/attachment was created.</documentation>
+        </annotation>
+      </element>
+      <element name="modificationDate" type="dateTime">
+        <annotation>
+          <documentation>Date and time when the business specific metadata item/attachment was last modified.</documentation>
+        </annotation>
+      </element>
+      <element name="creatorUserName" type="string">
+        <annotation>
+          <documentation>The user name of the user that created the item/attachment</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="AccessibilityInfo">
+    <annotation>
+      <documentation>A set of flags indicating how and where to access a document. Useful for the cases where user does not have access
+                or lost access to the document.</documentation>
+    </annotation>
+    <sequence>
+      <element name="accessible" type="boolean">
+        <annotation>
+          <documentation>If true the document is accessible by the user in Hermes.</documentation>
+        </annotation>
+      </element>
+      <element name="inHermes" type="boolean">
+        <annotation>
+          <documentation>If true the document is still in Hermes but not necessarily accessible by the user. If not trashed, access
+                        can be granted by contacting the author of the document or the DMO.
+                        If false, the document cannot be obtained via Ares or HRS.</documentation>
+        </annotation>
+      </element>
+      <element name="trashed" type="boolean">
+        <annotation>
+          <documentation>If true it indicates the document is trashed (but still in Hermes) and not accessible by any user.
+                        Access can be granted by contacting the DMO (or directly Ares support). If not recovered from trash in
+                        time, it will be completely deleted.</documentation>
+        </annotation>
+      </element>
+      <element name="transferred" type="boolean">
+        <annotation>
+          <documentation>If true it indicates that (an instance of) the document was transferred to A-REP.</documentation>
+        </annotation>
+      </element>
+      <element name="eliminated" type="boolean">
+        <annotation>
+          <documentation>If true it indicates that (an instance of) the document has been eliminated. If all instances of a
+                        document are eliminated, it cannot be accessed any more.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ExternalSignature">
+    <annotation>
+      <documentation>An external signature of a document. This represents a sign action done
+                outside of Hermes and, thus, not via Hermes e-Signatory workflow.
+                From Hermes point of view this is just stored as information and does not have any
+                (legal) value.</documentation>
+    </annotation>
+    <sequence>
+      <element name="id" type="int">
+        <annotation>
+          <documentation>Internal ID of the external signature.</documentation>
+        </annotation>
+      </element>
+      <element name="signedBy" type="tns:WorkflowUser">
+        <annotation>
+          <documentation>User that signed the external signature in an external application.</documentation>
+        </annotation>
+      </element>
+      <element name="dateSigned" type="dateTime">
+        <annotation>
+          <documentation>Date (and time) on which the document was signed.</documentation>
+        </annotation>
+      </element>
+      <element name="application" type="string">
+        <annotation>
+          <documentation>Name of the external application in which the document was signed.</documentation>
+        </annotation>
+      </element>
+      <element name="ecasSignature" type="boolean">
+        <annotation>
+          <documentation>Indicates whether the external signature was an ECAS digital XML signature</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="Link">
+    <annotation>
+      <documentation>A link between 2 documents</documentation>
+    </annotation>
+    <sequence>
+      <element name="sourceDocumentId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID of the source document</documentation>
+        </annotation>
+      </element>
+      <element name="targetDocumentId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID of the target document</documentation>
+        </annotation>
+      </element>
+      <element name="type" type="tns:LinkType">
+        <annotation>
+          <documentation>The type of link</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="Procedure">
+    <annotation>
+      <documentation>A procedure</documentation>
+    </annotation>
+    <sequence>
+      <element name="id" type="int">
+        <annotation>
+          <documentation>Internal ID of the procedure</documentation>
+        </annotation>
+      </element>
+      <element name="englishName" type="string">
+        <annotation>
+          <documentation>English name</documentation>
+        </annotation>
+      </element>
+      <element name="frenchName" type="string">
+        <annotation>
+          <documentation>French name</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="Entity" abstract="true">
+    <annotation>
+      <documentation>An entity</documentation>
+    </annotation>
+    <sequence>
+      <element name="entityId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID to uniquely identify an entity</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="InternalEntity">
+    <annotation>
+      <documentation>An internal entity</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="tns:Entity">
+        <sequence>
+          <element name="internalOrganization" type="tns:InternalOrganization">
+            <annotation>
+              <documentation>Internal organization</documentation>
+            </annotation>
+          </element>
+          <element name="internalPerson" type="tns:InternalPerson" minOccurs="0">
+            <annotation>
+              <documentation>Internal person</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ExternalEntity">
+    <annotation>
+      <documentation>An entity which is external to the Commission</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="tns:Entity">
+        <sequence>
+          <element name="externalOrganization" type="tns:ExternalOrganization" minOccurs="0">
+            <annotation>
+              <documentation>External organization</documentation>
+            </annotation>
+          </element>
+          <element name="externalPerson" type="tns:ExternalPerson" minOccurs="0">
+            <annotation>
+              <documentation>External person</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="InternalOrganization">
+    <annotation>
+      <documentation>An organization internal in the Commission</documentation>
+    </annotation>
+    <sequence>
+      <element name="code" type="string">
+        <annotation>
+          <documentation>Name of the organization e.g. DIGIT, AIDCO.G.5</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ExternalOrganization">
+    <annotation>
+      <documentation>An external organization</documentation>
+    </annotation>
+    <sequence>
+      <element name="name" type="string">
+        <annotation>
+          <documentation>Name of the organization</documentation>
+        </annotation>
+      </element>
+      <element name="acronym" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Acronym of the organization</documentation>
+        </annotation>
+      </element>
+      <element name="address" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Address of the external organization</documentation>
+        </annotation>
+      </element>
+      <element name="postalCode" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Postal code</documentation>
+        </annotation>
+      </element>
+      <element name="postOfficeBox" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>PO box</documentation>
+        </annotation>
+      </element>
+      <element name="city" type="string" minOccurs="0">
+        <annotation>
+          <documentation>City where the external organization is based</documentation>
+        </annotation>
+      </element>
+      <element name="country" type="tns:CountryCode" minOccurs="0">
+        <annotation>
+          <documentation>Country of the external organization</documentation>
+        </annotation>
+      </element>
+      <element name="language" type="tns:LanguageCode" minOccurs="0">
+        <annotation>
+          <documentation>Communication language of the external organization</documentation>
+        </annotation>
+      </element>
+      <element name="phone" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Telephone number of the external organization</documentation>
+        </annotation>
+      </element>
+      <element name="fax" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Fax number of the external organization</documentation>
+        </annotation>
+      </element>
+      <element name="email" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Email address of the external organization</documentation>
+        </annotation>
+      </element>
+      <element name="internet" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Internet address of website of the external organization</documentation>
+        </annotation>
+      </element>
+      <element name="VAT" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>VAT code of the external organization</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="InternalPerson">
+    <annotation>
+      <documentation>An internal person</documentation>
+    </annotation>
+    <sequence>
+      <element name="lastName" type="string">
+        <annotation>
+          <documentation>The person's last name</documentation>
+        </annotation>
+      </element>
+      <element name="firstName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>First name(s) of the person</documentation>
+        </annotation>
+      </element>
+      <element name="userName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Internal user name. This is user name is also the ECAS user name of the person</documentation>
+        </annotation>
+      </element>
+      <element name="floor" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Floor on which the person is located</documentation>
+        </annotation>
+      </element>
+      <element name="building" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Building where the person is located</documentation>
+        </annotation>
+      </element>
+      <element name="room" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Room in the building where the person is located</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ExternalPerson">
+    <annotation>
+      <documentation>An external person</documentation>
+    </annotation>
+    <sequence>
+      <element name="title" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>The title e.g. Dr. Mr. etc.</documentation>
+        </annotation>
+      </element>
+      <element name="lastName" type="string">
+        <annotation>
+          <documentation>The person's last name</documentation>
+        </annotation>
+      </element>
+      <element name="firstName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The person's first name(s).</documentation>
+        </annotation>
+      </element>
+      <element name="address" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Address of the external person</documentation>
+        </annotation>
+      </element>
+      <element name="postalCode" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Postal code</documentation>
+        </annotation>
+      </element>
+      <element name="postOfficeBox" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>PO box</documentation>
+        </annotation>
+      </element>
+      <element name="city" type="string" minOccurs="0">
+        <annotation>
+          <documentation>City where the external person lives</documentation>
+        </annotation>
+      </element>
+      <element name="country" type="tns:CountryCode" minOccurs="0">
+        <annotation>
+          <documentation>Country where the external person lives</documentation>
+        </annotation>
+      </element>
+      <element name="language" type="tns:LanguageCode" minOccurs="0">
+        <annotation>
+          <documentation>Mother tongue of the person</documentation>
+        </annotation>
+      </element>
+      <element name="phone" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Telephone number of the external person</documentation>
+        </annotation>
+      </element>
+      <element name="fax" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Fax number of the external person</documentation>
+        </annotation>
+      </element>
+      <element name="email" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Email address of the external person</documentation>
+        </annotation>
+      </element>
+      <element name="internet" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Internet address of website of the external person</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <xsd:complexType name="ExternalizationDetails">
+    <sequence>
+      <element name="status" type="tns:ExternalizationStatus">
+        <annotation>
+          <documentation>Indicates if the document is in the process of being externalized, has been externalized,
+                        is in the process of being revoked, or has been revoked.
+                        A document can be externalized/revoked several times, in which case this attribute shows the
+                        latest status.</documentation>
+        </annotation>
+      </element>
+      <element name="externalizationDate" type="xsd:dateTime" minOccurs="0">
+        <annotation>
+          <documentation>Date when the document was externalized (i.e. when externalization was initiated in Hermes).
+                        This field exists for documents having an externalizatin status of
+                        EXTERNALIZATION_INITIATED or EXTERNALIZED.</documentation>
+        </annotation>
+      </element>
+      <element name="revocationDate" type="xsd:dateTime" minOccurs="0">
+        <annotation>
+          <documentation>Date when the document was revoked (i.e. when revocation was initiated in Hermes).
+                        This field exists for documents having an externalizatin status of
+                        REVOCATION_INITIATED or REVOKED.</documentation>
+        </annotation>
+      </element>
+      <element name="externalizedBy" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Full name of the person that externalized the document. This field exists for documents
+                        having an externalizatin status of EXTERNALIZATION_INITIATED or EXTERNALIZED.</documentation>
+        </annotation>
+      </element>
+      <element name="revokedBy" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Full name of the person that revoked the document. This field exists for documents
+                        having an externalizatin status of REVOCATION_INITIATED or REVOKED.</documentation>
+        </annotation>
+      </element>
+      <element name="ersPartitionId" type="int" minOccurs="0">
+        <annotation>
+          <documentation>Indicates the ERS partition where the document is externalized (returned only for
+                        externalized documents).</documentation>
+        </annotation>
+      </element>
+      <element name="partial" type="xsd:boolean" minOccurs="0">
+        <annotation>
+          <documentation>Indicates if the externalization is partial (i.e. only some items have been externalized) or
+                        complete (i.e. all items have been externalized).
+                        Returned only for status EXTERNALIZATION_INITIATED and EXTERNALIZED.</documentation>
+        </annotation>
+      </element>
+      <element name="externalizedItems" minOccurs="0">
+        <annotation>
+          <documentation>List of items that have been externalized.
+                        Returned only for status EXTERNALIZATION_INITIATED and EXTERNALIZED.</documentation>
+        </annotation>
+        <xsd:complexType>
+          <sequence>
+            <xsd:element name="itemId" type="tns:ObjectId" minOccurs="0" maxOccurs="unbounded"/>
+          </sequence>
+        </xsd:complexType>
+      </element>
+      <element name="externalizedSpecificMetadataItems" minOccurs="0">
+        <annotation>
+          <documentation>The business specific metadata items/attachments that have been externalized.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="itemId" type="tns:ObjectId" minOccurs="1" maxOccurs="10">
+              <annotation>
+                <documentation>Repository IDs of externalized business specific attachments.</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SpecificMetadata">
+    <sequence>
+      <element name="namespace" type="xsd:anyURI">
+        <annotation>
+          <documentation>Serves as an identifier for the specific metadata. Good namespaces are e.g.
+                        the URL of the application, the URL of the wiki, ...
+                        For example it could identify all specific metadata added by a given application.</documentation>
+        </annotation>
+      </element>
+      <element name="string1" type="xsd:string" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A string metadata (max size 2000 bytes)</documentation>
+        </annotation>
+      </element>
+      <element name="string2" type="xsd:string" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A string metadata (max size 2000 bytes)</documentation>
+        </annotation>
+      </element>
+      <element name="string3" type="xsd:string" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A string metadata (max size 2000 bytes)</documentation>
+        </annotation>
+      </element>
+      <element name="string4" type="xsd:string" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A string metadata (max size 2000 bytes)</documentation>
+        </annotation>
+      </element>
+      <element name="string5" type="xsd:string" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A string metadata (max size 2000 bytes)</documentation>
+        </annotation>
+      </element>
+      <element name="string6" type="xsd:string" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A string metadata (max size 2000 bytes)</documentation>
+        </annotation>
+      </element>
+      <element name="string7" type="xsd:string" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A string metadata (max size 2000 bytes)</documentation>
+        </annotation>
+      </element>
+      <element name="date1" type="xsd:dateTime" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A date metadata</documentation>
+        </annotation>
+      </element>
+      <element name="date2" type="xsd:dateTime" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A date metadata</documentation>
+        </annotation>
+      </element>
+      <element name="date3" type="xsd:dateTime" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A date metadata</documentation>
+        </annotation>
+      </element>
+      <element name="double1" type="xsd:double" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A double metadata. Will be 0.0 if not set.</documentation>
+        </annotation>
+      </element>
+      <element name="double2" type="xsd:double" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A double metadata. Will be 0.0 if not set.</documentation>
+        </annotation>
+      </element>
+      <element name="double3" type="xsd:double" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A double metadata. Will be 0.0 if not set.</documentation>
+        </annotation>
+      </element>
+      <element name="boolean1" type="xsd:boolean" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A boolean metadata. Will be false if not set.</documentation>
+        </annotation>
+      </element>
+      <element name="boolean2" type="xsd:boolean" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A boolean metadata. Will be false if not set.</documentation>
+        </annotation>
+      </element>
+      <element name="boolean3" type="xsd:boolean" minOccurs="0" nillable="true">
+        <annotation>
+          <documentation>A boolean metadata. Will be false if not set.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </xsd:complexType>
+  <simpleType name="ObjectId">
+    <annotation>
+      <documentation>Internal repository ID of an object</documentation>
+    </annotation>
+    <restriction base="string">
+      <pattern value="[a-f0-9]{16}"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="CurrentEntityId">
+    <annotation>
+      <documentation>Id for a current entity (identifies the entity uniquely in the
+                repository)</documentation>
+    </annotation>
+    <restriction base="string">
+      <pattern value="-?[0-9]+[I|E][0-9]+"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="LanguageCode">
+    <annotation>
+      <documentation>The language code (e.g. : EN, FR)</documentation>
+    </annotation>
+    <restriction base="string">
+      <pattern value="[A-Z]{2}"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="CountryCode">
+    <annotation>
+      <documentation>The country code (e.g. : Uni, BE)</documentation>
+    </annotation>
+    <restriction base="string">
+      <pattern value="[A-Za-z]{2}|[A-Za-z]{3}"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="AttachmentType">
+    <annotation>
+      <documentation>Type of attachment linked to a document</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="NATIVE_ELECTRONIC"/>
+      <enumeration value="SCANNED"/>
+      <enumeration value="EMAIL"/>
+      <enumeration value="ARES_SCANNED"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="ItemKind">
+    <annotation>
+      <documentation>The item kind</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="MAIN"/>
+      <enumeration value="COVER_LETTER"/>
+      <enumeration value="ANNEX"/>
+      <enumeration value="TRANSLATION"/>
+      <enumeration value="ACK_RECEIPT"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="LinkType">
+    <annotation>
+      <documentation>Type of link between two documents</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="RESPONSE"/>
+      <enumeration value="REQUEST"/>
+      <enumeration value="GENERAL"/>
+      <enumeration value="DUPLICATE"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="SecurityClassification">
+    <annotation>
+      <documentation>Security classification to be applied to a document</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="NORMAL"/>
+      <enumeration value="LIMITED"/>
+      <enumeration value="EU_RESTRAINED"/>
+      <enumeration value="EURA_RESTRICTED"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="MarkerType">
+    <annotation>
+      <documentation>
+        Marker to be applied to a document.
+        <br/>
+        All markers ending in _DEADLINE are actually deprecated. They will automatically
+                be mapped to their counterpart: e.g. LIMITED_SERVICE and LIMITED_SERVICE_DEADLINE are the
+                same and no service will ever return LIMITED_SERVICE_DEADLINE (but will accept it,
+                mapping it automatically to LIMITED_SERVICE).
+      </documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="LIMITED_SERVICE"/>
+      <enumeration value="MEDICAL_MATTER"/>
+      <enumeration value="STAFF_MATTER"/>
+      <enumeration value="PERSONAL"/>
+      <enumeration value="PERSONAL_DATA"/>
+      <enumeration value="INVESTIGATIONS_AND_DISCIPLINARY_MATTER"/>
+      <enumeration value="OPINION_LEGAL_SERVICE"/>
+      <enumeration value="OLAF"/>
+      <enumeration value="OLAF_SPECIAL"/>
+      <enumeration value="COMMISSION_INTERNAL"/>
+      <enumeration value="LIMITED"/>
+      <enumeration value="EMBARGO_UNTIL"/>
+      <enumeration value="COMP_OPERATIONS"/>
+      <enumeration value="COMP_SPECIAL_HANDLING"/>
+      <enumeration value="COURT_PROCEDURAL_DOCUMENTS"/>
+      <enumeration value="SECURITY_MATTER"/>
+      <enumeration value="MEDIATION_SERVICE_MATTER"/>
+      <enumeration value="EU_SATELLITE_NAVIGATION_MATTERS"/>
+      <enumeration value="JOINT_PROCUREMENT"/>
+      <enumeration value="IAS_OPERATIONS"/>
+      <enumeration value="ECONOMY_AND_FINANCE"/>
+      <enumeration value="ETS_LIMITED"/>
+      <enumeration value="ETS_SENSITIVE"/>
+      <enumeration value="ETS_CRITICAL"/>
+      <enumeration value="PHARMA_INVESTIGATIONS"/>
+      <enumeration value="PHARMA_INVESTIGATIONS_SPECIAL_HANDLING"/>
+      <!--deprecated markings-->
+      <enumeration value="PERSONAL_DATA_DEADLINE"/>
+      <enumeration value="LIMITED_DEADLINE"/>
+      <enumeration value="COMP_OPERATIONS_DEADLINE"/>
+      <enumeration value="SECURITY_MATTER_DEADLINE"/>
+      <enumeration value="MEDIATION_SERVICE_MATTER_DEADLINE"/>
+      <enumeration value="EU_SATELLITE_NAVIGATION_MATTERS_DEADLINE"/>
+      <enumeration value="COMP_SPECIAL_HANDLING_DEADLINE"/>
+      <enumeration value="LIMITED_DG_DEADLINE"/>
+      <enumeration value="LIMITED_SERVICE_DEADLINE"/>
+      <enumeration value="MEDICAL_MATTER_DEADLINE"/>
+      <enumeration value="STAFF_MATTER_DEADLINE"/>
+      <enumeration value="PERSONAL_DEADLINE"/>
+      <enumeration value="INVESTIGATIONS_AND_DISCIPLINARY_MATTER_DEADLINE"/>
+      <enumeration value="OPINION_LEGAL_SERVICE_DEADLINE"/>
+      <enumeration value="OLAF_DEADLINE"/>
+      <enumeration value="OLAF_SPECIAL_DEADLINE"/>
+      <enumeration value="COMMISSION_INTERNAL_DEADLINE"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="FileStatus">
+    <annotation>
+      <documentation>Status of a file</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="INACTIVE"/>
+      <enumeration value="ACTIVE"/>
+      <enumeration value="CLOSED"/>
+      <enumeration value="TRANSFERRED"/>
+      <enumeration value="ELIMINATED"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="HeadingStatus">
+    <annotation>
+      <documentation>Status of a heading</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="INACTIVE"/>
+      <enumeration value="ACTIVE"/>
+      <enumeration value="EXTINCT"/>
+      <enumeration value="FROZEN"/>
+    </restriction>
+  </simpleType>
+  <annotation>
+    <documentation>Status of a file</documentation>
+  </annotation>
+  <simpleType name="AssignmentActionCode">
+    <annotation>
+      <documentation>Action code applied on a document</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="CF"/>
+      <enumeration value="ASOC"/>
+      <enumeration value="INFO"/>
+      <enumeration value="CLASS"/>
+      <enumeration value="CBC"/>
+      <enumeration value="CDP"/>
+      <enumeration value="DAD"/>
+      <enumeration value="QP"/>
+      <enumeration value="CIS"/>
+      <enumeration value="CAB"/>
+      <enumeration value="PET"/>
+      <enumeration value="CONTR"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="int1To10">
+    <restriction base="xsd:int">
+      <minInclusive value="1"/>
+      <maxInclusive value="10"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="int0To300">
+    <restriction base="xsd:int">
+      <minInclusive value="0"/>
+      <maxInclusive value="300"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="int0To2000">
+    <restriction base="xsd:int">
+      <minInclusive value="0"/>
+      <maxInclusive value="2000"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="RecipientCode">
+    <annotation>
+      <documentation>Code to indicate if a recipient was addressed directly or in copy</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="TO"/>
+      <enumeration value="CC"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="MailType">
+    <annotation>
+      <documentation>Document mail type that indicates the direction a document is sent.
+                Since HRS 1.27 it's calculated at run time based on the senders and recipients and cannot be provided in the INPUT request.
+                However for response we need this enum mapping.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="INCOMING_DOCUMENT"/>
+      <enumeration value="OUTGOING_DOCUMENT"/>
+      <enumeration value="INTERNAL_DOCUMENT"/>
+      <enumeration value="INTER_INSTITUTIONAL_DOCUMENT"/>
+      <enumeration value="NOTE_TO_THE_FILE_DOCUMENT"/>
+      <enumeration value="EXTERNAL_DOCUMENT"/>
+      <enumeration value="OTHER_DOCUMENT"/>
+      <enumeration value="INTERNAL_MESSAGE"/>
+      <enumeration value="INTER_INSTITUTIONAL_MESSAGE"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="RenditionStatus">
+    <annotation>
+      <documentation>Indicates the state of the rendition</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="NONE"/>
+      <enumeration value="SUCCESSFUL"/>
+      <enumeration value="FAILED"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="DecimalPercentage">
+    <annotation>
+      <documentation>Decimal percent value in the range [0, 100].</documentation>
+    </annotation>
+    <restriction base="decimal">
+      <minInclusive value="0"/>
+      <maxInclusive value="100"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="CategoryType">
+    <annotation>
+      <documentation>Category type : Coordination / Contribution</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="COORD"/>
+      <enumeration value="CONTRIB"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="ExternalizationStatus">
+    <annotation>
+      <documentation>Externalization status: the status of the document's externalization to the ERS repository.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="NOT_EXTERNALIZED"/>
+      <enumeration value="EXTERNALIZATION_INITIATED"/>
+      <enumeration value="EXTERNALIZED"/>
+      <enumeration value="REVOCATION_INITIATED"/>
+      <enumeration value="REVOKED"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="AsyncOperationStatus">
+    <annotation>
+      <documentation>Status of an asynchronous operation</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="RUNNING"/>
+      <enumeration value="EXECUTED"/>
+      <enumeration value="EXECUTED_WITH_ERRORS"/>
+      <enumeration value="CANCELED"/>
+    </restriction>
+  </simpleType>
+  <complexType name="AsyncOperationError">
+    <annotation>
+      <documentation>All errors that occured during an asynchronous operation</documentation>
+    </annotation>
+    <xsd:sequence>
+      <element name="errorMessage" type="string" minOccurs="1" maxOccurs="1">
+        <annotation>
+          <documentation>The message of an error that occured during an asynchronous operation</documentation>
+        </annotation>
+      </element>
+    </xsd:sequence>
+  </complexType>
+  <xsd:complexType name="AssociatedLeadDepartments">
+    <xsd:annotation>
+      <xsd:documentation>A list of associated lead departments of a File</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <element name="associatedLeadDepartment" type="string" minOccurs="1" maxOccurs="unbounded">
+        <annotation>
+          <documentation>One of the associated lead departments of a File</documentation>
+        </annotation>
+      </element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <simpleType name="CategoryStatus">
+    <annotation>
+      <documentation>Status of a category</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="INACTIVE"/>
+      <enumeration value="ACTIVE"/>
+      <enumeration value="FROZEN"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="HeadingType">
+    <annotation>
+      <documentation>Status of a category</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="COMMON"/>
+      <enumeration value="SPECIFIC"/>
+    </restriction>
+  </simpleType>
+  <xsd:complexType name="FilePreservationMetadata">
+    <xsd:annotation>
+      <xsd:documentation>The preervation metadata of a file</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <element name="custodian" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The custodian of the file</documentation>
+        </annotation>
+      </element>
+      <element name="userDateOfFirstUse" type="date" minOccurs="0">
+        <annotation>
+          <documentation>
+            User specified date of the first use for the file.
+            <br/>
+            When user modifies the date of first use, the system will automatically calculate at file closure which is the date of the oldest document and use it as a date of first use.
+          </documentation>
+        </annotation>
+      </element>
+      <element name="dateOfFirstUse" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Date of the first use for the file as computed by the system</documentation>
+        </annotation>
+      </element>
+      <element name="userClosureDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>
+            User specified closure date for the file.
+            <br/>
+            When user modifies the closure date, the system will automatically calculate at file closure which is the most recent document date and use this as a closure date.
+          </documentation>
+        </annotation>
+      </element>
+      <element name="closureDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>Closure date for the file as computed by the system</documentation>
+        </annotation>
+      </element>
+      <element name="endDateARP" type="date" minOccurs="0">
+        <annotation>
+          <documentation>End date of ARP for the file</documentation>
+        </annotation>
+      </element>
+      <element name="postARPAction" type="tns:FilePostARPAction" minOccurs="0">
+        <annotation>
+          <documentation>The post ARP action for the file</documentation>
+        </annotation>
+      </element>
+      <element name="financialDocuments" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Flag specifying if the file has financial documents</documentation>
+        </annotation>
+      </element>
+      <element name="crlCategoryWithManualFollowUp" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>CRL category with manual follow-up (system check)</documentation>
+        </annotation>
+      </element>
+      <element name="crlCategoryWithAdminElimination" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>CRL category with admin elimination (system check)</documentation>
+        </annotation>
+      </element>
+      <element name="deadlineForAPED" type="int" minOccurs="0">
+        <annotation>
+          <documentation>The year of the deadline date for APED</documentation>
+        </annotation>
+      </element>
+      <element name="hermesDigitalRepository" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Hermes digital reository (system check)</documentation>
+        </annotation>
+      </element>
+      <element name="otherDigitalRepositories" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Other digital repositories for the file</documentation>
+        </annotation>
+      </element>
+      <element name="otherStorageTypes" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Flag specifying if there are other storage types for the file</documentation>
+        </annotation>
+      </element>
+      <element name="physicalItems" type="tns:FilePhysicalItem" minOccurs="0" maxOccurs="unbounded">
+        <annotation>
+          <documentation>The physical items (binder, folder…) of the files that have a non-electronic part (ex: paper documents, information on DVD…).
+                        This is not compulsory and the functionality is only available for files (not for subfiles).</documentation>
+        </annotation>
+      </element>
+      <element name="shelf" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Shelf for the file (previously called filer or binder in HRS)</documentation>
+        </annotation>
+      </element>
+      <element name="cupboard" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Cupboard for the file</documentation>
+        </annotation>
+      </element>
+      <element name="office" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Office where the file can be found in case of a paper file</documentation>
+        </annotation>
+      </element>
+      <element name="locationComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Location comments for the file</documentation>
+        </annotation>
+      </element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="FileTransparencyMetadata">
+    <xsd:annotation>
+      <xsd:documentation>The transparency metadata of a file</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <element name="hasDocumentsWithClassifications" type="boolean">
+        <annotation>
+          <documentation>System check to indicate if the file contains documents with classification(s)</documentation>
+        </annotation>
+      </element>
+      <element name="hasDocumentsWithMarkings" type="boolean">
+        <annotation>
+          <documentation>System check to indicate if the file contains documents with marking(s)</documentation>
+        </annotation>
+      </element>
+      <element name="sensitivePersonalData" type="tns:FileSensitivePersonalData">
+        <annotation>
+          <documentation>Indicates if the file contains documents with sensitive personal data</documentation>
+        </annotation>
+      </element>
+      <element name="publicAccessStatus" type="tns:FilePublicAccessStatus" minOccurs="0">
+        <annotation>
+          <documentation>Specifies the public access status of the file
+                        (linked to 1049/2001 - Access to documents in relation to this file)</documentation>
+        </annotation>
+      </element>
+      <element name="exceptionForOpeningToThePublic" type="tns:FileExceptionForOpeningToThePublic" minOccurs="0" maxOccurs="unbounded">
+        <annotation>
+          <documentation>Specifies the exception for opening to the public, if any
+                        (linked to 1700/2003 - Opening to the public of the historical archives)</documentation>
+        </annotation>
+      </element>
+      <element name="commentsRelatedToOpeningToThePublic" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Specified the comments related to opening to the public, if any
+                        (linked to 1700/2003 - Opening to the public of the historical archives)</documentation>
+        </annotation>
+      </element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <simpleType name="FileSensitivePersonalData">
+    <annotation>
+      <documentation>Transparency metadata status associated to a file to indicate if the file contains
+                documents with sensitive personal data</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="UNKNOWN"/>
+      <enumeration value="NO"/>
+      <enumeration value="YES"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="FilePublicAccessStatus">
+    <annotation>
+      <documentation>The public access status associated to a file</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="NO"/>
+      <enumeration value="PARTIAL"/>
+      <enumeration value="FULL"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="FileExceptionForOpeningToThePublic">
+    <annotation>
+      <documentation>The public access status associated to a file</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="CLASSIFIED"/>
+      <enumeration value="PERSONAL_DATA_PROTECTION"/>
+      <enumeration value="COMMERCIAL_INTERESTS"/>
+      <enumeration value="CLASSIFIED_FROM_THIRD_PARTY"/>
+      <enumeration value="EURATOM"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="FilePostARPAction">
+    <annotation>
+      <documentation>Post ARP action for a file</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="ELIMINATION"/>
+      <enumeration value="TRANSFER_TO_THE_HISTORICAL_ARCHIVES"/>
+      <enumeration value="SAMPLING_AND_OR_SELECTION"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="FilePhysicalItemType">
+    <annotation>
+      <documentation>The type of a physical item</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="ARCHIVE_BOX"/>
+      <enumeration value="BINDER_LARGE"/>
+      <enumeration value="BINDER_SMALL"/>
+      <enumeration value="FOLDER"/>
+      <enumeration value="ENVELOPE"/>
+      <enumeration value="PACKAGE"/>
+      <enumeration value="OTHER_UNIT"/>
+    </restriction>
+  </simpleType>
+  <xsd:complexType name="FilePhysicalItem">
+    <xsd:annotation>
+      <xsd:documentation>A physical item (binder, folder…) for a file that has a non-electronic part (ex: paper documents, information on DVD…).
+                This is not compulsory and the functionality is only available for files (not for subfiles).</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <element name="type" type="tns:FilePhysicalItemType">
+        <annotation>
+          <documentation>The type of a physical item</documentation>
+        </annotation>
+      </element>
+      <element name="code" type="string">
+        <annotation>
+          <documentation>Code of the physical item</documentation>
+        </annotation>
+      </element>
+      <element name="paper" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Specifies if the physical item contains paper</documentation>
+        </annotation>
+      </element>
+      <element name="digital" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Specifies if the physical item contains digital items (e.g. CD, DVD, tape, floppy, usb, etc)</documentation>
+        </annotation>
+      </element>
+      <element name="analogue" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Specifies if the physical item contains analogue items (e.g. audio tape, VHS, developed films, etc)</documentation>
+        </annotation>
+      </element>
+      <element name="other" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Specifies if the physical item contains other media</documentation>
+        </annotation>
+      </element>
+      <element name="comments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The information used as a label for the physical item</documentation>
+        </annotation>
+      </element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <complexType name="WorkflowManagers">
+    <annotation>
+      <documentation>An element to list all the managers involved in e-signatory work-flow.</documentation>
+    </annotation>
+    <sequence>
+      <element name="manager" type="tns:WorkflowUser" minOccurs="1" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+  <simpleType name="FileVisibilityType">
+    <annotation>
+      <documentation>The visibility levels of a File (and the containing Documents)</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="ALL">
+        <annotation>
+          <documentation>Visible to all users</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="INSTITUTION">
+        <annotation>
+          <documentation>Visible to the institution (e.g. Commission, EEAS, ...)</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="DG">
+        <annotation>
+          <documentation>Visible to the DG (e.g. SG, DIGIT, ...)</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="LIMITED">
+        <annotation>
+          <documentation>Visible to a selected number of users/groups</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SPECIFIC">
+        <annotation>
+          <documentation>A special file with specific visibility which is not propagated to the containing documents. E.g. 'PMO file'</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="AfterRegistrationAccess">
+    <annotation>
+      <documentation>A string which will identify whether access level is RESTRICTED or EXTENDED work-flow etc.</documentation>
+    </annotation>
+    <restriction base="xsd:string">
+      <enumeration value="RESTRICTED">
+        <annotation>
+          <documentation>Depict that the chosen access level is RESTRICTED</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="EXTENDED">
+        <annotation>
+          <documentation>Depict that the chosen access level is EXTENDED</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <complexType name="SupportingItems">
+    <annotation>
+      <documentation>An element to wrap various fields, providing details about supporting-item.</documentation>
+    </annotation>
+    <sequence>
+      <element name="supportingItem" type="tns:SupportingItem" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+  <complexType name="SupportingItem">
+    <annotation>
+      <documentation>An element for supporting-Item details</documentation>
+    </annotation>
+    <sequence>
+      <group ref="tns:SupportingItemGroupCommon"/>
+      <element name="id" type="tns:ObjectId">
+        <annotation>
+          <documentation>Supporting-Item's Id</documentation>
+        </annotation>
+      </element>
+      <element name="documentId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Id of Document to which supporting-Item is associated with</documentation>
+        </annotation>
+      </element>
+      <element name="fileSize" type="long" minOccurs="0">
+        <annotation>
+          <documentation>File size (in bytes) of attached supporting-Item</documentation>
+        </annotation>
+      </element>
+      <element name="hyperlink" type="string" minOccurs="0">
+        <annotation>
+          <documentation>URL link of supporting-Item (If supporting item category is link)</documentation>
+        </annotation>
+      </element>
+      <element name="retentionRequested" type="xsd:boolean" default="false" minOccurs="0">
+        <annotation>
+          <documentation>Boolean flag to indicate whether supporting item should be saved as new document after
+                              registration. True, if user requests to save the supporting-Item as new document, false otherwise.</documentation>
+        </annotation>
+      </element>
+      <element name="supportingItemRetained" type="xsd:boolean" default="false" minOccurs="0">
+        <annotation>
+          <documentation>Boolean flag indicating if document was created or not after registration.
+                              If true, supporting-Item was saved as new document successfully at registration
+                              time, false otherwise.</documentation>
+        </annotation>
+      </element>
+      <element name="fileName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>File name of supporting-Item</documentation>
+        </annotation>
+      </element>
+      <element name="contentId" type="tns:ContentIdType" minOccurs="0">
+        <annotation>
+          <documentation>Content id that was obtained by uploading the content using
+                        the data transfer service.
+                        (Note: This value does not exist for supporting-items uploaded in the past(before ver 1.27) and it will not exist for supporting-items
+                        of type URL and for supporting-items uploaded using Ares, AresLook, ...)</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <group name="SupportingItemGroupCommon">
+    <sequence>
+      <element name="type" type="string" minOccurs="0">
+        <annotation>
+          <documentation>
+            This field is an optional text field which may be used to categorise the supporting
+                              documents, for
+                              example minutes of a meeting, memo etc.
+                              For update, if user want to clear the data for this field,
+                              then an empty field should be passed in the request.
+                              e.g
+            <type/>
+          </documentation>
+        </annotation>
+      </element>
+      <element name="contentCategory">
+        <annotation>
+          <documentation>Category of attached supporting-Item. e.g File or Link.</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="string">
+            <enumeration value="FILE"/>
+            <enumeration value="URL"/>
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="title" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The title of supporting-Item.
+                              For supporting item update, blank/empty title input will be ignored. and existing title value will be retained.</documentation>
+        </annotation>
+      </element>
+      <element name="comment" type="string" minOccurs="0">
+        <annotation>
+          <documentation>
+            Comment associated to the supporting-Item (If any).
+                              For update, if user want to clear the data for this field, then an empty field should be passed in the request.
+                              e.g
+            <comment/>
+          </documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </group>
+</schema>

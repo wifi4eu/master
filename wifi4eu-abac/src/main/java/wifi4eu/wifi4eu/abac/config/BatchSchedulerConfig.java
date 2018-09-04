@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.integration.abac.AbacIntegrationService;
+import wifi4eu.wifi4eu.abac.service.DocumentService;
 import wifi4eu.wifi4eu.abac.service.LegalCommitmentService;
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 import wifi4eu.wifi4eu.abac.service.NotificationService;
@@ -32,7 +33,10 @@ public class BatchSchedulerConfig {
     @Autowired
     LegalEntityService legalEntityService;
 
-    @Scheduled(cron = "${batch.legalentity.create.crontable}")
+    @Autowired
+    DocumentService documentService;
+
+    //@Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
         //check-update the LE status for ABAC (change from IMPORTED to READY_FOR_ABAC)
         legalEntityService.checkLegalEntityReadyForAbac();
@@ -40,17 +44,17 @@ public class BatchSchedulerConfig {
 		abacIntegrationService.findAndSendLegalEntitiesReadyToABAC(MAX_RECORDS_CREATE);
     }
 
-    @Scheduled(cron = "${batch.budgetarycommitment.create.crontable}")
+    //@Scheduled(cron = "${batch.budgetarycommitment.create.crontable}")
     public void createBudgetaryCommitmentsInABAC() {
         abacIntegrationService.findAndSendBudgetaryCommitmentsReadyToABAC(MAX_RECORDS_CREATE);
     }
 
-    @Scheduled(cron = "${batch.legalcommitment.countersign.crontable}")
+    //@Scheduled(cron = "${batch.legalcommitment.countersign.crontable}")
     public void createLegalCommitmentsInABAC() {
         abacIntegrationService.findAndSendLegalCommitmentsReadyToABAC();
     }
 
-    @Scheduled(cron = "${batch.abac.checkstatus.crontable}")
+    //@Scheduled(cron = "${batch.abac.checkstatus.crontable}")
     public void checkAbacStatuses() {
 
         abacIntegrationService.updateLegalEntitiesStatuses();
@@ -58,15 +62,20 @@ public class BatchSchedulerConfig {
         abacIntegrationService.updateLegalCommitmentStatuses();
     }
 
-    @Scheduled(cron = "${batch.legalcommitment.create.crontable}")
+    //@Scheduled(cron = "${batch.legalcommitment.create.crontable}")
     public void counterSignGrantAgreements() {
         legalCommitmentService.findAndCounterSignGrantAgreements();
     }
 
-    @Scheduled(cron = "${notifications.batch.crontable}")
+    //@Scheduled(cron = "${notifications.batch.crontable}")
     public void sendNotifications() {
         notificationService.notifyLegalEntityProcessFinished();
         notificationService.notifyBudgetaryCommitmentProcessFinished();
         notificationService.notifyLegalCommitmentProcessFinished();
+    }
+
+    @Scheduled(cron = "${batch.documents.ares.upload}")
+    public void uploadDocumentsInAres() {
+        documentService.submitDocumentsToAres(0, MAX_RECORDS_CREATE);
     }
 }

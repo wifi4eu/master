@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WL5G3N0:definitions name="CoreServices" targetNamespace="http://ec.europa.eu/sg/hrs" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="http://ec.europa.eu/sg/hrs/types" xmlns:WL5G3N2="http://ec.europa.eu/sg/hrs" xmlns:WL5G3N3="http://schemas.xmlsoap.org/wsdl/soap/">
+  <WL5G3N0:types>
+    <xsd:schema targetNamespace="http://ec.europa.eu/sg/hrs/types" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ec.europa.eu/sg/hrs" xmlns:types="http://ec.europa.eu/sg/hrs/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:include schemaLocation="FilingPlanWebServicePS.xsd"/>
+    </xsd:schema>
+  </WL5G3N0:types>
+  <WL5G3N0:message name="searchFilesByExpression">
+    <WL5G3N0:part element="WL5G3N1:searchFilesByExpression" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="searchFilesByExpressionResponse">
+    <WL5G3N0:part element="WL5G3N1:searchFilesByExpressionResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="searchHeadingsByExpression">
+    <WL5G3N0:part element="WL5G3N1:searchHeadingsByExpression" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="searchHeadingsByExpressionResponse">
+    <WL5G3N0:part element="WL5G3N1:searchHeadingsByExpressionResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createFile">
+    <WL5G3N0:part element="WL5G3N1:createFile" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createFileResponse">
+    <WL5G3N0:part element="WL5G3N1:createFileResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="updateFile">
+    <WL5G3N0:part element="WL5G3N1:updateFile" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="updateFileResponse">
+    <WL5G3N0:part element="WL5G3N1:updateFileResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="updateFileStatus">
+    <WL5G3N0:part element="WL5G3N1:updateFileStatus" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="updateFileStatusResponse">
+    <WL5G3N0:part element="WL5G3N1:updateFileStatusResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="updateFileStatusAsync">
+    <WL5G3N0:part element="WL5G3N1:updateFileStatusAsync" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="updateFileStatusAsyncResponse">
+    <WL5G3N0:part element="WL5G3N1:updateFileStatusAsyncResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getUpdateFileStatusAsyncResult">
+    <WL5G3N0:part element="WL5G3N1:getUpdateFileStatusAsyncResult" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getUpdateFileStatusAsyncResponse">
+    <WL5G3N0:part element="WL5G3N1:getUpdateFileStatusAsyncResultResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="deleteFile">
+    <WL5G3N0:part element="WL5G3N1:deleteFile" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="deleteFileResponse">
+    <WL5G3N0:part element="WL5G3N1:deleteFileResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getUserFavoriteFiles">
+    <WL5G3N0:part element="WL5G3N1:getUserFavoriteFiles" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="getUserFavoriteFilesResponse">
+    <WL5G3N0:part element="WL5G3N1:getUserFavoriteFilesResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:portType name="FilingPlanService">
+    <WL5G3N0:operation name="searchFilesByExpression">
+      <WL5G3N0:documentation><![CDATA[This operation searches files that match the given search expression.
+
+                <p>Fields that can be used inside the search expression are:</p>
+                <ul>
+                <li> fileId - the file's id </li>
+                <li> name - either the name in EN, FR or DE </li>
+                <li> nameEN - the English name of the file </li>
+                <li> nameFR - the French name of the file </li>
+                <li> nameDE - the German name of the file </li>
+                <li> fileCode - the code of the file </li>
+                <li> specificCode - the specific code of the file </li>
+                <li> headingCode - the code of the heading under which this file is situated </li>
+                <li> isSubFile - whether we are searching for top level files or subfiles </li>
+                <li> status - the status of the file (i.e. ACTIVE, INACTIVE, CLOSED, TRANSFERRED) </li>
+                <li> chefDeFile - owner of the file </li>
+                <li> parentId - the repository id of the parent file or parent heading </li>
+                <li> creationDate - the date the file was created </li>
+                <li> activationDate - the date the file was (re-)activated </li>
+                </ul>
+
+                <p>Sample search expressions are:</p>
+                <ul style="list-style-type:none">
+                 <li> chefDeFile CONTAINS 'digit' AND status='ACTIVE' </li>
+                 <li> name IN ('test 1', 'test 2' ) </li>
+                </ul>]]></WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:searchFilesByExpression"/>
+      <WL5G3N0:output message="WL5G3N2:searchFilesByExpressionResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="searchHeadingsByExpression">
+      <WL5G3N0:documentation><![CDATA[This operation searches headings that match the given search expression.
+
+                <p>Fields that can be used inside the search expression are:</p>
+                <ul>
+                <li> headingId - the heading's id </li>
+                <li> name - either the name in EN, FR or DE </li>
+                <li> nameEN - the English name of the heading </li>
+                <li> nameFR - the French name of the heading </li>
+                <li> nameDE - the German name of the heading </li>
+                <li> headingCode - the code of the heading </li>
+                <li> specificCode - the specific code of the heading </li>
+                <li> creationDate - the creation date of the heading </li>
+                <li> status - the status of the heading </li>
+                <li> categoryKey - the ID of a category of the heading </li>
+                <li> serviceOwner - a service owner of the heading </li>
+                <li> fileCreator - a file creator of the heading </li>
+                <li> headingEditor - a heading creator of the heading </li>
+                <li> headingReader - a heading reader of the heading </li>
+                <li> status - the status of the heading (i.e. ACTIVE, INACTIVE, EXTINCT, FROZEN) </li>
+                </ul>
+
+                <p>Sample search expressions are:</p>
+                <ul style="list-style-type:none">
+                 <li> nameEN CONTAINS 'Press, communication and publications' </li>
+                 <li> status IN ('INACTIVE', 'EXTINCT', 'FROZEN') </li>
+                </ul>]]></WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:searchHeadingsByExpression"/>
+      <WL5G3N0:output message="WL5G3N2:searchHeadingsByExpressionResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createFile">
+      <WL5G3N0:documentation>This operation creates a new (sub)file in the NOMCOM filing plan.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:createFile"/>
+      <WL5G3N0:output message="WL5G3N2:createFileResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="updateFile">
+      <WL5G3N0:documentation><![CDATA[This operation updates and existing (sub)file in the NOMCOM filing plan.<br/>
+                Only the fields provided in the web service request will be updated, the others will
+                stay as they are.<br />
+
+                The user needs to have FILE_EDITOR or NOMCOM_MANAGER rights on the file in order to update it.
+                To check this, you can search using the flag includeUserFileRole=true, and inspect
+                afterwards the value of the userFileRole element in the response. Also, the
+                file status needs to be ACTIVE or INACTIVE (e.g. CLOSED files cannot be updated) <br/>
+
+                <b>WARNING</b>: if you update the file readers, users or editors, the security of
+                all the documents that are filed in the file must be updated! This might fail if a
+                document has a checked out item. In case there are many documents filed in the file
+                <ul>the response time is unpredictable</ul> and it will take a very long time!
+
+                If the file is CLOSED, you can not update the specific code, titles, comments,
+                limited, chef de file and desk officer. An exception will be thrown.]]></WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:updateFile"/>
+      <WL5G3N0:output message="WL5G3N2:updateFileResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="updateFileStatus">
+      <WL5G3N0:documentation>This operation updates the status of a (sub)file in the NOMCOM filing plan.&lt;br/>
+                It allows you to update the state (INACTIVE, ACTIVE, ...) of the file in the file
+                lifecycle.
+                Currently only activation (INACTIVE -> ACTIVE) is supported in HRS.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:updateFileStatus"/>
+      <WL5G3N0:output message="WL5G3N2:updateFileStatusResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="updateFileStatusAsync">
+      <WL5G3N0:documentation><![CDATA[This operation updates asynchronously the status of a (sub)file in the NOMCOM filing plan.<br/>
+                It allows you to update the state (INACTIVE, ACTIVE, ...) of the file in the file lifecycle.
+                Currently only closing a file (ACTIVE -> CLOSED) is supported in HRS.<br/>
+                The operation will do some validations (e.g. user is a FILE EDITOR of the selected file, file is ACTIVE)
+                and schedule an asynchronous job for setting the updating the status to the file and its subfiles.<br/>
+                The user can check the status of the scheduled job by calling the getUpdateFileStatusAsyncResult operation.<br/>
+
+                <b>WARNING</b>: In order to perform this operation the user must have a special profile configured by the HRS team.]]></WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:updateFileStatusAsync"/>
+      <WL5G3N0:output message="WL5G3N2:updateFileStatusAsyncResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getUpdateFileStatusAsyncResult">
+      <WL5G3N0:documentation>Get the current status of the last asynchronous operation launched for a (sub)file in the NOMCOM filing plan.&lt;br/>
+                The operation should have been lauched using the updateFileStatusAsync operation.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:getUpdateFileStatusAsyncResult"/>
+      <WL5G3N0:output message="WL5G3N2:getUpdateFileStatusAsyncResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="deleteFile">
+      <WL5G3N0:documentation>This operation deletes a (sub)file from the NOMCOM filing plan.&lt;br/>
+
+                A file can only be deleted if it's INACTIVE or ACTIVE, if there are no documents
+                filed into the file and if the file does not contain sub files.
+                The user needs to have FILE_EDITOR or NOMCOM_MANAGER rights on the file in order to delete it.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:deleteFile"/>
+      <WL5G3N0:output message="WL5G3N2:deleteFileResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getUserFavoriteFiles">
+      <WL5G3N0:documentation>Returns the favorite files of the current authenticated user.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:getUserFavoriteFiles"/>
+      <WL5G3N0:output message="WL5G3N2:getUserFavoriteFilesResponse"/>
+    </WL5G3N0:operation>
+  </WL5G3N0:portType>
+  <WL5G3N0:binding name="FilingPlanServiceBinding" type="WL5G3N2:FilingPlanService">
+    <WL5G3N3:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <WL5G3N0:operation name="searchFilesByExpression">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="searchHeadingsByExpression">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createFile">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="updateFile">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="updateFileStatus">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="updateFileStatusAsync">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getUpdateFileStatusAsyncResult">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="deleteFile">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="getUserFavoriteFiles">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+  </WL5G3N0:binding>
+  <WL5G3N0:service name="FilingPlanWebService">
+    <WL5G3N0:documentation>The FilingPlan web service provides search operations for the filing plan : files and headings.</WL5G3N0:documentation>
+    <WL5G3N0:port binding="WL5G3N2:FilingPlanServiceBinding" name="FilingPlanService">
+      <WL5G3N3:address location="http://www.test.cc.cec/hrs-ws/1.28/FilingPlanWebServicePS"/>
+    </WL5G3N0:port>
+  </WL5G3N0:service>
+</WL5G3N0:definitions>

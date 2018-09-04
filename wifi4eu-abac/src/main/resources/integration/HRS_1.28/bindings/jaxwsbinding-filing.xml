@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jaxws:bindings version="2.1" xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <jaxws:bindings node="wsdl:definitions" wsdlLocation="../../resources/integration/HRS_1.28/FilingPlanWebServicePS_1.wsdl">
+        <jaxws:package name="generated.hrs.ws"/>
+    </jaxws:bindings>
+    <jaxws:enableWrapperStyle>false</jaxws:enableWrapperStyle>
+</jaxws:bindings>

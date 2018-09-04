@@ -27,19 +27,7 @@ import javax.xml.bind.annotation.XmlType;
 public enum SecurityClassification {
 
     NORMAL,
-
-    /**
-     * In ARES UI, 'LIMITED' security classification is displayed/referred as 'Handling restriction',
-     *                             which is just an alias for 'LIMITED' type security classification.
-     * 
-     */
     LIMITED,
-
-    /**
-     * In ARES UI, 'EU_RESTRAINED' security classification is displayed/referred as 'RESTREINT UE/EU RESTRICTED',
-     *                             which is just an alias for 'EU_RESTRAINED' type security classification.
-     * 
-     */
     EU_RESTRAINED,
     EURA_RESTRICTED;
 

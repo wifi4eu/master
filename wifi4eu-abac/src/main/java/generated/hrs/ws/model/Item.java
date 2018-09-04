@@ -75,8 +75,6 @@ import org.jvnet.jaxb2_commons.locator.util.LocatorUtils;
  *         &lt;element name="contentId" type="{http://ec.europa.eu/sg/hrs/types}ContentIdType" minOccurs="0"/>
  *         &lt;element name="sha256" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="searchSummary" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="creatorUserName" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="versions" minOccurs="0">
  *           &lt;complexType>
  *             &lt;complexContent>
@@ -88,7 +86,6 @@ import org.jvnet.jaxb2_commons.locator.util.LocatorUtils;
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
- *         &lt;element name="toStamp" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -119,10 +116,7 @@ import org.jvnet.jaxb2_commons.locator.util.LocatorUtils;
     "contentId",
     "sha256",
     "searchSummary",
-    "creatorUserName",
-    "comment",
-    "versions",
-    "toStamp"
+    "versions"
 })
 public class Item
     implements Equals, HashCode, ToString
@@ -155,12 +149,7 @@ public class Item
     protected String contentId;
     protected String sha256;
     protected String searchSummary;
-    @XmlElement(required = true)
-    protected String creatorUserName;
-    protected String comment;
     protected Item.Versions versions;
-    @XmlElement(defaultValue = "true")
-    protected Boolean toStamp;
 
     /**
      * Gets the value of the itemId property.
@@ -635,54 +624,6 @@ public class Item
     }
 
     /**
-     * Gets the value of the creatorUserName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getCreatorUserName() {
-        return creatorUserName;
-    }
-
-    /**
-     * Sets the value of the creatorUserName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setCreatorUserName(String value) {
-        this.creatorUserName = value;
-    }
-
-    /**
-     * Gets the value of the comment property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getComment() {
-        return comment;
-    }
-
-    /**
-     * Sets the value of the comment property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setComment(String value) {
-        this.comment = value;
-    }
-
-    /**
      * Gets the value of the versions property.
      * 
      * @return
@@ -704,30 +645,6 @@ public class Item
      */
     public void setVersions(Item.Versions value) {
         this.versions = value;
-    }
-
-    /**
-     * Gets the value of the toStamp property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isToStamp() {
-        return toStamp;
-    }
-
-    /**
-     * Sets the value of the toStamp property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setToStamp(Boolean value) {
-        this.toStamp = value;
     }
 
     public boolean equals(ObjectLocator thisLocator, ObjectLocator thatLocator, Object object, EqualsStrategy strategy) {
@@ -919,38 +836,11 @@ public class Item
             }
         }
         {
-            String lhsCreatorUserName;
-            lhsCreatorUserName = this.getCreatorUserName();
-            String rhsCreatorUserName;
-            rhsCreatorUserName = that.getCreatorUserName();
-            if (!strategy.equals(LocatorUtils.property(thisLocator, "creatorUserName", lhsCreatorUserName), LocatorUtils.property(thatLocator, "creatorUserName", rhsCreatorUserName), lhsCreatorUserName, rhsCreatorUserName)) {
-                return false;
-            }
-        }
-        {
-            String lhsComment;
-            lhsComment = this.getComment();
-            String rhsComment;
-            rhsComment = that.getComment();
-            if (!strategy.equals(LocatorUtils.property(thisLocator, "comment", lhsComment), LocatorUtils.property(thatLocator, "comment", rhsComment), lhsComment, rhsComment)) {
-                return false;
-            }
-        }
-        {
             Item.Versions lhsVersions;
             lhsVersions = this.getVersions();
             Item.Versions rhsVersions;
             rhsVersions = that.getVersions();
             if (!strategy.equals(LocatorUtils.property(thisLocator, "versions", lhsVersions), LocatorUtils.property(thatLocator, "versions", rhsVersions), lhsVersions, rhsVersions)) {
-                return false;
-            }
-        }
-        {
-            Boolean lhsToStamp;
-            lhsToStamp = this.isToStamp();
-            Boolean rhsToStamp;
-            rhsToStamp = that.isToStamp();
-            if (!strategy.equals(LocatorUtils.property(thisLocator, "toStamp", lhsToStamp), LocatorUtils.property(thatLocator, "toStamp", rhsToStamp), lhsToStamp, rhsToStamp)) {
                 return false;
             }
         }
@@ -1078,24 +968,9 @@ public class Item
             strategy.appendField(locator, this, "searchSummary", buffer, theSearchSummary);
         }
         {
-            String theCreatorUserName;
-            theCreatorUserName = this.getCreatorUserName();
-            strategy.appendField(locator, this, "creatorUserName", buffer, theCreatorUserName);
-        }
-        {
-            String theComment;
-            theComment = this.getComment();
-            strategy.appendField(locator, this, "comment", buffer, theComment);
-        }
-        {
             Item.Versions theVersions;
             theVersions = this.getVersions();
             strategy.appendField(locator, this, "versions", buffer, theVersions);
-        }
-        {
-            Boolean theToStamp;
-            theToStamp = this.isToStamp();
-            strategy.appendField(locator, this, "toStamp", buffer, theToStamp);
         }
         return buffer;
     }
@@ -1203,24 +1078,9 @@ public class Item
             currentHashCode = strategy.hashCode(LocatorUtils.property(locator, "searchSummary", theSearchSummary), currentHashCode, theSearchSummary);
         }
         {
-            String theCreatorUserName;
-            theCreatorUserName = this.getCreatorUserName();
-            currentHashCode = strategy.hashCode(LocatorUtils.property(locator, "creatorUserName", theCreatorUserName), currentHashCode, theCreatorUserName);
-        }
-        {
-            String theComment;
-            theComment = this.getComment();
-            currentHashCode = strategy.hashCode(LocatorUtils.property(locator, "comment", theComment), currentHashCode, theComment);
-        }
-        {
             Item.Versions theVersions;
             theVersions = this.getVersions();
             currentHashCode = strategy.hashCode(LocatorUtils.property(locator, "versions", theVersions), currentHashCode, theVersions);
-        }
-        {
-            Boolean theToStamp;
-            theToStamp = this.isToStamp();
-            currentHashCode = strategy.hashCode(LocatorUtils.property(locator, "toStamp", theToStamp), currentHashCode, theToStamp);
         }
         return currentHashCode;
     }

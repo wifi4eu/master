@@ -101,9 +101,9 @@ public class ErisIntegrationService {
         }
 
         Serializable property = erisHelper.getMetadataProperty(params.getSaveNumCCM2Code(), response.getDocument());
-        if(property != null) {
+        /*if(property != null) {
             erisDocument.setSaveNumber(property.toString());
-        }
+        }*/
     }
 
     /**

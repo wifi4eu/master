@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jxb:bindings version="2.1" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <jxb:bindings schemaLocation="../../HRS_1.28/FilingPlanWebServicePS.xsd"
+                  node="/xsd:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="generated.hrs.ws.model" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+
+</jxb:bindings>
