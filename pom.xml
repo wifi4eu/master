@@ -356,6 +356,8 @@
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
                 <redis.enabled>true</redis.enabled>
                 <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
+                <mail.serv.using.smtp>false</mail.serv.using.smtp>
+                <mail.serv.using.cns>true</mail.serv.using.cns>
             </properties>
         </profile>
         <profile>
