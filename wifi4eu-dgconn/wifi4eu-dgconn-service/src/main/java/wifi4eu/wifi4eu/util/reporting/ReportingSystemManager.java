@@ -1,18 +1,20 @@
 package wifi4eu.wifi4eu.util.reporting;
 
-import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
-import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
+import java.io.IOException;
+import java.util.EnumSet;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
-import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorage;
-import wifi4eu.wifi4eu.common.azureblobstorage.AzureBlobStorageUtils;
-import wifi4eu.wifi4eu.common.helper.Validator;
 
-import java.io.IOException;
-import java.util.EnumSet;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
+
+import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorage;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorageUtils;
 
 @Configurable
 @Component

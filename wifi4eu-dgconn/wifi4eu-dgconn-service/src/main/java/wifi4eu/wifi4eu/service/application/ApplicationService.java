@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 
 import wifi4eu.wifi4eu.common.Constant;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.ApplicantListItemDTO;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationVoucherInfoDTO;
@@ -35,7 +36,9 @@ import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.entity.logEmails.LogEmail;
@@ -66,11 +69,11 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
-import wifi4eu.wifi4eu.util.MailService;
-import wifi4eu.wifi4eu.common.helper.Validator;
 
 @Service
 public class ApplicationService {
+    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
+
     @Value("${mail.server.location}")
     private String baseUrl;
 
@@ -112,8 +115,6 @@ public class ApplicationService {
 
     @Autowired
     VoucherService voucherService;
-
-    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
 
     @Autowired
     BeneficiaryService beneficiaryService;
@@ -241,14 +242,12 @@ public class ApplicationService {
                 } else {
                     _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - The user " + user.getEcasUsername() + " has not specified a language");
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.voucherApply.subject");
-                String msgBody = bundle.getString("mail.voucherApply.body");
-                msgBody = MessageFormat.format(msgBody, municipality.getName());
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, registration.getMunicipalityId(), "createApplication");
-                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());
-                }
+                
+                MailData mailData = MailHelper.buildMailCreateApplication(
+                		user.getEcasEmail(), MailService.FROM_ADDRESS, 
+                		municipality.getId(), "createApplication", locale);
+            	mailService.sendMail(mailData, true);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to" + user.getEcasEmail());                
             }
             if (applicationDTO.getId() != 0) {
                 _log.warn("Call to a create method with id set, the value has been removed ({})", applicationDTO.getId());
@@ -597,8 +596,10 @@ public class ApplicationService {
                 }
 
                 if (!emailBody.isEmpty()) {
-                    mailService.sendEmail(application.getUserEcasEmail(), MailService.FROM_ADDRESS, subject, emailBody, registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS);
-//                    applicationRepository.updateSentEmailByApplicationId(true, new Date(), application.getApplicationId());
+                	MailData mailData = new MailData(application.getUserEcasEmail(), MailService.FROM_ADDRESS, 
+                			subject, emailBody, locale, 
+                			registration.getMunicipality().getId(), Constant.LOG_EMAIL_ACTION_SEND_CORRECTION_EMAILS, true);
+                	mailService.sendMail(mailData, false);
                 }
             }
             correctionRequest = new CorrectionRequestEmailDTO(null, callId, new Date().getTime(), buttonPressedCounter);

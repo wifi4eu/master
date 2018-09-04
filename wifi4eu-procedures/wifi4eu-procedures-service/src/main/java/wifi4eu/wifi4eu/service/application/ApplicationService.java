@@ -1,40 +1,36 @@
 package wifi4eu.wifi4eu.service.application;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.entity.user.User;
+import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.user.UserConstants;
-import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.MailService;
-
-import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Service
 public class ApplicationService {
+    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
+
     @Value("${mail.server.location}")
     private String baseUrl;
 
-    private static final Logger _log = LogManager.getLogger(ApplicationService.class);
-
     @Autowired
     private MailService mailService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private ApplicationRepository applicationRepository;
@@ -49,9 +45,6 @@ public class ApplicationService {
     private ApplicationService applicationService;
 
     @Autowired
-    private CallRepository callRepository;
-
-    @Autowired
     ApplicationMapper applicationMapper;
 
     public void sendCreateApplicationEmail(User user, Integer municipalityId, ApplicationDTO application) throws Exception {
@@ -61,16 +54,13 @@ public class ApplicationService {
         } else {
             _log.warn("SCHEDULED TASK: Create Application Emails - The user " + user.getEcasUsername() + " has not specified a language");
         }
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.voucherApply.subject");
-        String msgBody = bundle.getString("mail.voucherApply.body");
-        if (!userService.isLocalHost()) {
 
-        }
-            mailService.sendEmailAsync(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityId, "createApplication");
-            application.setSentEmail(true);
-            applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
-            _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + application.getId());
+    	MailData mailData = MailHelper.buildMailCreateApplication(user.getEcasEmail(), MailService.FROM_ADDRESS, municipalityId, "createApplication", locale);
+    	mailService.sendMail(mailData, true);
+    	
+        application.setSentEmail(true);
+        applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
+        _log.log(Level.getLevel("BUSINESS"), "SCHEDULED TASK: Create Application Emails - Email will be sent to " + user.getEcasEmail() + " for the " + "application id: " + application.getId());
     }
 
     public Integer[] sendEmailApplications(Integer callId) throws Exception {
