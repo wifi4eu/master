@@ -28,6 +28,7 @@ import wifi4eu.wifi4eu.abac.integration.eris.model.ErisServerException;
 import wifi4eu.wifi4eu.abac.integration.hrs.HermesDocumentServiceClient;
 import wifi4eu.wifi4eu.abac.rest.LegalEntityController;
 
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -78,6 +79,7 @@ public class DocumentService {
 		return document;
 	}
 
+	@Transactional(Transactional.TxType.REQUIRES_NEW)
 	public Document addDocumentInAres(Document document) throws DocumentFault {
 
         try {
@@ -85,11 +87,14 @@ public class DocumentService {
             document.setWfStatus(DocumentWorkflowStatus.ARCHIVED_IN_ARES);
         } catch (Exception e) {
             log.error("ERROR Saving document in ARES {}", document.getId(), e);
+			document.setWfStatus(DocumentWorkflowStatus.ARES_ERROR);
         }
 
         return saveDocument(document);
     }
 
+
+	@Transactional
     public List<Document> submitDocumentsToAres(Integer startPage, Integer maxRecords) {
         Pageable pageable = PageRequest.of(startPage, maxRecords);
         List<Document> documents = documentRepository.findByWfStatusOrderByDateCreated(DocumentWorkflowStatus.IMPORTED, pageable);

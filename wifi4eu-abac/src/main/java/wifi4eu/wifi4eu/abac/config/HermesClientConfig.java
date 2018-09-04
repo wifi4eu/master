@@ -50,46 +50,46 @@ public class HermesClientConfig {
     @Value("classpath:/integration/HRS_1.28/FilingPlanWebServicePS_1.wsdl")
     private URL filingPlanServiceWSDL;
 
-    @Value("${pdm.integration.hrs.ws.document.endpoint}")
+    @Value("${integration.hrs.ws.document.endpoint}")
     private String documentServiceEndPoint;
 
-    @Value("${pdm.integration.hrs.ws.filing.endpoint}")
+    @Value("${integration.hrs.ws.filing.endpoint}")
     private String filingPlanServiceEndPoint;
 
-    @Value("${pdm.integration.hrs.ecas.cert.login.service.keyStore.file}")
+    @Value("${integration.hrs.ecas.cert.login.service.keyStore.file}")
     String ecasKeyStoreFileName;
 
-    @Value("${pdm.integration.hrs.ecas.cert.login.service.keyStore.password}")
+    @Value("${integration.hrs.ecas.cert.login.service.keyStore.password}")
     String ecasKeyStorePassword;
 
-    @Value("${pdm.integration.hrs.ecas.cert.login.service.keyStoreType}")
+    @Value("${integration.hrs.ecas.cert.login.service.keyStoreType}")
     String keyStoreType;
 
-    @Value("${pdm.integration.hrs.ecas.cert.login.service.keyStoreProvider}")
+    @Value("${integration.hrs.ecas.cert.login.service.keyStoreProvider}")
     String keyStoreProvider;
 
-    @Value("${pdm.integration.hrs.ecas.cert.login.service.privateKeyAlias}")
+    @Value("${integration.hrs.ecas.cert.login.service.privateKeyAlias}")
     String ecasKeyAlias;
 
-    @Value("${pdm.integration.hrs.ecas.cert.login.service.url}")
+    @Value("${integration.hrs.ecas.cert.login.service.url}")
     String ecasServerCertLoginUrl;
 
-    @Value("${pdm.integration.hrs.ecas.cert.login.service.additionalTrustedCertificateResourceName}")
+    @Value("${integration.hrs.ecas.cert.login.service.additionalTrustedCertificateResourceName}")
     String additionalTrustedCertificateResourceName;
 
-    @Value("${pdm.integration.hrs.service.hermesApplicationId}")
+    @Value("${integration.hrs.service.hermesApplicationId}")
     String hermesApplicationId;
 
-    @Value("${pdm.integration.hrs.service.hermesJobAccount}")
+    @Value("${integration.hrs.service.hermesJobAccount}")
     String hermesJobAccount;
 
-    @Value("${pdm.integration.hrs.http.attachment.endpoint}")
+    @Value("${integration.hrs.http.attachment.endpoint}")
     String hermesHttpServiceEndpoint;
 
-    @Value("${pdm.integration.hrs.service.useFakeTicket}")
+    @Value("${integration.hrs.service.useFakeTicket}")
     private Boolean useFakeTicket;
 
-    @Value("${pdm.integration.hrs.service.fakeTicket}")
+    @Value("${integration.hrs.service.fakeTicket}")
     private String fakeTicket;
 
 

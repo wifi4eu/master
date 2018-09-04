@@ -21,10 +21,15 @@ import generated.hrs.ws.model.SendersToAdd;
 import generated.hrs.ws.model.UploadedItemToAdd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
+import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 
+import javax.transaction.Transactional;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -38,15 +43,36 @@ public class HermesDocumentServiceClient {
 
     private HrsHTTpClient HrsHTTpClient;
 
+    @Value("${integration.hrs.service.file.headingId}")
+    private String headingId;
+
+    @Value("${integration.hrs.service.file.chefDeFile}")
+    private String chefDeFile;
+
+    @Value("${integration.hrs.service.file.readers}")
+    private String readers;
+
+    @Value("${integration.hrs.service.file.users}")
+    private String users;
+
+    @Value("${integration.hrs.service.file.editors}")
+    private String editors;
+
+    @Value("${integration.hrs.service.file.categoryKey}")
+    private String categoryKey;
+
+
     public HermesDocumentServiceClient(DocumentService documentServicePort, FilingPlanService filingServicePort, HrsHTTpClient hrsHTTpClient) {
         this.documentService = documentServicePort;
         this.filingService = filingServicePort;
         this.HrsHTTpClient = hrsHTTpClient;
     }
 
+
+    @Transactional
     public Document saveDocumentInAres(Document document) throws Exception{
-        createDocument(document);
         createFile(document);
+        createDocument(document);
         uploadAttachment(document);
         fileDocument(document);
         registerDocument(document);
@@ -54,6 +80,7 @@ public class HermesDocumentServiceClient {
         return document;
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     protected Document uploadAttachment(Document document)throws Exception {
         String hrsAttachmentRef = HrsHTTpClient.uploadAttachment(document);
         document.setHermesAttachmentId(hrsAttachmentRef);
@@ -61,10 +88,20 @@ public class HermesDocumentServiceClient {
         return document;
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     protected Document createDocument(Document document) throws Exception {
 
+        if(document.getHermesDocumentId() != null){
+            logger.info("A document is already created for DOC {} HermesDocumentId {}", document.getId(), document.getHermesDocumentId());
+            return document;
+        }
+
         DocumentCreationRequest request = new DocumentCreationRequest();
-        request.setTitle(document.getName());
+
+        LegalEntity legalEntity = document.getLegalEntity();
+        String documentName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s - %s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getOfficialName(), legalEntity.getCountry().getName(), document.getType().getValue());
+
+        request.setTitle(documentName);
         request.setDocumentDate(getGregorianDate(document.getDateCreated()));
         request.setSecurityClassification(SecurityClassification.NORMAL);
         request.setSenders(createIneaSender());
@@ -83,6 +120,7 @@ public class HermesDocumentServiceClient {
         return document;
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     protected boolean fileDocument(Document document) throws Exception {
         FileDocument fileDocument = new FileDocument();
         fileDocument.setDocumentId(document.getHermesDocumentId());
@@ -93,35 +131,40 @@ public class HermesDocumentServiceClient {
         return fileDocumentResponse.getResult().isSuccess();
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     protected Document createFile(Document document) throws Exception {
 
         CreateFileRequest createFileRequest = new CreateFileRequest();
-        createFileRequest.setHeadingId("0b0166e4850ba916");
-        createFileRequest.setEnglishName(document.getName());
-        createFileRequest.setChefDeFile("inea.c.c05");
+        createFileRequest.setHeadingId(headingId);
+
+        LegalEntity legalEntity = document.getLegalEntity();
+
+        if(legalEntity.getHermesFileId() != null){
+            logger.info("A file is already created for MID {} HermesFileId {}", legalEntity.getMid(), legalEntity.getHermesFileId());
+            document.setHermesFileId(legalEntity.getHermesFileId());
+            return document;
+        }
+
+        String fileName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getOfficialName(), legalEntity.getCountry().getName());
+
+        createFileRequest.setEnglishName(fileName);
+        createFileRequest.setChefDeFile(chefDeFile);
 
         CreateFileRequest.Readers readers = new CreateFileRequest.Readers();
-        readers.getReader().add("inea");
-        readers.getReader().add("cnect");
+        readers.getReader().addAll(Arrays.asList(this.readers.split(",")));
         createFileRequest.setReaders(readers);
 
         CreateFileRequest.Users users = new CreateFileRequest.Users();
-        users.getUser().add("je_eris");
-        users.getUser().add("inea.c.c05");
-        users.getUser().add("inea.r.r01");
-        users.getUser().add("inea.r.r03");
-        //users.getUser().add("inea.r.r04.43");
+        users.getUser().addAll(Arrays.asList(this.users.split(",")));
         createFileRequest.setUsers(users);
 
 
         CreateFileRequest.Editors editors = new CreateFileRequest.Editors();
-        editors.getEditor().add("nc_inea_fc");
-        editors.getEditor().add("je_wifieuinea");
-
+        editors.getEditor().addAll(Arrays.asList(this.editors.split(",")));
         createFileRequest.setEditors(editors);
 
         createFileRequest.setActivate(true);
-        createFileRequest.setCategoryKey("080166e4806c3e10");
+        createFileRequest.setCategoryKey(this.categoryKey);
 
         CreateFile createFile = new CreateFile();
         createFile.setRequest(createFileRequest);
@@ -129,16 +172,19 @@ public class HermesDocumentServiceClient {
         CreateFileResponse createFileResponse = filingService.createFile(createFile);
 
         document.setHermesFileId(createFileResponse.getFile().getFileId());
+        legalEntity.setHermesFileId(createFileResponse.getFile().getFileId());
+
 
         return document;
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     protected Document registerDocument(Document document) throws Exception {
 
 
         DocumentRegistrationRequest registrationRequest = new DocumentRegistrationRequest();
         registrationRequest.setTitle(document.getName());
-        registrationRequest.setDocumentDate(getGregorianDate(document.getPortalDate()));
+        registrationRequest.setDocumentDate(getGregorianDate(document.getDateCreated()));
         registrationRequest.setSentDate(getGregorianDate(new Date()));
         registrationRequest.setSecurityClassification(SecurityClassification.NORMAL);
         registrationRequest.setSenders(createIneaSender());
@@ -148,6 +194,7 @@ public class HermesDocumentServiceClient {
         UploadedItemToAdd uploadedItemToAdd = new UploadedItemToAdd();
         uploadedItemToAdd.setName(document.getFileName());
         uploadedItemToAdd.setContentId(document.getHermesAttachmentId());
+        uploadedItemToAdd.setLanguage("EN");
         uploadedItemToAdd.setKind(ItemKindToAdd.MAIN);
         uploadedItemToAdd.setAttachmentType(AttachmentTypeToAdd.NATIVE_ELECTRONIC);
         uploadedItemToAdd.setExternalReference("HRS");
@@ -159,9 +206,8 @@ public class HermesDocumentServiceClient {
 
         RegisterDocumentResponse registerDocumentResponse = documentService.registerDocument(registerDocument);
 
-        if(registerDocumentResponse.getDocument().getFilingResult().isSuccess()){
-            document.setRegistrationNumber(registerDocumentResponse.getDocument().getRegistrationNumber());
-        }
+        document.setRegistrationNumber(registerDocumentResponse.getDocument().getRegistrationNumber());
+        document.setAresReference(registerDocumentResponse.getDocument().getRegistrationNumber());
 
         return document;
     }

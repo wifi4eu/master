@@ -76,6 +76,8 @@ public class HermesClientSOAPHandler implements SOAPHandler<SOAPMessageContext>{
 
                 SOAPElement firstNode = (SOAPElement)envelope.getBody().getChildElements().next();
                 SOAPElement requestNode = (SOAPElement)firstNode.getChildElements(new QName("http://ec.europa.eu/sg/hrs/types", "request")).next();
+                SOAPElement fileId = (SOAPElement)firstNode.getChildElements(new QName("http://ec.europa.eu/sg/hrs/types", "fileId")).next();
+                SOAPElement documentId = (SOAPElement)firstNode.getChildElements(new QName("http://ec.europa.eu/sg/hrs/types", "documentId")).next();
 
                 firstNode.removeContents();
 
@@ -87,7 +89,12 @@ public class HermesClientSOAPHandler implements SOAPHandler<SOAPMessageContext>{
                 SOAPElement applicationIdElement = headerNode.addChildElement(new QName("http://ec.europa.eu/sg/hrs/types", "applicationId"));
                 applicationIdElement.setValue(applicationId);
 
-                firstNode.addChildElement(requestNode);
+                if(requestNode != null) {
+                    firstNode.addChildElement(requestNode);
+                }else{
+                    firstNode.addChildElement(documentId);
+                    firstNode.addChildElement(fileId);
+                }
 
 
                 message.saveChanges();

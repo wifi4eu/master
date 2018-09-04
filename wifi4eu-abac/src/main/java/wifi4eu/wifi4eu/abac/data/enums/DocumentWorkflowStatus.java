@@ -6,6 +6,7 @@ public enum DocumentWorkflowStatus {
 	COUNTERSIGNATURE_REQUESTED("COUNTERSIGNATURE_REQUESTED", "Counter Signature Requested"),
 	COUNTERSIGNED("COUNTERSIGNED", "Counter Signed"),
 	ARCHIVED_IN_ARES("ARCHIVED_IN_ARES", "Created and registered in ARES"),
+	ARES_ERROR("ARES_ERROR", "Error creating in ARES"),
 	UNMAPPED_STATUS("UNMAPPED_STATUS", "Unknown status");
 
 	private String value;

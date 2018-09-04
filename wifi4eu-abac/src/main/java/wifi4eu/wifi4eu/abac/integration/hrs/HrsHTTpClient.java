@@ -53,7 +53,7 @@ public class HrsHTTpClient {
                 }
 
                 public String getFileName() {
-                    return "test.pdf";
+                    return document.getFileName();
                 }
 
                 public InputStream createInputStream() {

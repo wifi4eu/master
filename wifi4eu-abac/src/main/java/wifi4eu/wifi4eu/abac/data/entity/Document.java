@@ -26,7 +26,7 @@ public class Document {
 	@Column(name="portal_date")
 	private Date portalDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name="LEGAL_ENTITY_ID")
 	private LegalEntity legalEntity;
 
