@@ -303,15 +303,6 @@ public class RegistrationService {
 
                     _log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
                             "document number type:" + legalFile.getFileType());
-
-                    List<LegalFileCorrectionReason> legalFilesCorrectionReasons = legalFileCorrectionReasonRepository.findAllCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(),legalFile.getFileType());
-
-                    for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
-                        legalFileCorrectionReason.setCorrectionReason(null);
-                        legalFileCorrectionReason.setRequestCorrection(false);
-                    }
-
-                    legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
                 }
             }else{
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file its data is in incorrect format");
