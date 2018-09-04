@@ -63,15 +63,21 @@ public class User {
     private String csrfToken;
 
     @Column(name = "contact_phone_prefix")
-    private String phone_prefix;
+    private String phonePrefix;
 
     @Column(name = "contact_phone_number")
-    private String phone_number;
+    private String phoneNumber;
+
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "city")
+    private String city;
 
     public User() {
     }
 
-    public User(Integer id, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken, String phone_prefix, String phone_number) {
+    public User(Integer id, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken, String phonePrefix, String phoneNumber, String country, String city) {
         this.id = id;
         this.treatment = treatment;
         this.name = name;
@@ -89,8 +95,10 @@ public class User {
         this.ecasEmail = ecasEmail;
         this.ecasUsername = ecasUsername;
         this.csrfToken = csrfToken;
-        this.phone_prefix = phone_prefix;
-        this.phone_number = phone_number;
+        this.phonePrefix = phonePrefix;
+        this.phoneNumber = phoneNumber;
+        this.country = country;
+        this.city = city;
     }
 
     public Integer getId() {
@@ -229,19 +237,35 @@ public class User {
         this.csrfToken = csrfToken;
     }
 
-    public String getPhone_prefix() {
-        return phone_prefix;
+    public String getPhonePrefix() {
+        return phonePrefix;
     }
 
-    public void setPhone_prefix(String phone_prefix) {
-        this.phone_prefix = phone_prefix;
+    public void setPhonePrefix(String phonePrefix) {
+        this.phonePrefix = phonePrefix;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

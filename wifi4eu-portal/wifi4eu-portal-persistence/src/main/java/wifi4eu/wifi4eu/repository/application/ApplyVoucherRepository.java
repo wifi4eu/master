@@ -27,6 +27,7 @@ public interface ApplyVoucherRepository extends CrudRepository<ApplyVoucher,Inte
             " r.allFiles_flag as files_uploaded," +
             " (select top 1 upload_time from legal_files where registration = ru.registration order by upload_time desc ) as upload_time,"+
             " (SELECT count(a.id) FROM applications a WHERE a.registration = r.id) as numberApplicant," +
+            " (select top 1 date from applications a where registration = ru.registration) as apply_time,"+
             " (select TOP 1 ca.status FROM conditions_agreement ca WHERE ca.registration_id = r.id ORDER BY ca.id DESC) as conditionAgreement" +
             " FROM registration_users ru" +
             " INNER JOIN registrations r ON r.id = ru.registration" +

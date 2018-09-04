@@ -1,6 +1,13 @@
 package wifi4eu.wifi4eu.service.user;
 
-import com.google.common.collect.Lists;
+import java.security.SecureRandom;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -13,8 +20,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import com.google.common.collect.Lists;
+
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserRegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
@@ -25,17 +41,23 @@ import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
+import wifi4eu.wifi4eu.entity.mayor.Mayor;
+import wifi4eu.wifi4eu.common.utils.Utils;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
-import wifi4eu.wifi4eu.entity.registration.ConditionsAgreement;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
 import wifi4eu.wifi4eu.entity.supplier.SupplierUser;
+import wifi4eu.wifi4eu.entity.user.User;
+import wifi4eu.wifi4eu.entity.user.UserContactDetails;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
@@ -58,11 +80,12 @@ import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
-import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.util.RedisUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -77,6 +100,9 @@ public class UserService {
 
     @Value("${ecas.location}")
     private String ecasUrl;
+
+    @Value("${server.address}")
+    private String serverAddress;
 
     @Autowired
     UserMapper userMapper;
@@ -140,12 +166,15 @@ public class UserService {
 
     @Autowired
     ConditionsAgreementRepository conditionsAgreementRepository;
-
+    
     @Autowired
     ApplicationService applicationService;
 
     @Autowired
     RightRepository rightRepository;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
@@ -218,37 +247,81 @@ public class UserService {
     }
 
     @Transactional
-    public void saveInvitedUserModified(UserDTO userDTO) {
-        if (userDTO.getType() == 0) {
-
+    public UserDTO checkIfInvitedUser(UserDTO userDTO){
+        if (userDTO.getType() == 0){
             InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
-            if (Validator.isNotNull(invitationContact)) {
-
-                if (invitationContact.getIdRegistration() != null) {
-                    userDTO.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
-                    createRegistrationUser(userDTO, invitationContact.getIdRegistration());
-
-                } else if (invitationContact.getIdSupplier() != null) {
-                    userDTO.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
-                    createSupplierUser(userDTO, invitationContact.getIdSupplier());
-
+            if (Validator.isNotNull(invitationContact)){
+                userDTO.setUserInvited(true);
+                long hours = Utils.getHoursBetweenDates(invitationContact.getLastModified(), new Date());
+                if (hours >= 24){
+                    userDTO.setUserInvitedFor(0);
                 } else {
-                    return; //Mister Tester
+                    if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0){
+                        userDTO.setUserInvitedFor((int) Constant.ROLE_REPRESENTATIVE);
+                    } else if (Validator.isNotNull(invitationContact.getIdSupplier()) && invitationContact.getIdSupplier() != 0){
+                        userDTO.setUserInvitedFor((int) Constant.ROLE_SUPPLIER);
+                    }
                 }
+            }
+        }
+        return userDTO;
+    }
 
+    public boolean createAddContact(UserDTO userDTO, UserDTO userConnected){
+        if (Validator.isNotNull(userDTO)) {
+            InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userConnected.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
+            if (Validator.isNotNull(invitationContact) && checkFieldsContactDetails(userDTO, invitationContact.getType())) {
+                userConnected.setName(userDTO.getName());
+                userConnected.setSurname(userDTO.getSurname());
+                if (invitationContact.getIdRegistration() != null && invitationContact.getIdRegistration() != 0) {
+                    userConnected.setCity(userDTO.getCity());
+                    userConnected.setCountry(userDTO.getCountry());
+                    userConnected.setAddress(userDTO.getAddress());
+                    userConnected.setAddressNum(userDTO.getAddressNum());
+                    userConnected.setPostalCode(userDTO.getPostalCode());
+                    userConnected.setType(((Long) Constant.ROLE_REPRESENTATIVE).intValue());
+                    createRegistrationUser(userConnected, invitationContact.getIdRegistration());
+                } else if (invitationContact.getIdSupplier() != null && invitationContact.getIdSupplier() != 0) {
+                    userConnected.setPhonePrefix(userDTO.getPhonePrefix());
+                    userConnected.setPhoneNumber(userDTO.getPhoneNumber());
+                    userConnected.setType(((Long) Constant.ROLE_SUPPLIER).intValue());
+                    createSupplierUser(userConnected, invitationContact.getIdSupplier());
+                } else {
+                    return false;
+                }
                 UserDTO userDTOInvitatorDTO = getUserById(invitationContact.getIdUserRequest());
-                userDTO.setLang(userDTOInvitatorDTO.getLang());
-                userRepository.save(userMapper.toEntity(userDTO));
-
+                userConnected.setLang(userDTOInvitatorDTO.getLang());
+                userRepository.save(userMapper.toEntity(userConnected));
                 invitationContact.setStatus(InvitationContactStatus.OK.getValue());
                 invitationContact.setLastModified(new Date());
                 invitationContactRepository.save(invitationContact);
+                return true;
             }
         }
+        return false;
+    }
+
+    private boolean checkFieldsContactDetails(UserDTO userDTO, int type){
+        if (type == ((Long) Constant.ROLE_REPRESENTATIVE).intValue()) {
+            return Validator.isNotNull(userDTO.getName()) && Validator.isNotNull(userDTO.getSurname())
+                    && Validator.isNotNull(userDTO.getAddress()) && Validator.isNotNull(userDTO.getAddressNum())
+                    && Validator.isNotNull(userDTO.getCity()) && Validator.isNotNull(userDTO.getCountry())
+                    && Validator.isNotNull(userDTO.getPostalCode()) && !userDTO.getAddress().isEmpty()
+                    && !userDTO.getAddressNum().isEmpty() && !userDTO.getCity().isEmpty()
+                    && !userDTO.getCountry().isEmpty() && !userDTO.getPostalCode().isEmpty()
+                    && !userDTO.getName().isEmpty() && !userDTO.getSurname().isEmpty();
+        } else if (type == ((Long) Constant.ROLE_SUPPLIER).intValue()) {
+            return Validator.isNotNull(userDTO.getName()) && Validator.isNotNull(userDTO.getSurname())
+                    && Validator.isNotNull(userDTO.getPhoneNumber()) && Validator.isNotNull(userDTO.getPhonePrefix())
+                    && !userDTO.getName().isEmpty() && !userDTO.getSurname().isEmpty()
+                    && !userDTO.getPhoneNumber().isEmpty() && !userDTO.getPhonePrefix().isEmpty();
+        }
+
+        return false;
     }
 
 
-    private void createRegistrationUser(UserDTO userDTO, Integer registrationId) {
+    private void createRegistrationUser(UserDTO userDTO, Integer registrationId){
         RegistrationUsers registrationUsers = new RegistrationUsers();
         registrationUsers.setContactEmail(userDTO.getEcasEmail());
         registrationUsers.setCreationDate(new Date());
@@ -264,10 +337,14 @@ public class UserService {
                 RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipality().getId());
         permissionChecker.addTablePermissions(userDTO, Integer.toString(registration.getMunicipality().getId()),
                 RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + registration.getMunicipality().getId() + " - Country: " + registration.getMunicipality().getCountry() + " - Lau Id: " + registration.getMunicipality().getLau().getId());
-        registrationUsersRepository.save(registrationUsers);
+        registrationUsers = registrationUsersRepository.save(registrationUsers);
+
+        if (Validator.isNotNull(registrationUsers)) {
+            redisUtil.sync(userDTO.getId());
+        }
     }
 
-    private void createSupplierUser(UserDTO userDTO, Integer supplierId) {
+    private void createSupplierUser(UserDTO userDTO, Integer supplierId){
         SupplierUser supplierUser = new SupplierUser();
         supplierUser.setEmail(userDTO.getEcasEmail());
         supplierUser.setCreationDate(new Date());
@@ -284,7 +361,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteInvitationByUser(String email) {
+    public void deleteInvitationByUser(String email){
         invitationContactRepository.delete(invitationContactRepository.findByEmailInvited(email));
     }
 
@@ -295,7 +372,7 @@ public class UserService {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
 
-                    if (applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0) {
+                    if(applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0){
 
                         for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
                             municipalityService.deleteMunicipality(municipality.getId(), request);
@@ -311,7 +388,9 @@ public class UserService {
 
                         userDTO.setType(0);
                         userRepository.save(userMapper.toEntity(userDTO));
-                    } else {
+
+                        redisUtil.sync(userId);
+                    }else{
                         // Application detected for this user id
                         _log.warn("ECAS Username: " + userDTO.getEcasUsername() + " - User registrations cannot be deleted due to one registration is applied");
                         return new ResponseDTO(false, null, new ErrorDTO(10, "benefPortal.withdraw.existingApplication.error"));
@@ -346,22 +425,42 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserRights(Integer userId) {
+    public void deleteUserRights(Integer userId){
         rightRepository.deleteByUserId(userId);
     }
 
     @Transactional
-    public void deleteUserConditionAgreements(Integer userId) {
+    public void deleteUserConditionAgreements(Integer userId){
         conditionsAgreementRepository.deleteByUserId(userId);
     }
 
     @Transactional
-    public UserDTO updateUserDetails(UserDTO userDTO, String name, String surname) {
+    public ResponseDTO updateUserDetails(UserDTO userConnected, List<UserContactDetails> users) {
+        //verifying data
+        List<UserDTO> usersToSave = new ArrayList<UserDTO>();
+        for (UserContactDetails userDetails : users) {
+            UserDTO user = getUserById(userDetails.getId());
+            user.setName(userDetails.getName());
+            user.setSurname(userDetails.getSurname());
+            user.setAddress(userDetails.getAddress());
+            user.setAddressNum(userDetails.getAddressNum());
+            user.setPostalCode(userDetails.getPostalCode());
+            user.setCity(userDetails.getCity());
+            user.setCountry(userDetails.getCountry());
+            if (Validator.isNull(userDetails) || !checkFieldsContactDetails(user, userDetails.getType())) {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The user details cannot been updated");
+                return new ResponseDTO(false, null, new ErrorDTO(org.springframework.http.HttpStatus.BAD_REQUEST.value(), org.springframework.http
+                        .HttpStatus.BAD_REQUEST.getReasonPhrase()));
+            } else {
+                usersToSave.add(user);
+            }
+        }
 
-        userDTO.setName(name);
-        userDTO.setSurname(surname);
+        for (UserDTO user : usersToSave) {
+            userRepository.save(userMapper.toEntity(user));
+        }
 
-        return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
+        return new ResponseDTO(true, "sucess", null);
     }
 
     public List<UserDTO> getUsersByType(int type) {
@@ -447,13 +546,9 @@ public class UserService {
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
         }
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.subject");
-        String msgBody = bundle.getString("mail.body");
-
-        if (!isLocalHost()) {
-            mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-        }
+        
+        MailData mailData = MailHelper.buildMailBeneficiaryRegistration(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, locale);
+    	mailService.sendMail(mailData, false);
     }
 
     @Transactional
@@ -462,13 +557,9 @@ public class UserService {
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
         }
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.supplierRegistration.subject");
-        String msgBody = bundle.getString("mail.supplierRegistration.body");
-
-        if (!isLocalHost()) {
-            mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-        }
+        
+        MailData mailData = MailHelper.buildMailSupplierRegistration(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, locale);
+    	mailService.sendMail(mailData, false);
     }
 
 
@@ -494,6 +585,11 @@ public class UserService {
                 UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
                 /* validate if user exist in wifi4eu portal */
                 if (userDTO != null) {
+                    Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                    if (userDTO.getLang() != null) {
+                        locale = new Locale(userDTO.getLang());
+                    }
+
                     /* Create a temporal key for activation and reset password functionalities */
                     TempTokenDTO tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.findByEmail(email));
                     if (tempTokenDTO == null) {
@@ -507,15 +603,11 @@ public class UserService {
                     SecureRandom secureRandom = new SecureRandom();
                     String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
                     tempTokenDTO.setToken(token);
-
                     tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO));
-
-                    /* Send email with */
-                    String fromAddress = MailService.FROM_ADDRESS;
-                    //TODO: translate subject and msgBody
-                    String subject = "wifi4eu portal Forgot Password";
-                    String msgBody = "you can access to the next link and reset your password " + baseUrl + UserConstants.RESET_PASS_URL + tempTokenDTO.getToken();
-                    mailService.sendEmail(email, fromAddress, subject, msgBody);
+                    
+                    String url = baseUrl + UserConstants.RESET_PASS_URL + tempTokenDTO.getToken();
+                    MailData mailData = MailHelper.buildMailForgotPassword(email, MailService.FROM_ADDRESS, url, locale);
+                    mailService.sendMail(mailData, false);
                 } else {
                     throw new Exception("trying to forgetPassword with an unregistered user");
                 }
@@ -553,6 +645,10 @@ public class UserService {
         return ecasUrl;
     }
 
+    public String getServerAddress(){
+        return serverAddress;
+    }
+
     private void removeTempToken(UserDTO userDTO) {
         for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
             tempTokenRepository.delete(tempToken);
@@ -572,17 +668,6 @@ public class UserService {
         return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
     }
 
-    public void createNewRegistrationUser(UserRegistrationDTO userRegistrationDTO) {
-        RegistrationUsers registrationUsers = new RegistrationUsers();
-        Integer registrationId = registrationRepository.findByMunicipalityId(userRegistrationDTO.getMunicipalityId()).getId();
-        registrationUsers.setContactEmail(userRegistrationDTO.getEmail());
-        registrationUsers.setCreationDate(new Date());
-        registrationUsers.setRegistrationId(registrationId);
-        registrationUsers.setStatus(0);
-        registrationUsers.setMain(0);
-        registrationUsersRepository.save(registrationUsers);
-    }
-
     public boolean checkIfApplied(UserDTO userDTO) {
         return applicationService.applicationsByListOfMunicipalities(userDTO.getId()).size() == 0;
     }
@@ -598,4 +683,64 @@ public class UserService {
         }
         return false;
     }
+
+    public ResponseDTO deactivateRegistrationUser(Integer registrationId, Integer userId, String logInfo) throws Exception {
+        ResponseDTO responseDTO = new ResponseDTO();
+        //has municipality more than one user associated?
+        if (registrationUsersRepository.countRegistrationUsersByRegistrationIdAndStatusNot(registrationId,RegistrationUsersStatus.DEACTIVATED.getValue()) > 1) {
+            //setting user as deactivated
+            RegistrationUsers registrationUsers = registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId);
+            if(registrationUsers.getStatus() != RegistrationUsersStatus.DEACTIVATED.getValue()) {
+                registrationUsers.setStatus(RegistrationUsersStatus.DEACTIVATED.getValue());
+                registrationUsers = registrationUsersRepository.save(registrationUsers);
+
+                if (Validator.isNotNull(registrationUsers)) {
+                    redisUtil.sync(userId.longValue());
+                }
+
+                //if user doesn't have more registrations associated we put type to deactivated
+                if (registrationUsersRepository.countRegistrationUsersByUserIdAndStatusNot(userId, RegistrationUsersStatus.DEACTIVATED.getValue()) <= 1) {
+                    setUserTypeToDeactivate(userId);
+                }
+
+                //taking off user rights for this registration
+                Registration registration = registrationRepository.findOne(registrationId);
+                Municipality municipality = registration.getMunicipality();
+                Mayor mayor;
+                if (!Validator.isNull(municipality)) {
+                    mayor = mayorRepository.findByMunicipalityId(municipality.getId());
+                    if (Validator.isNull(mayor)) {
+                        throw new Exception("Inconsistency in data, mayor from municipality " + municipality.getId() + " is null");
+                    }
+                } else {
+                    throw new Exception("Inconsistency in data, municipality from registration " + registrationId + " is null");
+                }
+
+                permissionChecker.dropTablePermissions(userId, Integer.toString(registrationId), RightConstants.REGISTRATIONS_TABLE);
+                permissionChecker.dropTablePermissions(userId, Integer.toString(mayor.getId()), RightConstants.MAYORS_TABLE);
+                permissionChecker.dropTablePermissions(userId, Integer.toString(municipality.getId()), RightConstants.MUNICIPALITIES_TABLE);
+                responseDTO.setSuccess(true);
+                responseDTO.setData("success");
+                _log.info("ECAS Username: " + logInfo + "- Registration contact with the id "+userId+" deactivated successfully");
+            } else{
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(1, "User already deactivated."));
+                _log.info("ECAS Username: " + logInfo + "- User "+userId+ " already deactivated.");
+            }
+        } else {
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(1, "There has to be minimum 1 user per registration."));
+            _log.info("ECAS Username: " + logInfo + "- Registration " + registrationId + " has to have minimum 1 user per registration. Could not " +
+                    "deactive user " + userId + ".");
+        } return responseDTO;
+    }
+
+    public void setUserTypeToDeactivate(Integer userId){
+        User contactToDeactivate = userRepository.findOne(userId);
+        contactToDeactivate.setType((int) Constant.ROLE_DEACTIVATED);
+        userRepository.save(contactToDeactivate);
+    }
+
 }

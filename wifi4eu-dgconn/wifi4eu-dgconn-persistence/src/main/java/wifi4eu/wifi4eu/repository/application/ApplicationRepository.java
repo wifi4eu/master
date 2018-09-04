@@ -235,4 +235,7 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "INNER JOIN nuts n ON l.country_code = n.country_code " +
             "WHERE a._status = 1 AND a.call_id = ?1 AND air.reason = ?2 AND n.id = ?3", nativeQuery = true)
     Integer findApplicationsInvalidatedByCallAndReasonAndNut(int idCall, int reason, int idNut);
+
+    @Query(value = "SELECT count(*) FROM applications ap WHERE ap._status = 2 AND ap.call_id = ?1", nativeQuery = true)
+    Integer countValidatedApplicationsByCall(Integer callId);
 }

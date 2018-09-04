@@ -16,6 +16,7 @@ export class BeneficiaryRegistrationStep1Component {
     @Output() private countryChange: EventEmitter<NutsDTOBase>;
     @Output() private multipleMunicipalitiesChange: EventEmitter<boolean>;
     @Output() private onNext: EventEmitter<any>;
+    @Output() private selectedCountry = new EventEmitter(); 
 
     private countrySelected: boolean = false;
     private singleMunicipalityCheckbox: boolean = false;
