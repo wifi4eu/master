@@ -450,24 +450,17 @@ export class BeneficiaryEditProfileComponent {
             let newAssociationName = this.registrations[0].associationName;
             let numRegistrations = this.registrations.length;
             let successCount = 0;
-            for (let i = 0; i < this.registrations.length; i++) {
-                let registration = this.registrations[i];
-                registration.associationName = newAssociationName;
-                this.registrationApi.updateAssociationName(registration).subscribe(
-                    (response: ResponseDTOBase) => {
-                        if (response.success) {
-                            this.registrations[i] = response.data;
-                            successCount++;
-                        } else {
-                            this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
-                            this.submittingData = false;
-                        }
-                        if (successCount == numRegistrations) {
-                            this.editProfileData();
-                        }
+            this.registrationApi.updateAssociationName(this.registrations[0]).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        this.registrations = response.data;
+                        this.editProfileData();
+                    } else {
+                        this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                        this.submittingData = false;
                     }
-                );
-            }
+                }
+            );
         } else {
             this.editProfileData();
         }
