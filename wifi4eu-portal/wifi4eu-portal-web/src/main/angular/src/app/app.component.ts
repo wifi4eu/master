@@ -83,8 +83,8 @@ export class AppComponent {
 
         this.updateFooterDate();
 
-        //  this.sessionInterval = IntervalObservable.create(61500);
-        //  this.startInterval();
+         this.sessionInterval = IntervalObservable.create(61500);
+         this.startInterval();
     }
 
     startInterval() {
@@ -96,13 +96,13 @@ export class AppComponent {
             });
     }
 
-    // @HostListener('document:keyup', ['$event'])
-    // @HostListener('document:click', ['$event'])
-    // @HostListener('document:wheel', ['$event'])
-    // private resetInterval(newEndTime) {
-    //     this.ngUnSubscribe.next();
-    //     this.startInterval();
-    // }
+    @HostListener('document:keyup', ['$event'])
+    @HostListener('document:click', ['$event'])
+    @HostListener('document:wheel', ['$event'])
+    private resetInterval(newEndTime) {
+        this.ngUnSubscribe.next();
+        this.startInterval();
+    }
 
     private updateMenuTranslations() {
         let translatedItems = 0;
