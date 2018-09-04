@@ -1,19 +1,24 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
-import com.google.common.collect.Lists;
+import java.util.Date;
+import java.util.Locale;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.cns.CNSManager;
+
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryDisplayedListMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryDisplayedListRepository;
@@ -24,9 +29,6 @@ import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.utils.UserUtils;
-
-import java.util.Date;
-import java.util.Locale;
 
 @Service("beneficiary")
 public class BeneficiaryDisplayedListService {
@@ -41,7 +43,7 @@ public class BeneficiaryDisplayedListService {
     RegistrationRepository registrationRepository;
 
     @Autowired
-    CNSManager cnsManager;
+    MailService mailService;
 
     @Autowired
     PermissionChecker permissionChecker;
@@ -112,7 +114,10 @@ public class BeneficiaryDisplayedListService {
             if (lang != null) {
                 locale = new Locale(lang);
             }
-            cnsManager.sendInstallationConfirmationNotification(email, name, locale);
+            
+            MailData mailData = MailHelper.buildMailInstallationConfirmationNotification(email, name, locale);
+        	mailService.sendMail(mailData, false);
+            
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Successfully confirmed report");
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Confirm installation report email sent");
         } else {

@@ -1,6 +1,6 @@
 <div class="container">
     <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
-        <a class="link-label" routerLink=".." routerLinkActive="active">
+        <a class="link-label" (click)="goBack()">
             <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
         </a>
     </div>
@@ -85,7 +85,7 @@
                         </p>
                         <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
                             <span class="ui-g-6">{{ 'suppRegistration.phone.number' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ user.phone_prefix }}{{ user.phone_number }}</span>
+                            <span class="ui-g-6 profileData">{{ user.phonePrefix }} {{ user.phoneNumber }}</span>
                         </p>
                         <br><br>
                     </div>  

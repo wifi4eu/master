@@ -425,6 +425,11 @@ body {
   margin-top: 20px !important;
 }
 
+.registrationHr {
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  background: none;
+}
+
 .genericHr {
   border: 0;
   border-top: 2px solid rgba(0, 0, 0, 0.1);
@@ -519,6 +524,7 @@ body {
 
 .profileData {
   font-weight: bold;
+  overflow-wrap: break-word;
 }
 
 .profileDataDiscussion {
@@ -1970,4 +1976,24 @@ li.panel .panel-header .toggle{
 
 li.panel .panel-header .label-wrapper .label {
   color:#254872 !important;
+}
+
+.mTopCenter{
+  text-align: center;
+  margin-top: 3em;
+}
+
+.timer-height-block {
+  height: 19rem;
+}
+
+@-moz-document url-prefix() {
+  .timer-height-block {
+    @media screen and (max-width: 750px) {
+      height: 19.50rem;
+    }
+    @media screen and (max-width: 450px) {
+      height: 25rem;
+    }
+  }
 }

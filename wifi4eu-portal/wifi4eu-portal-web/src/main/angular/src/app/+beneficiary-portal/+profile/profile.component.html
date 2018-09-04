@@ -6,17 +6,18 @@
             <div class="row">
                 <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
                     <span class="beneficiaryTitle">{{ 'benefPortal.profile.title' | translate }}</span>
-                    <span class="link-label right editRegistrationsLabel" (click)="goToEditProfile()">
+                    <span class="link-label right editRegistrationsLabel" (click)="goToEditProfile()" *ngIf="!fetchingData">
                         <i class="fa fa-pencil" aria-hidden="true"></i> {{'discussionForum.editRegistration' | translate}}
                     </span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <hr class="beneficiaryHr">
+                    <hr class="registrationHr">
                 </div>
             </div>
-            <div class="row" *ngIf="municipalities.length > 0 && municipalities.length == mayors.length">
+            <i *ngIf="fetchingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+            <div class="row" *ngIf="municipalities.length > 0 && municipalities.length == mayors.length && !fetchingData">
                 <div class="col-sm-12" *ngFor="let municipality of municipalities; let i = index">
                     <div *ngIf = "i >= 1" class="row">
                         <br>
@@ -78,22 +79,22 @@
                                     <hr class="beneficiaryHr sizeBeneficiaryHr">
                                 </div>
                                 <div class="ui-g-12">
-                                    <span class="ui-g-4 ui-sm-12">Legal representative name</span>
+                                    <span class="ui-g-4 ui-sm-12">{{ 'benefRegistration.nameMayor.label' | translate }}</span>
                                     <span class="ui-g-8 ui-sm-12"><b>{{mayors[i]?.name}}</b></span>
                                 </div>
                                 <div class="ui-g-12">
-                                    <span class="ui-g-4 ui-sm-12">Legal representative surname</span>
+                                    <span class="ui-g-4 ui-sm-12">{{ 'benefRegistration.surnameMayor.label' | translate }}</span>
                                     <span class="ui-g-8 ui-sm-12"><b>{{mayors[i]?.surname}}</b></span>
                                 </div>
                                 <div class="ui-g-12">
-                                    <span class="ui-g-4 ui-sm-12">Legal representative e-mail</span>
+                                    <span class="ui-g-4 ui-sm-12">{{ 'benefRegistration.emailMayor.label' | translate }}</span>
                                     <span class="ui-g-8 ui-sm-12"><b>{{mayors[i]?.email}}</b></span>
                                 </div>
                                 <div class="ui-g-12">
                                     <hr class="beneficiaryHr sizeBeneficiaryHr">
                                 </div>
-                                <div *ngFor="let user of users[municipality.id]; let i = index">
-                                    <div *ngIf="!user?.main">
+                                <div *ngFor="let contactPerson of users[municipality.id]; let i = index">
+                                    <div *ngIf="!contactPerson?.main">
                                         <div class="ui-g-12">
                                             <span class="ui-g-12 blueText">Contact person details of Municipality {{municipality?.name}}</span>
                                         </div>
@@ -105,35 +106,35 @@
                                         -->
                                         <div class="ui-g-12">
                                             <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
-                                            <span class="ui-g-8 ui-sm-12"><b>{{user?.name}}</b></span>
+                                            <span class="ui-g-8 ui-sm-12"><b>{{contactPerson?.name}}</b></span>
                                         </div>
                                         <div class="ui-g-12">
                                             <span class="ui-g-4 ui-sm-12">{{ 'shared.surname.label' | translate }}</span>
-                                            <span class="ui-g-8 ui-sm-12"><b>{{user?.surname}}</b></span>
+                                            <span class="ui-g-8 ui-sm-12"><b>{{contactPerson?.surname}}</b></span>
                                         </div>
                                         <div class="ui-g-12">
-                                            <span class="ui-g-4 ui-sm-12">{{ 'benefPortal.granAgreement.addressLabel' | translate }}</span>
-                                            <span class="ui-g-8 ui-sm-12"><b>{{user?.address}}</b></span>
+                                            <span class="ui-g-4 ui-sm-12">{{ 'benefRegistration.townHall.address' | translate }}</span>
+                                            <span class="ui-g-8 ui-sm-12"><b>{{contactPerson?.address}}</b></span>
                                         </div>
                                         <div class="ui-g-12">
                                             <span class="ui-g-4 ui-sm-12">{{ 'shared.number.label' | translate }}</span>
-                                            <span class="ui-g-8 ui-sm-12"><b>{{user?.addressNum}}</b></span>
+                                            <span class="ui-g-8 ui-sm-12"><b>{{contactPerson?.addressNum}}</b></span>
                                         </div>
                                         <div class="ui-g-12">
                                             <span class="ui-g-4 ui-sm-12">{{ 'shared.postal-code.label' | translate }}</span>
-                                            <span class="ui-g-8 ui-sm-12"><b>{{user?.postalCode}}</b></span>
+                                            <span class="ui-g-8 ui-sm-12"><b>{{contactPerson?.postalCode}}</b></span>
                                         </div>
                                         <div class="ui-g-12">
                                             <span class="ui-g-4 ui-sm-12">{{ 'suppRegistration.city.label' | translate }}</span>
-                                            <span class="ui-g-8 ui-sm-12"><b>{{user?.city}}</b></span>
+                                            <span class="ui-g-8 ui-sm-12"><b>{{contactPerson?.city}}</b></span>
                                         </div>
                                         <div class="ui-g-12">
-                                            <span class="ui-g-4 ui-sm-12">{{ 'dgConn.beneficiaries.country' | translate }}</span>
-                                            <span class="ui-g-8 ui-sm-12"><b>{{user?.country}}</b></span>
+                                            <span class="ui-g-4 ui-sm-12">{{ 'shared.country.label' | translate }}</span>
+                                            <span class="ui-g-8 ui-sm-12"><b>{{contactPerson?.country}}</b></span>
                                         </div>
                                         <div class="ui-g-12">
                                             <span class="ui-g-4 ui-sm-12">{{ 'shared.email.label' | translate }}</span>
-                                            <span class="ui-g-8 ui-sm-12"><b>{{user?.email}}</b></span>
+                                            <span class="ui-g-8 ui-sm-12"><b>{{contactPerson?.email}}</b></span>
                                         </div>
                                         <div *ngIf="i >= 1" class="">
                                             <div class="ui-g-12">
@@ -143,7 +144,9 @@
                                     </div>
                                 </div>
                                 <div class="ui-g-12">
-                                    <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToMunicipality(municipality.id)">+ {{ 'benefPortal.beneficary.addMunicipality' | translate}}</p>
+                                    <a class="edit ui-g-12 cursorPointer" (click)="addNewContactToMunicipality(municipality.id)">
+                                        + <span class="addContactLink">{{ 'benefPortal.beneficary.addMunicipality' | translate}}</span>
+                                    </a>
                                 </div>
                             </div>
                         </ux-panel>
@@ -155,7 +158,7 @@
                 </div> <!-- end for -->
                 <div class="clearfix"></div>
                 <div class="container">
-                        <div *ngIf="userMain && userMain?.main" class="">
+                        <div  *ngIf="userMain && userMain?.main" class="">
                             <div class="row ui-g-12">
                                 <span class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
                             </div>
@@ -176,7 +179,7 @@
                                     <span class="ui-g-8 ui-sm-12"><b>{{userMain?.surname}}</b></span>
                                 </div>
                                 <div class="ui-g-12">
-                                    <span class="ui-g-4 ui-sm-12">{{ 'benefPortal.granAgreement.addressLabel' | translate }}</span>
+                                    <span class="ui-g-4 ui-sm-12">{{ 'benefRegistration.townHall.address' | translate }}</span>
                                     <span class="ui-g-8 ui-sm-12"><b>{{userMain?.address}}</b></span>
                                 </div>
                                 <div class="ui-g-12">
@@ -192,7 +195,7 @@
                                     <span class="ui-g-8 ui-sm-12"><b>{{userMain?.city}}</b></span>
                                 </div>
                                 <div class="ui-g-12">
-                                    <span class="ui-g-4 ui-sm-12">{{ 'dgConn.beneficiaries.country' | translate }}</span>
+                                    <span class="ui-g-4 ui-sm-12">{{ 'shared.country.label' | translate }}</span>
                                     <span class="ui-g-8 ui-sm-12"><b>{{userMain?.country}}</b></span>
                                 </div>
                                 <div class="ui-g-12">

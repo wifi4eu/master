@@ -53,9 +53,9 @@
                     </span>
                 </label>
             </div>
-            <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">   
+            <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
                 <!-- <p (click)="addNewContactToSupplier()">{{ "benefPortal.beneficary.addMunicipality" | translate}}</p>-->
-                <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToSupplier()">+ {{ "benefPortal.beneficary.addMunicipality" | translate}}</p>   
+                <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToSupplier()">+ {{ "benefPortal.beneficary.addMunicipality" | translate}}</p>
             </div>
         </div>
 
@@ -64,10 +64,11 @@
             <hr class="genericHr" />
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
             <div *ngFor="let user of supplier.users; let i = index">
-                <div *ngIf="i == 0">
-                <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12"> 
+                <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
                     <b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>
-                    <span class="btn redButton right"  maxlength="254" (click)="deactivateShowModal(i)" *ngIf="!(user.type == -1) && !(userConnected.id == user.id)">{{ 'shared.deactivate.button' | translate}}</span>
+                    <p  class="edit cursorPointer right"(click)="deactivateShowModal(i)" *ngIf="!(user.type == -1) && !(userConnected.id == user.id)">
+                        <i class="fa fa-ban"></i>
+                        {{ 'shared.deactivate.button' | translate}}</p>
                 </div>  
                 <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                     <label>{{ 'shared.name.label' | translate }}</label><br>
@@ -83,19 +84,18 @@
                 <br>
                 <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
                     <label>{{ 'suppRegistration.phone.number' | translate }}</label><br>
-                    <input [id]="'phone-prefix-'+i" type="text" maxlength="254" [name]="'phone-prefix-'+i" class="form-control ui-g-2 ui-sm-4"
-                        style="margin-right: 1em;" [(ngModel)]="users[i].phone_prefix" (ngModelChange)="enableButtonUser(i)" required [disabled]="user.type == -1">
-                    <input [id]="'phone-number-'+i" maxlength="254" type="text" [name]="'phone-number-'+i" class="form-control ui-g-3 ui-sm-7"
-                        [(ngModel)]="users[i].phone_number" required (ngModelChange)="enableButtonUser(i)" [disabled]="user.type == -1">
+                    <input [id]="'phone-prefix-'+i" type="text" [name]="'phonePrefix-'+i" class="form-control ui-g-2 ui-sm-4"
+                        style="margin-right: 1em;" [(ngModel)]="users[i].phonePrefix" (ngModelChange)="enableButtonUser(i)" required pattern="[0-9]{1,4}" [disabled]="user.type == -1">
+                    <input [id]="'phone-number-'+i" type="text" [name]="'phoneNumber-'+i" class="form-control ui-g-3 ui-sm-7"
+                        [(ngModel)]="users[i].phoneNumber" required (ngModelChange)="enableButtonUser(i)" pattern="[0-9]{1,}" [disabled]="user.type == -1">
                     <br>
                     <label class="ui-g-2 ui-sm-4" style="font-size: 70%;color: #8f8f8f;">
                         {{ 'suppRegistration.prefix.number' | translate }}
                     </label>
                 </div>
-                </div>
             </div>
         </div>
-  
+
         <div class="ui-g-12" *ngIf="geographicalScopeLoaded">
             <hr class="genericHr" />
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'suppRegistration.entity.support' | translate }}</p>
@@ -134,16 +134,18 @@
         <i *ngIf="!geographicalScopeLoaded" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
         <div class="ui-g-12">
             <hr class="genericHr" />
-            <div class="form-group" style="text-align: center;">
-                <button type="button" (click)="goBack()"
-                        class="btn btn-primary whiteButton" style="margin-right: 0.5em;">
+            <div class="col-lg-2"></div>
+            <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+                <button type="button" class="btn btn-primary cancel-button" (click)="goBack()">
                     {{ 'shared.cancel.button' | translate }}
                 </button>
-                <button type="button" (click)="saveSupplierData()" [disabled]="savingData || !buttonEnabled || !buttonRegionsEnabled"
-                        class="btn btn-primary blueButton" style="margin-left: 0.5em;">
-                    {{ 'shared.save' | translate }} <i *ngIf="savingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+            </div>
+            <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+                <button (click)="saveSupplierData()" class="btn btn-primary publish-button" [disabled]="savingData || !buttonEnabled || !buttonRegionsEnabled">
+                        {{ 'shared.save' | translate }} <i *ngIf="savingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
                 </button>
             </div>
+            <div class="col-lg-2"></div>
             <br style="margin-bottom: 2em;">
         </div>
     </form>
@@ -190,3 +192,25 @@
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
 
+<!--MODAL CONFIMATION OF DEACTIVATING CONTACT-->
+<p-dialog [(visible)]="displayDeactivatemodal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
+        [closeOnEscape]="false">
+        <div class="form-group ui-g">
+            <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
+                <span>{{ 'shared.deactivate.modalTitle' | translate}}</span>
+            </div>
+            <div class="col-sm-12 center" style="padding-bottom:1em;">
+                <span style="line-height: 1.25; font-size: 16px;">{{ 'shared.deactivateContactModalAreYouSure' | translate}}</span>
+            </div>
+            <div class="col-sm-12 center">
+                <div class="offset-lg-2 col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="closeModal()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' | translate }} </button>
+                </div>
+                <div class="col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="deactivateContactModal()" type="button" class="btn btn-primary cancel-button">
+                        {{ 'shared.confirm.button' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </p-dialog>
