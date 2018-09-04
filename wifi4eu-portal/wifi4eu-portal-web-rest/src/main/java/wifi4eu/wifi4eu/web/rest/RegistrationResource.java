@@ -178,7 +178,8 @@ public class RegistrationResource {
             List<RegistrationDTO> registrationResult = new ArrayList<>();
             registrationResult = registrationService.getRegistrationsByUserId(userId);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Registration retrieved successfully");
-            return registrationResult;
+
+    		return registrationResult;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());

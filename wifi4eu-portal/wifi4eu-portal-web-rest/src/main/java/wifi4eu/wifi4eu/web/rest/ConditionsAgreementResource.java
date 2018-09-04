@@ -46,7 +46,7 @@ public class ConditionsAgreementResource {
 
     @Autowired
     ApplicationService applicationService;
-
+    
     Logger _log = LogManager.getLogger(ConditionsAgreementResource.class);
 
     @ApiOperation(value = "Change ConditionsAgreement Status")
