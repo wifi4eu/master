@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.ConditionsAgreementDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.entity.registration.ConditionsAgreement;
 import wifi4eu.wifi4eu.mapper.registration.ConditionsAgreementMapper;
 import wifi4eu.wifi4eu.repository.registration.ConditionsAgreementRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
+import wifi4eu.wifi4eu.util.RedisUtil;
 
 import java.util.Date;
 
@@ -27,6 +29,9 @@ public class ConditionsAgreementService {
     @Autowired
     CallService callService;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     public ConditionsAgreementDTO saveConditionsAgreementDTO(UserDTO user, ConditionsAgreementDTO conditionsAgreementDTO) throws Exception {
         // userConnected.getId(), conditionsAgreementDTO.getRegistrationId(), conditionsAgreementDTO.getStatus()
 
@@ -39,7 +44,11 @@ public class ConditionsAgreementService {
 
         conditionsAgreementDTO.setUserId(user.getId());
         conditionsAgreementDTO.setChangeStatusDate(new Date());
-        return conditionsAgreementMapper.toDTO(conditionsAgreementRepository.save(conditionsAgreementMapper.toEntity(conditionsAgreementDTO)));
+        ConditionsAgreement condAgr = conditionsAgreementRepository.save(conditionsAgreementMapper.toEntity(conditionsAgreementDTO));
+        if (Validator.isNotNull(condAgr)) {
+            redisUtil.sync(user.getId());
+        }
+        return conditionsAgreementMapper.toDTO(condAgr);
     }
 
     public int getStatusConditionsAgreement(Integer supplierId) {

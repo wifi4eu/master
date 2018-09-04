@@ -1,7 +1,11 @@
 package wifi4eu.wifi4eu.web.cnect.rest;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +19,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
@@ -27,35 +41,22 @@ import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
-import wifi4eu.wifi4eu.service.voucher.util.ScenariosService;
-import wifi4eu.wifi4eu.util.MailService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/voucher", description = "Application object REST API services")
 @RequestMapping("voucher")
 public class VoucherResource {
-    @Autowired
-    VoucherService voucherService;
+    Logger _log = LogManager.getLogger(VoucherResource.class);
 
     @Autowired
-    ScenariosService scenariosService;
+    VoucherService voucherService;
 
     @Autowired
     UserService userService;
 
     @Autowired
-    PermissionChecker permissionChecker;
-
-    @Autowired
-    MailService mailService;
-
-    Logger _log = LogManager.getLogger(VoucherResource.class);
+    PermissionChecker permissionChecker;	
 
     @ApiOperation(value = "Get if application is in freeze list")
     @RequestMapping(value = "/in-freeze/application/{applicationId}", method = RequestMethod.GET, produces = "application/json")

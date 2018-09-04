@@ -22,6 +22,9 @@ public class ApplyVoucher {
     @Column(name = "upload_time")
     private long uploadTime;
 
+    @Column(name = "apply_time")
+    private long applyTime;
+
     @Column(name = "numberApplicant")
     private int numberApplicant;
 
@@ -32,7 +35,7 @@ public class ApplyVoucher {
 
     }
 
-    public ApplyVoucher(Long idRegistration, Long idMunicipality, String municipality, int filesUploaded, long uploadTime, int numberApplicant, int conditionAgreement) {
+    public ApplyVoucher(Long idRegistration, Long idMunicipality, String municipality, int filesUploaded, long uploadTime, long applyTime, int numberApplicant, int conditionAgreement) {
         this.idRegistration = idRegistration;
         this.idMunicipality = idMunicipality;
         this.municipality = municipality;
@@ -40,6 +43,7 @@ public class ApplyVoucher {
         this.uploadTime = uploadTime;
         this.numberApplicant = numberApplicant;
         this.conditionAgreement = conditionAgreement;
+        this.applyTime = applyTime;
     }
 
     public Long getIdRegistration() {
@@ -72,6 +76,14 @@ public class ApplyVoucher {
 
     public void setFilesUploaded(int filesUploaded) {
         this.filesUploaded = filesUploaded;
+    }
+
+    public long getApplyTime() {
+        return applyTime;
+    }
+
+    public void setApplyTime(long applyTime) {
+        this.applyTime = applyTime;
     }
 
     public long getUploadTime() {

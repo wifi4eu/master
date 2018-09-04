@@ -17,14 +17,15 @@
             <beneficiary-registration-step2 [country]="country"
                                             [multipleMunicipalities]="multipleMunicipalities"
                                             [(municipalities)]="municipalities"
-                                            [(laus)]="laus" [(mayors)]="mayors"
+                                            [(laus)]="laus" [(mayors)]="mayors" [buttonEnabledStep2]="buttonEnabledStep2"
+                                            [(emailConfirmations)]= "emailConfirmations" [(css_class_email)]= "css_class_email"
                                             (onNext)="navigate(3)" (onBack)="navigate(1)"></beneficiary-registration-step2>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'benefRegistration.registration.entity.title' | translate }}" [isCompleted]="completed[2]"
                     [isActive]="active[2]">
         <uxWizardStepCustomContent>
-            <beneficiary-registration-step3 [(initialUser)]="initialUser" [mayors]="mayors"
+            <beneficiary-registration-step3 [(initialUser)]="initialUser" [mayors]="mayors" [countries]="countries" 
                                             [multipleMunicipalities]="multipleMunicipalities"
                                             [municipalities]="municipalities" [(associationName)]="associationName"
                                             (onNext)="navigate(4)" (onBack)="navigate(2)"></beneficiary-registration-step3>
