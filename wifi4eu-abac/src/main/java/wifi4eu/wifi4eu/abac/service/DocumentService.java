@@ -1,41 +1,23 @@
 package wifi4eu.wifi4eu.abac.service;
 
 import eu.europa.ec.research.fp.services.document_management.v5.DocumentFault;
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
-import wifi4eu.wifi4eu.abac.data.entity.DocumentTypeMetadataType;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
-import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.repository.DocumentRepository;
 import wifi4eu.wifi4eu.abac.data.repository.DocumentTypeMetadataRepository;
-import wifi4eu.wifi4eu.abac.integration.eris.ErisIntegrationService;
-import wifi4eu.wifi4eu.abac.integration.eris.model.ErisClientException;
-import wifi4eu.wifi4eu.abac.integration.eris.model.ErisClientParams;
-import wifi4eu.wifi4eu.abac.integration.eris.model.ErisDocTypeEnum;
-import wifi4eu.wifi4eu.abac.integration.eris.model.ErisMetadataParam;
-import wifi4eu.wifi4eu.abac.integration.eris.model.ErisMetadataParamType;
-import wifi4eu.wifi4eu.abac.integration.eris.model.ErisServerException;
 import wifi4eu.wifi4eu.abac.integration.hrs.HermesDocumentServiceClient;
-import wifi4eu.wifi4eu.abac.rest.LegalEntityController;
 
 import javax.transaction.Transactional;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Service
 public class DocumentService {

@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac.integration.eris;
+package wifi4eu.wifi4eu.abac.integration;
 
 import org.apache.xml.serializer.DOMSerializer;
 import org.apache.xml.serializer.Method;
@@ -24,9 +24,9 @@ import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ErisLogMessageHandler implements SOAPHandler<SOAPMessageContext> {
+public class SoapLogMessageHandler implements SOAPHandler<SOAPMessageContext> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ErisLogMessageHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SoapLogMessageHandler.class);
 
     private static final Set<QName> EMPTY_SET = new HashSet<>();
     private static final ThreadLocal<String> xslt = new ThreadLocal<>();

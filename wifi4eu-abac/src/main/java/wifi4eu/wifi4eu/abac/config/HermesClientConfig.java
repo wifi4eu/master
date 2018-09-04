@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import wifi4eu.wifi4eu.abac.integration.EcasProxyTicketClient;
-import wifi4eu.wifi4eu.abac.integration.eris.ErisLogMessageHandler;
+import wifi4eu.wifi4eu.abac.integration.SoapLogMessageHandler;
 import wifi4eu.wifi4eu.abac.integration.hrs.HermesClientSOAPHandler;
 import wifi4eu.wifi4eu.abac.integration.hrs.HermesDocumentServiceClient;
 import wifi4eu.wifi4eu.abac.integration.hrs.HrsHTTpClient;
@@ -172,7 +172,7 @@ public class HermesClientConfig {
         Binding binding = ((BindingProvider)port).getBinding();
         List<Handler> handlerList = binding.getHandlerChain();
         handlerList.add(new HermesClientSOAPHandler(scriptClient, hermesApplicationId, hermesJobAccount, useFakeTicket, fakeTicket));
-        handlerList.add(new ErisLogMessageHandler());
+        handlerList.add(new SoapLogMessageHandler());
         binding.setHandlerChain(handlerList);
 
     }
