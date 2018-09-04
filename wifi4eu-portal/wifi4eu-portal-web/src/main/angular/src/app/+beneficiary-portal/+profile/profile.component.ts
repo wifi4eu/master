@@ -87,9 +87,9 @@ export class BeneficiaryProfileComponent {
     private withdrawingRegistrationConfirmation: boolean = false;
     private registrations: RegistrationDTOBase[] = [];
     private nameCookieApply: string = "hasRequested";
-    private isOrganisation: boolean = false;
     private withdrawAble: boolean = false;
     private fetchingData: boolean = false;
+    private associationName: string = null;
 
     constructor(private cookieService: CookieService, private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         this.fetchingData = true;
@@ -115,8 +115,8 @@ export class BeneficiaryProfileComponent {
                 for (let registration of registrations) {
                     if (registration.municipalityId == 0)
                         continue;
-                    if (!this.isOrganisation && registration.organisationId > 0)
-                        this.isOrganisation = true;
+                    if (!this.associationName && registration.organisationId > 0)
+                        this.associationName = registration.associationName;
                     this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                     this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(

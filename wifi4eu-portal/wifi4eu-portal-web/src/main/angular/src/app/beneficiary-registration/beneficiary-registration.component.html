@@ -37,6 +37,7 @@
             <beneficiary-registration-step4 [initialUser]="initialUser" [country]="country"
                                             [municipalities]="municipalities" [mayors]="mayors"
                                             [multipleMunicipalities]="multipleMunicipalities"
+                                            [associationName]="associationName"
                                             (onNext)="submitRegistration()" (onBack)="navigate(3)"
                                             (onEdit)="navigate($event)"></beneficiary-registration-step4>
         </uxWizardStepCustomContent>

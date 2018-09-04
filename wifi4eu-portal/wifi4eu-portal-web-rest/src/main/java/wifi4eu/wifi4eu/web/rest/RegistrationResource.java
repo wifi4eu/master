@@ -392,9 +392,10 @@ public class RegistrationResource {
             if (userConnected == null) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            RegistrationDTO associationNameUpdated = registrationService.saveRegistration(registrationDTO);
+            permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+            List<RegistrationDTO> registrations = registrationService.updateAssociationName(registrationDTO.getAssociationName(), userConnected.getId());
             _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + "- Legal files saved successfully");
-            return new ResponseDTO(true, associationNameUpdated, null);
+            return new ResponseDTO(true, registrations, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update association name", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -403,7 +404,6 @@ public class RegistrationResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These association name cannot been saved", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
-
     }
 
 }

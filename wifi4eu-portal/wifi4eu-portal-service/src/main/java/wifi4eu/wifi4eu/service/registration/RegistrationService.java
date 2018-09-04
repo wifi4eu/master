@@ -658,4 +658,15 @@ public class RegistrationService {
         }
         return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
     }
+
+    public List<RegistrationDTO> updateAssociationName(String associationName, Integer userId) {
+        List<RegistrationDTO> originalRegistrations = getRegistrationsByUserId(userId);
+        List<RegistrationDTO> newRegistrations = new ArrayList<>();
+        for (RegistrationDTO reg : originalRegistrations) {
+            RegistrationDTO newReg = reg;
+            newReg.setAssociationName(associationName);
+            newRegistrations.add(saveRegistration(newReg));
+        }
+        return newRegistrations;
+    }
 }
