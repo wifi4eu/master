@@ -1,40 +1,5 @@
 package wifi4eu.wifi4eu.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rabbitmq.client.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Controller;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
-import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
-import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
-import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
-import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
-import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
-import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
-import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
-import wifi4eu.wifi4eu.repository.user.UserRepository;
-import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
-import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
-import wifi4eu.wifi4eu.service.application.ApplicationService;
-import wifi4eu.wifi4eu.service.call.CallService;
-import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
-import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.user.UserService;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -47,47 +12,68 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Controller;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.GetResponse;
+
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
+import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
+import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
+import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
+import wifi4eu.wifi4eu.service.user.UserService;
+
 @Configuration
 @PropertySource("classpath:env.properties")
 @EnableScheduling
 @Controller
 public class ScheduledTasks {
+	
+    private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
-    @Autowired
-    private MailService mailService;
+    private final static String QUEUE_NAME = "wifi4eu_apply";
+
+    @Value("${rabbitmq.host}")
+    private String rabbitMQHost;
+
+    @Value("${rabbitmq.username}")
+    private String rabbitUsername;
+
+    @Value("${rabbitmq.password}")
+    private String rabbitPassword;
 
     @Autowired
     private HelpdeskService helpdeskService;
 
     @Autowired
-    private HelpdeskIssueMapper helpdeskIssueMapper;
-
-    @Autowired
-    private RegistrationService registrationService;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
-    private ApplicationMapper applicationMapper;
-
-    @Autowired
     private ApplicationService applicationService;
-
-    @Autowired
-    private CallService callService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private CorrectionRequestEmailRepository correctionRequestEmailRepository;
-
-    @Autowired
-    private CorrectionRequestEmailMapper correctionRequestEmailMapper;
 
     @Autowired
     private VoucherAssignmentRepository voucherAssignmentRepository;
@@ -106,19 +92,6 @@ public class ScheduledTasks {
 
     @Autowired
     DateUtils dateUtils;
-
-    private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
-
-    private final static String QUEUE_NAME = "wifi4eu_apply";
-
-    @Value("${rabbitmq.host}")
-    private String rabbitMQHost;
-
-    @Value("${rabbitmq.username}")
-    private String rabbitUsername;
-
-    @Value("${rabbitmq.password}")
-    private String rabbitPassword;
 
     /**
      * This cron method consumes the messages from the RabbitMQ

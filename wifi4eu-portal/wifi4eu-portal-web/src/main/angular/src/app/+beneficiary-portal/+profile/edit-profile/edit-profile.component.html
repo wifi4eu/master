@@ -173,9 +173,9 @@
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <a class="edit cursorPointer" (click)="addNewContactToMunicipality(municipality.id)">
-                            + <span class="addContactLink">{{ 'benefPortal.beneficary.addMunicipality' | translate}}</span>
-                        </a>
+                        <button type="button" (click)="addNewContactToMunicipality(municipality.id)" class="btn btn-primary pull-right">
+                            {{ 'benefPortal.beneficary.addMunicipality' | translate}}
+                        </button>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
@@ -433,9 +433,9 @@
                 </div>
                 <div class="row">
                     <div class="offset-sm-2 col-sm-8">
-                            <select [(ngModel)]="contactPerson.country" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" id="country_user" name="country_user"
-                            class="form-control" ng-options="option.value as option.name for option in typeOptions" #country_user="ngModel"
-                            [disabled]="countries.length < 1 || contactPerson.type == -1">
+                        <select [(ngModel)]="contactPerson.country" (ngModelChange)="checkButtonEnabledUser($event, contactPerson.id)" id="country_user"
+                            name="country_user" class="form-control" ng-options="option.value as option.name for option in typeOptions"
+                            #country_user="ngModel" [disabled]="countries.length < 1 || contactPerson.type == -1">
                             <option disabled selected [ngValue]="null">
                                 {{ 'benefRegistration.registration.selectCountry' | translate }}
                             </option>

@@ -45,7 +45,8 @@
 
 
     <properties>
-
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
         <!-- DEPENDENCIES VERSIONS -->
 
         <jdk.version>1.7</jdk.version>
@@ -166,16 +167,19 @@
         <enable.login.start></enable.login.start>
         <enable.login.end></enable.login.end>
         <enable.appinsights.start></enable.appinsights.start>
-        <enable.appinsights.end></enable.appinsights.end>
-        <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
+        <enable.appinsights.end></enable.appinsights.end>        
 
+        <!-- MailService for notifications -->
+        <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
+        <mail.serv.enable>true</mail.serv.enable>
+        <mail.serv.using.smtp>false</mail.serv.using.smtp>
+        <mail.serv.using.cns>true</mail.serv.using.cns>
         <!-- CNS -->
-        <cns.client.system.key>KEY-WiFi4EU-B49nLE82Cx</cns.client.system.key>
+        <cns.client.system.key>KEY-WiFi4EU-HK7hK38a0D</cns.client.system.key>
         <cns.client.system.password>secret</cns.client.system.password>
+        <cns.notification.group.code>WiFi4EU_NOTIF</cns.notification.group.code>
         <cns.notification.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/NotificationWebService</cns.notification.service.url>
         <cns.user.preferences.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/UserPreferencesWebService</cns.user.preferences.service.url>
-        <cns.notification.group.code>WiFi4EU_OP</cns.notification.group.code>
-
         <!-- SMTP -->
         <encrypted.azure.smtp.password>2yjdOTqqi4iVtcQmSwMcGVauFDwrdz3buvTzvyxweaVg16y5gij2kIKS/s5FggRniHETj9EhRgVoNgQlLPGpOQ==</encrypted.azure.smtp.password>
         <encrypted.smtp.password>8G6DpkmzyVSH/2SHiGZfh58xX05W8k0EM0ncdrz6tms=</encrypted.smtp.password>
@@ -187,7 +191,6 @@
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
         <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
-        <mail.serv.enable>true</mail.serv.enable>
 
         <!-- RabbitMQ -->
         <rabbitmq.host>localhost</rabbitmq.host>
@@ -217,6 +220,7 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
 
                 <!-- Webapp modules -->
                 <module>wifi4eu-portal</module>
@@ -236,6 +240,7 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
                 <!-- Webapp modules -->
                 <module>wifi4eu-portal</module>
             </modules>
@@ -247,6 +252,7 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
                 <!-- Webapp modules -->
                 <module>wifi4eu-public-portal</module>
             </modules>
@@ -258,6 +264,7 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
                 <!-- Webapp modules -->
                 <module>wifi4eu-dgconn</module>
             </modules>
@@ -269,6 +276,7 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
                 <!-- Webapp modules -->
                 <module>wifi4eu-supplier</module>
             </modules>
@@ -280,6 +288,7 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
                 <!-- Webapp modules -->
                 <module>wifi4eu-financial</module>
             </modules>
@@ -301,6 +310,9 @@
                 <ecas.server.address>${server.test.address}</ecas.server.address>
                 <ecas.server.port>8080</ecas.server.port>
                 <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
+                <mail.serv.enable>true</mail.serv.enable>
+                <mail.serv.using.smtp>true</mail.serv.using.smtp>
+                <mail.serv.using.cns>false</mail.serv.using.cns>                
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
@@ -342,8 +354,10 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
-                <redis.enabled>false</redis.enabled>
+                <redis.enabled>true</redis.enabled>
                 <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
+                <mail.serv.using.smtp>false</mail.serv.using.smtp>
+                <mail.serv.using.cns>true</mail.serv.using.cns>
             </properties>
         </profile>
         <profile>
@@ -448,6 +462,8 @@
                 <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
                 <mail.serv.enable>true</mail.serv.enable>
                 <mail.serv.location>https://${server.azure.devpg.address}/wifi4eu/#/</mail.serv.location>
+                <mail.serv.using.smtp>false</mail.serv.using.smtp>
+                <mail.serv.using.cns>true</mail.serv.using.cns>                
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>

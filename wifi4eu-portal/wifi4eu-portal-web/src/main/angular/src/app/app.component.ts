@@ -327,7 +327,7 @@ export class AppComponent {
                         this.router.navigateByUrl(String(publicRedirection));
                     }
                     this.sharedService.login(this.user);
-                    if (this.children.length == 5) {
+                    if (this.children.length == 7) {
                         this.updateHeader();
                     } else {
                         this.childrenInitialized.subscribe(() => this.updateHeader());
