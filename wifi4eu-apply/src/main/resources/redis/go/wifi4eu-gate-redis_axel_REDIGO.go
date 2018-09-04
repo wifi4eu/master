@@ -317,7 +317,7 @@ func getCallOpen() (int64, time.Time, time.Time) {
 
     })
 
-    e.GET("/calls/:callId/apply/:r/:u/:m", func(c echo.Context) error {
+	e.GET("/calls/:callId/apply/:r/:u/:m", func(c echo.Context) error {
 
 	//-- 0. Read input parameters parameters
 	cToken, err := strconv.ParseInt(c.Param("callId"), 10, 64)
