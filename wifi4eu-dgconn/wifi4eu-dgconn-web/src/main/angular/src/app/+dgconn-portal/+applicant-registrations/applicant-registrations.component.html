@@ -58,8 +58,8 @@
                 </a>
             </div>
             <p-dataTable *ngIf="!firstDataDownload" #tableApplicants [value]="applicantListItems" (onSort)="sortData($event)">
-                <p-column field="countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
-                <p-column field="name" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
+                <p-column field="countryCode" [sortable]="!loadingData" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
+                <p-column field="name" [sortable]="!loadingData" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
                 <p-column field="status" [sortable]="false" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
                     <ng-template let-row="rowData" pTemplate="body">
                         <span *ngIf="row.status == -1">-</span>
@@ -83,14 +83,14 @@
                         </span>
                     </ng-template>
                 </p-column>
-                <p-column field="counter" [sortable]="true" header="{{ 'dgConn.numberOfApplications' | translate }}" styleClass="text-center"></p-column>
-                <p-column field="mediation" [sortable]="true" header="{{ 'dgConn.beneficiaries.mediation' | translate }}" styleClass="text-center">
+                <p-column field="counter" [sortable]="!loadingData" header="{{ 'dgConn.numberOfApplications' | translate }}" styleClass="text-center"></p-column>
+                <p-column field="mediation" [sortable]="!loadingData" header="{{ 'dgConn.beneficiaries.mediation' | translate }}" styleClass="text-center">
                     <ng-template let-row="rowData" pTemplate="body">
                         <span *ngIf="row.mediation">{{'dgConn.yes' | translate }}</span>
                         <span *ngIf="!row.mediation">{{'dgConn.no' | translate }}</span>
                     </ng-template>
                 </p-column>
-                <p-column field="supportingDocuments" [sortable]="true" header="{{ 'dgConn.manageApplications.table.supportingDocuments' | translate }}" styleClass="text-center">
+                <p-column field="supportingDocuments" [sortable]="!loadingData" header="{{ 'dgConn.manageApplications.table.supportingDocuments' | translate }}" styleClass="text-center">
                   <ng-template let-row="rowData" pTemplate="body">
                     <span *ngIf="row.supportingDocuments >= 1">{{ 'dgConn.manageApplications.newUpload' | translate }}</span>
                     <span *ngIf="row.supportingDocuments == 0">-</span>
