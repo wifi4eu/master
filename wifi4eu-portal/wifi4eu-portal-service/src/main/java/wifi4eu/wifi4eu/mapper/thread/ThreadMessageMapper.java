@@ -12,12 +12,14 @@ import java.util.List;
 public interface ThreadMessageMapper {
     @Mappings({
             @Mapping(source = "entity.thread.id", target = "threadId"),
-            @Mapping(source = "entity.author.id", target = "authorId")
+            @Mapping(source = "entity.author.id", target = "authorId"),
+            @Mapping(source = "entity.registration", target = "registrationId")
     })
     ThreadMessageDTO toDTO(ThreadMessage entity);
     @Mappings({
             @Mapping(source = "vo.threadId", target = "thread.id"),
-            @Mapping(source = "vo.authorId", target = "author.id")
+            @Mapping(source = "vo.authorId", target = "author.id"),
+            @Mapping(source = "vo.registrationId", target = "registration")
     })
     ThreadMessage toEntity(ThreadMessageDTO vo);
     List<ThreadMessageDTO> toDTOList(List<ThreadMessage> list);
