@@ -93,6 +93,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
 
     private checkMunicipalitiesSelected() {
         for (let i = 0; i < this.laus.length; i++) {
+            if (!this.laus[i]) continue; // Lau is filled when the municipality is chosen, if is not chosen yet is null (and show errors)
             if (!this.laus[i].id) {
                 if (!this.multipleMunicipalities) {
                     this.municipalityForm.controls['municipality'].setErrors({ 'incorrect': true });
