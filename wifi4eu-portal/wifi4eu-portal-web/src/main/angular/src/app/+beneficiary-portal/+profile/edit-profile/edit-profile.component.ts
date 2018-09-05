@@ -197,12 +197,13 @@ export class BeneficiaryEditProfileComponent {
                                                 );
                                             }
                                         );
-                                        this.userApi.getUsersFromRegistration(registration.id).subscribe(
-                                            (users: UserContactDetailsBase[]) => {
+                                         this.userApi.getUsersFromRegistration(registration.id).subscribe(
+                                             (users: UserContactDetailsBase[]) => {
                                                 this.users[registration.municipalityId] = users;
-                                                this.userMain = users.find(x => x.main === 1);
+                                             this.userMain = users.find(x => x.main === 1);
                                             }
                                         );
+
                                     }
                                 }
                             );
@@ -553,43 +554,43 @@ export class BeneficiaryEditProfileComponent {
             }
         }
     }
+    //CONTACT DETAILS ADD CONTACT MUNICIPALITY 
+    // private addNewContactToMunicipality(municipalityId: number) {
+    //     this.idMunicipalityNewContactUser = municipalityId;
+    //     this.addUser = true;
+    // }
 
-    private addNewContactToMunicipality(municipalityId: number) {
-        this.idMunicipalityNewContactUser = municipalityId;
-        this.addUser = true;
-    }
+    // private closeAddNewContactModal() {
+    //     this.newUserEmail = '';
+    //     this.addUser = false;
+    // }
 
-    private closeAddNewContactModal() {
-        this.newUserEmail = '';
-        this.addUser = false;
-    }
-
-    private addNewContact() {
-        if (this.newUserEmail.trim() != '' && this.idMunicipalityNewContactUser != 0) {
-            this.addContact = true;
-            this.beneficiaryApi.invitateContactBeneficiary(this.idMunicipalityNewContactUser, this.newUserEmail).subscribe(
-                (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
-                        this.addContact = false;
-                        this.addUser = false;
-                        this.closeModal();
-                    } else {
-                        this.addContact = false;
-                        this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
-                        this.closeModal();
-                    }
-                }, error => {
-                    this.addContact = false;
-                    this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
-                    this.closeModal();
-                }
-            );
-            this.newUserEmail = '';
-        } else {
-            this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
-        }
-    }
+    // private addNewContact() {
+    //     if (this.newUserEmail.trim() != '' && this.idMunicipalityNewContactUser != 0) {
+    //         this.addContact = true;
+    //         this.beneficiaryApi.invitateContactBeneficiary(this.idMunicipalityNewContactUser, this.newUserEmail).subscribe(
+    //             (response: ResponseDTOBase) => {
+    //                 if (response.success) {
+    //                     this.sharedService.growlTranslation('Email sent successfully', response.data, 'success');
+    //                     this.addContact = false;
+    //                     this.addUser = false;
+    //                     this.closeModal();
+    //                 } else {
+    //                     this.addContact = false;
+    //                     this.sharedService.growlTranslation(response.data, response.error.errorMessage, 'error');
+    //                     this.closeModal();
+    //                 }
+    //             }, error => {
+    //                 this.addContact = false;
+    //                 this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.email.error', 'error');
+    //                 this.closeModal();
+    //             }
+    //         );
+    //         this.newUserEmail = '';
+    //     } else {
+    //         this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
+    //     }
+    // }
 
 
     private checkButtonEnabledUser(event, id) {
@@ -635,24 +636,25 @@ export class BeneficiaryEditProfileComponent {
         }
     }
 
-    private deactivateContactModal() {
-        this.userApi.deactivateRegistrationUser(this.registration.id, this.contactIdToDeactvate).subscribe(
-            (responseDTO: ResponseDTOBase) => {
-                this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.deactivate.sucess', 'success');
-                this.closeModal();
-                this.goBackToProfile();
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.error.api.generic', 'error');
-                this.closeModal();
-            }
-        );
-        this.closeModal();
-    }
+    // private deactivateContactModal() {
+    //     this.userApi.deactivateRegistrationUser(this.registration.id, this.contactIdToDeactvate).subscribe(
+    //         (responseDTO: ResponseDTOBase) => {
+    //             this.sharedService.growlTranslation('Deactivate contact successfully', 'shared.deactivate.sucess', 'success');
+    //             this.closeModal();
+    //             this.goBackToProfile();
+    //         }, error => {
+    //             this.sharedService.growlTranslation('An error occurred. Please, try again later.', 'shared.error.api.generic', 'error');
+    //             this.closeModal();
+    //         }
+    //     );
+    //     this.closeModal();
+    // }
 
-    private deactivateShowModal(i) {
-        this.contactIdToDeactvate = i;
-        this.displayDeactivatemodal = true;
-    }
+    //CONTACT DETAILS ADD CONTACT MUNICIPALITY
+    // private deactivateShowModal(i) {
+    //     this.contactIdToDeactvate = i;
+    //     this.displayDeactivatemodal = true;
+    // }
 
 
 }

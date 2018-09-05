@@ -169,6 +169,8 @@
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
+                
+                <!-- CONTACT DETAILS ADD CONTACT MUNICIPALITY
                 <br>
                 <div class="row">
                     <div class="col-sm-2"></div>
@@ -179,7 +181,29 @@
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
-
+                
+                   
+                <div class="col-sm-12" *ngIf="users[municipality?.id].length > 0">
+                    <div *ngFor="let contactPerson of users[registration?.municipalityId]; let i = index">
+                        <div *ngIf="!contactPerson?.main" class="ui-g-12">
+                            <div class="offset-sm-2 ui-g-8">
+                                <hr class="genericHr">
+                            </div>
+                            <span class="offset-sm-2 ui-g-8 blueText">{{'benefPortal.profile.contactPerson' | translate}}</span>
+                            <p class="edit cursorPointer right" (click)="deactivateShowModal(contactPerson.id)" *ngIf="!(contactPerson.type == -1) && !(contactPerson.id == user.id)">
+                                <i class="fa fa-ban"></i>{{ 'shared.deactivate.button' | translate}}</p>
+                            <beneficiary-user [user]="contactPerson" [organizationName]="finalBeneficiary.associationName" [isEdit]="true" [countries]="countries"
+                                (onOrganizationChange)="finalBeneficiary.associationName  = $event;checkButtonEnabledUser($event, null)"
+                                (onUserChange)="users[registration?.municipalityId][i] = $event;checkButtonEnabledUser($event, contactPerson.id)"></beneficiary-user>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br> 
+            -->
+                
             </div>
         </div>
         <br>
@@ -316,23 +340,6 @@
     </div>
     <br>
     <br>
-    <!-- CONTACT DETAILS -->
-    <div class="whitePanel col-sm-12" *ngIf="multipleMunicipalities">
-        <div *ngFor="let contactPerson of users[registration?.municipalityId]; let i = index">
-            <div *ngIf="!contactPerson?.main" class="ui-g-12">
-                <span class="offset-sm-2 ui-g-8 blueText">{{'benefPortal.profile.contactPerson' | translate}}</span>
-                <p class="edit cursorPointer right" (click)="deactivateShowModal(contactPerson.id)" *ngIf="!(contactPerson.type == -1) && !(contactPerson.id == user.id)">
-                    <i class="fa fa-ban"></i>{{ 'shared.deactivate.button' | translate}}</p>
-                <beneficiary-user [user]="contactPerson" [organizationName]="finalBeneficiary.associationName" [isEdit]="true" [countries]="countries"
-                    (onOrganizationChange)="finalBeneficiary.associationName  = $event;checkButtonEnabledUser($event, null)"
-                    (onUserChange)="users[registration?.municipalityId][i] = $event;checkButtonEnabledUser($event, contactPerson.id)"></beneficiary-user>
-                <br>
-                <br>
-            </div>
-        </div>
-    </div>
-    <br>
-    <br>
     <div class="whitePanel col-sm-12" *ngIf="userMain && userMain?.main">
         <br>
         <br>
@@ -356,7 +363,7 @@
     </div>
     <br>
     <br>
-
+        <!--CONTACT DETAILS FOR ORGANIZATION WOULD GO HERE-->
     <div class="row">
         <div class="col-lg-2"></div>
         <div class="col-sm-6 col-lg-4" style="text-align: center !important">
@@ -410,6 +417,7 @@
     </div>
 </p-dialog>
 
+<!-- CONTACT DETAILS ADD CONTACT MUNICIPALITY
 <p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
     [closeOnEscape]="false">
     <form #addNewUser="ngForm">
@@ -443,7 +451,7 @@
         <div class="col-lg-2"></div>
     </div>
 </p-dialog>
-<p-dialog [(visible)]="addContact" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
+ <p-dialog [(visible)]="addContact" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
     [closeOnEscape]="false">
     <p class="ModalLoaderDots">
         <span>·</span>
@@ -452,10 +460,10 @@
     </p>
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
-</p-dialog>
+</p-dialog> -->
 
 <!--MODAL CONFIMATION OF DEACTIVATING CONTACT-->
-<p-dialog [(visible)]="displayDeactivatemodal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+<!-- <p-dialog [(visible)]="displayDeactivatemodal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
     [closable]="false" [closeOnEscape]="false">
     <div class="form-group ui-g">
         <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
@@ -475,4 +483,4 @@
             </div>
         </div>
     </div>
-</p-dialog>
+</p-dialog> -->
