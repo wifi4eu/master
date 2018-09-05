@@ -4,6 +4,7 @@ public class LegalEntityInformationCSVRow {
 
 	private Long mid;
 	private String officialName;
+	private String abacLatinName;
 	private String officialAddress;
 	private String postalCode;
 	private String city;
@@ -83,6 +84,14 @@ public class LegalEntityInformationCSVRow {
 
 	public void setAbacReference(String abacReference) {
 		this.abacReference = abacReference;
+	}
+
+	public String getAbacLatinName() {
+		return abacLatinName;
+	}
+
+	public void setAbacLatinName(String abacLatinName) {
+		this.abacLatinName = abacLatinName;
 	}
 
 	public Integer getCallNumber() {
