@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <p class="discussionForumMayors marginTopCountdown"
-                       [innerHTML]="'discussionForum.beneficiary.registration1' | translate:{selfRegistration:user.id}">
+                       [innerHTML]="'discussionForum.beneficiary.registration1' | translate:{selfRegistration:myRegistration.id}">
                     </p>
                 </div>
             </div>
@@ -149,7 +149,7 @@
                     <div class="col-sm-3 backgroundMessage">
                         <p class="authorMessage">
                             {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
-                            {{thread.messages[i].authorId}}
+                            {{thread.messages[i].registrationId}}
                         </p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'shortTime'}}</p>

@@ -162,6 +162,7 @@ export class DiscussionComponent {
             newMessage.message = this.message;
             newMessage.authorId = this.user.id;
             newMessage.threadId = this.thread.id;
+            newMessage.registrationId = this.myRegistration.id;
             this.threadmessagesApi.createThreadMessage(newMessage).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
