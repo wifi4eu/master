@@ -22,6 +22,7 @@ export class SupplierRegistrationStep3Component {
     private user: UserDTO;
     private hasEcasEmail: boolean = false;
     private prefixRegex = new RegExp('^[+]?[1-9]{1}[0-9]{1,2}$');
+    private phoneNumberRegex = new RegExp("[0-9]{1,}");
 
     constructor(private localStorageService: LocalStorageService) {
         this.supplierChange = new EventEmitter<SupplierDTOBase>();
@@ -79,6 +80,10 @@ export class SupplierRegistrationStep3Component {
     }
 
     private isButtonEnabled() {
+        return this.checkFieldAreFilled() && this.checkPrefixAndNumberRegex();
+    }
+
+    private checkFieldAreFilled() : boolean {
         if (this.hasEcasEmail) {
             if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
             && this.supplier['contactPhoneNumber'] != null && this.supplier['contactPhonePrefix'] != null
@@ -94,7 +99,10 @@ export class SupplierRegistrationStep3Component {
                     return true;
             }
         }
-        return false;
+    }
+        
+    private checkPrefixAndNumberRegex() : boolean{
+        return this.supplier['contactPhonePrefix'].trim().match(this.prefixRegex) && this.supplier['contactPhoneNumber'].trim(this.phoneNumberRegex);
     }
 
     private rulesPrefix(event) {
