@@ -4,7 +4,7 @@ public enum LegalEntityCSVColumn {
 
 	MUNICIPALITY_PORTAL_ID("mun_id"),
 	MUNICIPALITY_NAME("mun_name"),
-	MUNICIPALITY_ABAC_LATIN_NAME("mun_abac_latin_name"),
+	MUNICIPALITY_ABAC_LATIN_NAME("mun_abac_name"),
    	MUNICIPALITY_ADDRESS("mun_address"),
 	MUNICIPALITY_POSTAL_CODE("mun_postalCode"),
 	MUNICIPALITY_CITY("mun_city"),
