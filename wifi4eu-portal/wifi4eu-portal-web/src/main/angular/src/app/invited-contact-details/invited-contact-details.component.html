@@ -16,7 +16,7 @@
                             <label class="label floatLeft" for="address">{{ 'shared.name.label' |
                                 translate }}</label>
                             <input type="text" class="form-control paddingInput" min="1" 
-                                id="name" name="name" [(ngModel)]="userInvited.name"  maxlength="254" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                                id="name" name="name" [(ngModel)]="userInvited.name"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
                         </div>
                     </div>
                     <div class="ui-g-6">
@@ -24,7 +24,7 @@
                             <label class="label floatLeft" for="address">{{ 'shared.surname.label' |
                                 translate }}</label>
                             <input type="text" class="form-control paddingInput" min="1" 
-                                id="surname" name="surname" [(ngModel)]="userInvited.surname"  maxlength="254" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                                id="surname" name="surname" [(ngModel)]="userInvited.surname"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                                     <label class="label floatLeft" for="address">{{ 'suppRegistration.phone.number' |
                                             translate }}</label>
                                         <input type="text" class="form-control paddingInput" min="1" pattern="[0-9]{1,}"
-                                            id="phoneNumber" name="phoneNumber" [(ngModel)]="userInvited.phoneNumber"  maxlength="254" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                                            id="phoneNumber" name="phoneNumber" [(ngModel)]="userInvited.phoneNumber"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
                             </div>
                         </div>
                     <br>
@@ -88,7 +88,7 @@
                             <label class="label floatLeft" for="address">{{ 'suppRegistration.city.label' |
                                 translate }}</label>
                             <input type="text" class="form-control paddingInput" min="1" 
-                                id="city" name="city" [(ngModel)]="userInvited.city"  maxlength="254" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                                id="city" name="city" [(ngModel)]="userInvited.city"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
                         </div>
                     </div>
                     <div class="ui-g-6">
@@ -96,7 +96,7 @@
                             <label class="label floatLeft" for="address">{{ 'shared.postal-code.label' |
                                 translate }}</label>
                             <input type="text" class="form-control paddingInput" min="1" 
-                                id="postalCode" name="postalCode" [(ngModel)]="userInvited.postalCode"  maxlength="254" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                                id="postalCode" name="postalCode" [(ngModel)]="userInvited.postalCode"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
                         </div>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                                 <label class="label floatLeft" for="address">{{ 'benefRegistration.townHall.address' |
                                     translate }}</label>
                                 <input type="text" class="form-control paddingInput" min="1" 
-                                        id="address" name="address" [(ngModel)]="userInvited.address"  maxlength="254" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
+                                        id="address" name="address" [(ngModel)]="userInvited.address"  maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)" required>
                             </div>
                         </div>
                         <div class="ui-g-6">
@@ -116,7 +116,7 @@
                                 <label class="label floatLeft" for="address">{{ 'shared.number.label' | translate
                                     }}</label>
                                 <input type="text" class="form-control paddingInput"
-                                    id="addressNum" name="addressNum" [(ngModel)]="userInvited.addressNum" maxlength="254" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
+                                    id="addressNum" name="addressNum" [(ngModel)]="userInvited.addressNum" maxlength="255" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
                                     required>
                             </div>
                         </div>

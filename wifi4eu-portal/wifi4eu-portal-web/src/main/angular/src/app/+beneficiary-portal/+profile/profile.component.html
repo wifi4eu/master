@@ -164,12 +164,10 @@
                             </div>
                             <div class="clearfix"></div>
                             <div class="row whitePanelBeneficiary">
-                                <!--
-                                <div *ngIf="isOrganisation" class="ui-g-12">
-                                    <span class="ui-g-4 ui-sm-12">Organisations name</span>
-                                    <span class="ui-g-8 ui-sm-12"><b>-</b></span>
+                                <div *ngIf="associationName" class="ui-g-12">
+                                    <span class="ui-g-4 ui-sm-12">{{ 'registration.nameOrganisation' | translate}}</span>
+                                    <span class="ui-g-8 ui-sm-12"><b>{{associationName}}</b></span>
                                 </div>
-                                -->
                                 <div class="ui-g-12">
                                     <span class="ui-g-4 ui-sm-12">{{ 'shared.name.label' | translate }}</span>
                                     <span class="ui-g-8 ui-sm-12"><b>{{userMain?.name}}</b></span>

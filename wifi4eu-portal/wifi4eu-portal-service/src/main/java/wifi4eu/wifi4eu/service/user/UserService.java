@@ -460,7 +460,7 @@ public class UserService {
             userRepository.save(userMapper.toEntity(user));
         }
 
-        return new ResponseDTO(true, "sucess", null);
+        return new ResponseDTO(true, "success", null);
     }
 
     public List<UserDTO> getUsersByType(int type) {

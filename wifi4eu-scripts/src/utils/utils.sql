@@ -38,3 +38,15 @@ SELECT
  INNER JOIN  municipalities mun ON mun.id = reg.municipality
  WHERE
       u.id = 28165
+
+-- When deleteing applications, delete the following tables
+
+-- delete from voucher_assignments
+-- delete from vouchers_simulations
+-- delete from grant_agreement
+-- delete from application_comment
+-- delete from authorized_person_application
+-- delete from application_invalidate_reason
+-- delete from applications
+
+

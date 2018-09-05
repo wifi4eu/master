@@ -125,6 +125,10 @@
                 <p class="ui-g-11 ui-md-11 ui-lg-10 beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
                 <a class="ui-g-2 ui-md-2 ui-lg-2 right" (click)="edit(3)">{{ 'shared.edit.button' | translate }} <i
                         class="fa fa-pencil" aria-hidden="true"></i></a>
+                <div class="row-municipality" *ngIf="associationName">
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'registration.nameOrganisation' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ associationName }}</b></span>
+                </div>
                 <div class="row-municipality">
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.name.label' | translate }}</span>
                     <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.name }}</b></span>
