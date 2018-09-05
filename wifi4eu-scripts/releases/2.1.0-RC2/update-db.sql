@@ -217,3 +217,18 @@ where region in
 (select id from nuts where label like 'EXTRA%')
 
 delete from nuts where label like 'EXTRA%'
+
+/* Add column registration to thread_messages - WIFIFOREU-3356 on 05/09/2018 */
+USE wifi4eu
+ALTER TABLE thread_messages
+ADD registration int
+
+/* Update thread_messages with registration field - WIFIFOREU-3356 on 05/09/2018 */
+USE wifi4eu
+UPDATE tm SET tm.registration = r.id
+FROM thread_messages tm
+INNER JOIN registration_users ru ON tm.author = ru._user
+INNER JOIN registrations r ON ru.registration = r.id
+INNER JOIN municipalities m ON r.municipality = m.id
+INNER JOIN threads t ON tm.thread = t.id
+WHERE m.name = t.title
