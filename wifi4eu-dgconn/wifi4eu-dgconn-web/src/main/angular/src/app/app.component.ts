@@ -91,7 +91,7 @@ export class AppComponent {
             .takeUntil(this.ngUnSubscribe)
             .subscribe(execution => {
                 // This will be called every 10 seconds until `stopCondition` flag is set to true
-                this.isSessionExpired();
+                //this.isSessionExpired();
             });
     }
 
