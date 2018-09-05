@@ -65,15 +65,19 @@
                         </span>
                     </template>
                 </p-column>
-                <p-column header="" styleClass="label" *ngIf="voucherCompetitionState != null && voucherCompetitionState != 0">
+                <p-column header="" styleClass="label" >
                     <template pTemplate="body" let-data="rowData" let-i="rowIndex">
-                          <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied(data.idRegistration) && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement">
+                          <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied(data.idRegistration) && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement || voucherCompetitionState == null || voucherCompetitionState == 0">
                               {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                           </button>
-                          <span *ngIf="data.numberApplicant || isVoucherApplied(data.idRegistration)">
+                          <span *ngIf="(data.numberApplicant || isVoucherApplied(data.idRegistration)) && (voucherCompetitionState != null && voucherCompetitionState != 0)">
                               <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
                               {{ 'benefPortal.voucher.applied' | translate }}
                           </span>
+                          <span *ngIf="(data.numberApplicant || isVoucherApplied(data.idRegistration)) && (voucherCompetitionState == null || voucherCompetitionState == 0)">
+                            <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
+                            {{ 'benefPortal.voucher.applied.callEnded' | translate:{date:applyDateTime[data.idMunicipality],hour:applyHourTime[data.idMunicipality]} }} 
+                        </span>
                     </template>
                 </p-column>
                 <template let-data pTemplate="rowexpansion" let-i="rowIndex">
@@ -85,7 +89,7 @@
                                 <i *ngIf="data.numberApplicant || isVoucherApplied(data.idRegistration)" class="fa fa-check-square-o" aria-hidden="true" ></i>
                             </div>
                             <div class="col-sm-11 col-md-11 col-lg-11">
-                                <div [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></div>
+                                <div class="forceBlueColorOnLinks" [innerHTML]="'benefPortal.voucher.conditionsAgreement' | translate"></div>
                             </div>
                         </div>
                     </div>

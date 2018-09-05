@@ -57,7 +57,7 @@ export class InvitedContactDetailsComponent {
     return false;
   }
 
-  private sendInvitedContactDetails(){
+  /*private sendInvitedContactDetails(){
     if (this.checkButtonEnabledByInvitedUserType()){
       this.userApi.completeInvitateContactDetails(this.userInvited).subscribe(
         (response: ResponseDTOBase) => {
@@ -76,5 +76,5 @@ export class InvitedContactDetailsComponent {
     } else {
       this.sharedService.growlTranslation('Please, fill all the fields to proceed with the registration', '', 'error');
     }
-  }
+  }*/
 }

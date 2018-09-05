@@ -14,6 +14,9 @@
 
     <name>WiFi4EU Public Portal Service module</name>
 
+	<properties>
+		<jdk.version>1.8</jdk.version>
+	</properties>
 
     <dependencies>
         <dependency>
@@ -76,6 +79,18 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>wifi4eu-persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>wifi4eu-common-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

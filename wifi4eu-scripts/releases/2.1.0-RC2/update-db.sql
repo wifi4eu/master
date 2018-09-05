@@ -218,6 +218,9 @@ where region in
 
 delete from nuts where label like 'EXTRA%'
 
+-- 2018-09-03 Convert the date of the applications from nanos to millis (10 digits)
+UPDATE applications set date = LEFT(date, 10) where LEN(date) > 10
+
 /* Add column registration to thread_messages - WIFIFOREU-3356 on 05/09/2018 */
 USE wifi4eu
 ALTER TABLE thread_messages

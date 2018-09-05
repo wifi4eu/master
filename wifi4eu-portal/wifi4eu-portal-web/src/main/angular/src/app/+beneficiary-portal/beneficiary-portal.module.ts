@@ -15,6 +15,7 @@ import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-pr
 import { MyHistoryComponent } from "./my-history/my-history.component";
 import { MyVoucherComponent } from "./+grant-agreement/grant-agreement.component";
 import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agreement/sign-grant-agreement.component";
+import { BeneficiaryUserComponent } from "./+profile/beneficiary-user/beneficiary-user.component";
 
 // import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
 
@@ -32,7 +33,8 @@ import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agre
         BeneficiaryEditProfileComponent,
         MyHistoryComponent,
         MyVoucherComponent,
-        SignGrantAgreementComponent
+        SignGrantAgreementComponent,
+        BeneficiaryUserComponent
         // SelectSupplierComponent
     ], providers: [
         BeneficiaryService

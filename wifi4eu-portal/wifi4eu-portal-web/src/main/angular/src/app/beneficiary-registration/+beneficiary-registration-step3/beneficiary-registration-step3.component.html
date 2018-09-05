@@ -133,7 +133,7 @@
                         <label class="label floatLeft">{{ 'shared.email.label' | translate }}</label>
                         <input class="form-control paddingInput" type="email" [pattern]="emailPattern" [disabled]="imMayor" [(ngModel)]="initialUser.ecasEmail"
                              id="emailStep2" name="email"
-                               (input)="checkEmailsMatch()" maxlength="254" required>
+                               (input)="checkEmailsMatch()" maxlength="255" required>
                         <label class="field-desc" style="margin-top: 10px;color: gray;">
                             {{ 'benefRegistration.email.fielddesc' | translate }}
                         </label>
@@ -147,7 +147,7 @@
                         <input class="form-control paddingInput {{css_class_email}}" [pattern]="emailPattern" [disabled]="imMayor" [(ngModel)]="repeatEmail"
                                name="confirm-email" id="confirm-emailStep2" type="email"
                                (input)="checkEmailsMatch()" (paste)="preventPaste()"
-                               maxlength="254" required>
+                               maxlength="255" required>
                     </div>
                     <div class="ui-g-2"></div>
                 </div>

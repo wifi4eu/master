@@ -1,13 +1,16 @@
 package wifi4eu.wifi4eu.util.reporting;
+import java.util.Locale;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Configurable;
+
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.cns.CNSManager;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.helper.BeanUtil;
 import wifi4eu.wifi4eu.common.helper.Validator;
-
-import java.util.Locale;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 
 @Configurable
 public class ExcelReportsRunnable implements Runnable {
@@ -15,8 +18,9 @@ public class ExcelReportsRunnable implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(ExcelReportsRunnable.class);
 
-    CNSManager cnsManager;
+    MailService mailService;
     ReportingSystemManager reportingSystemManager;
+    
     String currentQuery;
     String name;
     String email;
@@ -29,7 +33,7 @@ public class ExcelReportsRunnable implements Runnable {
         this.email = email;
         this.lang = lang;
         this.reportingSystemManager = BeanUtil.getBean(ReportingSystemManager.class);
-        this.cnsManager = BeanUtil.getBean(CNSManager.class);
+        this.mailService = BeanUtil.getBean(MailService.class);
     }
 
     public ExcelReportsRunnable(){
@@ -53,7 +57,9 @@ public class ExcelReportsRunnable implements Runnable {
                 if(Validator.isNotNull(lang)){
                     locale = new Locale(lang);
                 }
-                cnsManager.sendReportingSystemCallOpen(email, name, urlFinal, locale);
+                
+                MailData mailData = MailHelper.buildMailReportingSystemCallOpen(email, name, urlFinal, locale);
+            	mailService.sendMail(mailData, true);
             }
         } else {
             logger.debug("URL not generated correctly");

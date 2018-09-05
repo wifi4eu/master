@@ -87,8 +87,9 @@ export class SupplierEditProfileComponent {
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
                     this.supplier = supplier;
-                    // this.users = this.supplier.users;
-                    this.users = this.supplier.users;
+                    // ADD CONTACT 
+                    //this.users = this.supplier.users; //uncomment
+                    this.users.push(this.user); //delete
                     if (this.supplier.logo != null)
                         this.isLogoUploaded = true;
                     this.nutsApi.getNutsByLevel(0).subscribe(
@@ -262,8 +263,8 @@ export class SupplierEditProfileComponent {
         this.displayDeactivatemodal = false;
     }
 
+/* ADD CONTACT
 
-    /* New contact funciontality */
     private sendMailToUser(){
         this.newUserEmail = '';
         this.addUser = true;
@@ -287,7 +288,7 @@ export class SupplierEditProfileComponent {
         this.contactIndex = i;
         this.displayDeactivatemodal= true;
     }
-
+*/
  
     private enableButton() {
         this.buttonEnabled = false;
@@ -339,7 +340,7 @@ export class SupplierEditProfileComponent {
         for (let i = 0; i < this.users.length; i++)
             this.enableButtonUser(i);
     }
-
+/* ADD CONTACT
     private closeAddNewContactModal(){
         this.newUserEmail = '';
         this.addUser = false;
@@ -375,5 +376,5 @@ export class SupplierEditProfileComponent {
             this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'supplierPortal.profile.addNewContact.empty', 'error');
         }
     }
-
+*/
 }

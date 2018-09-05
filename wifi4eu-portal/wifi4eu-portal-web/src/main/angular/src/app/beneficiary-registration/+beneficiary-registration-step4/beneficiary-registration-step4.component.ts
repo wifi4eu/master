@@ -22,6 +22,7 @@ export class BeneficiaryRegistrationStep4Component {
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
     @Input('mayors') private mayors: UserDTOBase[];
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
+    @Input('associationName') private associationName: string;
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
     @Output() private onEdit: EventEmitter<number>;

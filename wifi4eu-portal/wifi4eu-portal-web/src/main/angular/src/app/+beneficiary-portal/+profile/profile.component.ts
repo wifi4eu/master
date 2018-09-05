@@ -87,10 +87,10 @@ export class BeneficiaryProfileComponent {
     private withdrawingRegistrationConfirmation: boolean = false;
     private registrations: RegistrationDTOBase[] = [];
     private nameCookieApply: string = "hasRequested";
-    private isOrganisation: boolean = false;
     private withdrawAble: boolean = false;
     private fetchingData: boolean = false;
     private repeatedMunicipality: Array<boolean> = [];
+    private associationName: string = null;
 
     constructor(private cookieService: CookieService, private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         this.fetchingData = true;
@@ -116,8 +116,8 @@ export class BeneficiaryProfileComponent {
                 for (let registration of registrations) {
                     if (registration.municipalityId == 0)
                         continue;
-                    if (!this.isOrganisation && registration.organisationId > 0)
-                        this.isOrganisation = true;
+                    if (!this.associationName && registration.organisationId > 0)
+                        this.associationName = registration.associationName;
                     this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
                     this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
@@ -232,22 +232,6 @@ export class BeneficiaryProfileComponent {
                 );
                 break;
         }
-    }
-
-    private saveUserChanges() {
-        if (this.editedUser.email != this.user.email) {
-            this.editedUser.email = this.user.email;
-        }
-        this.submittingData = true;
-        this.userApi.updateUserDetails(this.editedUser).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.user = response.data;
-                    this.closeModal();
-                    this.submittingData = false;
-                }
-            }
-        );
     }
 
     private saveMunicipalityChanges() {
@@ -416,7 +400,7 @@ export class BeneficiaryProfileComponent {
     private goToEditProfile() {
         this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
     }
-
+    /*CONTACT DETAILS ADD CONTACT MUNICIPALITY
     private addNewContactToMunicipality(municipalityId: number){
         this.idMunicipalityNewContactUser = municipalityId;
         this.addUser = true;
@@ -452,5 +436,5 @@ export class BeneficiaryProfileComponent {
         } else {
             this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
         }
-    }
+    }*/
 }
