@@ -99,7 +99,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
                     this.municipalityForm.controls['municipality'].setErrors({ 'incorrect': true });
                 }
                 else {
-                    this.municipalityForm.controls[`municipality-${i}`].setErrors({ 'incorrect': true });
+                    this.municipalityForm.controls[`municipality-${this.getIndexInForm(i)}`].setErrors({ 'incorrect': true });
                 }
                 this.css_class_municipalities[i] = 'notValid';
             } else {
@@ -107,7 +107,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
                     if (this.municipalityForm.controls['municipality'] != undefined) this.municipalityForm.controls['municipality'].setErrors(null);
                 }
                 else {
-                    this.municipalityForm.controls[`municipality-${i}`].setErrors(null);
+                    this.municipalityForm.controls[`municipality-${this.getIndexInForm(i)}`].setErrors(null);
                 }
                 this.css_class_municipalities[i] = 'isValid';
             }
@@ -190,5 +190,17 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
 
     private isEmpty(string: String) : boolean{
         return string == null || string.trim() == "";
+    }
+
+    private getIndexInForm(index: number) :number{
+        let indexInForm : number = 0;
+        let position : number = 0;
+
+        while(position < index){
+            indexInForm++;
+            if (this.municipalityForm.controls[`municipality-${indexInForm}`]  != undefined) position++;
+        }
+
+        return indexInForm;
     }
 }
