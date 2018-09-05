@@ -90,6 +90,7 @@ export class BeneficiaryProfileComponent {
     private isOrganisation: boolean = false;
     private withdrawAble: boolean = false;
     private fetchingData: boolean = false;
+    private repeatedMunicipality: Array<boolean> = [];
 
     constructor(private cookieService: CookieService, private beneficiaryApi: BeneficiaryApi, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         this.fetchingData = true;
@@ -123,19 +124,24 @@ export class BeneficiaryProfileComponent {
                         (municipality: MunicipalityDTOBase) => {
                             this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                 (mayor: MayorDTOBase) => {
-                                    this.municipalities.push(municipality);
-                                    this.mayors.push(mayor);
-                                    // Order the threads array with the municipalities
-                                    if (this.municipalities.length == registrations.length) {
-                                        let indexedThreads = this.userThreads.map(function(element) {return element.title});
-                                        for(let municipality of this.municipalities) {
-                                            let exists = indexedThreads.indexOf(municipality.name);
-                                            if (exists != -1)
-                                                this.orderedUserThreads.push(this.userThreads[exists]);
-                                            else
-                                                this.orderedUserThreads.push(null);
+                                    this.municipalityApi.getIfManyMunicipalitiesByLauId(municipality.id, municipality.lauId).subscribe(
+                                        (repeated : boolean) => {
+                                            this.municipalities.push(municipality);
+                                            this.mayors.push(mayor);
+                                            this.repeatedMunicipality.push(repeated);
+                                            // Order the threads array with the municipalities
+                                            if (this.municipalities.length == registrations.length) {
+                                                let indexedThreads = this.userThreads.map(function(element) {return element.title});
+                                                for(let municipality of this.municipalities) {
+                                                    let exists = indexedThreads.indexOf(municipality.name);
+                                                    if (exists != -1)
+                                                        this.orderedUserThreads.push(this.userThreads[exists]);
+                                                    else
+                                                        this.orderedUserThreads.push(null);
+                                                }
+                                            }
                                         }
-                                    }
+                                    );
                                 }
                             );
                         }
@@ -165,7 +171,6 @@ export class BeneficiaryProfileComponent {
                                                          for (let i = 0; i < utsByThread.length; ++i) {
                                                             if (utsByThread[i].userId != this.user.id) {
                                                                 this.threadsByUser.push(utsByThread[i]);
-
                                                             }
                                                         }
                                                     }
@@ -331,10 +336,6 @@ export class BeneficiaryProfileComponent {
                 }
             );
         }
-    }
-
-    private checkHasDiscussion(municipality){
-      return this.userThreads.some(userThread => userThread.title === municipality.name);
     }
 
     private goToDiscussion(index) {

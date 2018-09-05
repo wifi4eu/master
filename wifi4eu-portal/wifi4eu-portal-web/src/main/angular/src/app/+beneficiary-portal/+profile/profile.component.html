@@ -40,7 +40,7 @@
                     <div class="row panelMunicipality">
                         <ux-panel label="{{ 'shared.municipality.label' | translate }} {{municipality?.name}} - #{{ i + 1 }}" [isExpandable]="true" [isExpanded]="i == 0" tagLabel="show">
                             <div class="container whitePanelBeneficiary">
-                            <div class="ui-g-12" *ngIf="checkHasDiscussion(municipality)">
+                            <div class="ui-g-12" *ngIf="repeatedMunicipality[i]">
                                     <div class="ui-g-12">
                                         <div *ngIf="orderedUserThreads[i]" class="col-sm-12 margin-top discussionWarningBox discussionWarning-icon">
                                             <div class="row">
