@@ -54,8 +54,8 @@
                 </label>
             </div>
             <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
-                <!-- <p (click)="addNewContactToSupplier()">{{ "benefPortal.beneficary.addMunicipality" | translate}}</p>-->
-                <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToSupplier()">+ {{ "benefPortal.beneficary.addMunicipality" | translate}}</p>
+ <!--ADD CONTACT-->
+               <!-- <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToSupplier()">+ {{ "benefPortal.beneficary.addMunicipality" | translate}}</p>-->
             </div>
         </div>
 
@@ -63,9 +63,10 @@
         <div class="ui-g-12">
             <hr class="genericHr" />
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
-            <div *ngFor="let user of supplier.users; let i = index">
+            <div *ngFor="let user of users; let i = index">
                 <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
-                    <b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>
+                    <!--ADD CONTACT-->
+                    <!--<b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>-->
                     <p  class="edit cursorPointer right"(click)="deactivateShowModal(i)" *ngIf="!(user.type == -1) && !(userConnected.id == user.id)">
                         <i class="fa fa-ban"></i>
                         {{ 'shared.deactivate.button' | translate}}</p>
@@ -150,7 +151,7 @@
         </div>
     </form>
 </div>
-
+<!--ADD CONTACT
 <p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <form #addNewUser="ngForm">
@@ -191,8 +192,8 @@
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
-
-<!--MODAL CONFIMATION OF DEACTIVATING CONTACT-->
+-->
+<!--MODAL CONFIMATION OF DEACTIVATING CONTACT
 <p-dialog [(visible)]="displayDeactivatemodal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
         [closeOnEscape]="false">
         <div class="form-group ui-g">
@@ -214,3 +215,4 @@
             </div>
         </div>
     </p-dialog>
+    -->

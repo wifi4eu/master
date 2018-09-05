@@ -105,7 +105,9 @@ export class SupplierProfileComponent {
                                 });
                             }
                             this.regionsToRender = this.supportedRegions[this.selectedCountriesNames[0]];
-                            this.users = this.supplier.users;
+                            // ADD CONTACT 
+                            //this.users = this.supplier.users; //uncomment
+                            this.users.push(this.user); //delete
                             this.fetchingData = false;
                         }
                     );
@@ -342,7 +344,7 @@ export class SupplierProfileComponent {
         this.displayLanguageModal = false;
         Object.assign(this.editedSupplier, this.supplier);
     }
-
+/* ADD CONTACT
     private closeAddNewContactModal(){
         this.newUserEmail = '';
         this.addUser = false;
@@ -378,5 +380,5 @@ export class SupplierProfileComponent {
             this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'supplierPortal.profile.addNewContact.empty', 'error');
         }
     }
-
+*/
 }
