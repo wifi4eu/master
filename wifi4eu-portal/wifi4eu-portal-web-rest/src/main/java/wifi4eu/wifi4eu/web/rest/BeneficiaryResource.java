@@ -278,10 +278,10 @@ public class BeneficiaryResource {
             return null;
         }
     }
-
-    @ApiOperation(value = "Generate invitation to be a beneficiary contact")
-    @RequestMapping(value = "/invitation-contact-beneficiary", method = RequestMethod.POST)
-    @ResponseBody
+//      ADD CONTACT
+//    @ApiOperation(value = "Generate invitation to be a beneficiary contact")
+//    @RequestMapping(value = "/invitation-contact-beneficiary", method = RequestMethod.POST)
+//    @ResponseBody
     public ResponseDTO invitateContactBeneficiary(@RequestParam("idMunicipality") final int idMunicipality, @RequestParam("newContactEmail") final String newContactEmail, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);

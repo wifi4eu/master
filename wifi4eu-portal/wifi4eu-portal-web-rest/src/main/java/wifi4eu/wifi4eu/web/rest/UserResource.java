@@ -153,9 +153,10 @@ public class UserResource {
         }
     }
 
-    @ApiOperation(value = "Service to do Login with a ECAS User")
-    @RequestMapping(value = "/complete-contact-details", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
+    //ADD CONTACT
+//    @ApiOperation(value = "Service to do Login with a ECAS User")
+//    @RequestMapping(value = "/complete-contact-details", method = RequestMethod.POST, produces = "application/json")
+//    @ResponseBody
     public ResponseDTO completeInvitateContactDetails(@RequestBody final UserDTO userDTO, HttpServletResponse response) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
@@ -357,9 +358,10 @@ public class UserResource {
         return responseDTO;
     }
 
-    @ApiOperation(value = "Deactivate user from registration")
-    @RequestMapping(value = "/registrationUsers/{registrationId}/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
+    //ADD CONTACT
+//    @ApiOperation(value = "Deactivate user from registration")
+//    @RequestMapping(value = "/registrationUsers/{registrationId}/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
+//    @ResponseBody
     public ResponseDTO deactivateRegistrationUser(@PathVariable("registrationId") Integer registrationId, @PathVariable("userId") Integer userId,
                                                   HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
