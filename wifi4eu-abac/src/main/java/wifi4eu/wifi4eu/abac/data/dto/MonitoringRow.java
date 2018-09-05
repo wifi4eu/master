@@ -18,8 +18,11 @@ public class MonitoringRow {
 	private String municipality;
 	private Long registrationNumber;
 	private String lefStatus;
+	private String lefAbacRef;
 	private String bcStatus;
+	private String bcAbacRef;
 	private String lcStatus;
+	private String lcAbacRef;
 	private Boolean readyToBeCounterSigned;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
@@ -43,11 +46,13 @@ public class MonitoringRow {
 			this.setRegistrationNumber(legalEntity.getRegistrationNumber());
 			this.setSignatureDate(legalEntity.getSignatureDate());
 			this.setLefStatus(legalEntity.getWfStatus());
+			this.setLefAbacRef(legalEntity.getAbacFelId());
 		}
 
 		//Budgetary Commitment Data
 		if(budgetaryCommitment != null) {
 			this.setBcStatus(budgetaryCommitment.getWfStatus());
+			//this.setBcAbacRef(???);
 		}
 
 		//Legal Commitment Data
@@ -55,7 +60,7 @@ public class MonitoringRow {
 			this.setLcStatus(legalCommitment.getWfStatus());
 			this.setSignatureDate(legalCommitment.getGrantAgreementSignatureDate());
 			this.setCounterSignatureDate(legalCommitment.getGrantAgreementCounterSignatureDate());
-
+			this.setLcAbacRef(legalCommitment.getAbacKey());
 		}
 
 		//TODO check in the USER REQUIREMENTS if these condtions are right
@@ -156,4 +161,29 @@ public class MonitoringRow {
 	public void setReadyToBeCounterSigned(Boolean readyToBeCounterSigned) {
 		this.readyToBeCounterSigned = readyToBeCounterSigned;
 	}
+
+	public String getLefAbacRef() {
+		return lefAbacRef;
+	}
+
+	public void setLefAbacRef(String lefAbacRef) {
+		this.lefAbacRef = lefAbacRef;
+	}
+
+	public String getBcAbacRef() {
+		return bcAbacRef;
+	}
+
+	public void setBcAbacRef(String bcAbacRef) {
+		this.bcAbacRef = bcAbacRef;
+	}
+
+	public String getLcAbacRef() {
+		return lcAbacRef;
+	}
+
+	public void setLcAbacRef(String lcAbacRef) {
+		this.lcAbacRef = lcAbacRef;
+	}
+	
 }

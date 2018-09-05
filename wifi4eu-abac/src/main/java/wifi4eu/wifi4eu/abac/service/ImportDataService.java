@@ -3,7 +3,6 @@ package wifi4eu.wifi4eu.abac.service;
 
 import eu.cec.digit.ecas.client.jaas.DetailedUser;
 import eu.cec.digit.ecas.client.jaas.SubjectNotFoundException;
-import eu.cec.digit.ecas.client.jaas.SubjectUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,9 +44,6 @@ public class ImportDataService {
 	private DocumentCSVFileParser documentCSVFileParser;
 
 	@Autowired
-	private LegalCommitmentCSVFileParser legalCommitmentCSVFileParser;
-
-	@Autowired
 	private BudgetaryCommitmentCSVFileParser budgetaryCommitmentCSVFileParser;
 
 	@Autowired
@@ -56,15 +52,20 @@ public class ImportDataService {
 	@Autowired
 	private DocumentService documentService;
 
-	@Autowired BudgetaryCommitmentService budgetaryCommitmentService;
+	@Autowired
+	private BudgetaryCommitmentService budgetaryCommitmentService;
 
 	@Autowired
 	private ImportLogRepository importLogRepository;
 
-	@Autowired NotificationService notificationService;
+	@Autowired
+	private NotificationService notificationService;
 
 	@Autowired
-	LegalCommitmentService legalCommitmentService;
+	private LegalCommitmentService legalCommitmentService;
+	
+	@Autowired
+	ECASUserService ecasUserService;
 
 
 	static final String LEGAL_ENTITY_INFORMATION_CSV_FILENAME = "portal_exportBeneficiaryInformation.csv";
@@ -98,7 +99,7 @@ public class ImportDataService {
 		legalCommitmentService.createLegalCommitments(batchRef);
 
 		//log the imported file
-		logImport(fileDTO, batchRef, getCurrentUser().getUid());
+		logImport(fileDTO, batchRef, ecasUserService.getCurrentUsername());
 
 		//create user notification
 		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LC_CREATION);
@@ -151,7 +152,7 @@ public class ImportDataService {
 				legalEntity = legalEntityService.mapLegalEntityCSVToEntity(legalEntityInformationCSVRow);
 
 				//set the current user
-                legalEntity.setUserImported(getCurrentUser().getUid());
+                legalEntity.setUserImported(ecasUserService.getCurrentUsername());
 
                 //set the current batch ID
 				legalEntity.setBatchRef(batchRef);
@@ -171,20 +172,10 @@ public class ImportDataService {
 		}
 
 		//log the imported file
-		logImport(fileDTO, batchRef, getCurrentUser().getUid());
+		logImport(fileDTO, batchRef, ecasUserService.getCurrentUsername());
 
 		//create user notification
 		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LEF_CREATION);
-	}
-
-	private DetailedUser getCurrentUser() {
-		DetailedUser currentEcasUser = null;
-		try {
-			currentEcasUser = SubjectUtil.getCurrentEcasUser();
-		} catch (SubjectNotFoundException e) {
-			log.error("ERROR while trying to retrieve the current user", e);
-		}
-		return currentEcasUser;
 	}
 
 	private void logImport(FileDTO fileDTO, String batchRef, String userId){
@@ -260,7 +251,7 @@ public class ImportDataService {
 		}
 
 		//log the imported file
-		logImport(fileDTO, batchRef, getCurrentUser().getUid());
+		logImport(fileDTO, batchRef, ecasUserService.getCurrentUsername());
 
 		//create user notification
 		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.BC_CREATION);

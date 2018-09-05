@@ -1,32 +1,25 @@
 package wifi4eu.wifi4eu.abac.service;
 
 
-import eu.cec.digit.ecas.client.jaas.DetailedUser;
-import eu.cec.digit.ecas.client.jaas.SubjectNotFoundException;
-import eu.cec.digit.ecas.client.jaas.SubjectUtil;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
+
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
-import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
-import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
-import wifi4eu.wifi4eu.abac.data.entity.*;
-import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
-import wifi4eu.wifi4eu.abac.data.enums.NotificationType;
-import wifi4eu.wifi4eu.abac.data.repository.ImportLogRepository;
-import wifi4eu.wifi4eu.abac.utils.ZipFileReader;
+import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
+import wifi4eu.wifi4eu.abac.data.entity.Document;
+import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.utils.ZipFileWriter;
 import wifi4eu.wifi4eu.abac.utils.csvparser.BudgetaryCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.DocumentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalCommitmentCSVFileParser;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
-
-import javax.transaction.Transactional;
-import java.io.IOException;
-import java.util.*;
 
 @Service
 public class ExportDataService {

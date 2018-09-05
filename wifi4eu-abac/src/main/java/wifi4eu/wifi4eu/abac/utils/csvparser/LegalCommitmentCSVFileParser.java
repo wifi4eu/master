@@ -3,8 +3,8 @@ package wifi4eu.wifi4eu.abac.utils.csvparser;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import wifi4eu.wifi4eu.abac.data.dto.LegalCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentCSVColumn;
@@ -59,6 +59,7 @@ public class LegalCommitmentCSVFileParser extends AbstractCSVFileParser{
 			}
 
 			csvPrinter.flush();
+			csvPrinter.close();
 			return stream.toString();
 
 		} catch (IOException e) {

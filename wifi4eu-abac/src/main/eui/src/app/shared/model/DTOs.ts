@@ -9,8 +9,11 @@ export interface MonitoringRowDTO {
     municipality?: string;
     registrationNumber?: number;
     lefStatus?: string;
+    lefAbacRef?: string;
     bcStatus?: string;
+    bcAbacRef?: string;
     lcStatus?: string;
+    lcAbacRef?: string;
     signatureDate?: string;
     counterSignatureDate?: string;
     readyToBeCounterSigned?: Boolean;

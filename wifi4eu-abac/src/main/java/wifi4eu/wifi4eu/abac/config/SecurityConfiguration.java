@@ -21,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import wifi4eu.wifi4eu.abac.security.CustomAuthFilter;
 import wifi4eu.wifi4eu.abac.security.CustomAuthenticationProvider;
 import wifi4eu.wifi4eu.abac.security.CustomUserDetailsService;
+import wifi4eu.wifi4eu.abac.service.ECASUserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
@@ -32,6 +33,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     CustomAuthenticationProvider customAuthProvider;
+    
+    @Autowired
+    ECASUserService ecasUserService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
@@ -54,7 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint());
 
-        http.addFilterBefore(new CustomAuthFilter(authenticationManager()), BasicAuthenticationFilter.class);
+        http.addFilterBefore(new CustomAuthFilter(authenticationManager(), ecasUserService), BasicAuthenticationFilter.class);
 
     }
 

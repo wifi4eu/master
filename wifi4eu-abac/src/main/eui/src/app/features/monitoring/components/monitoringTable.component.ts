@@ -35,8 +35,11 @@ export class MonitoringTableComponent implements OnInit{
             { field: 'municipality', header: '<br/>Municipality' },
             { field: 'registrationNumber', header: 'Registration<br/>Number' },
             { field: 'lefStatus', header: '<br/>LEF Status', isFor: 'lef' },
+            { field: 'lefAbacRef', header: '<br/>LEF ABAC ref', isFor: 'lef' },
             { field: 'bcStatus', header: '<br/>BC Status', isFor: 'bc' },
+            { field: 'bcAbacRef', header: '<br/>BC ABAC ref', isFor: 'bc' },
             { field: 'lcStatus', header: '<br/>LC Status', isFor: 'lc' },
+            { field: 'lcAbacRef', header: '<br/>LC ABAC ref', isFor: 'lc' },
             { field: 'signatureDate', header: 'Date of<br/>signature' },
             { field: 'counterSignatureDate', header: 'Date of<br/>counter signature' },
         ];
