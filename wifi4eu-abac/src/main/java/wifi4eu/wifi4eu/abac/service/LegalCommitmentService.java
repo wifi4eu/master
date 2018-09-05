@@ -42,6 +42,9 @@ public class LegalCommitmentService {
 	@Autowired
 	private PropertiesService propertiesService;
 
+	@Autowired
+	private UserService userService;
+
 	@Transactional
 	public void findAndCounterSignGrantAgreements() {
 
@@ -51,7 +54,7 @@ public class LegalCommitmentService {
 
 				Document grantAgreement = legalCommitment.getGrantAgreementDocument();
 
-				byte[] countersignedFile = essiService.signDocument(grantAgreement, createSignatureDescription(legalCommitment));
+				byte[] countersignedFile = essiService.signDocument(grantAgreement, userService.getUserByUsername(getCurrentUser().getUid()), userService.getUserByUsername(propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_UID")));
 
 				Document counterSignedGrantAgreement = new Document();
 				counterSignedGrantAgreement.setName("countersigned_"+ grantAgreement.getName());
@@ -75,18 +78,6 @@ public class LegalCommitmentService {
 		} catch (Throwable e) {
 			log.error(e.getMessage());
 		}
-	}
-
-	private String createSignatureDescription(LegalCommitment legalCommitment) {
-		String designatedOfficerUid = propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_UID");
-		String designatedOfficerName = propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_NAME");
-		String signatureDescription = "";
-		if(legalCommitment.getGrantAgreementCounterSignatureUser().equalsIgnoreCase(designatedOfficerUid)){
-            signatureDescription = "Signed by " + designatedOfficerName;
-        }else{
-            signatureDescription = "Signed on behalf of " + designatedOfficerName;
-        }
-		return signatureDescription;
 	}
 
 	private DetailedUser getCurrentUser() {
