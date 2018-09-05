@@ -206,6 +206,28 @@ public class MunicipalityResource {
         return municipalityService.getMunicipalitiesByLauId(lauId);
     }
 
+    @ApiOperation(value = "Get if there are many municipalities by specific lau id")
+    @RequestMapping(value = "/{municipalityId}/{lauId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Boolean getIfManyMunicipalitiesByLauId(@RequestParam("municipalityId") final Integer municipalityId, @RequestParam("lauId") final Integer lauId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting if many municipalities by lau id " + lauId);
+        try {
+            RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityId);
+            if (userConnected.getType() != 5 && registrationUsersRepository.findByUserIdAndRegistrationId(userConnected.getId(), registrationDTO.getId()) == null) {
+                permissionChecker.check(userConnected, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            }
+        } catch (AccessDeniedException ade) {
+            _log.error("User ECAS name: " + userConnected.getEcasUsername() + "- You have no permissions to check these municipalities", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The municipalities cannot be retrieved", e);
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        }
+        return municipalityService.getIfManyMunicipalitiesByLauId(lauId);
+    }
+
     @ApiOperation(value = "Get all correspondence for a municipality")
     @RequestMapping(value = "/correspondence/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

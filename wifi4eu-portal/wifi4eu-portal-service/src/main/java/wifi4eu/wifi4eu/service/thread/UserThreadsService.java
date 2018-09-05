@@ -60,4 +60,8 @@ public class UserThreadsService {
 	public UserThreadsDTO getByUserIdAndThreadId(int userId, int threadId) {
 		return userThreadsMapper.toDTO(userThreadsRepository.findByUserIdAndThreadId(userId, threadId));
 	}
+
+	public UserThreadsDTO getUserThreadByUserAndRegistration(int userId, String municipalityName) {
+		return userThreadsMapper.toDTO(userThreadsRepository.getUserThreadByUserAndRegistration(userId, municipalityName));
+	}
 }

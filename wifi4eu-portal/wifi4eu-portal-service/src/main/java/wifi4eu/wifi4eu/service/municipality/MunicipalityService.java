@@ -27,6 +27,7 @@ import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
 
@@ -79,6 +80,9 @@ public class MunicipalityService {
 
     @Autowired
     CallRepository callRepository;
+
+    @Autowired
+    UserThreadsService userThreadsService;
 
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
@@ -202,6 +206,15 @@ public class MunicipalityService {
             } else {
                 _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application from this municipality not found");
             }
+
+            UserThreadsDTO userThread = userThreadsService.getUserThreadByUserAndRegistration(userConnected.getId(), municipalityDTO.getName());
+            if (userThread != null) {
+                userThreadsService.deleteUserThreads(userThread.getId());
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - UserThread from this municipality removed");
+            } else {
+                _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - No UserThread from this municipality found");
+            }
+
             municipalityRepository.delete(municipalityMapper.toEntity(municipalityDTO));
             return municipalityDTO;
         } else {
@@ -211,6 +224,15 @@ public class MunicipalityService {
 
     public List<MunicipalityDTO> getMunicipalitiesByLauId(int lauId) {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findByLauId(lauId)));
+    }
+
+    public Boolean getIfManyMunicipalitiesByLauId(int lauId) {
+        List<MunicipalityDTO> municipalities = municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findByLauId(lauId)));
+        if(municipalities.size() > 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public List<MunicipalityDTO> getMunicipalitiesByUserId(int userId) {
