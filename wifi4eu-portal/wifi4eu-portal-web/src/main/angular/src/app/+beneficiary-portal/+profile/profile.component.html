@@ -89,10 +89,11 @@
                                 <div class="ui-g-12">
                                     <span class="ui-g-4 ui-sm-12">{{ 'benefRegistration.emailMayor.label' | translate }}</span>
                                     <span class="ui-g-8 ui-sm-12"><b>{{mayors[i]?.email}}</b></span>
-                                </div>
+                                </div><!-- CONTACT DETAILS ADD CONTACT MUNICIPALITY
                                 <div class="ui-g-12">
                                     <hr class="beneficiaryHr sizeBeneficiaryHr">
                                 </div>
+                                     
                                 <div *ngFor="let contactPerson of users[municipality.id]; let i = index">
                                     <div *ngIf="!contactPerson?.main">
                                         <div class="ui-g-12">
@@ -111,6 +112,7 @@
                                         + <span class="addContactLink">{{ 'benefPortal.beneficary.addMunicipality' | translate}}</span>
                                     </a>
                                 </div>
+                                -->
                             </div>
                         </ux-panel>
                     </div>
@@ -121,15 +123,15 @@
                 </div> <!-- end for -->
                 <div class="clearfix"></div>
                 <div class="container">
-                        <div  *ngIf="userMain && userMain?.main" class="">
-                            <div class="row ui-g-12">
-                                <span class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="row whitePanelBeneficiary">
-                                <beneficiary-user [user]="userMain" [organizationName]="associationName" [isEdit]="false" (onUserChange)="return;" (onOrganizationChange)="return;"></beneficiary-user>
-                            </div>
+                    <div  *ngIf="userMain && userMain?.main" class="">
+                        <div class="row ui-g-12">
+                            <span class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
                         </div>
+                        <div class="clearfix"></div>
+                        <div class="row whitePanelBeneficiary">
+                            <beneficiary-user [user]="userMain" [organizationName]="associationName" [isEdit]="false" (onUserChange)="return;" (onOrganizationChange)="return;"></beneficiary-user>
+                        </div>
+                    </div>
                 </div> 
             </div>
         </div>
@@ -237,7 +239,7 @@
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
 
-
+     <!-- CONTACT DETAILS ADD CONTACT MUNICIPALITY
 <p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <form #addNewUser="ngForm">
@@ -277,4 +279,4 @@
     <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
-</p-dialog>
+</p-dialog>-->
