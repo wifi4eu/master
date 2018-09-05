@@ -26,7 +26,7 @@ public class Document {
 	@Column(name="portal_date")
 	private Date portalDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name="LEGAL_ENTITY_ID")
 	private LegalEntity legalEntity;
 
@@ -63,14 +63,21 @@ public class Document {
 	@Column(name = "HERMES_REF")
 	private String hermesRef;
 
+	@Column(name = "HERMES_DOC_ID")
+	private String hermesDocumentId;
+
+
 	@Column(name = "HERMES_ATT_ID")
 	private String hermesAttachmentId;
 
 	@Column(name = "HERMES_SAVE_NUMBER")
-	private String saveNumber;
+	private String hermesSaveNumber;
 
 	@Column(name = "HERMES_REG_NUMBER")
 	private String registrationNumber;
+
+	@Column(name = "HERMES_FILE_ID")
+	private String hermesFileId;
 
 	@Column(name = "DOCUMENTTYPE_CCM2CODE")
 	private String docTypeCCM2Id;
@@ -209,14 +216,6 @@ public class Document {
 		this.hermesAttachmentId = hermesAttachmentId;
 	}
 
-	public String getSaveNumber() {
-		return saveNumber;
-	}
-
-	public void setSaveNumber(String saveNumber) {
-		this.saveNumber = saveNumber;
-	}
-
 	public String getRegistrationNumber() {
 		return registrationNumber;
 	}
@@ -231,5 +230,29 @@ public class Document {
 
 	public void setDocTypeCCM2Id(String docTypeCCM2Id) {
 		this.docTypeCCM2Id = docTypeCCM2Id;
+	}
+
+	public String getHermesDocumentId() {
+		return hermesDocumentId;
+	}
+
+	public void setHermesDocumentId(String hermesDocumentId) {
+		this.hermesDocumentId = hermesDocumentId;
+	}
+
+	public String getHermesSaveNumber() {
+		return hermesSaveNumber;
+	}
+
+	public void setHermesSaveNumber(String hermesSaveNumber) {
+		this.hermesSaveNumber = hermesSaveNumber;
+	}
+
+	public String getHermesFileId() {
+		return hermesFileId;
+	}
+
+	public void setHermesFileId(String hermesFileId) {
+		this.hermesFileId = hermesFileId;
 	}
 }

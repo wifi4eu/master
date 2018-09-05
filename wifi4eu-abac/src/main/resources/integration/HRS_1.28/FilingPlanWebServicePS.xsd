@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://ec.europa.eu/sg/hrs/types" elementFormDefault="qualified" xmlns:tns="http://ec.europa.eu/sg/hrs/types" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <include schemaLocation="FilingPlanWebServicePS_1.xsd"/>
+  <!--Element definitions-->
+  <element name="searchFilesByExpression">
+    <annotation>
+      <documentation>Request and header for the operation searchFilesByExpression</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:FilingPlanSearchByExpressionRequest"/>
+        <element name="fileRetrievalOptions" type="tns:FileRetrievalOptions" minOccurs="0"/>
+        <element name="sortOptions" type="tns:SortOptions" minOccurs="0"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="searchFilesByExpressionResponse">
+    <annotation>
+      <documentation>Response for the operation searchFilesByExpression</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="return" type="tns:FileSearchResponse"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="searchHeadingsByExpression">
+    <annotation>
+      <documentation>Request and header for the operation searchHeadingsByExpression</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:FilingPlanSearchByExpressionRequest"/>
+        <element name="headingRetrievalOptions" type="tns:HeadingRetrievalOptions" minOccurs="0"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="searchHeadingsByExpressionResponse">
+    <annotation>
+      <documentation>Response for the operation searchHeadingsByExpression</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="return" type="tns:HeadingSearchResponse"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="createFile">
+    <annotation>
+      <documentation>Request and header for the operation createFile</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:CreateFileRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="createFileResponse">
+    <annotation>
+      <documentation>Response for the operation createFile</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="file" type="tns:File">
+          <annotation>
+            <documentation>The new file</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateFile">
+    <annotation>
+      <documentation>Request and header for the operation updateFile</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:UpdateFileRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateFileResponse">
+    <annotation>
+      <documentation>Response for the operation updateFile</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as failures. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="deleteFile">
+    <annotation>
+      <documentation>Request and header for the operation deleteFile</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="fileId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Internal repository ID of a file</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="deleteFileResponse">
+    <annotation>
+      <documentation>Response for the operation deleteFile</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean" fixed="true">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as failures. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateFileStatus">
+    <annotation>
+      <documentation>Request and header for the operation updateFileStatus</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:UpdateFileStatusRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateFileStatusResponse">
+    <annotation>
+      <documentation>Response for the operation updateFileStatus</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as failures. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateFileStatusAsync">
+    <annotation>
+      <documentation>Request and header for the operation updateFileStatusAsync</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:UpdateFileStatusAsyncRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateFileStatusAsyncResponse">
+    <annotation>
+      <documentation>Response for the operation updateFileStatusAsync</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="success" type="xsd:boolean">
+          <annotation>
+            <documentation>For now, this value is always true, because any exceptions
+                            are raised as failures. The element is here only to avoid returning an
+                            empty message.</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="getUpdateFileStatusAsyncResult">
+    <annotation>
+      <documentation>Request and header for the operation getUpdateFileStatusAsyncResult</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="request" type="tns:GetUpdateFileStatusAsyncResultRequest"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="getUpdateFileStatusAsyncResultResponse">
+    <annotation>
+      <documentation>Response for the operation getUpdateFileStatusAsyncResult</documentation>
+    </annotation>
+    <complexType>
+      <sequence>
+        <element name="return" type="tns:UpdateFileStatusAsyncResultResponse"/>
+      </sequence>
+    </complexType>
+  </element>
+  <!--Type definitions-->
+  <complexType name="FilingPlanSearchByExpressionRequest">
+    <annotation>
+      <documentation>Request for searching files or headings.</documentation>
+    </annotation>
+    <sequence>
+      <element name="searchExpression" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Expression to be used for searching by meta-data</documentation>
+        </annotation>
+      </element>
+      <element name="skip" type="tns:int0To300" minOccurs="0" default="0">
+        <annotation>
+          <documentation>Skip N documents. This field is used to implement a mechanism of
+                        pagination</documentation>
+        </annotation>
+      </element>
+      <element name="max" type="tns:int0To300" minOccurs="0" default="10">
+        <annotation>
+          <documentation>Maximum number of documents to be retrieved by the search.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="FileSearchResponse">
+    <annotation>
+      <documentation>Structure representing the response for the operation searchFilesByExpression</documentation>
+    </annotation>
+    <sequence>
+      <element name="totalRetrievable" type="tns:int0To300">
+        <annotation>
+          <documentation>Number of files that can be retrieved</documentation>
+        </annotation>
+      </element>
+      <element name="file" type="tns:File" minOccurs="0" maxOccurs="300">
+        <annotation>
+          <documentation>The files corresponding to the search criteria</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="HeadingSearchResponse">
+    <annotation>
+      <documentation>Structure representing the response for the operation searchHeadingsByExpression</documentation>
+    </annotation>
+    <sequence>
+      <element name="totalRetrievable" type="tns:int0To300">
+        <annotation>
+          <documentation>Number of headings that can be retrieved</documentation>
+        </annotation>
+      </element>
+      <element name="heading" type="tns:Heading" minOccurs="0" maxOccurs="300">
+        <annotation>
+          <documentation>The list of headings corresponding to the search criteria</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="CreateFileRequest">
+    <annotation>
+      <documentation>Request for creating a file</documentation>
+    </annotation>
+    <sequence>
+      <choice>
+        <element name="headingId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Internal repository ID of the heading in which the file should be created. Set this field if you want to create a top level file.</documentation>
+          </annotation>
+        </element>
+        <element name="parentFileId" type="tns:ObjectId">
+          <annotation>
+            <documentation>Internal repository ID of the file in which the subfile should be created. Set this field if you want to create a subfile.</documentation>
+          </annotation>
+        </element>
+      </choice>
+      <element name="englishName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the file in English</documentation>
+        </annotation>
+      </element>
+      <element name="frenchName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the file in French</documentation>
+        </annotation>
+      </element>
+      <element name="germanName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the file in German</documentation>
+        </annotation>
+      </element>
+      <element name="englishComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>English Comments</documentation>
+        </annotation>
+      </element>
+      <element name="frenchComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>French comments</documentation>
+        </annotation>
+      </element>
+      <element name="germanComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>German comments</documentation>
+        </annotation>
+      </element>
+      <element name="specialFile" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>If true the the file is expected to be a 'PMO file' - 'blue' and as such having specific visibility</documentation>
+        </annotation>
+      </element>
+      <!--Start: Preservation metadata-->
+      <element name="custodian" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The custodian of the file (cannot be set for subfiles)</documentation>
+        </annotation>
+      </element>
+      <element name="userFirstUseDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>
+            User specified date of the first use for the file (cannot be set for subfiles).
+            <br/>
+            When user modifies the date of first use, the system will automatically calculate at file closure which is the date of the oldest document and use it as a date of first use.
+          </documentation>
+        </annotation>
+      </element>
+      <element name="userClosureDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>
+            User specified closure date for the file (cannot be set for subfiles).
+            <br/>
+            When user modifies the closure date, the system will automatically calculate at file closure which is the most recent document date and use this as a closure date.
+          </documentation>
+        </annotation>
+      </element>
+      <element name="financialDocuments" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Flag specifying if the file has financial documents</documentation>
+        </annotation>
+      </element>
+      <element name="otherDigitalRepositories" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Other digital repositories for the file</documentation>
+        </annotation>
+      </element>
+      <element name="otherStorageTypes" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Flag specifying if there are other storage types for the file</documentation>
+        </annotation>
+      </element>
+      <element name="shelf" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Shelf where the file can be found in case of a paper file (previously called filer or binder in HRS)</documentation>
+        </annotation>
+      </element>
+      <element name="cupboard" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Cupboard where the file can be found in case of a paper file</documentation>
+        </annotation>
+      </element>
+      <element name="office" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Office where the file can be found in case of a paper file</documentation>
+        </annotation>
+      </element>
+      <element name="locationComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Location comments for the file</documentation>
+        </annotation>
+      </element>
+      <!--End: Preservation metadata-->
+      <element name="specificCode" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The file's specific code</documentation>
+        </annotation>
+      </element>
+      <element name="chefDeFile" type="xsd:string">
+        <annotation>
+          <documentation>Internal organization 'main lead department' / 'chef de file' (e.g. digit.b.1.001)</documentation>
+        </annotation>
+      </element>
+      <element name="associatedLeadDepartments" type="tns:AssociatedLeadDepartments" minOccurs="0">
+        <annotation>
+          <documentation>List of internal organizations representing the 'associated lead departments'</documentation>
+        </annotation>
+      </element>
+      <element name="deskOfficer" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>User name of the desk officer</documentation>
+        </annotation>
+      </element>
+      <element name="readers" minOccurs="0">
+        <annotation>
+          <documentation>Collection of file readers</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="reader" minOccurs="0" maxOccurs="unbounded" type="string">
+              <annotation>
+                <documentation>The user or group name of the file reader</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="users" minOccurs="0">
+        <annotation>
+          <documentation>Collection of file users</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="user" minOccurs="0" maxOccurs="unbounded" type="string">
+              <annotation>
+                <documentation>The user or group name of the file user</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="editors">
+        <annotation>
+          <documentation>Collection of file editors</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="editor" maxOccurs="unbounded" type="string">
+              <annotation>
+                <documentation>The user or group name of the file editor</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="activate" type="boolean" default="false">
+        <annotation>
+          <documentation>Indicates if the file should be activated on creation</documentation>
+        </annotation>
+      </element>
+      <element name="categoryKey" type="tns:ObjectId" minOccurs="0">
+        <annotation>
+          <documentation>The category that should be linked to this file. The category must be linked
+                        to heading in which this file is created.
+                        Categories can only be linked to files and not subfiles. For subfiles the
+                        value generates an error as a category cannot be linked to a subfile.
+                        You must provide the categoryKey of the category and not the categoryId. The
+                        system will automatically assign the correct category version from the
+                        category version tree.
+                        If you omit the category and there's only one category linked to the heading
+                        in which you create the file, that category will be linked to the file
+                        (HPS business rule). Note that this happens transparently. If there are
+                        multiple categories linked to the heading, no category will be linked to the
+                        file.</documentation>
+        </annotation>
+      </element>
+      <!--Start: Transparency metadata-->
+      <element name="sensitivePersonalData" type="tns:FileSensitivePersonalData" minOccurs="0">
+        <annotation>
+          <documentation>
+            Indicates if the file contains documents with sensitive personal data
+            <br/>
+            This field cannot be set for a subfile.
+          </documentation>
+        </annotation>
+      </element>
+      <element name="exceptionForOpeningToThePublic" type="tns:FileExceptionForOpeningToThePublic" minOccurs="0" maxOccurs="unbounded">
+        <annotation>
+          <documentation>
+            Specifies the exception for opening to the public, if any
+                        (linked to 1700/2003 - Opening to the public of the historical archives)
+            <br/>
+            This field cannot be set for a subfile.
+          </documentation>
+        </annotation>
+      </element>
+      <element name="commentsRelatedToOpeningToThePublic" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Specifies the comments related to opening to the public
+                        (linked to 1700/2003 - Opening to the public of the historical archives)</documentation>
+        </annotation>
+      </element>
+      <!--End: Transparency metadata-->
+    </sequence>
+  </complexType>
+  <complexType name="UpdateFileStatusRequest">
+    <annotation>
+      <documentation>Request for updating an existing file</documentation>
+    </annotation>
+    <sequence>
+      <element name="fileId" type="tns:ObjectId">
+        <annotation>
+          <documentation>The file id</documentation>
+        </annotation>
+      </element>
+      <element name="status">
+        <annotation>
+          <documentation>The new status that should be assigned to the file.
+                    Currently only the update from INACTIVE to ACTIVE is supported.</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="tns:FileStatus">
+            <enumeration value="ACTIVE"/>
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="UpdateFileStatusAsyncRequest">
+    <annotation>
+      <documentation>Request for updating an existing file via lanching an asynchronous operation.</documentation>
+    </annotation>
+    <sequence>
+      <element name="fileId" type="tns:ObjectId">
+        <annotation>
+          <documentation>The file id</documentation>
+        </annotation>
+      </element>
+      <element name="status">
+        <annotation>
+          <documentation>The new status that should be assigned to the file.
+                        Currently only the update from ACTIVE to CLOSED is supported.</documentation>
+        </annotation>
+        <simpleType>
+          <restriction base="tns:FileStatus">
+            <enumeration value="CLOSED"/>
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="GetUpdateFileStatusAsyncResultRequest">
+    <annotation>
+      <documentation>Request for getting the status of the last operation for updating an existing file via an asynchronous operation</documentation>
+    </annotation>
+    <sequence>
+      <element name="fileId" type="tns:ObjectId">
+        <annotation>
+          <documentation>The file id</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="UpdateFileStatusAsyncResultResponse">
+    <annotation>
+      <documentation>Structure representing the response for the operation getUpdateFileStatusAsyncResult</documentation>
+    </annotation>
+    <sequence>
+      <element name="status" type="tns:AsyncOperationStatus">
+        <annotation>
+          <documentation>The current status of the operation</documentation>
+        </annotation>
+      </element>
+      <element name="creationTime" type="dateTime">
+        <annotation>
+          <documentation>The date and time when the asynchronous update was requested</documentation>
+        </annotation>
+      </element>
+      <element name="lastUpdate" type="dateTime">
+        <annotation>
+          <documentation>The date and time when the current status of the operation was last updated</documentation>
+        </annotation>
+      </element>
+      <element name="statusMessage" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Global message associated to the current status of the operation, if any</documentation>
+        </annotation>
+      </element>
+      <element name="errorDetailMessage" type="string" minOccurs="0" maxOccurs="unbounded">
+        <annotation>
+          <documentation>Provide details about what went wrong when the status is EXECUTED_WITH_ERRORS</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="UpdateFileRequest">
+    <annotation>
+      <documentation>Request for updating an existing file</documentation>
+    </annotation>
+    <sequence>
+      <element name="fileId" type="tns:ObjectId">
+        <annotation>
+          <documentation>Internal repository ID of the file that should be updated.</documentation>
+        </annotation>
+      </element>
+      <element name="englishName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the file in English</documentation>
+        </annotation>
+      </element>
+      <element name="frenchName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the file in French</documentation>
+        </annotation>
+      </element>
+      <element name="germanName" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Name of the file in German</documentation>
+        </annotation>
+      </element>
+      <element name="englishComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>English Comments</documentation>
+        </annotation>
+      </element>
+      <element name="frenchComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>French comments</documentation>
+        </annotation>
+      </element>
+      <element name="germanComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>German comments</documentation>
+        </annotation>
+      </element>
+      <!--Start: Preservation metadata-->
+      <element name="custodian" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The custodian of the file (cannot be set for subfiles)</documentation>
+        </annotation>
+      </element>
+      <element name="userFirstUseDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>
+            User specified date of the first use for the file (cannot be set for subfiles).
+            <br/>
+            When user modifies the date of first use, the system will automatically calculate at file closure which is the date of the oldest document and use it as a date of first use.
+          </documentation>
+        </annotation>
+      </element>
+      <element name="userClosureDate" type="date" minOccurs="0">
+        <annotation>
+          <documentation>
+            User specified closure date for the file (cannot be set for subfiles).
+            <br/>
+            When user modifies the closure date, the system will automatically calculate at file closure which is the most recent document date and use this as a closure date.
+          </documentation>
+        </annotation>
+      </element>
+      <element name="financialDocuments" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Flag specifying if the file has financial documents</documentation>
+        </annotation>
+      </element>
+      <element name="otherDigitalRepositories" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Other digital repositories for the file</documentation>
+        </annotation>
+      </element>
+      <element name="otherStorageTypes" type="boolean" minOccurs="0">
+        <annotation>
+          <documentation>Flag specifying if there are other storage types for the file</documentation>
+        </annotation>
+      </element>
+      <element name="shelf" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Shelf where the file can be found in case of a paper file (previously called filer or binder in HRS)</documentation>
+        </annotation>
+      </element>
+      <element name="cupboard" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Cupboard where the file can be found in case of a paper file</documentation>
+        </annotation>
+      </element>
+      <element name="office" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Office where the file can be found in case of a paper file</documentation>
+        </annotation>
+      </element>
+      <element name="locationComments" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Location comments for the file</documentation>
+        </annotation>
+      </element>
+      <!--End: Preservation metadata-->
+      <element name="specificCode" type="string" minOccurs="0">
+        <annotation>
+          <documentation>The file's specific code</documentation>
+        </annotation>
+      </element>
+      <element name="chefDeFile" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>Internal organization 'main lead department' / 'chef de file' (e.g. digit.b.1.001)</documentation>
+        </annotation>
+      </element>
+      <element name="updateAssociatedLeadDepartments" minOccurs="0">
+        <annotation>
+          <documentation>Add or remove associated list departments. The values used in the add and remove elements
+                        below are internal organisation names (e.g. digit.b.1.001). &lt;br/>
+
+                        If you add an already existing value, or remove an inexistent value,
+                        no update will happen for that value.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="remove" type="string" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Remove the specified associated lead department</documentation>
+              </annotation>
+            </element>
+            <element name="add" type="string" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Add the specified associated lead department</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="deskOfficer" type="xsd:string" minOccurs="0">
+        <annotation>
+          <documentation>User name of the desk officer</documentation>
+        </annotation>
+      </element>
+      <element name="updateReaders" minOccurs="0">
+        <annotation>
+          <documentation>Add or remove file readers. The values used in the add and remove elements
+                        below are user names or group names (e.g. sandule, digit.b.1.001). &lt;br/>
+
+                        Changing the readers of a file will update the security for all documents
+                        filed in that file. Depending on the number of documents, this can take
+                        a long time. &lt;br/>
+
+                        If you add an already existing value, or remove an inexistent value,
+                        no update will happen for that value.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="remove" type="string" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Remove the specified file reader</documentation>
+              </annotation>
+            </element>
+            <element name="add" type="string" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Add the specified file reader</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="updateUsers" minOccurs="0">
+        <annotation>
+          <documentation>Add or remove file users. The values used in the add and remove elements
+                        below are user names or group names (e.g. sandule, digit.b.1.001). &lt;br/>
+
+                        Changing the users of a file will update the security for all documents
+                        filed in that file. Depending on the number of documents, this can take
+                        a long time &lt;br/>
+
+                        If you add an already existing value, or remove an inexistent value,
+                        no update will happen for that value.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="remove" type="string" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Remove the specified file user</documentation>
+              </annotation>
+            </element>
+            <element name="add" type="string" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Add the specified file user</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="updateEditors" minOccurs="0">
+        <annotation>
+          <documentation>Add or remove file editors. The values used in the add and remove elements
+                        below are user names or group names (e.g. sandule, digit.b.1.001). &lt;br/>
+
+                        Changing the editors of a file will update the security for all documents
+                        filed in that file. Depending on the number of documents, this can take
+                        a long time. &lt;br/>
+
+                        If you add an already existing value, or remove an inexistent value,
+                        no update will happen for that value.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="remove" type="string" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Remove the specified file editor</documentation>
+              </annotation>
+            </element>
+            <element name="add" type="string" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Add the specified file editor</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="categoryKey" type="tns:ObjectId" minOccurs="0">
+        <annotation>
+          <documentation>The category that should be linked to this file. The category must be linked
+                        to heading in which this file is updated.
+                        Categories can only be linked to files and not subfiles. For subfiles the
+                        value generates an error as a category cannot be linked to a subfile.
+                        You must provide the categoryKey of the category and not the categoryId. The
+                        system will automatically assign the correct category version from the
+                        category version tree.
+                        If you omit the category and there's only one category linked to the heading
+                        in which you update the file, that category will be linked to the file
+                        (HPS business rule). Note that this happens transparently. If there are
+                        multiple categories linked to the heading, no category will be linked to the
+                        file.</documentation>
+        </annotation>
+      </element>
+      <!--Start: Transparency metadata-->
+      <element name="sensitivePersonalData" type="tns:FileSensitivePersonalData" minOccurs="0">
+        <annotation>
+          <documentation>
+            Indicates if the file contains documents with sensitive personal data.
+            <br/>
+            This field cannot be set for a subfile.
+          </documentation>
+        </annotation>
+      </element>
+      <element name="updateExceptionForOpeningToThePublic" minOccurs="0">
+        <annotation>
+          <documentation>Add or remove exceptions for opening to the public
+                        (linked to 1700/2003 - Opening to the public of the historical archives)&lt;br/>
+
+                        If you add an already existing value, or remove an inexistent value,
+                        no update will happen for that value.&lt;br/>
+                        This element cannot be set for a subfile.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element name="remove" type="tns:FileExceptionForOpeningToThePublic" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Remove the specified exception for opening to the public</documentation>
+              </annotation>
+            </element>
+            <element name="add" type="tns:FileExceptionForOpeningToThePublic" minOccurs="0" maxOccurs="unbounded">
+              <annotation>
+                <documentation>Add the specified exception for opening to the public</documentation>
+              </annotation>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="commentsRelatedToOpeningToThePublic" type="string" minOccurs="0">
+        <annotation>
+          <documentation>Specifies the comments related to opening to the public
+                        (linked to 1700/2003 - Opening to the public of the historical archives)</documentation>
+        </annotation>
+      </element>
+      <!--End: Transparency metadata-->
+    </sequence>
+  </complexType>
+  <element name="getUserFavoriteFiles">
+    <complexType>
+      <sequence>
+        <element ref="tns:header"/>
+        <element name="includeSubFiles" type="boolean">
+          <annotation>
+            <documentation>Indicates if the subfiles of the favorite should also be
+                            retrieved</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="getUserFavoriteFilesResponse">
+    <complexType>
+      <sequence>
+        <element name="favorite" type="tns:File" minOccurs="0" maxOccurs="unbounded">
+          <annotation>
+            <documentation>The favorite files of the current user</documentation>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <complexType name="HeadingRetrievalOptions">
+    <annotation>
+      <documentation>Options allowing to precise the information headings. If
+                less information is required, the operation can result in better response times.</documentation>
+    </annotation>
+    <sequence>
+      <element name="includeRoles" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the heading will contain the roles (heading readers, heading editors, file creators) of the heading</documentation>
+        </annotation>
+      </element>
+      <element name="includeServiceOwners" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the heading will contain the service owners</documentation>
+        </annotation>
+      </element>
+      <element name="includeCategories" type="boolean" minOccurs="0" default="false">
+        <annotation>
+          <documentation>Specifies that the heading will contain category information</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+</schema>

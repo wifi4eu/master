@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.integration.abac.AbacIntegrationService;
+import wifi4eu.wifi4eu.abac.service.DocumentService;
 import wifi4eu.wifi4eu.abac.service.LegalCommitmentService;
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 import wifi4eu.wifi4eu.abac.service.NotificationService;
@@ -31,6 +32,9 @@ public class BatchSchedulerConfig {
 
     @Autowired
     LegalEntityService legalEntityService;
+
+    @Autowired
+    DocumentService documentService;
 
     @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
@@ -68,5 +72,10 @@ public class BatchSchedulerConfig {
         notificationService.notifyLegalEntityProcessFinished();
         notificationService.notifyBudgetaryCommitmentProcessFinished();
         notificationService.notifyLegalCommitmentProcessFinished();
+    }
+
+    @Scheduled(cron = "${batch.documents.ares.upload}")
+    public void uploadDocumentsInAres() {
+        documentService.submitDocumentsToAres(0, MAX_RECORDS_CREATE);
     }
 }

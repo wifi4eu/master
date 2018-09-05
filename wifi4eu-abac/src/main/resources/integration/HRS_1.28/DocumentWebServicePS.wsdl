@@ -1,0 +1,980 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WL5G3N0:definitions name="CoreServices" targetNamespace="http://ec.europa.eu/sg/hrs" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="http://ec.europa.eu/sg/hrs/types" xmlns:WL5G3N2="http://ec.europa.eu/sg/hrs" xmlns:WL5G3N3="http://schemas.xmlsoap.org/wsdl/soap/">
+  <WL5G3N0:types>
+    <xsd:schema targetNamespace="http://ec.europa.eu/sg/hrs/types" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ec.europa.eu/sg/hrs" xmlns:types="http://ec.europa.eu/sg/hrs/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:include schemaLocation="DocumentWebServicePS.xsd"/>
+    </xsd:schema>
+  </WL5G3N0:types>
+  <WL5G3N0:message name="fileDocument">
+    <WL5G3N0:part element="WL5G3N1:fileDocument" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="fileDocumentResponse">
+    <WL5G3N0:part element="WL5G3N1:fileDocumentResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="unfileDocument">
+    <WL5G3N0:part element="WL5G3N1:unfileDocument" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="unfileDocumentResponse">
+    <WL5G3N0:part element="WL5G3N1:unfileDocumentResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createDocument">
+    <WL5G3N0:part element="WL5G3N1:createDocument" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createDocumentResponse">
+    <WL5G3N0:part element="WL5G3N1:createDocumentResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="updateDocument">
+    <WL5G3N0:part element="WL5G3N1:updateDocument" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="updateDocumentResponse">
+    <WL5G3N0:part element="WL5G3N1:updateDocumentResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="trashDocument">
+    <WL5G3N0:part element="WL5G3N1:trashDocument" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="trashDocumentResponse">
+    <WL5G3N0:part element="WL5G3N1:trashDocumentResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="registerDocumentById">
+    <WL5G3N0:part element="WL5G3N1:registerDocumentById" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="registerDocumentByIdResponse">
+    <WL5G3N0:part element="WL5G3N1:registerDocumentByIdResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="registerDocument">
+    <WL5G3N0:part element="WL5G3N1:registerDocument" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="registerDocumentResponse">
+    <WL5G3N0:part element="WL5G3N1:registerDocumentResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="checkoutItem">
+    <WL5G3N0:part element="WL5G3N1:checkoutItem" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="checkoutItemResponse">
+    <WL5G3N0:part element="WL5G3N1:checkoutItemResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="cancelItemCheckout">
+    <WL5G3N0:part element="WL5G3N1:cancelItemCheckout" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="cancelItemCheckoutResponse">
+    <WL5G3N0:part element="WL5G3N1:cancelItemCheckoutResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="checkinItem">
+    <WL5G3N0:part element="WL5G3N1:checkinItem" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="checkinItemResponse">
+    <WL5G3N0:part element="WL5G3N1:checkinItemResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="addTranslations">
+    <WL5G3N0:part element="WL5G3N1:addTranslations" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="addTranslationsResponse">
+    <WL5G3N0:part element="WL5G3N1:addTranslationsResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="searchDocumentsByExpression">
+    <WL5G3N0:part element="WL5G3N1:searchDocumentsByExpression" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="searchDocumentsByExpressionResponse">
+    <WL5G3N0:part element="WL5G3N1:searchDocumentsByExpressionResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="linkDocuments">
+    <WL5G3N0:part element="WL5G3N1:linkDocuments" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="linkDocumentsResponse">
+    <WL5G3N0:part element="WL5G3N1:linkDocumentsResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="unlinkDocuments">
+    <WL5G3N0:part element="WL5G3N1:unlinkDocuments" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="unlinkDocumentsResponse">
+    <WL5G3N0:part element="WL5G3N1:unlinkDocumentsResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="findPotentialRegisteredDuplicates">
+    <WL5G3N0:part element="WL5G3N1:findPotentialRegisteredDuplicates" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="findPotentialRegisteredDuplicatesResponse">
+    <WL5G3N0:part element="WL5G3N1:findPotentialRegisteredDuplicatesResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="findPotentialRegisteredDuplicatesById">
+    <WL5G3N0:part element="WL5G3N1:findPotentialRegisteredDuplicatesById" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="findPotentialRegisteredDuplicatesByIdResponse">
+    <WL5G3N0:part element="WL5G3N1:findPotentialRegisteredDuplicatesResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="encryptItems">
+    <WL5G3N0:part element="WL5G3N1:encryptItems" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="encryptItemsResponse">
+    <WL5G3N0:part element="WL5G3N1:encryptItemsResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="decryptItems">
+    <WL5G3N0:part element="WL5G3N1:decryptItems" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="decryptItemsResponse">
+    <WL5G3N0:part element="WL5G3N1:decryptItemsResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="findDocumentNotifications">
+    <WL5G3N0:part element="WL5G3N1:findDocumentNotifications" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="findDocumentNotificationsResponse">
+    <WL5G3N0:part element="WL5G3N1:findDocumentNotificationsResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="markDocumentNotifications">
+    <WL5G3N0:part element="WL5G3N1:markDocumentNotifications" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="markDocumentNotificationsResponse">
+    <WL5G3N0:part element="WL5G3N1:markDocumentNotificationsResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="deleteDocumentNotifications">
+    <WL5G3N0:part element="WL5G3N1:deleteDocumentNotifications" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="deleteDocumentNotificationsResponse">
+    <WL5G3N0:part element="WL5G3N1:deleteDocumentNotificationsResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="externalizeDocument">
+    <WL5G3N0:part element="WL5G3N1:externalizeDocument" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="externalizeDocumentResponse">
+    <WL5G3N0:part element="WL5G3N1:externalizeDocumentResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="revokeExternalization">
+    <WL5G3N0:part element="WL5G3N1:revokeExternalization" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="revokeExternalizationResponse">
+    <WL5G3N0:part element="WL5G3N1:revokeExternalizationResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createOrUpdateSpecificMetadata">
+    <WL5G3N0:part element="WL5G3N1:createOrUpdateSpecificMetadata" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createOrUpdateSpecificMetadataResponse">
+    <WL5G3N0:part element="WL5G3N1:createOrUpdateSpecificMetadataResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="deleteAllSpecificMetadata">
+    <WL5G3N0:part element="WL5G3N1:deleteAllSpecificMetadata" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="deleteAllSpecificMetadataResponse">
+    <WL5G3N0:part element="WL5G3N1:deleteAllSpecificMetadataResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="applyProcedure">
+    <WL5G3N0:part element="WL5G3N1:applyProcedure" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="applyProcedureResponse">
+    <WL5G3N0:part element="WL5G3N1:applyProcedureResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createSpecificMetadataItems">
+    <WL5G3N0:part element="WL5G3N1:createSpecificMetadataItems" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="createSpecificMetadataItemsResponse">
+    <WL5G3N0:part element="WL5G3N1:createSpecificMetadataItemsResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="updateSpecificMetadataItems">
+    <WL5G3N0:part element="WL5G3N1:updateSpecificMetadataItems" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="updateSpecificMetadataItemsResponse">
+    <WL5G3N0:part element="WL5G3N1:updateSpecificMetadataItemsResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="deleteSpecificMetadataItems">
+    <WL5G3N0:part element="WL5G3N1:deleteSpecificMetadataItems" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="deleteSpecificMetadataItemsResponse">
+    <WL5G3N0:part element="WL5G3N1:deleteSpecificMetadataItemsResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="addExternalSignature">
+    <WL5G3N0:part element="WL5G3N1:addExternalSignature" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="addExternalSignatureResponse">
+    <WL5G3N0:part element="WL5G3N1:addExternalSignatureResponse" name="result"/>
+  </WL5G3N0:message>
+  <WL5G3N0:portType name="DocumentService">
+    <WL5G3N0:operation name="fileDocument">
+      <WL5G3N0:documentation>This operation performs the filing of a document into a file of the
+                filing plan</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:fileDocument"/>
+      <WL5G3N0:output message="WL5G3N2:fileDocumentResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="unfileDocument">
+      <WL5G3N0:documentation>This operation performs the unfiling of a document from a file of the
+                filing plan</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:unfileDocument"/>
+      <WL5G3N0:output message="WL5G3N2:unfileDocumentResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createDocument">
+      <WL5G3N0:documentation>This operation creates a document in the common
+                repository. It returns generated metadata, such as the saveNumber. &lt;br/>
+
+                In ARES UI, 'Security Classification' is displayed/referred as 'Level Of Sensitivity'.
+                'Level Of Sensitivity' is just an alias for securityClassification. &lt;br/>
+
+                If securityClassification is a value different than 'NORMAL', the document
+                can have a marking. Markings affect the visibility of the document but can also
+                mandate other restrictions. For now, the COMP and OLAF family of markings forbid
+                having items on the document. &lt;br/>
+
+                Specifying securityClassification 'EU_RESTRAINED' also forbids items on the document.
+
+                &lt;br/>
+                If a file Id or a file search expression was provided then this operation
+                performs the filing of a document into a file of the filing plan.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:createDocument"/>
+      <WL5G3N0:output message="WL5G3N2:createDocumentResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="updateDocument">
+      <WL5G3N0:documentation>This operation updates an existing document from the common repository. &lt;br/>
+                If the document has checked out items or is otherwise locked, the operation fails.&lt;br/>
+
+                In ARES UI, 'Security Classification' is displayed/referred as 'Level Of Sensitivity'.
+                'Level Of Sensitivity' is just an alias for securityClassification. &lt;br/>
+
+                If securityClassification is changed to 'EU_RESTRICTED', all existing items
+                must be removed as part of the update. &lt;/br>
+
+                The same is true for COMP and OLAF markings. Because they don't allow any items,
+                existing items must be removed as part of the update if any. &lt;br/></WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:updateDocument"/>
+      <WL5G3N0:output message="WL5G3N2:updateDocumentResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="trashDocument">
+      <WL5G3N0:documentation>This operation sends an unregistered document to trash. Registered documents
+                can never be trashed. &lt;br/>
+
+                Trashing a document will unfile it from any file where it is currently filed,
+                and will link it to a special trash folder. &lt;br/>
+
+                If a document sits more than 6 month in trash, it will be deleted from the system.
+                If a document is filed after being trashed, but before being deleted, it's going to
+                be restored (un-trashed). &lt;br/>
+
+                The user must have visibility on the document in order to trash it.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:trashDocument"/>
+      <WL5G3N0:output message="WL5G3N2:trashDocumentResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="registerDocumentById">
+      <WL5G3N0:documentation>This operation registers an existing document. It returns generated
+                metadata, such as the registrationNumber. &lt;br/>
+                If the document has checked out items or is otherwise locked, the operation fails. &lt;br/>
+                If there are open eSignatory tasks, they will be automatically closed.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:registerDocumentById"/>
+      <WL5G3N0:output message="WL5G3N2:registerDocumentByIdResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="registerDocument">
+      <WL5G3N0:documentation>This operation performs the creation and registration of a document in
+                the common repository. It returns generated metadata, such as the saveNumber and the
+                registrationNumber. &lt;br/>
+
+                In ARES UI, 'Security Classification' is displayed/referred as 'Level Of Sensitivity'.
+                'Level Of Sensitivity' is just an alias for securityClassification. &lt;br/>
+
+                If the securityClassification has a value other than 'NORMAL', the document
+                can have a marking. Markings affect the visibility of the document but can also
+                mandate other restrictions. For now, the COMP and OLAF family of markings forbid
+                having items on the document. Specifying the securityClassification 'EU_RESTRAINED'
+                also forbids items on the document. In all other cases, it is compulsory to have
+                at least one item on the document to be able to perform registration.
+
+                &lt;br/>
+                If a file Id or a file search expression was provided then this operation
+                performs the filing of a document into a file of the filing plan.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:registerDocument"/>
+      <WL5G3N0:output message="WL5G3N2:registerDocumentResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="checkoutItem">
+      <WL5G3N0:documentation>This operation performs a checkout of the specified item. Only items with
+                uploaded content (i.e. items with attachment type different from ARES_SCANNED),
+                belonging to unregistered documents can be checked out. Translations cannot be
+                checked out.&lt;br/>
+
+                A checkout will place a lock on the item, and the item will become readonly
+                unless the checkout operation is canceled. The document to which the item belongs
+                will also be considered locked as long as the item is checked out.&lt;br/>
+
+                To retrieve the content of the item after checkout, the normal HTTP data transfer
+                service can be used.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:checkoutItem"/>
+      <WL5G3N0:output message="WL5G3N2:checkoutItemResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="cancelItemCheckout">
+      <WL5G3N0:documentation>This operation canceles the checkout of an item. The lock is removed from
+                the item and modifications are again possible on it.&lt;br/>
+
+                Note that the user that cancels the checkout must be the same as the one that
+                has performed the checkout.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:cancelItemCheckout"/>
+      <WL5G3N0:output message="WL5G3N2:cancelItemCheckoutResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="checkinItem">
+      <WL5G3N0:documentation>This operation creates a new version of the item, with the specified
+                content. The item content should have previously been uploaded with the usual HTTP
+                data transfer service. &lt;br/>
+
+                Note that the user that checks in the item must be the same as the one that
+                has performed the checkout.&lt;br/>
+
+                The new version of the item will receive a new repository id,
+                which is returned by this operation. The old version of the item will not be
+                accessible anymore with the current HRS services (i.e you will not be able to
+                retrieve the item's previous version by using the old item id); however, new
+                web service operations may be added in the future to retrieve
+                old item versions if needed.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:checkinItem"/>
+      <WL5G3N0:output message="WL5G3N2:checkinItemResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="addTranslations">
+      <WL5G3N0:documentation>This operation adds translations to one of the items of a document
+                (the document can be registered or unregistered).   &lt;br/>
+
+                For registered documents, only the document creator or DMO can add translations.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:addTranslations"/>
+      <WL5G3N0:output message="WL5G3N2:addTranslationsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="searchDocumentsByExpression">
+      <WL5G3N0:documentation><![CDATA[This operation searches after documents that match the specified
+                search expression.
+                <p>
+                A search can be performed using an expression for the meta-data
+                (e.g. <tt>encodingDate>=2010-01-01</tt>), an expression for fulltext search (e.g.
+                <tt>FULLTEXT('Report')</tt>) or both expressions for a combined search. When performing
+                a combined search (i.e. specifying both the meta-data
+                search expression and the fulltext search expression) the effect will be of a
+                logical AND between those two expressions. For example, specifying
+                the meta-data search expression <tt>encodingDate>=2010-01-01</tt> and the fulltext
+                search expression <tt>FULLTEXT('Report')</tt> will return those documents that
+                contain the word 'Report' AND have been created after 01/01/2010.</p>
+
+                <p>
+                For performance reasons, the search will retrieve a maximum of 2000 results,
+                no matter how many documents match the search criteria. Furthermore, if more
+                than 300 documents are requested (i.e value of <tt>max</tt> is greater than 300),
+                then only basic metadata of documents can be retrieved. Thus, specifying any value
+                in <tt>DocumentRetrievalOptions</tt> when <tt>max>300</tt> is not allowed.
+                </p>
+
+                <p>Fields that can be used inside the search expression are:</p>
+                <ul>
+                <li> documentId - the document's internal id </li>
+                <li> title - the document's title</li>
+                <li> registrationNumber - the document's registration number</li>
+                <li> saveNumber - the document's save number</li>
+                <li> registrationDate - the document's registration date</li>
+                <li> documentDate - the document's date</li>
+                <li> encodingDate - the date when the document was created in the repository</li>
+                <li> sendDate - the date when the document was sent</li>
+                <li> modificationDate - the date when the document was last modified. A modification is considered to be any change to the document's metadata, filing, items, senders and recipients.</li>
+                <li> comments - the document's comments</li>
+                <li> createdOnBehalfOfEcasId - User name of the user on whose behalf the document was created (e.g. if a secretary creates a document on behalf of the head of unit, this field refers to the ECAS id of the head of unit)</li>
+                <li> createdOnBehalfOfName - fullname of the person on behalf of which the document was created.</li>
+                <li> createdOnBehalfOfOrganization - organization name of the person on behalf of which the document was created.</li>
+                <li> creatorEcasId - ECAS id of the document's creator (e.g. ECAS id of the secretary that created the document, even if acting on behalf of somebody else). Use this field for documents created with delegations, otherwise use createdOnBehalfOfEcasId.</li>
+                <li> creatorName - full name of the document's creator. Use this field for documents created with delegations, otherwise use createdOnBehalfOfName.</li>
+                <li> creatorOrganization - organization name of the document's creator. Use this field for documents created with delegations, otherwise use createdOnBehalfOfOrganization.</li>
+                <li> referenceNumberDigits - numeric part of the save number or the registration number, e.g. searching for 123 will match both digit.b.2.001(2016)123 or Ares(2016)123</li>
+                <li> registeredOnBehalfOfEcasId - ECAS id of the person on behalf of which the document was registered.</li>
+                <li> registeredOnBehalfOfName - full name of the person on behalf of which the document was registered.</li>
+                <li> registeredOnBehalfOfOrganization - organization name of the person on behalf of which the document was registered</li>
+                <li> registererEcasId - ECAS id of the person that registered the document. Use this field for documents registered with delegations, otherwise use registeredOnBehalfOf.</li>
+                <li> registererName - full name of the person that registered the document. Use this field for documents registered with delegations, otherwise use registeredOnBehalfOfName.</li>
+                <li> registererOrganization - organization name of the person that registered the document. Use this field for documents registered with delegations, otherwise use registeredOnBehalfOfOrganization.</li>
+                <li> registrationNumberDigits - numeric part of the registration number, e.g. 123 in case the full registration number is Ares(2016)123</li>
+                <li> isEncrypted - whether the document's items are stored encrypted or not. Note that regardless of how they are stored, items are always decrypted before being sent to the client.</li>
+                <li> itemName - search after documents that have at least one item with a name that satisfies the specified condition</li>
+                <li> itemScanWithoutContent - search after documents that have at least one item for which the scanning status matches the condition (e.g. true indicates a scanned item that has no content because it has not been scanned yet)</li>
+                <li> itemExternalReference - search after documents that have at least one item for which the external reference satisfies the condition</li>
+                <li> itemLanguage - search after documents that have at least one item for which the language matches the condition</li>
+                <li> saveNumberDigits -  numeric part of the save number, e.g. 123 in case the full registration number is digit.b.2.001(2016)123</li>
+                <li> senderId - search for documents that have at least one sender with an entity id that satisfies the specified condition</li>
+                <li> senderIsInternal - search for documents where the sender is internal (person or organization)</li>
+                <li> senderIsOrganization - search for documents where the sender is an organization</li>
+                <li> senderName - the full name of the person</li>
+                <li> senderOrganization - the name of the organization</li>
+                <li> recipientId - search for documents that have at least one recipient with an entity id that satisfies the specified condition</li>
+                <li> recipientIsInternal - search for documents where the recipient is internal</li>
+                <li> recipientIsOrganization - search for documents where the recipient is an organization</li>
+                <li> recipientName - the fullname of the person</li>
+                <li> recipientOrganization - the name of the organization</li>
+                <li> recipientCode - TO or CC</li>
+                <li> workflowCategory - the category of the workflow - ESIGNATORY, ASSIGNMENT or PAPER</li>
+                <li> actionCode - search documents that have at least one task with a task code that satisfies the condition</li>
+                <li> assignmentDate - the date when the task was assigned</li>
+                <li> taskComments - comments in the task</li>
+                <li> taskInstructions - instructions in the task</li>
+                <li> taskStatus - status of the task, such as ACTIVE, CLOSED, BYPASSED etc.</li>
+                <li> assigneeEcasId - ECAS id of the task's assigned person</li>
+                <li> assigneeName - the name of the assigned person</li>
+                <li> assigneeOrganization - the organization name the assignee belongs to</li>
+                <li> assignerEcasId - ECAS id of the person that assigned the task</li>
+                <li> assignerName - the name of the person that assigned the task</li>
+                <li> assignerOrganization - the organization code the assigner belongs to</li>
+                <li> fileId - search documents that are filed in the file with this fileId</li>
+                <li> fileName - search for documents filed in a file with this name. English, French and German fields are taken into account.</li>
+                <li> fileCode - search documents that are filed in the file with this fileCode</li>
+                <li> fileSpecificCode - search documents that are filed in the file where this specific file code satisfies the condition</li>
+                <li> chefDeFile - search documents that are filed in the file where the 'chef de file' satisfies the condition</li>
+                <li> filingDate - search documents that are filed in a file on a this date</li>
+                <li> link - search documents that have at least one link of this enum type
+                            Valid values are RESPONSE, REQUEST, GENERAL and DUPLICATE. These are enums (and not strings) and don't have to be surrounded with single quotes
+                            Examples: link = REQUEST
+                                      link != GENERAL</li>
+                <li> linkTarget - search documents that have at least one link pointing to the specified document id.
+                                  By including this search criteria, only documents with links will be taken into account when searching</li>
+                <li> securityClassification - search documents based on their security classification (alias level of sensitivity).
+                                              In ARES UI, 'LIMITED' is displayed/reffered as 'Handling restriction'(an alias to 'LIMITED').
+                                              Valid values are NORMAL, LIMITED, EU_RESTRAINED and EURA_RESTRICTED.
+                                              Example: securityClassification = LIMITED </li>
+                <li> marker - search documents that have a specific marker
+                              Valid values are enum values from MarkerType.
+                              Example: marker = PERSONAL </li>
+                <li> personConcernedEcasId - ECAS id of the person specified in the marking as person concerned.</li>
+                <li> personConcernedName - full name of the person specified in the marking as person concerned.</li>
+                <li> personConcernedOrganization - organization of the person specified in the marking as person concerned.</li>
+                <li> procedureName - search documents based on the name of their linked procedure.
+                                     Both the English and the French names are take into account.</li>
+                <li> procedureId - search documents based on the ID of their linked procedure.</li>
+                <li> externalizationStatus - indicates if the document has been externalized to ERS or not. Valid values are:
+                                             NOT_EXTERNALIZED, EXTERNALIZATION_INITIATED, EXTERNALIZED, REVOCATION_INITIATED, REVOKED.</li>
+                <li> isPartialExternalization - indicates if the externalization is partial or not.</li>
+                <li> externalizationDate - date when the document was externalized (when the operation was triggered in Hermes)</li>
+                <li> revocationDate - date when the document was revoked (when the operation was triggered in Hermes)</li>
+                <li> externalizedBy - full name of the person that externalized the document</li>
+                <li> revokedBy -  full name of the person that revoked the document</li>
+
+                <li> specificMetadataNamespace</li>
+                <li> specificMetadataString1</li>
+                <li> specificMetadataString2</li>
+                <li> specificMetadataString3</li>
+                <li> specificMetadataString4</li>
+                <li> specificMetadataString5</li>
+                <li> specificMetadataString6</li>
+                <li> specificMetadataString7</li>
+                <li> specificMetadataDouble1</li>
+                <li> specificMetadataDouble2</li>
+                <li> specificMetadataDouble3</li>
+                <li> specificMetadataDate1</li>
+                <li> specificMetadataDate2</li>
+                <li> specificMetadataDate3</li>
+                <li> specificMetadataBoolean1</li>
+                <li> specificMetadataBoolean2</li>
+                <li> specificMetadataBoolean3</li>
+                </ul>
+
+               The following fields are deprecated:
+               <ul>
+                 <li> assigneeOrganizationCode - use assigneeOrganization instead</li>
+                 <li> assignerOrganizationCode - use assignerOrganization instead</li>
+                 <li> createdOnBehalfOf - use createdOnBehalfOfEcasId instead</li>
+                 <li> saverEcasId - use creatorEcasId instead</li>
+                 <li> senderInternalPersonName - use senderName and senderIsInternal instead</li>
+                 <li> senderInternalOrganizationCode - use senderOrganization and senderIsInternal instead</li>
+                 <li> senderIsInternalOrganization - use senderIsOrganization and senderIsInternal instead</li>
+                 <li> senderExternalPersonName - similar to above</li>
+                 <li> senderExternalOrganizationName - similar to above</li>
+                 <li> senderIsExternalOrganization - similar to above</li>
+                 <li> recipientInternalPersonName - similar to above</li>
+                 <li> recipientInternalOrganizationCode - similar to above</li>
+                 <li> recipientIsInternalOrganization - similar to above</li>
+                 <li> recipientExternalPersonName - similar to above</li>
+                 <li> recipientExternalOrganizationName - similar to above</li>
+                 <li> recipientIsExternalOrganization - similar to above</li>
+                 <li> linkType - use link instead</li>
+                 <li> securityClassificationType - use securityClassification instead</li>
+               </ul>
+
+               <p>Sample search expressions are: </p>
+               <ul style="list-style-type:none">
+                 <li>title CONTAINS 'Report'</li>
+                 <li>registrationNumber = 'Ares(2008)2301'</li>
+                 <li>documentDate BETWEEN (2008-12-23, 2009-01-14)</li>
+                 <li>comments startsWith 'Updated'</li>
+               </ul>
+
+               <p>The fulltext search expression does not have any fields but always requires the word <tt>FULLTEXT</tt>.
+                  Sample fulltext search expressions are:</p>
+               <ul style="list-style-type:none">
+                 <li>FULLTEXT('test')</li>
+                 <li>FULLTEXT('"This is a test"')</li>
+               </ul>
+
+
+               <p>When not using the index server, the following fields can be used for sorting:</p>
+               <ul>
+                    <li> documentId</li>
+                    <li> title</li>
+                    <li> registrationNumber</li>
+                    <li> saveNumber</li>
+                    <li> registrationDate</li>
+                    <li> documentDate</li>
+                    <li> encodingDate</li>
+                    <li> modificationDate</li>
+                    <li> comments</li>
+                    <li> securityClassification</li>
+                    <li> itemName</li>
+               </ul>
+               <p>In case the index server is used, by default documents are sorted by matching
+                  relevance.
+                  Following fields can be used for sorting:</p>
+                  <ul>
+                    <li>title</li>
+                    <li>registrationDate</li>
+                    <li>encodingDate</li>
+                  </ul>
+                <p>Note that the same expression might return different results when using the index
+                   server because the underlying technology is different.
+                   For the index server, updates might not be immediately visible ('save-to-search'
+                   latency).
+                   Also empty strings, null, not, ... might produce different results.
+                </p>]]></WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:searchDocumentsByExpression"/>
+      <WL5G3N0:output message="WL5G3N2:searchDocumentsByExpressionResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="linkDocuments">
+      <WL5G3N0:documentation>Creates a link between 2 documents. The link is two-way (meaning if A is
+                linked to B, then B is also linked to A). Allowed link types for creation are:
+                GENERAL, DUPLICATE and RESPONSE. In case of the RESPONSE type, the reverse link will
+                automatically have the REQUEST type assigned.
+
+                &lt;p>Any two documents can be linked together, unless a link of the same type
+                already exists, in which case a failure will be thrown.&lt;/p>
+
+                &lt;p>The user needs to have permissions to "see" the documents (i.e. to be able to find
+                them using a search) in order to be able to create links.&lt;/p></WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:linkDocuments"/>
+      <WL5G3N0:output message="WL5G3N2:linkDocumentsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="unlinkDocuments">
+      <WL5G3N0:documentation>Removes a link of the specified type between 2 documents. If no such
+                link exists, the operation will return false, otherwise it will return true. After
+                the successfull execution, neither A will be linked to B, nor B will be linked to A
+                with o link of the specified type.
+
+                &lt;p>In the case of the RESPONSE/REQUEST link type, the directionality of the link
+                doesn't matter, meaning that if the link A -> B is of type RESPONSE, but
+                when removing the parameters are (A, B, REQUEST) the link will still be removed.&lt;/p>
+
+                &lt;p>The user needs to have permissions to "see" the documents (i.e. to be able to find
+                them using a search) in order to be able to remove links.&lt;/p></WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:unlinkDocuments"/>
+      <WL5G3N0:output message="WL5G3N2:unlinkDocumentsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="findPotentialRegisteredDuplicates">
+      <WL5G3N0:documentation><![CDATA[Searches the repository for registered documents that might be a potential duplicate
+                of a document that has to be registered. This operation must be called prior to <i>
+                registerDocument</i>. For ease of use, it accepts the same input data as a
+                registration request.<br />
+                Currently following data is used when searching for duplicates:
+                <ul>
+                <li>title</li>
+                <li>document date</li>
+                <li>mail type</li>
+                <li>senders / recipients (depending on the mail type)</li>
+                </ul>
+                The purpose of this operation is to prevent double registrations.]]></WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:findPotentialRegisteredDuplicates"/>
+      <WL5G3N0:output message="WL5G3N2:findPotentialRegisteredDuplicatesResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="findPotentialRegisteredDuplicatesById">
+      <WL5G3N0:documentation>Searches the repository for registered documents that might be a potential duplicate
+                of a document that has to be registered. This operation must be called prior to &lt;i>
+                registerDocumentById&lt;/i>. The document ID should correspond to a non-registered
+                document.&lt;br />
+                The purpose of this operation is to prevent double registrations.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:findPotentialRegisteredDuplicatesById"/>
+      <WL5G3N0:output message="WL5G3N2:findPotentialRegisteredDuplicatesByIdResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="encryptItems">
+      <WL5G3N0:documentation>Encrypts the content of all the items of a document. In order to encrypt items the
+                user should have a specific role that allows him/her to perform this operation.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:encryptItems"/>
+      <WL5G3N0:output message="WL5G3N2:encryptItemsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="decryptItems">
+      <WL5G3N0:documentation>Decrypts the content of all the items of a document. In order to decrypt items the
+                user should have a specific role that allows him/her to perform this operation.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:decryptItems"/>
+      <WL5G3N0:output message="WL5G3N2:decryptItemsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="findDocumentNotifications">
+      <WL5G3N0:documentation>Find received document notifications for the current user.
+                    A document is received at the moment of registration if the user is one of the recipients,
+                    or if modify special is performed on a registered document and the user is added to the list
+                    of recipients.
+                    Document notifications are ordered descending by the document's registration date. The number
+                    of results is limited to 300.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:findDocumentNotifications"/>
+      <WL5G3N0:output message="WL5G3N2:findDocumentNotificationsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="markDocumentNotifications">
+      <WL5G3N0:documentation>Mark one or more document notifications as read/unread.
+                    The document notifications have to belong to the current user.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:markDocumentNotifications"/>
+      <WL5G3N0:output message="WL5G3N2:markDocumentNotificationsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="deleteDocumentNotifications">
+      <WL5G3N0:documentation>Delete one or more document notifications, specified by their notification id.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:deleteDocumentNotifications"/>
+      <WL5G3N0:output message="WL5G3N2:deleteDocumentNotificationsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="externalizeDocument">
+      <WL5G3N0:documentation>Externalize the specified document (or part of it) to the ERS repository. The target ERS partition has
+                to be specified and the client application needs to have externalization rights for that partition.
+
+                The externalization operation is asynchronous, i.e. the document will arrive in the ERS repository at
+                some point in the future, but this operation returns immediately.
+
+                Note:
+                    
+                        If the document is already externalized, the document will be re-externalized.
+                        A document can be externalized to only one partition</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:externalizeDocument"/>
+      <WL5G3N0:output message="WL5G3N2:externalizeDocumentResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="revokeExternalization">
+      <WL5G3N0:documentation>Revoke the specified document from the ERS repository. The client application needs to have
+                externalization rights on the ERS partition where the document resides in order to revoke it.
+
+                The revocation operation is asynchronous, i.e. the document will be removed from the ERS repository
+                at some point in the future, but this operation returns immediately.
+
+                Only documents that are externalized can be revoked, otherwise a failure is raised.
+                After revocation, a document can be externalized again if necessary.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:revokeExternalization"/>
+      <WL5G3N0:output message="WL5G3N2:revokeExternalizationResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createOrUpdateSpecificMetadata">
+      <WL5G3N0:documentation>Add or modify (business) specific metadata for the specified document.
+
+                In case of an update, only the fields present in the request will be updated. The others
+                will be unaffected. To remove a value, use use the nil attribute e.g. &lt;string1 xsi:nil="true" />
+
+                This metadata allows a client application to add specific (business) metadata together
+                with the e-Domec metadata. It enables clients to e.g. searches on the specific metadata
+                combined with the e-Domec metadata.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:createOrUpdateSpecificMetadata"/>
+      <WL5G3N0:output message="WL5G3N2:createOrUpdateSpecificMetadataResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="deleteAllSpecificMetadata">
+      <WL5G3N0:documentation>Delete (business) specific metadata for the specified document.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:deleteAllSpecificMetadata"/>
+      <WL5G3N0:output message="WL5G3N2:deleteAllSpecificMetadataResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="applyProcedure">
+      <WL5G3N0:documentation>This operation applies a new procedure to an existing document or removes the procedure from the document. &lt;br/>
+
+                The user must have access to the document and have the right to apply the procedure, otherwise the operation will fail. &lt;br/></WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:applyProcedure"/>
+      <WL5G3N0:output message="WL5G3N2:applyProcedureResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createSpecificMetadataItems">
+      <WL5G3N0:documentation>Add bussiness specific metadata XML items (attachments) to the specified document.
+
+                A well-formed XML file needs to uploaded first.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:createSpecificMetadataItems"/>
+      <WL5G3N0:output message="WL5G3N2:createSpecificMetadataItemsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="updateSpecificMetadataItems">
+      <WL5G3N0:documentation>Update bussiness specific metadata XML items (attachments) of a specified document.
+
+                If the content needs to be changed, a well-formed XML file needs to uploaded first.
+                In case of an update, only the fields present in the request will be updated. The others
+                will be unaffected.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:updateSpecificMetadataItems"/>
+      <WL5G3N0:output message="WL5G3N2:updateSpecificMetadataItemsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="deleteSpecificMetadataItems">
+      <WL5G3N0:documentation>Delete bussiness specific metadata XML items (attachments) of a specified document.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:deleteSpecificMetadataItems"/>
+      <WL5G3N0:output message="WL5G3N2:deleteSpecificMetadataItemsResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="addExternalSignature">
+      <WL5G3N0:documentation>An external EU Login / ECAS signature will be added to the list of documents. The consequences is that the documents will
+                become signed and locked.
+
+                The documents must not be registered. The order of the documents must match the order as they appear in the ECAS
+                digital signature. Also the titles and attachments must match.
+
+                Upon registration, the rendition will contain a message indicating that it was digitally signed. This is because
+                we consider and trust EU Login / ECAS signatures (compared to normal HRS external signatures) as the transfer or
+                of a validation chain from a given system to Hermes. It's considered similar as an Ares/Hermes e-Signatory SIGN
+                task.</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:addExternalSignature"/>
+      <WL5G3N0:output message="WL5G3N2:addExternalSignatureResponse"/>
+    </WL5G3N0:operation>
+  </WL5G3N0:portType>
+  <WL5G3N0:binding name="DocumentServiceBinding" type="WL5G3N2:DocumentService">
+    <WL5G3N3:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <WL5G3N0:operation name="fileDocument">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="unfileDocument">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createDocument">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="updateDocument">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="trashDocument">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="registerDocumentById">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="registerDocument">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="checkoutItem">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="cancelItemCheckout">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="checkinItem">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="addTranslations">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="searchDocumentsByExpression">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="linkDocuments">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="unlinkDocuments">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="findPotentialRegisteredDuplicates">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="findPotentialRegisteredDuplicatesById">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="encryptItems">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="decryptItems">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="findDocumentNotifications">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="markDocumentNotifications">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="deleteDocumentNotifications">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="externalizeDocument">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="revokeExternalization">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createOrUpdateSpecificMetadata">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="deleteAllSpecificMetadata">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="applyProcedure">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="createSpecificMetadataItems">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="updateSpecificMetadataItems">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="deleteSpecificMetadataItems">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="addExternalSignature">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+  </WL5G3N0:binding>
+  <WL5G3N0:service name="DocumentWebService">
+    <WL5G3N0:documentation>The Document web service exposes basic operations on documents: create,
+            update, register, file/unfile and search</WL5G3N0:documentation>
+    <WL5G3N0:port binding="WL5G3N2:DocumentServiceBinding" name="DocumentService">
+      <WL5G3N3:address location="http://www.cc.cec/hrs-ws/1.28/DocumentWebServicePS"/>
+    </WL5G3N0:port>
+  </WL5G3N0:service>
+</WL5G3N0:definitions>
