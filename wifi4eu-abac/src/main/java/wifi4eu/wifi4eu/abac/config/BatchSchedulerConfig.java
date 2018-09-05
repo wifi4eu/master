@@ -36,7 +36,7 @@ public class BatchSchedulerConfig {
     @Autowired
     DocumentService documentService;
 
-    //@Scheduled(cron = "${batch.legalentity.create.crontable}")
+    @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
         //check-update the LE status for ABAC (change from IMPORTED to READY_FOR_ABAC)
         legalEntityService.checkLegalEntityReadyForAbac();
@@ -44,17 +44,17 @@ public class BatchSchedulerConfig {
 		abacIntegrationService.findAndSendLegalEntitiesReadyToABAC(MAX_RECORDS_CREATE);
     }
 
-    //@Scheduled(cron = "${batch.budgetarycommitment.create.crontable}")
+    @Scheduled(cron = "${batch.budgetarycommitment.create.crontable}")
     public void createBudgetaryCommitmentsInABAC() {
         abacIntegrationService.findAndSendBudgetaryCommitmentsReadyToABAC(MAX_RECORDS_CREATE);
     }
 
-    //@Scheduled(cron = "${batch.legalcommitment.countersign.crontable}")
+    @Scheduled(cron = "${batch.legalcommitment.countersign.crontable}")
     public void createLegalCommitmentsInABAC() {
         abacIntegrationService.findAndSendLegalCommitmentsReadyToABAC();
     }
 
-    //@Scheduled(cron = "${batch.abac.checkstatus.crontable}")
+    @Scheduled(cron = "${batch.abac.checkstatus.crontable}")
     public void checkAbacStatuses() {
 
         abacIntegrationService.updateLegalEntitiesStatuses();
@@ -62,12 +62,12 @@ public class BatchSchedulerConfig {
         abacIntegrationService.updateLegalCommitmentStatuses();
     }
 
-    //@Scheduled(cron = "${batch.legalcommitment.create.crontable}")
+    @Scheduled(cron = "${batch.legalcommitment.create.crontable}")
     public void counterSignGrantAgreements() {
         legalCommitmentService.findAndCounterSignGrantAgreements();
     }
 
-    //@Scheduled(cron = "${notifications.batch.crontable}")
+    @Scheduled(cron = "${notifications.batch.crontable}")
     public void sendNotifications() {
         notificationService.notifyLegalEntityProcessFinished();
         notificationService.notifyBudgetaryCommitmentProcessFinished();
