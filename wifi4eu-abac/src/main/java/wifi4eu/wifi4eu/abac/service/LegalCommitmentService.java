@@ -54,7 +54,7 @@ public class LegalCommitmentService {
 
 				Document grantAgreement = legalCommitment.getGrantAgreementDocument();
 
-				byte[] countersignedFile = essiService.signDocument(grantAgreement, userService.getUserByUsername(getCurrentUser().getUid()), userService.getUserByUsername(propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_UID")));
+				byte[] countersignedFile = essiService.signDocument(grantAgreement, userService.getUserByUsername(legalCommitment.getGrantAgreementCounterSignatureUser()), userService.getUserByUsername(propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_UID")));
 
 				Document counterSignedGrantAgreement = new Document();
 				counterSignedGrantAgreement.setName("countersigned_"+ grantAgreement.getName());
