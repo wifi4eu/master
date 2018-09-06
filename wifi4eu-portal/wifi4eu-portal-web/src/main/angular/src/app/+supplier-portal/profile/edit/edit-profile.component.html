@@ -51,7 +51,12 @@
                                (change)="changeLogo($event)" accept="image/png,image/jpeg"
                                style="visibility:hidden;height: 0;width: 0;padding: 0;margin: 0;">
                     </span>
+                    
                 </label>
+
+                <button *ngIf="isLogoUploaded" type="button" class="ui-g-3 btn btn-primary" (click)="clearLogoFile()">
+                    {{'shared.clear.label' | translate}}
+                </button>
             </div>
             <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
  <!--ADD CONTACT-->

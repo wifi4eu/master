@@ -205,6 +205,7 @@ export class SupplierEditProfileComponent {
         this.logoUrl = new FileReader();
         this.logoFile = null;
         this.isLogoUploaded = false;
+        this.enableButton();
     }
 
     private goBack() {
