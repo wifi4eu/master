@@ -79,7 +79,7 @@
 		        <tr>
 		        	<ng-container *ngFor="let col of cols">
                         <td *ngIf="col.field == 'selected'" class="text-center">
-                            <p-checkbox [(ngModel)]="selectedLegalEntities" name="selectedRows" value="{{row.id}}" [disabled]="!row.readyToBeCounterSigned"></p-checkbox>
+                            <p-checkbox [(ngModel)]="row.isSelected" name="selectedRows" value="{{row}}" [disabled]="false" binary="true"></p-checkbox>
                         </td>
 		        		<td *ngIf="(col.field != 'selected') && showColumn(col.isFor)">{{row[col.field]}}</td>
 		        	</ng-container>
@@ -90,8 +90,15 @@
 	</ux-panel>
 
 	<div class="row">
-		<div class="col-12 text-right">
-            <ux-button (click)="uxService.openMessageBox('confirmCounterSignatureMessageBox')" [isDisabled]="selectedLegalEntities.length == 0">Counter-sign Grant Agreements</ux-button>
+		<div class="col-4">
+            <ux-button (click)="selectAll()" [isDisabled]="!hasSelectable">Select all</ux-button>
+            <ux-button (click)="clearSelection()" [isDisabled]="isSelectionEmpty()">Clear selection</ux-button>
+        </div>
+        <div class="col-4 text-center">
+            <span *ngIf="!isSelectionEmpty()">{{getSelection().length}} row(s) selected</span>
+        </div>
+		<div class="col-4 text-right">
+            <ux-button (click)="uxService.openMessageBox('confirmCounterSignatureMessageBox')" [isDisabled]="isSelectionEmpty()">Counter-sign Grant Agreements</ux-button>
         </div>
     </div>
 

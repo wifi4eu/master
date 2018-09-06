@@ -19,6 +19,8 @@ export class MonitoringTableComponent implements OnInit{
     private lcStatuses: string[] = [];
     private rows: MonitoringRowDTO[];
 
+    private hasSelectable: boolean = false;
+  
     private showLEF: boolean = true;
     private showBC: boolean = true;
     private showLC: boolean = true;
@@ -29,8 +31,6 @@ export class MonitoringTableComponent implements OnInit{
     private filterLEFStatus: string;
     private filterBCStatus: string;
     private filterLCStatus: string;
-
-    private selectedLegalEntities = [];
 
     @ViewChild('monitoring') monitoringTable: Table;
 
@@ -61,7 +61,6 @@ export class MonitoringTableComponent implements OnInit{
     }
 
     loadData() {
-        this.selectedLegalEntities = [];
         this.api.getMonitoringData().subscribe(monitoringRows => {
             this.rows = monitoringRows;
             for (let i = 0; i < this.rows.length; i++) {
@@ -78,6 +77,9 @@ export class MonitoringTableComponent implements OnInit{
                 }
                 if (lcStatus !== undefined && lcStatus !== '' && this.lcStatuses.indexOf(lcStatus) === -1){
                     this.lcStatuses.push(lcStatus);
+                }
+                if (this.rows[i].readyToBeCounterSigned){
+                    this.hasSelectable = true;
                 }
             }
             this.lefStatuses.sort();
@@ -120,10 +122,38 @@ export class MonitoringTableComponent implements OnInit{
         }, 200);
     }
 
+    selectAll(){
+        this.clearSelection();
+        for (let i = 0; i < this.rows.length; i++) {
+            if (this.rows[i].readyToBeCounterSigned) {
+                this.rows[i].isSelected = true;
+            }
+        }
+    }
+  
+    clearSelection(){
+        for (let i = 0; i < this.rows.length; i++) {
+            this.rows[i].isSelected = false;
+        }
+    }
+  
+    getSelection(){
+        let result = [];
+        for (let i = 0; i < this.rows.length; i++) {
+            if (this.rows[i].isSelected) {
+                result.push(this.rows[i].id);
+            }
+        }
+        return result;
+    }
+  
+    isSelectionEmpty(){
+        return this.getSelection().length === 0;
+    }
+    
     countersignSelected(userConfirmedOperation) {
-
         if (userConfirmedOperation) {
-            this.api.counterSignGrantAgreements(this.selectedLegalEntities).subscribe(
+            this.api.counterSignGrantAgreements(this.getSelection()).subscribe(
                 event => {
                     this.showSuccess();
                     this.loadData();

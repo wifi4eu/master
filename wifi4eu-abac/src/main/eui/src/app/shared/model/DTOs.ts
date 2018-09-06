@@ -17,6 +17,7 @@ export interface MonitoringRowDTO {
     signatureDate?: string;
     counterSignatureDate?: string;
     readyToBeCounterSigned?: Boolean;
+    isSelected?: Boolean;
 }
 
 export interface ResponseDTO {
