@@ -74,7 +74,6 @@ public class BudgetaryCommitmentService {
 		finishedStatuses.add(AbacWorkflowStatus.ABAC_VALID);
 		finishedStatuses.add(AbacWorkflowStatus.ABAC_REJECTED);
 		finishedStatuses.add(AbacWorkflowStatus.ABAC_ERROR);
-		finishedStatuses.add(AbacWorkflowStatus.ABAC_FINISH);
 
 		Long pending = budgetaryCommitmentyRepository.countAllByWfStatusNotInAndBatchRefEquals(finishedStatuses, batchRef);
 

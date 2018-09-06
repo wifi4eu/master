@@ -4,29 +4,28 @@ public enum AbacWorkflowStatus {
 	
 	IMPORTED("IMPORTED", "Imported"),
 	WAITING_FOR_ARES("WAITING_FOR_ARES", "Waiting for ARES reference"),
-	READY_FOR_ABAC("READY_FOR_ABAC", "Ready for ABAC"),
-	WAITING_FOR_ABAC("WAITING_FOR_ABAC", "Waiting to be sent to ABAC"),
-	WAITING_APPROVAL("WAITING_APPROVAL", "Waiting for approval"),
-	ABAC_FINISH("ABAC_FINISH", "Sent to ABAC"),
+	READY_FOR_ABAC("READY_FOR_ABAC", "Imported"),
+	WAITING_FOR_ABAC("WAITING_FOR_ABAC", "Imported"),
+	WAITING_APPROVAL("WAITING_APPROVAL", "Wating ABAC Validation"),
 	ABAC_ERROR("ABAC_ERROR", "Error sending to ABAC"),
     ABAC_VALID("ABAC_VALID", "Validated in ABAC"),
     ABAC_REJECTED("ABAC_REJECTED", "Rejected in ABAC"),
 	UNMAPPED_STATUS("UNMAPPED_STATUS", "Unknown status");
 
 	private String value;
-	private String title;
+	private String userInterfaceTitle;
 
-	private AbacWorkflowStatus(String value, String title) {
+	private AbacWorkflowStatus(String value, String userInterfaceTitle) {
 		this.value = value;
-		this.title = title;
+		this.userInterfaceTitle = userInterfaceTitle;
 	}
 
 	public String getValue() {
 		return value;
 	}
 	
-	public String getTitle() {
-		return title;
+	public String getUserInterfaceTitle() {
+		return userInterfaceTitle;
 	}
 
 	@Override

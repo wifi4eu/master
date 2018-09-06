@@ -14,7 +14,7 @@ import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentWorkflowStatus;
 
 public interface LegalCommitmentRepository extends CrudRepository<LegalCommitment, Integer> {
 
-	@Query(value = "SELECT lc FROM LegalCommitment lc WHERE lc.wfStatus in ('ABAC_FINISH', 'ABAC_ERROR')")
+	@Query(value = "SELECT lc FROM LegalCommitment lc WHERE lc.wfStatus in ('ABAC_VALID', 'ABAC_ERROR')")
 	List<LegalCommitment> findLCFinishedInAbac();
 	
 	LegalCommitment findByLegalEntityMid(Long municipalityPortalId);

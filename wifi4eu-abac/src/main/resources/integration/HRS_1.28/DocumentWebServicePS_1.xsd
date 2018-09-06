@@ -889,7 +889,7 @@
           <documentation>Internal repository ID of a document</documentation>
         </annotation>
       </element>
-      <element name="title" type="string" minOccurs="0">
+      <element name="userInterfaceTitle" type="string" minOccurs="0">
         <annotation>
           <documentation>Title/subject of the document</documentation>
         </annotation>
@@ -2204,9 +2204,9 @@
       <documentation>An external person</documentation>
     </annotation>
     <sequence>
-      <element name="title" type="xsd:string" minOccurs="0">
+      <element name="userInterfaceTitle" type="xsd:string" minOccurs="0">
         <annotation>
-          <documentation>The title e.g. Dr. Mr. etc.</documentation>
+          <documentation>The userInterfaceTitle e.g. Dr. Mr. etc.</documentation>
         </annotation>
       </element>
       <element name="lastName" type="string">
@@ -3165,10 +3165,10 @@
           </restriction>
         </simpleType>
       </element>
-      <element name="title" type="string" minOccurs="0">
+      <element name="userInterfaceTitle" type="string" minOccurs="0">
         <annotation>
-          <documentation>The title of supporting-Item.
-                              For supporting item update, blank/empty title input will be ignored. and existing title value will be retained.</documentation>
+          <documentation>The userInterfaceTitle of supporting-Item.
+                              For supporting item update, blank/empty userInterfaceTitle input will be ignored. and existing userInterfaceTitle value will be retained.</documentation>
         </annotation>
       </element>
       <element name="comment" type="string" minOccurs="0">
