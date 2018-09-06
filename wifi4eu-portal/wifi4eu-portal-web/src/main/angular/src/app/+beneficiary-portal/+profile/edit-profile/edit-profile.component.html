@@ -62,7 +62,7 @@
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <p>{{ 'benefRegistration.address.label' | translate }}</p>
+                        <p>{{ 'benefRegistration.townHall.address' | translate }}</p>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
@@ -73,6 +73,7 @@
                             ngcontrol="address_municipality" #address_municipality="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event, i)"
                             [disabled]="!isMunicipalityEditable[municipality.id]" required>
                         <div [hidden]="address_municipality.valid || address_municipality.pristine" class="alert alert-danger">
+                            {{ 'suppRegistration.address.required' | translate }}
                         </div>
                     </div>
                     <div class="col-sm-2"></div>
@@ -163,9 +164,12 @@
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <input id="email_mayor" type="text" [(ngModel)]="mayors[i].email" class="form-control" name="email_mayor" ngcontrol="email_mayor"
+                        <input id="email_mayor" type="text" [(ngModel)]="mayors[i].email" class="form-control" name="email_mayor" ngcontrol="email_mayor" [pattern]="emailPattern"
                             #email_mayor="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]"
                             required>
+                        <div [hidden]="email_mayor.valid || email_mayor.pristine" class="alert alert-danger">
+                             {{ 'email.required' | translate }}
+                        </div>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
