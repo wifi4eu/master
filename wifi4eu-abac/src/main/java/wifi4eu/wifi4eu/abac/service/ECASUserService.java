@@ -14,15 +14,13 @@ public class ECASUserService {
 	private final Logger log = LoggerFactory.getLogger(ECASUserService.class);
 	
 	public String getCurrentUsername() {
-//		String currentEcasUserName = null;
-//		try {
-//			DetailedUser currentEcasUser = SubjectUtil.getCurrentEcasUser();
-//			currentEcasUserName=currentEcasUser.getUid();
-//		} catch (SubjectNotFoundException e) {
-//			log.error("ERROR while trying to retrieve the current user", e);
-//		}
-//		return currentEcasUserName;
-		
-		return "dbek";
+		String currentEcasUserName = null;
+		try {
+			DetailedUser currentEcasUser = SubjectUtil.getCurrentEcasUser();
+			currentEcasUserName=currentEcasUser.getUid();
+		} catch (SubjectNotFoundException e) {
+			log.error("ERROR while trying to retrieve the current user", e);
+		}
+		return currentEcasUserName;
 	}
 }

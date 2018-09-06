@@ -40,7 +40,6 @@ public class CustomAuthFilter extends GenericFilterBean {
     		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(currentUser, "none");
     		Authentication authResult = this.authenticationManager.authenticate(authRequest);
     		SecurityContextHolder.getContext().setAuthentication(authResult);
-    		log.info("Authentication success: " + authResult);
     	}
     	chain.doFilter(request, response);
     }

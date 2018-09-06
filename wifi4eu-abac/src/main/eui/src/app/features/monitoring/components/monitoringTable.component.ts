@@ -14,6 +14,9 @@ export class MonitoringTableComponent implements OnInit{
 
     private cols: any[];
     private countries: CountryDTO[];
+    private lefStatuses: string[] = [];
+    private bcStatuses: string[] = [];
+    private lcStatuses: string[] = [];
     private rows: MonitoringRowDTO[];
 
     private showLEF: boolean = true;
@@ -23,6 +26,9 @@ export class MonitoringTableComponent implements OnInit{
     private filterTimeout: any;
     private filterCountry: string;
     private filterName: string;
+    private filterLEFStatus: string;
+    private filterBCStatus: string;
+    private filterLCStatus: string;
 
     private selectedLegalEntities = [];
 
@@ -56,7 +62,28 @@ export class MonitoringTableComponent implements OnInit{
 
     loadData() {
         this.selectedLegalEntities = [];
-        this.api.getMonitoringData().subscribe(monitoringRows => this.rows = monitoringRows);
+        this.api.getMonitoringData().subscribe(monitoringRows => {
+            this.rows = monitoringRows;
+            for (let i = 0; i < this.rows.length; i++) {
+                let
+                    lefStatus = this.rows[i].lefStatus,
+                    bcStatus = this.rows[i].bcStatus,
+                    lcStatus = this.rows[i].lcStatus
+                ;
+                if (lefStatus !== undefined && lefStatus !== '' && this.lefStatuses.indexOf(lefStatus) === -1){
+                    this.lefStatuses.push(lefStatus);
+                }
+                if (bcStatus !== undefined && bcStatus !== '' && this.bcStatuses.indexOf(bcStatus) === -1){
+                    this.bcStatuses.push(bcStatus);
+                }
+                if (lcStatus !== undefined && lcStatus !== '' && this.lcStatuses.indexOf(lcStatus) === -1){
+                    this.lcStatuses.push(lcStatus);
+                }
+            }
+            this.lefStatuses.sort();
+            this.bcStatuses.sort();
+            this.lcStatuses.sort();
+        });
         this.api.getCountries().subscribe(countries => this.countries = countries);
     }
 
@@ -71,6 +98,9 @@ export class MonitoringTableComponent implements OnInit{
     clearFilters(){
         this.filterCountry = undefined;
         this.filterName = undefined;
+        this.filterLEFStatus = undefined;
+        this.filterBCStatus = undefined;
+        this.filterLCStatus = undefined;
         this.applyFilters();
     }
 
@@ -81,7 +111,10 @@ export class MonitoringTableComponent implements OnInit{
         this.filterTimeout = setTimeout(() => {
           this.monitoringTable.filters = {
               'countryCode': { value: this.filterCountry, matchMode: 'equals' },
-              'municipality': { value: this.filterName, matchMode: 'contains' }
+              'municipality': { value: this.filterName, matchMode: 'contains' },
+              'lefStatus' : { value: this.filterLEFStatus, matchMode: 'equals' },
+              'bcStatus' : { value: this.filterBCStatus, matchMode: 'equals' },
+              'lcStatus' : { value: this.filterLCStatus, matchMode: 'equals' },
           };
           this.monitoringTable._filter();
         }, 200);

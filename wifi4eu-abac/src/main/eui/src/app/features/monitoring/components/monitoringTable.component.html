@@ -25,6 +25,26 @@
 				<button type='button' (click)="clearFilters()" class="btn btn-light btn-block">Clear filters</button>
 			</div>
 		</div>
+		<div class="row ux-u-pt">
+		    <div class="col-md-4">
+			    <select class="form-control" [(ngModel)]="filterLEFStatus" (change)="applyFilters()">
+			    	<option [value]="undefined" disabled selected>Search by LEF status...</option>
+			    	<option *ngFor="let status of lefStatuses" [value]="status">{{status}}</option>
+			    </select>
+			</div>
+			<div class="col-md-4">
+			    <select class="form-control" [(ngModel)]="filterBCStatus" (change)="applyFilters()">
+			    	<option [value]="undefined" disabled selected>Search by BC status...</option>
+			    	<option *ngFor="let status of bcStatuses" [value]="status">{{status}}</option>
+			    </select>
+			</div>
+			<div class="col-md-4">
+				<select class="form-control" [(ngModel)]="filterLCStatus" (change)="applyFilters()">
+			    	<option [value]="undefined" disabled selected>Search by LC status...</option>
+			    	<option *ngFor="let status of lcStatuses" [value]="status">{{status}}</option>
+			    </select>
+			</div>
+		</div>
 	</ux-panel>
 
 	<ux-panel label="List of Beneficiaries of Call 1" [hasNoContentPadding]="true">
