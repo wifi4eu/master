@@ -42,7 +42,7 @@ public class AbacIntegrationService {
         List<LegalEntity> legalEntities = legalEntityRepository.findByWfStatusOrderByDateCreated(AbacWorkflowStatus.READY_FOR_ABAC, pageable);
 
         if (!legalEntities.isEmpty()) {
-            log.info(String.format("Found %s legal entities ready to be sent to ABAC...", legalEntities.size()));
+            log.info("Found {} legal entities ready to be sent to ABAC...", legalEntities.size());
         }
 
         try {
@@ -50,7 +50,7 @@ public class AbacIntegrationService {
                 createLegalEntityInAbac(legalEntity);
             }
         } catch (Exception e){
-            log.error(String.format("Error sending data to abac: %s", e.getMessage()));
+            log.error("Error sending data to abac: {}", e.getMessage());
         }
 
     }
@@ -58,10 +58,10 @@ public class AbacIntegrationService {
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     private void createLegalEntityInAbac(LegalEntity legalEntity) {
         try {
-            log.info(String.format("Insert legal entity %s into abac", legalEntity.getId()));
+            log.info("Insert legal entity {} into abac", legalEntity.getId());
             legalEntityRepository.createFinancialLegalEntity(legalEntity.getId());
         } catch (Exception e){
-            log.error(String.format("Error sending data to abac: %s", e.getMessage()));
+            log.error("Error sending data to abac: {}", e.getMessage());
         }
     }
 
@@ -69,7 +69,7 @@ public class AbacIntegrationService {
         try {
             legalEntityRepository.updateFinancialLegalEntitiesStatuses();
         } catch (Exception e){
-            log.error(String.format("Error retrieving data from abac: %s", e.getMessage()));
+            log.error("Error retrieving data from abac: {}", e.getMessage());
         }
     }
 
@@ -77,16 +77,16 @@ public class AbacIntegrationService {
         List<LegalEntity> legalEntities = legalEntityRepository.findAvailableLegalEntitiesForBudgetaryCommitmentCreation();
 
         if (!legalEntities.isEmpty()) {
-            log.info(String.format("Found %s legal entities with budgetary commitments to be created in ABAC...", legalEntities.size()));
+            log.info("Found {} legal entities with budgetary commitments to be created in ABAC...", legalEntities.size());
         }
 
         try {
             for (LegalEntity legalEntity : legalEntities) {
-                log.info(String.format("Insert BC for legal entity id %s in ABAC", legalEntity.getId()));
+                log.info("Insert BC for legal entity id {} in ABAC", legalEntity.getId());
                 budgetaryCommitmentRepository.createBudgetaryCommitmentInAbac(legalEntity.getId());
             }
         } catch (Exception e){
-            log.error(String.format("Error sending data to abac: %s", e.getMessage()));
+            log.error("Error sending data to abac: {}", e.getMessage());
         }
     }
 
@@ -94,7 +94,7 @@ public class AbacIntegrationService {
         try {
             budgetaryCommitmentRepository.updateBudgetaryCommitmentStatuses();
         } catch (Exception e){
-            log.error(String.format("Error retrieving data from abac: %s", e.getMessage()));
+            log.error("Error retrieving data from abac: {}", e.getMessage());
         }
     }
 
@@ -102,7 +102,7 @@ public class AbacIntegrationService {
         try {
             legalCommitmentRepository.updateLegalCommitmentStatuses();
         } catch (Exception e){
-            log.error(String.format("Error retrieving data from abac: %s", e.getMessage()));
+            log.error("Error retrieving data from abac: {}", e.getMessage());
         }
 	}
 

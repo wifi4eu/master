@@ -64,7 +64,7 @@ public abstract class AbstractCSVFileParser {
 		}
 
 		if (!isValid) {
-			log.error(String.format("Invalid file format. Missing columns %s", columnsNotFound));
+			log.error("Invalid file format. Missing columns {}", columnsNotFound);
 			throw new RuntimeException(String.format("Invalid file format. Missing columns %s", columnsNotFound));
 		}
 

@@ -114,7 +114,7 @@ public class ImportDataService {
 
 		while(fileDTO != null) {
 
-			log.info(String.format("Processing file %s", fileDTO.getFileName()));
+			log.info("Processing file {}", fileDTO.getFileName());
 
 			switch (fileDTO.getFileName()) {
 				case LEGAL_ENTITY_INFORMATION_CSV_FILENAME:
@@ -207,7 +207,7 @@ public class ImportDataService {
 				documentService.saveDocument(document);
 			} else {
 				//TODO update or ignore?
-				log.info(String.format("Document with Portal ID/Name %s/%s already exists in the DB. Ignoring it for now", document.getPortalId(), document.getName()));
+				log.info("Document with Portal ID/Name {}/{} already exists in the DB. Ignoring it for now", document.getPortalId(), document.getName());
 			}
 		}
 	}
@@ -230,7 +230,7 @@ public class ImportDataService {
 			BudgetaryCommitmentPosition budgetaryCommitmentPosition = budgetaryCommitmentService.getBCPosition(budgetaryCommitmentCSVRow.getMunicipalityPortalId(), budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
 
 			if(budgetaryCommitmentPosition == null) {
-				log.info(String.format("importing BC %s for mid %s", budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey(), budgetaryCommitmentCSVRow.getMunicipalityPortalId()));
+				log.info("importing BC {} for mid {}", budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey(), budgetaryCommitmentCSVRow.getMunicipalityPortalId());
 
 				budgetaryCommitmentPosition = budgetaryCommitmentService.mapBudgetaryCommitmentCSVToEntity(budgetaryCommitmentCSVRow);
 
@@ -244,9 +244,9 @@ public class ImportDataService {
 				budgetaryCommitmentService.saveBCPosition(budgetaryCommitmentPosition);
 			} else {
 				//TODO update or ignore?
-				log.info(String.format("Legal entity mid %s already has a Budgetary commitment position %s. Ignoring it for now",
+				log.info("Legal entity mid {} already has a Budgetary commitment position {}. Ignoring it for now",
 										budgetaryCommitmentCSVRow.getMunicipalityPortalId(),
-										budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position()));
+										budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
 			}
 		}
 

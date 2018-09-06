@@ -29,7 +29,7 @@ public class ZipFileWriter {
 	}
 
 	public void addFile(FileDTO fileDTO) throws IOException {
-		log.info(String.format("Adding file %s to zip", fileDTO.getFileName()));
+		log.info("Adding file {} to zip", fileDTO.getFileName());
 		ZipEntry zipEntry = new ZipEntry(fileDTO.getFileName());
 		zipOutputStream.putNextEntry(zipEntry);
 		zipOutputStream.write(fileDTO.getContent(), 0, fileDTO.getContent().length);

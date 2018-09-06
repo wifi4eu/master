@@ -95,7 +95,7 @@ public class BatchSchedulerConfig {
         List<Document> documents = documentService.getDocumentsByStatus(DocumentWorkflowStatus.IMPORTED, pageable);
 
         if (!documents.isEmpty()) {
-            log.info(String.format("Found %s documents ready to be sent to ARES...", documents.size()));
+            log.info("Found {} documents ready to be sent to ARES...", documents.size());
         }
 
 
@@ -103,10 +103,10 @@ public class BatchSchedulerConfig {
                 try {
                     documentService.addDocumentInAres(document);
                 }catch (SOAPFaultException e){
-                    log.error(String.format("Error sending document to ARES: %s", e.getMessage()), e);
+                    log.error("Error sending document to ARES: {}", e.getMessage(), e);
                     documentService.updateStatusInNewTransaction(document, DocumentWorkflowStatus.ARES_ERROR);
                 } catch (Exception e){
-                    log.error(String.format("Error sending document to ARES: %s", e.getMessage()), e);
+                    log.error("Error sending document to ARES: {}", e.getMessage(), e);
                     documentService.updateStatusInNewTransaction(document, DocumentWorkflowStatus.ARES_ERROR);
                 }
             }
