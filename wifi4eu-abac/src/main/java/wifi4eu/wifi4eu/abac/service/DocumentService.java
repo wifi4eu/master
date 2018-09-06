@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
@@ -16,8 +18,9 @@ import wifi4eu.wifi4eu.abac.data.repository.DocumentRepository;
 import wifi4eu.wifi4eu.abac.data.repository.DocumentTypeMetadataRepository;
 import wifi4eu.wifi4eu.abac.integration.hrs.HermesDocumentServiceClient;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DocumentService {
@@ -36,8 +39,16 @@ public class DocumentService {
     @Autowired
     HermesDocumentServiceClient hermesDocumentServiceClient;
 
+	@Transactional
 	public Document saveDocument(Document document) {
 		return documentRepository.save(document);
+	}
+
+	@Transactional( propagation = Propagation.REQUIRES_NEW )
+	public Document updateStatusInNewTransaction(Document document, DocumentWorkflowStatus workflowStatus){
+		document.setWfStatus(workflowStatus);
+		saveDocument(document);
+		return document;
 	}
 
 	public Document getDocumentByPortalId(Long portalId) {
@@ -61,40 +72,19 @@ public class DocumentService {
 		return document;
 	}
 
-	@Transactional(Transactional.TxType.REQUIRES_NEW)
-	public Document addDocumentInAres(Document document) throws DocumentFault {
-
-        try {
-            document = hermesDocumentServiceClient.saveDocumentInAres(document);
-            document.setWfStatus(DocumentWorkflowStatus.ARCHIVED_IN_ARES);
-        } catch (Exception e) {
-            log.error("ERROR Saving document in ARES {}", document.getId(), e);
-			document.setWfStatus(DocumentWorkflowStatus.ARES_ERROR);
-        }
+	@Transactional( propagation = Propagation.REQUIRES_NEW )
+	public Document addDocumentInAres(Document document) throws Exception {
+		hermesDocumentServiceClient.createFile(document);
+		hermesDocumentServiceClient.createDocument(document);
+		hermesDocumentServiceClient.uploadAttachment(document);
+		hermesDocumentServiceClient.fileDocument(document);
+		hermesDocumentServiceClient.registerDocument(document);
 
         return saveDocument(document);
     }
 
 
-	@Transactional
-    public List<Document> submitDocumentsToAres(Integer startPage, Integer maxRecords) {
-        Pageable pageable = PageRequest.of(startPage, maxRecords);
-        List<Document> documents = documentRepository.findByWfStatusOrderByDateCreated(DocumentWorkflowStatus.IMPORTED, pageable);
 
-        if (!documents.isEmpty()) {
-            log.info(String.format("Found %s documents ready to be sent to ARES...", documents.size()));
-        }
-
-        try {
-            for (Document document : documents) {
-                addDocumentInAres(document);
-            }
-        } catch (Exception e){
-            log.error(String.format("Error sending document to ARES: %s", e.getMessage()), e);
-        }
-
-        return documents;
-    }
 
 
 	public List<Document> getDocumentsByTypeAndStatus(DocumentType grantAgreement, DocumentWorkflowStatus waitingCountersignature) {
@@ -104,4 +94,9 @@ public class DocumentService {
 	public Document getDocumentsByLegalEntityIdAndType(Long legalEntityId, DocumentType documentType) {
     	return documentRepository.findByLegalEntityIdAndType(legalEntityId, documentType);
 	}
+
+	public List<Document> getDocumentsByStatus(DocumentWorkflowStatus workflowStatus, Pageable pageable) {
+		return documentRepository.findByWfStatusOrderByDateCreated(workflowStatus, pageable);
+	}
+
 }

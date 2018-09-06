@@ -69,27 +69,16 @@ public class HermesDocumentServiceClient {
     }
 
 
-    @Transactional
-    public Document saveDocumentInAres(Document document) throws Exception{
-        createFile(document);
-        createDocument(document);
-        uploadAttachment(document);
-        fileDocument(document);
-        registerDocument(document);
 
-        return document;
-    }
-
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    protected Document uploadAttachment(Document document)throws Exception {
+    public Document uploadAttachment(Document document)throws Exception {
         String hrsAttachmentRef = HrsHTTpClient.uploadAttachment(document);
         document.setHermesAttachmentId(hrsAttachmentRef);
 
         return document;
     }
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    protected Document createDocument(Document document) throws Exception {
+
+    public Document createDocument(Document document) throws Exception {
 
         if(document.getHermesDocumentId() != null){
             logger.info("A document is already created for DOC {} HermesDocumentId {}", document.getId(), document.getHermesDocumentId());
@@ -120,8 +109,8 @@ public class HermesDocumentServiceClient {
         return document;
     }
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    protected boolean fileDocument(Document document) throws Exception {
+
+    public boolean fileDocument(Document document) throws Exception {
         FileDocument fileDocument = new FileDocument();
         fileDocument.setDocumentId(document.getHermesDocumentId());
         fileDocument.setFileId(document.getHermesFileId());
@@ -131,8 +120,8 @@ public class HermesDocumentServiceClient {
         return fileDocumentResponse.getResult().isSuccess();
     }
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    protected Document createFile(Document document) throws Exception {
+
+    public Document createFile(Document document) throws Exception {
 
         CreateFileRequest createFileRequest = new CreateFileRequest();
         createFileRequest.setHeadingId(headingId);
@@ -178,9 +167,13 @@ public class HermesDocumentServiceClient {
         return document;
     }
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    protected Document registerDocument(Document document) throws Exception {
 
+    public Document registerDocument(Document document) throws Exception {
+
+        if(document.getRegistrationNumber() != null){
+            logger.info("A document is already registered for DOC {} RegistrationNumber {}", document.getId(), document.getRegistrationNumber());
+            return document;
+        }
 
         DocumentRegistrationRequest registrationRequest = new DocumentRegistrationRequest();
         registrationRequest.setTitle(document.getName());
