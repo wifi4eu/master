@@ -323,7 +323,7 @@ export class BeneficiaryEditProfileComponent {
         //if there's new laus, it changes to false if there's one invalid
         this.municipalitiesSelected = true;
         for (let i = 0; i < this.laus.length; i++) {
-            if (this.laus[i] == null) {
+            if (!this.laus[i]) {
                 this.municipalitiesSelected = false;
                 this.css_class_municipalities[i] = 'notValid';
             } else {
@@ -634,6 +634,9 @@ export class BeneficiaryEditProfileComponent {
             }
             this.checkEmailsMatch();
             this.checkMunicipalitiesSelected();
+        } else {
+            this.emailsMatch = true;
+            this.municipalitiesSelected = true;
         }
     }
 

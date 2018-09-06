@@ -65,7 +65,7 @@ export class BeneficiaryRegistrationStep4Component {
 
     check(legalChecks: boolean[]){
         if(!legalChecks[1] || !legalChecks[2] || !legalChecks[3]
-            || !legalChecks[4] || !legalChecks[5] || !legalChecks[6] || !legalChecks[7]
+            || !legalChecks[4] || !legalChecks[5] || !legalChecks[7]
             || !legalChecks[8]){
             return false;
         }else{
