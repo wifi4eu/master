@@ -34,16 +34,11 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     @Output() private onBack: EventEmitter<any>;
     @Output() private lausChange: EventEmitter<LauDTOBase[]>;
     @Output() private emailConfirmationsChanged: EventEmitter<string[]>;
-
-    @ViewChild('municipalityForm') private municipalityForms: NgForm;
     private lauSuggestions: LauDTOBase[] = [];
     private readonly MAX_LENGTH = 2;
     private css_class_municipalities: string[] = ['notValid'];
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
-
     private userEcas: UserDTOBase;
-
-    @ViewChild('municipalityForm') municipalityForm: NgForm;
 
     constructor(private lauApi: LauApi, private localStorage: LocalStorageService, private sharedService: SharedService) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
@@ -141,7 +136,6 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
             this.css_class_email.push('notValid');
             this.css_class_municipalities.push('notValid');
         }
-        this.checkMunicipalitiesSelected();
     }
 
     private removeMunicipality(index: number, deleteCount: number = 1) {
@@ -151,7 +145,6 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.emailConfirmations.splice(index, deleteCount);
         this.css_class_email.splice(index, deleteCount);
         this.css_class_municipalities.splice(index, deleteCount);
-        this.checkMunicipalitiesSelected();
         this.checkButtonEnabled(null);
 
     }
@@ -183,7 +176,6 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private checkButtonEnabled(event, i?) {
         if (this.municipalities) {
             this.checButtonNextEnabled();
-            this.checkMunicipalitiesSelected();
             this.checkEmailsMatch();
         }
     }
