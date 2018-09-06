@@ -8,6 +8,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "VALIDATED_LEF")
 public class ValidatedLEF {
+
     @Column(name = "idLef")
     @Id
     private Integer idLef;
@@ -24,6 +25,11 @@ public class ValidatedLEF {
     public ValidatedLEF(Integer idLef, String stat) {
         this.idLef = idLef;
         this.stat = stat;
+    }
+
+    public ValidatedLEF(Long abacReference, String abacStatus) {
+        this.idLef = abacReference.intValue();
+        this.stat = abacStatus;
     }
 
     public Integer getIdLef() {

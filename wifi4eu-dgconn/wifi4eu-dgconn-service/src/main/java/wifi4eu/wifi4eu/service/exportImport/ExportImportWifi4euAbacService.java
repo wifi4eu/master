@@ -45,6 +45,7 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.DateUtils;
 import wifi4eu.wifi4eu.util.ExportFileUtils;
+import wifi4eu.wifi4eu.util.parsing.LegalEntityCSVColumn;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.*;
@@ -152,12 +153,21 @@ public class ExportImportWifi4euAbacService {
                 // JsonArray lefVals = callJson.getAsJsonArray("idLef");
                 // for (int u = 0; u < lefVals.size(); u++) {
                 // JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
-                int idLef = callJson.get("idLef").getAsInt();
+
+                // TODO: double check. This filed is not contained in a file.
+//                 int idLef = callJson.get("idLef").getAsInt();
+
+                Long abacReference = callJson.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.getValue()).getAsLong();
+                String abacStatus = callJson.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_STATUS.getValue()).getAsString();
+                _log.debug("ABAC Reference from LEF reference [{}] and status [{}]", abacReference, abacStatus);
+
                 // String status = callJson.get("status").getAsString();
                 // ValidateLEF validatedLEF=new
                 // ValidateLEF(Integer.parseInt(callJson.get("idLef").toString()),
                 // callJson.get("status").toString());
-                ValidatedLEF validatedLEF = new ValidatedLEF(idLef);
+
+                ValidatedLEF validatedLEF = new ValidatedLEF(abacReference, abacStatus);
+
                 validatedLefRepository.save(validatedLEF);
                 // }
             }
