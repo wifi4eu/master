@@ -8,6 +8,7 @@ import javax.persistence.Id;
 @Entity
 public class BeneficiaryInformation {
 
+    // TODO: replace with Long
     @Id
     private Integer id;
 
@@ -27,13 +28,13 @@ public class BeneficiaryInformation {
 
 	private String mun_languageCodeISO;
 
-	private Integer mun_registrationNumber;
+	private Long mun_registrationNumber;
 
 	private String mun_abacReference;
 
-	private String mun_callNumber;
+	private Integer mun_callNumber;
 
-	private Integer doc_portalId;
+	private Long doc_portalId;
 
 	private String doc_name;
 
@@ -105,22 +106,6 @@ public class BeneficiaryInformation {
 		this.mun_languageCodeISO = mun_languageCodeISO;
 	}
 
-	public Integer getMun_registrationNumber() {
-		return mun_registrationNumber;
-	}
-
-	public void setMun_registrationNumber(Integer mun_registrationNumber) {
-		this.mun_registrationNumber = mun_registrationNumber;
-	}
-
-	public Integer getDoc_portalId() {
-		return doc_portalId;
-	}
-
-	public void setDoc_portalId(Integer doc_portalId) {
-		this.doc_portalId = doc_portalId;
-	}
-
 	public String getDoc_name() {
 		return doc_name;
 	}
@@ -169,14 +154,6 @@ public class BeneficiaryInformation {
 		this.doc_location = doc_location;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public String getMun_abacName() {
 		return mun_abacName;
 	}
@@ -193,19 +170,43 @@ public class BeneficiaryInformation {
 		this.mun_abacReference = mun_abacReference;
 	}
 
-	public String getMun_callNumber() {
-		return mun_callNumber;
-	}
-
-	public void setMun_callNumber(String mun_callNumber) {
-		this.mun_callNumber = mun_callNumber;
-	}
-
 	public String getAresReference() {
 		return aresReference;
 	}
 
 	public void setAresReference(String aresReference) {
 		this.aresReference = aresReference;
+	}
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Long getMun_registrationNumber() {
+		return mun_registrationNumber;
+	}
+
+	public void setMun_registrationNumber(Long mun_registrationNumber) {
+		this.mun_registrationNumber = mun_registrationNumber;
+	}
+
+	public Integer getMun_callNumber() {
+		return mun_callNumber;
+	}
+
+	public void setMun_callNumber(Integer mun_callNumber) {
+		this.mun_callNumber = mun_callNumber;
+	}
+
+	public Long getDoc_portalId() {
+		return doc_portalId;
+	}
+
+	public void setDoc_portalId(Long doc_portalId) {
+		this.doc_portalId = doc_portalId;
 	}
 }

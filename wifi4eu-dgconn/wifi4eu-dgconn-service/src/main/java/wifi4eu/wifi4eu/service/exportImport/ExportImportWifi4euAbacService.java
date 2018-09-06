@@ -184,12 +184,12 @@ public class ExportImportWifi4euAbacService {
 
         // Preparation for the Beneficiary CSV file
         StringBuilder csvBeneficiaryData = new StringBuilder();
-        String csvMunicipalitiesHeaders = exportFileUtilities.generateCSVHeaders(exportFileUtilities.csvMunicipalitiesHeaders);
+        String csvMunicipalitiesHeaders = exportFileUtilities.getMunicipalitiesCsvHeaders();
         csvBeneficiaryData.append(csvMunicipalitiesHeaders).append("\r\n");
 
         // Preparation for the Documents CSV file
         StringBuilder csvDocumentData = new StringBuilder();
-        String csvDocumentHeaders = exportFileUtilities.generateCSVHeaders(exportFileUtilities.csvDocumentHeaders);
+        String csvDocumentHeaders = exportFileUtilities.getMunicipalitiesDocCsvHeaders();
         csvDocumentData.append(csvDocumentHeaders).append("\r\n");
 
         List<ExportFile> exportFiles = new ArrayList<>();
@@ -236,7 +236,7 @@ public class ExportImportWifi4euAbacService {
                 .append(beneficiaryInformation.getMun_languageCodeISO()).append(ExportFileUtils.SEPARATOR)
                 .append(beneficiaryInformation.getMun_registrationNumber()).append(ExportFileUtils.SEPARATOR)
                 .append(StringUtils.defaultString(beneficiaryInformation.getMun_abacReference())).append(ExportFileUtils.SEPARATOR)
-                .append(StringUtils.defaultString(beneficiaryInformation.getMun_callNumber()));
+                .append(beneficiaryInformation.getMun_callNumber());
         csvBeneficiaryData.append("\r\n");
     }
 
