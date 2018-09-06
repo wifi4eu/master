@@ -70,7 +70,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="address_municipality" type="text" [(ngModel)]="municipality.address" class="form-control" name="address_municipality"
-                            ngcontrol="address_municipality" #address_municipality="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event, i)"
+                            ngcontrol="address_municipality" #address_municipality="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event)"
                             [disabled]="!isMunicipalityEditable[municipality.id]" required>
                         <div [hidden]="address_municipality.valid || address_municipality.pristine" class="alert alert-danger">
                             {{ 'suppRegistration.address.required' | translate }}
@@ -89,7 +89,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="number_municipality" type="text" [(ngModel)]="municipality.addressNum" class="form-control" name="number_municipality"
-                            ngcontrol="number_municipality" #number_municipality="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event, i)"
+                            ngcontrol="number_municipality" #number_municipality="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event)"
                             [disabled]="!isMunicipalityEditable[municipality.id]" required>
                         <div [hidden]="number_municipality.valid || number_municipality.pristine" class="alert alert-danger">
                             {{ 'suppRegistration.address.required' | translate }}
@@ -108,7 +108,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="postalCode_municipality" type="text" [(ngModel)]="municipality.postalCode" class="form-control" name="postalCode_municipality"
-                            ngcontrol="postalCode_municipality" #postalCode_municipality="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event, i)"
+                            ngcontrol="postalCode_municipality" #postalCode_municipality="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event)"
                             [disabled]="!isMunicipalityEditable[municipality.id]" required>
                         <div [hidden]="postalCode_municipality.valid || postalCode_municipality.pristine" class="alert alert-danger">
                             {{ 'suppRegistration.address.required' | translate }}
@@ -127,7 +127,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="name_mayor" type="text" [(ngModel)]="mayors[i].name" class="form-control" name="name_mayor" ngcontrol="name_mayor"
-                            #name_mayor="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]"
+                            #name_mayor="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event)" [disabled]="!isMunicipalityEditable[municipality.id]"
                             required>
                         <div [hidden]="name_mayor.valid || name_mayor.pristine" class="alert alert-danger">
                             {{ 'shared.name.required' | translate }}
@@ -146,7 +146,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="surname_mayor" type="text" [(ngModel)]="mayors[i].surname" class="form-control" name="surname_mayor" ngcontrol="surname_mayor"
-                            #surname_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event, i)" maxlength="255" [disabled]="!isMunicipalityEditable[municipality.id]"
+                            #surname_mayor="ngModel" (ngModelChange)="checkButtonEnabled($event)" maxlength="255" [disabled]="!isMunicipalityEditable[municipality.id]"
                             required>
                         <div [hidden]="surname_mayor.valid || surname_mayor.pristine" class="alert alert-danger">
                             {{ 'shared.surname.required' | translate }}
@@ -165,7 +165,7 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <input id="email_mayor" type="text" [(ngModel)]="mayors[i].email" class="form-control" name="email_mayor" ngcontrol="email_mayor" [pattern]="emailPattern"
-                            #email_mayor="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event, i)" [disabled]="!isMunicipalityEditable[municipality.id]"
+                            #email_mayor="ngModel" maxlength="255" (ngModelChange)="checkButtonEnabled($event)" [disabled]="!isMunicipalityEditable[municipality.id]"
                             required>
                         <div [hidden]="email_mayor.valid || email_mayor.pristine" class="alert alert-danger">
                              {{ 'email.required' | translate }}
@@ -247,7 +247,7 @@
                                                 <label class="label floatLeft" for="address">
                                                     {{ 'benefRegistration.townHall.address' | translate }}</label>
                                                 <input type="text" class="form-control paddingInput" min="1" [id]="'address-'+i" [name]="'address-'+i" [(ngModel)]="newMunicipalities[i].address"
-                                                    (ngModelChange)="checkButtonEnabled($event, i)" required>
+                                                    (ngModelChange)="checkButtonEnabled($event)" required>
                                             </div>
                                         </div>
 
@@ -256,7 +256,7 @@
                                                 <label class="label floatLeft" for="address">
                                                     {{ 'shared.number.label' | translate }}</label>
                                                 <input type="text" class="form-control paddingInput" [id]="'addressNum-'+i" [name]="'addressNum-'+i" [(ngModel)]="newMunicipalities[i].addressNum"
-                                                    (ngModelChange)="checkButtonEnabled($event, i)" required>
+                                                    (ngModelChange)="checkButtonEnabled($event)" required>
                                             </div>
                                         </div>
                                     </div>
@@ -268,7 +268,7 @@
                                                 <label class="label floatLeft" [for]="'postalCode-'+i">
                                                     {{ 'shared.postal-code.label' | translate }}</label>
                                                 <input type="text" class="form-control paddingInput" [id]="'postalCode-'+i" [name]="'postalCode-'+i" [(ngModel)]="newMunicipalities[i].postalCode"
-                                                    (ngModelChange)="checkButtonEnabled($event, i)" required>
+                                                    (ngModelChange)="checkButtonEnabled($event)" required>
                                             </div>
                                         </div>
                                         <div class="ui-g-8"></div>
@@ -288,7 +288,7 @@
                                     <div class="ui-g-12">
                                         <label class="label floatLeft">{{ 'benefRegistration.nameMayor.label' | translate }}</label>
                                         <input class="form-control paddingInput" [name]="'name-'+i" [id]="'name-'+i" type="text" maxlength="255" [(ngModel)]="newMayors[i].name"
-                                            (ngModelChange)="checkButtonEnabled($event, i)" required>
+                                            (ngModelChange)="checkButtonEnabled($event)" required>
                                     </div>
                                 </div>
                                 <!-- Mayor last name -->
@@ -298,7 +298,7 @@
                                             {{ 'benefRegistration.surnameMayor.label' | translate }}
                                         </label>
                                         <input class="form-control paddingInput" type="text" [name]="'surname-'+i" [id]="'surname-'+i" maxlength="255" [(ngModel)]="newMayors[i].surname"
-                                            (ngModelChange)="checkButtonEnabled($event, i)" required>
+                                            (ngModelChange)="checkButtonEnabled($event)" required>
                                     </div>
                                 </div>
                                 <!-- Mayor email -->
@@ -308,7 +308,7 @@
                                             {{ 'benefRegistration.emailMayor.label' | translate }}
                                         </label>
                                         <input class="form-control paddingInput" maxlength="255" type="email" [pattern]="emailPattern" [(ngModel)]="newMayors[i].email"
-                                            [id]="'email-'+i" [name]="'email-'+i" (input)="checkEmailsMatch()" maxlength="255"
+                                            [id]="'email-'+i" [name]="'email-'+i" (input)="checkButtonEnabled($event)" maxlength="255"
                                             required>
                                         <label class="field-desc" style="margin-top: 10px;color: gray;">
                                             {{ 'benefRegistration.email.fielddesc' | translate }}</label>
@@ -375,7 +375,7 @@
                 {{ 'shared.cancel.button' | translate }}
             </button>
         </div>
-        <!-- {{ !municipalitiesSelected }} - {{!emailsMatch}} - {{!profileEditForm.form.valid}} - {{!buttonEnabled}}  -->
+        <!-- {{ !municipalitiesSelected }} - {{!emailsMatch}} - {{!profileEditForm.form}} - {{!buttonEnabled}}  -->
         <div class="col-sm-6 col-lg-4" style="text-align: center !important">
             <button (click)="editProfile()" class="btn btn-primary publish-button" [disabled]="!municipalitiesSelected || !emailsMatch || !profileEditForm.form.valid || !buttonEnabled">
                 {{ 'shared.confirm.button' | translate }}
