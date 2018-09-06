@@ -133,7 +133,7 @@ public class MonitoringRow {
 	}
 	
 	public void setLcStatus(LegalCommitmentWorkflowStatus lcStatus) {
-		this.lcStatus = lcStatus.getTitle();
+		this.lcStatus = lcStatus.getUserInterfaceTitle();
 	}
 
 	public Date getSignatureDate() {
