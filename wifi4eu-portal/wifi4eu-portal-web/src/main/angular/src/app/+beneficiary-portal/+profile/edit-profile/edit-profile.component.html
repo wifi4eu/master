@@ -375,7 +375,7 @@
                 {{ 'shared.cancel.button' | translate }}
             </button>
         </div>
-        <!-- {{ !municipalitiesSelected }} - {{!emailsMatch}} - {{!profileEditForm.form}} - {{!buttonEnabled}}  -->
+        <!-- {{ !municipalitiesSelected }} - {{!emailsMatch}} - {{!profileEditForm.form.valid}} - {{!buttonEnabled}}  -->
         <div class="col-sm-6 col-lg-4" style="text-align: center !important">
             <button (click)="editProfile()" class="btn btn-primary publish-button" [disabled]="!municipalitiesSelected || !emailsMatch || !profileEditForm.form.valid || !buttonEnabled">
                 {{ 'shared.confirm.button' | translate }}
