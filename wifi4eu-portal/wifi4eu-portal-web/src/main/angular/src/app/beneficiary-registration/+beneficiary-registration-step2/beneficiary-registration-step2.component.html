@@ -143,8 +143,8 @@
                                                             [(ngModel)]="laus[i]"
                                                             [suggestions]="lauSuggestions"
                                                             (completeMethod)="search($event)"
-                                                            (onSelect)="checkMunicipalitiesSelected()"
-                                                            (input)="checkMunicipalitiesSelected()"
+                                                            (onSelect)="checkMunicipalitySelector($event, i)"
+                                                            (input)="checkMunicipalitySelector($event, i)"
                                                             (focusout)="clearMunicipality(i)"
                                                             required></p-autoComplete>
                                         </div>

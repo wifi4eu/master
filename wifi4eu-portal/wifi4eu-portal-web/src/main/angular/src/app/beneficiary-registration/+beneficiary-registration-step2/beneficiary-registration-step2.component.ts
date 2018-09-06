@@ -86,26 +86,21 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         }
     }
 
-    private checkMunicipalitiesSelected() {
+    private checkMunicipalities(){
         for (let i = 0; i < this.laus.length; i++) {
-            if (!this.laus[i]) continue; // Lau is filled when the municipality is chosen, if is not chosen yet is null (and show errors)
-            if (!this.laus[i].id) {
-                if (!this.multipleMunicipalities) {
-                    this.municipalityForm.controls['municipality'].setErrors({ 'incorrect': true });
-                }
-                else {
-                    this.municipalityForm.controls[`municipality-${this.getIndexInForm(i)}`].setErrors({ 'incorrect': true });
-                }
-                this.css_class_municipalities[i] = 'notValid';
-            } else {
-                if (!this.multipleMunicipalities) {
-                    if (this.municipalityForm.controls['municipality'] != undefined) this.municipalityForm.controls['municipality'].setErrors(null);
-                }
-                else {
-                    this.municipalityForm.controls[`municipality-${this.getIndexInForm(i)}`].setErrors(null);
-                }
-                this.css_class_municipalities[i] = 'isValid';
+            if (!this.laus[i] || !this.laus[i].id){
+                 this.buttonEnabledStep2 = false
+                break;
             }
+        }
+    } 
+
+
+    private checkMunicipalitySelector(event, i : number){
+        if (event.id){
+            this.css_class_municipalities[i] = 'notValid';
+        }else{
+            this.css_class_municipalities[i] = 'isValid';
         }
     }
 
@@ -135,6 +130,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
             this.emailConfirmations.push('');
             this.css_class_email.push('notValid');
             this.css_class_municipalities.push('notValid');
+            this.checkButtonEnabled(null);
         }
     }
 
@@ -176,6 +172,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private checkButtonEnabled(event, i?) {
         if (this.municipalities) {
             this.checButtonNextEnabled();
+            this.checkMunicipalities()
             this.checkEmailsMatch();
         }
     }
@@ -184,15 +181,4 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         return string == null || string.trim() == "";
     }
 
-    private getIndexInForm(index: number) :number{
-        let indexInForm : number = 0;
-        let position : number = 0;
-
-        while(position < index){
-            indexInForm++;
-            if (this.municipalityForm.controls[`municipality-${indexInForm}`]  != undefined) position++;
-        }
-
-        return indexInForm;
-    }
 }
