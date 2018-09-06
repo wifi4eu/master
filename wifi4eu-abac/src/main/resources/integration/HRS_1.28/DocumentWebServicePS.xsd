@@ -944,7 +944,7 @@
       </element>
       <element name="externalizationTitle" type="xsd:string" minOccurs="0">
         <annotation>
-          <documentation>Optional - The externalization title to be used for ERS, if different than the one in Hermes.</documentation>
+          <documentation>Optional - The externalization userInterfaceTitle to be used for ERS, if different than the one in Hermes.</documentation>
         </annotation>
       </element>
       <element name="partial" type="xsd:boolean">
@@ -1067,7 +1067,7 @@
                     database or against the indexed data.
                     Searching against the database will give accurate results while searching against
                     the index might not always be accurate because the document was not indexed yet.
-                    When performing "contains" searches, e.g. title contains 'test', you should
+                    When performing "contains" searches, e.g. userInterfaceTitle contains 'test', you should
                     use the index server, while searches like documentId = '[id]' should target
                     the database.
                     If you include a fulltext condition (e.g. FULLTEXT('test')), the only option is
@@ -1132,7 +1132,7 @@
       <documentation>Request for the operation registerDocument</documentation>
     </annotation>
     <sequence>
-      <element name="title" type="string">
+      <element name="userInterfaceTitle" type="string">
         <annotation>
           <documentation>Title/subject of the document</documentation>
         </annotation>
@@ -1248,7 +1248,7 @@
       <documentation>Request for the operation createDocument</documentation>
     </annotation>
     <sequence>
-      <element name="title" type="string">
+      <element name="userInterfaceTitle" type="string">
         <annotation>
           <documentation>Title/subject of the document</documentation>
         </annotation>
@@ -1361,9 +1361,9 @@
         </annotation>
         <complexType>
           <sequence>
-            <element name="title" type="string" minOccurs="0">
+            <element name="userInterfaceTitle" type="string" minOccurs="0">
               <annotation>
-                <documentation>Updated title of the document</documentation>
+                <documentation>Updated userInterfaceTitle of the document</documentation>
               </annotation>
             </element>
             <element name="documentDate" type="date" minOccurs="0">

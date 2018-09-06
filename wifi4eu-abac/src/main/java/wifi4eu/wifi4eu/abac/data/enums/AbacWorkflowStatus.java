@@ -14,19 +14,19 @@ public enum AbacWorkflowStatus {
 	UNMAPPED_STATUS("UNMAPPED_STATUS", "Unknown status");
 
 	private String value;
-	private String title;
+	private String userInterfaceTitle;
 
-	private AbacWorkflowStatus(String value, String title) {
+	private AbacWorkflowStatus(String value, String userInterfaceTitle) {
 		this.value = value;
-		this.title = title;
+		this.userInterfaceTitle = userInterfaceTitle;
 	}
 
 	public String getValue() {
 		return value;
 	}
 	
-	public String getTitle() {
-		return title;
+	public String getUserInterfaceTitle() {
+		return userInterfaceTitle;
 	}
 
 	@Override

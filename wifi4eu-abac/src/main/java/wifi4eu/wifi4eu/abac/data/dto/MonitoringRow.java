@@ -2,11 +2,9 @@ package wifi4eu.wifi4eu.abac.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
-import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
-import wifi4eu.wifi4eu.abac.data.enums.DocumentWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentWorkflowStatus;
 
 import java.util.Date;
@@ -111,7 +109,7 @@ public class MonitoringRow {
 	}
 	
 	public void setLefStatus(AbacWorkflowStatus lefStatus) {
-		this.lefStatus = lefStatus.getTitle();
+		this.lefStatus = lefStatus.getUserInterfaceTitle();
 	}
 
 	public String getBcStatus() {
@@ -123,7 +121,7 @@ public class MonitoringRow {
 	}
 	
 	public void setBcStatus(AbacWorkflowStatus bcStatus) {
-		this.bcStatus = bcStatus.getTitle();
+		this.bcStatus = bcStatus.getUserInterfaceTitle();
 	}
 
 	public String getLcStatus() {

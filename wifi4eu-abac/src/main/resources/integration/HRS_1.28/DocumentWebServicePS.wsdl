@@ -351,7 +351,7 @@
                 <p>Fields that can be used inside the search expression are:</p>
                 <ul>
                 <li> documentId - the document's internal id </li>
-                <li> title - the document's title</li>
+                <li> userInterfaceTitle - the document's userInterfaceTitle</li>
                 <li> registrationNumber - the document's registration number</li>
                 <li> saveNumber - the document's save number</li>
                 <li> registrationDate - the document's registration date</li>
@@ -479,7 +479,7 @@
 
                <p>Sample search expressions are: </p>
                <ul style="list-style-type:none">
-                 <li>title CONTAINS 'Report'</li>
+                 <li>userInterfaceTitle CONTAINS 'Report'</li>
                  <li>registrationNumber = 'Ares(2008)2301'</li>
                  <li>documentDate BETWEEN (2008-12-23, 2009-01-14)</li>
                  <li>comments startsWith 'Updated'</li>
@@ -496,7 +496,7 @@
                <p>When not using the index server, the following fields can be used for sorting:</p>
                <ul>
                     <li> documentId</li>
-                    <li> title</li>
+                    <li> userInterfaceTitle</li>
                     <li> registrationNumber</li>
                     <li> saveNumber</li>
                     <li> registrationDate</li>
@@ -511,7 +511,7 @@
                   relevance.
                   Following fields can be used for sorting:</p>
                   <ul>
-                    <li>title</li>
+                    <li>userInterfaceTitle</li>
                     <li>registrationDate</li>
                     <li>encodingDate</li>
                   </ul>
@@ -560,7 +560,7 @@
                 registration request.<br />
                 Currently following data is used when searching for duplicates:
                 <ul>
-                <li>title</li>
+                <li>userInterfaceTitle</li>
                 <li>document date</li>
                 <li>mail type</li>
                 <li>senders / recipients (depending on the mail type)</li>
