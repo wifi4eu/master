@@ -656,7 +656,10 @@
                 <rabbitmq.host></rabbitmq.host>
                 <rabbitmq.username></rabbitmq.username>
                 <rabbitmq.password></rabbitmq.password>
+                <redis.enabled>true</redis.enabled>
                 <redis.sentinel.uris>202.3.2.4,202.3.2.5,202.3.2.6</redis.sentinel.uris>
+                <mail.serv.using.smtp>false</mail.serv.using.smtp>
+                <mail.serv.using.cns>true</mail.serv.using.cns>
             </properties>
         </profile>
         <profile>
@@ -694,7 +697,10 @@
                 <rabbitmq.host></rabbitmq.host>
                 <rabbitmq.username></rabbitmq.username>
                 <rabbitmq.password></rabbitmq.password>
+                <redis.enabled>true</redis.enabled>
                 <redis.sentinel.uris>202.3.2.11,202.3.2.12,202.3.2.13</redis.sentinel.uris>
+                <mail.serv.using.smtp>false</mail.serv.using.smtp>
+                <mail.serv.using.cns>true</mail.serv.using.cns>
             </properties>
         </profile>
         <profile>
