@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 import wifi4eu.wifi4eu.abac.data.repository.LegalEntityRepository;
+import wifi4eu.wifi4eu.abac.utils.XCharacterDecoder;
 import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
 import javax.transaction.Transactional;
@@ -22,6 +24,7 @@ import javax.transaction.Transactional;
 @Service
 public class LegalEntityService {
 
+	public static final int ABAC_NAME_MAX_CHARS = 35;
 	private final Logger log = LoggerFactory.getLogger(LegalEntityService.class);
 
 	@Autowired
@@ -41,6 +44,17 @@ public class LegalEntityService {
 	}
 
 	public LegalEntity saveLegalEntity(LegalEntity legalEntity) {
+		//clean-up the name sent to ABAC
+		if(StringUtils.isEmpty(legalEntity.getAbacLatinName())){
+			legalEntity.setAbacLatinName(StringUtils.abbreviate(XCharacterDecoder.decode(legalEntity.getOfficialName()), ABAC_NAME_MAX_CHARS));
+		}else{
+			legalEntity.setAbacLatinName(StringUtils.abbreviate(legalEntity.getAbacLatinName(),ABAC_NAME_MAX_CHARS));
+		}
+
+		//clean-up the address sent to ABAC
+		legalEntity.setAbacLatinAddress(XCharacterDecoder.decode(legalEntity.getOfficialAddress()));
+
+		//save Municipality
 		return legalEntityRepository.save(legalEntity);
 	}
 
@@ -49,6 +63,7 @@ public class LegalEntityService {
 
 		legalEntity.setMid(legalEntityInformationCSVRow.getMid());
 		legalEntity.setOfficialName(legalEntityInformationCSVRow.getOfficialName());
+		legalEntity.setAbacLatinName(legalEntityInformationCSVRow.getAbacLatinName());
 		legalEntity.setOfficialAddress(legalEntityInformationCSVRow.getOfficialAddress());
 		legalEntity.setPostalCode(legalEntityInformationCSVRow.getPostalCode());
 		legalEntity.setCity(legalEntityInformationCSVRow.getCity());

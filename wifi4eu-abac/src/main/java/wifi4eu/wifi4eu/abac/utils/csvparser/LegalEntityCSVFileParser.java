@@ -46,6 +46,7 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 
 			legalEntityInformationCSVRow.setMid(Long.parseLong(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID)));
 			legalEntityInformationCSVRow.setOfficialName(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_NAME));
+			legalEntityInformationCSVRow.setAbacLatinName(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME));
 			legalEntityInformationCSVRow.setOfficialAddress(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ADDRESS));
 			legalEntityInformationCSVRow.setPostalCode(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_POSTAL_CODE));
 			legalEntityInformationCSVRow.setCity(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_CITY));
@@ -72,6 +73,7 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 					.withHeader(
 							LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID.toString(),
 							LegalEntityCSVColumn.MUNICIPALITY_NAME.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME.toString(),
 							LegalEntityCSVColumn.MUNICIPALITY_ADDRESS.toString(),
 							LegalEntityCSVColumn.MUNICIPALITY_POSTAL_CODE.toString(),
 							LegalEntityCSVColumn.MUNICIPALITY_CITY.toString(),
@@ -88,6 +90,7 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 				csvPrinter.printRecord(
 						legalEntity.getMid(),
 						legalEntity.getOfficialName(),
+						legalEntity.getAbacLatinName(),
 						legalEntity.getOfficialAddress(),
 						legalEntity.getPostalCode(),
 						legalEntity.getCity(),

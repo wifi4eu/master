@@ -35,6 +35,9 @@ public class LegalEntity {
 	@Column(name = "official_name", length = 400)
 	private String officialName;
 
+	@Column(name = "ABAC_LATIN_NAME")
+	private String abacLatinName;
+
 	@Column(name = "language_code", length = 3)
 	private String languageCode;
 
@@ -44,6 +47,9 @@ public class LegalEntity {
 
 	@Column(name = "official_address", length = 400)
 	private String officialAddress;
+
+	@Column(name = "ABAC_LATIN_ADDRESS")
+	private String abacLatinAddress;
 
 	@Column(name = "postal_code", length = 50)
 	private String postalCode;
@@ -239,6 +245,22 @@ public class LegalEntity {
 
 	public void setCallNumber(Integer callNumber) {
 		this.callNumber = callNumber;
+	}
+
+	public String getAbacLatinName() {
+		return abacLatinName;
+	}
+
+	public void setAbacLatinName(String abacLatinName) {
+		this.abacLatinName = abacLatinName;
+	}
+
+	public String getAbacLatinAddress() {
+		return abacLatinAddress;
+	}
+
+	public void setAbacLatinAddress(String abacLatinAddress) {
+		this.abacLatinAddress = abacLatinAddress;
 	}
 
 	public List<Document> getDocuments() {
