@@ -39,8 +39,11 @@
             <p *ngIf="showTimeline" class="europeans-text"
                [innerHTML]="'home.part2.text1' | translate:{date:dateNumber,hour:hourNumber}">
             </p>
-            <p *ngIf="!showTimeline" class="europeans-text"
+            <p *ngIf="!showTimeline && !noCall" class="europeans-text"
                [innerHTML]="'benefPortal.voucher.call.label1' | translate">
+            </p>
+            <p *ngIf="!showTimeline && noCall" class="europeans-text"
+               [innerHTML]="'benefPortal.voucher.noCall' | translate">
             </p>
             <p class="europeans-text">{{ 'home.part2.subtitle4' | translate}}</p>
             <ul class="europeans-text">

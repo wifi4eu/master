@@ -20,6 +20,7 @@ export class HomeComponent {
     private hourNumber: string;
     private showTimeline: boolean = false;
     private showTimer: boolean = false;
+    private noCall: boolean = false;
 
     constructor(private municipalityApi: MunicipalityApi, private localStorage: LocalStorageService, private callApi: CallApi) {
         let u = this.localStorage.get('user');
@@ -46,11 +47,17 @@ export class HomeComponent {
                     this.showTimeline = true;
                     this.showTimer = true;
                     let date = new Date(this.currentCall.startDate);
-                    this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                    this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+                    this.dateNumber = ('0' + date.getUTCDate()).toString().slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                    this.hourNumber = ('0' + (date.getUTCHours() + 2)).toString().slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+                    this.noCall = false;
+                } else if(this.currentCall.endDate > Date.now()) {
+                    this.showTimeline = false;
+                    this.showTimer = false;
+                    this.noCall = false;
                 } else {
                     this.showTimeline = false;
                     this.showTimer = false;
+                    this.noCall = true;
                 }
             }, error => {
                 console.log(error);
