@@ -58,8 +58,8 @@
                 </a>
             </div>
             <p-dataTable *ngIf="!firstDataDownload" #tableApplicants [value]="applicantListItems" (onSort)="sortData($event)">
-                <p-column field="countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
-                <p-column field="name" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
+                <p-column field="countryCode" [sortable]="!loadingData" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
+                <p-column field="name" [sortable]="!loadingData" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
                 <p-column field="status" [sortable]="false" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
                     <ng-template let-row="rowData" pTemplate="body">
                         <span *ngIf="row.status == -1">-</span>
@@ -70,23 +70,27 @@
                     </ng-template>
                 </p-column>
                 <p-column field="issueStatus" [sortable]="false" header="{{ 'dgConn.issues' | translate }}" styleClass="text-center">
-                    <ng-template let-row="rowData" pTemplate="body">
-                      <span class="badge" style="color: #000;" [class.badge-warning]="(row.warning1 && row.warning2 && !row.warning3) || row.warning1 || row.warning2" [class.badge-warning-yellow]="!row.warning1 && !row.warning2 && row.warning3" *ngIf="row.warning1 || row.warning2 || row.warning3">
-                        <span>{{  'dgConn.badge.warning' | translate  }}</span>
-                          <span style="letter-spacing: 0.12em;" pTooltip="{{ 'dgConn.badge.warning1Info' | translate }}">{{  row.warning1 ? '1' + (row.warning2 ? ',' : '' + (row.warning3 ? ',' : '' )) : '' }}</span>
-                          <span style="letter-spacing: 0.12em;" pTooltip="{{ 'dgConn.badge.warning2Info' | translate }}">{{  row.warning2 ? '2' + (row.warning3 ? ',' : '') : '' }}</span>
-                          <span style="letter-spacing: 0.12em;" pTooltip="{{ 'dgConn.badge.warning3Info' | translate }}">{{  row.warning3 ? '3' : '' }}</span>
-                      </span>
+                    <ng-template let-row="rowData" let-index="rowIndex" pTemplate="body">
+                        <span class="badge" style="color: #000;"
+                              [class.badge-warning]="(row.warning1 && row.warning2 && !row.warning3) || row.warning1 || row.warning2"
+                              [class.badge-warning-yellow]="!row.warning1 && !row.warning2 && row.warning3"
+                              *ngIf="row.warning1 || row.warning2 || row.warning3"
+                              [pTooltip]="warningTooltipMessages[index]">
+                            <span>{{  'dgConn.badge.warning' | translate  }}</span>
+                            <span style="letter-spacing: 0.12em;">{{  row.warning1 ? '1' + (row.warning2 ? ',' : '' + (row.warning3 ? ',' : '' )) : '' }}</span>
+                            <span style="letter-spacing: 0.12em;">{{  row.warning2 ? '2' + (row.warning3 ? ',' : '') : '' }}</span>
+                            <span style="letter-spacing: 0.12em;">{{  row.warning3 ? '3' : '' }}</span>
+                        </span>
                     </ng-template>
                 </p-column>
-                <p-column field="counter" [sortable]="true" header="{{ 'dgConn.numberOfApplications' | translate }}" styleClass="text-center"></p-column>
-                <p-column field="mediation" [sortable]="true" header="{{ 'dgConn.beneficiaries.mediation' | translate }}" styleClass="text-center">
+                <p-column field="counter" [sortable]="!loadingData" header="{{ 'dgConn.numberOfApplications' | translate }}" styleClass="text-center"></p-column>
+                <p-column field="mediation" [sortable]="!loadingData" header="{{ 'dgConn.beneficiaries.mediation' | translate }}" styleClass="text-center">
                     <ng-template let-row="rowData" pTemplate="body">
                         <span *ngIf="row.mediation">{{'dgConn.yes' | translate }}</span>
                         <span *ngIf="!row.mediation">{{'dgConn.no' | translate }}</span>
                     </ng-template>
                 </p-column>
-                <p-column field="supportingDocuments" [sortable]="true" header="{{ 'dgConn.manageApplications.table.supportingDocuments' | translate }}" styleClass="text-center">
+                <p-column field="supportingDocuments" [sortable]="!loadingData" header="{{ 'dgConn.manageApplications.table.supportingDocuments' | translate }}" styleClass="text-center">
                   <ng-template let-row="rowData" pTemplate="body">
                     <span *ngIf="row.supportingDocuments >= 1">{{ 'dgConn.manageApplications.newUpload' | translate }}</span>
                     <span *ngIf="row.supportingDocuments == 0">-</span>

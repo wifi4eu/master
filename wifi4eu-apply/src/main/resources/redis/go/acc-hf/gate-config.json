@@ -1,0 +1,11 @@
+{
+
+	"dbUserName" : "user_rw",
+	"dbPassword" : "532V301vO205lHz",
+	"dbHost"     : "wifi4eu-dbserver-acc.database.windows.net",
+	"dbPort"     : 1433,
+	"dbName"     : "wifi4eu-dbserver-acchf",
+
+	"haproxyUri"   : "127.0.0.1:8000",
+	"sentinelUris" : ["202.3.2.11:5000", "202.3.2.12:5000", "202.3.2.13:5000"]
+}

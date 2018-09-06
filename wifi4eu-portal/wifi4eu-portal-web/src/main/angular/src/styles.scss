@@ -425,6 +425,11 @@ body {
   margin-top: 20px !important;
 }
 
+.registrationHr {
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  background: none;
+}
+
 .genericHr {
   border: 0;
   border-top: 2px solid rgba(0, 0, 0, 0.1);
@@ -519,6 +524,7 @@ body {
 
 .profileData {
   font-weight: bold;
+  overflow-wrap: break-word;
 }
 
 .profileDataDiscussion {
@@ -1990,4 +1996,14 @@ li.panel .panel-header .label-wrapper .label {
       height: 25rem;
     }
   }
+}
+
+.forceBlueColorOnLinks a{
+  color:#254872 !important;
+}
+.whiteTableBackground {
+    background-color: #fff !important;
+}
+.whiteTableBackground:hover {
+    background-color: #fff !important;
 }

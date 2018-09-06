@@ -17,19 +17,20 @@ import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@PropertySource("classpath:env.properties")
+@PropertySource("classpath:redis.properties")
 @Service
 public class RedisUtil {
 
-    /*@Value("${redis.sentinel.uris}")
+    @Value("${redis.sentinel.uris}")
     private String[] redisUris;
 
-    @Value("${redis.enabled}")*/
-    private boolean enableSync = false;
+    @Value("${redis.enabled}")
+    private boolean enableSync = true;
 
     private final Logger _log = LogManager.getLogger(RedisUtil.class);
     private final String channel = "refresh";
@@ -37,42 +38,28 @@ public class RedisUtil {
     private static RedisClient redis = null;
     private static int sentinelPort = 5000;
 
-    private static final String sentinelUri1 = "10.0.2.31";
-    private static final String sentinelUri2 = "10.0.2.32";
-    private static final String sentinelUri3 = "10.0.2.33";
-
     @Autowired
     UserRepository userRepository;
 
-    public RedisUtil() {
-
+    @PostConstruct
+    public void init() {
         if (this.enableSync) {
-            /*_log.info("***************** REDIS ******************************");
-            _log.info(" > Hosts: " + Arrays.toString(this.redisUris));
-            _log.info("******************************************************");
-
-            if (Validator.isNotNull(redisUris) && redisUris.length > 0) {
-                RedisURI.Builder builder = RedisURI.builder();
-
-                for (String currentHost : this.redisUris) {
-                    _log.info("Registering REDIS sentinel:" + currentHost);
-                    builder.withSentinel(currentHost, sentinelPort);
-                }
-
-                builder.withSentinelMasterId("master1");
-                RedisURI redisUri = builder.build();
-            /*RedisURI redisUri = RedisURI.Builder.sentinel(sentinelUri1, sentinelPort, "master1")
-                    .withSentinel(sentinelUri2, sentinelPort)
-                    .withSentinel(sentinelUri3, sentinelPort)
-                    .build();
+            if (Validator.isNotNull(this.redisUris) && this.redisUris.length == 3) {
+                RedisURI redisUri = RedisURI.Builder.sentinel(this.redisUris[0], sentinelPort, "master1")
+                        .withSentinel(this.redisUris[1], sentinelPort)
+                        .withSentinel(this.redisUris[2], sentinelPort)
+                        .build();
                 redis = RedisClient.create(redisUri);
-            }*/
+                _log.info("***************** REDIS ******************************");
+                _log.info(" > Hosts: " + Arrays.toString(this.redisUris));
+                _log.info("         -    REDIS INITIALIZED     -                  ");
+                _log.info("******************************************************");
+            } else {
+                _log.info("***************** REDIS ******************************");
+                _log.info(" > REDIS SYNC URIs NOT SETS");
+                _log.info("******************************************************");
+            }
 
-            RedisURI redisUri = RedisURI.Builder.sentinel(sentinelUri1, sentinelPort, "master1")
-                    .withSentinel(sentinelUri2, sentinelPort)
-                    .withSentinel(sentinelUri3, sentinelPort)
-                    .build();
-            redis = RedisClient.create(redisUri);
         } else {
             _log.info("***************** REDIS ******************************");
             _log.info(" > REDIS SYNC IS DISABLED");
@@ -80,8 +67,10 @@ public class RedisUtil {
         }
     }
 
+    public RedisUtil() { }
+
     public void sync(long userId) {
-        if (!this.enableSync) {
+        if (!this.enableSync || Validator.isNull(redis)) {
             return;
         }
 

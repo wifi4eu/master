@@ -1,6 +1,13 @@
 package wifi4eu.wifi4eu.service.user;
 
-import com.google.common.collect.Lists;
+import java.security.SecureRandom;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -13,8 +20,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import com.google.common.collect.Lists;
+
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserRegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
@@ -25,8 +41,13 @@ import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.enums.SupplierUserStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
+import wifi4eu.wifi4eu.entity.mayor.Mayor;
+import wifi4eu.wifi4eu.common.utils.Utils;
 import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.mayor.Mayor;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
@@ -59,12 +80,13 @@ import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
-import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.util.RedisUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Configuration
@@ -78,6 +100,9 @@ public class UserService {
 
     @Value("${ecas.location}")
     private String ecasUrl;
+
+    @Value("${server.address}")
+    private String serverAddress;
 
     @Autowired
     UserMapper userMapper;
@@ -227,12 +252,16 @@ public class UserService {
             InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndStatus(userDTO.getEcasEmail(), InvitationContactStatus.PENDING.getValue());
             if (Validator.isNotNull(invitationContact)){
                 userDTO.setUserInvited(true);
-                if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0){
-                    userDTO.setUserInvitedFor((int) Constant.ROLE_REPRESENTATIVE);
-                } else if (Validator.isNotNull(invitationContact.getIdSupplier()) && invitationContact.getIdSupplier() != 0){
-                    userDTO.setUserInvitedFor((int) Constant.ROLE_SUPPLIER);
+                long hours = Utils.getHoursBetweenDates(invitationContact.getLastModified(), new Date());
+                if (hours >= 24){
+                    userDTO.setUserInvitedFor(0);
+                } else {
+                    if (Validator.isNotNull(invitationContact.getIdRegistration()) && invitationContact.getIdRegistration() != 0){
+                        userDTO.setUserInvitedFor((int) Constant.ROLE_REPRESENTATIVE);
+                    } else if (Validator.isNotNull(invitationContact.getIdSupplier()) && invitationContact.getIdSupplier() != 0){
+                        userDTO.setUserInvitedFor((int) Constant.ROLE_SUPPLIER);
+                    }
                 }
-
             }
         }
         return userDTO;
@@ -431,7 +460,7 @@ public class UserService {
             userRepository.save(userMapper.toEntity(user));
         }
 
-        return new ResponseDTO(true, "sucess", null);
+        return new ResponseDTO(true, "success", null);
     }
 
     public List<UserDTO> getUsersByType(int type) {
@@ -517,13 +546,9 @@ public class UserService {
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
         }
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.subject");
-        String msgBody = bundle.getString("mail.body");
-
-        if (!isLocalHost()) {
-            mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-        }
+        
+        MailData mailData = MailHelper.buildMailBeneficiaryRegistration(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, locale);
+    	mailService.sendMail(mailData, false);
     }
 
     @Transactional
@@ -532,13 +557,9 @@ public class UserService {
         if (userDTO.getLang() != null) {
             locale = new Locale(userDTO.getLang());
         }
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.supplierRegistration.subject");
-        String msgBody = bundle.getString("mail.supplierRegistration.body");
-
-        if (!isLocalHost()) {
-            mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-        }
+        
+        MailData mailData = MailHelper.buildMailSupplierRegistration(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, locale);
+    	mailService.sendMail(mailData, false);
     }
 
 
@@ -564,6 +585,11 @@ public class UserService {
                 UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
                 /* validate if user exist in wifi4eu portal */
                 if (userDTO != null) {
+                    Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                    if (userDTO.getLang() != null) {
+                        locale = new Locale(userDTO.getLang());
+                    }
+
                     /* Create a temporal key for activation and reset password functionalities */
                     TempTokenDTO tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.findByEmail(email));
                     if (tempTokenDTO == null) {
@@ -577,15 +603,11 @@ public class UserService {
                     SecureRandom secureRandom = new SecureRandom();
                     String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
                     tempTokenDTO.setToken(token);
-
                     tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO));
-
-                    /* Send email with */
-                    String fromAddress = MailService.FROM_ADDRESS;
-                    //TODO: translate subject and msgBody
-                    String subject = "wifi4eu portal Forgot Password";
-                    String msgBody = "you can access to the next link and reset your password " + baseUrl + UserConstants.RESET_PASS_URL + tempTokenDTO.getToken();
-                    mailService.sendEmail(email, fromAddress, subject, msgBody);
+                    
+                    String url = baseUrl + UserConstants.RESET_PASS_URL + tempTokenDTO.getToken();
+                    MailData mailData = MailHelper.buildMailForgotPassword(email, MailService.FROM_ADDRESS, url, locale);
+                    mailService.sendMail(mailData, false);
                 } else {
                     throw new Exception("trying to forgetPassword with an unregistered user");
                 }
@@ -623,6 +645,10 @@ public class UserService {
         return ecasUrl;
     }
 
+    public String getServerAddress(){
+        return serverAddress;
+    }
+
     private void removeTempToken(UserDTO userDTO) {
         for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
             tempTokenRepository.delete(tempToken);
@@ -640,17 +666,6 @@ public class UserService {
     public UserDTO updateLanguage(UserDTO userDTO, String lang) {
         userDTO.setLang(lang);
         return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
-    }
-
-    public void createNewRegistrationUser(UserRegistrationDTO userRegistrationDTO) {
-        RegistrationUsers registrationUsers = new RegistrationUsers();
-        Integer registrationId = registrationRepository.findByMunicipalityId(userRegistrationDTO.getMunicipalityId()).getId();
-        registrationUsers.setContactEmail(userRegistrationDTO.getEmail());
-        registrationUsers.setCreationDate(new Date());
-        registrationUsers.setRegistrationId(registrationId);
-        registrationUsers.setStatus(0);
-        registrationUsers.setMain(0);
-        registrationUsersRepository.save(registrationUsers);
     }
 
     public boolean checkIfApplied(UserDTO userDTO) {

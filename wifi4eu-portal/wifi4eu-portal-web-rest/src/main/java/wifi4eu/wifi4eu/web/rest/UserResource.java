@@ -139,7 +139,6 @@ public class UserResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Logging in with ECAS User");
-        // get registrationUsers relation pending to be approved for the user logging in
         userConnected = userService.checkIfInvitedUser(userConnected);
         try {
             Cookie cookie = userService.getCSRFCookie();
@@ -154,9 +153,10 @@ public class UserResource {
         }
     }
 
-    @ApiOperation(value = "Service to do Login with a ECAS User")
-    @RequestMapping(value = "/complete-contact-details", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
+    //ADD CONTACT
+//    @ApiOperation(value = "Service to do Login with a ECAS User")
+//    @RequestMapping(value = "/complete-contact-details", method = RequestMethod.POST, produces = "application/json")
+//    @ResponseBody
     public ResponseDTO completeInvitateContactDetails(@RequestBody final UserDTO userDTO, HttpServletResponse response) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
@@ -255,13 +255,13 @@ public class UserResource {
     @ApiOperation(value = "Get all users from registration")
     @RequestMapping(value = "/registrationUsers/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserContactDetails> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId) {
+    public List<UserContactDetails> getUsersFromRegistration(@PathVariable("registrationId") Integer registrationId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving users from registration");
         try {
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
             return registrationService.findUsersContactDetailsByRegistrationId(registrationId);
-            // return registrationService.getUsersFromRegistration(registrationId);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
             return null;
@@ -286,7 +286,6 @@ public class UserResource {
                 permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + id);
                 return registrationService.findUsersContactDetailsByRegistrationId(id);
             }
-            // return registrationService.getUsersFromRegistration(registrationId);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Users cannot been retrieved", e);
             return null;
@@ -359,9 +358,10 @@ public class UserResource {
         return responseDTO;
     }
 
-    @ApiOperation(value = "Deactivate user from registration")
-    @RequestMapping(value = "/registrationUsers/{registrationId}/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
+    //ADD CONTACT
+//    @ApiOperation(value = "Deactivate user from registration")
+//    @RequestMapping(value = "/registrationUsers/{registrationId}/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
+//    @ResponseBody
     public ResponseDTO deactivateRegistrationUser(@PathVariable("registrationId") Integer registrationId, @PathVariable("userId") Integer userId,
                                                   HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();

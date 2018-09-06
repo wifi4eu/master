@@ -23,22 +23,24 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     @Input('mayors') private mayors: MayorDTOBase[];
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
     @Input('laus') private laus: LauDTOBase[];
+    @Input('emailConfirmations') private emailConfirmations: string[] = [''];
+    @Input('css_class_email') private css_class_email: string[] = ['notValid'];
+    @Input('buttonEnabledStep2') private buttonEnabledStep2: boolean = false;
+
     @Output() private mayorsChange: EventEmitter<MayorDTOBase[]>;
     @Output() private municipalitiesChange: EventEmitter<MunicipalityDTOBase[]>;
     @Output() private findLaus: EventEmitter<string>;
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
     @Output() private lausChange: EventEmitter<LauDTOBase[]>;
+    @Output() private emailConfirmationsChanged: EventEmitter<string[]>;
+
     @ViewChild('municipalityForm') private municipalityForms: NgForm;
     private lauSuggestions: LauDTOBase[] = [];
-    private municipalitiesSelected: boolean = false;
-    private emailsMatch: boolean = false;
-    private emailConfirmations: string[] = [''];
     private readonly MAX_LENGTH = 2;
     private css_class_municipalities: string[] = ['notValid'];
-    private css_class_email: string[] = ['notValid'];
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
-    private buttonEnabled: boolean = false;
+
     private userEcas: UserDTOBase;
 
     @ViewChild('municipalityForm') municipalityForm: NgForm;
@@ -47,11 +49,10 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
         this.municipalitiesChange = new EventEmitter<MunicipalityDTOBase[]>();
         this.lausChange = new EventEmitter<LauDTOBase[]>();
+        this.emailConfirmationsChanged = new EventEmitter();
         this.findLaus = new EventEmitter<string>();
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
-
-        this.emailsMatch = true;
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -80,11 +81,19 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         }
     }
 
+    private checButtonNextEnabled(){
+        this.buttonEnabledStep2 = true;
+        for (let i = 0; i < this.municipalities.length; i++) {
+            if (this.isEmpty(this.municipalities[i].address) || this.isEmpty(this.municipalities[i].postalCode) || this.isEmpty(this.mayors[i].name) || this.isEmpty(this.mayors[i].surname)){
+                this.buttonEnabledStep2 = false;
+                break;
+            }
+        }
+    }
+
     private checkMunicipalitiesSelected() {
-        this.municipalitiesSelected = false;
         for (let i = 0; i < this.laus.length; i++) {
             if (!this.laus[i].id) {
-                this.municipalitiesSelected = false;
                 if (!this.multipleMunicipalities) {
                     this.municipalityForm.controls['municipality'].setErrors({ 'incorrect': true });
                 }
@@ -100,28 +109,23 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
                     this.municipalityForm.controls[`municipality-${i}`].setErrors(null);
                 }
                 this.css_class_municipalities[i] = 'isValid';
-                this.municipalitiesSelected = true;
             }
         }
     }
 
     private checkEmailsMatch() {
-        this.emailsMatch = false;
         for (let i = 0; i < this.mayors.length; i++) {
-            if (this.mayors[i].email != this.emailConfirmations[i] || this.emailConfirmations[i].length < 1) {
-                this.emailsMatch = false;
-                this.css_class_email[i] = 'notValid';
-            } else if (this.emailPattern.test(this.emailConfirmations[i])) {
-                this.css_class_email[i] = 'isValid';
-                this.emailsMatch = true;
+            if (this.mayors[i] && this.emailConfirmations[i]) {
+                if (this.mayors[i].email != this.emailConfirmations[i] || this.emailConfirmations[i].length < 1) {
+                    this.buttonEnabledStep2 = false;
+                    this.css_class_email[i] = 'notValid';
+                } else if (this.emailPattern.test(this.emailConfirmations[i])) {
+                    this.css_class_email[i] = 'isValid';
+                }
+                this.emailConfirmationsChanged.emit(this.css_class_email);
+            }else{
+                this.buttonEnabledStep2 = false;
             }
-        }
-        if (this.municipalitiesSelected && this.emailsMatch) {
-            const keys = Object.keys(this.municipalityForm.controls);
-            keys.forEach(key => {
-                this.municipalityForm.controls[key].setErrors({ 'incorrect': true });
-                this.municipalityForm.controls[key].setErrors(null);
-            });
         }
     }
 
@@ -146,14 +150,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.emailConfirmations.splice(index, deleteCount);
         this.css_class_email.splice(index, deleteCount);
         this.css_class_municipalities.splice(index, deleteCount);
-        if (this.mayors.length < 1) {
-            this.checkMunicipalitiesSelected();
-            this.municipalitiesSelected = true;
-        } else {
-            this.municipalitiesSelected = true;
-            this.checkMunicipalitiesSelected();
-        }
-        this.checkEmailsMatch();
+        this.checkMunicipalitiesSelected();
         this.checkButtonEnabled(null);
 
     }
@@ -167,6 +164,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.mayorsChange.emit(this.mayors);
         this.municipalitiesChange.emit(this.municipalities);
         this.lausChange.emit(this.laus);
+        this.emailConfirmationsChanged.emit(this.emailConfirmations);
         this.onNext.emit();
     }
 
@@ -182,15 +180,14 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     }
 
     private checkButtonEnabled(event, i?) {
-        this.buttonEnabled = true;
-        for (let i = 0; i < this.municipalities.length; i++) {
-            if (this.municipalities[i].address != null && this.municipalities[i].addressNum != null && this.municipalities[i].postalCode != null && this.mayors[i].name != null && this.mayors[i].surname != null
-                && this.municipalities[i].address.trim() != "" && this.municipalities[i].addressNum.trim() != "" && this.municipalities[i].postalCode.trim() != "" && this.mayors[i].name.trim() != "" && this.mayors[i].surname.trim() != "") {
-                continue;
-
-            } else {
-                this.buttonEnabled = false;
-            }
+        if (this.municipalities) {
+            this.checButtonNextEnabled();
+            this.checkMunicipalitiesSelected();
+            this.checkEmailsMatch();
         }
+    }
+
+    private isEmpty(string: String) : boolean{
+        return string == null || string.trim() == "";
     }
 }

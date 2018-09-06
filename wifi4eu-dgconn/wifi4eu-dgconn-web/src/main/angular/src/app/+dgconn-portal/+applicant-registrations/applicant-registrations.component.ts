@@ -14,6 +14,7 @@ import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
 import * as FileSaver from "file-saver";
 import { Subscription } from "rxjs/Subscription";
 import { DataTable } from "primeng/primeng";
+import { TranslateService } from "ng2-translate/ng2-translate";
 
 @Component({
     templateUrl: 'applicant-registrations.component.html',
@@ -63,8 +64,12 @@ export class DgConnApplicantRegistrationsComponent {
     private correctionRequestsEmailCounter: number = 0;
     private correctionRequestsEmailDate: string = null;
     private correctionRequestsEmailTime: string = null;
+    private warningTooltipMessages: string[] = [];
+    private warning1Message: string = '';
+    private warning2Message: string = '';
+    private warning3Message: string = '';
 
-    constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService) {
+    constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
         this.callApi.allCalls().subscribe(
             (calls: CallDTOBase[]) => {
                 if (calls.length > 0) {
@@ -105,7 +110,7 @@ export class DgConnApplicantRegistrationsComponent {
                                     }
                                     if (queryParams['sortField']) {
                                         let sortField = queryParams['sortField'].toString().toLowerCase().trim();
-                                        if (sortField == 'countryCode' || sortField == 'counter' || sortField == 'mediation' || sortField == 'supportingdocuments')
+                                        if (sortField == 'countrycode' || sortField == 'counter' || sortField == 'mediation' || sortField == 'supportingdocuments')
                                             this.sortField = sortField;
                                         else
                                             this.sortField = 'name';
@@ -119,11 +124,27 @@ export class DgConnApplicantRegistrationsComponent {
                 }
             }
         );
+        this.translateService.get('dgConn.badge.warning1Info').subscribe(
+            (translatedString: string) => {
+                this.warning1Message = translatedString;
+            }
+        );
+        this.translateService.get('dgConn.badge.warning2Info').subscribe(
+            (translatedString: string) => {
+                this.warning2Message = translatedString;
+            }
+        );
+        this.translateService.get('dgConn.badge.warning3Info').subscribe(
+            (translatedString: string) => {
+                this.warning3Message = translatedString;
+            }
+        );
     }
 
     private searchApplicants() {
         if (this.currentCall) {
             this.applicantListItems = [];
+            this.warningTooltipMessages = [];
             this.loadingData = true;
             let pagingAndSortingData = new PagingSortingDTOBase();
             pagingAndSortingData.offset = this.itemsPerPage * this.page;
@@ -150,6 +171,7 @@ export class DgConnApplicantRegistrationsComponent {
                                 this.filterApplicantsSearch();
                             } else {
                                 this.applicantListItems = response.data;
+                                this.updateWarningTooltipMessages();
                                 this.loadingData = false;
                             }
                         }
@@ -171,6 +193,7 @@ export class DgConnApplicantRegistrationsComponent {
                                 this.filterApplicantsSearch();
                             } else {
                                 this.applicantListItems = response.data;
+                                this.updateWarningTooltipMessages();
                                 this.loadingData = false;
                             }
                         }
@@ -365,6 +388,30 @@ export class DgConnApplicantRegistrationsComponent {
                     }
                 }
             );
+        }
+    }
+
+    private updateWarningTooltipMessages() {
+        for (let item of this.applicantListItems) {
+            let warningTooltipMessage = null;
+            if (item.warning1) {
+                warningTooltipMessage = "1) " + this.warning1Message;
+            }
+            if (item.warning2) {
+                if (warningTooltipMessage != null) {
+                    warningTooltipMessage += "<br/><br/>2) " + this.warning2Message;
+                } else {
+                    warningTooltipMessage = "2) " + this.warning2Message;
+                }
+            }
+            if (item.warning3) {
+                if (warningTooltipMessage != null) {
+                    warningTooltipMessage += "<br/><br/>3) " + this.warning3Message;
+                } else {
+                    warningTooltipMessage = "3) " + this.warning3Message;
+                }
+            }
+            this.warningTooltipMessages.push(warningTooltipMessage);
         }
     }
 }

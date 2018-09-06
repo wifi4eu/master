@@ -1,5 +1,10 @@
 <div class="container">
-    <label class="label beneficiaryMayor">Managment Publication of the call</label>
+    <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
+        <a class="link-label" routerLink=".." routerLinkActive="active">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+        </a>
+        <p class="beneficiaryTitle">Managment Publication of the call</p>
+    </div>
     <p-tabView class="white" (onChange)="changeCall($event)">
         <p-tabPanel *ngFor="let call of calls; let i=index" [header]="'Call '+(i+1)">
             <div class="form-group ui-g">

@@ -44,7 +44,7 @@ export function translateFactory(http: Http) {
         // EcasComponent,
         NotFoundComponent,
         ListSuppliersComponent,
-        InvitedContactDetailsComponent,
+        //InvitedContactDetailsComponent,
         DeactivatedUserComponent
     ],
     exports: [

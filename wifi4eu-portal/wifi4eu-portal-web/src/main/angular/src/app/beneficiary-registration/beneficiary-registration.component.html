@@ -17,7 +17,8 @@
             <beneficiary-registration-step2 [country]="country"
                                             [multipleMunicipalities]="multipleMunicipalities"
                                             [(municipalities)]="municipalities"
-                                            [(laus)]="laus" [(mayors)]="mayors"
+                                            [(laus)]="laus" [(mayors)]="mayors" [buttonEnabledStep2]="buttonEnabledStep2"
+                                            [(emailConfirmations)]= "emailConfirmations" [(css_class_email)]= "css_class_email"
                                             (onNext)="navigate(3)" (onBack)="navigate(1)"></beneficiary-registration-step2>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
@@ -36,6 +37,7 @@
             <beneficiary-registration-step4 [initialUser]="initialUser" [country]="country"
                                             [municipalities]="municipalities" [mayors]="mayors"
                                             [multipleMunicipalities]="multipleMunicipalities"
+                                            [associationName]="associationName"
                                             (onNext)="submitRegistration()" (onBack)="navigate(3)"
                                             (onEdit)="navigate($event)"></beneficiary-registration-step4>
         </uxWizardStepCustomContent>
