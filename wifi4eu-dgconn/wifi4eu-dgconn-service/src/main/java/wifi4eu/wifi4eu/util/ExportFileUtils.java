@@ -27,11 +27,11 @@ public class ExportFileUtils {
 
 	private final Logger log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
 
-	public final String[] csvDocumentHeaders = new String[] { "mun_id", "doc_portalId", "doc_name", "doc_fileName",
-			"doc_mimeType", "doc_date", "doc_type" };
+	public final String[] csvDocumentHeaders = new String[] { "mun_id", "doc_portalId", "doc_name", "doc_fileName", "doc_mimeType", "doc_date", "doc_type", "ares_reference" };
 
-	public final String[] csvMunicipalitiesHeaders = new String[] { "mun_id", "mun_name", "mun_address",
-			"mun_postalCode", "mun_city", "mun_countryCodeISO", "mun_languageCodeISO", "mun_registrationNumber" };
+	public final String[] csvMunicipalitiesHeaders = new String[] {
+			"mun_id", "mun_name", "mun_abac_name", "mun_address", "mun_postalCode", "mun_city", "mun_countryCodeISO", "mun_languageCodeISO", "reg_registrationNumber",
+			"mun_abacReference", "mun_CallNumber"};
 
 	public ByteArrayOutputStream generateZipFileStream(List<ExportFile> includedExportFiles) {
 		if (includedExportFiles == null || includedExportFiles.size() == 0) {

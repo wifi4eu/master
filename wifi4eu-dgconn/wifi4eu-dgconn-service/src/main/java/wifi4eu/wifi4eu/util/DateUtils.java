@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class DateUtils {
 
-	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
 	public LocalDate getLocalTimeFromDate(Date datedef) {
 		java.sql.Date sDate = new java.sql.Date(datedef.getTime());
 		return sDate.toLocalDate();
@@ -29,11 +27,13 @@ public class DateUtils {
 	}
 
 	public String convertDate2String(Date date) {
-		return DATE_FORMAT.format(date);
+		// SimpleDateFormat is not thread-safe
+		return new SimpleDateFormat("yyyy-MM-dd").format(date);
 	}
 
-	public Date convertString2Date(String date) throws ParseException {
-		return DATE_FORMAT.parse(date);
+	private Date convertString2Date(String date) throws ParseException {
+		// SimpleDateFormat is not thread-safe
+		return new SimpleDateFormat("yyyy-MM-dd").parse(date);
 	}
 
 	public String convertLong2String(Long date) {

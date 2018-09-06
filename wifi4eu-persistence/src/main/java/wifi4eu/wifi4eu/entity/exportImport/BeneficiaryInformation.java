@@ -15,6 +15,8 @@ public class BeneficiaryInformation {
 
 	private String mun_name;
 
+	private String mun_abacName;
+
 	private String mun_address;
 
 	private String mun_postalCode;
@@ -26,6 +28,10 @@ public class BeneficiaryInformation {
 	private String mun_languageCodeISO;
 
 	private Integer mun_registrationNumber;
+
+	private String mun_abacReference;
+
+	private String mun_callNumber;
 
 	private Integer doc_portalId;
 
@@ -40,6 +46,8 @@ public class BeneficiaryInformation {
 	private String doc_type;
 	
 	private String doc_location;
+
+	private String aresReference;
 
 	public String getMun_id() {
 		return mun_id;
@@ -169,4 +177,35 @@ public class BeneficiaryInformation {
 		this.id = id;
 	}
 
+	public String getMun_abacName() {
+		return mun_abacName;
+	}
+
+	public void setMun_abacName(String mun_abacName) {
+		this.mun_abacName = mun_abacName;
+	}
+
+	public String getMun_abacReference() {
+		return mun_abacReference;
+	}
+
+	public void setMun_abacReference(String mun_abacReference) {
+		this.mun_abacReference = mun_abacReference;
+	}
+
+	public String getMun_callNumber() {
+		return mun_callNumber;
+	}
+
+	public void setMun_callNumber(String mun_callNumber) {
+		this.mun_callNumber = mun_callNumber;
+	}
+
+	public String getAresReference() {
+		return aresReference;
+	}
+
+	public void setAresReference(String aresReference) {
+		this.aresReference = aresReference;
+	}
 }

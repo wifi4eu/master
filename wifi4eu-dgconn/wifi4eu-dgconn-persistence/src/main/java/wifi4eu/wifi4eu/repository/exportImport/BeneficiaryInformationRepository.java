@@ -2,8 +2,9 @@ package wifi4eu.wifi4eu.repository.exportImport;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-
 import wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation;
+
+import java.util.List;
 
 public interface BeneficiaryInformationRepository extends CrudRepository<BeneficiaryInformation, Integer> {
 
@@ -18,5 +19,5 @@ public interface BeneficiaryInformationRepository extends CrudRepository<Benefic
 			+ "where m.name is not null "
 			+ "and ga.date_signature is not null "
 			+ "and ga.date_counter_signature is null", nativeQuery = true)
-	Iterable<BeneficiaryInformation> getBeneficiariesInformationSignedAndNotCounterSigned();
+	List<BeneficiaryInformation> getBeneficiariesInformationSignedAndNotCounterSigned();
 }
