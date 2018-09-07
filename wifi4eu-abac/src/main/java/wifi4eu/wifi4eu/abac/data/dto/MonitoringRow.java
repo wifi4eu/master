@@ -50,7 +50,7 @@ public class MonitoringRow {
 		//Budgetary Commitment Data
 		if(budgetaryCommitment != null) {
 			this.setBcStatus(budgetaryCommitment.getWfStatus());
-			//this.setBcAbacRef(???);
+			this.setBcAbacRef(budgetaryCommitment.getCommitmentLevel2Key());
 		}
 
 		//Legal Commitment Data
