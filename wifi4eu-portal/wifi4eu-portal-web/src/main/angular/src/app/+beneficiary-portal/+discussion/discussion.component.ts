@@ -123,7 +123,7 @@ export class DiscussionComponent {
     }
 
     private editRegistration() {
-        this.router.navigateByUrl('/beneficiary-portal/profile/edit-profile');
+        this.router.navigateByUrl('/beneficiary-portal/profile/profile/edit-profile');
     }
 
     private withdrawRegistration() {
