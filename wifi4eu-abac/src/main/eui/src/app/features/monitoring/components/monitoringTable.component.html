@@ -14,7 +14,7 @@
 		<div class="row">
 		    <div class="col-md-5">
 			    <select class="form-control" [(ngModel)]="filterCountry" (change)="applyFilters()">
-			    	<option [value]="undefined" disabled selected>Search by country...</option>
+			    	<option [value]="undefined" selected>Search by country...</option>
 			    	<option *ngFor="let country of countries" [value]="country.iso2Code">{{country.name}}</option>
 			    </select>
 			</div>
@@ -28,24 +28,25 @@
 		<div class="row ux-u-pt">
 		    <div class="col-md-4">
 			    <select class="form-control" [(ngModel)]="filterLEFStatus" (change)="applyFilters()">
-			    	<option [value]="undefined" disabled selected>Search by LEF status...</option>
+			    	<option [value]="undefined" selected>Search by LEF status...</option>
 			    	<option *ngFor="let status of lefStatuses" [value]="status">{{status}}</option>
 			    </select>
 			</div>
 			<div class="col-md-4">
 			    <select class="form-control" [(ngModel)]="filterBCStatus" (change)="applyFilters()">
-			    	<option [value]="undefined" disabled selected>Search by BC status...</option>
+			    	<option [value]="undefined" selected>Search by BC status...</option>
 			    	<option *ngFor="let status of bcStatuses" [value]="status">{{status}}</option>
 			    </select>
 			</div>
 			<div class="col-md-4">
 				<select class="form-control" [(ngModel)]="filterLCStatus" (change)="applyFilters()">
-			    	<option [value]="undefined" disabled selected>Search by LC status...</option>
+			    	<option [value]="undefined" selected>Search by LC status...</option>
 			    	<option *ngFor="let status of lcStatuses" [value]="status">{{status}}</option>
 			    </select>
 			</div>
 		</div>
 	</ux-panel>
+</div>
 
 	<ux-panel label="List of Beneficiaries of Call 1" [hasNoContentPadding]="true">
 
@@ -79,7 +80,7 @@
 		        <tr>
 		        	<ng-container *ngFor="let col of cols">
                         <td *ngIf="col.field == 'selected'" class="text-center">
-                            <p-checkbox [(ngModel)]="row.isSelected" name="selectedRows" value="{{row}}" [disabled]="false" binary="true"></p-checkbox>
+                            <p-checkbox *ngIf="row.readyToBeCounterSigned" [(ngModel)]="row.isSelected" name="selectedRows" value="{{row}}" binary="true"></p-checkbox>
                         </td>
 		        		<td *ngIf="(col.field != 'selected') && showColumn(col.isFor)">{{row[col.field]}}</td>
 		        	</ng-container>
@@ -102,6 +103,7 @@
         </div>
     </div>
 
+<div class="content-wrapper">
     <ux-message-box id="confirmCounterSignatureMessageBox" titleLabel="WARNING" acceptLabel="YES" dismissLabel="NO" (clicked)="countersignSelected($event)">
         <p>The selected Legal Entities will be Counter-signed by you. Do you confirm the operation?</p>
     </ux-message-box>

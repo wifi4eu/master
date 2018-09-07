@@ -69,13 +69,13 @@ export class MonitoringTableComponent implements OnInit{
                     bcStatus = this.rows[i].bcStatus,
                     lcStatus = this.rows[i].lcStatus
                 ;
-                if (lefStatus !== undefined && lefStatus !== '' && this.lefStatuses.indexOf(lefStatus) === -1){
+                if (lefStatus !== undefined && lefStatus !== null && lefStatus.trim() !== '' && this.lefStatuses.indexOf(lefStatus) === -1){
                     this.lefStatuses.push(lefStatus);
                 }
-                if (bcStatus !== undefined && bcStatus !== '' && this.bcStatuses.indexOf(bcStatus) === -1){
+                if (bcStatus !== undefined && bcStatus !== null && bcStatus.trim() !== '' && this.bcStatuses.indexOf(bcStatus) === -1){
                     this.bcStatuses.push(bcStatus);
                 }
-                if (lcStatus !== undefined && lcStatus !== '' && this.lcStatuses.indexOf(lcStatus) === -1){
+                if (lcStatus !== undefined && lcStatus !== null && lcStatus.trim() !== '' && this.lcStatuses.indexOf(lcStatus) === -1){
                     this.lcStatuses.push(lcStatus);
                 }
                 if (this.rows[i].readyToBeCounterSigned){
@@ -111,6 +111,18 @@ export class MonitoringTableComponent implements OnInit{
             clearTimeout(this.filterTimeout);
         }
         this.filterTimeout = setTimeout(() => {
+          if (this.filterCountry === 'undefined'){
+              this.filterCountry = undefined;
+          }
+          if (this.filterLEFStatus === 'undefined'){
+              this.filterLEFStatus = undefined;
+          }
+          if (this.filterBCStatus === 'undefined'){
+              this.filterBCStatus = undefined;
+          }
+          if (this.filterLCStatus === 'undefined'){
+              this.filterLCStatus = undefined;
+          }
           this.monitoringTable.filters = {
               'countryCode': { value: this.filterCountry, matchMode: 'equals' },
               'municipality': { value: this.filterName, matchMode: 'contains' },
