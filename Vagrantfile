@@ -26,6 +26,9 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "LocalDevelopmemt/tomcat/logs", "/home/bargee/dev/logs", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
   config.vm.synced_folder "LocalDevelopmemt/tomcat/conf", "/home/bargee/dev/conf", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
 
+  config.vm.synced_folder "LocalDevelopmemt/sql", "/home/bargee/dev/sql", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
+
+
   # comment this out if you are outside the EC network
   config.vm.provision "shell", inline: $script_setproxy
 
@@ -33,7 +36,7 @@ Vagrant.configure("2") do |config|
     d.pull_images "microsoft/mssql-server-linux:2017-latest"
     d.run "sqlserver",
       image: "microsoft/mssql-server-linux:2017-latest",
-      args: "-e \"ACCEPT_EULA=Y\" -e \"SA_PASSWORD=SQLserver1\" -p 1433:1433 --name sql1 --restart always"
+      args: "-e \"ACCEPT_EULA=Y\" -e \"SA_PASSWORD=SQLserver1\" -p 1433:1433 --name sql1 --restart always -v /home/bargee/dev/sql:/tmp/sql"
 
     d.pull_images "tomcat:8.5"
     d.run "tomcat",
