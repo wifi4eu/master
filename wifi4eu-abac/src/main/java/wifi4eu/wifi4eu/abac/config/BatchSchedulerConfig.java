@@ -102,6 +102,7 @@ public class BatchSchedulerConfig {
             for (Document document : documents) {
                 try {
                     documentService.addDocumentInAres(document);
+                    documentService.updateStatusInNewTransaction(document, DocumentWorkflowStatus.ARCHIVED_IN_ARES);
                 }catch (SOAPFaultException e){
                     log.error("Error sending document to ARES: {}", e.getMessage(), e);
                     documentService.updateStatusInNewTransaction(document, DocumentWorkflowStatus.ARES_ERROR);

@@ -77,7 +77,7 @@ public class DocumentService {
 		hermesDocumentServiceClient.createFile(document);
 		hermesDocumentServiceClient.createDocument(document);
 		hermesDocumentServiceClient.uploadAttachment(document);
-		hermesDocumentServiceClient.fileDocument(document);
+		//hermesDocumentServiceClient.fileDocument(document); THIS IS FAILING
 		hermesDocumentServiceClient.registerDocument(document);
 
         return saveDocument(document);

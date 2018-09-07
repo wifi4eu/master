@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.abac.integration.hrs;
 
+import com.sun.xml.ws.fault.ServerSOAPFaultException;
 import generated.hrs.ws.DocumentService;
 import generated.hrs.ws.FilingPlanService;
 import generated.hrs.ws.model.AttachmentTypeToAdd;
@@ -115,9 +116,14 @@ public class HermesDocumentServiceClient {
         fileDocument.setDocumentId(document.getHermesDocumentId());
         fileDocument.setFileId(document.getHermesFileId());
 
-        FileDocumentResponse fileDocumentResponse = documentService.fileDocument(fileDocument);
+        try {
+            FileDocumentResponse fileDocumentResponse = documentService.fileDocument(fileDocument);
+        }catch (ServerSOAPFaultException e){
+            logger.error("ERROR filing document {}", document.getId(), e);
+            return false;
+        }
 
-        return fileDocumentResponse.getResult().isSuccess();
+        return true;
     }
 
 
@@ -175,8 +181,11 @@ public class HermesDocumentServiceClient {
             return document;
         }
 
+        LegalEntity legalEntity = document.getLegalEntity();
+        String documentName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s - %s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getOfficialName(), legalEntity.getCountry().getName(), document.getType().getValue());
+
         DocumentRegistrationRequest registrationRequest = new DocumentRegistrationRequest();
-        registrationRequest.setTitle(document.getName());
+        registrationRequest.setTitle(documentName);
         registrationRequest.setDocumentDate(getGregorianDate(document.getDateCreated()));
         registrationRequest.setSentDate(getGregorianDate(new Date()));
         registrationRequest.setSecurityClassification(SecurityClassification.NORMAL);
