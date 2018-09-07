@@ -157,7 +157,7 @@
             <div class="form-group">
                 <label class="label" for="streetName">{{ 'benefPortal.granAgreement.addressLabel' | translate }}</label>
                 <input class="form-control paddingInput" maxlength="255" type="text" id="streetName" name="streetName"
-                        [(ngModel)]="officialAddress.streetName" #streetName="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                        [(ngModel)]="supplier.street" #streetName="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="streetName.valid || streetName.pristine">
                     {{'shared.address.required' | translate}}
                 </div>
@@ -171,7 +171,7 @@
             <div class="form-group">
                 <label class="label" for="streetNumber">{{ 'shared.number.label' | translate }}</label>
                 <input class="form-control paddingInput" maxlength="255" type="text" id="streetNumber" name="streetNumber"
-                        [(ngModel)]="officialAddress.streetNumber" #streetNumber="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                        [(ngModel)]="supplier.streetNumber" #streetNumber="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="streetNumber.valid || streetNumber.pristine">
                     {{'shared.address.required' | translate}}
                 </div>
@@ -185,7 +185,7 @@
             <div class="form-group">
                 <label class="label" for="postalCode">{{ 'shared.postal-code.label' | translate }}</label>
                 <input class="form-control paddingInput" maxlength="255" type="text" id="postalCode" name="postalCode"
-                        [(ngModel)]="officialAddress.postalCode" #postalCode="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                        [(ngModel)]="supplier.postalCode" #postalCode="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="postalCode.valid || postalCode.pristine">
                     {{'shared.address.required' | translate}}
                 </div>
@@ -199,7 +199,7 @@
             <div class="form-group">
                 <label class="label" for="city">{{ 'suppRegistration.city.label' | translate }}</label>
                 <input class="form-control paddingInput" maxlength="255" type="text" id="city" name="city"
-                        [(ngModel)]="officialAddress.city" #city="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                        [(ngModel)]="supplier.city" #city="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="city.valid || city.pristine">
                     {{'shared.address.required' | translate}}
                 </div>

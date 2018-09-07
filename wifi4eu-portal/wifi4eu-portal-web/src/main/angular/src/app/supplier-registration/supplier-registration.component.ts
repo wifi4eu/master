@@ -30,7 +30,7 @@ export class SupplierRegistrationComponent {
     private allRegionsSelect: SelectItem[][] = [];
     private logoUrl: FileReader = new FileReader();
     private user: UserDTOBase;
-    private officialAddress: any = {};
+    // private officialAddress: any = {};
 
     constructor(private localStorageService: LocalStorageService, private nutsApi: NutsApi, private supplierApi: SupplierApi, private sharedService: SharedService, private translateService: TranslateService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
@@ -104,7 +104,7 @@ export class SupplierRegistrationComponent {
             language = 'en';
         }
         this.supplier.lang = language;
-        this.supplier.address = this.officialAddress.streetName.trim() + " " + this.officialAddress.streetNumber.trim() + " " + this.officialAddress.postalCode.trim() + " " +  this.officialAddress.city.trim() + " " + this.officialAddress.country.trim();
+        // this.supplier.address = this.officialAddress.streetName.trim() + " " + this.officialAddress.streetNumber.trim() + " " + this.officialAddress.postalCode.trim() + " " +  this.officialAddress.city.trim() + " " + this.officialAddress.country.trim();
         this.supplierApi.submitSupplierRegistration(this.supplier).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {

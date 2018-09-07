@@ -7,6 +7,11 @@ public class SupplierDTO implements Serializable {
     private int id;
     private String name;
     private String address;
+    private String street;
+    private String streetNumber;
+    private String postalCode;
+    private String city;
+    private String country;
     private String vat;
     private String bic;
     private String accountNumber;
@@ -201,12 +206,57 @@ public class SupplierDTO implements Serializable {
         this.contactNumber = contactNumber;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
+    }
+
     @Override
     public String toString() {
         return "SupplierDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
+                ", street='" + street+ '\'' +
+                ", number='" + streetNumber + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
                 ", vat='" + vat + '\'' +
                 ", bic='" + bic + '\'' +
                 ", accountNumber='" + accountNumber + '\'' +
@@ -221,5 +271,4 @@ public class SupplierDTO implements Serializable {
                 ", status='" + status + '\'' +
                 '}';
     }
-
 }

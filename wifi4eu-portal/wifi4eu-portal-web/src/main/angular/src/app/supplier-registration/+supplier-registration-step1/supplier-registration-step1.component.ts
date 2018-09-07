@@ -121,10 +121,10 @@ export class SupplierRegistrationStep1Component {
       */
         if(this.supplier.name != null && this.supplier.name.trim() != "" 
         && this.supplier.vat != null  &&  this.supplier.vat.trim() != ""
-        && this.officialAddress.streetName != null && this.officialAddress.streetName.trim() != ""
-        && this.officialAddress.streetNumber != null && this.officialAddress.streetNumber.trim() != ""
-        && this.officialAddress.postalCode != null && this.officialAddress.postalCode.trim() != ""
-        && this.officialAddress.city != null && this.officialAddress.city.trim() != ""
+        && this.supplier.street != null && this.supplier.street.trim() != ""
+        && this.supplier.streetNumber != null && this.supplier.streetNumber.trim() != ""
+        && this.supplier.postalCode != null && this.supplier.postalCode.trim() != ""
+        && this.supplier.city != null && this.supplier.city.trim() != ""
         ){
             this.buttonEnabled = true;
         }
@@ -158,6 +158,9 @@ export class SupplierRegistrationStep1Component {
         }else {
             setTimeout(()=>{this.supplierForm.controls['address'].setErrors({'invalid': true});} ,5);
         } */
+
+        /* OLD VALIDATOR */
+        /*
         // custom street name validator
         if(this.officialAddress.streetName != null && this.officialAddress.streetName.trim() != ""){
             setTimeout(()=>{this.supplierForm.controls['streetName'].setErrors(null);} ,5);
@@ -182,5 +185,33 @@ export class SupplierRegistrationStep1Component {
         }else {
             setTimeout(()=>{this.supplierForm.controls['city'].setErrors({'invalid': true});} ,5);
         }
+        */
+
+        // custom street name validator
+        if(this.supplier.street != null && this.supplier.street.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['street'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['street'].setErrors({'invalid': true});} ,5);
+        }
+        // custom streetNumber validator
+        if(this.supplier.streetNumber != null && this.supplier.streetNumber.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['streetNumber'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['streetNumber'].setErrors({'invalid': true});} ,5);
+        }
+        // custom postal code validator
+        if(this.supplier.postalCode != null && this.supplier.postalCode.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['postalCode'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['postalCode'].setErrors({'invalid': true});} ,5);
+        }
+        // custom city validator
+        if(this.supplier.city != null && this.supplier.city.trim() != ""){
+            setTimeout(()=>{this.supplierForm.controls['city'].setErrors(null);} ,5);
+        }else {
+            setTimeout(()=>{this.supplierForm.controls['city'].setErrors({'invalid': true});} ,5);
+        }
+
+        // this.supplier.
     }
 }

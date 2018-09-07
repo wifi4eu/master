@@ -52,7 +52,8 @@
         </div>
     </div>
     
-    <div class="ui-g">
+    <!-- OLD METHOD -->
+    <!-- <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.streetName' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{officialAddress.streetName}}</b></div>
     </div>
@@ -71,6 +72,28 @@
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'listMunicipalities.memberState.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{officialAddress.country}}</b></div>
+    </div> -->
+
+    <!-- NEW METHOD -->
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.streetName' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.street}}</b></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.number.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.streetNumber}}</b></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.postal-code.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.postalCode}}</b></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.city.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.city}}</b></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'listMunicipalities.memberState.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.country}}</b></div>
     </div>
 
     <hr class="beneficiaryHr marginHr">
