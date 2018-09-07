@@ -377,10 +377,11 @@ public class SupplierResource {
 
     }
 
-    @ApiOperation(value = "Deactivate supplier contact")
-    @RequestMapping(value = "/deactivateContact/{supplierId}/{userId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
+    //ADD CONTACT
+//    @ApiOperation(value = "Deactivate supplier contact")
+//    @RequestMapping(value = "/deactivateContact/{supplierId}/{userId}", method = RequestMethod.GET, produces = "application/json")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseBody
     public ResponseDTO deactivateSupplierContact(@PathVariable("supplierId") Integer supplierId, @PathVariable("userId") Integer userIdToDeactivate,
                                                  HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
@@ -421,9 +422,10 @@ public class SupplierResource {
         }
     }
 
-    @ApiOperation(value = "Generate invitation to be a supplier contact")
-    @RequestMapping(value = "/invitation-contact-supplier", method = RequestMethod.POST)
-    @ResponseBody
+    // ADD CONTACT
+//    @ApiOperation(value = "Generate invitation to be a supplier contact")
+//    @RequestMapping(value = "/invitation-contact-supplier", method = RequestMethod.POST)
+//    @ResponseBody
     public ResponseDTO invitateContactSupplier(@RequestParam("supplierId") final int supplierId, @RequestParam("newContactEmail") final String newContactEmail, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
