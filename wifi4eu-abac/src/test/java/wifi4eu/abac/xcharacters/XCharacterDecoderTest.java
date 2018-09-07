@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac.integration.essi.wifi4eu.wifi4eu.abac.xcharacters;
+package wifi4eu.abac.xcharacters;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
