@@ -23,7 +23,7 @@ public class CallCustomResource {
     @ApiOperation(value = "Get the call to apply")
     @RequestMapping(value = "/applyvoucher", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public CallCustom getCallForApply(HttpServletResponse response) {
+    public CallCustom getCallForApply(@RequestParam("date") final Long timestamp, HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         response.setHeader("Pragma", "no-cache");
         return callCustomService.getCallForApply();

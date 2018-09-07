@@ -45,7 +45,7 @@ export class HomeComponent {
     }
 
     checkForCalls() {
-        this.callCustomApi.getCallForApply().subscribe(
+        this.callCustomApi.getCallForApply(new Date().getTime()).subscribe(
             (call: CallCustomBase) => {
                 this.currentCall = call;
                 if (this.currentCall) {
