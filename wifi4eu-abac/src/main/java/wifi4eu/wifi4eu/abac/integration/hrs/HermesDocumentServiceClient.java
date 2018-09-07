@@ -89,7 +89,7 @@ public class HermesDocumentServiceClient {
         DocumentCreationRequest request = new DocumentCreationRequest();
 
         LegalEntity legalEntity = document.getLegalEntity();
-        String documentName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s - %s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getOfficialName(), legalEntity.getCountry().getName(), document.getType().getValue());
+        String documentName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s - %s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getAbacLatinName(), legalEntity.getCountry().getName(), document.getType().getValue());
 
         request.setTitle(documentName);
         request.setDocumentDate(getGregorianDate(document.getDateCreated()));
@@ -140,7 +140,7 @@ public class HermesDocumentServiceClient {
             return document;
         }
 
-        String fileName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getOfficialName(), legalEntity.getCountry().getName());
+        String fileName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getAbacLatinName(), legalEntity.getCountry().getName());
 
         createFileRequest.setEnglishName(fileName);
         createFileRequest.setChefDeFile(chefDeFile);
@@ -182,7 +182,7 @@ public class HermesDocumentServiceClient {
         }
 
         LegalEntity legalEntity = document.getLegalEntity();
-        String documentName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s - %s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getOfficialName(), legalEntity.getCountry().getName(), document.getType().getValue());
+        String documentName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s - %s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getAbacLatinName(), legalEntity.getCountry().getName(), document.getType().getValue());
 
         DocumentRegistrationRequest registrationRequest = new DocumentRegistrationRequest();
         registrationRequest.setTitle(documentName);

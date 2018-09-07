@@ -36,9 +36,10 @@ public class GenerateTestLEFImport {
     private static final String SAMPLE_CSV_FILE_EXPORT_DOCUMENTS = "portal_exportBeneficiaryDocuments.csv";
 
     @Test
-    @Ignore
+    //@Ignore
     public void generateLEFImport() throws Exception{
-        int startMunID=1010600;
+        int startMunID=1010900;
+        int start=100;
         int limit = 100;
 
         try (
@@ -66,12 +67,17 @@ public class GenerateTestLEFImport {
         ) {
             for (CSVRecord csvRecord : csvParser) {
 
+                if(start != 0){
+                    start = start-1;
+                    continue;
+                }
+
                 if(limit == 0){
                     break;
                 }
 
                 // Accessing values by Header names
-                String name = csvRecord.get("name");
+                String name = csvRecord.get("name")+" DIGIT " +startMunID;
                 String address = csvRecord.get("address");
                 String postalCode = csvRecord.get("postal_code");
 
@@ -84,7 +90,7 @@ public class GenerateTestLEFImport {
                 System.out.println("---------------\n\n");
 
                 csvPrinter.printRecord(startMunID, name, "", address, postalCode, name, "BE", "eng", "123456", "", 1);
-                csvPrinterDocs.printRecord(startMunID, startMunID, name+" Doc", startMunID+"_identificationForm.pdf", "application/pdf","07/09/2018", "IDENTIFICATION_FORM", "");
+                csvPrinterDocs.printRecord(startMunID, startMunID, "IDENTIFICATION_FORM DIGIT Doc "+startMunID, startMunID+"_identificationForm.pdf", "application/pdf","07/09/2018", "IDENTIFICATION_FORM", "");
 
                 copyFileUsingStream(this.getClass().getClassLoader().getResourceAsStream(SAMPLE_CSV_FILE_IDENTIFICATION_FORM),new File(SAMPLE_CSV_FILE_EXPORT_DIR+startMunID+"_identificationForm.pdf"));
 
