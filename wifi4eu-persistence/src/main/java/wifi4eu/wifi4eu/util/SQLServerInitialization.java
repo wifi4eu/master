@@ -33,8 +33,8 @@ public class SQLServerInitialization {
     public void initSQLServerAzureProvider() {    	
         // TODO FIXME hardcoded for testing
     	
-        String applicationClientID = "ae77fa68-6492-44dc-b98d-74e002e4a271";
-        String applicationKey = "test";
+        String applicationClientID = "7ea3895c-7769-4ad0-a688-d50f60642a36";
+        String applicationKey = "3qAjl0R7zmpQ6+A4RhjyG9UqYppwhI2TEeXegUK2mmc=";
         
         //https://github.com/Microsoft/mssql-jdbc/wiki/Constructors-for-SQLServerColumnEncryptionAzureKeyVaultProvider
         SQLServerColumnEncryptionAzureKeyVaultProvider akvProvider = null;
