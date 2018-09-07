@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.abac.config;
 
-import com.sun.xml.ws.fault.ServerSOAPFaultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class BatchSchedulerConfig {
     private final Logger log = LoggerFactory.getLogger(BatchSchedulerConfig.class);
 
     @Value("${batch.scheduler.maxrecords}")
-    private Integer MAX_RECORDS_CREATE;
+    private Integer MAX_RECORDS;
 
     @Autowired
     AbacIntegrationService abacIntegrationService;
@@ -54,17 +53,17 @@ public class BatchSchedulerConfig {
         //check-update the LE status for ABAC (change from IMPORTED to READY_FOR_ABAC)
         legalEntityService.checkLegalEntityReadyForAbac();
         //submit LE to ABAC
-		abacIntegrationService.findAndSendLegalEntitiesReadyToABAC(MAX_RECORDS_CREATE);
+		abacIntegrationService.findAndSendLegalEntitiesReadyToABAC(MAX_RECORDS);
     }
 
     @Scheduled(cron = "${batch.budgetarycommitment.create.crontable}")
     public void createBudgetaryCommitmentsInABAC() {
-        abacIntegrationService.findAndSendBudgetaryCommitmentsReadyToABAC(MAX_RECORDS_CREATE);
+        abacIntegrationService.findAndSendBudgetaryCommitmentsReadyToABAC(MAX_RECORDS);
     }
 
     @Scheduled(cron = "${batch.legalcommitment.create.crontable}")
     public void createLegalCommitmentsInABAC() {
-        abacIntegrationService.findAndSendLegalCommitmentsReadyToABAC();
+        abacIntegrationService.findAndSendLegalCommitmentsReadyToABAC(MAX_RECORDS);
     }
 
     @Scheduled(cron = "${batch.abac.checkstatus.crontable}")
@@ -77,7 +76,7 @@ public class BatchSchedulerConfig {
 
     @Scheduled(cron = "${batch.legalcommitment.countersign.crontable}")
     public void counterSignGrantAgreements() {
-        legalCommitmentService.findAndCounterSignGrantAgreements();
+        legalCommitmentService.findAndCounterSignGrantAgreements(MAX_RECORDS);
     }
 
     @Scheduled(cron = "${notifications.batch.crontable}")
@@ -91,26 +90,25 @@ public class BatchSchedulerConfig {
     @Transactional( propagation = Propagation.REQUIRES_NEW )
     public void uploadDocumentsInAres() {
 
-        Pageable pageable = PageRequest.of(0, MAX_RECORDS_CREATE);
+        Pageable pageable = PageRequest.of(0, MAX_RECORDS);
         List<Document> documents = documentService.getDocumentsByStatus(DocumentWorkflowStatus.IMPORTED, pageable);
 
         if (!documents.isEmpty()) {
             log.info("Found {} documents ready to be sent to ARES...", documents.size());
         }
 
-
-            for (Document document : documents) {
-                try {
-                    documentService.addDocumentInAres(document);
-                    documentService.updateStatusInNewTransaction(document, DocumentWorkflowStatus.ARCHIVED_IN_ARES);
-                }catch (SOAPFaultException e){
-                    log.error("Error sending document to ARES: {}", e.getMessage(), e);
-                    documentService.updateStatusInNewTransaction(document, DocumentWorkflowStatus.ARES_ERROR);
-                } catch (Exception e){
-                    log.error("Error sending document to ARES: {}", e.getMessage(), e);
-                    documentService.updateStatusInNewTransaction(document, DocumentWorkflowStatus.ARES_ERROR);
-                }
+        for (Document document : documents) {
+            try {
+                documentService.addDocumentInAres(document);
+                documentService.updateStatusInNewTransaction(document, DocumentWorkflowStatus.ARCHIVED_IN_ARES);
+            }catch (SOAPFaultException e){
+                log.error("Error sending document to ARES: {}", e.getMessage(), e);
+                documentService.updateStatusInNewTransaction(document, DocumentWorkflowStatus.ARES_ERROR);
+            } catch (Exception e){
+                log.error("Error sending document to ARES: {}", e.getMessage(), e);
+                documentService.updateStatusInNewTransaction(document, DocumentWorkflowStatus.ARES_ERROR);
             }
+        }
 
     }
 }

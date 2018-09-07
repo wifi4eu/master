@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.abac.data.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
@@ -20,6 +21,7 @@ public interface LegalCommitmentRepository extends CrudRepository<LegalCommitmen
 	LegalCommitment findByLegalEntityMid(Long municipalityPortalId);
 
 	List<LegalCommitment> findByWfStatus(LegalCommitmentWorkflowStatus readyForAbac);
+	List<LegalCommitment> findByWfStatus(LegalCommitmentWorkflowStatus readyForAbac, Pageable pageable);
 
 	@Procedure(name = "CREATE_LC_IN_ABAC")
 	void createLegalCommitmentInABAC(@Param("LEGAL_COMMITMENT_ID") Long legalCommitmentId);
@@ -34,5 +36,5 @@ public interface LegalCommitmentRepository extends CrudRepository<LegalCommitmen
 	List<LegalCommitment> findAllByBatchRefEquals(String batchRef);
 
 	@Query("select lc from LegalCommitment lc where lc.wfStatus = 'COUNTERSIGNED' and lc.legalEntity.budgetaryCommitment.wfStatus = 'ABAC_VALID'")
-	List<LegalCommitment> findLegalCommitmentsAvailableForCreation();
+	List<LegalCommitment> findLegalCommitmentsAvailableForCreation(Pageable pageable);
 }

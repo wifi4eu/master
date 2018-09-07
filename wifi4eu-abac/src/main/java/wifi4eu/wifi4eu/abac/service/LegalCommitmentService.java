@@ -6,6 +6,8 @@ import eu.cec.digit.ecas.client.jaas.SubjectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.abac.data.dto.LegalCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
@@ -25,6 +27,7 @@ import java.util.List;
 @Service
 public class LegalCommitmentService {
 
+	private static int FIRST_PAGE = 0;
 	private final Logger log = LoggerFactory.getLogger(LegalCommitmentService.class);
 
 	@Autowired
@@ -46,9 +49,10 @@ public class LegalCommitmentService {
 	private UserService userService;
 
 	@Transactional
-	public void findAndCounterSignGrantAgreements() {
+	public void findAndCounterSignGrantAgreements(Integer maxRecords) {
 
-		List<LegalCommitment> legalCommitments = legalCommitmentRepository.findByWfStatus(LegalCommitmentWorkflowStatus.COUNTERSIGNATURE_REQUESTED);
+		Pageable pageable = PageRequest.of(FIRST_PAGE, maxRecords);
+		List<LegalCommitment> legalCommitments = legalCommitmentRepository.findByWfStatus(LegalCommitmentWorkflowStatus.COUNTERSIGNATURE_REQUESTED, pageable);
 		try {
 			for (LegalCommitment legalCommitment : legalCommitments) {
 

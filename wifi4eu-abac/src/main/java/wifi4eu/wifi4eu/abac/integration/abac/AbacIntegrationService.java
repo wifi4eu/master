@@ -73,8 +73,9 @@ public class AbacIntegrationService {
         }
     }
 
-    public void findAndSendBudgetaryCommitmentsReadyToABAC(Integer max_records_create_legal_entity) {
-        List<LegalEntity> legalEntities = legalEntityRepository.findAvailableLegalEntitiesForBudgetaryCommitmentCreation();
+    public void findAndSendBudgetaryCommitmentsReadyToABAC(Integer maxRecords) {
+        Pageable pageable = PageRequest.of(FIRST_PAGE, maxRecords);
+        List<LegalEntity> legalEntities = legalEntityRepository.findAvailableLegalEntitiesForBudgetaryCommitmentCreation(pageable);
 
         if (!legalEntities.isEmpty()) {
             log.info("Found {} legal entities with budgetary commitments to be created in ABAC...", legalEntities.size());
@@ -106,9 +107,9 @@ public class AbacIntegrationService {
         }
 	}
 
-    public void findAndSendLegalCommitmentsReadyToABAC() {
-
-        List<LegalCommitment> legalCommitments = legalCommitmentRepository.findLegalCommitmentsAvailableForCreation();
+    public void findAndSendLegalCommitmentsReadyToABAC(Integer maxRecords) {
+        Pageable pageable = PageRequest.of(FIRST_PAGE, maxRecords);
+        List<LegalCommitment> legalCommitments = legalCommitmentRepository.findLegalCommitmentsAvailableForCreation(pageable);
 
         for (LegalCommitment legalCommitment : legalCommitments) {
             legalCommitmentRepository.createLegalCommitmentInABAC(legalCommitment.getId());
