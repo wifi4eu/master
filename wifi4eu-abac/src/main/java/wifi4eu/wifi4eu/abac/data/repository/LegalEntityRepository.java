@@ -39,7 +39,7 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	List<MonitoringRow> findMonitoringData();
 	
 	@Query("select bc.legalEntity from BudgetaryCommitment bc where bc.wfStatus = 'READY_FOR_ABAC' and bc.legalEntity.wfStatus = 'ABAC_VALID'")
-	List<LegalEntity> findAvailableLegalEntitiesForBudgetaryCommitmentCreation();
+	List<LegalEntity> findAvailableLegalEntitiesForBudgetaryCommitmentCreation(Pageable pageable);
 
 	Long countAllByWfStatusNotInAndBatchRefEquals(List<AbacWorkflowStatus> wfStatuses, String batchRef);
 
