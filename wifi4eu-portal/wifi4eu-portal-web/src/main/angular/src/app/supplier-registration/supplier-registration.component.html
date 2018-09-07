@@ -1,7 +1,7 @@
 <custom-wizard-steps [isCustomContent]="true" *ngIf="!(successRegistration || failureRegistration)">
     <ux-wizard-step label="{{ 'suppRegistration.step1.supplier' | translate }}" [isCompleted]="completed[0]" [isActive]="active[0]">
         <uxWizardStepCustomContent>
-            <supplier-registration-step1 [(supplier)]="supplier" [(countries)]="allCountriesSelect" [(logoUrl)]="logoUrl" (onNext)="navigate(2)"></supplier-registration-step1>
+            <supplier-registration-step1 [(supplier)]="supplier" [(countries)]="allCountriesSelect" [(logoUrl)]="logoUrl" [(officialAddress)]="officialAddress" (onNext)="navigate(2)"></supplier-registration-step1>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'suppRegistration.step2.supplier' | translate }}" [isCompleted]="completed[1]" [isActive]="active[1]">
@@ -19,7 +19,7 @@
     <ux-wizard-step label="{{ 'suppRegistration.step4.supplier' | translate }}" [isCompleted]="completed[3]" [isActive]="active[3]">
         <uxWizardStepCustomContent>
             <supplier-registration-step4 [supplier]="supplier" [selectedCountriesNames]="selectedCountriesNames" [selectedRegions]="selectedRegions" [logoUrl]="logoUrl"
-                                         (onNext)="submitRegistration()" (onBack)="navigate(3)" (onEdit)="navigate($event)"></supplier-registration-step4>
+                                        [(officialAddress)]="officialAddress" (onNext)="submitRegistration()" (onBack)="navigate(3)" (onEdit)="navigate($event)"></supplier-registration-step4>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
 </custom-wizard-steps>

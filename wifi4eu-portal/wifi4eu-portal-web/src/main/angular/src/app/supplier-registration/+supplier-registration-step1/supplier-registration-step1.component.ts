@@ -22,8 +22,9 @@ export class SupplierRegistrationStep1Component {
     private buttonEnabled: boolean = false;
 
     private countrySelected: boolean = false;
-    private officialAddress: any = {};
+    // private officialAddress: any = {};
 
+    @Input('officialAddress') private officialAddress: any;
     @Input('countries') private countries: NutsDTOBase[];
     @Input('country') private country: NutsDTOBase;
     @Output() private countryChange: EventEmitter<NutsDTOBase>;
@@ -36,8 +37,9 @@ export class SupplierRegistrationStep1Component {
     }
 
     private submit() {
-        // Wrap address first
-        this.supplier.address = this.officialAddress.streetName.trim() + " " + this.officialAddress.streetNumber.trim() + " " + this.officialAddress.postalCode.trim() + " " +  this.officialAddress.city.trim() + " " + this.country.label;
+        // Address is passed as a separate object from supplier to include different fields
+        this.officialAddress.country = this.country.label;
+        this.supplier.address = this.officialAddress; 
         this.supplierChange.emit(this.supplier);
         this.logoUrlChange.emit(this.logoUrl);
         this.onNext.emit();

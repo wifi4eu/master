@@ -12,6 +12,9 @@ export class SupplierRegistrationStep4Component {
     @Input('selectedCountriesNames') private selectedCountriesNames: string[];
     @Input('selectedRegions') private selectedRegions: NutsDTOBase[][];
     @Input('logoUrl') private logoUrl: FileReader;
+
+    @Input('officialAddress') private officialAddress: any;
+
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
     @Output() private onEdit: EventEmitter<any>;

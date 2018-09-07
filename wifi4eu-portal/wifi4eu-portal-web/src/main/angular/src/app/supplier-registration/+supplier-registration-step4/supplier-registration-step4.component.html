@@ -18,36 +18,6 @@
 
     <div class="ui-g">
         <div class="ui-g-11 ui-md-11 ui-lg-11">
-            <p class="beneficiaryMayor">{{ 'suppRegistration.contact.person' | translate }}</p>
-        </div>
-        <div class="ui-g-1 ui-md-1 ui-lg-1">
-            <a (click)="edit(3)">
-                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
-            </a>
-        </div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.name.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactName}}</b></div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.surname.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactSurname}}</b></div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.phone.number' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactPhonePrefix}} {{supplier.contactPhoneNumber}}</b>
-        </div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.email.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactEmail}}</b></div>
-    </div>
-
-    <hr class="beneficiaryHr marginHr">
-
-    <div class="ui-g">
-        <div class="ui-g-11 ui-md-11 ui-lg-11">
             <p class="beneficiaryMayor">{{ 'suppRegistration.company.details' | translate }}</p>
         </div>
         <div class="ui-g-1 ui-md-1 ui-lg-1">
@@ -56,25 +26,51 @@
             </a>
         </div>
     </div>
+
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+            <p class="subtitle-registration">{{ 'suppPortal.companyInformation' | translate }}</p>
+        </div>
+    </div>
+    
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.company.name' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.name}}</b></div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.legal.address' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.address}}</b></div>
-    </div>
-    <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.vat.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.vat}}</b></div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.company.web' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.website}}</b></div>
     </div>
     <div class="ui-g" *ngIf="supplier.logo != null">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.company.logo' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><img src="{{logoUrl.result}}" alt="logo" height="60"></div>
+    </div>
+
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+            <p class="subtitle-registration">{{ 'suppRegistration.company.address' | translate }}</p>
+        </div>
+    </div>
+    
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.streetName' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{officialAddress.streetName}}</b></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.number.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{officialAddress.streetNumber}}</b></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.postal-code.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{officialAddress.postalCode}}</b></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.city.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{officialAddress.city}}</b></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'listMunicipalities.memberState.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{officialAddress.country}}</b></div>
     </div>
 
     <hr class="beneficiaryHr marginHr">
@@ -108,6 +104,36 @@
     <hr class="beneficiaryHr marginHr">
 
     <div class="clearfix"></div>
+
+    <div class="ui-g">
+        <div class="ui-g-11 ui-md-11 ui-lg-11">
+            <p class="beneficiaryMayor">{{ 'suppRegistration.contact.person' | translate }}</p>
+        </div>
+        <div class="ui-g-1 ui-md-1 ui-lg-1">
+            <a (click)="edit(3)">
+                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
+            </a>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.name.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactName}}</b></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.surname.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactSurname}}</b></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.phone.number' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactPhonePrefix}} {{supplier.contactPhoneNumber}}</b>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.email.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactEmail}}</b></div>
+    </div>
+
+    <hr class="beneficiaryHr marginHr">
 
     <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
