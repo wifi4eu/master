@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentWorkflowStatus;
 
 @Entity
@@ -72,25 +73,17 @@ public class LegalCommitment {
 	public LegalCommitment() {
 	}
 
-	public LegalCommitment(Long id, LegalEntity legalEntity, String abacKey, LegalCommitmentWorkflowStatus wfStatus,
-						   String userImported, Date dateCreated, Date dateUpdated, Date countersignatureDate,
-						   Long idCountersignatureFile, String userCountersignatured) {
-		super();
-		this.id = id;
-		this.legalEntity = legalEntity;
-		this.abacKey = abacKey;
-		this.wfStatus = wfStatus;
-		this.dateCreated = dateCreated;
-		this.dateUpdated = dateUpdated;
-	}
-
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
-		this.wfStatus = LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED;
+
+		if (legalEntity.getBudgetaryCommitment() != null && legalEntity.getBudgetaryCommitment().getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)) {
+			this.wfStatus = LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED;
+		} else {
+			this.wfStatus = LegalCommitmentWorkflowStatus.IMPORTED;
+		}
 	}
 
-	
 	public Long getId() {
 		return id;
 	}

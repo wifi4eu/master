@@ -61,11 +61,7 @@ public class MonitoringRow {
 			this.setLcAbacRef(legalCommitment.getAbacKey());
 		}
 
-		//TODO check in the USER REQUIREMENTS if these condtions are right
-		readyToBeCounterSigned = legalEntity != null && budgetaryCommitment != null && legalCommitment != null
-								&& legalEntity.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)
-								&& budgetaryCommitment.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)
-								&& legalCommitment.getWfStatus().equals(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);
+		readyToBeCounterSigned = legalCommitment != null && legalCommitment.getWfStatus().equals(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);
 	}
 	
 	public Long getId() {

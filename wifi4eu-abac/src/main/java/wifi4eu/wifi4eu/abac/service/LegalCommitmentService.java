@@ -105,7 +105,7 @@ public class LegalCommitmentService {
 		legalCommitment.setLegalEntity(grantAgreement.getLegalEntity());
 		legalCommitment.setGrantAgreementDocument(grantAgreement);
 		legalCommitment.setGrantAgreementSignatureDate(grantAgreement.getPortalDate());
-		legalCommitment.setWfStatus(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);
+		legalCommitment.setWfStatus(LegalCommitmentWorkflowStatus.IMPORTED);
 		legalCommitment.setBatchRef(batchRef);
 		legalCommitmentRepository.save(legalCommitment);
 	}
