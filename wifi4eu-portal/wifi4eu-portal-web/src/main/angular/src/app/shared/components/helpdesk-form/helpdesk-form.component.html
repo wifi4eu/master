@@ -55,7 +55,7 @@
                             {{ 'benefRegistration.registration.selectCountry' | translate }}
                         </option>
                         <option *ngFor="let country of countries" [value]="country.label">
-                            {{country.label | slice:0:1 | uppercase }}{{country.label | slice:1:country.label.length | lowercase }}
+                            {{country.label}}
                         </option>
                     </select>
                 </div>

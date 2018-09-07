@@ -69,7 +69,6 @@ export class SupplierMunicipalitiesComponent {
             //                                     selectedMunicipality.setMunicipalityName(lau.name1);
             //                                     this.nutsApi.findNutsByCode(municipality.countryCode).subscribe(
             //                                         (nut: NutsDTO) => {
-            //                                             nut.name = nut.name.charAt(0).toUpperCase() + nut.name.slice(1).toLowerCase();
             //                                             selectedMunicipality.setCountryName(nut.name);
             //                                             this.selectedMeMunicipalities.push(selectedMunicipality);
             //                                         }

@@ -96,9 +96,8 @@ export class SupplierEditProfileComponent {
                         (countries: NutsDTOBase[]) => {
                             for (let i = 0; i < countries.length; i++) {
                                 let country = countries[i];
-                                let countryName = country.label.substring(0, 1).toUpperCase() + country.label.substring(1, country.label.length).toLowerCase();
                                 let countryOption = {
-                                    label: countryName,
+                                    label: country.label,
                                     value: country
                                 };
                                 this.countryOptions.push(countryOption);

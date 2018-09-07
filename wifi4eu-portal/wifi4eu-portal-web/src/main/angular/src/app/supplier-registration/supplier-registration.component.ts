@@ -35,9 +35,8 @@ export class SupplierRegistrationComponent {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (countries: NutsDTOBase[]) => {
                 for (let country of countries) {
-                    let countryName = country.label.substring(0, 1).toUpperCase() + country.label.substring(1, country.label.length).toLowerCase();
                     let selectCountry = {
-                        label: countryName,
+                        label: country.label,
                         value: country
                     };
                     this.allCountriesSelect.push(selectCountry);
