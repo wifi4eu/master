@@ -124,7 +124,7 @@ public class ExportImportWifi4euAbacService {
 
     @Transactional
     public boolean importLegalEntityFBCValidate() throws IOException {
-        _log.info("importLegalEntityFBCValidate");
+        _log.debug("importLegalEntityFBCValidate");
         JFileChooser fc = new JFileChooser();
         fc.setAcceptAllFileFilterUsed(false);
 
@@ -154,22 +154,16 @@ public class ExportImportWifi4euAbacService {
                 // for (int u = 0; u < lefVals.size(); u++) {
                 // JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
 
-                // TODO: double check. This filed is not contained in a file.
+                // TODO: double check. This column is not in a file.
 //                 int idLef = callJson.get("idLef").getAsInt();
 
                 Long abacReference = callJson.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.getValue()).getAsLong();
                 String abacStatus = callJson.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_STATUS.getValue()).getAsString();
                 _log.debug("ABAC Reference from LEF reference [{}] and status [{}]", abacReference, abacStatus);
 
-                // String status = callJson.get("status").getAsString();
-                // ValidateLEF validatedLEF=new
-                // ValidateLEF(Integer.parseInt(callJson.get("idLef").toString()),
-                // callJson.get("status").toString());
-
                 ValidatedLEF validatedLEF = new ValidatedLEF(abacReference, abacStatus);
 
                 validatedLefRepository.save(validatedLEF);
-                // }
             }
             // JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");
             // for (int i = 0; i < callsJsonArrayBc.size(); i++) {
@@ -190,7 +184,7 @@ public class ExportImportWifi4euAbacService {
     }
 
     public ByteArrayOutputStream exportBeneficiaryInformation() {
-        _log.info("exportBeneficiaryInformation");
+        _log.debug("exportBeneficiaryInformation");
 
         // Preparation for the Beneficiary CSV file
         StringBuilder csvBeneficiaryData = new StringBuilder();
@@ -372,13 +366,13 @@ public class ExportImportWifi4euAbacService {
 
     @Transactional
     public void importRegistrationData() throws Exception {
-        _log.info("importRegistrationData");
+        _log.debug("importRegistrationData");
         ReadFile rF = new ReadFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
         rF.readExcelFileRegistrationData();
     }
 
     public ResponseDTO exportBudgetaryCommitment() throws Exception {
-        _log.info("exportBudgetaryCommitment");
+        _log.debug("exportBudgetaryCommitment");
         ResponseDTO result = new ResponseDTO();
         Gson gson = new GsonBuilder().create();
         JsonParser parser = new JsonParser();

@@ -11,7 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -30,71 +34,48 @@ import java.io.ByteArrayOutputStream;
 @Api(value = "/exportImport", description = "Export and import registration data")
 @RequestMapping("exportImport")
 public class ExportImportWifi4euAbacResource {
+
+    private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacResource.class);
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private ExportImportWifi4euAbacService exportImportWifi4euAbacService;
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacResource.class);
 
     @ApiOperation(value = "Import LEF and BC validates")
     @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
     @ResponseBody
     public ResponseDTO importLegalEntityFBCValidate(final HttpServletResponse response) {
         try {
-            _log.info("importLegalEntityFBCValidate");
-            return new ResponseDTO(exportImportWifi4euAbacService.importLegalEntityFBCValidate(), null, null);
+            _log.debug("importLegalEntityFBCValidate");
+
+            boolean success = exportImportWifi4euAbacService.importLegalEntityFBCValidate();
+
+            _log.debug("Import of the LEF result: {}", success);
+
+            return new ResponseDTO(success, null, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on operation.", ade);
-            }
+            _log.error("Error with permission on operation.", ade);
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on operation.", e);
-            }
+            _log.error("Error on operation.", e);
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
-
-//    @ApiOperation(value = "Import LEF and BC validates")
-//    @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
-//    @ResponseBody
-//    public ResponseDTO importLegalEntityFBCValidate(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
-//        try {
-//            _log.info("importLegalEntityFBCValidate");
-//            JSONArray jsonArray = new JSONArray(jsonStringFile);
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                JSONObject object = jsonArray.getJSONObject(i);
-//                exportImportWifi4euAbacService.importLegalEntityFBCValidate(object.toString());
-//            }
-//            return new ResponseDTO(true, null, null);
-//        } catch (AccessDeniedException ade) {
-//            if (_log.isErrorEnabled()) {
-//                _log.error("Error with permission on operation.", ade);
-//            }
-//            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
-//        } catch (Exception e) {
-//            if (_log.isErrorEnabled()) {
-//                _log.error("Error on operation.", e);
-//            }
-//            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
-//        }
-//    }
 
     @ApiOperation(value = "Export Beneficiary Information")
     @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "application/zip")
     @ResponseBody
     public ResponseEntity<byte[]> exportBeneficiaryInformation(final HttpServletResponse response) throws Exception {
-        _log.info("exportBeneficiaryInformation");
+        _log.debug("exportBeneficiaryInformation");
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
             if (Validator.isNull(userConnected) || userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            // WIFIFOREU-2498 JSON -> CSV
-            ResponseEntity<byte[]> responseReturn = null;
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("application/zip"));
 
@@ -102,21 +83,20 @@ public class ExportImportWifi4euAbacResource {
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-            _log.info("exportBeneficiaryInformation - generating zip file content");
+            _log.debug("exportBeneficiaryInformation - generating zip file content");
             ByteArrayOutputStream file = exportImportWifi4euAbacService.exportBeneficiaryInformation();
-            responseReturn = new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
+            ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
 
             _log.info("exportBeneficiaryInformation - csv file exported successfully");
             return responseReturn;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export beneficiary information", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The exportBeneficiaryInformation cannot be executed", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
-            return null;
         }
+        return null;
     }
 
     @ApiOperation(value = "Export registration data")
@@ -125,7 +105,8 @@ public class ExportImportWifi4euAbacResource {
     @ResponseBody
     public ResponseDTO exportRegistrationData() {
         try {
-            _log.info("exportRegistrationData");
+            _log.debug("exportRegistrationData");
+
             if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
                 throw new AccessDeniedException("");
             }
@@ -144,18 +125,16 @@ public class ExportImportWifi4euAbacResource {
     @ResponseBody
     public ResponseDTO importRegistrationData() {
         try {
-            _log.info("importRegistrationData");
+            _log.debug("importRegistrationData");
+
             exportImportWifi4euAbacService.importRegistrationData();
+
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on operation.", ade);
-            }
+            _log.error("Error with permission on operation.", ade);
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on operation.", e);
-            }
+            _log.error("Error on operation.", e);
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
@@ -165,15 +144,13 @@ public class ExportImportWifi4euAbacResource {
     @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET, produces = "text/csv")
     @ResponseBody
     public ResponseEntity<byte[]> exportBudgetaryCommitment(final HttpServletResponse response) throws Exception {
-        _log.info("exportBudgetaryCommitment");
+        _log.debug("exportBudgetaryCommitment");
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
             if (Validator.isNull(userConnected) || userConnected.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            // WIFIFOREU-2498 JSON -> CSV
-            ResponseEntity<byte[]> responseReturn = null;
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType("text/csv"));
             String filename = "exportBudgetaryCommitment.csv";
@@ -183,18 +160,17 @@ public class ExportImportWifi4euAbacResource {
             _log.info("exportBudgetaryCommitment - generating csv file content");
             String responseData = exportImportWifi4euAbacService.exportBudgetaryCommitment().getData().toString();
             // getBytes(Charset.forName("UTF-8"));
-            responseReturn = new ResponseEntity<>(responseData.getBytes(), headers, HttpStatus.OK);
+            ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(responseData.getBytes(), headers, HttpStatus.OK);
 
             _log.info("exportBudgetaryCommitment - csv file exported successfully");
             return responseReturn;
-        }  catch (AccessDeniedException ade) {
+        } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export budgetary commitment", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The exportBudgetaryCommitment cannot be executed", e);
             response.sendError(HttpStatus.BAD_REQUEST.value());
-            return null;
         }
+        return null;
     }
 }
