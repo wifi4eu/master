@@ -54,11 +54,11 @@ public class EssiService {
 
         PadesSigner psigner = new PadesSigner(essiClientConfiguration);
 
-        PDFWidgetDescription.Text officerNameText = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(0, -50, 70, 150), String.format("%s\n%s", currentUser.getLastName(), currentUser.getFirstName()));
-        officerNameText.setFont(new Font("Arial", Font.BOLD, 15));
+        PDFWidgetDescription.Text officerNameText = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(0, 0, 200, 100), String.format("%s %s", currentUser.getLastName(), currentUser.getFirstName()).toUpperCase());
+        officerNameText.setFont(new Font("Arial", Font.BOLD, 14));
 
-        PDFWidgetDescription.Text officerDetailsText = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(70, -50, 100, 150), sinatureDetails);
-        officerDetailsText.setFont(new Font("Verdana", Font.ITALIC, 6));
+        PDFWidgetDescription.Text officerDetailsText = new PDFWidgetDescription.Text(new PDFWidgetDescription.Position(0, -30, 200, 100), sinatureDetails);
+        officerDetailsText.setFont(new Font("Verdana", Font.ITALIC, 7));
 
         PDFWidgetDescription pdfWidgetDescription = new PDFWidgetDescription();
         pdfWidgetDescription.addText(officerNameText);
