@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.service.grantAgreement;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.text.DateFormat;
@@ -14,7 +13,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import com.itextpdf.text.pdf.*;
-import com.microsoft.applicationinsights.core.dependencies.apachecommons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 
 import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
@@ -230,8 +227,8 @@ public class GrantAgreementService {
         replacementsMap.put("field-signature", "SIGNATURE HERE");
         replacementsMap.put("field-agency-name", "user of agency");
         replacementsMap.put("field-signature-agency", "SIGNATURE HERE");
-        replacementsMap.put("field-action", lauDTO.getName2());
-        replacementsMap.put("field-municipality", "INEA/CEF/WiFi4EU/".concat(header));
+        replacementsMap.put("field-action", "INEA/CEF/WiFi4EU/".concat(header));
+        replacementsMap.put("field-municipality", lauDTO.getName2());
         return fillGrantAgreementDocument(grantAgreement, replacementsMap);
     }
 
