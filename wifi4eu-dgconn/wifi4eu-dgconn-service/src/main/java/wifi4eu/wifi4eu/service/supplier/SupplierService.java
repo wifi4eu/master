@@ -1,6 +1,9 @@
 package wifi4eu.wifi4eu.service.supplier;
 
-import com.google.common.collect.Lists;
+import java.util.Base64;
+import java.util.List;
+import java.util.Locale;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +13,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
+
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
 import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.common.utils.SupplierValidator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
@@ -28,10 +34,6 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierUserRepository;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.MailService;
-
-import java.text.MessageFormat;
-import java.util.*;
 
 @Service("portalSupplierService")
 public class SupplierService {
@@ -152,14 +154,12 @@ public class SupplierService {
                 if (user.getLang() != null) {
                     locale = new Locale(user.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
                 String additionalInfoUrl = userService.getBaseUrl() + "supplier-portal/additional-info";
-                msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                }
+
+                MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(
+                		user.getEcasEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, locale);
+            	mailService.sendMail(mailData, false);
+
                 return true;
             }
         }
@@ -181,14 +181,11 @@ public class SupplierService {
             if (user.getLang() != null) {
                 locale = new Locale(user.getLang());
             }
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            String subject = bundle.getString("mail.dgConn.invalidateSupplier.subject");
-            String msgBody = bundle.getString("mail.dgConn.invalidateSupplier.body");
-            String company = supplierDTO.getName();
-            msgBody = MessageFormat.format(msgBody, company);
-            if (!userService.isLocalHost()) {
-                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
+            String company = supplierDTO.getName();    
+            
+            MailData mailData = MailHelper.buildMailInvalidRegistration(
+            		user.getEcasEmail(), MailService.FROM_ADDRESS, company, locale);
+        	mailService.sendMail(mailData, false);
         }
         return supplierDTO;
     }

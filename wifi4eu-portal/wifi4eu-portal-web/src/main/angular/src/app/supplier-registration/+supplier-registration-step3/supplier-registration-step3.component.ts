@@ -21,6 +21,8 @@ export class SupplierRegistrationStep3Component {
     private userForSUpplier: UserDTO;
     private user: UserDTO;
     private hasEcasEmail: boolean = false;
+    private prefixRegex = new RegExp('^[+]?[1-9]{1}[0-9]{1,2}$');
+    private phoneNumberRegex = new RegExp('^[0-9]{1,}$');
 
     constructor(private localStorageService: LocalStorageService) {
         this.supplierChange = new EventEmitter<SupplierDTOBase>();
@@ -77,24 +79,35 @@ export class SupplierRegistrationStep3Component {
         }
     }
 
-    private isButtonEnabled(){
-        if (this.hasEcasEmail){
+    private isButtonEnabled() {
+        return this.checkFieldAreFilled() && this.checkPrefixAndNumberRegex();
+    }
+
+    private checkFieldAreFilled() : boolean {
+        if (this.hasEcasEmail) {
             if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
             && this.supplier['contactPhoneNumber'] != null && this.supplier['contactPhonePrefix'] != null
-                && this.supplier['contactSurname'].trim() != "" && this.supplier['contactName'].trim() != "" && this.supplier['contactPhoneNumber'].trim() != "" && this.supplier['contactPhonePrefix'].trim() != ""){
+                && this.supplier['contactSurname'].trim() != "" && this.supplier['contactName'].trim() != "" && this.supplier['contactPhoneNumber'].trim() != "" && this.supplier['contactPhonePrefix'].trim() != "") {
                     return true;
-                    
             }
         } else {
             if(this.supplier['contactSurname'] != null && this.supplier['contactName'] != null 
             && this.supplier['contactPhoneNumber'] != null && this.supplier['contactPhonePrefix'] != null
             && this.supplier['contactSurname'].trim() != "" && this.supplier['contactName'].trim() != "" && this.supplier['contactPhoneNumber'].trim() != "" 
-            && this.supplier['contactPhonePrefix'].trim() != "" && this.supplier.contactEmail === this.confirmEmailField && this.confirmEmailField.length > 0){
+            && this.supplier['contactPhonePrefix'].trim() != "" && this.supplier.contactEmail === this.confirmEmailField && this.confirmEmailField.length > 0) {
                     this.css_class_email = 'isValid';
-                    return true; 
-            }  
+                    return true;
+            }
         }
-        return false;
+    }
+        
+    private checkPrefixAndNumberRegex() : boolean{
+        return this.supplier['contactPhonePrefix'].trim().match(this.prefixRegex) && this.supplier['contactPhoneNumber'].trim().match(this.phoneNumberRegex);
+    }
+
+    private rulesPrefix(event) {
+        let inputValue = event.target.value;
+        let result = inputValue.match(this.prefixRegex);
     }
     //      //¡custom name validator
     //     if(this.supplier.contactName != null && this.supplier.contactName.trim() != ""){
@@ -121,5 +134,4 @@ export class SupplierRegistrationStep3Component {
     //         setTimeout(()=>{this.supplierForm.controls['contactPhonePrefix'].setErrors({'invalid': true});} ,5);
     //     }
     // }
-
 }

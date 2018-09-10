@@ -3,10 +3,10 @@
         <span class="ui-g-12" style="background: #fbfbfb;box-shadow: 0px 1px 2px #888888;">
             <div class="ui-g-12 center">
                 <p class="timelineTitle">{{ 'benefPortal.timelineComponentTitle' | translate}}</p>
-                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{days}}</span>
-                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{hours}}</span>
-                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{minutes}}</span>
-                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{seconds}}</span>
+                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{days | number:'2.0'}}</span>
+                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{hours | number:'2.0'}}</span>
+                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{minutes | number:'2.0'}}</span>
+                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{seconds | number:'2.0'}}</span>
             </div>
             <div class="ui-g-12 center">
                 <span class="ui-g-3">{{ 'benefPortal.voucher.days' | translate}}</span>

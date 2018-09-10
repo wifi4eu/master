@@ -55,10 +55,11 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-3">
             <div class="form-group">
-                <label class="label floatLeft" for="contactPhonePrefix">{{ 'suppRegistration.prefix.number' | translate
-                    }}</label>
-                <input class="form-control paddingInput" type="text" maxlength="255"
-                       id="contactPhonePrefix" name="contactPhonePrefix" pattern="[0-9]{1,4}"
+                <label class="label floatLeft" for="contactPhonePrefix">
+                    {{ 'suppRegistration.prefix.number' | translate }}
+                </label>
+                <input class="form-control paddingInput" type="text" (input)="rulesPrefix($event)"
+                       id="contactPhonePrefix" name="contactPhonePrefix" [pattern]="prefixRegex"
                        [(ngModel)]="supplier.contactPhonePrefix" #contactPhonePrefix="ngModel" required>
                 <!--
                 <div class="alert alert-danger"
@@ -70,8 +71,9 @@
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-3">
             <div class="form-group">
-                <label class="label floatLeft" for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate
-                    }}</label>
+                <label class="label floatLeft" for="contactPhoneNumber">
+                    {{ 'suppRegistration.phone.number' | translate }}
+                </label>
                 <input class="form-control paddingInput" type="text" maxlength="255"
                        id="contactPhoneNumber" name="contactPhoneNumber" pattern="[0-9]{1,}"
                        [(ngModel)]="supplier.contactPhoneNumber" #contactPhoneNumber="ngModel" required>
