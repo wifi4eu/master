@@ -28,7 +28,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder "LocalDevelopmemt/sql", "/home/bargee/dev/sql", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
 
-
   # comment this out if you are outside the EC network
   config.vm.provision "shell", inline: $script_setproxy
 
@@ -41,12 +40,17 @@ Vagrant.configure("2") do |config|
     d.pull_images "tomcat:8.5"
     d.run "tomcat",
         image: "tomcat:8.5",
-        args:"-p 8880:8080 -v /home/bargee/dev/webapps:/usr/local/tomcat/webapps -v /home/bargee/dev/logs:/usr/local/tomcat/logs --name tomcat --restart always"
+        args:"-e JPDA_TRANSPORT=dt_socket -p 8080:8080 -p 8000:8000 -v /home/bargee/dev/webapps:/usr/local/tomcat/webapps -v /home/bargee/dev/logs:/usr/local/tomcat/logs --name tomcat --restart always"
   end
 
+  # local ip setting for the vagrant box
   config.vm.network "private_network", ip: "172.30.10.10"
 
-  config.vm.network "forwarded_port", guest: 8880, host: 8888
+  # tomcat port forwarding
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 8000, host: 8000
+
+  #sql server port forwarding
   config.vm.network "forwarded_port", guest: 1433, host: 1433
 
   config.vm.provider "virtualbox" do |vb|
