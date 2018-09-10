@@ -9,6 +9,8 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.call.CallCustom;
 import wifi4eu.wifi4eu.service.call.CallCustomService;
 
+import javax.servlet.http.HttpServletResponse;
+
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/callcustom", description = "Call object REST API services")
@@ -21,7 +23,9 @@ public class CallCustomResource {
     @ApiOperation(value = "Get the call to apply")
     @RequestMapping(value = "/applyvoucher", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public CallCustom getCallForApply() {
+    public CallCustom getCallForApply(@RequestParam("date") final Long timestamp, HttpServletResponse response) {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
         return callCustomService.getCallForApply();
     }
 
