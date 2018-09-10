@@ -85,14 +85,14 @@ public class SupplierResource {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating supplier");
         try {
-            /*
+
             if (supplierService.getUserIdFromSupplier(supplierDTO.getId()) != userConnected.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            */
-            if (!supplierService.isSupplierEditable(userConnected)){
+
+            /*if (!supplierService.isSupplierEditable(userConnected)){
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
+            }*/
             SupplierValidator.validateSupplierUpdate(supplierDTO);
             SupplierDTO resSupplier = supplierService.updateSupplier(supplierDTO);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Supplier updated successfully");
