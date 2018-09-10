@@ -70,11 +70,11 @@
                           <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(data)" *ngIf="!isVoucherApplied(data.idRegistration) && !data.numberApplicant" [disabled]="!data.filesUploaded || !data.conditionAgreement || voucherCompetitionState == null || voucherCompetitionState == 0">
                               {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                           </button>
-                          <span *ngIf="(data.numberApplicant || isVoucherApplied(data.idRegistration)) && (voucherCompetitionState != null && voucherCompetitionState != 0)">
+                          <span *ngIf="(data.numberApplicant || isVoucherApplied(data.idRegistration)) && ((voucherCompetitionState != null && voucherCompetitionState != 0) || data.applyTime == 0)">
                               <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
                               {{ 'benefPortal.voucher.applied' | translate }}
                           </span>
-                          <span *ngIf="(data.numberApplicant || isVoucherApplied(data.idRegistration)) && (voucherCompetitionState == null || voucherCompetitionState == 0)">
+                          <span *ngIf="(data.numberApplicant || isVoucherApplied(data.idRegistration)) && (voucherCompetitionState == null || voucherCompetitionState == 0) && data.applyTime != 0">
                             <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
                             {{ 'benefPortal.voucher.applied.callEnded' | translate:{date:applyDateTime[data.idMunicipality],hour:applyHourTime[data.idMunicipality]} }} 
                         </span>
