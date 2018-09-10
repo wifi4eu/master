@@ -31,16 +31,19 @@ Vagrant.configure("2") do |config|
   # comment this out if you are outside the EC network
   config.vm.provision "shell", inline: $script_setproxy
 
-  config.vm.provision :docker do |d|
+  config.vm.provision "sqlserver", type: "docker" do |d|
     d.pull_images "microsoft/mssql-server-linux:2017-latest"
     d.run "sqlserver",
       image: "microsoft/mssql-server-linux:2017-latest",
       args: "-e \"ACCEPT_EULA=Y\" -e \"SA_PASSWORD=SQLserver1\" -p 1433:1433 --name sql1 --restart always -v /home/bargee/dev/sql:/tmp/sql"
+  end
 
-    d.pull_images "tomcat:8.5"
-    d.run "tomcat",
-        image: "tomcat:8.5",
-        args:"-e JPDA_TRANSPORT=dt_socket -p 8080:8080 -p 8000:8000 -v /home/bargee/dev/webapps:/usr/local/tomcat/webapps -v /home/bargee/dev/logs:/usr/local/tomcat/logs --name tomcat --restart always"
+  config.vm.provision "tomcat", type: "docker" do |d|
+      d.pull_images "tomcat:8.5"
+      d.run "tomcat",
+          image: "tomcat:8.5",
+          cmd:"catalina.sh jpda run",
+          args:"-e JPDA_TRANSPORT=dt_socket -e JPDA_ADDRESS=8000 -p 8080:8080 -p 8000:8000 -v /home/bargee/dev/webapps:/usr/local/tomcat/webapps -v /home/bargee/dev/logs:/usr/local/tomcat/logs --name tomcat --restart always"
   end
 
   # local ip setting for the vagrant box
