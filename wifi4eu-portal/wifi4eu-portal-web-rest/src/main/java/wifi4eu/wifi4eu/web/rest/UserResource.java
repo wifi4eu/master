@@ -87,10 +87,17 @@ public class UserResource {
         for (UserContactDetails user : usersList) {
             try {
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating user details by id " + user.getId());
-                List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(user.getId());
-                for (RegistrationDTO registration : registrations) {
-                    permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registration.getId());
+                //ADD CONTACT PERMISSION VULNERABILITY
+//                List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(user.getId());
+//                for (RegistrationDTO registration : registrations) {
+//                    permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registration.getId());
+//                }
+
+                permissionChecker.check(RightConstants.USER_TABLE + user.getId());
+                if (user.getId() != userConnected.getId()) {
+                    throw new AccessDeniedException("");
                 }
+
             } catch (AccessDeniedException ade) {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to update user details", ade.getMessage
                         ());
