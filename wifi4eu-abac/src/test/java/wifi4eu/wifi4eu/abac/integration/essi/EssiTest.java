@@ -27,7 +27,7 @@ public class EssiTest {
     @Test
     public void testClient() throws Exception {
 //        Resource resource = new ClassPathResource("essi-client-config.properties");
-//        Properties essiClientConfigProperties = PropertiesLoaderUtils.loadProperties(resource);
+//        PersistedProperty essiClientConfigProperties = PropertiesLoaderUtils.loadProperties(resource);
 //        ConfigurationProperties configProperties = ConfigurationProperties.fromProperties(essiClientConfigProperties,"EreceiptProperty Files");
 //        InputStream keyStore = new FileInputStream("C:\\PGM\\tmp\\WIFI\\ForAndreiAlexandruDigitG1\\certificate\\j92ape7.p12");
 //        ClientConfiguration essiClientConfiguration = ClientConfiguration.getConfiguration(configProperties, IOUtils.toByteArray(keyStore));

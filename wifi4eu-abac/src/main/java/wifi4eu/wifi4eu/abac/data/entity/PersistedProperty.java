@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "WIF_CONSTANTS")
-public class Properties {
+public class PersistedProperty {
 
     @Id
     @Column(name = "ID", unique = true, nullable = false, precision = 18, scale = 0)

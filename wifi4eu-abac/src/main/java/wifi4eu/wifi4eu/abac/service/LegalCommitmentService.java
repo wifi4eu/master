@@ -43,7 +43,7 @@ public class LegalCommitmentService {
 	private LegalEntityService legalEntityService;
 
 	@Autowired
-	private PropertiesService propertiesService;
+	private PersistedPropertyService persistedPropertyService;
 
 	@Autowired
 	private UserService userService;
@@ -58,7 +58,7 @@ public class LegalCommitmentService {
 
 				Document grantAgreement = legalCommitment.getGrantAgreementDocument();
 
-				byte[] countersignedFile = essiService.signDocument(grantAgreement, userService.getUserByUsername(legalCommitment.getGrantAgreementCounterSignatureUser()), userService.getUserByUsername(propertiesService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_UID")));
+				byte[] countersignedFile = essiService.signDocument(grantAgreement, userService.getUserByUsername(legalCommitment.getGrantAgreementCounterSignatureUser()), userService.getUserByUsername(persistedPropertyService.findPropertyByKey("GA_COUNTERSIGN_OFFICER_UID")));
 
 				Document counterSignedGrantAgreement = new Document();
 				counterSignedGrantAgreement.setName("countersigned_"+ grantAgreement.getName());
