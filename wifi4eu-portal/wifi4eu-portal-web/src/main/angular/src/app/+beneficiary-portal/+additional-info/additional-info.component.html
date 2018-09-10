@@ -315,7 +315,7 @@
         </div>
     </form>
 
-    <p-dialog [(visible)]="displayConfirmClose">
+    <p-dialog [(visible)]="displayConfirmClose" [modal] = "true" [responsive]="true" [resizable]="false" [draggable]="false">
         <div class="form-group ui-g">
             <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
                 <span>{{ 'shared.supportingDocuments.leavePage.title' | translate}}</span>
@@ -323,11 +323,11 @@
             <span style="line-height: 1.25; padding-bottom: 3em; padding-left: 2em; padding-right: 2em; font-size: 16px;">{{ 'shared.supportingDocuments.leavePage.body' | translate}}</span>
             <div class="ui-lg-2"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-4" style="text-align: center !important">
-                <button (click)="cancelBack()" class="btn btn-primary publish-button">{{ 'shared.no' | translate }}
+                <button (click)="action(false)" class="btn btn-primary publish-button">{{ 'shared.no' | translate }}
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-4" style="text-align: center !important">
-                <button type="button" class="btn btn-primary cancel-button" (click)="goBack()">
+                <button type="button" class="btn btn-primary cancel-button" (click)="action(true)">
                     {{ 'shared.yes' | translate }}
                 </button>
             </div>

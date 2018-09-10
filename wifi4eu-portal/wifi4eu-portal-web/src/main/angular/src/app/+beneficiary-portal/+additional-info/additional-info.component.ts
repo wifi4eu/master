@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, ViewChild, HostListener } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LocalStorageService } from "angular-2-local-storage";
 import { Observable } from "rxjs/Observable";
@@ -13,6 +13,8 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 import { LegalFileDTOBase, LegalFilesViewDTOBase } from "../../shared/swagger";
+import { CanDeactivateGuard } from "../../can-deactivate-guard.service";
+import { Location } from "@angular/common";
 
 
 @Component({
@@ -46,9 +48,12 @@ export class AdditionalInfoComponent {
 
     private fileURL: string = '/wifi4eu/api/registration/getDocument/';
 
-    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
+
+
+    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router, private location: Location, ) {
         let storedUser = this.localStorageService.get('user');
         this.changedDocs = 0;
+        
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             let municipalityId;
@@ -342,7 +347,34 @@ export class AdditionalInfoComponent {
         this.removingFile = null;
     }
 
-    goBack(){
-        window.history.back();
+    action(value: boolean){
+       if(value){
+        this.goBack();
+       }else{
+        this.cancelBack();
+       }
     }
+
+
+    goBack() {
+        this.displayConfirmClose = false;
+        this.displayConfirmDelete = false;
+        this.location.back();
+    }
+
+    canDeactivate(): boolean | Observable<boolean> {
+        console.log('Run you fools');
+        this.confirmClose();
+        if (!this.displayConfirmClose) {
+            console.log('No, Gandalf, we stay!');
+            this.displayConfirmClose = false;
+            return true;
+        }
+        console.log('Bye Gandalf, good luck with the Balrog');
+        this.displayConfirmClose = true;
+        return false;
+    }
+
+
+
 }
