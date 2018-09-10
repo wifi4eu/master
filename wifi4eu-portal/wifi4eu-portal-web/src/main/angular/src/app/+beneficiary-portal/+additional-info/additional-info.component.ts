@@ -1,5 +1,5 @@
 import { Component, ViewChild, HostListener } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, NavigationEnd, RoutesRecognized } from "@angular/router";
 import { LocalStorageService } from "angular-2-local-storage";
 import { Observable } from "rxjs/Observable";
 import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
@@ -45,6 +45,7 @@ export class AdditionalInfoComponent {
     private displayConfirmDelete: boolean = false;
     private removingFile: number;
     private changedDocs: number;
+    private previousUrl: string;
 
     private fileURL: string = '/wifi4eu/api/registration/getDocument/';
 
@@ -53,7 +54,8 @@ export class AdditionalInfoComponent {
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router, private location: Location, ) {
         let storedUser = this.localStorageService.get('user');
         this.changedDocs = 0;
-        
+         
+       
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             let municipalityId;
@@ -342,6 +344,7 @@ export class AdditionalInfoComponent {
     }
 
     cancelBack() {
+        console.log('cancelling')
         this.displayConfirmClose = false;
         this.displayConfirmDelete = false;
         this.removingFile = null;
@@ -357,6 +360,7 @@ export class AdditionalInfoComponent {
 
 
     goBack() {
+        console.log('backing')
         this.displayConfirmClose = false;
         this.displayConfirmDelete = false;
         this.location.back();
