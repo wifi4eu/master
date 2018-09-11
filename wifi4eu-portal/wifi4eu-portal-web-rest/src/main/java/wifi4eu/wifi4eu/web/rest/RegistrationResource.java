@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
@@ -252,13 +253,33 @@ public class RegistrationResource {
         String fileName = legalFile.getFileName();
         String fileMime = legalFile.getFileMime();
         String fileExtension = legalFilesService.getExtensionFromMime(fileMime);
+        
+        
+        ////////////////////////////////////////////////////////////////
+        String data = legalFile.getFileData();
+        String fileNameDownload = data.substring(data.lastIndexOf("/") + 1);
+        AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
+        String content = null;
+        String containerName = "wifi4eu";
+        
+        try {
+        	_log.info("Downloading container [{}] fileName[{}]", containerName, fileNameDownload);
+        	content = azureBlobConnector.downloadText(containerName, fileNameDownload);
+        } catch (Exception e) {
+        	_log.error("ERROR", e);
+        }
+        ////////////////////////////////////////////////////////////////
+
+        
+        
         //if fileMime is null or has lenght 0 fileExtension is null
         if (fileName != null && fileName.length() != 0 && !legalFile.getFileData().isEmpty() && fileExtension != null) {
             try {
                 response.setContentType(fileMime);
                 response.setHeader("Content-disposition", "inline; filename=\"" + fileName + fileExtension + "\"");
 
-                byte[] fileBytes = Base64Utils.decodeFromString(legalFile.getFileData());
+                //byte[] fileBytes = Base64Utils.decodeFromString(legalFile.getFileData());
+                byte[] fileBytes = Base64Utils.decodeFromString(content);
                 response.getOutputStream().write(fileBytes);
                 response.getOutputStream().flush();
                 response.getOutputStream().close();

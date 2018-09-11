@@ -39,6 +39,7 @@ import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
+import wifi4eu.wifi4eu.common.utils.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
@@ -291,27 +292,57 @@ public class RegistrationService {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File doesn't have a name");
                     throw new Exception("File must have a valid extension.");
                 } else{
-                    //file name also comes from front input
-                    legalFile.setId(0);
-                    legalFile.setRegistration(registrationID);
-                    legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
-                    legalFile.setUploadTime(new Date().getTime());
-                    legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
-                    legalFile.setFileSize(byteArray.length);
-                    legalFile.setUserId(userConnected.getId());
-                    legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
-
-                    _log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
-                            "document number type:" + legalFile.getFileType());
-
-                    List<LegalFileCorrectionReason> legalFilesCorrectionReasons = legalFileCorrectionReasonRepository.findAllCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(),legalFile.getFileType());
-
-                    for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
-                        legalFileCorrectionReason.setCorrectionReason(null);
-                        legalFileCorrectionReason.setRequestCorrection(false);
+                    /////////////////////////////////////////////////////////////////
+                    AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
+                    
+                    String containerName = "wifi4eu";
+                    String content = base64;
+                    String uri = null;
+                    boolean docUploaded = false;
+                    
+                    String fileName = String.valueOf(registrationID) + "_" + legalFile.getFileName();
+                    try {
+                    	_log.info("UPLOADING DOCUMENT container[{}] fileName[{}]", containerName, fileName);
+                    	uri = azureBlobConnector.uploadText(containerName, fileName, content);
+                    	_log.info("URI [{}]", uri);
+                    	docUploaded = true;
+                    } catch (Exception e) {
+                    	_log.error("error", e);
                     }
+                    
+                    legalFile.setFileData(uri);
+                    
+                    /////////////////////////////////////////////////////////////////
+                    //file name also comes from front input
 
-                    legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
+                    if (docUploaded) {
+                    	legalFile.setId(0);
+                    	legalFile.setRegistration(registrationID);
+                    	//legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
+                    	legalFile.setUploadTime(new Date().getTime());
+                    	legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
+                    	legalFile.setFileSize(byteArray.length);
+                    	legalFile.setUserId(userConnected.getId());
+                    	legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
+
+                    	_log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
+                    			"document number type:" + legalFile.getFileType());
+
+                    	List<LegalFileCorrectionReason> legalFilesCorrectionReasons = legalFileCorrectionReasonRepository.findAllCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(),legalFile.getFileType());
+
+                    	for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
+                    		legalFileCorrectionReason.setCorrectionReason(null);
+                    		legalFileCorrectionReason.setRequestCorrection(false);
+                    	}
+
+                    	try {
+                    		_log.info("Saving legal file entry on Database");
+                    		legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
+                    	} catch (Exception e) {
+                    		_log.error("Error saving legal_files", e);
+                    		azureBlobConnector.delete(containerName, fileName);
+                    	}
+                    }
                 }
             }else{
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file its data is in incorrect format");
