@@ -12,6 +12,6 @@
     <mvc:annotation-driven />
 
     <!--<context:component-scan base-package="wifi4eu.dgconn.web.rest"/>-->
-    <context:component-scan base-package="wifi4eu.wifi4eu.web.cnect.rest"/>
+    <context:component-scan base-package="wifi4eu.wifi4eu.web"/>
 
 </beans>

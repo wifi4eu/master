@@ -16,12 +16,13 @@
     <div class="ui-g-6 ui-lg-6 ui-md-12">
         <div class="panelItem ui-g-12" (click)="exportBeneficiaryInformation()">
             <span class="beneficiaryMayor">{{'dgConn.importexport.lef.export.legalentities' | translate}}</span>
-            <p>{{'dgConn.importexport.lef.export.legalentities.desc' | translate}}</p>
+            <p>{{ 'dgConn.importexport.lef.export.legalentities.desc' | translate }}</p>
         </div>
     </div>
     <br/><br/>
+
     <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" (click)="importLegalEntityFBCValidate()">
+        <div class="panelItem ui-g-12" (click)="onNavigateToImportLefFile()">
             <span class="beneficiaryMayor">{{'dgConn.importexport.lef.import.legalentities' | translate}}</span>
             <p>{{'dgConn.importexport.lef.export.legalentities.desc' | translate}}</p>
         </div>
@@ -29,7 +30,7 @@
     <div class="ui-g-6 ui-lg-6 ui-md-12">
         <div class="panelItem ui-g-12" (click)="importRegistrationData()">
             <span class="beneficiaryMayor">{{'dgConn.importexport.lef.import.references' | translate}}</span>
-            <p>{{'dgConn.importexport.lef.import.references.desc' | translate}}</p>
+            <p>{{ 'dgConn.importexport.lef.import.references.desc' | translate }}</p>
         </div>
     </div>
     <br/><br/>

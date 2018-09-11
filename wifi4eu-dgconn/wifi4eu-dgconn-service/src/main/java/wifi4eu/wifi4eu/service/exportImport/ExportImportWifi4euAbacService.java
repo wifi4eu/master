@@ -7,6 +7,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
@@ -23,7 +26,6 @@ import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.common.helper.ParserCSV2JSON;
 import wifi4eu.wifi4eu.common.helper.ParserJSON2CSV;
 import wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation;
 import wifi4eu.wifi4eu.entity.exportImport.ExportFile;
@@ -48,16 +50,13 @@ import wifi4eu.wifi4eu.util.ExportFileUtils;
 import wifi4eu.wifi4eu.util.parsing.LegalEntityCSVColumn;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -123,64 +122,39 @@ public class ExportImportWifi4euAbacService {
     private HttpServletRequest httpServletRequest;
 
     @Transactional
-    public boolean importLegalEntityFBCValidate() throws IOException {
+    public boolean importLegalEntityFBCValidate(InputStream fileDataStream) throws IOException {
         _log.debug("importLegalEntityFBCValidate");
-        JFileChooser fc = new JFileChooser();
-        fc.setAcceptAllFileFilterUsed(false);
 
-        // WIFIFOREU-2498 JSON -> CSV
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files (*.csv)", "csv");
-
-        fc.setFileFilter(filter);
-        int response = fc.showOpenDialog(null);
-        if (response == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            String content = new String(Files.readAllBytes(file.toPath()));
-
-            // WIFIFOREU-2498 JSON -> CSV - Process the CSV input file into the expected
-            // JSON format
-            String jsonStringFile = ParserCSV2JSON.parseCSV2JSON(content, "validatedLEF");
-
-            JsonParser parser = new JsonParser();
-            JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonArray().getAsJsonObject();
-            JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
-            for (int i = 0; i < callsJsonArrayLef.size(); i++) {
-                JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
-                // JsonObject applicationJson =
-                // parser.parse(gson.toJson(callsJsonArrayLef.get(i))).getAsJsonObject();
-                //// CallDTO call = gson.fromJson(callJson, CallDTO.class);
-                //// JsonArray lefVals = resultJson.getAsJsonArray("idLef");
-                // JsonArray lefVals = callJson.getAsJsonArray("idLef");
-                // for (int u = 0; u < lefVals.size(); u++) {
-                // JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
-
-                // TODO: double check. This column is not in a file.
-//                 int idLef = callJson.get("idLef").getAsInt();
-
-                Long abacReference = callJson.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.getValue()).getAsLong();
-                String abacStatus = callJson.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_STATUS.getValue()).getAsString();
-                _log.debug("ABAC Reference from LEF reference [{}] and status [{}]", abacReference, abacStatus);
-
-                ValidatedLEF validatedLEF = new ValidatedLEF(abacReference, abacStatus);
-
-                validatedLefRepository.save(validatedLEF);
-            }
-            // JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");
-            // for (int i = 0; i < callsJsonArrayBc.size(); i++) {
-            // JsonObject callJson = callsJsonArrayBc.get(i).getAsJsonObject();
-            //// CallDTO call = gson.fromJson(callJson, CallDTO.class);
-            //// JsonArray lefBcs = resultJson.getAsJsonArray("idBc");
-            // JsonArray lefBcs = callJson.getAsJsonArray("idBc");
-            // for (int u = 0; u < lefBcs.size(); u++) {
-            // JsonObject jsonStringLef = lefBcs.get(u).getAsJsonObject();
-            // JsonObject lefBc = jsonStringLef.getAsJsonObject("idBc");
-            // ValidatedBC validatedBC=new ValidatedBC(Integer.parseInt(lefBc.toString()));
-            // validatedBcRepository.save(validatedBC);
-            // }
-            // }
-            return true;
+        try (InputStreamReader inputStreamReader = new InputStreamReader(fileDataStream)) {
+            CSVParser csvParser = CSVParser.parse(inputStreamReader, CSVFormat.EXCEL);
+            csvParser.forEach(csvRecord -> {
+                ValidatedLEF validatedLEF = parseValidatedLEF(csvRecord);
+                if (validatedLEF != null) {
+                    validatedLefRepository.save(validatedLEF);
+                }
+            });
         }
-        return false;
+        return true;
+    }
+
+    private ValidatedLEF parseValidatedLEF(CSVRecord csvRecord) {
+        // TODO: make it recognize headers and then use .get(:name).
+        String abacReference = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.getAirGapColumnIndex());
+        if (StringUtils.isNotEmpty(abacReference)) {
+            String abacStatus = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_STATUS.getAirGapColumnIndex());
+
+            _log.info("ABAC Reference from LEF reference [{}] and status [{}]", abacReference, abacStatus);
+
+            try {
+                Long abacId = Long.parseLong(abacReference);
+                return new ValidatedLEF(abacId);
+            } catch (NumberFormatException e) {
+                _log.error("Error parsing the CSV", e);
+            }
+        } else {
+            _log.info("ABAC Reference is Empty");
+        }
+        return null;
     }
 
     public ByteArrayOutputStream exportBeneficiaryInformation() {
@@ -230,18 +204,26 @@ public class ExportImportWifi4euAbacService {
         // Address include the address street and number, and must be between quotes to escape the comma ","
         beneficiaryInformation.setMun_address(ExportFileUtils.QUOTE + beneficiaryInformation.getMun_address() + ExportFileUtils.QUOTE);
 
-        csvBeneficiaryData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getMun_name()).append(ExportFileUtils.SEPARATOR)
-                .append(StringUtils.defaultString(beneficiaryInformation.getMun_abacName())).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getMun_address()).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getMun_postalCode()).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getMun_city()).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getMun_countryCodeISO()).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getMun_languageCodeISO()).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getMun_registrationNumber()).append(ExportFileUtils.SEPARATOR)
-                .append(StringUtils.defaultString(beneficiaryInformation.getMun_abacReference())).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getMun_callNumber());
+        csvBeneficiaryData.append(defaultEmpty(beneficiaryInformation.getMun_id())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getMun_name())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getMun_abacName())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getMun_address())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getMun_postalCode())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getMun_city())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getMun_countryCodeISO())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getMun_languageCodeISO())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getMun_registrationNumber())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getMun_abacReference())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getMun_callNumber()));
         csvBeneficiaryData.append("\r\n");
+    }
+
+    private String defaultEmpty(Object source) {
+        return source != null ? source.toString() : "";
+    }
+
+    private String defaultEmpty(String source) {
+        return StringUtils.defaultString(source);
     }
 
     private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation,
@@ -285,13 +267,13 @@ public class ExportImportWifi4euAbacService {
         }
 
         csvDocumentData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getDoc_portalId()).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getDoc_name()).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getDoc_fileName()).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getDoc_mimeType()).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getDoc_portalId())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getDoc_name())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getDoc_fileName())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getDoc_mimeType())).append(ExportFileUtils.SEPARATOR)
                 .append(dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date())).append(ExportFileUtils.SEPARATOR)
-                .append(beneficiaryInformation.getDoc_type()).append(ExportFileUtils.SEPARATOR)
-                .append(StringUtils.defaultString(beneficiaryInformation.getAresReference()));
+                .append(defaultEmpty(beneficiaryInformation.getDoc_type())).append(ExportFileUtils.SEPARATOR)
+                .append(defaultEmpty(beneficiaryInformation.getAresReference()));
         csvDocumentData.append("\r\n");
     }
 

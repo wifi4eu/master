@@ -11,11 +11,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -26,6 +29,7 @@ import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euAbacService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.ByteArrayOutputStream;
 
 
@@ -44,14 +48,14 @@ public class ExportImportWifi4euAbacResource {
     private ExportImportWifi4euAbacService exportImportWifi4euAbacService;
 
 
-    @ApiOperation(value = "Import LEF and BC validates")
+    //    @ApiOperation(value = "Import LEF and BC validates")
     @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
     @ResponseBody
-    public ResponseDTO importLegalEntityFBCValidate(final HttpServletResponse response) {
+    public ResponseDTO importLegalEntityFBCValidate(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         try {
-            _log.debug("importLegalEntityFBCValidate");
+            _log.debug("importLegalEntityFBCValidate: file size = {}", file.getSize());
 
-            boolean success = exportImportWifi4euAbacService.importLegalEntityFBCValidate();
+            boolean success = exportImportWifi4euAbacService.importLegalEntityFBCValidate(file.getInputStream());
 
             _log.debug("Import of the LEF result: {}", success);
 

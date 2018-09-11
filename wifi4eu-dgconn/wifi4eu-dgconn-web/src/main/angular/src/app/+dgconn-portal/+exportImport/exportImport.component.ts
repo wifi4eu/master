@@ -8,6 +8,7 @@ import { CallApi } from '../../shared/swagger/api/CallApi';
 import { ResponseDTOBase } from '../../shared/swagger/model/ResponseDTO';
 import { TranslateService } from 'ng2-translate';
 import * as FileSaver from 'file-saver';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     templateUrl: 'exportImport.component.html',
@@ -33,7 +34,13 @@ export class DgConnExportImportComponent {
 
     processingOperation: boolean = false;
 
-    constructor(private http: Http, private exportImportApi: ExportImportApi, private sharedService: SharedService, private translateService: TranslateService) {
+    constructor(private http: Http, private exportImportApi: ExportImportApi, private sharedService: SharedService,
+                private translateService: TranslateService,
+                private router: Router, private route: ActivatedRoute) {
+    }
+
+    onNavigateToImportLefFile(): void {
+        this.router.navigate(['lef'], {relativeTo: this.route});
     }
 
     exportRegistrationData() {
@@ -54,6 +61,7 @@ export class DgConnExportImportComponent {
 
     importRegistrationData() {
         this.processingOperation = true;
+
         this.exportImportApi.importRegistrationData().subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success)
@@ -98,19 +106,4 @@ export class DgConnExportImportComponent {
         );
     }
 
-    importLegalEntityFBCValidate() {
-        this.processingOperation = true;
-        this.exportImportApi.importLegalEntityFBCValidate().subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success)
-                    this.sharedService.growlTranslation('Your file have been imported correctly!', 'dgconn.dashboard.card.messageImport', 'success');
-                else
-                    this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
-                this.processingOperation = false;
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
-                this.processingOperation = false;
-            }
-        );
-    }
 }
