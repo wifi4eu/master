@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
   
     renderLoginInfo(){
         if (this.userState !== undefined && this.userState !== null){
-            return 'Loged in as: ' + this.userState.fullName + ' (' + this.userState.userId + ')';
+            return this.userState.fullName + ' (' + this.userState.userId + ')';
         }else{
             return 'Login unknown';
         }
