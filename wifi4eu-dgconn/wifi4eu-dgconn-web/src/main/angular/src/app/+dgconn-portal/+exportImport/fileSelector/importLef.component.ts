@@ -5,10 +5,25 @@ import { Location } from '@angular/common';
 import { ResponseDTOBase } from '../../../shared/swagger/model/ResponseDTO';
 import { LegalEntitiesService } from '../../../services/legal-entities-service';
 import { SharedService } from '../../../shared/shared.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
     templateUrl: 'importLef.component.html',
-    providers: [LegalEntitiesService]
+    providers: [LegalEntitiesService],
+    animations: [
+        trigger(
+            'enterSpinner', [
+                transition(':enter', [
+                    style({ opacity: 0 }),
+                    animate('200ms', style({ opacity: 1 }))
+                ]),
+                transition(':leave', [
+                    style({ opacity: 1 }),
+                    animate('200ms', style({ opacity: 0 }))
+                ])
+            ]
+        )
+    ]
 })
 export class ImportLefComponent {
 

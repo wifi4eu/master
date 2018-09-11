@@ -7,7 +7,7 @@ import { ResponseDTO } from '../shared/swagger/model/ResponseDTO';
 @Injectable()
 export class LegalEntitiesService {
 
-    private basePath = 'http://localhost:8081/dashboard/api';
+    private basePath = 'http://localhost:8080/dashboard/api';
 
     constructor(private http: Http, @Optional() @Inject(BASE_PATH) basePath: string) {
         if (basePath) {

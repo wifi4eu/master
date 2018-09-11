@@ -15,26 +15,12 @@
                 <div class="form-group">
                     <input type="file" id="importFile" (change)="onFileChange($event)">
                 </div>
-                <button class="btn btn-secondary" (click)="onBack()">{{ 'shared.back.button' | translate }}</button>
                 <button type="submit" class="btn btn-success">{{ 'shared.confirm.button' | translate }}</button>
             </form>
 
         </div>
     </div>
 </div>
-
-<!--<div class="container">
-
-    <div>{{ 'dgConn.importexport.lef.import.legalentities' | translate }}</div>
-    <form [formGroup]="form" (ngSubmit)="importLegalEntityFile()" enctype="multipart/form-data">
-        <div class="form-group">
-            <input type="file" id="importFile" (change)="onFileChange($event)">
-        </div>
-        <button class="btn btn-secondary" (click)="onBack()">{{ 'shared.back.button' | translate }}</button>
-        <button type="submit" class="btn btn-success">{{ 'shared.confirm.button' | translate }}</button>
-    </form>
-
-</div>-->
 
 <p-dialog [(visible)]="processingOperation" [modal]="true" [responsive]="true" [resizable]="false"
           [draggable]="false" [closable]="false">
