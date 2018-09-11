@@ -30,6 +30,9 @@ public class EncrypterService {
 
 	@Value("${azure.blob.storage.key}")
 	private String azureCredentials;
+	
+	@Value("${azure.blob.legal.files.key}")
+	private String azureCredentialsLegalFiles;
 
 	public byte[] encrypt(String textValue) throws GeneralSecurityException {
 		return encryptAESCBC(textValue);
@@ -161,6 +164,19 @@ public class EncrypterService {
 			_log.debug("Decrypting azure blob storage credentials");
 			byte[] b = azureCredentials.getBytes(StandardCharsets.UTF_8);
 			return decrypt(b);
+		} catch (Exception e) {
+			_log.error("Failed in Decryption " + e.getMessage(), e);
+			return null;
+		}
+	}
+	
+	public String getAzureKeyStorageLegalFiles() {
+		try {
+			//TODO
+			//_log.debug("Decrypting azure blob storage credentials for legal files");
+			//byte[] b = azureCredentialsLegalFiles.getBytes(StandardCharsets.UTF_8);
+			//return decrypt(b);
+			return azureCredentialsLegalFiles;
 		} catch (Exception e) {
 			_log.error("Failed in Decryption " + e.getMessage(), e);
 			return null;

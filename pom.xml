@@ -185,6 +185,7 @@
         <encrypted.smtp.password>8G6DpkmzyVSH/2SHiGZfh58xX05W8k0EM0ncdrz6tms=</encrypted.smtp.password>
         <secret.key.encryption>IU4zdyNLM3kjUDRzcyExOA==</secret.key.encryption>
         <azure.blob.storage.key>aIo1n7IUPpzaHEV1P0j23m6i/c/jR1vU4nDLK24q4yl1yzQ8+/6PgQezHPGGJ+C/JcFSiLoGzv9q6e1Lp/gBu/JkaIJxSTGgRre3SIRWfmF0lEucTtyS6xQYD04p0scjAIMCe8Uj0hUwcRu7k9DazuxoAfLlwvCmov+QDkzG786N3QnshnYy6IYt4y7M0hUMm31juQNXvRLrYC0wX/UWC36fui4i6Akn6vN01n6kp2CA6an0/6wGu6ceRUkbyT6d0fymsL92enrFojwNDhP7VTkJGxDmx0BBvItw8ecBAqw=</azure.blob.storage.key>
+        <azure.blob.legal.files.key>DefaultEndpointsProtocol=https;AccountName=w4eudevlfstore;AccountKey=FqH8YTh8O5ZJcPyiFBjjFsQFg9MH1eev8srDcc4MUlFCupEGW66bbPFgyPO7EIgwfu3saPq/ECiuEEAgrF0b6A==;EndpointSuffix=core.windows.net;</azure.blob.legal.files.key>
 
         <mail.smtp.host>localhost</mail.smtp.host>
         <mail.smtp.port>25</mail.smtp.port>
