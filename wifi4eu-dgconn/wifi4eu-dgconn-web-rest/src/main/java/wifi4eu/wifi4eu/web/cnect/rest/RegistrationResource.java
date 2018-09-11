@@ -1,7 +1,13 @@
 package wifi4eu.wifi4eu.web.cnect.rest;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,14 +16,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Base64Utils;
-import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileCorrectionReasonDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
@@ -27,13 +48,6 @@ import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -313,12 +327,6 @@ public class RegistrationResource {
         RegistrationDTO registration = registrationService.getRegistrationByUserThreadId(userThreadDTO.getThreadId(), userThreadDTO.getUserId());
         UserDTO user = userConnected;
         if (userThreadsService.getByUserIdAndThreadId(user.getId(), userThreadDTO.getThreadId()) != null) {
-            //TODO Temporary solution to prevent information leaks
-            // we check that the user has access to registrations table
-            //registration.setLegalFile1(null);
-            //registration.setLegalFile2(null);
-            //registration.setLegalFile3(null);
-            //registration.setLegalFile4(null);
             registration.setIpRegistration(null);
             registration.setMailCounter(0);
             registration.setRole(null);
@@ -359,13 +367,29 @@ public class RegistrationResource {
         String fileName = legalFile.getFileName();
         String fileMime = legalFile.getFileMime();
         String fileExtension = legalFilesService.getExtensionFromMime(fileMime);
+        
+        ////////////////////////////////////////////////////////////////
+        String data = legalFile.getFileData();
+        String fileNameDownload = data.substring(data.lastIndexOf("/") + 1);
+        AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
+        String content = null;
+        String containerName = "wifi4eu";
+        
+        try {
+        	_log.info("Downloading container [{}] fileName[{}]", containerName, fileNameDownload);
+        	content = azureBlobConnector.downloadText(containerName, fileNameDownload);
+        } catch (Exception e) {
+        	_log.error("ERROR", e);
+        }
+        ////////////////////////////////////////////////////////////////
+
         //if fileMime is null or has lenght 0 fileExtension is null
-        if (fileName != null && fileName.length() != 0 && !legalFile.getFileData().isEmpty() && fileExtension != null) {
+        if (fileName != null && fileName.length() != 0 && !legalFile.getFileData().isEmpty() && fileExtension != null && content != null) {
             try {
                 response.setContentType(fileMime);
                 response.setHeader("Content-disposition", "inline; filename=\"" + fileName + fileExtension + "\"");
 
-                byte[] fileBytes = Base64Utils.decodeFromString(legalFile.getFileData());
+                byte[] fileBytes = Base64Utils.decodeFromString(content);
                 response.getOutputStream().write(fileBytes);
                 response.getOutputStream().close();
                 response.getOutputStream().flush();
