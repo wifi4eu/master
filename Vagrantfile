@@ -22,7 +22,8 @@ docker cp /home/bargee/dev/lib/jtds-1.3.1.jar tomcat:/usr/local/tomcat/lib
 docker cp /home/bargee/dev/lib/ecas-tomcat-8.0-4.26.0.jar tomcat:/usr/local/tomcat/lib
 docker cp /home/bargee/dev/lib/org tomcat:/usr/local/tomcat/lib
 docker cp /home/bargee/dev/conf/context.xml tomcat:/usr/local/tomcat/conf
-/etc/init.d/docker restart
+docker cp /home/bargee/dev/conf/tomcat-users.xml tomcat:/usr/local/tomcat/conf
+docker restart tomcat
 SCRIPT
 
 Vagrant.configure("2") do |config|
@@ -53,7 +54,7 @@ Vagrant.configure("2") do |config|
       d.run "tomcat",
           image: "tomcat:8.5",
           cmd:"catalina.sh jpda run",
-          args:"-e JPDA_TRANSPORT=dt_socket -e JPDA_ADDRESS=8000 -p 8080:8080 -p 8000:8000 -v /home/bargee/dev/webapps:/usr/local/tomcat/webapps -v /home/bargee/dev/logs:/usr/local/tomcat/logs --name tomcat --restart always"
+          args:"--link sql1:sqlserver -e JPDA_TRANSPORT=dt_socket -e JPDA_ADDRESS=8000 -p 8080:8080 -p 8000:8000 -v /home/bargee/dev/webapps:/usr/local/tomcat/webapps -v /home/bargee/dev/logs:/usr/local/tomcat/logs --name tomcat --restart always"
   end
 
   # configure tomcat with jdbc driver and ECAS client
