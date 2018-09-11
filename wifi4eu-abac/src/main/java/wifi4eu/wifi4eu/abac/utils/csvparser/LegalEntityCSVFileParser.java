@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.LegalEntityCSVColumn;
@@ -52,9 +53,14 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 			legalEntityInformationCSVRow.setCity(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_CITY));
 			legalEntityInformationCSVRow.setCountryCode(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_COUNTRY_CODE));
 			legalEntityInformationCSVRow.setLanguageCode(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_LANGUAGE_CODE));
-			legalEntityInformationCSVRow.setRegistrationNumber(Long.parseLong(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER)));
 			legalEntityInformationCSVRow.setAbacReference(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE));
-			legalEntityInformationCSVRow.setCallNumber(Integer.parseInt(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_CALL_NUMBER)));
+			legalEntityInformationCSVRow.setRegistrationNumber(
+														StringUtils.isEmpty(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER)) ? null :
+														Long.parseLong(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_REGISTRATION_NUMBER)));
+			legalEntityInformationCSVRow.setCallNumber(
+														StringUtils.isEmpty(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_CALL_NUMBER)) ? null :
+														Integer.parseInt(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_CALL_NUMBER)));
+
 
 			legalEntityRows.add(legalEntityInformationCSVRow);
 		}
