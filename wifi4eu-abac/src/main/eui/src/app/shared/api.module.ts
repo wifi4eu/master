@@ -3,6 +3,7 @@ import { HttpClient, HttpParams, HttpRequest, HttpEvent } from '@angular/common/
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UxAllModule } from '@eui/ux-commons';
+import { UserState } from '@eui/ux-core';
 import { Observable } from 'rxjs/Observable';
 import { deserialize, classToPlain } from 'class-transformer';
 import { ResponseDTO, MonitoringRowDTO, CountryDTO } from './model/DTOs';
@@ -49,11 +50,14 @@ export class ApiModule {
         let path = this.basePath + 'monitor/data';
         return this.httpClient.get<MonitoringRowDTO[]>(path);
     }
+  
+    getUserDetails(): Observable<UserState> {
+        let path = this.basePath + 'user/details';
+        return this.httpClient.get<UserState>(path);
+    }
 
     counterSignGrantAgreements(legalEntityIds): Observable<HttpEvent<ResponseDTO>> {
-
         const req = new HttpRequest('POST', 'legalCommitment/countersign', legalEntityIds);
-
         return this.httpClient.request(req);
     }
 

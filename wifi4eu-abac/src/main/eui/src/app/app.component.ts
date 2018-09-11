@@ -1,30 +1,40 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
-import { Store } from '@ngrx/store';
+import { ApiModule } from './shared/api.module';
 
 import { UxLanguage } from '@eui/ux-commons';
-import { UserState, getUserState, UxLink } from '@eui/ux-core';
+import { UserState, UxLink } from '@eui/ux-core';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-    userState: Observable<UserState>;
-
+  
+    userState: UserState;
     menuLinks: UxLink[] = [];
 
-    constructor(private translateService: TranslateService, private store: Store<any>, ) {
+    constructor(private translateService: TranslateService, protected api: ApiModule) {
     }
 
     ngOnInit() {
-        this.userState = <any>this.store.select(getUserState);
         this._createMenuLinks();
+        this.api.getUserDetails().subscribe(userState => {
+            this.userState = userState;
+        });
     }
 
     onLanguageChanged(language: UxLanguage) {
         this.translateService.use(language.code);
+    }
+  
+    renderLoginInfo(){
+        if (this.userState !== undefined && this.userState !== null){
+            return 'Loged in as: ' + this.userState.fullName + ' (' + this.userState.userId + ')';
+        }else{
+            return 'Login unknown';
+        }
     }
 
     private _createMenuLinks() {

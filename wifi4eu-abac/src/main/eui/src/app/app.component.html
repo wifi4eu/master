@@ -2,7 +2,7 @@
 	[isScrollHandlerActive]="true"
    	headerAppFullName="WiFi4EU - ABAC Interface"
     headerAppShortName="App"
-    [headerUserInfos]="(userState | async)?.fullName"
+    [headerUserInfos]="renderLoginInfo()"
     (headerLanguageChanged)="onLanguageChanged($event)"
     [navBarTopMenuLinks]="menuLinks"
     footerAppVersion="1.0"

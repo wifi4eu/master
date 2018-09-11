@@ -25,7 +25,6 @@ public class MonitoringController {
 		this.monitoringService = monitoringService;
 	}
 
-
 	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
 	@RequestMapping(value = "data", method = RequestMethod.GET, produces = "application/json")
 	public List<MonitoringRow> data() throws IOException {
