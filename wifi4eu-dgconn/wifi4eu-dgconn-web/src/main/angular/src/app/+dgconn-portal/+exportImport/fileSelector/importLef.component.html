@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <input type="file" id="importFile" (change)="onFileChange($event)">
                 </div>
-                <button type="submit" class="btn btn-success">{{ 'shared.confirm.button' | translate }}</button>
+                <button type="submit" class="btn btn-success" [disabled]="!this.form.valid">{{ 'shared.confirm.button' | translate }}</button>
             </form>
 
         </div>

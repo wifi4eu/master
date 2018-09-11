@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from 'ng2-translate';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ResponseDTOBase } from '../../../shared/swagger/model/ResponseDTO';
 import { LegalEntitiesService } from '../../../services/legal-entities-service';
@@ -34,7 +34,7 @@ export class ImportLefComponent {
     constructor(private translateService: TranslateService, private formBuilder: FormBuilder, private location: Location,
                 private legalEntitiesService: LegalEntitiesService, private sharedService: SharedService) {
         this.form = this.formBuilder.group({
-            importFile: null
+            importFile: [null, Validators.required]
         });
     }
 
@@ -45,11 +45,19 @@ export class ImportLefComponent {
         }
     }
 
-    onBack(): void {
-        this.location.back();
+    importLegalEntityFile() {
+        if (this.form.valid) {
+            this.sendFormData();
+        } else {
+            this.sharedService.growlTranslation(
+                'An error occurred while trying to retrieve the data from the server. Please, try again later.',
+                'shared.error.api.generic',
+                'error'
+            );
+        }
     }
 
-    importLegalEntityFile() {
+    private sendFormData() {
         this.processingOperation = true;
 
         const importFile: FormData = this.prepareSave();
@@ -59,6 +67,8 @@ export class ImportLefComponent {
                 (response: ResponseDTOBase) => {
                     this.processingOperation = false;
                     if (response.success) {
+                        this.clearFileInput();
+
                         this.sharedService.growlTranslation(
                             'Your file have been imported correctly!',
                             'dgconn.dashboard.card.messageImport',
@@ -77,6 +87,10 @@ export class ImportLefComponent {
                         'error');
                 }
             );
+    }
+
+    private clearFileInput() {
+        this.form.get('importFile').setValue(null);
     }
 
     private prepareSave(): any {
