@@ -24,7 +24,7 @@ public class AzureBlobConnector {
 	private String storageConnectionString =
 			"DefaultEndpointsProtocol=https;AccountName=w4eudevlfstore;AccountKey=FqH8YTh8O5ZJcPyiFBjjFsQFg9MH1eev8srDcc4MUlFCupEGW66bbPFgyPO7EIgwfu3saPq/ECiuEEAgrF0b6A==;EndpointSuffix=core.windows.net;";
 	
-	private CloudBlobContainer getContainerReference(String containerName) {
+	private CloudBlobContainer getContainerReference(final String containerName) {
 		CloudStorageAccount storageAccount;
 		CloudBlobClient blobClient = null;
 		CloudBlobContainer container = null;
@@ -40,7 +40,7 @@ public class AzureBlobConnector {
 		return container;
 	}
 	
-	public String uploadText(String containerName, String fileName, String content) {
+	public String uploadText(final String containerName, final String fileName, final String content) {
 		// Returning value
 		String fileUri = null;
 		
@@ -73,7 +73,7 @@ public class AzureBlobConnector {
 		return fileUri;
 	}
 	
-	public boolean downloadAsString(String containerName, String fileName, String absoluteDestinationPath) throws Exception {
+	public boolean downloadAsString(final String containerName, final String fileName, final String absoluteDestinationPath) throws Exception {
 		boolean result = false;
 		
 		// Validating the paramenters
@@ -92,7 +92,7 @@ public class AzureBlobConnector {
 		return result;
 	}
 	
-	public String downloadText(String containerName, String fileName) {
+	public String downloadText(final String containerName, final String fileName) {
 		String content = null;
 		
 		// Validating the paramenters
@@ -122,7 +122,7 @@ public class AzureBlobConnector {
 		return content;
 	}
 	
-	public boolean delete(String containerName, String fileName) {
+	public boolean delete(final String containerName, final String fileName) {
 		boolean result = false;
 		CloudBlobContainer container = this.getContainerReference(containerName);
 
@@ -158,7 +158,7 @@ public class AzureBlobConnector {
 		}
 	}
 	
-	private void checkContainerName(String containerName) throws IllegalArgumentException {
+	private void checkContainerName(final String containerName) throws IllegalArgumentException {
 		String errorMessage = null;
 		
 		if (containerName == null) {
@@ -173,12 +173,16 @@ public class AzureBlobConnector {
 			errorMessage = "The file name cannot be longer than 63 characters";
 		}
 		
+		if (containerName.contains(" ")) {
+			errorMessage = "The file name cannot contain \" \" (spaces)";
+		}
+		
 		if (errorMessage != null) {
 			throw new IllegalArgumentException(errorMessage);
 		}
 	}
 	
-	private void checkFileName(String fileName) throws IllegalArgumentException {
+	private void checkFileName(final String fileName) throws IllegalArgumentException {
 		String errorMessage = null;
 		
 		if (fileName == null) {
@@ -189,12 +193,12 @@ public class AzureBlobConnector {
 			errorMessage = "The file name cannot be longer than 500 characters";
 		}
 		
-		if (fileName.indexOf('.') != -1 ) {
-			errorMessage = "The file name cannot have \".\" character";
+		if (fileName.endsWith(".")) {
+			errorMessage = "The file name cannot end with \".\" character";
 		}
 		
-		if (fileName.indexOf('/') != -1 ) {
-			errorMessage = "The file name cannot have \"/\" character";
+		if (fileName.endsWith("/")) {
+			errorMessage = "The file name cannot end with \"/\" character";
 		}
 		
 		if (errorMessage != null) {
