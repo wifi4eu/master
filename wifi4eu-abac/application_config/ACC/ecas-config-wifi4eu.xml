@@ -4,7 +4,7 @@
 
 	<ecasBaseUrl>https://webgate.ec.europa.eu</ecasBaseUrl>
 	<validateUrl>/cas/laxValidate</validateUrl>
-    <serverName>webgate.acceptance.ec.europa.eu</serverName>
+    <serverName>www.acceptance.ec.europa.eu</serverName>
     <serverProtocol>https</serverProtocol>
     <serverPort>80</serverPort>
     <serverSSLPort>443</serverSSLPort>

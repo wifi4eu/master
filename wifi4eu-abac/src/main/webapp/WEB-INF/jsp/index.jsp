@@ -1,9 +1,7 @@
-<%@
-	page pageEncoding="UTF-8" import="java.io.File" %><%@ 
-	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@ 
-	taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %><c:set
-	var="baseHref" value="${fn:substring(url, 0, fn:length(url) - fn:length(pageContext.request.requestURI))}${pageContext.request.contextPath}"
-/><!doctype html>
+<%@	page pageEncoding="UTF-8" import="java.io.File" %>
+<%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="baseHref" value="/wifi4eu"/>
+<!doctype html>
 <html>
     <head>
         <meta charset="utf-8">
