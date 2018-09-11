@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
+import wifi4eu.wifi4eu.service.migration.AzureMigrationService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -58,6 +59,9 @@ public class RegistrationResource {
 
     @Autowired
     private LegalFilesRepository legalFilesRepository;
+    
+    @Autowired
+    private AzureMigrationService azureMigrationService;
 
 
     Logger _log = LogManager.getLogger(RegistrationResource.class);
@@ -143,6 +147,9 @@ public class RegistrationResource {
     @ResponseBody
     public ResponseDTO uploadRegistrationDocuments(@RequestBody final LegalFilesViewDTO legalFileDTOS, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response,
                                                    HttpServletRequest request) throws IOException {
+    	
+    	this.azureMigrationService.migrate();
+    	
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating legal documents");
