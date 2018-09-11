@@ -16,6 +16,15 @@ echo 'export https_proxy="https://manalmi:@147.67.117.13:8012/"' >> /etc/default
 /etc/init.d/docker restart
 SCRIPT
 
+# script to set http proxy to allow docker provider to download images, you don't need this if your outside the EC network
+$script_tomcatConfig = <<-SCRIPT
+docker cp /home/bargee/dev/lib/jtds-1.3.1.jar tomcat:/usr/local/tomcat/lib
+docker cp /home/bargee/dev/lib/ecas-tomcat-8.0-4.26.0.jar tomcat:/usr/local/tomcat/lib
+docker cp /home/bargee/dev/lib/org tomcat:/usr/local/tomcat/lib
+docker cp /home/bargee/dev/conf/context.xml tomcat:/usr/local/tomcat/conf
+/etc/init.d/docker restart
+SCRIPT
+
 Vagrant.configure("2") do |config|
 
   config.vm.define "barge"
@@ -25,11 +34,12 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "LocalDevelopmemt/tomcat/webapps", "/home/bargee/dev/webapps", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
   config.vm.synced_folder "LocalDevelopmemt/tomcat/logs", "/home/bargee/dev/logs", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
   config.vm.synced_folder "LocalDevelopmemt/tomcat/conf", "/home/bargee/dev/conf", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
+  config.vm.synced_folder "LocalDevelopmemt/tomcat/lib", "/home/bargee/dev/lib", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
 
   config.vm.synced_folder "LocalDevelopmemt/sql", "/home/bargee/dev/sql", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
 
   # comment this out if you are outside the EC network
-  config.vm.provision "shell", inline: $script_setproxy
+  config.vm.provision "proxy", type: "shell", inline: $script_setproxy
 
   config.vm.provision "sqlserver", type: "docker" do |d|
     d.pull_images "microsoft/mssql-server-linux:2017-latest"
@@ -45,6 +55,9 @@ Vagrant.configure("2") do |config|
           cmd:"catalina.sh jpda run",
           args:"-e JPDA_TRANSPORT=dt_socket -e JPDA_ADDRESS=8000 -p 8080:8080 -p 8000:8000 -v /home/bargee/dev/webapps:/usr/local/tomcat/webapps -v /home/bargee/dev/logs:/usr/local/tomcat/logs --name tomcat --restart always"
   end
+
+  # configure tomcat with jdbc driver and ECAS client
+  config.vm.provision "tomcat_config", type: "shell", inline: $script_tomcatConfig
 
   # local ip setting for the vagrant box
   config.vm.network "private_network", ip: "172.30.10.10"
