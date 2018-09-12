@@ -31,16 +31,16 @@ public class GenerateTestLEFImport {
 
     private static final String SAMPLE_CSV_FILE_IMPORT = "LEF_Data/export-municipalities.csv";
     private static final String SAMPLE_CSV_FILE_IDENTIFICATION_FORM = "LEF_Data/doc1_identificationForm.pdf";
-    private static final String SAMPLE_CSV_FILE_EXPORT_DIR ="C:\\PGM\\tmp\\WIFI\\GENERATED_DATA\\LEF\\";
+    private static final String SAMPLE_CSV_FILE_EXPORT_DIR ="C:\\projects\\tmp\\WIFI\\GENERATED_DATA\\LEF\\";
     private static final String SAMPLE_CSV_FILE_EXPORT_BENEFICIARY = "portal_exportBeneficiaryInformation.csv";
     private static final String SAMPLE_CSV_FILE_EXPORT_DOCUMENTS = "portal_exportBeneficiaryDocuments.csv";
 
     @Test
     //@Ignore
     public void generateLEFImport() throws Exception{
-        int startMunID=1010900;
-        int start=100;
-        int limit = 100;
+        int startMunID=20000;
+        int start=1;
+        int limit = 1500;
 
         try (
                 BufferedReader reader = new BufferedReader(
