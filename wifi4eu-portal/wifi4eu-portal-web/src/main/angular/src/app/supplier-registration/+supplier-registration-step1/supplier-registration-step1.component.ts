@@ -20,11 +20,10 @@ export class SupplierRegistrationStep1Component {
     private logoFile: File;
     private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
     private buttonEnabled: boolean = false;
-
     private countrySelected: boolean = false;
     // private officialAddress: any = {};
 
-    @Input('officialAddress') private officialAddress: any;
+    // @Input('officialAddress') private officialAddress: any;
     @Input('countries') private countries: NutsDTOBase[];
     @Input('country') private country: NutsDTOBase;
     @Output() private countryChange: EventEmitter<NutsDTOBase>;
@@ -38,8 +37,7 @@ export class SupplierRegistrationStep1Component {
 
     private submit() {
         // Address is passed as a separate object from supplier to include different fields
-        this.officialAddress.country = this.country.label;
-        this.supplier.address = this.officialAddress; 
+        this.supplier.country = this.country.label
         this.supplierChange.emit(this.supplier);
         this.logoUrlChange.emit(this.logoUrl);
         this.onNext.emit();
@@ -147,7 +145,7 @@ export class SupplierRegistrationStep1Component {
             setTimeout(()=>{this.supplierForm.controls['bic'].setErrors({'invalid': true});} ,5);
         } */
         //custom vat validator
-        if(this.supplier.vat != null && this.supplier.vat.trim() != "" && this.supplier.vat.trim().slice(0, 2).match(/[A-z][A-z]/) && this.supplier.vat.trim().length > 3 && this.supplier.vat.trim().match(/[1-9][1-9][1-9]/)){
+        if(this.supplier.vat != null && this.supplier.vat.trim() != "" && this.supplier.vat.trim().length > 3){
             setTimeout(()=>{this.supplierForm.controls['vat'].setErrors(null);} ,5);
         }else {
             setTimeout(()=>{this.supplierForm.controls['vat'].setErrors({'invalid': true});} ,5);
@@ -159,7 +157,7 @@ export class SupplierRegistrationStep1Component {
             setTimeout(()=>{this.supplierForm.controls['address'].setErrors({'invalid': true});} ,5);
         } */
 
-        /* OLD VALIDATOR */
+        /* OLD ADDRESS VALIDATOR */
         /*
         // custom street name validator
         if(this.officialAddress.streetName != null && this.officialAddress.streetName.trim() != ""){
@@ -187,6 +185,7 @@ export class SupplierRegistrationStep1Component {
         }
         */
 
+        /* NEW ADDRESS VALIDATOR */
         // custom street name validator
         if(this.supplier.street != null && this.supplier.street.trim() != ""){
             setTimeout(()=>{this.supplierForm.controls['street'].setErrors(null);} ,5);
@@ -211,7 +210,5 @@ export class SupplierRegistrationStep1Component {
         }else {
             setTimeout(()=>{this.supplierForm.controls['city'].setErrors({'invalid': true});} ,5);
         }
-
-        // this.supplier.
     }
 }

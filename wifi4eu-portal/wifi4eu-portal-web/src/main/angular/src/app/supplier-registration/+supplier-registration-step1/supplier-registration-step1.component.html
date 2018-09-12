@@ -155,10 +155,10 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="streetName">{{ 'benefPortal.granAgreement.addressLabel' | translate }}</label>
-                <input class="form-control paddingInput" maxlength="255" type="text" id="streetName" name="streetName"
-                        [(ngModel)]="supplier.street" #streetName="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
-                <div class="alert alert-danger" [hidden]="streetName.valid || streetName.pristine">
+                <label class="label" for="street">{{ 'benefPortal.granAgreement.addressLabel' | translate }}</label>
+                <input class="form-control paddingInput" maxlength="255" type="text" id="street" name="street"
+                        [(ngModel)]="supplier.street" #street="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
+                <div class="alert alert-danger" [hidden]="street.valid || street.pristine">
                     {{'shared.address.required' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
