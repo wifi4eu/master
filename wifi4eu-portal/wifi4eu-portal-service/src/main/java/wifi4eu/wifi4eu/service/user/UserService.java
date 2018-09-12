@@ -675,8 +675,8 @@ public class UserService {
     public boolean checkIfVoucherAwarded(UserDTO userDTO) {
         List<Integer> voucherAwarded = userRepository.getIfUserHasVouchersAwarded(userDTO.getId());
         if (Validator.isNotNull(voucherAwarded)) {
-            for (int vouch : voucherAwarded) {
-                if (vouch == 1) {
+            for (Integer vouch : voucherAwarded) {
+                if (vouch.intValue() == 1) {
                     return true;
                 }
             }

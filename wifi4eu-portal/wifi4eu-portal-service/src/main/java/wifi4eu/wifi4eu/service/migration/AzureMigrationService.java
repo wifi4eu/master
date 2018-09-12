@@ -2,11 +2,11 @@ package wifi4eu.wifi4eu.service.migration;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import wifi4eu.wifi4eu.common.utils.AzureBlobConnector;
+
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
@@ -21,7 +21,8 @@ public class AzureMigrationService implements Runnable {
 	@Autowired
 	private RegistrationRepository registrationRepository;
 
-	private AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
+	@Autowired
+	private AzureBlobConnector azureBlobConnector;
 	
 	@Override
 	public void run() {
