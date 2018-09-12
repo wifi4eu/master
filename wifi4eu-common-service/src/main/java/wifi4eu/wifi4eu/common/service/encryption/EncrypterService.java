@@ -172,11 +172,9 @@ public class EncrypterService {
 	
 	public String getAzureKeyStorageLegalFiles() {
 		try {
-			//TODO
-			//_log.debug("Decrypting azure blob storage credentials for legal files");
-			//byte[] b = azureCredentialsLegalFiles.getBytes(StandardCharsets.UTF_8);
-			//return decrypt(b);
-			return azureCredentialsLegalFiles;
+			_log.debug("Decrypting azure blob storage credentials for legal files");
+			byte[] b = azureCredentialsLegalFiles.getBytes(StandardCharsets.UTF_8);
+			return decrypt(b);
 		} catch (Exception e) {
 			_log.error("Failed in Decryption " + e.getMessage(), e);
 			return null;

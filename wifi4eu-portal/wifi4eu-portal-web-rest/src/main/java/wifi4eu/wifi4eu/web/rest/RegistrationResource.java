@@ -74,7 +74,7 @@ public class RegistrationResource {
 	private LegalFilesRepository legalFilesRepository;
 
 	@Autowired
-	AzureBlobConnector azureBlobConnector;
+	private AzureBlobConnector azureBlobConnector;
 
 	Logger _log = LogManager.getLogger(RegistrationResource.class);
 

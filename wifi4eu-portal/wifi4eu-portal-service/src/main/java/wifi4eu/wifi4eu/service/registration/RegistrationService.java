@@ -35,8 +35,8 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
-import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.mail.MailService;
@@ -165,6 +165,9 @@ public class RegistrationService {
 
     @Autowired
     private RedisUtil redisUtil;
+    
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -291,30 +294,13 @@ public class RegistrationService {
                 } else if (legalFile.getFileName().isEmpty()) {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File doesn't have a name");
                     throw new Exception("File must have a valid extension.");
-                } else{
-                    /////////////////////////////////////////////////////////////////
-                    AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
-                    
-                    String containerName = "wifi4eu";
-                    String content = base64;
-                    String uri = null;
-                    boolean docUploaded = false;
-                    
+                } else {
                     String fileName = String.valueOf(registrationID) + "_" + legalFile.getFileName();
-                    try {
-                    	_log.info("UPLOADING DOCUMENT container[{}] fileName[{}]", containerName, fileName);
-                    	uri = azureBlobConnector.uploadText(containerName, fileName, content);
-                    	_log.info("URI [{}]", uri);
-                    	docUploaded = true;
-                    } catch (Exception e) {
-                    	_log.error("error", e);
-                    }
-                    
+
+                	String uri = azureBlobConnector.uploadLegalFile(fileName, base64);
+                    boolean docUploaded = !Validator.isEmpty(uri);
                     legalFile.setFileData(uri);
                     
-                    /////////////////////////////////////////////////////////////////
-                    //file name also comes from front input
-
                     if (docUploaded) {
                     	legalFile.setId(0);
                     	legalFile.setRegistration(registrationID);
@@ -340,11 +326,11 @@ public class RegistrationService {
                     		legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
                     	} catch (Exception e) {
                     		_log.error("Error saving legal_files", e);
-                    		azureBlobConnector.delete(containerName, fileName);
+                    		azureBlobConnector.deleteLegalFile(fileName);
                     	}
                     }
                 }
-            }else{
+            } else {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file its data is in incorrect format");
                 throw new Exception("Data is in incorrect format");
             }

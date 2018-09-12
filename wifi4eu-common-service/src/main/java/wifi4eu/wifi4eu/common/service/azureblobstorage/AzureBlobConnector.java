@@ -33,18 +33,15 @@ import wifi4eu.wifi4eu.common.service.encryption.EncrypterService;
 @Configurable
 public class AzureBlobConnector {
 
-	private final Logger LOGGER = LogManager.getLogger(AzureBlobConnector.class);
+	private static final Logger LOGGER = LogManager.getLogger(AzureBlobConnector.class);
+
+	private static final String DEFAULT_CONTAINER_NAME = "wifi4eu";
 
     @Autowired
     EncrypterService encrypterService;
 
     private String storageConnectionString;
-    
-    private final static String DEFAULT_CONTAINER_NAME = "wifi4eu";
-    
-	//private String storageConnectionString =
-	//		"DefaultEndpointsProtocol=https;AccountName=w4eudevlfstore;AccountKey=FqH8YTh8O5ZJcPyiFBjjFsQFg9MH1eev8srDcc4MUlFCupEGW66bbPFgyPO7EIgwfu3saPq/ECiuEEAgrF0b6A==;EndpointSuffix=core.windows.net;";
-	
+    	
     @PostConstruct
     public void init() throws Exception {
         storageConnectionString = encrypterService.getAzureKeyStorageLegalFiles();
@@ -254,18 +251,36 @@ public class AzureBlobConnector {
 	}
 	
 	public String downloadLegalFile(final String data) {
-	    String fileNameDownload = data.substring(data.lastIndexOf("/") + 1);
+	    String fileNameDownload = data.substring(data.lastIndexOf('/') + 1);
 	    AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
 	    String content = null;
 	    
 	    try {
 	    	LOGGER.info("Downloading container [{}] fileName[{}]", DEFAULT_CONTAINER_NAME, fileNameDownload);
-	    	content = azureBlobConnector.downloadText(DEFAULT_CONTAINER_NAME, fileNameDownload);
+	    	content = downloadText(DEFAULT_CONTAINER_NAME, fileNameDownload);
 	    } catch (Exception e) {
 	    	LOGGER.error("ERROR", e);
 	    }
 	    
 	    return content;
+	}
+	
+	public String uploadLegalFile(final String fileName, final String content) {
+        String uri = null;
+        
+        try {
+        	LOGGER.info("UPLOADING DOCUMENT container[{}] fileName[{}]", DEFAULT_CONTAINER_NAME, fileName);
+        	uri = uploadText(DEFAULT_CONTAINER_NAME, fileName, content);
+        	LOGGER.info("URI [{}]", uri);
+        } catch (Exception e) {
+        	LOGGER.error("error", e);
+        }
+        
+        return uri;
+	}
+	
+	public boolean deleteLegalFile(final String fileName) {
+        return delete(DEFAULT_CONTAINER_NAME, fileName);
 	}
 	
 }
