@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.abac.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
@@ -21,6 +22,8 @@ public class MonitoringRow {
 	private String bcAbacRef;
 	private String lcStatus;
 	private String lcAbacRef;
+	private String lefDocAresRef;
+	private String lcDocAresRef;
 	private Boolean readyToBeCounterSigned;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
@@ -32,7 +35,7 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(LegalEntity legalEntity, BudgetaryCommitment budgetaryCommitment, LegalCommitment legalCommitment) {
+	public MonitoringRow(LegalEntity legalEntity, BudgetaryCommitment budgetaryCommitment, LegalCommitment legalCommitment, Document lefDoc, Document lcDoc) {
 
 		//Legal Entity data
 		if(legalEntity != null) {
@@ -59,6 +62,14 @@ public class MonitoringRow {
 			this.setSignatureDate(legalCommitment.getGrantAgreementSignatureDate());
 			this.setCounterSignatureDate(legalCommitment.getGrantAgreementCounterSignatureDate());
 			this.setLcAbacRef(legalCommitment.getAbacKey());
+		}
+		
+		if(lefDoc != null) {
+			this.setLefDocAresRef(lefDoc.getAresReference());
+		}
+		
+		if(lcDoc != null) {
+			this.setLcDocAresRef(lcDoc.getAresReference());
 		}
 
 		readyToBeCounterSigned = legalCommitment != null && legalCommitment.getWfStatus().equals(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);
@@ -178,6 +189,22 @@ public class MonitoringRow {
 
 	public void setLcAbacRef(String lcAbacRef) {
 		this.lcAbacRef = lcAbacRef;
+	}
+
+	public String getLefDocAresRef() {
+		return lefDocAresRef;
+	}
+
+	public void setLefDocAresRef(String lefDocAresRef) {
+		this.lefDocAresRef = lefDocAresRef;
+	}
+
+	public String getLcDocAresRef() {
+		return lcDocAresRef;
+	}
+
+	public void setLcDocAresRef(String lcDocAresRef) {
+		this.lcDocAresRef = lcDocAresRef;
 	}
 	
 }

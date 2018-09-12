@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.dto.MonitoringRow;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
-import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 
 public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integer> {
 
@@ -31,10 +30,12 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 	void updateFinancialLegalEntitiesStatuses();
 	
 	@Query(value =
-			"SELECT new wifi4eu.wifi4eu.abac.data.dto.MonitoringRow(le, bc, lc) " +
+			"SELECT new wifi4eu.wifi4eu.abac.data.dto.MonitoringRow(le, bc, lc, lefdoc, lcdoc) " +
 			"FROM LegalEntity le " +
 			"LEFT JOIN BudgetaryCommitment bc on bc.legalEntity.id = le.id " +
-			"LEFT JOIN LegalCommitment lc on lc.legalEntity.id = le.id"
+			"LEFT JOIN LegalCommitment lc on lc.legalEntity.id = le.id " +
+			"LEFT JOIN Document lefdoc on lefdoc.legalEntity.id = le.id and lefdoc.type='IDENTIFICATION_FORM' " + 
+			"LEFT JOIN Document lcdoc on lcdoc.legalEntity.id = le.id and lcdoc.type='COUNTERSIGNED_GRANT_AGREEMENT' "
 	)
 	List<MonitoringRow> findMonitoringData();
 	
