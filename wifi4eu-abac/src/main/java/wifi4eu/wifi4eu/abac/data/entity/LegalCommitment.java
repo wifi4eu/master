@@ -70,6 +70,12 @@ public class LegalCommitment {
 	@Column(name = "GRANT_AGREEMENT_CNTRSIGN_USER")
 	private String grantAgreementCounterSignatureUser;
 
+	@Column(name = "date_exported")
+	private Date dateExported;
+
+	@Column(name = "user_exported")
+	private String userExported;
+
 	public LegalCommitment() {
 	}
 
@@ -182,6 +188,30 @@ public class LegalCommitment {
 
 	public void setGrantAgreementCounterSignatureUser(String grantAgreementCounterSignatureUser) {
 		this.grantAgreementCounterSignatureUser = grantAgreementCounterSignatureUser;
+	}
+
+	public List<LegalCommitmentAbacRequest> getAbacRequests() {
+		return abacRequests;
+	}
+
+	public void setAbacRequests(List<LegalCommitmentAbacRequest> abacRequests) {
+		this.abacRequests = abacRequests;
+	}
+
+	public Date getDateExported() {
+		return dateExported;
+	}
+
+	public void setDateExported(Date dateExported) {
+		this.dateExported = dateExported;
+	}
+
+	public String getUserExported() {
+		return userExported;
+	}
+
+	public void setUserExported(String userExported) {
+		this.userExported = userExported;
 	}
 
 	@Override

@@ -82,6 +82,12 @@ public class Document {
 	@Column(name = "DOCUMENTTYPE_CCM2CODE")
 	private String docTypeCCM2Id;
 
+	@Column(name = "date_exported")
+	private Date dateExported;
+
+	@Column(name = "user_exported")
+	private String userExported;
+
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
@@ -254,5 +260,21 @@ public class Document {
 
 	public void setHermesFileId(String hermesFileId) {
 		this.hermesFileId = hermesFileId;
+	}
+
+	public Date getDateExported() {
+		return dateExported;
+	}
+
+	public void setDateExported(Date dateExported) {
+		this.dateExported = dateExported;
+	}
+
+	public String getUserExported() {
+		return userExported;
+	}
+
+	public void setUserExported(String userExported) {
+		this.userExported = userExported;
 	}
 }

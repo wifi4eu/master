@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Table } from 'primeng/components/table/table';
 import { ResponseDTO, MonitoringRowDTO, CountryDTO } from '../../../shared/model/DTOs';
 import { ApiModule } from '../../../shared/api.module';
@@ -21,7 +21,7 @@ export class MonitoringTableComponent implements OnInit{
     private rows: MonitoringRowDTO[];
 
     private hasSelectable: boolean = false;
-  
+
     private showLEF: boolean = true;
     private showBC: boolean = true;
     private showLC: boolean = true;
@@ -47,8 +47,8 @@ export class MonitoringTableComponent implements OnInit{
             { field: 'bcAbacRef', header: '<br/>BC ABAC ref', isFor: 'bc' },
             { field: 'lcStatus', header: '<br/>LC Status', isFor: 'lc' },
             { field: 'lcAbacRef', header: '<br/>LC ABAC ref', isFor: 'lc' },
-            { field: 'signatureDate', header: 'Date of<br/>signature' },
-            { field: 'counterSignatureDate', header: 'Date of<br/>counter signature' },
+            { field: 'signatureDate', header: 'Date of<br/>signature', isFor: 'lc' },
+            { field: 'counterSignatureDate', header: 'Date of<br/>counter signature', isFor: 'lc' }
         ];
     }
 
@@ -143,13 +143,13 @@ export class MonitoringTableComponent implements OnInit{
             }
         }
     }
-  
+
     clearSelection(){
         for (let i = 0; i < this.rows.length; i++) {
             this.rows[i].isSelected = false;
         }
     }
-  
+
     getSelection(){
         let result = [];
         for (let i = 0; i < this.rows.length; i++) {
@@ -159,11 +159,11 @@ export class MonitoringTableComponent implements OnInit{
         }
         return result;
     }
-  
+
     isSelectionEmpty(){
         return this.getSelection().length === 0;
     }
-    
+
     countersignSelected(userConfirmedOperation) {
         if (userConfirmedOperation) {
             this.api.counterSignGrantAgreements(this.getSelection()).subscribe(
@@ -175,7 +175,10 @@ export class MonitoringTableComponent implements OnInit{
                         }else{
                             this.showError(response.body.message);
                         }
-                    }else if (response.status === 401 || response.status === 403){
+                    }
+                },
+                (response: HttpErrorResponse) => {
+                    if (response.status === 401 || response.status === 403){
                         this.showError('You are not authorized to perform this action');
                     }else{
                         this.showError('An unexpected error has occured. Please try again. (Response status=' + response.status + ')');
