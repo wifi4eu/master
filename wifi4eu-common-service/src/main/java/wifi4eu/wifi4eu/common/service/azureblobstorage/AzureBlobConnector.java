@@ -1,11 +1,17 @@
-package wifi4eu.wifi4eu.common.utils;
+package wifi4eu.wifi4eu.common.service.azureblobstorage;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
+
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
@@ -13,13 +19,30 @@ import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.blob.ListBlobItem;
 
+import wifi4eu.wifi4eu.common.service.encryption.EncrypterService;
+
+/**
+ * Azure Blob Storage for Legal files of the registrations.
+ *
+ */
+@Component
+@Configurable
 public class AzureBlobConnector {
 
-	private final Logger LOGGER = LogManager.getLogger(AzureBlobConnector.class);
+	private static final Logger LOGGER = LogManager.getLogger(AzureBlobConnector.class);
 
-	private String storageConnectionString =
-			"DefaultEndpointsProtocol=https;AccountName=w4eudevlfstore;AccountKey=FqH8YTh8O5ZJcPyiFBjjFsQFg9MH1eev8srDcc4MUlFCupEGW66bbPFgyPO7EIgwfu3saPq/ECiuEEAgrF0b6A==;EndpointSuffix=core.windows.net;";
-	
+	private static final String DEFAULT_CONTAINER_NAME = "wifi4eu";
+
+    @Autowired
+    EncrypterService encrypterService;
+
+    private String storageConnectionString;
+    	
+    @PostConstruct
+    public void init() throws Exception {
+        storageConnectionString = encrypterService.getAzureKeyStorageLegalFiles();
+    }
+    
 	private CloudBlobContainer getContainerReference(final String containerName) {
 		CloudStorageAccount storageAccount;
 		CloudBlobClient blobClient = null;
@@ -159,17 +182,11 @@ public class AzureBlobConnector {
 		
 		if (containerName == null) {
 			errorMessage = "The container name cannot be null";
-		}
-		
-		if (containerName.length() < 3) {
+		} else if (containerName.length() < 3) {
 			errorMessage = "The container name cannot be shorter than 3 characters";
-		}
-		
-		if (containerName.length() > 63) {
+		} else if (containerName.length() > 63) {
 			errorMessage = "The file name cannot be longer than 63 characters";
-		}
-		
-		if (containerName.contains(" ")) {
+		} else if (containerName.contains(" ")) {
 			errorMessage = "The file name cannot contain \" \" (spaces)";
 		}
 		
@@ -183,17 +200,11 @@ public class AzureBlobConnector {
 		
 		if (fileName == null) {
 			errorMessage = "The file name cannot be null";
-		}
-		
-		if (fileName.length() > 500) {
+		} else if (fileName.length() > 500) {
 			errorMessage = "The file name cannot be longer than 500 characters";
-		}
-		
-		if (fileName.endsWith(".")) {
+		} else if (fileName.endsWith(".")) {
 			errorMessage = "The file name cannot end with \".\" character";
-		}
-		
-		if (fileName.endsWith("/")) {
+		} else if (fileName.endsWith("/")) {
 			errorMessage = "The file name cannot end with \"/\" character";
 		}
 		
@@ -221,6 +232,39 @@ public class AzureBlobConnector {
 		
 		blobConnector.listAllWifi4EuOnConsole("wifi4eu");
 		
+	}
+	
+	public String downloadLegalFile(final String data) {
+	    String fileNameDownload = data.substring(data.lastIndexOf('/') + 1);
+	    AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
+	    String content = null;
+	    
+	    try {
+	    	LOGGER.info("Downloading container [{}] fileName[{}]", DEFAULT_CONTAINER_NAME, fileNameDownload);
+	    	content = downloadText(DEFAULT_CONTAINER_NAME, fileNameDownload);
+	    } catch (Exception e) {
+	    	LOGGER.error("ERROR", e);
+	    }
+	    
+	    return content;
+	}
+	
+	public String uploadLegalFile(final String fileName, final String content) {
+        String uri = null;
+        
+        try {
+        	LOGGER.info("UPLOADING DOCUMENT container[{}] fileName[{}]", DEFAULT_CONTAINER_NAME, fileName);
+        	uri = uploadText(DEFAULT_CONTAINER_NAME, fileName, content);
+        	LOGGER.info("URI [{}]", uri);
+        } catch (Exception e) {
+        	LOGGER.error("error", e);
+        }
+        
+        return uri;
+	}
+	
+	public boolean deleteLegalFile(final String fileName) {
+        return delete(DEFAULT_CONTAINER_NAME, fileName);
 	}
 	
 }

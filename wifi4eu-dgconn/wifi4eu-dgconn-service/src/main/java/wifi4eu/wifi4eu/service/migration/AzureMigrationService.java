@@ -26,7 +26,8 @@ public class AzureMigrationService implements Runnable {
 	@Autowired
 	private RegistrationRepository registrationRepository;
 
-	private AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
+	@Autowired
+	private AzureBlobConnector azureBlobConnector;
 	
     private static Logger LOGGER = LogManager.getLogger(AzureMigrationService.class);
 
