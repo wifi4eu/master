@@ -182,17 +182,11 @@ public class AzureBlobConnector {
 		
 		if (containerName == null) {
 			errorMessage = "The container name cannot be null";
-		}
-		
-		if (containerName.length() < 3) {
+		} else if (containerName.length() < 3) {
 			errorMessage = "The container name cannot be shorter than 3 characters";
-		}
-		
-		if (containerName.length() > 63) {
+		} else if (containerName.length() > 63) {
 			errorMessage = "The file name cannot be longer than 63 characters";
-		}
-		
-		if (containerName.contains(" ")) {
+		} else if (containerName.contains(" ")) {
 			errorMessage = "The file name cannot contain \" \" (spaces)";
 		}
 		
@@ -206,17 +200,11 @@ public class AzureBlobConnector {
 		
 		if (fileName == null) {
 			errorMessage = "The file name cannot be null";
-		}
-		
-		if (fileName.length() > 500) {
+		} else if (fileName.length() > 500) {
 			errorMessage = "The file name cannot be longer than 500 characters";
-		}
-		
-		if (fileName.endsWith(".")) {
+		} else if (fileName.endsWith(".")) {
 			errorMessage = "The file name cannot end with \".\" character";
-		}
-		
-		if (fileName.endsWith("/")) {
+		} else if (fileName.endsWith("/")) {
 			errorMessage = "The file name cannot end with \"/\" character";
 		}
 		
