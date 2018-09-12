@@ -20,7 +20,7 @@ public interface BeneficiaryInformationRepository extends CrudRepository<Benefic
 			+ "left join laus as l on m.lau = l.id "
 			+ "left join GRANT_AGREEMENT as ga on ga.application_id = a.id "
 			+ "where m.name is not null "
-			/*+ "and ga.date_signature is not null "
-			+ "and ga.date_counter_signature is null"*/, nativeQuery = true)
+			+ "and ga.date_signature is not null "
+			+ "and ga.date_counter_signature is null", nativeQuery = true)
 	List<BeneficiaryInformation> getBeneficiariesInformationSignedAndNotCounterSigned();
 }
