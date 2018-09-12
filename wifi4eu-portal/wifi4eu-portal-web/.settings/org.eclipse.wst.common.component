@@ -14,12 +14,6 @@
         <dependent-module archiveName="wifi4eu-portal-service-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/wifi4eu-portal-service/wifi4eu-portal-service">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="wifi4eu-persistence-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/wifi4eu-persistence/wifi4eu-persistence">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="wifi4eu-common-service-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/wifi4eu-common-service/wifi4eu-common-service">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="wifi4eu-portal-persistence-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/wifi4eu-portal-persistence/wifi4eu-portal-persistence">
             <dependency-type>uses</dependency-type>
         </dependent-module>
