@@ -260,8 +260,7 @@ public class RegistrationResource {
         String fileName = legalFile.getFileName();
         String fileMime = legalFile.getFileMime();
         String fileExtension = legalFilesService.getExtensionFromMime(fileMime);
-        
-        
+                
         ////////////////////////////////////////////////////////////////
         String data = legalFile.getFileData();
         String fileNameDownload = data.substring(data.lastIndexOf("/") + 1);
@@ -277,15 +276,12 @@ public class RegistrationResource {
         }
         ////////////////////////////////////////////////////////////////
 
-        
-        
         //if fileMime is null or has lenght 0 fileExtension is null
-        if (fileName != null && fileName.length() != 0 && !legalFile.getFileData().isEmpty() && fileExtension != null) {
+        if (fileName != null && fileName.length() != 0 && !legalFile.getFileData().isEmpty() && fileExtension != null && content != null) {
             try {
                 response.setContentType(fileMime);
                 response.setHeader("Content-disposition", "inline; filename=\"" + fileName + fileExtension + "\"");
 
-                //byte[] fileBytes = Base64Utils.decodeFromString(legalFile.getFileData());
                 byte[] fileBytes = Base64Utils.decodeFromString(content);
                 response.getOutputStream().write(fileBytes);
                 response.getOutputStream().flush();
@@ -354,7 +350,7 @@ public class RegistrationResource {
     }
 
 
-        @ApiOperation(value = "getLegalFile")
+    @ApiOperation(value = "getLegalFile")
     @RequestMapping(value = "/getLegalFile", method = RequestMethod.GET)
     @ResponseBody
     public LegalFileCorrectionReasonDTO getLegalFile() {
