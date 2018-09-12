@@ -221,3 +221,7 @@ delete from nuts where label like 'EXTRA%'
 -- 2018-09-03 Convert the date of the applications from nanos to millis (10 digits)
 UPDATE applications set date = LEFT(date, 10) where LEN(date) > 10
 
+-- SUPPLIER modification (break down legal address into small pieces - 12/09/2018)
+USE wifi4eu
+ALTER TABLE suppliers
+ADD street varchar(255), street_number varchar(255), postal_code varchar(255), city varchar(255), country varchar(255);
