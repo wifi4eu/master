@@ -2,6 +2,9 @@ package wifi4eu.wifi4eu.service.migration;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,9 @@ public class AzureMigrationService implements Runnable {
 
 	private AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
 	
-	@Override
+    Logger _log = LogManager.getLogger(AzureMigrationService.class);
+
+    @Override
 	public void run() {
 		this.migrate();
 	}
@@ -48,7 +53,10 @@ public class AzureMigrationService implements Runnable {
 		String containerName = "wifi4eu";
 		boolean docUploaded = false;
 		
+		int i = 0;
 		for (LegalFile legalFile : listLegalFiles) {
+			_log.info(i++);
+			
 			
 			String fileName = String.valueOf(registrationId) + "_" + legalFile.getFileName() + "_" + String.valueOf(legalFile.getId());
 			String content = legalFile.getFileData();
@@ -66,6 +74,11 @@ public class AzureMigrationService implements Runnable {
 				legalFile.setUploadTime(uploadTime);
 				legalFilesRepository.save(legalFile);
 			}
+			
+			if (i == 10) {
+				break;
+			}
 		}
+		_log.info("FININSHED");
 	}
 }
