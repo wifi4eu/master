@@ -829,7 +829,7 @@
   "dgConn.manageApplications.newUpload": "New upload",
   "benefPortal.beneficary.addMunicipality": "Dodaj kontaktno osebo",
   "dgConn.importexport.title": "ABAC",
-  "dgConn.importexport.introduction": "Breif explanation TBU",
+  "dgConn.importexport.introduction": "Brief explanation TBU",
   "dgConn.importexport.lef": "Legal Entities (LEF)",
   "dgConn.importexport.lef.import.finallist": "Import Final list from DG BUDG",
   "dgConn.importexport.lef.import.finallist.desc": "This button will import the municipalities as completed by DG BUDG into the portal. If a municipality exists already in ABAC, this imported file will give the ABAC reference number to the portal.",

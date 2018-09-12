@@ -151,6 +151,39 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>ng-build-linux</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.5.0</version>
+            <executions>
+              <execution>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>/home/michael/.nvm/versions/node/v9.7.1/bin/ng</executable>
+                  <workingDirectory>src/main/angular</workingDirectory>
+                  <arguments>
+                    <argument>build</argument>
+                    <argument>--base-href</argument>
+                    <argument>${dgconn.context.name}/</argument>
+                    <argument>--env=${ng.env}</argument>
+                    <argument>--prod</argument>
+                    <argument>--aot</argument>
+                    <argument>false</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <build>

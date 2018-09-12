@@ -1,0 +1,31 @@
+
+<div class="container">
+    <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
+        <a class="link-label" routerLink=".." routerLinkActive="active">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{'shared.back.button' | translate}}
+        </a>
+        <p class="beneficiaryTitle">{{ 'dgConn.importexport.title' | translate }}</p>
+        <p>{{ 'dgConn.importexport.lef.import.legalentities' | translate }}</p>
+    </div>
+
+    <div class="ui-g-6 ui-lg-6 ui-md-12">
+        <div class="panelItem ui-g-12">
+
+            <form [formGroup]="form" (ngSubmit)="importLegalEntityFile()" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="file" id="importFile" (change)="onFileChange($event)">
+                </div>
+                <button type="submit" class="btn btn-success" [disabled]="!this.form.valid">{{ 'shared.confirm.button' | translate }}</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<p-dialog [(visible)]="processingOperation" [modal]="true" [responsive]="true" [resizable]="false"
+          [draggable]="false" [closable]="false">
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
+    <div style="text-align: center;font-size: 4em;margin: 1em 0">
+        <i [@enterSpinner] class="fa fa-spinner loading-icon" style="text-align: center;"></i>
+    </div>
+</p-dialog>
