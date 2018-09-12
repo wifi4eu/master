@@ -120,7 +120,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"REQUEST_TYPE" VARCHAR2(25 BYTE),
 	"BC_ID" NUMBER,
 	"LC_ID" NUMBER
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS"."LE_ID" IS ' Municipality ID in AIRGAP';
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS"."L_LOC_OBJ_FK" IS 'This is created by the application and is a unique identifier for the LE. The format should be "WIF.XXXXXX" where XXXXXX is the id in the application.';
@@ -136,7 +142,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
   CREATE TABLE "WIFI4EU_ABAC"."WIF_AUTH_ROLES"
    (	"ID" NUMBER(18,0),
 	"NAME" VARCHAR2(100 BYTE)
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Table WIF_AUTH_USERS
 --------------------------------------------------------
@@ -149,7 +161,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"LAST_NAME" VARCHAR2(100 BYTE),
 	"ENABLED" VARCHAR2(1 BYTE) DEFAULT 'Y',
 	"TOKEN_EXPIRED" VARCHAR2(1 BYTE) DEFAULT 'Y'
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Table WIF_AUTH_USERS_ROLES
 --------------------------------------------------------
@@ -157,7 +175,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
   CREATE TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS_ROLES"
    (	"ROLE_ID" NUMBER(18,0),
 	"USER_ID" NUMBER(18,0)
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Table WIF_BC_LEVEL2_POSITION
 --------------------------------------------------------
@@ -169,7 +193,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"BUDGETARY_COMMITMENT_ID" NUMBER,
 	"GLOBAL_COMMITMENT_L1_POS_KEY" VARCHAR2(50 BYTE),
 	"COMMITMENT_L2_KEY" VARCHAR2(50 BYTE)
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Table WIF_BUDGETARY_COMMITMENT
 --------------------------------------------------------
@@ -181,8 +211,16 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"DATE_CREATED" DATE,
 	"DATE_UPDATED" DATE,
 	"COMMITMENT_L2_KEY" VARCHAR2(50 BYTE),
-	"BATCH_REF" VARCHAR2(50 BYTE)
-   ) ;
+	"BATCH_REF" VARCHAR2(50 BYTE),
+	"DATE_EXPORTED" DATE,
+	"USER_EXPORTED" VARCHAR2(20 BYTE)
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT"."BATCH_REF" IS 'The batch process unique reference used for notifications';
 --------------------------------------------------------
@@ -193,7 +231,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
    (	"ID" NUMBER(18,0),
 	"NAME" VARCHAR2(200 BYTE),
 	"VALUE" VARCHAR2(200 BYTE)
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Table WIF_COUNTRY
 --------------------------------------------------------
@@ -206,7 +250,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"CCM2_CODE" NUMBER,
 	"NATIVE_DESCRIPTIONS" VARCHAR2(50 BYTE),
 	"ISO3_CODE" VARCHAR2(3 BYTE)
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Table WIF_DOCTYPE_METADATA_TYPE
 --------------------------------------------------------
@@ -218,7 +268,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"CCM2_METADATA_ID" NUMBER(18,0),
 	"CCM2_METADATA_ABBREV" VARCHAR2(100 BYTE),
 	"METADATA_KEY" VARCHAR2(100 BYTE)
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Table WIF_DOCUMENTS
 --------------------------------------------------------
@@ -245,8 +301,22 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"HERMES_REG_NUMBER" VARCHAR2(200 BYTE),
 	"DOCUMENTTYPE_CCM2CODE" VARCHAR2(100 BYTE),
 	"HERMES_FILE_ID" VARCHAR2(200 BYTE),
-	"HERMES_DOC_ID" VARCHAR2(200 BYTE)
-   ) ;
+	"HERMES_DOC_ID" VARCHAR2(200 BYTE),
+	"DATE_EXPORTED" DATE,
+	"USER_EXPORTED" VARCHAR2(20 BYTE)
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"
+ LOB ("DATA") STORE AS BASICFILE (
+  TABLESPACE "WIFI4EU_ABAC" ENABLE STORAGE IN ROW CHUNK 8192 RETENTION
+  NOCACHE LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)) ;
 
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_DOCUMENTS"."ID" IS 'Incremental ID';
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_DOCUMENTS"."ARES_REFERENCE" IS 'ARES document reference';
@@ -266,7 +336,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"CCM2_DOCTYPE_ABBREV" VARCHAR2(50 BYTE),
 	"CCM2_DOCTYPE_PARENT_ID" NUMBER,
 	"CCM2_DOCTYPE_PARENT_ABBREV" VARCHAR2(50 BYTE)
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Table WIF_IMPORT_LOG
 --------------------------------------------------------
@@ -277,7 +353,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"IMPORT_DATE" DATE,
 	"USER_ID" VARCHAR2(20 BYTE),
 	"BATCH_REF" VARCHAR2(50 BYTE)
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Table WIF_LANGUAGE
 --------------------------------------------------------
@@ -288,7 +370,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"ACTIVE" VARCHAR2(1 CHAR) DEFAULT 'Y',
 	"CCM2_CODE" NUMBER,
 	"NATIVE_DESCRIPTIONS" VARCHAR2(200 BYTE)
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Table WIF_LEGAL_COMMITMENT
 --------------------------------------------------------
@@ -305,8 +393,16 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"GRANT_AGREEMENT_SIGNATURE_DATE" DATE,
 	"GRANT_AGREEMENT_CNTRSIGN_DATE" DATE,
 	"BATCH_REF" VARCHAR2(50 BYTE),
-	"GRANT_AGREEMENT_CNTRSIGN_USER" VARCHAR2(20 BYTE)
-   ) ;
+	"GRANT_AGREEMENT_CNTRSIGN_USER" VARCHAR2(20 BYTE),
+	"DATE_EXPORTED" DATE,
+	"USER_EXPORTED" VARCHAR2(20 BYTE)
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_LEGAL_COMMITMENT"."ID" IS 'Incremental ID';
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_LEGAL_COMMITMENT"."LEGAL_ENTITY_ID" IS 'ID of the related LegalEntity';
@@ -343,8 +439,16 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"BATCH_REF" VARCHAR2(50 BYTE),
 	"CALL_NUMBER" NUMBER(18,0),
 	"ABAC_LATIN_NAME" VARCHAR2(35 BYTE),
-	"ABAC_LATIN_ADDRESS" VARCHAR2(400 BYTE)
-   ) ;
+	"ABAC_LATIN_ADDRESS" VARCHAR2(400 BYTE),
+	"DATE_EXPORTED" DATE,
+	"USER_EXPORTED" VARCHAR2(20 BYTE)
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY"."ID" IS 'AIGAP incremental id';
    COMMENT ON COLUMN "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY"."MID" IS 'MUNICIPALITY registration ID from Portal';
@@ -371,7 +475,13 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"SEND_TO" VARCHAR2(200 BYTE),
 	"BATCH_REF" VARCHAR2(50 BYTE),
 	"STATUS" VARCHAR2(100 BYTE) DEFAULT 'PENDING'
-   ) ;
+   ) SEGMENT CREATION IMMEDIATE
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_ABAC_RUN_ID
 --------------------------------------------------------
@@ -396,7 +506,7 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --  DDL for Sequence SEQ_DOCUMENT
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_DOCUMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 341 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_DOCUMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 501 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_IMPORT_LOG
 --------------------------------------------------------
@@ -411,7 +521,7 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --  DDL for Sequence SEQ_LEGAL_ENTITY
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_ENTITY"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 557 NOCACHE  NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_ENTITY"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 711 NOCACHE  NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_NOTIFICATION
 --------------------------------------------------------
@@ -427,109 +537,181 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_DOCUMENT_TYPE_PK" ON "WIFI4EU_ABAC"."WIF_DOCUMENT_TYPE" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_DOCTYPE_METADATA_TYPE_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE_PK" ON "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_ABAC_BATCH_STATUS_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_ABAC_BATCH_STATUS_PK" ON "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_BUDGETARY_COMMITMENT_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT_PK" ON "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_LEGAL_ENTITY_MID_UNQ
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY_MID_UNQ" ON "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" ("OFFICIAL_NAME")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_IMPORT_LOG_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_IMPORT_LOG_PK" ON "WIFI4EU_ABAC"."WIF_IMPORT_LOG" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_CONSTANTS_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_CONSTANTS_PK" ON "WIFI4EU_ABAC"."WIF_CONSTANTS" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_AUTH_TOLES_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_AUTH_TOLES_PK" ON "WIFI4EU_ABAC"."WIF_AUTH_ROLES" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_NOTIFICATION_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_NOTIFICATION_PK" ON "WIFI4EU_ABAC"."WIF_NOTIFICATION" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_BC_LEVEL2_POSITION_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION_PK" ON "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index PK_LANGUAGE
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."PK_LANGUAGE" ON "WIFI4EU_ABAC"."WIF_LANGUAGE" ("CD")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_DOCUMENTS_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_DOCUMENTS_PK" ON "WIFI4EU_ABAC"."WIF_DOCUMENTS" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_LC_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_LC_PK" ON "WIFI4EU_ABAC"."WIF_LEGAL_COMMITMENT" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index UK_LANGUAGE_NAME
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."UK_LANGUAGE_NAME" ON "WIFI4EU_ABAC"."WIF_LANGUAGE" ("NAME")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_AUTH_USERS_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_AUTH_USERS_PK" ON "WIFI4EU_ABAC"."WIF_AUTH_USERS" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index PK_COUNTRY
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."PK_COUNTRY" ON "WIFI4EU_ABAC"."WIF_COUNTRY" ("ISO2_CODE")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index IDX_TB_COUNTRYCCM2_CODE
 --------------------------------------------------------
 
   CREATE INDEX "WIFI4EU_ABAC"."IDX_TB_COUNTRYCCM2_CODE" ON "WIFI4EU_ABAC"."WIF_COUNTRY" ("CCM2_CODE")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Index WIF_MUNICIPALITY_PK
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX "WIFI4EU_ABAC"."WIF_MUNICIPALITY_PK" ON "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" ("ID")
-  ;
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC" ;
 --------------------------------------------------------
 --  DDL for Procedure CREATE_BC_IN_ABAC
 --------------------------------------------------------
@@ -548,16 +730,16 @@ set define off;
   header_title              varchar2(200);
   global_commitment_position varchar2(50);
   CONTR_REF_LOC_OBJ_FOREIGN_ID varchar2(100);
-  request_type              varchar2(20);
   fdi_date                  date;
-  fdi_delay_months          number;
+  fdi_delay_months          number := 18+6;
   user_imported_login       varchar2(20);
   user_imported_name        varchar2(100);
   supporting_doc_ares_ref   varchar2(100);
+  request_type              varchar2(20) := 'BUDGETARY_COMMITMENT';
+  status_waiting_for_abac   varchar2(2) := 'WAITING_FOR_ABAC';
 BEGIN
 
   --global constants
-  request_type := 'BUDGETARY_COMMITMENT';
   SELECT VALUE INTO l_loc_sys_cd from WIF_CONSTANTS WHERE NAME='ABAC_SYS_CD';
   SELECT VALUE INTO l_destination from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_DEST';
   l_run_id := SEQ_ABAC_RUN_ID.NEXTVAL;
@@ -572,8 +754,6 @@ BEGIN
   join WIF_AUTH_USERS u on le.user_imported = u.USERNAME
   join WIF_DOCUMENTS doc on doc.legal_entity_id = le.id and doc.document_type = 'IDENTIFICATION_FORM'
   where le.id = LEGALENTITYID;
-
-    fdi_delay_months := 18+6;
 
   --Don't move on unless the Legal Entity has a FEL ID
   if (ABAC_FEL_ID is null) then
@@ -679,7 +859,7 @@ BEGIN
   Insert into WIF_ABAC_REQUEST_PROCESS (ID,BC_ID,L_LOC_OBJ_FK,L_QUE_ID, REQUEST_TYPE) values (SEQ_WIF_ABAC_STATUS.NEXTVAL,l_BC_ID,l_loc_obj_foreign_id,l_que_id, request_type);
 
   --UPDATE the BUDGETARY_COMMITMENT status
-  update WIF_BUDGETARY_COMMITMENT set WF_STATUS='WAITING_FOR_ABAC' where ID=l_BC_ID;
+  update WIF_BUDGETARY_COMMITMENT set WF_STATUS = status_waiting_for_abac where ID=l_BC_ID;
 
   commit;
 
@@ -699,16 +879,13 @@ set define off;
 	l_loc_obj_foreign_id	    VARCHAR2(56);
   l_que_id 				          NUMBER;
   l_destination             VARCHAR2(200);
-  request_type              varchar2(50);
-  duration_in_months        NUMBER;
-  payment_time_limit        NUMBER;
-
+  duration_in_months        NUMBER := 18;
+  payment_time_limit        NUMBER := 60;
+  request_type              varchar2(50) := 'LEGAL_COMMITMENT';
+  status_countersigned      varchar2(30) := 'COUNTERSIGNED';
 BEGIN
 
   --global constants
-  request_type := 'LEGAL_COMMITMENT';
-  duration_in_months := 18;
-  payment_time_limit := 60;
   SELECT VALUE INTO l_loc_sys_cd from WIF_CONSTANTS WHERE NAME='ABAC_SYS_CD';
   SELECT VALUE INTO l_destination from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_DEST';
   l_run_id := SEQ_ABAC_RUN_ID.NEXTVAL;
@@ -725,7 +902,7 @@ BEGIN
     join WIF_AUTH_USERS u on le.user_imported = u.USERNAME
     join wif_budgetary_commitment bc on lc.LEGAL_ENTITY_ID = bc.legal_entity_id
     join wif_bc_level2_position bc_l2 on bc_l2.budgetary_commitment_id = bc.id
-    where lc.WF_STATUS = 'COUNTERSIGNED'
+    where lc.WF_STATUS = status_countersigned
   ) loop
 
       -- STEP 1 - Creation of the Commitment header
@@ -824,28 +1001,25 @@ set define off;
   l_table_alias             VARCHAR2(200);
   l_debtor_cat_id           VARCHAR2(200);
   l_legal_type_cd           VARCHAR2(200);
+  l_resp_org_struct_id      number;
   l_resp_org_struct_key_cd  VARCHAR2(200);
   l_resp_org_struct_tp_cd   VARCHAR2(200);
   l_doc_table_alias         VARCHAR2(200);
   l_doc_scan_table_alias    VARCHAR2(200);
   l_visa_table_alias        VARCHAR2(200);
   l_visa_action_cd          VARCHAR2(200);
-  --l_visa_signature          VARCHAR2(200);
   l_visa_comment            VARCHAR2(200);
-  --l_visa_agent_id           VARCHAR2(200);
   l_visa_wlkflw_center_cd   VARCHAR2(200);
   l_visa_wlkflw_orgname     VARCHAR2(200);
   l_visa_agent_type         VARCHAR2(200);
-  --l_visa_agent_name         VARCHAR2(200);
-  l_LE_ID                   NUMBER := LEGALENTITYID;
   l_language_cd             VARCHAR2(1);
-  request_type              VARCHAR2(20);
   supporting_doc            WIF_DOCUMENTS%ROWTYPE;
-  default_doc_type          VARCHAR2(20) := 'pdf';
-
+  l_LE_ID                   NUMBER              := LEGALENTITYID;
+  request_type              VARCHAR2(20)        := 'LEGAL_ENTITY';
+  default_doc_type          VARCHAR2(20)        := 'pdf';
+  status_waiting_abac       varchar2(20)        := 'WAITING_FOR_ABAC';
 BEGIN
  --init constants
- request_type := 'LEGAL_ENTITY';
  l_run_id := SEQ_ABAC_RUN_ID.NEXTVAL;
  SELECT VALUE INTO l_loc_sys_cd from WIF_CONSTANTS WHERE NAME='ABAC_SYS_CD';
  SELECT VALUE INTO l_destination from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_DEST';
@@ -855,21 +1029,17 @@ BEGIN
  SELECT VALUE INTO l_table_alias from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_TABLE_ALIAS';
  SELECT VALUE INTO l_debtor_cat_id from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_DEBTOR_CAT_ID';
  SELECT VALUE INTO l_legal_type_cd from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_LEGAL_TYPE_CD';
+ SELECT VALUE INTO l_resp_org_struct_id from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_RESP_ORG_STRUCT_ID';
  SELECT VALUE INTO l_resp_org_struct_key_cd from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_RESP_ORG_STRUCT_KEY_CD';
  SELECT VALUE INTO l_resp_org_struct_tp_cd from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_RESP_ORG_STRUCT_TP_CD';
-
  SELECT VALUE INTO l_doc_table_alias from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_DOC_TABLE_ALIAS';
  SELECT VALUE INTO l_doc_scan_table_alias from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_DOC_SCAN_TABLE_ALIAS';
-
  SELECT VALUE INTO l_visa_table_alias from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_TABLE_ALIAS';
  SELECT VALUE INTO l_visa_action_cd from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_ACTION_CD';
- --SELECT VALUE INTO l_visa_signature from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_SIGNATURE';
  SELECT VALUE INTO l_visa_comment from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_DEFAULT_COMMENT';
- --SELECT VALUE INTO l_visa_agent_id from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_AGENT_ID';
  SELECT VALUE INTO l_visa_wlkflw_center_cd from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_WRKFLW_CENTER_CD';
  SELECT VALUE INTO l_visa_wlkflw_orgname from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_WRKFLW_ORG_NAME';
  SELECT VALUE INTO l_visa_agent_type from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_SIGN_AS_AGENT_TYPE';
- --SELECT VALUE INTO l_visa_agent_name from WIF_CONSTANTS WHERE NAME='LEF_V_LOC_VISA_SUPPLIED_AGENT_NAME';
 
  l_loc_obj_foreign_id:= l_loc_sys_cd || '.' || to_char(l_run_id);
 
@@ -918,7 +1088,7 @@ BEGIN
       l_debtor_cat_id, NULL, NULL, NULL, l_legal_type_cd,
       NULL, NULL, NULL, NULL, NULL,
       NULL, NULL, NULL, NULL, NULL,
-      NULL, NULL, NULL, NULL, NULL,
+      NULL, NULL, NULL, NULL, l_resp_org_struct_id,
       NULL, NULL, NULL, l_resp_org_struct_key_cd, l_resp_org_struct_tp_cd,
       NULL, NULL, NULL, NULL, NULL,
       NULL, NULL, NULL, NULL, NULL,
@@ -959,7 +1129,7 @@ BEGIN
       Insert into WIF_ABAC_REQUEST_PROCESS (ID,LE_ID,L_LOC_OBJ_FK,L_QUE_ID, REQUEST_TYPE) values (SEQ_WIF_ABAC_STATUS.NEXTVAL,l_LE_ID,l_loc_obj_foreign_id,l_que_id, request_type);
 
       --UPDATE the LEGAL_ENTITY status
-      update WIF_LEGAL_ENTITY set WF_STATUS='WAITING_FOR_ABAC' where ID=l_LE_ID;
+      update WIF_LEGAL_ENTITY set WF_STATUS=STATUS_WAITING_ABAC where ID=l_LE_ID;
  END LOOP;
  -- commit operations
  commit;
@@ -973,23 +1143,16 @@ set define off;
 
   CREATE OR REPLACE PROCEDURE "WIFI4EU_ABAC"."UPDATE_BC_STATUS_FROM_ABAC" AS
   PRAGMA AUTONOMOUS_TRANSACTION;
-  ABAC_VALID varchar2(30);
-  WAITING_APPROVAL varchar2(30);
-  LC_IMPORTED varchar2(30);
-  LC_READY_TO_BE_COUNTERSIGNED varchar2(30);
-  rows_affected number;
+  STATUS_ABAC_VALID               varchar2(30) := 'ABAC_VALID';
+  STATUS_WAITING_APPROVAL         varchar2(30) := 'WAITING_APPROVAL';
+  STATUS_IMPORTED                 varchar2(30) := 'IMPORTED';
+  STATUS_READY_TO_BE_COUNTERSGD   varchar2(30) := 'READY_TO_BE_COUNTERSIGNED';
 BEGIN
-  --init constants
-  ABAC_VALID := 'ABAC_VALID';
-  WAITING_APPROVAL := 'WAITING_APPROVAL';
-  LC_IMPORTED := 'IMPORTED';
-  LC_READY_TO_BE_COUNTERSIGNED := 'READY_TO_BE_COUNTERSIGNED';
 
-  rows_affected := 0;
   for request in (
                   select bc.legal_entity_id as le_id, bc.id as bc_id, l_loc_obj_fk, bc.WF_STATUS as bc_status, status_vw.status as abac_status, status_vw.ERROR_MSG
                   from wif_budgetary_commitment bc
-                  left join wif_abac_bc_status_view status_vw on bc.id = status_vw.bc_id and bc.WF_STATUS <> ABAC_VALID
+                  left join wif_abac_bc_status_view status_vw on bc.id = status_vw.bc_id and bc.WF_STATUS <> STATUS_ABAC_VALID
                   where status_vw.submit_date = (select max(all_requests.submit_date)
                                                 from wif_abac_request_process all_requests
                                                 where all_requests.bc_id = bc.id
@@ -1004,7 +1167,7 @@ BEGIN
         where wif_budgetary_commitment.id = request.bc_id;
 
         --Update the ABAC Commitment Level 2 Key of the Budgetary Commitment
-        if request.abac_status in (WAITING_APPROVAL, ABAC_VALID) then
+        if request.abac_status in (STATUS_WAITING_APPROVAL, STATUS_ABAC_VALID) then
           update wif_budgetary_commitment set commitment_l2_key = request.l_loc_obj_fk
           where wif_budgetary_commitment.id = request.bc_id;
         end if;
@@ -1027,14 +1190,13 @@ BEGIN
         update WIF_ABAC_REQUEST_PROCESS set ERROR_MSG=request.ERROR_MSG where l_loc_obj_fk=request.l_loc_obj_fk;
 
         --If there's already a legal commitment, update it's status
-        if (request.abac_status = ABAC_VALID) then
-          update wif_legal_commitment lc set wf_status = LC_READY_TO_BE_COUNTERSIGNED
-          where lc.legal_entity_id = request.le_id and lc.wf_status = LC_IMPORTED;
+        if (request.abac_status = STATUS_ABAC_VALID) then
+          update wif_legal_commitment lc set wf_status = STATUS_READY_TO_BE_COUNTERSGD
+          where lc.legal_entity_id = request.le_id and lc.wf_status = STATUS_IMPORTED;
         end if;
 
       end if;
 
-      rows_affected := rows_affected + 1;
   END LOOP;
   commit;
 END UPDATE_BC_STATUS_FROM_ABAC;
@@ -1047,17 +1209,13 @@ set define off;
 
   CREATE OR REPLACE PROCEDURE "WIFI4EU_ABAC"."UPDATE_LC_STATUS_FROM_ABAC" AS
   PRAGMA AUTONOMOUS_TRANSACTION;
-  ABAC_VALID varchar2(30);
-  rows_affected number;
+  status_abac_valid varchar2(30) := 'ABAC_VALID';
 BEGIN
-  --init constants
-  ABAC_VALID := 'ABAC_VALID';
 
-  rows_affected := 0;
   for request in (
                   select lc.id as lc_id, l_loc_obj_fk, lc.WF_STATUS as lc_status, status_vw.status as abac_status, status_vw.ERROR_MSG
                   from wif_legal_commitment lc
-                  left join wif_abac_lc_status_view status_vw on status_vw.lc_id = lc.id and lc.WF_STATUS <> 'ABAC_VALID'
+                  left join wif_abac_lc_status_view status_vw on status_vw.lc_id = lc.id and lc.WF_STATUS <> status_abac_valid
                   where status_vw.submit_date = (select max(all_requests.submit_date)
                                                 from wif_abac_request_process all_requests
                                                 where all_requests.lc_id = lc.id
@@ -1072,7 +1230,7 @@ BEGIN
         where wif_legal_commitment.id = request.lc_id;
 
         --Update the ABAC Legal Commitment Key
-        if request.abac_status = ABAC_VALID then
+        if request.abac_status = status_abac_valid then
           update wif_legal_commitment set abac_key = request.l_loc_obj_fk
           where wif_legal_commitment.id = request.lc_id;
         end if;
@@ -1081,7 +1239,6 @@ BEGIN
 
       end if;
 
-      rows_affected := rows_affected + 1;
   END LOOP;
   commit;
 END UPDATE_LC_STATUS_FROM_ABAC;
@@ -1094,13 +1251,9 @@ set define off;
 
   CREATE OR REPLACE PROCEDURE "WIFI4EU_ABAC"."UPDATE_LEF_STATUS_FROM_ABAC" AS
   PRAGMA AUTONOMOUS_TRANSACTION;
-  req_type varchar2(20);
-  rows_affected number;
+  req_type varchar2(20) := 'LEGAL_ENTITY';
 BEGIN
-  --init constants
-  req_type := 'LEGAL_ENTITY';
 
-  rows_affected := 0;
   for request in (
                   select le_id, l_loc_obj_fk, le.WF_STATUS as legal_entity_status, status_vw.status as abac_status, status_vw.LE_KEY, status_vw.ERROR_MSG, status_vw.REJECTION_MSG
                   from wif_abac_request_process req
@@ -1113,7 +1266,6 @@ BEGIN
                                                       and all_requests.request_type = req_type)
                   order by le_id, l_loc_obj_fk)
   loop
-      dbms_output.put_line('LEGAL_ENTITY_ID='||request.le_id);
 
       if (request.legal_entity_status <> request.abac_status) then
         update wif_legal_entity set WF_STATUS = request.abac_status, abac_fel_id = request.LE_KEY
@@ -1122,41 +1274,8 @@ BEGIN
         update WIF_ABAC_REQUEST_PROCESS set ERROR_MSG=request.ERROR_MSG, REJECTION_MSG=request.REJECTION_MSG where l_loc_obj_fk=request.l_loc_obj_fk;
 
       end if;
-
-      rows_affected := rows_affected + 1;
   END LOOP;
   commit;
-END UPDATE_LEF_STATUS_FROM_ABAC;
-
-/
---------------------------------------------------------
---  DDL for Package ABAC_FN
---------------------------------------------------------
-
-  CREATE OR REPLACE PACKAGE "WIFI4EU_ABAC"."ABAC_FN" as function FN_UPDATE_LEF_STATUS_FROM_ABAC return number is
-BEGIN
-  --init constants
-  var WAITING_FOR_ABAC := 'WAITING_FOR_ABAC';
-  var WAITING_APPROVAL := 'WAITING_APPROVAL';
-
-  var counter := 0;
-
-  for request in (
-                  select le_id, l_loc_obj_fk, le.WF_STATUS as legal_entity_status, status_vw.status as abac_status, status_vw.LE_KEY
-                  from wif_abac_request_process request
-                  inner join wif_legal_entity le on request.le_id = le.id and le.wf_status in (WAITING_FOR_ABAC, WAITING_APPROVAL)
-                  left join wif_abac_lef_status_view status_vw on request.l_loc_obj_fk = loc_obj_foreign_id
-                  order by le_id, l_loc_obj_fk)
-  loop
-      dbms_output.put_line('LEGAL_ENTITY_ID='||request.le_id);
-
-      update wif_legal_entity set WF_STATUS = request.abac_status, abac_fel_id = request.LE_KEY
-      where wif_legal_entity.id = request.le_id;
-
-      counter := counter+1;
-  END LOOP;
-
-  return counter;
 END UPDATE_LEF_STATUS_FROM_ABAC;
 
 /
@@ -1166,7 +1285,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS" MODIFY ("SUBMIT_DATE" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS" ADD CONSTRAINT "WIF_ABAC_BATCH_STATUS_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS" MODIFY ("L_LOC_OBJ_FK" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS" MODIFY ("REQUEST_TYPE" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_ABAC_REQUEST_PROCESS" ADD CONSTRAINT "WIF_ABAC_REQUEST_TYPE_CK" CHECK (REQUEST_TYPE in ('LEGAL_ENTITY', 'BUDGETARY_COMMITMENT', 'LEGAL_COMMITMENT')) ENABLE;
@@ -1176,7 +1299,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 --------------------------------------------------------
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCUMENT_TYPE" ADD CONSTRAINT "WIF_DOCUMENT_TYPE_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCUMENT_TYPE" MODIFY ("DOCT_TYPE_NAME" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCUMENT_TYPE" MODIFY ("ID" NOT NULL ENABLE);
 --------------------------------------------------------
@@ -1186,16 +1313,28 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_COUNTRY" MODIFY ("ISO3_CODE" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_COUNTRY" MODIFY ("NAME" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_COUNTRY" ADD CONSTRAINT "WIF_COUNTRY_PK" PRIMARY KEY ("ISO2_CODE")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_COUNTRY" MODIFY ("ISO2_CODE" NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table WIF_LEGAL_ENTITY
 --------------------------------------------------------
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" ADD CONSTRAINT "WIF_LEGAL_ENTITY_MID_UNQ" UNIQUE ("OFFICIAL_NAME")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" ADD CONSTRAINT "WIF_MUNICIPALITY_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("DATE_CREATED" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("WF_STATUS" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("POSTAL_CODE" NOT NULL ENABLE);
@@ -1215,7 +1354,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 --------------------------------------------------------
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE" ADD CONSTRAINT "WIF_DOCTYPE_METADATA_TYPE_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE" MODIFY ("METADATA_KEY" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE" MODIFY ("CCM2_METADATA_ID" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCTYPE_METADATA_TYPE" MODIFY ("CCM2_DOCTYPE_ID" NOT NULL ENABLE);
@@ -1225,7 +1368,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 --------------------------------------------------------
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_COMMITMENT" ADD CONSTRAINT "WIF_LC_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_COMMITMENT" MODIFY ("DATE_CREATED" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_COMMITMENT" MODIFY ("WF_STATUS" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_COMMITMENT" MODIFY ("LEGAL_ENTITY_ID" NOT NULL ENABLE);
@@ -1236,7 +1383,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" MODIFY ("LEGAL_ENTITY_ID" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" ADD CONSTRAINT "WIF_BUDGETARY_COMMITMENT_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" MODIFY ("WF_STATUS" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" MODIFY ("ID" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BUDGETARY_COMMITMENT" MODIFY ("DATE_CREATED" NOT NULL ENABLE);
@@ -1245,7 +1396,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 --------------------------------------------------------
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_NOTIFICATION" ADD CONSTRAINT "WIF_NOTIFICATION_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_NOTIFICATION" MODIFY ("STATUS" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_NOTIFICATION" MODIFY ("SEND_TO" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_NOTIFICATION" MODIFY ("NOTIFICATION_TYPE" NOT NULL ENABLE);
@@ -1255,7 +1410,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 --------------------------------------------------------
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS" ADD CONSTRAINT "WIF_AUTH_USERS_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS" MODIFY ("TOKEN_EXPIRED" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS" MODIFY ("ENABLED" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_USERS" MODIFY ("LAST_NAME" NOT NULL ENABLE);
@@ -1269,7 +1428,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_IMPORT_LOG" MODIFY ("BATCH_REF" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_IMPORT_LOG" ADD CONSTRAINT "WIF_IMPORT_LOG_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_IMPORT_LOG" MODIFY ("USER_ID" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_IMPORT_LOG" MODIFY ("IMPORT_DATE" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_IMPORT_LOG" MODIFY ("FILENAME" NOT NULL ENABLE);
@@ -1279,7 +1442,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 --------------------------------------------------------
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_CONSTANTS" ADD CONSTRAINT "WIF_CONSTANTS_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_CONSTANTS" MODIFY ("VALUE" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_CONSTANTS" MODIFY ("NAME" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_CONSTANTS" MODIFY ("ID" NOT NULL ENABLE);
@@ -1288,7 +1455,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 --------------------------------------------------------
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_ROLES" ADD CONSTRAINT "WIF_AUTH_TOLES_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_ROLES" MODIFY ("NAME" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_AUTH_ROLES" MODIFY ("ID" NOT NULL ENABLE);
 --------------------------------------------------------
@@ -1297,7 +1468,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" MODIFY ("GLOBAL_COMMITMENT_L1_POS_KEY" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" ADD CONSTRAINT "WIF_BC_LEVEL2_POSITION_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" MODIFY ("BUDGETARY_COMMITMENT_ID" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" MODIFY ("COMMITMENT_L2_AMOUNT" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_BC_LEVEL2_POSITION" MODIFY ("COMMITMENT_L2_POSITION" NOT NULL ENABLE);
@@ -1307,7 +1482,11 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
 --------------------------------------------------------
 
   ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCUMENTS" ADD CONSTRAINT "WIF_DOCUMENTS_PK" PRIMARY KEY ("ID")
-  USING INDEX  ENABLE;
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCUMENTS" MODIFY ("WF_STATUS" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCUMENTS" MODIFY ("DATE_CREATED" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_DOCUMENTS" MODIFY ("MIMETYPE" NOT NULL ENABLE);
