@@ -16,7 +16,8 @@ export interface MonitoringRowDTO {
     lcAbacRef?: string;
     signatureDate?: string;
     counterSignatureDate?: string;
-    docAresRef?: string;
+    lefDocAresRef?: string;
+    lcDocAresRef?: string;
     readyToBeCounterSigned?: Boolean;
     isSelected?: Boolean;
 }

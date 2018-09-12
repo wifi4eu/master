@@ -43,12 +43,14 @@ export class MonitoringTableComponent implements OnInit{
             { field: 'registrationNumber', header: 'Registration<br/>Number' },
             { field: 'lefStatus', header: '<br/>LEF Status', isFor: 'lef' },
             { field: 'lefAbacRef', header: '<br/>LEF ABAC ref', isFor: 'lef' },
+            { field: 'lefDocAresRef', header: '<br/>LEF ARES ref', isFor: 'lef' },
             { field: 'bcStatus', header: '<br/>BC Status', isFor: 'bc' },
             { field: 'bcAbacRef', header: '<br/>BC ABAC ref', isFor: 'bc' },
             { field: 'lcStatus', header: '<br/>LC Status', isFor: 'lc' },
             { field: 'lcAbacRef', header: '<br/>LC ABAC ref', isFor: 'lc' },
             { field: 'signatureDate', header: 'Date of<br/>signature', isFor: 'lc' },
-            { field: 'counterSignatureDate', header: 'Date of<br/>counter signature', isFor: 'lc' }
+            { field: 'counterSignatureDate', header: 'Date of<br/>counter signature', isFor: 'lc' },
+            { field: 'lcDocAresRef', header: '<br/>LC ARES ref', isFor: 'lc' },
         ];
     }
 
