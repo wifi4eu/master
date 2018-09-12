@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.abac.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
@@ -21,6 +22,7 @@ public class MonitoringRow {
 	private String bcAbacRef;
 	private String lcStatus;
 	private String lcAbacRef;
+	private String docAresRef;
 	private Boolean readyToBeCounterSigned;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
@@ -32,7 +34,7 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(LegalEntity legalEntity, BudgetaryCommitment budgetaryCommitment, LegalCommitment legalCommitment) {
+	public MonitoringRow(LegalEntity legalEntity, BudgetaryCommitment budgetaryCommitment, LegalCommitment legalCommitment, Document doc) {
 
 		//Legal Entity data
 		if(legalEntity != null) {
@@ -59,6 +61,10 @@ public class MonitoringRow {
 			this.setSignatureDate(legalCommitment.getGrantAgreementSignatureDate());
 			this.setCounterSignatureDate(legalCommitment.getGrantAgreementCounterSignatureDate());
 			this.setLcAbacRef(legalCommitment.getAbacKey());
+		}
+		
+		if(doc != null) {
+			this.setDocAresRef(doc.getAresReference());
 		}
 
 		readyToBeCounterSigned = legalCommitment != null && legalCommitment.getWfStatus().equals(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);
@@ -178,6 +184,14 @@ public class MonitoringRow {
 
 	public void setLcAbacRef(String lcAbacRef) {
 		this.lcAbacRef = lcAbacRef;
+	}
+
+	public String getDocAresRef() {
+		return docAresRef;
+	}
+
+	public void setDocAresRef(String docAresRef) {
+		this.docAresRef = docAresRef;
 	}
 	
 }
