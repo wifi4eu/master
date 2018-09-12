@@ -309,7 +309,7 @@ export class SupplierProfileComponent {
 
     /* Language modal */
     private changeLanguage() {
-        this.displayLanguageModal = true;
+        this.displayLanguageModal === false? this.displayLanguageModal = true : this.displayLanguageModal = false;
     }
 
     private selectLanguage(lang) {
@@ -319,14 +319,14 @@ export class SupplierProfileComponent {
                     this.sharedService.growlTranslation('Your notification languaguage was succesfully changed.', 'shared.registration.update.success', 'success');
                     this.selectedLanguage = this.languages.find(language => language.code === lang);
                     this.sharedService.update();
-                    this.closeModal();
+                    this.changeLanguage();
                 } else {
                     this.sharedService.growlTranslation('An error occurred and your notification language change.', 'shared.registration.update.error', 'error');
-                    this.closeModal();
+                    this.changeLanguage();
                 }
             }, error => {
                 this.sharedService.growlTranslation('An error occurred and your notification language change.', 'shared.registration.update.error', 'error');
-                this.closeModal();
+                this.changeLanguage();
             }
        );
     }
@@ -341,7 +341,6 @@ export class SupplierProfileComponent {
         this.displayCompany = false;
         this.deletingLogo = false;
         this.clearLogoFile();
-        this.displayLanguageModal = false;
         Object.assign(this.editedSupplier, this.supplier);
     }
 /* ADD CONTACT
