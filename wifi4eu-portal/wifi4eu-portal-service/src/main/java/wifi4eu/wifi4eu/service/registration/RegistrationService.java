@@ -298,24 +298,18 @@ public class RegistrationService {
                     String containerName = "wifi4eu";
                     String content = base64;
                     String uri = null;
-                    boolean docUploaded = false;
                     
                     String fileName = String.valueOf(registrationID) + "_" + legalFile.getFileName();
                     try {
                     	_log.info("UPLOADING DOCUMENT container[{}] fileName[{}]", containerName, fileName);
                     	uri = azureBlobConnector.uploadText(containerName, fileName, content);
                     	_log.info("URI [{}]", uri);
-                    	docUploaded = true;
                     } catch (Exception e) {
                     	_log.error("error", e);
                     }
                     
-                    legalFile.setFileData(uri);
-                    
-                    /////////////////////////////////////////////////////////////////
-                    //file name also comes from front input
-
-                    if (docUploaded) {
+                    if (uri != null) {
+                    	legalFile.setFileData(uri);
                     	legalFile.setId(0);
                     	legalFile.setRegistration(registrationID);
                     	//legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));

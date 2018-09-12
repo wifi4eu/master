@@ -2,10 +2,15 @@ package wifi4eu.wifi4eu.service.migration;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
+
 import wifi4eu.wifi4eu.common.utils.AzureBlobConnector;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.registration.Registration;
@@ -23,30 +28,43 @@ public class AzureMigrationService implements Runnable {
 
 	private AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
 	
+    private static Logger LOGGER = LogManager.getLogger(AzureMigrationService.class);
+
 	@Override
+	@Transactional
 	public void run() {
 		this.migrate();
 	}
 
 	public void migrate() {
-		Iterable<Registration> registrations = registrationRepository.findAll();
+		long startTime = System.currentTimeMillis();
 		
-		for (Registration registration : registrations) {
+		LOGGER.info("Statring migration process");
 
-			Iterable<LegalFile> legalFiles = legalFilesRepository.findByRegistration(registration.getId());
-			List<LegalFile> listLegalFiles = new ArrayList<>();
-			legalFiles.forEach(listLegalFiles::add);
+		LOGGER.info("Querying registrations");
+		List<Registration> registrations = Lists.newArrayList(registrationRepository.findAll());
+		int qtyRegistrations = registrations.size();
+		
+		LOGGER.info("Registrations [{}]", qtyRegistrations);
+		
+		int i = 0;
+		for (Registration registration : registrations) {
+			i++;
+			LOGGER.info("Registrations Id[{}], [{}]/[{}]", registration.getId(), i, qtyRegistrations);
+			List<LegalFile> legalFiles = Lists.newArrayList(legalFilesRepository.findByRegistration(registration.getId()));
 			
-			this.save(registration.getId(), listLegalFiles);
+			LOGGER.info("   legalFiles [{}]", legalFiles.size());
+			
+			this.save(registration.getId(), legalFiles);
 		}
+		
+		LOGGER.info("Statring migration process. It tool [{}]", System.currentTimeMillis() - startTime);
+		
 	}
 
 	public void save(Integer registrationId, List<LegalFile> listLegalFiles) {
 
-		long uploadTime = System.currentTimeMillis();
-
 		String containerName = "wifi4eu";
-		boolean docUploaded = false;
 		
 		for (LegalFile legalFile : listLegalFiles) {
 			
@@ -55,15 +73,13 @@ public class AzureMigrationService implements Runnable {
 			String uri = null;
 			try {
 				uri = azureBlobConnector.uploadText(containerName, fileName, content);
-				docUploaded = true;
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOGGER.error("Error uploading file", e);
 			}
 
-			if (docUploaded) {
-				legalFile.setId(0);
+			if (uri != null) {
+				//legalFile.setId(0);
 				legalFile.setFileData(uri);
-				legalFile.setUploadTime(uploadTime);
 				legalFilesRepository.save(legalFile);
 			}
 		}
