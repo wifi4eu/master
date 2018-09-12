@@ -13,6 +13,9 @@ import { Http, RequestOptions, Headers } from "@angular/http";
 import { ApplyVoucherBase } from '../../shared/swagger/model/ApplyVoucher'
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../environments/environment';
+import * as moment from 'moment';
+import 'moment-timezone';
+import{ AppConstants} from '../../shared/constants/AppConstants';
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -120,12 +123,13 @@ export class VoucherComponent {
     }
     private loadVoucherData() {
         this.allRequestCompleted = false;
-        let startDateCall = new Date(this.currentCall.startDate);
-        let endDateCall = new Date(this.currentCall.endDate);
-        this.startDate = ('0' + startDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (startDateCall.getUTCMonth() + 1)).slice(-2) + "/" + startDateCall.getUTCFullYear();
-        this.startHour = ('0' + (startDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + startDateCall.getUTCMinutes()).slice(-2);
-        this.endDate = ('0' + endDateCall.getUTCDate()).slice(-2) + "/" + ('0' + (endDateCall.getUTCMonth() + 1)).slice(-2) + "/" + endDateCall.getUTCFullYear();
-        this.endHour = ('0' + (endDateCall.getUTCHours() + 2)).slice(-2) + ":" + ('0' + endDateCall.getUTCMinutes()).slice(-2);
+        let startDateCall= moment(this.currentCall.startDate).tz(AppConstants.timezone);
+        let endDateCall = moment(this.currentCall.endDate).tz(AppConstants.timezone);
+        this.startDate = startDateCall.format("DD/MM/YYYY");
+        this.startHour = startDateCall.format("HH:mm");
+        this.endDate = endDateCall.format("DD/MM/YYYY");
+        this.endHour = endDateCall.format("HH:mm");
+        
         this.applyVoucherApi.getDataForApplyVoucherByUserIdAndCallId(this.user.id, this.currentCall.id)
             .finally(() => this.allRequestCompleted = true)
             .subscribe(
