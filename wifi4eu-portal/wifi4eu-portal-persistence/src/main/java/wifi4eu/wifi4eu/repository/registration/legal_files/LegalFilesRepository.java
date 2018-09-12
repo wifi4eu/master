@@ -7,6 +7,7 @@ import wifi4eu.wifi4eu.entity.registration.*;
 import java.util.List;
 
 public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer> {
+	List<LegalFile> findByRegistration(Integer registrationId);
 	List<LegalFile> findByRegistrationAndFileType(Integer registrationId, Integer fileType);
 	void deleteByRegistration(Integer registrationId);
 	void deleteByRegistrationAndFileType(Integer registrationId, Integer fileType);
