@@ -1,487 +1,690 @@
-package wifi4eu.wifi4eu.web.rest;
+package wifi4eu.wifi4eu.service.registration;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.Base64Utils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.google.common.collect.Lists;
+
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.CallDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalFileCorrectionReasonDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalFilesViewDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.common.enums.RegistrationUsersStatus;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
-import wifi4eu.wifi4eu.entity.registration.LegalFile;
-import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason;
+import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
+import wifi4eu.wifi4eu.entity.user.User;
+import wifi4eu.wifi4eu.entity.user.UserContactDetails;
+import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
+import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
+import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
+import wifi4eu.wifi4eu.mapper.registrationWarning.RegistrationWarningMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
-import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.repository.user.UserContactDetailsRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.call.CallService;
+import wifi4eu.wifi4eu.service.location.LauService;
+import wifi4eu.wifi4eu.service.mayor.MayorService;
+import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
+import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
+import wifi4eu.wifi4eu.util.RedisUtil;
+import wifi4eu.wifi4eu.util.UserUtils;
 
-@CrossOrigin(origins = "*")
-@Controller
-@Api(value = "/registration", description = "Registration object REST API services")
-@RequestMapping("registration")
-public class RegistrationResource {
+@Service("portalRegistrationService")
+public class RegistrationService {
+    private final Logger _log = LogManager.getLogger(RegistrationService.class);
 
-	@Autowired
-	private RegistrationService registrationService;
+    @Autowired
+    RegistrationMapper registrationMapper;
 
-	@Autowired
-	private LegalFilesService legalFilesService;
+    @Autowired
+    RegistrationWarningMapper registrationWarningMapper;
 
-	@Autowired
-	private PermissionChecker permissionChecker;
+    @Autowired
+    RegistrationRepository registrationRepository;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    ApplicationIssueUtilRepository applicationIssueUtilRepository;
 
-	@Autowired
-	private UserThreadsService userThreadsService;
+    @Autowired
+    ApplicationService applicationService;
 
-	@Autowired
-	private LegalFilesRepository legalFilesRepository;
+    @Autowired
+    UserService userService;
 
-	@Autowired
-	private AzureBlobConnector azureBlobConnector;
-	
-	Logger _log = LogManager.getLogger(RegistrationResource.class);
+    @Autowired
+    MunicipalityService municipalityService;
 
-	/*
-	 * @ApiOperation(value = "Get all the registrations")
-	 * 
-	 * @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	 * 
-	 * @ResponseBody public List<RegistrationDTO>
-	 * allRegistrations(HttpServletResponse response) throws IOException {
-	 * _log.info("allRegistrations"); try { if
-	 * (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
-	 * throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase()); } }
-	 * catch (AccessDeniedException ade) {
-	 * response.sendError(HttpStatus.NOT_FOUND.value()); } catch (Exception e) {
-	 * response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value()); } return
-	 * registrationService.getAllRegistrations(); }
-	 */
+    @Autowired
+    UserThreadsService userThreadsService;
 
-	@ApiOperation(value = "Get registration by specific id")
-	@RequestMapping(value = "/{registrationId}", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public RegistrationDTO getRegistrationById(@PathVariable("registrationId") final Integer registrationId,
-			HttpServletResponse response) throws IOException {
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId);
-		try {
-			permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
-		} catch (AccessDeniedException ade) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- You have no permissions to retrieve this registration", ade.getMessage());
-			response.sendError(HttpStatus.NOT_FOUND.value());
-		} catch (Exception e) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been retrieved", e);
-			response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
-		}
-		return registrationService.getRegistrationById(registrationId);
-	}
+    @Autowired
+    ThreadService threadService;
 
-	@ApiOperation(value = "Invalidate registration")
-	@RequestMapping(method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
-	@ResponseBody
-	public ResponseDTO invalidateRegistration(@RequestBody final RegistrationDTO registrationDTO,
-			HttpServletResponse response, HttpServletRequest request) throws IOException {
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Invalidating registration");
-		try {
-			UserDTO userDTO = userConnected;
-			if (userDTO.getType() != 5) {
-				if (!registrationService.checkUserWithRegistration(registrationDTO.getId(), userConnected.getId())) {
-					throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-				}
-				permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
-			}
-			// RegistrationValidator.validate(registrationDTO);
-			RegistrationDTO resRegistration = registrationService.invalidateRegistration(registrationDTO.getId());
-			_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
-					+ userConnected.getEcasUsername() + "- Registration invalidated successfully");
-			return new ResponseDTO(true, resRegistration, null);
-		} catch (AccessDeniedException ade) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- You have no permissions to invalidate registrations", ade.getMessage());
-			response.sendError(HttpStatus.NOT_FOUND.value());
-			return new ResponseDTO(false, null,
-					new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-		} catch (Exception e) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been invalidated", e);
-			response.sendError(HttpStatus.BAD_REQUEST.value());
-			return new ResponseDTO(false, null,
-					new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-		}
-	}
+    @Autowired
+    LauService lauService;
 
-	@ApiOperation(value = "Confirm or request revision of installation report")
-	@RequestMapping(value = "/confirmOrRejectReport", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
-	@ResponseBody
-	public ResponseDTO confirmOrRejectInstallationReport(@RequestBody final Map<String, Object> map,
-			HttpServletRequest request) {
-		return registrationService.confirmOrRejectInstallationAndSendCNS(map, request);
-	}
+    @Autowired
+    MayorService mayorService;
 
-	@ApiOperation(value = "Update legal documents")
-	@RequestMapping(value = "/{registrationId}/uploadDocuments", method = RequestMethod.PUT, produces = "application/json")
-	@ResponseBody
-	public ResponseDTO uploadRegistrationDocuments(@RequestBody final LegalFilesViewDTO legalFileDTOS,
-			@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response,
-			HttpServletRequest request) throws IOException {
-			
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating legal documents");
-		try {
-			UserDTO userDTO = userConnected;
-			if (!registrationService.checkUserWithRegistration(registrationId, userConnected.getId())) {
-				throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-			}
-			permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationId);
-			ResponseDTO result = registrationService.uploadRegistrationDocuments(registrationId,
-					legalFileDTOS.getArrayOfFiles(), request);
-			_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
-					+ userConnected.getEcasUsername() + "- Documents updated successfully");
-			return result;
-		} catch (AccessDeniedException ade) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- You have no permissions to update documents", ade.getMessage());
-			response.sendError(HttpStatus.NOT_FOUND.value());
-			return new ResponseDTO(false, null,
-					new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-		} catch (Exception e) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These documents cannot been updated", e);
-			response.sendError(HttpStatus.BAD_REQUEST.value());
-			return new ResponseDTO(false, null,
-					new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
-		}
-	}
+    @Autowired
+    LegalFilesMapper legalFilesMapper;
 
-	@ApiOperation(value = "Get registrations by specific user id")
-	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public List<RegistrationDTO> getRegistrationsByUserId(@PathVariable("userId") final Integer userId,
-			@RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registrations by user id " + userId);
-		try {
-			permissionChecker.check(RightConstants.USER_TABLE + userId);
-			List<RegistrationDTO> registrationResult = new ArrayList<>();
-			registrationResult = registrationService.getRegistrationsByUserId(userId);
-			_log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Registration retrieved successfully");
-			return registrationResult;
-		} catch (AccessDeniedException ade) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- You have no permissions to retrieve this registration", ade.getMessage());
-			response.sendError(HttpStatus.NOT_FOUND.value());
-			return null;
-		} catch (Exception e) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been retrieved", e);
-			return null;
-		}
-	}
+    @Autowired
+    LegalFilesRepository legalFilesRepository;
 
-	@ApiOperation(value = "Get registrations by specific municipality id")
-	@RequestMapping(value = "/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public RegistrationDTO getRegistrationByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId,
-			HttpServletResponse httpServletResponse) {
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("User ECAS name: " + userConnected.getEcasUsername() + " - Getting registrations by munciipality id "
-				+ municipalityId);
-		httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-		httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-		httpServletResponse.setDateHeader("Expires", 0); // Proxies.
-		UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-		if (user.getType() != 5) {
-			permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
-		}
-		return registrationService.getRegistrationByMunicipalityId(municipalityId);
-	}
+    @Autowired
+    LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
 
-	@ApiOperation(value = "Get registration by specific userThread id")
-	@RequestMapping(value = "/userThread/{userThreadId}", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public RegistrationDTO getRegistrationByUserThreadId(@PathVariable("userThreadId") final Integer userThreadId) {
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registrations by user thread id "
-				+ userThreadId);
-		UserThreadsDTO userThreadDTO = userThreadsService.getUserThreadsById(userThreadId);
-		RegistrationDTO registration = registrationService.getRegistrationByUserThreadId(userThreadDTO.getThreadId(),
-				userThreadDTO.getUserId());
-		if (userThreadsService.getByUserIdAndThreadId(userConnected.getId(), userThreadDTO.getThreadId()) != null) {
-			registration.setIpRegistration(null);
-			registration.setMailCounter(0);
-			registration.setRole(null);
-			registration.setStatus(0);
-			registration.setAssociationName(null);
-			registration.setOrganisationId(0);
-			return registration;
-		} else {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- You don't have any thread registered with this id");
-			throw new AppException("The user in session does not contain any thread registered with the id provided.");
-		}
-	}
+    @Autowired
+    RegistrationWarningService registrationWarningService;
 
-	@ApiOperation(value = "Get registration by specific userThread id")
-	@RequestMapping(value = "/getDocument/{registrationId}/{fileId}", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public ResponseDTO getLegalFilesById(@PathVariable("registrationId") final Integer registrationId,
-			@PathVariable("fileId") final Integer fileId, HttpServletResponse response, HttpServletRequest request)
-			throws IOException {
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id "
-				+ registrationId + " and file id " + fileId);
-		try {
-			if (registrationId == null
-					|| (!legalFilesService.hasUserPermissionForLegalFile(registrationId, userConnected.getId(), fileId)
-							&& userConnected.getType() != 5)) {
-				throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-			}
-			permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
+    @Autowired
+    LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
 
-		} catch (AccessDeniedException ade) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- You have no permissions to retrieve this registration", ade.getMessage());
-			response.sendError(HttpStatus.NOT_FOUND.value());
-			return null;
-		}
+    @Autowired
+    MailService mailService;
 
-		LegalFile legalFile = legalFilesRepository.findOne(fileId); // if file doesnt exist user doesnt have permission
-		String fileName = legalFile.getFileName();
-		String fileMime = legalFile.getFileMime();
-		String fileExtension = legalFilesService.getExtensionFromMime(fileMime);
+    @Autowired
+    ApplicationRepository applicationRepository;
 
-		// if fileMime is null or has lenght 0 fileExtension is null
-		if (!Validator.isEmpty(fileName) && !Validator.isEmpty(legalFile.getFileData())
-				&& !Validator.isEmpty(fileExtension)) {
-			// Recover the data from Azure, the database field only stores the url of the file
-			String content = azureBlobConnector.downloadLegalFile(legalFile.getFileData());
+    @Autowired
+    PermissionChecker permissionChecker;
 
-			if (!Validator.isEmpty(content)) {
-				try {
-					response.setContentType(fileMime);
-					response.setHeader("Content-disposition", "inline; filename=\"" + fileName + fileExtension + "\"");
+    @Autowired
+    UserUtils userUtils;
 
-					byte[] fileBytes = Base64Utils.decodeFromString(content);
-					response.getOutputStream().write(fileBytes);
-					response.getOutputStream().flush();
-					response.getOutputStream().close();
-				} catch (Exception ex) {
-					_log.error("ECAS Username: " + userConnected.getEcasUsername()
-							+ "- The registration cannot been retrieved", ex);
-					return new ResponseDTO(false, null,
-							new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-				}
-			} else {
-				_log.error("ECAS Username: " + userConnected.getEcasUsername()
-						+ "- The File cannot been retrieved, file id : " + fileId);
-				return new ResponseDTO(false, null,
-						new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-			}
-		} else {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- The File cannot been retrieved, file id : " + fileId);
-			return new ResponseDTO(false, null,
-					new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-		}
-		_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
-				+ userConnected.getEcasUsername() + "- Legal files retrieved successfully, id: " + fileId);
-		return new ResponseDTO(true, null, null);
-	}
+    @Autowired
+    SupplierService supplierService;
 
-	@ApiOperation(value = "Get past of documents for type")
-	@RequestMapping(value = "/getHistory/{registrationId}/{type}", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public ResponseDTO getHistoryForType(@PathVariable("registrationId") final Integer registrationId,
-			@PathVariable("type") final Integer type, HttpServletResponse response, HttpServletRequest request)
-			throws IOException {
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting History for document type " + type
-				+ " and registration id " + registrationId);
-		try {
-			if (registrationId == null
-					|| (!registrationService.checkUserWithRegistration(registrationId, userConnected.getId()))
-							&& userConnected.getType() != 5) {
-				throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-			}
-			permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
-			return new ResponseDTO(true,
-					registrationService.getHistoryDocuments(registrationId, type, userConnected.getId()), null);
+    @Autowired
+    SupplierMapper supplierMapper;
 
-		} catch (AccessDeniedException ade) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- You have no permissions to retrieve this registration", ade.getMessage());
-			response.sendError(HttpStatus.NOT_FOUND.value());
-			return null;
-		}
-	}
+    @Autowired
+    RegistrationUsersRepository registrationUsersRepository;
 
-	@ApiOperation(value = "Get past of documents")
-	@RequestMapping(value = "/{registrationId}/getHistory", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public ResponseDTO getHistoryAll(@PathVariable("registrationId") final Integer registrationId,
-			HttpServletResponse response, HttpServletRequest request) throws IOException {
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting History for documents"
-				+ " of registration id " + registrationId);
-		try {
-			if (registrationId == null
-					|| (!registrationService.checkUserWithRegistration(registrationId, userConnected.getId()))
-							&& userConnected.getType() != 5) {
-				throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-			}
-			permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationId);
-			return new ResponseDTO(true,
-					registrationService.getHistoryDocuments(registrationId, null, userConnected.getId()), null);
+    @Autowired
+    UserRepository userRepository;
 
-		} catch (AccessDeniedException ade) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- You have no permissions to retrieve this registration", ade.getMessage());
-			response.sendError(HttpStatus.NOT_FOUND.value());
-			return null;
-		}
-	}
+    @Autowired
+    UserMapper userMapper;
 
-	@ApiOperation(value = "getLegalFile")
-	@RequestMapping(value = "/getLegalFile", method = RequestMethod.GET)
-	@ResponseBody
-	public LegalFileCorrectionReasonDTO getLegalFile() {
-		return new LegalFileCorrectionReasonDTO();
-	}
+    @Autowired
+    CallService callService;
 
-	@ApiOperation(value = "Get legal files by registration id")
-	@RequestMapping(value = "/getLegalFiles/{registrationId}", method = RequestMethod.GET)
-	@ResponseBody
-	public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(
-			@PathVariable("registrationId") final Integer registrationId, @RequestParam("date") final Long timestamp,
-			HttpServletResponse response, HttpServletRequest request) throws IOException {
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting legal files by registration id "
-				+ registrationId);
-		try {
-			if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
-				throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-			}
-			_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
-					+ userConnected.getEcasUsername() + "- Legal files retrieved successfully");
-			return registrationService.getLegalFilesByRegistrationId(registrationId);
-		} catch (AccessDeniedException ade) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- You have no permissions to retrieve these legal files", ade.getMessage());
-			response.sendError(HttpStatus.NOT_FOUND.value());
-			return null;
-		} catch (Exception e) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal files cannot been retrieved", e);
-			return null;
-		}
-	}
+    @Autowired
+    UserContactDetailsRepository userContactDetailsRepository;
 
-	@ApiOperation(value = "Create/update a legal file")
-	@RequestMapping(value = "/saveLegalFile", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
-	@ResponseBody
-	public ResponseDTO saveLegalFile(@RequestBody final LegalFileCorrectionReasonDTO legalFileDTO,
-			HttpServletResponse response, HttpServletRequest request) throws IOException {
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating/updating a legal file");
-		try {
-			if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + legalFileDTO.getRegistrationId())) {
-				throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-			}
-			LegalFileCorrectionReasonDTO resLegalFile = registrationService.saveLegalFile(legalFileDTO);
-			_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
-					+ userConnected.getEcasUsername() + "- Legal files saved successfully");
-			return new ResponseDTO(true, resLegalFile, null);
-		} catch (AccessDeniedException ade) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- You have no permissions to save legal files", ade.getMessage());
-			response.sendError(HttpStatus.NOT_FOUND.value());
-			return null;
-		} catch (Exception e) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal file cannot been saved", e);
-			return new ResponseDTO(false, null,
-					new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-		}
-	}
+    @Autowired
+    private RedisUtil redisUtil;
+    
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
 
-	@ApiOperation(value = "Update association name")
-	@RequestMapping(value = "/updateAssociationName", method = RequestMethod.PUT)
-	@ResponseBody
-	public ResponseDTO updateAssociationName(@RequestBody final RegistrationDTO registrationDTO,
-			HttpServletResponse response, HttpServletRequest request) throws IOException {
-		UserContext userContext = UserHolder.getUser();
-		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating/updating a legal file");
-		try {
-			if (userConnected == null) {
-				throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-			}
-			permissionChecker.check(userConnected, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
-			List<RegistrationDTO> registrations = registrationService
-					.updateAssociationName(registrationDTO.getAssociationName(), userConnected.getId());
-			_log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: "
-					+ userConnected.getEcasUsername() + "- Legal files saved successfully");
-			return new ResponseDTO(true, registrations, null);
-		} catch (AccessDeniedException ade) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername()
-					+ "- You have no permissions to update association name", ade.getMessage());
-			response.sendError(HttpStatus.NOT_FOUND.value());
-			return null;
-		} catch (Exception e) {
-			_log.error(
-					"ECAS Username: " + userConnected.getEcasUsername() + "- These association name cannot been saved",
-					e);
-			return new ResponseDTO(false, null,
-					new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-		}
-	}
+    public List<RegistrationDTO> getAllRegistrations() {
+        return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
+    }
 
+
+    public RegistrationDTO getRegistrationById(int registrationId) {
+        Registration registration = registrationRepository.findOne(registrationId);
+        RegistrationDTO registrationDTO = registrationMapper.toDTO(registration);
+        registrationDTO.setRegistrationWarningDTOList(registrationWarningMapper.toDTOList(registration.getRegistrationWarningList()));
+        return registrationDTO;
+    }
+
+    @Transactional
+    public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
+        RegistrationUsers registrationUsers = new RegistrationUsers();
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        if (registrationDTO.getId() == 0) {
+            registrationDTO.setMailCounter(3);
+        }
+        RegistrationDTO registrationCreated = saveRegistration(registrationDTO);
+        registrationUsers.setUserId(userConnected.getId());
+        registrationUsers.setRegistrationId(registrationCreated.getId());
+        registrationUsers.setMain(1);
+        registrationUsers.setStatus(RegistrationUsersStatus.REGISTERED.getValue());
+        registrationUsers.setCreationDate(new Date());
+        registrationUsers.setContactEmail(userConnected.getEcasEmail());
+        registrationUsers = registrationUsersRepository.save(registrationUsers);
+        if (Validator.isNotNull(registrationUsers)) {
+            redisUtil.sync(userConnected.getId());
+        }
+
+        registrationWarningService.createWarningsByRegistration(registrationCreated);
+        return registrationCreated;
+    }
+
+
+    @Transactional
+    public ResponseDTO uploadRegistrationDocuments(Integer registrationID, List<LegalFileDTO> legalFile, HttpServletRequest request) throws Exception {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        if(!legalFile.isEmpty()){
+            for( int i = 0 ; i < legalFile.size() ; i++){
+                uploadDocument(registrationID, legalFile.get(i), userConnected, (request == null ? "" : RequestIpRetriever.getIp(request)));
+            }
+        }
+
+        Registration registration = registrationRepository.findOne(registrationID);
+        if (hasRegistrationRequiredFiles(registrationID)) {
+            registration.setAllFilesFlag(1);
+        } else {
+            registration.setAllFilesFlag(0);
+        }
+        registration = registrationRepository.save(registration);
+
+        if (Validator.isNotNull(registration)) {
+            redisUtil.sync(userConnected.getId());
+        }
+
+        //if user doesn't have any documents as requested for correction we put its status on HOLD
+        //this is only relevant if the registration has applied to a call!
+        if (hasOneUserWithoutCorrectionRequest(registrationUsersRepository
+                .findByRegistrationId(registrationID), registrationID)) {
+
+            //three cases
+            //1. if last closed call exists it's in the revision period so the status is set automatically to HOLD
+            //2. if last closed call is null then check if some other call is open
+            //2.1 if there's a call going on the user should not be able to edit the documents if he's applied
+            // if he's not applied there's no application
+            //2.2  if there's no call going on we set the status to HOLD
+
+            CallDTO lastCall = callService.getLastCallClosed();
+            if(lastCall != null) {
+                Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationID, lastCall.getId());
+                if (applicationDB != null && applicationDB.getStatus() == ApplicationStatus.PENDING_FOLLOWUP.getValue()) {
+                    applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
+                    applicationRepository.save(applicationDB);
+                    _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected
+                            .getEcasUsername() + " - Changing applicant status for HOLD, as it doesn't have any more documents as requested for " +
+                            "correction. Application id: " + applicationDB.getId() + ". Registration id: " + registrationID);
+                }
+            } else {
+                CallDTO currentCall = callService.getCurrentCall();
+                if(currentCall == null){
+                    //do nothing there's no application
+
+                } else {
+                    //call going on
+                    //pending to define when it's allowed to upload documents
+                }
+            }
+        }
+        //DUPLICATED CODE, PLEASE WHEN UNCOMMENTING THIS MAKE IT RIGHT
+        // application has a correction request, set sent_email and sent_email_date to null to enable again the dgconn to validate/invalidate application according to new uploaded documents
+//        CallDTO lastCall = callService.getLastCallClosed();
+//        if(lastCall != null) {
+//            Application applicationDB = applicationRepository.findTopByRegistrationIdAndCallId(registrationID, lastCall.getId());
+//            if(applicationDB != null) {
+//                applicationDB.setSentEmail(false);
+//                applicationDB.setSentEmailDate(null);
+//                applicationRepository.save(applicationDB);
+//                _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected
+//                        .getEcasUsername() + " - Changing applicant sent_email and sent_email_date to null, as it has documents requested for " +
+//                        "correction. Dgconn can again validate/invalidate application. Application id: " + applicationDB.getId() + ". Registration id: " + registrationID);
+//            }
+//        }
+        return new ResponseDTO(true, "sucess", null);
+    }
+
+    private void uploadDocument (Integer registrationID, LegalFileDTO legalFile, UserDTO userConnected, String ip) throws Exception {
+        String legalFileToUpload = legalFile.getFileData();
+        if (legalFileToUpload != null) {
+            String base64 = LegalFilesService.getBase64Data(legalFileToUpload);
+            if(base64 != null && !base64.isEmpty()) {
+                byte[] byteArray = Base64.getMimeDecoder().decode(base64);
+                String extension = LegalFilesService.getValidFileExtension(legalFileToUpload);
+                if (byteArray.length > 1024000) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File size cannot bet greater than 1 MB");
+                    throw new Exception("File size cannot bet greater than 1 MB.");
+                } else if (extension == null) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File must have a valid extension");
+                    throw new Exception("File must have a valid extension.");
+                } else if (legalFile.getFileName().isEmpty()) {
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File doesn't have a name");
+                    throw new Exception("File must have a valid extension.");
+                } else {
+                    String fileName = String.valueOf(registrationID) + "_" + legalFile.getFileName();
+
+                	String uri = azureBlobConnector.uploadLegalFile(fileName, base64);
+                    boolean docUploaded = !Validator.isEmpty(uri);
+                    legalFile.setFileData(uri);
+                    
+                    if (docUploaded) {
+                    	legalFile.setId(0);
+                    	legalFile.setRegistration(registrationID);
+                    	//legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
+                    	legalFile.setUploadTime(new Date().getTime());
+                    	legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
+                    	legalFile.setFileSize(byteArray.length);
+                    	legalFile.setUserId(userConnected.getId());
+                    	legalFile.setFileName(fileName);
+                    	legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
+
+                    	_log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
+                    			"document number type:" + legalFile.getFileType());
+
+                    	List<LegalFileCorrectionReason> legalFilesCorrectionReasons = legalFileCorrectionReasonRepository.findAllCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(),legalFile.getFileType());
+
+                    	for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
+                    		legalFileCorrectionReason.setCorrectionReason(null);
+                    		legalFileCorrectionReason.setRequestCorrection(false);
+                    	}
+
+                    	try {
+                    		_log.info("Saving legal file entry on Database");
+                    		legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
+                    	} catch (Exception e) {
+                    		_log.error("Error saving legal_files", e);
+                    		azureBlobConnector.deleteLegalFile(fileName);
+                    	}
+                    }
+                }
+            } else {
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file its data is in incorrect format");
+                throw new Exception("Data is in incorrect format");
+            }
+        } else{
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to upload a file that is empty");
+            throw new Exception("File is empty");
+        }
+    }
+
+    /**
+     * True if there's at least one user associated with this registration has no file requested for correction
+     * @param users
+     * @param registrationId
+     * @return
+     */
+    private boolean hasOneUserWithoutCorrectionRequest(List<RegistrationUsers> users, Integer registrationId) {
+        for (int i = 0; i < users.size(); i++) {
+            if (legalFileCorrectionReasonRepository.findLastLegalFilesByRegistrationAndUserCorrection(registrationId, users.get(i).getUserId()).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ResponseDTO confirmOrRejectInstallationAndSendCNS(Map<String, Object> map, HttpServletRequest request) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO response = new ResponseDTO();
+        if (!map.isEmpty()) {
+            if (map.containsKey("id") && map.containsKey("beneficiaryIndicator")) {
+                Registration registration = registrationRepository.findOne((int) map.get("id"));
+
+                if (!checkPermissionsRegistrations(registration)){
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to confirm or reject");
+                    return permissionChecker.getAccessDeniedResponse();
+                }
+
+                // take origin submitted date
+                if (registration != null && registration.getInstallationSiteSubmission() != null) {
+                    boolean beneficiaryIndicator = (boolean) map.get("beneficiaryIndicator");
+
+                    if (beneficiaryIndicator) {
+                        registration.setInstallationSiteConfirmation(new java.sql.Date(new Date().getTime()));
+                        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Installation site confirmed");
+                    } else {
+                        registration.setInstallationSiteRejection(new java.sql.Date(new Date().getTime()));
+                        _log.log(Level.getLevel("BUSINESS"), "[ " + RequestIpRetriever.getIp(request) + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Installation site rejected");
+                    }
+                    // we save the new indicators
+                    if (sendEmailOnConfirmOrReject(registration)) {
+                        registrationRepository.save(registration);
+                        //if everything goes ok it's a success
+                        response.setSuccess(true);
+                        MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipality().getId());
+                        response.setData(municipality);
+                        return response;
+                    }
+
+                } else {
+                    response.setSuccess(false);
+                    response.setData("Error querying municipality - registration");
+                    response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The beneficiary is not found");
+                }
+            }
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(400, "error.400.invalidFields"));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The fields are invalid");
+        } else {
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(400, "error.400.noData"));
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Data not found");
+        }
+        return response;
+    }
+
+    private boolean checkPermissionsRegistrations(Registration registration) {
+        try {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            permissionChecker.checkBeneficiaryPermission(userDTO.getType(), registration.getMunicipality().getId(), registration.getId());
+            if (registrationUsersRepository.findByUserIdAndRegistrationId(userDTO.getId(), registration.getId()) == null) {
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    /* Method called when the user confirms/rejects the installation report. This method sends the CNS email to the
+     * supplier.
+     *
+     * @param registration
+     * @return
+     */
+    private boolean sendEmailOnConfirmOrReject(Registration registration) {
+        //sending CNS
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending email for registration with id " + registration.getId());
+        String beneficiaryName = registration.getMunicipality().getName();
+        Iterable<Application> applicationList = applicationRepository.findByRegistrationId(registration
+                .getId());
+        Supplier supplier = supplierMapper.toEntity(supplierService.getSupplierById(applicationList.iterator().next().getSupplierId()));
+        String name = supplier.getName();
+        String email = supplier.getContactEmail();
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        String lang = userUtils.getUserLangByUserId(supplierService.getUserIdFromSupplier(supplier.getId()));
+        if (lang != null) {
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - No language specified, using the default language");
+            locale = new Locale(lang);
+        }
+        //if beneficiary indicator and wifi indicator are true we send a confirmation email
+        if (registration.getInstallationSiteConfirmation() != null) {
+            MailData mailData = MailHelper.buildMailInstallationConfirmationFromBeneficiary(email, name, beneficiaryName, locale);
+        	mailService.sendMail(mailData, true);
+
+        	_log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Confirmation email for registration " + registration.getId() + " sent to " + email);
+            return true;
+        } else {
+            Date dateSubmission = registration.getInstallationSiteSubmission();
+            Date dateReject = registration.getInstallationSiteRejection();
+            if (dateSubmission.before(dateReject)) {
+                // if rejection date is bigger than submission date, send email
+                User user = userRepository.findMainUserFromRegistration(registration.getId());
+                String ccName = user.getName();
+                String ccEmail = user.getEmail();
+                
+                MailData mailDataSupplier = MailHelper.buildMailInstallationRejectionFromBeneficiary(email, name, beneficiaryName, locale);
+            	mailService.sendMail(mailDataSupplier, true);
+                MailData mailDataUser = MailHelper.buildMailInstallationRejectionFromBeneficiary(ccEmail, ccName, beneficiaryName, locale);
+            	mailService.sendMail(mailDataUser, true);
+
+                _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Rejection email for registration " + registration.getId() + " sent to " + email);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    @Transactional
+    public RegistrationDTO deleteRegistration(int registrationId, HttpServletRequest request) {
+        RegistrationDTO registrationDTO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
+        if (registrationDTO != null) {
+            for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registrationDTO.getId())) {
+                applicationService.deleteApplication(application.getId(), request);
+            }
+            legalFilesRepository.deleteByRegistration(registrationDTO.getId());
+            registrationRepository.delete(registrationMapper.toEntity(registrationDTO));
+            return registrationDTO;
+        } else {
+            return null;
+        }
+    }
+
+
+    public RegistrationDTO invalidateRegistration(int registrationId) {
+        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
+        registrationDBO.setStatus(RegistrationStatus.KO.getValue());
+        return saveRegistration(registrationDBO);
+    }
+
+    public List<RegistrationDTO> getRegistrationsByUserId(int userId) {
+        return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findByUserId(userId)));
+    }
+
+    public RegistrationDTO getRegistrationByMunicipalityId(int municipalityId) {
+        return registrationMapper.toDTO(registrationRepository.findByMunicipalityId(municipalityId));
+    }
+
+    public RegistrationDTO getRegistrationByUserAndMunicipality(int userId, int municipalityId) {
+        return registrationMapper.toDTO(registrationRepository.findByUserIdAndMunicipalityId(userId, municipalityId));
+    }
+
+    public boolean checkIfRegistrationIsKO(int userId) {
+        List<RegistrationDTO> registrations = registrationMapper.toDTOList(
+                Lists.newArrayList(
+                        registrationRepository.findByUserId(userId)));
+        for (RegistrationDTO registration : registrations) {
+            if (registration.getStatus() == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean requestLegalDocuments(int registrationId) {
+        RegistrationDTO registration = getRegistrationById(registrationId);
+        if (registration != null) {
+            UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationId));
+            if (user != null) {
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (user.getLang() != null) {
+                    locale = new Locale(user.getLang());
+                }
+                
+                String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
+                MailData mailData = MailHelper.buildMailRequestSupportingDocumentsForRegistration(
+                		user.getEcasEmail(), MailService.FROM_ADDRESS, additionalInfoUrl, 
+                		registration.getMunicipalityId(), "requestLegalDocuments", locale);
+            	mailService.sendMail(mailData, false);
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    @Transactional
+    public boolean assignLegalEntity(int registrationId) {
+        RegistrationDTO registration = getRegistrationById(registrationId);
+        if (registration != null) {
+            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+            List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(municipality.getLauId());
+            for (MunicipalityDTO municipalityItem : municipalities) {
+                RegistrationDTO registrationItem = getRegistrationByMunicipalityId(municipalityItem.getId());
+                if (registrationItem != null) {
+                    registrationItem.setStatus(RegistrationStatus.KO.getValue());
+                    if (registrationItem.getId() == registration.getId()) {
+                        registrationItem.setStatus(RegistrationStatus.OK.getValue());
+                    }
+                    createRegistration(registrationItem);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public RegistrationDTO getRegistrationByUserThreadId(int threadId, int userId) {
+        ThreadDTO threadDTO = threadService.getThreadById(threadId);
+        List<RegistrationDTO> registrations = getRegistrationsByUserId(userId);
+        for (RegistrationDTO registration : registrations) {
+            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+            if (threadDTO.getReason().equals(String.valueOf(municipality.getLauId()))) {
+                return registration;
+            }
+        }
+        return null;
+    }
+
+    public List<RegistrationDTO> getRegistrationsByIp(String ip) {
+        return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findByIpRegistration(ip)));
+    }
+
+    public List<RegistrationDTO> getRegistrationsByLauId(int lauId) {
+        List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(lauId);
+        List<RegistrationDTO> registrations = new ArrayList<>();
+        for (MunicipalityDTO municipality : municipalities) {
+            registrations.add(getRegistrationByMunicipalityId(municipality.getId()));
+        }
+        return registrations;
+    }
+
+    public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(Integer registrationId) {
+        return legalFileCorrectionReasonMapper.toDTOList(legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(registrationId));
+    }
+
+    @Transactional
+    public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) {
+        return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
+    }
+
+    public RegistrationDTO saveRegistration(RegistrationDTO registrationDTO) {
+        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
+    }
+
+    public boolean checkIfMayor(RegistrationDTO registrationDTO) {
+        UserDTO user = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
+        MayorDTO mayor = mayorService.getMayorByMunicipalityId(registrationDTO.getMunicipalityId());
+        if (user != null && mayor != null) {
+            if (mayor.getName().equals(user.getName()) && mayor.getSurname().equals(user.getSurname())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkUserWithRegistration(Integer registrationId, Integer userId){
+        if(registrationUsersRepository.findByUserIdAndRegistrationId(userId, registrationId) != null){
+            return true;
+        }
+        return false;
+    }
+
+    public List<UserContactDetails> findUsersContactDetailsByRegistrationId(Integer registrationId){
+        return userContactDetailsRepository.findUsersContactDetailsByRegistrationId(registrationId);
+    }
+
+    public List<UserContactDetails> findUsersContactDetailsByOrganisationId(Integer organizationId){
+        return userContactDetailsRepository.findUsersContactDetailsByOrganisationId(organizationId);
+    }
+
+    public List<Registration> findRegistrationsByOrganisationId(Integer organizationId){
+        return registrationRepository.findByOrganisationId(organizationId);
+    }
+
+
+    public List<UserDTO> getUsersFromRegistration(Integer registrationId){
+        List<UserDTO> users = userMapper.toDTOList(userRepository.findUsersByRegistrationId(registrationId));
+        return users;
+    }
+
+    /**
+     * Checks if registration has required files ( type 1 and 3 ) to be able to apply. Independent of user
+     *
+     * If it doesn't have the required file return false. if has required files and has correction request for that file return false too.
+     * If it has the required files and has no correction request for those files, returns true
+     * @param registrationID
+     * @return
+     */
+    public boolean hasRegistrationRequiredFiles(Integer registrationID) {
+        boolean hasFilesUploaded = !legalFilesRepository.findLastRequiredLegalFilesByRegistration(registrationID).isEmpty();
+        boolean hasCorrectionRequestedForRequiredFiles = !legalFileCorrectionReasonRepository.findLastRequiredLegalFilesCorrectionByRegistration
+                (registrationID).isEmpty();
+
+        if(!hasFilesUploaded || hasCorrectionRequestedForRequiredFiles){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Gets all documents that belong to that user and the mayor documents as well.
+     * If type is not null it returns all documents uploaded for that type.
+     * @param registrationId
+     * @param type
+     * @param userId
+     * @return
+     */
+    public List<LegalFileDTO> getHistoryDocuments(Integer registrationId, Integer type, Integer userId) {
+        if (type == null || type == 0) {
+            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryAll(registrationId, userId));
+        }
+        if (type == 1 || type == 3) {
+            return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryRequiredType(registrationId, type));
+        }
+        return legalFilesMapper.toDTOList(legalFilesRepository.findHistoryForType(registrationId, userId, type));
+    }
+
+    public List<RegistrationDTO> updateAssociationName(String associationName, Integer userId) {
+        List<RegistrationDTO> originalRegistrations = getRegistrationsByUserId(userId);
+        List<RegistrationDTO> newRegistrations = new ArrayList<>();
+        for (RegistrationDTO reg : originalRegistrations) {
+            RegistrationDTO newReg = reg;
+            newReg.setAssociationName(associationName);
+            newRegistrations.add(saveRegistration(newReg));
+        }
+        return newRegistrations;
+    }
 }
