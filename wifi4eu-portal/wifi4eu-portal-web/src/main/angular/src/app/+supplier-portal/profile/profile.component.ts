@@ -86,7 +86,7 @@ export class SupplierProfileComponent {
     }
 
     private fetchData() {
-        this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
+        this.supplierApi.getSupplierByUserId(this.user.id, new Date().getTime()).subscribe(
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
                     this.supplier = supplier;
