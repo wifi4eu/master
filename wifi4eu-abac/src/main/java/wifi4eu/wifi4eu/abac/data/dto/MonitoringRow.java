@@ -22,7 +22,8 @@ public class MonitoringRow {
 	private String bcAbacRef;
 	private String lcStatus;
 	private String lcAbacRef;
-	private String docAresRef;
+	private String lefDocAresRef;
+	private String lcDocAresRef;
 	private Boolean readyToBeCounterSigned;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
@@ -34,7 +35,7 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
-	public MonitoringRow(LegalEntity legalEntity, BudgetaryCommitment budgetaryCommitment, LegalCommitment legalCommitment, Document doc) {
+	public MonitoringRow(LegalEntity legalEntity, BudgetaryCommitment budgetaryCommitment, LegalCommitment legalCommitment, Document lefDoc, Document lcDoc) {
 
 		//Legal Entity data
 		if(legalEntity != null) {
@@ -63,8 +64,12 @@ public class MonitoringRow {
 			this.setLcAbacRef(legalCommitment.getAbacKey());
 		}
 		
-		if(doc != null) {
-			this.setDocAresRef(doc.getAresReference());
+		if(lefDoc != null) {
+			this.setLefDocAresRef(lefDoc.getAresReference());
+		}
+		
+		if(lcDoc != null) {
+			this.setLcDocAresRef(lcDoc.getAresReference());
 		}
 
 		readyToBeCounterSigned = legalCommitment != null && legalCommitment.getWfStatus().equals(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);
@@ -186,12 +191,20 @@ public class MonitoringRow {
 		this.lcAbacRef = lcAbacRef;
 	}
 
-	public String getDocAresRef() {
-		return docAresRef;
+	public String getLefDocAresRef() {
+		return lefDocAresRef;
 	}
 
-	public void setDocAresRef(String docAresRef) {
-		this.docAresRef = docAresRef;
+	public void setLefDocAresRef(String lefDocAresRef) {
+		this.lefDocAresRef = lefDocAresRef;
+	}
+
+	public String getLcDocAresRef() {
+		return lcDocAresRef;
+	}
+
+	public void setLcDocAresRef(String lcDocAresRef) {
+		this.lcDocAresRef = lcDocAresRef;
 	}
 	
 }
