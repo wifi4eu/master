@@ -128,6 +128,11 @@ public class SupplierService {
         SupplierDTO finalSupplier = new SupplierDTO();
         finalSupplier.setName(supplierDTO.getName());
         finalSupplier.setAddress(supplierDTO.getAddress());
+        finalSupplier.setStreet(supplierDTO.getStreet());
+        finalSupplier.setStreetNumber(supplierDTO.getStreetNumber());
+        finalSupplier.setPostalCode(supplierDTO.getPostalCode());
+        finalSupplier.setCity(supplierDTO.getCity());
+        finalSupplier.setCountry(supplierDTO.getCountry());
         finalSupplier.setVat(supplierDTO.getVat());
         finalSupplier.setBic(supplierDTO.getBic());
         finalSupplier.setAccountNumber(supplierDTO.getAccountNumber());
@@ -332,7 +337,11 @@ public class SupplierService {
     public SupplierDTO updateSupplier(SupplierDTO supplierDTO) throws Exception {
         SupplierDTO supplierDBO = getSupplierById(supplierDTO.getId());
         supplierDBO.setName(supplierDTO.getName());
-        supplierDBO.setAddress(supplierDTO.getAddress());
+        supplierDBO.setStreet(supplierDTO.getStreet());
+        supplierDBO.setStreetNumber(supplierDTO.getStreetNumber());
+        supplierDBO.setPostalCode(supplierDTO.getPostalCode());
+        supplierDBO.setCity(supplierDTO.getCity());
+        supplierDBO.setCountry(supplierDTO.getCountry());
         supplierDBO.setVat(supplierDTO.getVat());
         supplierDBO.setWebsite(supplierDTO.getWebsite());
         supplierDBO.setLogo(supplierDTO.getLogo());

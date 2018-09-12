@@ -32,13 +32,18 @@ public class SupplierValidator {
             throw new Exception("Incorrect supplier status");
         }
 
-        if ((Validator.isNull(supplierDTO.getAddress()) || supplierDTO.getAddress().trim().isEmpty())
+        if ((Validator.isNull(supplierDTO.getStreet()) || supplierDTO.getStreet().trim().isEmpty())
+                || (Validator.isNull(supplierDTO.getStreetNumber()) || supplierDTO.getStreetNumber().trim().isEmpty())
+                || (Validator.isNull(supplierDTO.getPostalCode()) || supplierDTO.getPostalCode().trim().isEmpty())
+                || (Validator.isNull(supplierDTO.getCity()) || supplierDTO.getCity().trim().isEmpty())
+                || (Validator.isNull(supplierDTO.getCountry()) || supplierDTO.getCountry().trim().isEmpty())
                 || (Validator.isNull(supplierDTO.getContactEmail()) || supplierDTO.getContactEmail().trim().isEmpty())
                 || (Validator.isNull(supplierDTO.getName()) || supplierDTO.getName().trim().isEmpty())
                 || (Validator.isNull(supplierDTO.getVat()) || supplierDTO.getVat().trim().isEmpty())) {
             throw new Exception("Some field is empty!");
         }
-        if (supplierDTO.getAddress().length() > 255 || supplierDTO.getContactEmail().length() > 255 || supplierDTO.getName().length() > 255 || supplierDTO.getVat().length() > 255) {
+        if (supplierDTO.getStreet().length() > 255 || supplierDTO.getStreetNumber().length() > 255 || supplierDTO.getPostalCode().length() > 255 || supplierDTO.getCity().length() > 255 || supplierDTO.getCountry().length() > 255
+                || supplierDTO.getContactEmail().length() > 255 || supplierDTO.getName().length() > 255 || supplierDTO.getVat().length() > 255) {
             throw new Exception("Too many characters in some field!");
         }
     }

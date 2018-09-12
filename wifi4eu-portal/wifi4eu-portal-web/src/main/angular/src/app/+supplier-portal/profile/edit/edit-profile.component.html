@@ -17,12 +17,12 @@
                        [(ngModel)]="supplier.name" (ngModelChange)="enableButton()" required>
             </div>
             <br>
-            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+            <!-- <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="address">{{ 'suppRegistration.legal.address' | translate }}</label><br>
                 <input id="address" type="text" name="address" class="form-control" maxlength="255"
                        [(ngModel)]="supplier.address" (ngModelChange)="enableButton()" required>
             </div>
-            <br>
+            <br> -->
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="vat">{{ 'suppRegistration.vat.label' | translate }}</label><br>
                 <input id="vat" type="text" name="vat" class="form-control" maxlength="255"
@@ -53,6 +53,39 @@
                     </span>
                 </label>
             </div>
+
+            <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'suppRegistration.company.address' | translate }}</p>
+            <br>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="street">{{ 'shared.streetName' | translate }}</label><br>
+                <input id="street" type="text" name="street" class="form-control" maxlength="255"
+                       [(ngModel)]="supplier.street" (ngModelChange)="enableButton()" required>
+            </div>
+            <br>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="streetNumber">{{ 'shared.number.label' | translate }}</label><br>
+                <input id="streetNumber" type="text" name="streetNumber" class="form-control" maxlength="255"
+                       [(ngModel)]="supplier.streetNumber" (ngModelChange)="enableButton()" required>
+            </div>
+            <br>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="postalCode">{{ 'shared.postal-code.label' | translate }}</label><br>
+                <input id="postalCode" type="text" name="postalCode" class="form-control" maxlength="255"
+                       [(ngModel)]="supplier.postalCode" (ngModelChange)="enableButton()" required>
+            </div>
+            <br>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="city">{{ 'suppRegistration.city.label' | translate }}</label><br>
+                <input id="city" type="text" name="city" class="form-control" maxlength="255"
+                       [(ngModel)]="supplier.city" (ngModelChange)="enableButton()" required>
+            </div>
+            <br>
+            <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
+                <label for="country">{{ 'shared.country.label' | translate }}</label><br>
+                <input id="country" type="text" name="country" class="form-control" maxlength="255"
+                       [(ngModel)]="supplier.country" (ngModelChange)="enableButton()" required>
+            </div>
+
             <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
  <!--ADD CONTACT-->
                <!-- <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToSupplier()">+ {{ "benefPortal.beneficary.addMunicipality" | translate}}</p>-->

@@ -292,9 +292,8 @@ export class SupplierEditProfileComponent {
  
     private enableButton() {
         this.buttonEnabled = false;
-        if (this.supplier.name != null && this.supplier.address != null
-            && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != ""
-            &&  this.supplier.vat.trim() != "") {
+        if (this.supplier.name != null && this.supplier.street != null && this.supplier.streetNumber != null && this.supplier.postalCode != null && this.supplier.city != null && this.supplier.country != null && this.supplier.vat != null 
+            && this.supplier.name.trim() != "" && this.supplier.street.trim() != "" && this.supplier.streetNumber.trim() != "" && this.supplier.postalCode.trim() != "" && this.supplier.city.trim() != "" && this.supplier.country.trim() != "" && this.supplier.vat.trim() != "") {
             if (this.supplier.website != null && this.supplier.website.trim() != "") {
                 let pattern = new RegExp(this.websitePattern);
                 this.buttonCompanyEnabled = pattern.test(this.supplier.website);
