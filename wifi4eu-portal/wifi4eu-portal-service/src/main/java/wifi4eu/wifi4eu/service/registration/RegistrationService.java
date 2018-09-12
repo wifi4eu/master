@@ -212,7 +212,7 @@ public class RegistrationService {
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         if(!legalFile.isEmpty()){
             for( int i = 0 ; i < legalFile.size() ; i++){
-                uploadDocument(registrationID, legalFile.get(i), userConnected, RequestIpRetriever.getIp(request));
+                uploadDocument(registrationID, legalFile.get(i), userConnected, (request == null ? "" : RequestIpRetriever.getIp(request)));
             }
         }
 
@@ -309,6 +309,7 @@ public class RegistrationService {
                     	legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
                     	legalFile.setFileSize(byteArray.length);
                     	legalFile.setUserId(userConnected.getId());
+                    	legalFile.setFileName(fileName);
                     	legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
 
                     	_log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +

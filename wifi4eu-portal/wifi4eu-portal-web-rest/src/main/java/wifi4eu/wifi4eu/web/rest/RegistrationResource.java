@@ -43,6 +43,7 @@ import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.entity.registration.LegalFile;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
+import wifi4eu.wifi4eu.service.migration.AzureMigrationService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -75,6 +76,9 @@ public class RegistrationResource {
 
 	@Autowired
 	private AzureBlobConnector azureBlobConnector;
+	
+	@Autowired
+	private AzureMigrationService azureMigrationService;
 
 	Logger _log = LogManager.getLogger(RegistrationResource.class);
 
@@ -101,8 +105,7 @@ public class RegistrationResource {
 			HttpServletResponse response) throws IOException {
 		UserContext userContext = UserHolder.getUser();
 		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id "
-				+ registrationId);
+		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registration by id " + registrationId);
 		try {
 			permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
 		} catch (AccessDeniedException ade) {
@@ -110,9 +113,7 @@ public class RegistrationResource {
 					+ "- You have no permissions to retrieve this registration", ade.getMessage());
 			response.sendError(HttpStatus.NOT_FOUND.value());
 		} catch (Exception e) {
-			_log.error(
-					"ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been retrieved",
-					e);
+			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been retrieved", e);
 			response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		}
 		return registrationService.getRegistrationById(registrationId);
@@ -147,9 +148,7 @@ public class RegistrationResource {
 			return new ResponseDTO(false, null,
 					new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
 		} catch (Exception e) {
-			_log.error(
-					"ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been invalidated",
-					e);
+			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been invalidated", e);
 			response.sendError(HttpStatus.BAD_REQUEST.value());
 			return new ResponseDTO(false, null,
 					new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
@@ -171,6 +170,9 @@ public class RegistrationResource {
 	public ResponseDTO uploadRegistrationDocuments(@RequestBody final LegalFilesViewDTO legalFileDTOS,
 			@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response,
 			HttpServletRequest request) throws IOException {
+			
+		// TODO FIXME @Franklin we shouldn't include this here!
+	    	this.azureMigrationService.migrate();
 		UserContext userContext = UserHolder.getUser();
 		UserDTO userConnected = userService.getUserByUserContext(userContext);
 		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating legal documents");
@@ -192,8 +194,7 @@ public class RegistrationResource {
 			return new ResponseDTO(false, null,
 					new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
 		} catch (Exception e) {
-			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These documents cannot been updated",
-					e);
+			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These documents cannot been updated", e);
 			response.sendError(HttpStatus.BAD_REQUEST.value());
 			return new ResponseDTO(false, null,
 					new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
@@ -207,8 +208,7 @@ public class RegistrationResource {
 			@RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
 		UserContext userContext = UserHolder.getUser();
 		UserDTO userConnected = userService.getUserByUserContext(userContext);
-		_log.debug(
-				"ECAS Username: " + userConnected.getEcasUsername() + " - Getting registrations by user id " + userId);
+		_log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting registrations by user id " + userId);
 		try {
 			permissionChecker.check(RightConstants.USER_TABLE + userId);
 			List<RegistrationDTO> registrationResult = new ArrayList<>();
@@ -221,9 +221,7 @@ public class RegistrationResource {
 			response.sendError(HttpStatus.NOT_FOUND.value());
 			return null;
 		} catch (Exception e) {
-			_log.error(
-					"ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been retrieved",
-					e);
+			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been retrieved", e);
 			return null;
 		}
 	}
@@ -426,9 +424,7 @@ public class RegistrationResource {
 			response.sendError(HttpStatus.NOT_FOUND.value());
 			return null;
 		} catch (Exception e) {
-			_log.error(
-					"ECAS Username: " + userConnected.getEcasUsername() + "- These legal files cannot been retrieved",
-					e);
+			_log.error("ECAS Username: " + userConnected.getEcasUsername() + "- These legal files cannot been retrieved", e);
 			return null;
 		}
 	}
