@@ -82,7 +82,8 @@ public class AzureMigrationService implements Runnable {
 
 			if (uri != null) {
 				//legalFile.setId(0);
-				legalFile.setFileData(uri);
+				//legalFile.setFileData(uri);
+				legalFile.setAzureUri(uri);
 				legalFilesRepository.save(legalFile);
 			}
 		}

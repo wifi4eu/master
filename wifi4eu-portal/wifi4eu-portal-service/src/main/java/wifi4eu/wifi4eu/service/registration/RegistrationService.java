@@ -295,9 +295,10 @@ public class RegistrationService {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - File doesn't have a name");
                     throw new Exception("File must have a valid extension.");
                 } else {
-                    String fileName = String.valueOf(registrationID) + "_" + legalFile.getFileName();
+                	long uploadTimeUTC = System.currentTimeMillis();
+                    String azureFileName = String.valueOf(registrationID) + "_" + legalFile.getFileName() + "_" + uploadTimeUTC;
 
-                	String uri = azureBlobConnector.uploadLegalFile(fileName, base64);
+                	String uri = azureBlobConnector.uploadLegalFile(azureFileName, base64);
                     boolean docUploaded = !Validator.isEmpty(uri);
                     legalFile.setFileData(uri);
                     
@@ -305,11 +306,11 @@ public class RegistrationService {
                     	legalFile.setId(0);
                     	legalFile.setRegistration(registrationID);
                     	//legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
-                    	legalFile.setUploadTime(new Date().getTime());
+                    	legalFile.setUploadTime(uploadTimeUTC);
                     	legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
                     	legalFile.setFileSize(byteArray.length);
                     	legalFile.setUserId(userConnected.getId());
-                    	legalFile.setFileName(fileName);
+                    	legalFile.setFileName(legalFile.getFileName());
                     	legalFilesRepository.save(legalFilesMapper.toEntity(legalFile));
 
                     	_log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
@@ -327,7 +328,7 @@ public class RegistrationService {
                     		legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
                     	} catch (Exception e) {
                     		_log.error("Error saving legal_files", e);
-                    		azureBlobConnector.deleteLegalFile(fileName);
+                    		azureBlobConnector.deleteLegalFile(legalFile.getFileName());
                     	}
                     }
                 }

@@ -32,10 +32,9 @@ import wifi4eu.wifi4eu.service.user.UserService;
 
 @CrossOrigin(origins = "*")
 @Controller
-@Api(value = "/azure", description = "Azure object REST API services")
-@RequestMapping(value = "azure")
+//@Api(value = "/azure", description = "Azure object REST API services")
+@RequestMapping(value = "/azure", method = RequestMethod.GET)
 public class AzureMigrationResource {
-	
 	Logger _log = LogManager.getLogger(RegistrationResource.class);
 
 	@Autowired
