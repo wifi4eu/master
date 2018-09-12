@@ -226,8 +226,7 @@ public class ExportImportWifi4euAbacService {
         return StringUtils.defaultString(source);
     }
 
-    private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation,
-                                            StringBuilder csvDocumentData, List<ExportFile> exportFiles) {
+    private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation, StringBuilder csvDocumentData, List<ExportFile> exportFiles) {
         // Those values are not in database, hardcoded
         String prefix = "doc" + beneficiaryInformation.getMun_id();
         beneficiaryInformation.setDoc_name(prefix);
