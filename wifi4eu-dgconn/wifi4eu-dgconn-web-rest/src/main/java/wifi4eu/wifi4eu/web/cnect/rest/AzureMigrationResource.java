@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.web.cnect.rest;
 
 import java.io.IOException;
-import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.mail.SendMailBySMTPTask;
 import wifi4eu.wifi4eu.service.migration.AzureMigrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -37,14 +39,18 @@ public class AzureMigrationResource {
 	Logger _log = LogManager.getLogger(RegistrationResource.class);
 
 	@Autowired
-	private AzureMigrationService azureMigrationService;
-	
-	@Autowired
 	private PermissionChecker permissionChecker;
 	
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	ApplicationContext context;
+
+	/** Task executor for sync tasks. */
+	@Autowired
+	SyncTaskExecutor syncTaskExecutor;
+	
 	@ApiOperation(value = "Initiates files migration")
 	@RequestMapping(value = "/blob", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
@@ -58,8 +64,9 @@ public class AzureMigrationResource {
 			}
 			
 			// Initiate the migration
-			Executors.newSingleThreadExecutor().execute(azureMigrationService);
-
+			Runnable azureThread = context.getBean(AzureMigrationService.class);
+			syncTaskExecutor.execute(azureThread);
+			
 			return new ResponseDTO(true, null, null);
 		} catch (AccessDeniedException ade) {
 			_log.error("ECAS Username: " + userConnected.getEcasUsername()
