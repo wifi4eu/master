@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Table } from 'primeng/components/table/table';
-import { MonitoringRowDTO, CountryDTO } from '../../../shared/model/DTOs';
+import { ResponseDTO, MonitoringRowDTO, CountryDTO } from '../../../shared/model/DTOs';
 import { ApiModule } from '../../../shared/api.module';
 import { UxMessageBoxComponent } from '@eui/ux-commons';
 import { UxService } from '@eui/ux-core';
@@ -166,12 +167,19 @@ export class MonitoringTableComponent implements OnInit{
     countersignSelected(userConfirmedOperation) {
         if (userConfirmedOperation) {
             this.api.counterSignGrantAgreements(this.getSelection()).subscribe(
-                event => {
-                    this.showSuccess();
-                    this.loadData();
-                },
-                (err) => {
-                    this.showError(err.message);
+                (response: HttpResponse<ResponseDTO>) => {
+                    if (response.ok){
+                        if (response.body.success){
+                            this.showSuccess();
+                            this.loadData();
+                        }else{
+                            this.showError(response.body.message);
+                        }
+                    }else if (response.status === 401 || response.status === 403){
+                        this.showError('You are not authorized to perform this action');
+                    }else{
+                        this.showError('An unexpected error has occured. Please try again. (Response status=' + response.status + ')');
+                    }
                 }
             );
         }
