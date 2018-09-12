@@ -14,8 +14,9 @@ public enum LegalEntityCSVColumn {
 	MUNICIPALITY_ABAC_REFERENCE("mun_ABACReference"),
 	MUNICIPALITY_ABAC_STATUS("mun_abacStatus"),
 	MUNICIPALITY_CALL_NUMBER("mun_CallNumber"),
-	MUNICIPALITY_ABAC_MESSAGE("abac_Message");
-
+	MUNICIPALITY_ABAC_MESSAGE("abac_Message"),
+	MUNICIPALITY_DATE_EXPORTED("mun_lastDateExported"),
+	MUNICIPALITY_USER_EXPORTED("mun_lastUserExported");
 
 	private String value;
 

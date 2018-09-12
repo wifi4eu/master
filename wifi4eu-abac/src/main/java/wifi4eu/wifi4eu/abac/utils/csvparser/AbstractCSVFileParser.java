@@ -19,6 +19,7 @@ import java.util.TreeMap;
 public abstract class AbstractCSVFileParser {
 
 	protected static final String PORTAL_CSV_DATE_FORMAT = "yyyy-MM-dd";
+	protected static final String PORTAL_CSV_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSZ";
 
 	private final Logger log = LoggerFactory.getLogger(AbstractCSVFileParser.class);
 

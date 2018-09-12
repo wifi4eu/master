@@ -54,6 +54,12 @@ public class BudgetaryCommitment {
 	@Column(name = "BATCH_REF", length = 50)
 	private String batchRef;
 
+	@Column(name = "date_exported")
+	private Date dateExported;
+
+	@Column(name = "user_exported")
+	private String userExported;
+
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
@@ -130,5 +136,21 @@ public class BudgetaryCommitment {
 
 	public void setBatchRef(String batchRef) {
 		this.batchRef = batchRef;
+	}
+
+	public Date getDateExported() {
+		return dateExported;
+	}
+
+	public void setDateExported(Date dateExported) {
+		this.dateExported = dateExported;
+	}
+
+	public String getUserExported() {
+		return userExported;
+	}
+
+	public void setUserExported(String userExported) {
+		this.userExported = userExported;
 	}
 }

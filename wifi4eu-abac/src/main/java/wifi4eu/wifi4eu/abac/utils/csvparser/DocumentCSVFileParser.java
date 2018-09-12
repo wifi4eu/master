@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
+import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentCSVColumn;
 import wifi4eu.wifi4eu.abac.data.enums.LegalEntityDocumentCSVColumn;
 import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
@@ -75,7 +76,9 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 							LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME.toString(),
 							LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE.toString(),
 							LegalEntityDocumentCSVColumn.DOCUMENT_TYPE.toString(),
-							LegalEntityDocumentCSVColumn.ARES_REFERENCE.toString()
+							LegalEntityDocumentCSVColumn.ARES_REFERENCE.toString(),
+							LegalEntityDocumentCSVColumn.DATE_EXPORTED.toString(),
+							LegalCommitmentCSVColumn.USER_EXPORTED.toString()
 					));
 
 			for (Document document : documents) {
@@ -85,7 +88,9 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 						document.getFileName(),
 						document.getMimetype(),
 						document.getType(),
-						document.getAresReference()
+						document.getAresReference(),
+						DateTimeUtils.format(document.getDateExported(), PORTAL_CSV_DATETIME_FORMAT),
+						document.getUserExported()
 				);
 			}
 

@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.LegalEntityCSVColumn;
+import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -89,7 +90,9 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 							LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.toString(),
 							LegalEntityCSVColumn.MUNICIPALITY_CALL_NUMBER.toString(),
 							LegalEntityCSVColumn.MUNICIPALITY_ABAC_STATUS.toString(),
-							LegalEntityCSVColumn.MUNICIPALITY_ABAC_MESSAGE.toString()
+							LegalEntityCSVColumn.MUNICIPALITY_ABAC_MESSAGE.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_DATE_EXPORTED.toString(),
+							LegalEntityCSVColumn.MUNICIPALITY_USER_EXPORTED.toString()
 					));
 
 			for (LegalEntity legalEntity : legalEntities) {
@@ -106,8 +109,10 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 						legalEntity.getAbacFelId(),
 						legalEntity.getCallNumber(),
 						legalEntity.getWfStatus(),
-						legalEntity.getRejectionReason() != null ? legalEntity.getRejectionReason() : legalEntity.getAbacErrorMessage()
-				);
+						legalEntity.getRejectionReason() != null ? legalEntity.getRejectionReason() : legalEntity.getAbacErrorMessage(),
+						DateTimeUtils.format(legalEntity.getDateExported(), PORTAL_CSV_DATETIME_FORMAT),
+						legalEntity.getUserExported()
+					);
 			}
 
 			csvPrinter.flush();

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
 import wifi4eu.wifi4eu.abac.data.enums.BudgetaryCommitmentCSVColumn;
+import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -65,7 +66,9 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 							BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_POSITION_AMOUNT.toString(),
 							BudgetaryCommitmentCSVColumn.ABAC_STATUS.toString(),
 							BudgetaryCommitmentCSVColumn.ABAC_MESSAGE.toString(),
-							BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_KEY.toString()
+							BudgetaryCommitmentCSVColumn.ABAC_COMMITMENT_LEVEL2_KEY.toString(),
+							BudgetaryCommitmentCSVColumn.DATE_EXPORTED.toString(),
+							BudgetaryCommitmentCSVColumn.USER_EXPORTED.toString()
 					));
 
 			for (BudgetaryCommitmentPosition budgetaryCommitmentPosition : budgetaryCommitments) {
@@ -76,7 +79,9 @@ public class BudgetaryCommitmentCSVFileParser extends AbstractCSVFileParser {
 						budgetaryCommitmentPosition.getCommitmentLevel2Amount(),
 						budgetaryCommitmentPosition.getBudgetaryCommitment().getWfStatus(),
 						budgetaryCommitmentPosition.getBudgetaryCommitment().getAbacErrorMessage(),
-						budgetaryCommitmentPosition.getBudgetaryCommitment().getCommitmentLevel2Key()
+						budgetaryCommitmentPosition.getBudgetaryCommitment().getCommitmentLevel2Key(),
+						DateTimeUtils.format(budgetaryCommitmentPosition.getBudgetaryCommitment().getDateExported(), PORTAL_CSV_DATETIME_FORMAT),
+						budgetaryCommitmentPosition.getBudgetaryCommitment().getUserExported()
 				);
 			}
 

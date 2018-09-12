@@ -101,6 +101,12 @@ public class LegalEntity {
 	@Column(name = "CALL_NUMBER")
 	private Integer callNumber;
 
+	@Column(name = "date_exported")
+	private Date dateExported;
+
+	@Column(name = "user_exported")
+	private String userExported;
+
 	public LegalEntity() {}
 
 	public Long getId() {
@@ -307,10 +313,27 @@ public class LegalEntity {
 		this.legalCommitment = legalCommitment;
 	}
 
+	public Date getDateExported() {
+		return dateExported;
+	}
+
+	public void setDateExported(Date dateExported) {
+		this.dateExported = dateExported;
+	}
+
+	public String getUserExported() {
+		return userExported;
+	}
+
+	public void setUserExported(String userExported) {
+		this.userExported = userExported;
+	}
+
 	@PrePersist
 	protected void onCreate() {
 		this.dateCreated = Calendar.getInstance().getTime();
 	}
+
 
 	@Override
 	public String toString() {
