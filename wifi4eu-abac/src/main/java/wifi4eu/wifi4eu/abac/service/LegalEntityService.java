@@ -108,7 +108,7 @@ public class LegalEntityService {
         return legalEntityRepository.findAllByBatchRefEquals(batchRef);
     }
 
-	public List<LegalEntity> getLegalEntitiesProcessedInAbac() {
+	public List<LegalEntity> getAllLegalEntitiesForExport() {
 		return legalEntityRepository.findLegalEntitiesProcessedInAbac();
 	}
 }

@@ -84,7 +84,7 @@ public class BudgetaryCommitmentService {
 		return budgetaryCommitmentyRepository.findAllByBatchRefEquals(batchRef);
 	}
 
-	public List<BudgetaryCommitmentPosition> findAllBudgetaryCommitmentPositions() {
-		return (List<BudgetaryCommitmentPosition>) budgetaryCommitmentyPositionRepository.findAll();
+	public List<BudgetaryCommitmentPosition> findAllBudgetaryCommitmentPositionsForExport() {
+		return (List<BudgetaryCommitmentPosition>) budgetaryCommitmentyPositionRepository.findAllByOrderByBudgetaryCommitmentDateExportedDesc();
 	}
 }

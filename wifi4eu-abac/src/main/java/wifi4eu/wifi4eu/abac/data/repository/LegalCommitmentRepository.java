@@ -37,4 +37,6 @@ public interface LegalCommitmentRepository extends CrudRepository<LegalCommitmen
 
 	@Query("select lc from LegalCommitment lc where lc.wfStatus = 'COUNTERSIGNED' and lc.legalEntity.budgetaryCommitment.wfStatus = 'ABAC_VALID'")
 	List<LegalCommitment> findLegalCommitmentsAvailableForCreation(Pageable pageable);
+
+	List<LegalCommitment> findAllByOrderByDateExportedDesc();
 }

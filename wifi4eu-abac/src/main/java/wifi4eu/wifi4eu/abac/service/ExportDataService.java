@@ -59,9 +59,9 @@ public class ExportDataService {
 	private final Logger log = LoggerFactory.getLogger(ExportDataService.class);
 
 	@Transactional
-	public FileDTO exportLegalEntityFile() {
-		log.info("exportLegalEntityFile");
-		List<LegalEntity> legalEntities = legalEntityService.getLegalEntitiesProcessedInAbac();
+	public FileDTO exportLegalEntities() {
+		log.info("exportLegalEntities");
+		List<LegalEntity> legalEntities = legalEntityService.getAllLegalEntitiesForExport();
 		String csvFile = legalEntityCSVFileParser.exportLegalEntitiesToCSV(legalEntities);
 
 		Date now = Calendar.getInstance().getTime();
@@ -77,7 +77,7 @@ public class ExportDataService {
 	@Transactional
 	public FileDTO exportBudgetaryCommitments() {
 		log.info("exportBudgetaryCommitmentyContent");
-		List<BudgetaryCommitmentPosition> budgetaryCommitmentPositions = (List<BudgetaryCommitmentPosition>) budgetaryCommitmentService.findAllBudgetaryCommitmentPositions();
+		List<BudgetaryCommitmentPosition> budgetaryCommitmentPositions = (List<BudgetaryCommitmentPosition>) budgetaryCommitmentService.findAllBudgetaryCommitmentPositionsForExport();
 		String csvFile = budgetaryCommitmentCSVFileParser.exportBudgetaryCommitmentToCSV(budgetaryCommitmentPositions);
 
 		Date now = Calendar.getInstance().getTime();
@@ -94,7 +94,7 @@ public class ExportDataService {
 	public FileDTO exportLegalCommitments() throws IOException {
 		ZipFileWriter zipFileWriter = new ZipFileWriter(LEGAL_COMMITMENT_INFORMATION_ZIP_FILENAME);
 
-		List<LegalCommitment> legalCommitments = legalCommitmentService.getAllLegalCommitments();
+		List<LegalCommitment> legalCommitments = legalCommitmentService.getAllLegalCommitmentsForExport();
 		List<Document> documents = new ArrayList<>();
 
 		for (LegalCommitment legalCommitment : legalCommitments) {
@@ -120,7 +120,14 @@ public class ExportDataService {
 		for (LegalCommitment legalCommitment : legalCommitments) {
 			legalCommitment.setDateExported(now);
 			legalCommitment.setUserExported(ecasUserService.getCurrentUsername());
+
+			if (legalCommitment.getCounterSignedGrantAgreementDocument() != null) {
+				legalCommitment.getCounterSignedGrantAgreementDocument().setDateExported(now);
+				legalCommitment.getCounterSignedGrantAgreementDocument().setUserExported(ecasUserService.getCurrentUsername());
+			}
+
 			legalCommitmentService.saveLegalCommitment(legalCommitment);
+
 		}
 
 		return zipFileWriter.finishAndReturnZipfile();

@@ -1,7 +1,5 @@
 package wifi4eu.wifi4eu.abac.rest;
 
-import java.nio.charset.StandardCharsets;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
-import wifi4eu.wifi4eu.abac.data.entity.Document;
-import wifi4eu.wifi4eu.abac.integration.essi.EssiService;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.DocumentService;
 import wifi4eu.wifi4eu.abac.service.ExportDataService;
@@ -65,7 +61,7 @@ public class LegalEntityController {
 	public ResponseEntity<byte[]> exportLegalEntity(final HttpServletResponse response, Model model) throws Exception {
 		log.info("exportLegalEntity");
 
-		FileDTO fileDTO = exportDataService.exportLegalEntityFile();
+		FileDTO fileDTO = exportDataService.exportLegalEntities();
 
 		ResponseEntity<byte[]> responseReturn = null;
 		HttpHeaders headers = new HttpHeaders();

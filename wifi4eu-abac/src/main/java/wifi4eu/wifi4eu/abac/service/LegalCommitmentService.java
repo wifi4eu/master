@@ -147,8 +147,8 @@ public class LegalCommitmentService {
 
 	}
 
-	public List<LegalCommitment> getAllLegalCommitments() {
-		return (List<LegalCommitment>) legalCommitmentRepository.findAll();
+	public List<LegalCommitment> getAllLegalCommitmentsForExport() {
+		return (List<LegalCommitment>) legalCommitmentRepository.findAllByOrderByDateExportedDesc();
 	}
 
 	public Boolean isBatchProcessed(String batchRef){

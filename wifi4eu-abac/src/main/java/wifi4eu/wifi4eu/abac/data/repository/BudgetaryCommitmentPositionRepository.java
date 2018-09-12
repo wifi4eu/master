@@ -6,7 +6,11 @@ import org.springframework.data.repository.query.Param;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
 
+import java.util.List;
+
 public interface BudgetaryCommitmentPositionRepository extends CrudRepository<BudgetaryCommitmentPosition, Integer> {
 
 	BudgetaryCommitmentPosition findByBudgetaryCommitmentLegalEntityMidAndCommitmentLevel2Position(Long municipalityPortalId, Integer abacCommitmentLevel2Position);
+
+	List<BudgetaryCommitmentPosition> findAllByOrderByBudgetaryCommitmentDateExportedDesc();
 }

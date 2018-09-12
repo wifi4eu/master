@@ -49,7 +49,7 @@ public class DateTimeUtils {
 		String stringDate = new String();
 		if (date != null) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-			LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDateTime localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 			stringDate = localDate.format(formatter);
 		}
 		return stringDate;
