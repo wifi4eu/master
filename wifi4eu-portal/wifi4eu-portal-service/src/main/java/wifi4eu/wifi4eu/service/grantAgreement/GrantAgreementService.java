@@ -150,10 +150,6 @@ public class GrantAgreementService {
 
     	// Template files are stored in Azure: wifi4eustoredocuments - Storage Explorer
     	return azureBlobStorage.getFileFromContainer("docs", fileName.toString());
-
-    	// TODO FIXME remove local reference
-    	//File file = new File("C:\\grant_agreements\\CNECT-2017-00250-02-08-EN-ORI-00-1.pdf");
-        //return FileUtils.readFileToByteArray(file);
     }
 
     public ByteArrayOutputStream fillGrantAgreementDocument(GrantAgreementDTO grantAgreement, Map<String, String> mapProperties) throws IOException {
@@ -191,44 +187,27 @@ public class GrantAgreementService {
         String year = df.format(cal.getTime());
 
         Map<String,String> replacementsMap = new HashMap<String,String>();
-        // TODO FIXME remove old placeholders names
-//        replacementsMap.put("[<call number>", String.valueOf(applicationDTO.getCallId()));
-//        replacementsMap.put("<year>]", year);
-//        replacementsMap.put("[<unique identifying number>]", formattedRegistrationID.concat("-").concat(formattedUserID));
-//        replacementsMap.put("[function, forename and surname]", "Head of Department C, Andreas Boschen");
-//        replacementsMap.put("[function-2, forename and surname]", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
-//        replacementsMap.put("[full official name]", lauDTO.getName1());
-//        replacementsMap.put("[official address in full]", municipalityDTO.getAddress().concat(", ").concat(municipalityDTO.getAddressNum()));
-//        replacementsMap.put("[insert name of the municipality]", lauDTO.getName2());
-//        replacementsMap.put("[insert number of the action in bold]", "INEA/CEF/WiFi4EU/" + String.valueOf(applicationDTO.getCallId()).concat(year) + "/" +  formattedRegistrationID.concat("-").concat(formattedUserID));
-//        if(grantAgreement.getDocumentLanguage().equalsIgnoreCase("en")){
-//            replacementsMap.put("[or in English]", "");
-//        }
-//        replacementsMap.put("[language]", languagesMap.get(grantAgreement.getDocumentLanguage()));
-//        replacementsMap.put("[function/forename/surname]", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
-//        replacementsMap.put("INEA/CEF/ICT/", "INEA/CEF/WiFi4EU/");
-//        replacementsMap.put("[<M or A><year>]", String.valueOf(applicationDTO.getCallId()).concat(year));
-//        replacementsMap.put("[xxxx]", formattedRegistrationID.concat("-").concat(formattedUserID));
-//        replacementsMap.put("[e-signature]", "");
-
-
         String header = String.valueOf(applicationDTO.getCallId());
         header = header.concat(year);
         header = header.concat("/");
         header = header.concat(formattedRegistrationID.concat("-").concat(formattedUserID));
 
+        String lauNationalName = lauDTO.getNationalName();
+        String lauDisplayName = lauDTO.getDisplayName();
+        String fullAddress = municipalityDTO.getAddress().concat(", ").concat(municipalityDTO.getAddressNum());
+
         replacementsMap.put("header", header);
         replacementsMap.put("field1", header);
         replacementsMap.put("field-forename-1", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
         replacementsMap.put("field-name-commission", "Head of Department C, Andreas Boschen");
-        replacementsMap.put("field-2", lauDTO.getName1() + "\n "+ municipalityDTO.getAddress().concat(", ").concat(municipalityDTO.getAddressNum()));
+        replacementsMap.put("field-2", lauNationalName + "\n"+ fullAddress);
         replacementsMap.put("field-language", languagesMap.get(grantAgreement.getDocumentLanguage()));
         replacementsMap.put("field-beneficiary-name", userDTO.getName().concat(" ").concat(userDTO.getSurname()));
         replacementsMap.put("field-signature", "SIGNATURE HERE");
         replacementsMap.put("field-agency-name", "user of agency");
         replacementsMap.put("field-signature-agency", "SIGNATURE HERE");
         replacementsMap.put("field-action", "INEA/CEF/WiFi4EU/".concat(header));
-        replacementsMap.put("field-municipality", lauDTO.getName2());
+        replacementsMap.put("field-municipality", lauDisplayName);
         return fillGrantAgreementDocument(grantAgreement, replacementsMap);
     }
 
@@ -245,23 +224,6 @@ public class GrantAgreementService {
             fields.setField("field-signature", signString);
             fields.setFieldProperty("field-signature", "textfont", font, null);
             fields.setFieldProperty("field-signature", "textsize", new Float(9), null);
-
-//            int pages = pdfReader.getNumberOfPages();
-//
-//            for (int i = 1; i <= pages; i++) {
-//                //Contain the pdf data.
-//                if (i == 7) {
-//                    PdfContentByte pageContentByte =
-//                            pdfStamper.getOverContent(i);
-//
-//                    BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, "Cp1252", BaseFont.EMBEDDED);
-//                    Font f = new Font(bf, 8);
-//                    ColumnText ct = new ColumnText(pageContentByte);
-//                    ct.setSimpleColumn(74, 0, pdfReader.getPageSize(i).getWidth() / 2, 400f);
-//                    ct.addElement(new Paragraph(signString, f));
-//                    ct.go();
-//                }
-//            }
 
             return outputStream;
         } catch (Exception e) {

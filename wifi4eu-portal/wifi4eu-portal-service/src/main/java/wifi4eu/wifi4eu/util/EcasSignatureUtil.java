@@ -72,12 +72,12 @@ public class EcasSignatureUtil {
      **/
 
     public String constructSignatureHDSCallbackUrl(HttpServletRequest request, String documentToBeSigned) {
-        //String url = userService.getBaseUrl().substring(0, userService.getBaseUrl().indexOf("#"));
         // TODO for local testing use:
     	// String url = "http://localhost:8080/wifi4eu/";
     	// TODO this should not be environment dependent, right now is hardcoded pointing to dev
-    	String url = "https://wifi4eu-dev.everincloud.com/wifi4eu/";
-        url += "api/signature/handleSignature/" + documentToBeSigned;
+    	//String url = "https://wifi4eu-dev.everincloud.com/wifi4eu/";
+    	String url = userService.getServerSchemes().concat("://").concat(userService.getServerAddress()).concat("/wifi4eu/");
+        url = url.concat("api/signature/handleSignature/").concat(documentToBeSigned);
         System.out.println("URL: "+  url);
         return url;
     }

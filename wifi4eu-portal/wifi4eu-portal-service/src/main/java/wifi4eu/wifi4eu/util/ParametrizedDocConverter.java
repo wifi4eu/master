@@ -67,23 +67,6 @@ public class ParametrizedDocConverter {
 				String repl = replPair.getValue();
 				setFieldValue(fields, find, repl);
 			}
-
-			/**
-			 * header 
-			 * field1 -OK 
-			 * field1-1 - OK 
-			 * field-name-commission - OK 
-			 * field-2 - OK
-			 * field-forename-1 -OK 
-			 * field-language - OK 
-			 * field-action 
-			 * field-municipality
-			 * field-beneficiary-name 
-			 * field-signature 
-			 * field-agency-name
-			 * field-signature-agency
-			 */
-			
 		} catch (DocumentException e1) {
 			_log.error("Document error", e1);
 		} catch (IOException e) {

@@ -104,6 +104,9 @@ public class UserService {
     @Value("${server.address}")
     private String serverAddress;
 
+    @Value("${server.schemes}")
+    private String serverSchemes;
+
     @Autowired
     UserMapper userMapper;
 
@@ -647,6 +650,10 @@ public class UserService {
 
     public String getServerAddress(){
         return serverAddress;
+    }
+
+    public String getServerSchemes(){
+        return serverSchemes;
     }
 
     private void removeTempToken(UserDTO userDTO) {
