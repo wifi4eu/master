@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { TranslateService } from 'ng2-translate';
-import { FormGroup } from '@angular/forms';
 import { ResponseDTOBase } from '../../../shared/swagger/model/ResponseDTO';
 import { LegalEntitiesService } from '../../../services/legal-entities-service';
 import { SharedService } from '../../../shared/shared.service';

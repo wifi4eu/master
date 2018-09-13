@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Http } from '@angular/http';
 import { ExportImportApi } from '../../shared/swagger/api/ExportImportApi';
