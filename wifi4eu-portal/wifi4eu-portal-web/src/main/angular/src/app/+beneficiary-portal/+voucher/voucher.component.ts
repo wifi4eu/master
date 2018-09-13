@@ -26,6 +26,7 @@ export class VoucherComponent {
     1 = There is a call created, but not started. DISPLAY TIMER
     2 = There is a call created, already started. You can 'Apply For Voucher'
     3 = Call created & started. You clicked 'Apply For Voucher' and are waiting for the approvement.
+    Note that if all calls are closed, then page with set voucherCompetitionState to 0.
     */
     private voucherCompetitionState: number;
     private user: UserDTOBase;
@@ -70,6 +71,9 @@ export class VoucherComponent {
                             this.openedCalls = "greyImage";
                         }
                         this.loadVoucherData();
+                        if(this.voucherCompetitionState == 3) {
+                            this.voucherApplied = "greyImage";
+                        }
                     } else {
                         this.voucherCompetitionState = 0;
                         this.loadVoucherDataWithoutCall(-1);
@@ -219,6 +223,7 @@ export class VoucherComponent {
 
     private openApplyForVoucher() {
         this.voucherCompetitionState = 2;
+        this.openedCalls = "greyImage";
     }
 
     private changeConditionsAgreement(applyVoucherData: ApplyVoucherBase) {
