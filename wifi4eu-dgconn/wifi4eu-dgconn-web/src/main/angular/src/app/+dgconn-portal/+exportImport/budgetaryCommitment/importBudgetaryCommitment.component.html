@@ -5,21 +5,10 @@
             <i class="fa fa-arrow-left" aria-hidden="true"></i> {{'shared.back.button' | translate}}
         </a>
         <p class="beneficiaryTitle">{{ 'dgConn.importexport.title' | translate }}</p>
-        <p>{{ 'dgConn.importexport.lef.import.legalentities' | translate }}</p>
+        <p>{{ 'dgConn.importexport.bc.import' | translate }}</p>
     </div>
 
-    <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12">
-
-            <form [formGroup]="form" (ngSubmit)="importLegalEntityFile()" enctype="multipart/form-data">
-                <div class="form-group">
-                    <input type="file" id="importFile" (change)="onFileChange($event)">
-                </div>
-                <button type="submit" class="btn btn-success" [disabled]="!this.form.valid">{{ 'shared.confirm.button' | translate }}</button>
-            </form>
-
-        </div>
-    </div>
+    <fileSelector (selectedFile)="sendFormData($event)"></fileSelector>
 </div>
 
 <p-dialog [(visible)]="processingOperation" [modal]="true" [responsive]="true" [resizable]="false"

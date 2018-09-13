@@ -34,20 +34,22 @@
         </div>
     </div>
     <br/><br/>
+
     <span class="ui-g-12"><b>{{'dgConn.importexport.bc' | translate}}</b></span>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
         <div class="panelItem ui-g-12" (click)="exportBudgetaryCommitment()">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.bc.export' | translate}}</span>
-            <p>{{'dgConn.importexport.bc.export.desc' | translate}}</p>
+            <span class="beneficiaryMayor">{{ 'dgConn.importexport.bc.export' | translate }}</span>
+            <p>{{ 'dgConn.importexport.bc.export.desc' | translate }}</p>
         </div>
     </div>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" (click)="importRegistrationData()">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.bc.import' | translate}}</span>
-            <p>{{'dgConn.importexport.bc.import.desc' | translate}}</p>
+        <div class="panelItem ui-g-12" (click)="onNavigateToImportBcFile()">
+            <span class="beneficiaryMayor">{{ 'dgConn.importexport.bc.import' | translate }}</span>
+            <p>{{ 'dgConn.importexport.bc.import.desc' | translate }}</p>
         </div>
     </div>
     <br/><br/>
+
     <span class="ui-g-12"><b>{{'dgConn.importexport.lc' | translate}}</b></span>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
         <div class="panelItem ui-g-12 panelDisabled">

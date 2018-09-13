@@ -32,12 +32,12 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = "ailispaw/barge"
 
-  config.vm.synced_folder "LocalDevelopmemt/tomcat/webapps", "/home/bargee/dev/webapps", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
-  config.vm.synced_folder "LocalDevelopmemt/tomcat/logs", "/home/bargee/dev/logs", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
-  config.vm.synced_folder "LocalDevelopmemt/tomcat/conf", "/home/bargee/dev/conf", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
-  config.vm.synced_folder "LocalDevelopmemt/tomcat/lib", "/home/bargee/dev/lib", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
+  config.vm.synced_folder "LocalDevelopment/tomcat/webapps", "/home/bargee/dev/webapps", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
+  config.vm.synced_folder "LocalDevelopment/tomcat/logs", "/home/bargee/dev/logs", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
+  config.vm.synced_folder "LocalDevelopment/tomcat/conf", "/home/bargee/dev/conf", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
+  config.vm.synced_folder "LocalDevelopment/tomcat/lib", "/home/bargee/dev/lib", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
 
-  config.vm.synced_folder "LocalDevelopmemt/sql", "/home/bargee/dev/sql", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
+  config.vm.synced_folder "LocalDevelopment/sql", "/home/bargee/dev/sql", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
 
   # comment this out if you are outside the EC network
   config.vm.provision "proxy", type: "shell", inline: $script_setproxy

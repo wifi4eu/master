@@ -40,6 +40,6 @@ bin
 **/.settings/
 **/.settings/**
 **/.classpath
-/LocalDevelopmemt/sql/
-/LocalDevelopmemt/tomcat/logs/
-/LocalDevelopmemt/tomcat/webapps/
+/LocalDevelopment/sql/
+/LocalDevelopment/tomcat/logs/
+/LocalDevelopment/tomcat/webapps/

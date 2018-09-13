@@ -43,6 +43,10 @@ export class DgConnExportImportComponent {
         this.router.navigate(['lef'], {relativeTo: this.route});
     }
 
+    onNavigateToImportBcFile(): void {
+        this.router.navigate(['bc'], {relativeTo: this.route});
+    }
+
     exportRegistrationData() {
         this.processingOperation = true;
         this.exportImportApi.exportRegistrationData().subscribe(
