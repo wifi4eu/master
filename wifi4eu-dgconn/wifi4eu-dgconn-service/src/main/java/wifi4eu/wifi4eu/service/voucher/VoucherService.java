@@ -416,7 +416,7 @@ public class VoucherService {
             List<String> participatingCountries = new ArrayList<>();
 
             // List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
-            long dateNanoSeconds = call.getStartDate() * 1000000;
+            long dateNanoSeconds = call.getStartDate();
             List<ApplicationDTO> listOfApplications = applicationService.findByCallIdOrderByDateBeforeCallDateAsc(call.getId(), dateNanoSeconds);
 
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Initializing municipalities, laus & registrations");

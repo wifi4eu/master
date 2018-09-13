@@ -64,13 +64,15 @@
             <hr class="genericHr" />
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
             <div *ngFor="let user of users; let i = index">
+                <!--ADD CONTACT-->
+                <!---
                 <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
-                    <!--ADD CONTACT-->
-                    <!--<b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>-->
+                   <b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>
                     <p  class="edit cursorPointer right"(click)="deactivateShowModal(i)" *ngIf="!(user.type == -1) && !(userConnected.id == user.id)">
                         <i class="fa fa-ban"></i>
                         {{ 'shared.deactivate.button' | translate}}</p>
-                </div>  
+                    
+                </div> -->
                 <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                     <label>{{ 'shared.name.label' | translate }}</label><br>
                     <input [id]="'name-'+i" type="text" [name]="'name-'+i" class="form-control"
@@ -86,7 +88,7 @@
                 <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
                     <label>{{ 'suppRegistration.phone.number' | translate }}</label><br>
                     <input [id]="'phone-prefix-'+i" type="text" [name]="'phonePrefix-'+i" class="form-control ui-g-2 ui-sm-4"
-                        style="margin-right: 1em;" [(ngModel)]="users[i].phonePrefix" (ngModelChange)="enableButtonUser(i)" required pattern="[0-9]{1,4}" [disabled]="user.type == -1">
+                        style="margin-right: 1em;" [(ngModel)]="users[i].phonePrefix" (ngModelChange)="enableButtonUser(i)" required pattern="^[+]?[1-9]{1}[0-9]{1,2}$" [disabled]="user.type == -1">
                     <input [id]="'phone-number-'+i" type="text" [name]="'phoneNumber-'+i" class="form-control ui-g-3 ui-sm-7"
                         [(ngModel)]="users[i].phoneNumber" required (ngModelChange)="enableButtonUser(i)" pattern="[0-9]{1,}" [disabled]="user.type == -1">
                     <br>
