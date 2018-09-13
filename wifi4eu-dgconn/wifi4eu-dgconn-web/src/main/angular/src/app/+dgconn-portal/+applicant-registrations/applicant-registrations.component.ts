@@ -110,7 +110,7 @@ export class DgConnApplicantRegistrationsComponent {
                                     }
                                     if (queryParams['sortField']) {
                                         let sortField = queryParams['sortField'].toString().toLowerCase().trim();
-                                        if (sortField == 'countrycode' || sortField == 'counter' || sortField == 'mediation' || sortField == 'supportingdocuments')
+                                        if (sortField == 'countrycode' || sortField == 'counter' || sortField == 'supportingdocuments')
                                             this.sortField = sortField;
                                         else
                                             this.sortField = 'name';

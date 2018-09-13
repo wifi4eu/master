@@ -385,25 +385,6 @@ public class ApplicationService {
                     applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByCounterAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
                 }
                 break;
-            case "mediation":
-                if (pagingSortingData.getOrderType() == -1) {
-                    if (name != null) {
-                        if (name.trim().length() > 0) {
-                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByMediationDesc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
-                            break;
-                        }
-                    }
-                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByMediationDesc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
-                } else {
-                    if (name != null) {
-                        if (name.trim().length() > 0) {
-                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByMediationAsc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
-                            break;
-                        }
-                    }
-                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByMediationAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
-                }
-                break;
             default:
                 if (pagingSortingData.getOrderType() == -1) {
                     if (name != null) {

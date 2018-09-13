@@ -10,7 +10,6 @@ public class ApplicantListItem {
     private String countryCode;
     private String name;
     private Integer counter;
-    private Boolean mediation;
     private Integer status;
     private Long applicationDate;
     private String invalidateReason;
@@ -22,12 +21,11 @@ public class ApplicantListItem {
     public ApplicantListItem() {
     }
 
-    public ApplicantListItem(Integer lauId, String countryCode, String name, Integer counter, Boolean mediation, Integer status, Long applicationDate, String invalidateReason, Boolean warning1, Boolean warning2, Boolean warning3, Integer supportingDocuments) {
+    public ApplicantListItem(Integer lauId, String countryCode, String name, Integer counter, Integer status, Long applicationDate, String invalidateReason, Boolean warning1, Boolean warning2, Boolean warning3, Integer supportingDocuments) {
         this.lauId = lauId;
         this.countryCode = countryCode;
         this.name = name;
         this.counter = counter;
-        this.mediation = mediation;
         this.status = status;
         this.applicationDate = applicationDate;
         this.invalidateReason = invalidateReason;
@@ -67,14 +65,6 @@ public class ApplicantListItem {
 
     public void setCounter(Integer counter) {
         this.counter = counter;
-    }
-
-    public Boolean getMediation() {
-        return mediation;
-    }
-
-    public void setMediation(Boolean mediation) {
-        this.mediation = mediation;
     }
 
     public Integer getStatus() {
