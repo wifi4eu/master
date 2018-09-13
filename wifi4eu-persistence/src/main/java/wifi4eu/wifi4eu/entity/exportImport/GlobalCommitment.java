@@ -13,7 +13,6 @@ public class GlobalCommitment {
     private Integer id;
 
     @Column(name = "call")
-
     private Integer call;
 
     @Column(name = "globalCommitment")

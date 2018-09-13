@@ -184,6 +184,25 @@
         </plugins>
       </build>
     </profile>
+
+      <profile>
+          <id>local-build</id>
+          <build>
+              <plugins>
+                  <plugin>
+                      <groupId>org.apache.maven.plugins</groupId>
+                      <artifactId>maven-war-plugin</artifactId>
+                      <version>${war.plugin.version}</version>
+                      <configuration>
+                          <warSourceDirectory>${project.basedir}/target</warSourceDirectory>
+                          <warName>dashboard</warName>
+                          <outputDirectory>${project.basedir}/../../LocalDevelopmemt/tomcat/webapps</outputDirectory>
+                      </configuration>
+                  </plugin>
+              </plugins>
+          </build>
+      </profile>
+
   </profiles>
 
   <build>
@@ -234,7 +253,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${war.plugin.version}</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
           <webResources>

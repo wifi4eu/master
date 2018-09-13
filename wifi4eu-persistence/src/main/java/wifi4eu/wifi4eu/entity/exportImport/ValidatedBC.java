@@ -12,7 +12,8 @@ public class ValidatedBC {
     @Id
     private Integer idBc;
 
-    public ValidatedBC() {}
+    public ValidatedBC() {
+    }
 
     public ValidatedBC(Integer idBc) {
         this.idBc = idBc;
@@ -22,7 +23,7 @@ public class ValidatedBC {
         return idBc;
     }
 
-    public void setId(Integer id) {
+    public void setId(Integer idBc) {
         this.idBc = idBc;
     }
 

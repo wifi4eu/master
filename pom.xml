@@ -203,6 +203,8 @@
 
         <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
         <!--<war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>-->
+
+        <war.plugin.version>3.2.2</war.plugin.version>
     </properties>
 
 
