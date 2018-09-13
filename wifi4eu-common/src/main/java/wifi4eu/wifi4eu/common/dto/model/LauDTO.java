@@ -14,11 +14,16 @@ public class LauDTO implements Serializable {
     private int pop;
     private int area;
     private String physicalAddress;
+    private String nationalName;
+    private String latinName;
+    private String abacName;
+    private String displayName;
 
     public LauDTO() {
     }
 
-    public LauDTO(int id, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, int pop, int area, String physicalAddress) {
+    public LauDTO(int id, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, int pop, int area,
+                  String physicalAddress, String nationalName, String latinName, String abacName, String displayName) {
         this.id = id;
         this.countryCode = countryCode;
         this.nuts3 = nuts3;
@@ -30,6 +35,10 @@ public class LauDTO implements Serializable {
         this.pop = pop;
         this.area = area;
         this.physicalAddress = physicalAddress;
+        this.nationalName = nationalName;
+        this.latinName = latinName;
+        this.abacName = abacName;
+        this.displayName = displayName;
     }
 
     public int getId() {
@@ -118,6 +127,38 @@ public class LauDTO implements Serializable {
 
     public void setPhysicalAddress(String physicalAddress) {
         this.physicalAddress = physicalAddress;
+    }
+
+    public String getNationalName() {
+        return nationalName;
+    }
+
+    public void setNationalName(String nationalName) {
+        this.nationalName = nationalName;
+    }
+
+    public String getLatinName() {
+        return latinName;
+    }
+
+    public void setLatinName(String latinName) {
+        this.latinName = latinName;
+    }
+
+    public String getAbacName() {
+        return abacName;
+    }
+
+    public void setAbacName(String abacName) {
+        this.abacName = abacName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @Override

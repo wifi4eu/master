@@ -224,5 +224,11 @@ UPDATE applications set date = LEFT(date, 13) where LEN(date) > 13
 -- 2018-09-13 Azure Blob storage for legal files, this new column stores the URI in Azure
 alter table legal_file add column azure_uri varchar(2048);
 
+--WIFIFOREU-3278
+ALTER TABLE laus ADD name_national nvarchar(255) NULL;
+ALTER TABLE laus ADD name_latin nvarchar(255) NULL;
+ALTER TABLE laus ADD abac_name nvarchar(255) NULL;
+ALTER TABLE laus ADD display_name nvarchar(255) NULL;
+
 
 
