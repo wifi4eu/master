@@ -45,8 +45,9 @@ public class AzureMigrationService implements Runnable {
 		LOGGER.info("Statring migration process");
 
 		LOGGER.info("Querying registrations");
-		List<Registration> registrations = Lists.newArrayList(registrationRepository.findAll());
-		int qtyRegistrations = registrations.size();
+		Iterable<Registration> registrations = registrationRepository.findAll();
+		//List<Registration> registrations = Lists.newArrayList(registrationRepository.findAll());
+		int qtyRegistrations = 23000;//registrations.size();
 		
 		LOGGER.info("Registrations [{}]", qtyRegistrations);
 		
