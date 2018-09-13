@@ -32,6 +32,8 @@ DBCC CHECKIDENT ('mayors', RESEED, 0);
 DBCC CHECKIDENT ('applications', RESEED, 0);
 DBCC CHECKIDENT ('rights', RESEED, 0);
 DBCC CHECKIDENT ('temp_tokens', RESEED, 0);
+DBCC CHECKIDENT ('registration_users', RESEED, 0);
+DBCC CHECKIDENT ('conditions_agreement', RESEED, 0);
 DECLARE @i INT = 0
 DECLARE @u VARCHAR(255) = ''
 DECLARE @m_id VARCHAR(255) = ''
@@ -40,7 +42,7 @@ DECLARE @r_id VARCHAR(255) = ''
 DECLARE @t_id VARCHAR(255) = ''
 DECLARE @f_id1 VARCHAR(255) = ''
 DECLARE @f_id3 VARCHAR(255) = ''
-WHILE @i < 3
+WHILE @i < 30001
 BEGIN
   set @u = 'uid'+RIGHT(CONCAT('00000', CONVERT(VARCHAR, @i)), 5)
   -- Add user
@@ -67,6 +69,9 @@ BEGIN
   VALUES(@u_id, @m_id, 'Representative', 0, '127.0.0.1', 0, '', 1, 0)
   -- Add registration link
   SET @r_id = (SELECT TOP 1 id FROM registrations ORDER BY ID DESC)
+  -- Registration users
+  INSERT INTO registration_users (contact_email, creation_date, main, registration, status, _user)
+  VALUES(@u+'.loadtest@ec.europa.eu', '2018-09-06 09:02:53.1010000', 1, @r_id, 1, @u_id)
   -- Add legal file #1
   INSERT INTO legal_files
     (registration, id_user, data, file_size, file_mime, file_name, upload_time, type)
