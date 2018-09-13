@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from '../../../shared/shared.service';
 
 @Component({
     selector: 'fileSelector',
-    templateUrl: 'fileSelector.component.html'
+    templateUrl: 'fileSelector.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    preserveWhitespaces: false
 })
 export class FileSelectorComponent {
 

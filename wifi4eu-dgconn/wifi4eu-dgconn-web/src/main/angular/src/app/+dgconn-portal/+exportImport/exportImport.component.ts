@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Http } from '@angular/http';
 import { ExportImportApi } from '../../shared/swagger/api/ExportImportApi';
@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     templateUrl: 'exportImport.component.html',
     styleUrls: ['./exportImport.component.scss'],
     providers: [CallApi, ApplicationApi, ExportImportApi],
+    preserveWhitespaces: false,
     animations: [
         trigger(
             'enterSpinner', [
@@ -29,7 +30,6 @@ import { ActivatedRoute, Router } from '@angular/router';
         )
     ]
 })
-
 export class DgConnExportImportComponent {
 
     processingOperation: boolean = false;
@@ -45,6 +45,10 @@ export class DgConnExportImportComponent {
 
     onNavigateToImportBcFile(): void {
         this.router.navigate(['bc'], {relativeTo: this.route});
+    }
+
+    onNavigateToImportLcFile(): void {
+        this.router.navigate(['lc'], {relativeTo: this.route});
     }
 
     exportRegistrationData() {

@@ -8,7 +8,7 @@
     </div>
     <span class="ui-g-12"><b>{{'dgConn.importexport.lef' | translate}}</b></span>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" (click)="importRegistrationData()">
+        <div class="panelItem ui-g-12 panelDisabled" (click)="importRegistrationData()">
             <span class="beneficiaryMayor">{{'dgConn.importexport.lef.import.finallist' | translate}}</span>
             <p>{{'dgConn.importexport.lef.import.finallist.desc' | translate}}</p>
         </div>
@@ -28,7 +28,8 @@
         </div>
     </div>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12" (click)="importRegistrationData()">
+        <!--<div class="panelItem ui-g-12 panelDisabled" (click)="importRegistrationData()">-->
+        <div class="panelItem ui-g-12 panelDisabled">
             <span class="beneficiaryMayor">{{'dgConn.importexport.lef.import.references' | translate}}</span>
             <p>{{ 'dgConn.importexport.lef.import.references.desc' | translate }}</p>
         </div>
@@ -53,17 +54,18 @@
     <span class="ui-g-12"><b>{{'dgConn.importexport.lc' | translate}}</b></span>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
         <div class="panelItem ui-g-12 panelDisabled">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.lc.export' | translate}}</span>
-            <p>{{'dgConn.importexport.lc.export.desc' | translate}}</p>
+            <span class="beneficiaryMayor">{{ 'dgConn.importexport.lc.export' | translate }}</span>
+            <p>{{ 'dgConn.importexport.lc.export.desc' | translate }}</p>
         </div>
     </div>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
-        <div class="panelItem ui-g-12 panelDisabled">
-            <span class="beneficiaryMayor">{{'dgConn.importexport.lc.import' | translate}}</span>
-            <p>{{'dgConn.importexport.lc.import.desc' | translate}}</p>
+        <div class="panelItem ui-g-12" (click)="onNavigateToImportLcFile()">
+            <span class="beneficiaryMayor">{{ 'dgConn.importexport.lc.import' | translate }}</span>
+            <p>{{ 'dgConn.importexport.lc.import.desc' | translate }}</p>
         </div>
     </div>
     <br/><br/>
+
     <span class="ui-g-12"><b>{{'dgConn.importexport.ba' | translate}}</b></span>
     <div class="ui-g-6 ui-lg-6 ui-md-12">
         <div class="panelItem ui-g-12 panelDisabled">

@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslateService } from 'ng2-translate';
-import { FormGroup } from '@angular/forms';
 import { ResponseDTOBase } from '../../../shared/swagger/model/ResponseDTO';
 import { LegalEntitiesService } from '../../../services/legal-entities-service';
 import { SharedService } from '../../../shared/shared.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
-    templateUrl: 'importLef.component.html',
+    templateUrl: 'importLegalCommitment.component.html',
     providers: [LegalEntitiesService],
     preserveWhitespaces: false,
     animations: [
@@ -25,7 +24,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
         )
     ]
 })
-export class ImportLefComponent {
+export class ImportLegalCommitmentComponent {
 
     processingOperation: boolean = false;
 
@@ -35,7 +34,7 @@ export class ImportLefComponent {
     sendFormData(importFile) {
         this.processingOperation = true;
 
-        this.legalEntitiesService.importLef(importFile)
+        this.legalEntitiesService.importLegalCommitment(importFile)
             .subscribe(
                 (response: ResponseDTOBase) => {
                     this.processingOperation = false;

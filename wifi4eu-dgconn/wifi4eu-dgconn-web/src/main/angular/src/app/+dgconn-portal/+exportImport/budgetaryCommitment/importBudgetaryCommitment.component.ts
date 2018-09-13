@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslateService } from 'ng2-translate';
 import { ResponseDTOBase } from '../../../shared/swagger/model/ResponseDTO';
 import { LegalEntitiesService } from '../../../services/legal-entities-service';
@@ -8,6 +8,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 @Component({
     templateUrl: 'importBudgetaryCommitment.component.html',
     providers: [LegalEntitiesService],
+    preserveWhitespaces: false,
     animations: [
         trigger(
             'enterSpinner', [

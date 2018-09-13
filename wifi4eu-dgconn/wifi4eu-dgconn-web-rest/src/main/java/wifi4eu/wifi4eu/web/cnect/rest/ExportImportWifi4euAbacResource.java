@@ -76,6 +76,14 @@ public class ExportImportWifi4euAbacResource {
         return null;
     }
 
+    @RequestMapping(value = "/importLegalCommitment", method = RequestMethod.POST, produces = "application/JSON")
+    @ResponseBody
+    public ResponseDTO importLegalCommitment(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
+        _log.debug("importLegalCommitment: file size = {}", file.getSize());
+
+        return null;
+    }
+
     @ApiOperation(value = "Export Beneficiary Information")
     @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "application/zip")
     @ResponseBody
