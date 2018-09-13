@@ -54,8 +54,8 @@
                 </label>
             </div>
             <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
-                <!-- <p (click)="addNewContactToSupplier()">{{ "benefPortal.beneficary.addMunicipality" | translate}}</p>-->
-                <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToSupplier()">+ {{ "benefPortal.beneficary.addMunicipality" | translate}}</p>
+ <!--ADD CONTACT-->
+               <!-- <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToSupplier()">+ {{ "benefPortal.beneficary.addMunicipality" | translate}}</p>-->
             </div>
         </div>
 
@@ -63,13 +63,16 @@
         <div class="ui-g-12">
             <hr class="genericHr" />
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
-            <div *ngFor="let user of supplier.users; let i = index">
+            <div *ngFor="let user of users; let i = index">
+                <!--ADD CONTACT-->
+                <!---
                 <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
-                    <b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>
+                   <b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>
                     <p  class="edit cursorPointer right"(click)="deactivateShowModal(i)" *ngIf="!(user.type == -1) && !(userConnected.id == user.id)">
                         <i class="fa fa-ban"></i>
                         {{ 'shared.deactivate.button' | translate}}</p>
-                </div>  
+                    
+                </div> -->
                 <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                     <label>{{ 'shared.name.label' | translate }}</label><br>
                     <input [id]="'name-'+i" type="text" [name]="'name-'+i" class="form-control"
@@ -85,7 +88,7 @@
                 <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
                     <label>{{ 'suppRegistration.phone.number' | translate }}</label><br>
                     <input [id]="'phone-prefix-'+i" type="text" [name]="'phonePrefix-'+i" class="form-control ui-g-2 ui-sm-4"
-                        style="margin-right: 1em;" [(ngModel)]="users[i].phonePrefix" (ngModelChange)="enableButtonUser(i)" required pattern="[0-9]{1,4}" [disabled]="user.type == -1">
+                        style="margin-right: 1em;" [(ngModel)]="users[i].phonePrefix" (ngModelChange)="enableButtonUser(i)" required pattern="^[+]?[1-9]{1}[0-9]{1,2}$" [disabled]="user.type == -1">
                     <input [id]="'phone-number-'+i" type="text" [name]="'phoneNumber-'+i" class="form-control ui-g-3 ui-sm-7"
                         [(ngModel)]="users[i].phoneNumber" required (ngModelChange)="enableButtonUser(i)" pattern="[0-9]{1,}" [disabled]="user.type == -1">
                     <br>
@@ -150,7 +153,7 @@
         </div>
     </form>
 </div>
-
+<!--ADD CONTACT
 <p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <form #addNewUser="ngForm">
@@ -191,8 +194,8 @@
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
-
-<!--MODAL CONFIMATION OF DEACTIVATING CONTACT-->
+-->
+<!--MODAL CONFIMATION OF DEACTIVATING CONTACT
 <p-dialog [(visible)]="displayDeactivatemodal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
         [closeOnEscape]="false">
         <div class="form-group ui-g">
@@ -214,3 +217,4 @@
             </div>
         </div>
     </p-dialog>
+    -->

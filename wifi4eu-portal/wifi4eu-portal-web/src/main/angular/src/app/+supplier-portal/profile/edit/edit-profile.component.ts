@@ -67,6 +67,9 @@ export class SupplierEditProfileComponent {
     private addUser: boolean = false;
     private displayDeactivatemodal : boolean = false;
 
+    private prefixRegex = new RegExp('^[+]?[1-9]{1}[0-9]{1,2}$');
+    private phoneNumberRegex = new RegExp('^[0-9]{1,}$');
+
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
         let allow = true;
         if (this.sharedService.user) {
@@ -87,8 +90,9 @@ export class SupplierEditProfileComponent {
             (supplier: SupplierDTOBase) => {
                 if (supplier != null) {
                     this.supplier = supplier;
-                    // this.users = this.supplier.users;
-                    this.users = this.supplier.users;
+                    // ADD CONTACT 
+                    //this.users = this.supplier.users; //uncomment
+                    this.users.push(this.user); //delete
                     if (this.supplier.logo != null)
                         this.isLogoUploaded = true;
                     this.nutsApi.getNutsByLevel(0).subscribe(
@@ -262,8 +266,8 @@ export class SupplierEditProfileComponent {
         this.displayDeactivatemodal = false;
     }
 
+/* ADD CONTACT
 
-    /* New contact funciontality */
     private sendMailToUser(){
         this.newUserEmail = '';
         this.addUser = true;
@@ -287,7 +291,7 @@ export class SupplierEditProfileComponent {
         this.contactIndex = i;
         this.displayDeactivatemodal= true;
     }
-
+*/
  
     private enableButton() {
         this.buttonEnabled = false;
@@ -312,12 +316,16 @@ export class SupplierEditProfileComponent {
         if (this.users[i]['phoneNumber'] != null && this.users[i]['phonePrefix'] != null
             && this.users[i]['surname'] != null  && this.users[i]['name'] != null
             && this.users[i]['phoneNumber'].trim() != "" && this.users[i]['phonePrefix'].trim() != ""
-            && this.users[i]['surname'].trim() != "" && this.users[i]['name'].trim() != "")
+            && this.users[i]['surname'].trim() != "" && this.users[i]['name'].trim() != "" && this.checkPrefixAndNumberRegex(i))
             this.buttonUserEnabled = true;
         else
             this.buttonUserEnabled = false;
         if (this.buttonUserEnabled && this.buttonCompanyEnabled)
             this.buttonEnabled = true;
+    }
+
+    private checkPrefixAndNumberRegex(i) : boolean{
+        return this.users[i]['phonePrefix'].trim().match(this.prefixRegex) != null && this.users[i]['phoneNumber'].trim().match(this.phoneNumberRegex) != null;
     }
 
     private checkRegions(event: any) {
@@ -339,7 +347,7 @@ export class SupplierEditProfileComponent {
         for (let i = 0; i < this.users.length; i++)
             this.enableButtonUser(i);
     }
-
+/* ADD CONTACT
     private closeAddNewContactModal(){
         this.newUserEmail = '';
         this.addUser = false;
@@ -375,5 +383,5 @@ export class SupplierEditProfileComponent {
             this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'supplierPortal.profile.addNewContact.empty', 'error');
         }
     }
-
+*/
 }

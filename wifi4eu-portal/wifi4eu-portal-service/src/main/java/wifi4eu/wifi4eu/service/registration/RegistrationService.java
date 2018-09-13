@@ -279,7 +279,7 @@ public class RegistrationService {
     }
 
     private void uploadDocument (Integer registrationID, LegalFileDTO legalFile, UserDTO userConnected, String ip) throws Exception {
-        String legalFileToUpload = legalFile.getFileData();
+        String legalFileToUpload = legalFile.getAzureUri();
         if (legalFileToUpload != null) {
             String base64 = LegalFilesService.getBase64Data(legalFileToUpload);
             if(base64 != null && !base64.isEmpty()) {
@@ -300,7 +300,7 @@ public class RegistrationService {
 
                 	String uri = azureBlobConnector.uploadLegalFile(azureFileName, base64);
                     boolean docUploaded = !Validator.isEmpty(uri);
-                    legalFile.setFileData(uri);
+                    legalFile.setAzureUri(uri);
                     
                     if (docUploaded) {
                     	legalFile.setId(0);

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -90,7 +89,8 @@ public class ThreadResource {
         }
     }
 
-    @ApiOperation(value = "Set mediation to thread")
+    //COMMENTED BY ORDER OF BERT 06/09/2018
+    /*@ApiOperation(value = "Set mediation to thread")
     @RequestMapping(value = "{threadId}/setMediation", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO askMediationThread(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
@@ -112,5 +112,5 @@ public class ThreadResource {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been set with mediation", e);
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
-    }
+    }*/
 }

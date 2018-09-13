@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.blob.BlobContainerPublicAccessType;
+import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
@@ -52,6 +55,7 @@ public class AzureBlobConnector {
 			storageAccount = CloudStorageAccount.parse(storageConnectionString);
 			blobClient = storageAccount.createCloudBlobClient();
 			container = blobClient.getContainerReference(containerName);
+			container.createIfNotExists(BlobContainerPublicAccessType.CONTAINER, new BlobRequestOptions(), new OperationContext());
 		} catch (StorageException | URISyntaxException | InvalidKeyException e) {
 			LOGGER.error("ERRO", e);
 		}

@@ -399,10 +399,10 @@ public class RegistrationResource {
 		String fileExtension = legalFilesService.getExtensionFromMime(fileMime);
 
 		// if fileMime is null or has lenght 0 fileExtension is null
-		if (!Validator.isEmpty(fileName) && !Validator.isEmpty(legalFile.getFileData())
+		if (!Validator.isEmpty(fileName) && !Validator.isEmpty(legalFile.getAzureUri())
 				&& !Validator.isEmpty(fileExtension)) {
 			// Recover the data from Azure, the database field only stores the url of the file
-			String content = azureBlobConnector.downloadLegalFile(legalFile.getFileData());
+			String content = azureBlobConnector.downloadLegalFile(legalFile.getAzureUri());
 
 			if (!Validator.isEmpty(content)) {
 				try {

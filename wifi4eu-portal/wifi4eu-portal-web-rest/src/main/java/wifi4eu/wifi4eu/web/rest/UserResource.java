@@ -87,10 +87,17 @@ public class UserResource {
         for (UserContactDetails user : usersList) {
             try {
                 _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating user details by id " + user.getId());
-                List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(user.getId());
-                for (RegistrationDTO registration : registrations) {
-                    permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registration.getId());
+                //ADD CONTACT PERMISSION VULNERABILITY
+//                List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(user.getId());
+//                for (RegistrationDTO registration : registrations) {
+//                    permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registration.getId());
+//                }
+
+                permissionChecker.check(RightConstants.USER_TABLE + user.getId());
+                if (user.getId() != userConnected.getId()) {
+                    throw new AccessDeniedException("");
                 }
+
             } catch (AccessDeniedException ade) {
                 _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to update user details", ade.getMessage
                         ());
@@ -153,9 +160,10 @@ public class UserResource {
         }
     }
 
-    @ApiOperation(value = "Service to do Login with a ECAS User")
-    @RequestMapping(value = "/complete-contact-details", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
+    //ADD CONTACT
+//    @ApiOperation(value = "Service to do Login with a ECAS User")
+//    @RequestMapping(value = "/complete-contact-details", method = RequestMethod.POST, produces = "application/json")
+//    @ResponseBody
     public ResponseDTO completeInvitateContactDetails(@RequestBody final UserDTO userDTO, HttpServletResponse response) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
@@ -357,9 +365,10 @@ public class UserResource {
         return responseDTO;
     }
 
-    @ApiOperation(value = "Deactivate user from registration")
-    @RequestMapping(value = "/registrationUsers/{registrationId}/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
+    //ADD CONTACT
+//    @ApiOperation(value = "Deactivate user from registration")
+//    @RequestMapping(value = "/registrationUsers/{registrationId}/deactivate/{userId}", method = RequestMethod.GET, produces = "application/json")
+//    @ResponseBody
     public ResponseDTO deactivateRegistrationUser(@PathVariable("registrationId") Integer registrationId, @PathVariable("userId") Integer userId,
                                                   HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();

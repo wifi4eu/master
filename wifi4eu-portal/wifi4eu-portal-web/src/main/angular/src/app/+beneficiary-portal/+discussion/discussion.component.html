@@ -159,7 +159,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <!-- COMMENTED BY ORDER OF BERT 06/09/2018 -->
+            <!--<div class="row">
                 <div class="col-sm-12">
                     <div class="col-sm-9"></div>
                     <div class="col-sm-3">
@@ -169,7 +170,7 @@
                         </button>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </ng-container>
 </div>
@@ -216,7 +217,8 @@
     </p-dialog>
 </div>
 
-<div class="container font">
+<!-- COMMENTED BY ORDER OF BERT 06/09/2018  There is not "Ask for mediation" -->
+<!--<div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true"
               [resizable]="false" [draggable]="false" [closeOnEscape]="true">
@@ -238,6 +240,7 @@
                             {{ 'shared.cancel.button' | translate }}
                         </button>
                     </div>
+
                     <div class="col-sm-6">
                         <button type="submit" class="btn btn-primary changePassword confirm-button"
                                 (click)="askMediation(); closeModal()">
@@ -248,7 +251,7 @@
             </div>
         </form>
     </p-dialog>
-</div>
+</div>-->
 <helpdesk-form-component portal="beneficiary-discussion"></helpdesk-form-component>
 <p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
