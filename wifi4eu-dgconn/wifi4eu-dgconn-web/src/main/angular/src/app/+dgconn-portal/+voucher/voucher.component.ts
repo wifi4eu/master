@@ -276,6 +276,8 @@ export class DgConnVoucherComponent {
   selectCountry(country: NutsDTOBase) {
     this.selectedCountry = country.label;
     this.page = 0;
+    this.searchedMunicipality = 'All';
+    this.municipalitySearch.nativeElement.value = '';
     this.filterTable();
   }
   

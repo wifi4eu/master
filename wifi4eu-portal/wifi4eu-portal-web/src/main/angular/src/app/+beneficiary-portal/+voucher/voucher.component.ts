@@ -105,7 +105,7 @@ export class VoucherComponent {
                             this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
                             this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
                             this.applyDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + applydate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (applydate.getMonth() + 1)).slice(-2) + "/" + applydate.getFullYear();
-                            this.applyHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + applydate.getHours()).toString().slice(-2) + ":" + ('0' + applydate.getMinutes()).slice(-2);                           
+                            this.applyHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + applydate.getHours()).toString().slice(-2) + ":" + ('0' + applydate.getMinutes()).slice(-2);
                         }
                     }
                 },
@@ -157,7 +157,7 @@ export class VoucherComponent {
         // we just need to check this variable
         // voucherCompetitionState is 2 then call is open
         // or when timer component emits that has finished
-        if (this.voucherCompetitionState == 2) {
+        if (this.voucherCompetitionState != null && this.voucherCompetitionState != 0) {
             if (applyVoucher && applyVoucher.idRegistration && applyVoucher.idMunicipality && this.currentCall.id && this.user.id) {
                 if (applyVoucher.conditionAgreement && applyVoucher.filesUploaded) {
                     let urlQueue = this.rabbitmqURI + this.currentCall.id + "/apply/" + applyVoucher.idRegistration + "/" + this.user.id + "/" + applyVoucher.idMunicipality;
@@ -176,12 +176,16 @@ export class VoucherComponent {
                             );
                         },
                         error => {
+                            if (error.status == 401 && error._body === "Call is not active") {
+                                this.displayCallClosed = true;
+                            } else {
+                                this.sharedService.growlTranslation(
+                                    "An error occurred and your application could not be received.",
+                                    "shared.registration.update.error",
+                                    "error"
+                                );
+                            }
                             this.cookieService.set(this.nameCookieApply + "_" + applyVoucher.idRegistration, 'false');
-                            this.sharedService.growlTranslation(
-                                "An error occurred and your application could not be received.",
-                                "shared.registration.update.error",
-                                "error"
-                            );
                         }
                     );
                 } else {
@@ -198,10 +202,7 @@ export class VoucherComponent {
                     "error"
                 );
             }
-        } else if (this.voucherCompetitionState == 1) {
-            // trying to apply before the opening of the call
-            this.displayCallClosed = true;
-        } else if (this.voucherCompetitionState == null || this.voucherCompetitionState == 0){
+        } else {
             this.sharedService.growlTranslation(
                 "An error occurred and your application could not be received.",
                 "shared.registration.update.error",

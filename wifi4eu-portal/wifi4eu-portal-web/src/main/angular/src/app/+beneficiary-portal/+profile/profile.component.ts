@@ -229,22 +229,6 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-    private saveUserChanges() {
-        if (this.editedUser.email != this.user.email) {
-            this.editedUser.email = this.user.email;
-        }
-        this.submittingData = true;
-        this.userApi.updateUserDetails(this.editedUser).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.user = response.data;
-                    this.closeModal();
-                    this.submittingData = false;
-                }
-            }
-        );
-    }
-
     private saveMunicipalityChanges() {
         if (this.editedMunicipality.country != this.municipalities[this.currentEditIndex].country) {
             this.editedMunicipality.country = this.municipalities[this.currentEditIndex].country;
@@ -415,7 +399,7 @@ export class BeneficiaryProfileComponent {
     private goToEditProfile() {
         this.router.navigate(['../profile/edit-profile'], { relativeTo: this.route });
     }
-
+    /*CONTACT DETAILS ADD CONTACT MUNICIPALITY
     private addNewContactToMunicipality(municipalityId: number){
         this.idMunicipalityNewContactUser = municipalityId;
         this.addUser = true;
@@ -451,5 +435,5 @@ export class BeneficiaryProfileComponent {
         } else {
             this.sharedService.growlTranslation('Please, complete the email field to add a new contact', 'benefPortal.profile.addNewContact.empty', 'error');
         }
-    }
+    }*/
 }

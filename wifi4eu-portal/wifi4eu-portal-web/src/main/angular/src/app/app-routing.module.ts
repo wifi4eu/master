@@ -60,10 +60,10 @@ import { DeactivatedUserComponent } from "./deactivated-user/deactivated-user.co
         }, {
             path: 'notfound',
             component: NotFoundComponent
-        },{
+        },/*{
             path: 'invited-contact-details',
             component: InvitedContactDetailsComponent
-        },{
+        },*/{
             path: 'deactivated-user',
             component: DeactivatedUserComponent
         
