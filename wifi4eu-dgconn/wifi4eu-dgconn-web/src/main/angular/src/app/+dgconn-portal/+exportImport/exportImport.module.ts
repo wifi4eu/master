@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { ImportLefComponent } from './fileSelector/importLef.component';
+import { ImportLefComponent } from './lef/importLef.component';
 import { ExportImportRoutingModule } from './exportImport-routing.module';
 import { DgConnExportImportComponent } from './exportImport.component';
+import { ImportBudgetaryCommitmentComponent } from './budgetaryCommitment/importBudgetaryCommitment.component';
+import { FileSelectorComponent } from './shared/fileSelector.component';
+import { ImportLegalCommitmentComponent } from 'app/+dgconn-portal/+exportImport/legalCommitment/importLegalCommitment.component';
 
 @NgModule({
     imports: [
@@ -11,7 +14,10 @@ import { DgConnExportImportComponent } from './exportImport.component';
     ],
     declarations: [
         ImportLefComponent,
-        DgConnExportImportComponent
+        ImportBudgetaryCommitmentComponent,
+        ImportLegalCommitmentComponent,
+        DgConnExportImportComponent,
+        FileSelectorComponent
     ],
     bootstrap: [DgConnExportImportComponent]
 })

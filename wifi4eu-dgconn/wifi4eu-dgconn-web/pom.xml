@@ -196,7 +196,7 @@
                       <configuration>
                           <warSourceDirectory>${project.basedir}/target</warSourceDirectory>
                           <warName>dashboard</warName>
-                          <outputDirectory>${project.basedir}/../../LocalDevelopmemt/tomcat/webapps</outputDirectory>
+                          <outputDirectory>${project.basedir}/../../LocalDevelopment/tomcat/webapps</outputDirectory>
                       </configuration>
                   </plugin>
               </plugins>

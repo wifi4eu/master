@@ -1,0 +1,20 @@
+
+<div class="container">
+    <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
+        <a class="link-label" routerLink=".." routerLinkActive="active">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{'shared.back.button' | translate}}
+        </a>
+        <p class="beneficiaryTitle">{{ 'dgConn.importexport.title' | translate }}</p>
+        <p>{{ 'dgConn.importexport.lc.import' | translate }}</p>
+    </div>
+
+    <fileSelector (selectedFile)="sendFormData($event)"></fileSelector>
+</div>
+
+<p-dialog [(visible)]="processingOperation" [modal]="true" [responsive]="true" [resizable]="false"
+          [draggable]="false" [closable]="false">
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
+    <div style="text-align: center;font-size: 4em;margin: 1em 0">
+        <i [@enterSpinner] class="fa fa-spinner loading-icon" style="text-align: center;"></i>
+    </div>
+</p-dialog>

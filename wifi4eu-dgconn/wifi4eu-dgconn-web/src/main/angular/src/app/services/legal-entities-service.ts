@@ -21,4 +21,16 @@ export class LegalEntitiesService {
         return this.http.post(path, fileData).map(response => response.json());
     }
 
+    importBudgetaryCommitment(fileData: FormData): Observable<ResponseDTO> {
+        const path = this.basePath + `/exportImport/importBudgetaryCommitment`;
+
+        return this.http.post(path, fileData).map(response => response.json());
+    }
+
+    importLegalCommitment(fileData: FormData): Observable<ResponseDTO> {
+        const path = this.basePath + `/exportImport/importLegalCommitment`;
+
+        return this.http.post(path, fileData).map(response => response.json());
+    }
+
 }

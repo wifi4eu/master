@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     templateUrl: 'exportImport.component.html',
     styleUrls: ['./exportImport.component.scss'],
     providers: [CallApi, ApplicationApi, ExportImportApi],
+    preserveWhitespaces: false,
     animations: [
         trigger(
             'enterSpinner', [
@@ -29,7 +30,6 @@ import { ActivatedRoute, Router } from '@angular/router';
         )
     ]
 })
-
 export class DgConnExportImportComponent {
 
     processingOperation: boolean = false;
@@ -41,6 +41,14 @@ export class DgConnExportImportComponent {
 
     onNavigateToImportLefFile(): void {
         this.router.navigate(['lef'], {relativeTo: this.route});
+    }
+
+    onNavigateToImportBcFile(): void {
+        this.router.navigate(['bc'], {relativeTo: this.route});
+    }
+
+    onNavigateToImportLcFile(): void {
+        this.router.navigate(['lc'], {relativeTo: this.route});
     }
 
     exportRegistrationData() {

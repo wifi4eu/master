@@ -48,7 +48,6 @@ public class ExportImportWifi4euAbacResource {
     private ExportImportWifi4euAbacService exportImportWifi4euAbacService;
 
 
-    //    @ApiOperation(value = "Import LEF and BC validates")
     @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.POST, produces = "application/JSON")
     @ResponseBody
     public ResponseDTO importLegalEntityFBCValidate(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
@@ -67,6 +66,22 @@ public class ExportImportWifi4euAbacResource {
             _log.error("Error on operation.", e);
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
+    }
+
+    @RequestMapping(value = "/importBudgetaryCommitment", method = RequestMethod.POST, produces = "application/JSON")
+    @ResponseBody
+    public ResponseDTO importBudgetaryCommitment(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
+        _log.debug("importBudgetaryCommitment: file size = {}", file.getSize());
+
+        return null;
+    }
+
+    @RequestMapping(value = "/importLegalCommitment", method = RequestMethod.POST, produces = "application/JSON")
+    @ResponseBody
+    public ResponseDTO importLegalCommitment(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
+        _log.debug("importLegalCommitment: file size = {}", file.getSize());
+
+        return null;
     }
 
     @ApiOperation(value = "Export Beneficiary Information")
@@ -142,7 +157,6 @@ public class ExportImportWifi4euAbacResource {
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
-
 
     @ApiOperation(value = "Export Budgetary Commitment")
     @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET, produces = "text/csv")
