@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 
 import javax.annotation.PostConstruct;
@@ -101,12 +102,11 @@ public class AzureBlobConnector {
 				if (blob != null) {
 					try {
 						blob.uploadText(content);
+						fileUri = blob.getUri().toString();
 					} catch (StorageException | IOException e) {
 						LOGGER.error("Error", e);
 					}
 				}
-
-				fileUri = blob.getUri().toString();
 			}
 		}
 		
@@ -185,27 +185,6 @@ public class AzureBlobConnector {
 		return result;
 	}
 	
-	public void listAllWifi4EuOnFile(String containerName) throws IOException {
-		CloudBlobContainer container = this.getContainerReference(containerName);
-		Iterable<ListBlobItem> it = container.listBlobs();
-		
-		
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("c:\\wifieeu-hash.txt")))) {
-		
-			LOGGER.info("Items on container [{}]", containerName);
-
-			for (ListBlobItem listBlobItem : it) {
-				String fileName = listBlobItem.getUri().toString();
-				byte[] sha1 = DigestUtils.sha1(this.downloadText(containerName, fileName.substring(fileName.lastIndexOf('/') + 1)));
-				LOGGER.info("Container [{}], fileName [{}], sha1[{}]", container, fileName, sha1);
-				
-				writer.write(fileName + ";" + sha1 + "\r\n");
-			}
-			writer.flush();
-		}		
-		
-	}
-	
 	private void checkContainerName(final String containerName) throws IllegalArgumentException {
 		String errorMessage = null;
 		
@@ -242,27 +221,6 @@ public class AzureBlobConnector {
 		}
 	}
 	
-	
-	public static void main(String args[]) throws Exception {
-		AzureBlobConnector blobConnector = new AzureBlobConnector();
-		
-		
-//        byte[] fileBytes = Base64Utils.decodeFromString(content);
-//        FileOutputStream fos = new FileOutputStream("c:\\file.txt");
-//        fos.write(fileBytes);
-//        fos.flush();
-//        fos.close();
-		
-		//String uriUploadedFile = blobConnector.uploadText("wifi4eu", "doc01", content);
-		//String pathDownloadedFile = blobConnector.download("wifi4eu", "doc01", "c:\\franklin\\everis\\downloads.pdf");
-		
-		//System.out.println("UPLOAD=>" + uriUploadedFile);
-		//System.out.println("DOWNLOAD =>" + pathDownloadedFile);
-		
-		blobConnector.listAllWifi4EuOnFile("wifi4eu");
-		
-	}
-	
 	public String downloadLegalFile(final String data) {
 	    String fileNameDownload = data.substring(data.lastIndexOf('/') + 1);
 	    AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
@@ -281,7 +239,7 @@ public class AzureBlobConnector {
 	public String uploadLegalFile(final String fileName, final String content) {
         String uri = null;
         
-        try {
+        try {        	
             final String encondedFileName = URLEncoder.encode(fileName, "UTF-8");
             
         	LOGGER.info("UPLOADING DOCUMENT container[{}] fileName[{}]", DEFAULT_CONTAINER_NAME, fileName);
