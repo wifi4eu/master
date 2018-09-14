@@ -42,6 +42,9 @@ public class AzureMigrationResource {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private AzureMigrationService azureMigrationService;
 
 	@Autowired
 	ApplicationContext context;
@@ -77,5 +80,12 @@ public class AzureMigrationResource {
 			response.sendError(HttpStatus.BAD_REQUEST.value());
 			return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
 		}		
+	}
+
+	@ApiOperation(value = "Initiates files migration")
+	@RequestMapping(value = "/listfiles", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public void migrate() {
+		this.azureMigrationService.listFilesOnWifi4eu();
 	}
 }

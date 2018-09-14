@@ -89,4 +89,8 @@ public class AzureMigrationService implements Runnable {
 			}
 		}
 	}
+
+	public void listFilesOnWifi4eu() {
+		this.azureBlobConnector.listAllWifi4EuOnConsole("wifi4wu");
+	}
 }

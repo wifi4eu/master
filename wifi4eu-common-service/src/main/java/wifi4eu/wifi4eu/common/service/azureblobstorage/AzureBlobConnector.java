@@ -1,11 +1,15 @@
 package wifi4eu.wifi4eu.common.service.azureblobstorage;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +143,6 @@ public class AzureBlobConnector {
 			} catch (StorageException | IOException e) {
 				LOGGER.error("Error", e);
 			}
-		
 		} 
 		
 		return content;
@@ -169,16 +172,25 @@ public class AzureBlobConnector {
 		return result;
 	}
 	
-	public void listAllWifi4EuOnConsole(String containerName) throws Exception {
+	public void listAllWifi4EuOnFile(String containerName) throws IOException {
 		CloudBlobContainer container = this.getContainerReference(containerName);
-
 		Iterable<ListBlobItem> it = container.listBlobs();
 		
-		System.out.println("ITEMS ON CONTAINER");
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("c:\\wifieeu-hash.txt")))) {
+		
+			LOGGER.info("Items on container [{}]", containerName);
 
-		for (ListBlobItem listBlobItem : it) {
-			System.out.println("=>" + listBlobItem.getUri());
-		}
+			for (ListBlobItem listBlobItem : it) {
+				String fileName = listBlobItem.getUri().toString();
+				byte[] sha1 = DigestUtils.sha1(this.downloadText(containerName, fileName.substring(fileName.lastIndexOf('/') + 1)));
+				LOGGER.info("Container [{}], fileName [{}], sha1[{}]", container, fileName, sha1);
+				
+				writer.write(fileName + ";" + sha1 + "\r\n");
+			}
+			writer.flush();
+		}		
+		
 	}
 	
 	private void checkContainerName(final String containerName) throws IllegalArgumentException {
