@@ -139,25 +139,31 @@ export class MonitoringTableComponent implements OnInit{
 
     selectAll(){
         this.clearSelection();
-        for (let i = 0; i < this.rows.length; i++) {
-            if (this.rows[i].readyToBeCounterSigned) {
-                this.rows[i].isSelected = true;
-            }
+        if (this.rows !== undefined && this.rows !== null){
+          for (let i = 0; i < this.rows.length; i++) {
+              if (this.rows[i].readyToBeCounterSigned) {
+                  this.rows[i].isSelected = true;
+              }
+          }
         }
     }
 
     clearSelection(){
-        for (let i = 0; i < this.rows.length; i++) {
-            this.rows[i].isSelected = false;
+        if (this.rows !== undefined && this.rows !== null){
+          for (let i = 0; i < this.rows.length; i++) {
+              this.rows[i].isSelected = false;
+          }
         }
     }
 
     getSelection(){
         let result = [];
-        for (let i = 0; i < this.rows.length; i++) {
-            if (this.rows[i].isSelected) {
-                result.push(this.rows[i].id);
-            }
+        if (this.rows !== undefined && this.rows !== null){
+          for (let i = 0; i < this.rows.length; i++) {
+              if (this.rows[i].isSelected) {
+                  result.push(this.rows[i].id);
+              }
+          }
         }
         return result;
     }
