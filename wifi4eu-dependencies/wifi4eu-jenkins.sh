@@ -7,19 +7,19 @@ echo "Check angular version"
 npm config set "//ecdevops.eu/repository/npm-all/:_authToken=828d555c-441f-3ee2-8ec5-8fe715c389f2"
 npm config set registry https://ecdevops.eu/repository/npm-all/
 echo "NPM install on angular folders"
-if [[ $2 = "" || $2 = *"wifi4eu-portal"* ]]; then
+if [[ -z $2 || $2 = *"wifi4eu-portal"* ]]; then
 npm install --prefix ./wifi4eu-portal/wifi4eu-portal-web/src/main/angular/
 fi
-if [[ $2 = "" || $2 = *"wifi4eu-public-portal"* ]]; then
+if [[ -z $2 || $2 = *"wifi4eu-public-portal"* ]]; then
 npm install --prefix ./wifi4eu-public-portal/wifi4eu-public-portal-web/src/main/angular/
 fi
-if [[ $2 = "" || $2 = *"wifi4eu-dgconn"* ]]; then
+if [[ -z $2 || $2 = *"wifi4eu-dgconn"* ]]; then
 npm install --prefix ./wifi4eu-dgconn/wifi4eu-dgconn-web/src/main/angular/
 fi
-if [[ $2 = "" || $2 = *"wifi4eu-supplier"* ]]; then
+if [[ -z $2 || $2 = *"wifi4eu-supplier"* ]]; then
 npm install --prefix ./wifi4eu-supplier/wifi4eu-supplier-web/src/main/angular/
 fi
-if [[ $2 = "" || $2 = *"wifi4eu-financial"* ]]; then
+if [[ -z $2 || $2 = *"wifi4eu-financial"* ]]; then
 npm install --prefix ./wifi4eu-financial/wifi4eu-financial-web/src/main/angular/
 fi
 #echo "Install ecas-tomcat-8.0 dependency"
@@ -28,7 +28,7 @@ fi
 /usr/local/lib/apache-maven/bin/mvn install:install-file -Dfile=wifi4eu-dependencies/cns-client-1.1.jar  -DgroupId=eu.europa.ec.digit.cns -DartifactId=cns-client -Dversion=1.1 -Dpackaging=jar
 echo "Compile project"
 echo "Environment: $1"
-if [ $2 = "" ]
+if [ -z $2 ]
 then
 echo "Modules: all"
 /usr/local/lib/apache-maven/bin/mvn clean install -U -Png-build-jenkins,$1
