@@ -206,7 +206,7 @@ public class GrantAgreementService {
         replacementsMap.put("field-signature", "SIGNATURE HERE");
         replacementsMap.put("field-agency-name", "user of agency");
         replacementsMap.put("field-signature-agency", "SIGNATURE HERE");
-        replacementsMap.put("field-action", "INEA/CEF/WiFi4EU/".concat(header));
+        replacementsMap.put("field-action", header);
         replacementsMap.put("field-municipality", lauDisplayName);
         return fillGrantAgreementDocument(grantAgreement, replacementsMap);
     }

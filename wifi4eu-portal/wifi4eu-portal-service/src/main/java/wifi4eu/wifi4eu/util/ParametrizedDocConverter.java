@@ -88,7 +88,7 @@ public class ParametrizedDocConverter {
 	
 	private static void setFieldValue(AcroFields fields, String find, String repl) {
 		try {
-			if (find.equalsIgnoreCase("field1")) {
+			if (find.equalsIgnoreCase("field1") || find.equalsIgnoreCase("field-action")) {
 				BaseFont baseFontBold = BaseFont.createFont(BaseFont.TIMES_BOLD, BaseFont.CP1252, BaseFont.EMBEDDED);
 				fields.setFieldProperty(find, "textfont", baseFontBold, null);
 			} else {
