@@ -28,5 +28,11 @@ fi
 /usr/local/lib/apache-maven/bin/mvn install:install-file -Dfile=wifi4eu-dependencies/cns-client-1.1.jar  -DgroupId=eu.europa.ec.digit.cns -DartifactId=cns-client -Dversion=1.1 -Dpackaging=jar
 echo "Compile project"
 echo "Environment: $1"
+if [[ $2 = ""]]; then
+echo "Modules: all"
+/usr/local/lib/apache-maven/bin/mvn clean install -U -Png-build-jenkins,$1
+else
 echo "Modules: $2"
 /usr/local/lib/apache-maven/bin/mvn clean install -U -Png-build-jenkins,!full-build,$1,$2
+fi
+
