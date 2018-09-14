@@ -316,21 +316,6 @@ public class RegistrationService {
 
                     	_log.log(Level.getLevel("BUSINESS"), "[ " + ip + " ] - ECAS Username: " + userConnected.getEcasUsername() + " - Updated legal " +
                     			"document number type:" + legalFile.getFileType());
-
-                    	List<LegalFileCorrectionReason> legalFilesCorrectionReasons = legalFileCorrectionReasonRepository.findAllCorrectionByRegistrationAndUserAndType(legalFile.getRegistration(),legalFile.getFileType());
-
-                    	for(LegalFileCorrectionReason legalFileCorrectionReason: legalFilesCorrectionReasons){
-                    		legalFileCorrectionReason.setCorrectionReason(null);
-                    		legalFileCorrectionReason.setRequestCorrection(false);
-                    	}
-
-                    	try {
-                    		_log.info("Saving legal file entry on Database");
-                    		legalFileCorrectionReasonRepository.save(legalFilesCorrectionReasons);
-                    	} catch (Exception e) {
-                    		_log.error("Error saving legal_files", e);
-                    		azureBlobConnector.deleteLegalFile(legalFile.getFileName());
-                    	}
                     }
                 }
             } else {
