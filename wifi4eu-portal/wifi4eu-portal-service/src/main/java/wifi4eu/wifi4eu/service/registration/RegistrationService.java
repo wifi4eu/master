@@ -279,7 +279,7 @@ public class RegistrationService {
     }
 
     private void uploadDocument (Integer registrationID, LegalFileDTO legalFile, UserDTO userConnected, String ip) throws Exception {
-        String legalFileToUpload = legalFile.getAzureUri();
+        String legalFileToUpload = legalFile.getFileData();
         if (legalFileToUpload != null) {
             String base64 = LegalFilesService.getBase64Data(legalFileToUpload);
             if(base64 != null && !base64.isEmpty()) {
@@ -306,6 +306,7 @@ public class RegistrationService {
                     	legalFile.setId(0);
                     	legalFile.setRegistration(registrationID);
                     	//legalFile.setFileData(LegalFilesService.getBase64Data(legalFileToUpload));
+                    	legalFile.setFileData("");
                     	legalFile.setUploadTime(uploadTimeUTC);
                     	legalFile.setFileMime(LegalFilesService.getMimeType(legalFileToUpload));
                     	legalFile.setFileSize(byteArray.length);
