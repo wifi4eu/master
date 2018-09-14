@@ -29,4 +29,4 @@ fi
 echo "Compile project"
 echo "Environment: $1"
 echo "Modules: $2"
-mvn clean install -U -Png-build-jenkins,!full-build,$1,$2
+/usr/local/lib/apache-maven/bin/mvn clean install -U -Png-build-jenkins,!full-build,$1,$2
