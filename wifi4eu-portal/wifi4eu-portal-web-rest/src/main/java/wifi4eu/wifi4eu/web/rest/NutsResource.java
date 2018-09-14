@@ -1,16 +1,21 @@
 package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.location.NutsService;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.List;
 
@@ -19,10 +24,11 @@ import java.util.List;
 @Api(value = "/nuts", description = "Nuts object REST API services")
 @RequestMapping("nuts")
 public class NutsResource {
+
     @Autowired
     NutsService nutsService;
 
-    Logger _log = LoggerFactory.getLogger(LauResource.class);
+    Logger _log = LogManager.getLogger(NutsResource.class);
 
     @ApiOperation(value = "Get all nuts")
     @ApiImplicitParams({
@@ -31,7 +37,6 @@ public class NutsResource {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> allNuts() {
-        _log.info("allNuts");
         return nutsService.getAllNuts();
     }
 
@@ -42,7 +47,6 @@ public class NutsResource {
     @RequestMapping(value = "/{nutsId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public NutsDTO getNutsById(@PathVariable("nutsId") final Integer nutsId) {
-        _log.info("getNutsById " + nutsId);
         return nutsService.getNutsById(nutsId);
     }
 
@@ -53,7 +57,6 @@ public class NutsResource {
     @RequestMapping(value = "/code/{code}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public NutsDTO getNutsByCode(@PathVariable("code") final String code) {
-        _log.info("getNutsByCode " + code);
         return nutsService.getNutsByCode(code);
     }
 
@@ -64,7 +67,6 @@ public class NutsResource {
     @RequestMapping(value = "/level/{level}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> getNutsByLevel(@PathVariable("level") final Integer level) {
-        _log.info("getNutsByLevel " + level);
         return nutsService.getNutsByLevel(level);
     }
 
@@ -75,7 +77,6 @@ public class NutsResource {
     @RequestMapping(value = "/countryCode/{countryCode}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> getNutsByCountryCode(@PathVariable("countryCode") final String countryCode) {
-        _log.info("getNutsByCountryCode " + countryCode);
         return nutsService.getNutsByCountryCode(countryCode);
     }
 
@@ -86,7 +87,6 @@ public class NutsResource {
     @RequestMapping(value = "/countryCode/{countryCode}/level/{level}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> getNutsByCountryCodeAndLevelOrderByLabelAsc(@PathVariable("countryCode") final String countryCode, @PathVariable("level") final Integer level) {
-        _log.info("getNutsByCountryCodeAndLevelOrderByLabelAsc " + countryCode + level);
         return nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode, level);
     }
 }

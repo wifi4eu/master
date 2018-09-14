@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.List;
 
 import eu.cec.digit.ecas.client.jaas.DetailedUser;
-import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserContext implements Serializable, UserDetails, Principal {
 
-    private List<RoleDTO> roleList;
 
     private static final long serialVersionUID = 1L;
     private final String username;
@@ -38,26 +36,14 @@ public class UserContext implements Serializable, UserDetails, Principal {
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        List<RoleDTO> roles = getRoleList();
         Collection<GrantedAuthority> grantedAuthorities = null;
 
         grantedAuthorities = new ArrayList<GrantedAuthority>();
-        for (int i = 0; i < roles.size(); i++) {
-            grantedAuthorities.add(new GrantedAuthorityImpl(roles.get(i).getName()));
-        }
 
         if (grantedAuthorities.isEmpty()) {
             grantedAuthorities.add(new GrantedAuthorityImpl("anonymousUser"));
         }
         return grantedAuthorities;
-    }
-
-    public List<RoleDTO> getRoleList() {
-        return this.roleList;
-    }
-
-    public void setRoleList(List<RoleDTO> roleList) {
-        this.roleList = roleList;
     }
 
     public String getFullName() {

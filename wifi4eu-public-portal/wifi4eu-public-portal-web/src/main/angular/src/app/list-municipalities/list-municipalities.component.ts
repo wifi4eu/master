@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NutsApi, NutsDTOBase, MunicipalityDTOBase, MunicipalityApi, ResponseDTO } from 'app/shared/swagger';
+import { NutsApi, NutsDTOBase, MunicipalityApi } from 'app/shared/swagger';
 import { ViewEncapsulation } from '@angular/core';
-import { MunicipalityCacheDTO, MunicipalityCacheDTOBase } from 'app/shared/swagger/model/MunicipalityCacheDTO';
+import { MunicipalityCacheDTOBase } from 'app/shared/swagger/model/MunicipalityCacheDTO';
+import { TranslateService } from 'ng2-translate';
+import { SharedService } from 'app/shared/shared.service';
 
 @Component({
   selector: 'app-list-municipalities',
@@ -22,7 +24,7 @@ export class ListMunicipalitiesComponent implements OnInit {
   regionNameSearched: string = null;
   defaultRegion = new NutsDTOBase();
   
-  constructor(private nutsApi: NutsApi, private municipalityApi: MunicipalityApi) {
+  constructor(private nutsApi: NutsApi, private municipalityApi: MunicipalityApi, private translateService: TranslateService, private sharedService: SharedService) {
     this.defaultRegion.code = "ALL";
     this.defaultRegion.label = "All";
     this.defaultRegion.id = 0;
@@ -34,6 +36,18 @@ export class ListMunicipalitiesComponent implements OnInit {
       }, error => {
         console.log(error);
       }
+    );
+    this.translateDefaultRegionLabel();
+    this.sharedService.languageEmitter.subscribe(() => this.translateDefaultRegionLabel());
+  }
+
+  translateDefaultRegionLabel() {
+    this.translateService.get("shared.all").subscribe(
+        (translation: string) => {
+            if (translation) {
+                this.defaultRegion.label = translation;
+            }
+        }
     );
   }
 

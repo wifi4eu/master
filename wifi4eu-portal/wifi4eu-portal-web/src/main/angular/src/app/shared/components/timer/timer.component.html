@@ -1,17 +1,22 @@
-<div class="ui-g-12 center">
-    <span class="ui-g-12" style="background: #fbfbfb;box-shadow: 0px 1px 2px #888888;">
-            <div class="ui-g-12 center">
-                <p class="timelineTitle">{{ 'benefPortal.timelineComponentTitle' | translate}}</p>
-                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{days}}</span>
-                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{hours}}</span>
-                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{minutes}}</span>
-                <span class="ui-g-3" style="font-size: 150%;color: darkblue;">{{seconds}}</span>
-            </div>
-            <div class="ui-g-12 center">
-                <span class="ui-g-3">{{ 'benefPortal.voucher.days' | translate}}</span>
-                <span class="ui-g-3">{{ 'benefPortal.voucher.hours' | translate}}</span>
-                <span class="ui-g-3">{{ 'benefPortal.voucher.minutes' | translate}}</span>
-                <span class="ui-g-3">{{ 'benefPortal.voucher.seconds' | translate}}</span>
-            </div>
-        </span>
+<div class="offset-lg-4 col-lg-4  offset-sm-2 col-sm-8 col-md-6 offset-md-3" *ngIf="days != undefined">
+    <span id="timerSpan" class="ui-g-12 center" style="background: #fbfbfb;box-shadow: 0px 1px 2px #888888;">
+        <div class="ui-g-3 center">
+            <span class="time dots">{{days | number:'2.0'}}</span>
+            <span>{{ 'benefPortal.voucher.days' | translate}}</span>
+        </div>
+        <div class="ui-g-3 center">
+            <span class="time dots">{{hours | number:'2.0'}}</span>
+            <span>{{ 'benefPortal.voucher.hours' | translate}}</span>
+        </div>
+        <div class="ui-g-3 center">
+            <span class="time dots">{{minutes | number:'2.0'}}</span>
+            <span>{{ 'benefPortal.voucher.minutes' | translate}}</span>
+        </div>
+        <div class="ui-g-3 center">
+            <span class="time">{{seconds | number:'2.0'}}</span>
+            <span>{{ 'benefPortal.voucher.seconds' | translate}}</span>
+        </div>
+    </span>
 </div>
+
+<p class="timelineTitle ui-g-12">{{ 'benefPortal.voucher.disclaimer' | translate}}</p>

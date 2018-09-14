@@ -1,0 +1,29 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 http://maven.apache.org/xsd/assembly-1.1.3.xsd">
+    <id>src</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+        <fileSet>
+            <directory>${project.basedir}</directory>
+            <outputDirectory>/</outputDirectory>
+            <useDefaultExcludes>false</useDefaultExcludes>
+            <excludes>
+                <exclude>**/*.iml</exclude>
+                <exclude>**/*.project</exclude>
+                <exclude>**/*.classpath</exclude>
+                <exclude>**/.settings/**</exclude>
+                <exclude>**/dist/**</exclude>
+                <exclude>**/.idea/**</exclude>
+                <exclude>**/.svn/**</exclude>
+                <exclude>**/.git/</exclude>
+                <exclude>**/.gitignore</exclude>
+                <exclude>**/pom.xml.*</exclude>
+                <exclude>**/release.properties</exclude>
+                <exclude>**/${project.build.directory}/**</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
+</assembly>

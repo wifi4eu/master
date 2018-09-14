@@ -37,8 +37,8 @@
                     <div>
                         <label class="label floatLeft" for="associationName">{{ 'benefRegistration.associationName' | translate }}
                         </label>
-                        <input id="associationName" type="text" class="form-control paddingInput" name="associationName" [(ngModel)]="associationName"
-                            required>
+                        <input id="associationName" type="text" class="form-control paddingInput" maxlength="255" name="associationName" [(ngModel)]="associationName" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
+                         required>
                     </div>
                 </div>
                 <div class="ui-lg-2"></div>
@@ -56,8 +56,8 @@
                 <div class="ui-g-8">
                     <div>
                         <label class="label floatLeft" for="name">{{ 'shared.name.label' | translate }}</label>
-                        <input id="nameStep3" type="text" class="form-control paddingInput" name="name" [disabled]="imMayor" [(ngModel)]="initialUser.name"
-                            required>
+                        <input id="nameStep3" type="text" class="form-control paddingInput" name="name" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.name" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
+                        required>
                     </div>
                 </div>
                 <div class="ui-lg-2"></div>
@@ -67,8 +67,8 @@
                 <div class="ui-g-8">
                     <div class="form-group">
                         <label class="label floatLeft" for="surname">{{ 'shared.surname.label' | translate }}</label>
-                        <input id="surnameStep3" type="text" class="form-control paddingInput" name="surname" [disabled]="imMayor" [(ngModel)]="initialUser.surname"
-                            required>
+                        <input id="surnameStep3" type="text" class="form-control paddingInput" name="surname" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.surname" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
+                        required>
                     </div>
                 </div>
                 <div class="ui-lg-2"></div>
@@ -78,14 +78,14 @@
                 <div class="ui-g-4">
                     <label class="label floatLeft" for="address">{{ 'benefRegistration.address.label' | translate }}
                     </label>
-                    <input id="addressStep3" type="text" class="form-control paddingInput" name="address" [disabled]="imMayor" [(ngModel)]="initialUser.address"
-                        required>
+                    <input id="addressStep3" type="text" class="form-control paddingInput" name="address" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.address" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
+                     required>
                 </div>
                 <div class="ui-g-2">
                     <label class="label floatLeft" for="addressNum">
                         {{ 'shared.number.label' | translate }}
                     </label>
-                    <input type="text" class="form-control paddingInput" id="addressNumStep3" name="addressNum" [disabled]="imMayor" [(ngModel)]="initialUser.addressNum"
+                    <input type="text" class="form-control paddingInput" id="addressNumStep3" name="addressNum" maxlength="255" [disabled]="imMayor" [(ngModel)]="initialUser.addressNum" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
                         required>
                 </div>
                 <div class="ui-g-2"></div>
@@ -96,10 +96,61 @@
                     <label class="label floatLeft" for="postalCode">
                         {{ 'shared.postal-code.label' | translate }}
                     </label>
-                    <input type="text" class="form-control paddingInput" id="postalCodeStep3" name="postalCode" [disabled]="imMayor" [(ngModel)]="initialUser.postalCode"
+                    <input type="text" class="form-control paddingInput" id="postalCodeStep3" maxlength="255" name="postalCode" [disabled]="imMayor" [(ngModel)]="initialUser.postalCode" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
+                    required>
+                </div>
+                <div class="ui-g-2"></div>
+            </div>
+            <div class="ui-g-12">
+                <div class="ui-g-2"></div>
+                <div class="ui-g-4">
+                    <label class="label floatLeft" for="country">
+                        {{ 'shared.country.label' | translate }}
+                    </label>
+                    <select [(ngModel)]="initialUser.country" id="country" (ngModelChange)="checkButtonEnabled($event)" name="country" class="form-control" 
+                        [disabled]="countries.length < 1 || imMayor" style="height: auto; padding: 0.9rem 1rem;" required>
+                        <option disabled selected [ngValue]="null">
+                            {{ 'benefRegistration.registration.selectCountry' | translate }}
+                        </option>
+                        <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry.label">
+                            {{currentCountry.label}}
+                        </option>
+                    </select>
+                </div>
+                <div class="ui-g-2">
+                    <label class="label floatLeft" for="city">
+                        {{ 'suppRegistration.city.label' | translate }}
+                    </label>
+                    <input type="text" class="form-control paddingInput" id="cityStep3" [disabled]="imMayor" maxlength="255" name="city" [(ngModel)]="initialUser.city" (paste)="checkButtonEnabled($event)" (ngModelChange)="checkButtonEnabled($event)"
                         required>
                 </div>
                 <div class="ui-g-2"></div>
+            </div>
+            <div class="ui-g-12" *ngIf="!hasEcasEmail">
+                <div id="contact-email" class="form-group ui-g">
+                    <div class="ui-g-2"></div>
+                    <div class="ui-g-8">
+                        <label class="label floatLeft">{{ 'shared.email.label' | translate }}</label>
+                        <input class="form-control paddingInput" type="email" [pattern]="emailPattern" [disabled]="imMayor" [(ngModel)]="initialUser.ecasEmail"
+                             id="emailStep2" name="email"
+                               (input)="checkEmailsMatch()" maxlength="255" required>
+                        <label class="field-desc" style="margin-top: 10px;color: gray;">
+                            {{ 'benefRegistration.email.fielddesc' | translate }}
+                        </label>
+                    </div>
+                    <div class="ui-g-2"></div>
+                </div>
+                <div id="contact-confirm-email" class="form-group ui-g">
+                    <div class="ui-g-2"></div>
+                    <div class="ui-g-8">
+                        <label class="label floatLeft">{{ 'shared.confirmemail.label' | translate }}</label>
+                        <input class="form-control paddingInput {{css_class_email}}" [pattern]="emailPattern" [disabled]="imMayor" [(ngModel)]="repeatEmail"
+                               name="confirm-email" id="confirm-emailStep2" type="email"
+                               (input)="checkEmailsMatch()" (paste)="preventPaste()"
+                               maxlength="255" required>
+                    </div>
+                    <div class="ui-g-2"></div>
+                </div>
             </div>
         </div>
 
@@ -111,7 +162,7 @@
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button type="submit" id="navigate-step4" class="btn btn-primary publish-button" [disabled]="!imMayor && (!entityForm.valid || !userEmailMatches)">
+                <button type="submit" id="navigate-step4" class="btn btn-primary publish-button" [disabled]="(!checkButtonEnabled() || !userEmailMatches || !hasEcasEmail)">
                     {{ 'shared.next.button' | translate }}
                 </button>
             </div>

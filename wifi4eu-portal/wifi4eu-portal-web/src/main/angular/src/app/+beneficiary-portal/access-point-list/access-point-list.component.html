@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="supplier"></div>
+    <div class="back-button">
+        <a (click)="goBack()">
+            <i class="fa fa-arrow-left"></i> Back</a>
+    </div>
+    <div id="step2-title" class="row">
+        <div class="col-sm-12">
+            <div id="component-title">
+                <p class="beneficiaryTitle labelModal">{{ 'accessPoint.title' | translate }}
+                <p>{{ 'accessPoint.thisPageIsUsedTo' | translate }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <p>{{ 'shared.beneficiary.label' | translate }}: <span class="profileData">{{municipalityName}}</span></p>
+            <p>{{ 'accessPoint.installationSite' | translate }} <span
+                    class="profileData">{{installationSiteName}}</span>
+            </p>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="results accessPoints button-content paddingTable">
+
+        <p-dataTable [value]="accessPoints" [rows]="searchParametersService.parameters.delta" [paginator]="true"
+                     [rowsPerPageOptions]="[5,10,20]"
+                     [totalRecords]="totalResults" [first]="searchParametersService.parameters.page" [lazy]="true"
+                     (onLazyLoad)="onPage($event)">
+            <p-column field="number" header="{{'shared.number.label' | translate }}" sortable="true"></p-column>
+            <p-column field="locationType" header="{{'accessPoint.locationType' | translate }}"
+                      sortable="true"></p-column>
+            <p-column field="location" header="{{'accessPoint.locationName' | translate }}" sortable="true"></p-column>
+            <p-column header="{{'accessPoint.geoLocation' | translate }}">
+                <ng-template let-col let-accessPoint="rowData" pTemplate="body">
+<span>
+{{accessPoint.latitude}}, {{accessPoint.longitude}}
+</span>
+                </ng-template>
+            </p-column>
+            <p-column field="indoor" header="{{'accessPoint.deviceType' | translate }}" sortable="true">
+                <ng-template let-col let-accessPoint="rowData" pTemplate="body">
+                    <span *ngIf="accessPoint.indoor; else outdoor"> {{ 'accessPoint.indoor' | translate }}</span>
+                    <ng-template #outdoor>{{ 'accessPoint.outdoor' |translate }}</ng-template>
+                </ng-template>
+            </p-column>
+            <p-column field="deviceBrand" header="{{'accessPoint.deviceBrand' | translate }}"
+                      sortable="true"></p-column>
+            <p-column field="modelNumber" header="{{'accessPoint.deviceModel' | translate }}"
+                      sortable="true"></p-column>
+            <p-column field="serialNumber" header="{{'accessPoint.deviceSerial' | translate }}"
+                      sortable="true"></p-column>
+            <p-column field="macAddress" header="{{'accessPoint.macAddress' | translate }}"></p-column>
+            <p-column header="{{'shared.details' | translate }}">
+                <template let-accessPoint="rowData" let-i="rowIndex" pTemplate="body">
+                    <div class="my-center-text">
+                        <a class="linkNoStyle" id="voucherButton" (click)="goToDetails(i)"
+                           routerLinkActive="active"><i class="fa fa-eye"></i> {{ 'shared.view' | translate }}
+                        </a>
+                    </div>
+                </template>
+            </p-column>
+
+            <ng-template pTemplate="emptymessage">
+                {{'shared.noResults' | translate}}
+            </ng-template>
+        </p-dataTable>
+    </div>
+    <div class="supplier"></div>
+</div>

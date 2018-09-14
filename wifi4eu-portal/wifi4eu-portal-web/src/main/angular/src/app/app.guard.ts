@@ -12,6 +12,9 @@ export class AppGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
         let allow = true;
         if (this.sharedService.user) {
+            if (this.sharedService.user.userInvited){
+                this.router.navigateByUrl('/invited-contact-details');
+            }
             allow = this.allowAccess(route.url[0].path);
             if (!allow) {
                 this.router.navigateByUrl('/notfound');
@@ -49,9 +52,6 @@ export class AppGuard implements CanActivate {
                 break;
             case 'supplier-portal':
                 allow = this.allowAccessToSupplier();
-                break;
-            case 'dgconn-portal':
-                allow = this.allowAccessToDgConn();
                 break;
         }
         return allow;

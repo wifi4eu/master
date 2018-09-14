@@ -72,8 +72,8 @@
                   <workingDirectory>src/main/angular</workingDirectory>
                   <arguments>
                     <argument>build</argument>
+					<argument>--prod</argument>
                     <argument>--env=${ng.env}</argument>
-                    <argument>--prod</argument>
                     <argument>--aot</argument>
                     <argument>false</argument>
                   </arguments>
@@ -103,7 +103,7 @@
                   <workingDirectory>src/main/angular</workingDirectory>
                   <arguments>
                     <argument>/c</argument>
-                    <argument>"ng build --base-href /dashboard/"</argument>
+                    <argument>"ng build --base-href ${dgconn.context.name}/"</argument>
                     <argument>--env=${ng.env}</argument>
                     <argument>--prod</argument>
                     <argument>--aot</argument>
@@ -132,11 +132,13 @@
                 </goals>
                 <configuration>
                   <executable>
-                    /var/quark/binaries/node/node-v6.11.5-linux-x64/lib/node_modules/@angular/cli/bin/ng
+                    /var/quark/binaries/node/node-v8.9.3-linux-x64/lib/node_modules/@angular/cli/bin/ng
                   </executable>
                   <workingDirectory>src/main/angular</workingDirectory>
                   <arguments>
                     <argument>build</argument>
+                    <argument>--base-href</argument>
+                    <argument>${dgconn.context.name}/</argument>
                     <argument>--env=${ng.env}</argument>
                     <argument>--prod</argument>
                     <argument>--aot</argument>
@@ -152,7 +154,7 @@
   </profiles>
 
   <build>
-    <finalName>dashboard</finalName>
+    <finalName>${dgconn.name}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>

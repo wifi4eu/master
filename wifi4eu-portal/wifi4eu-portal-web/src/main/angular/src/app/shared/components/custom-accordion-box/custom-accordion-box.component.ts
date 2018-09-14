@@ -29,7 +29,7 @@ export class CustomAccordionBoxComponent extends UxAccordionBoxComponent {
     @Output('onClose') onClose: EventEmitter<any> = new EventEmitter();
 
     clickInside(event: any) {
-        return event.preventDefault();
+        // return event.preventDefault();
     }
 
     close() {

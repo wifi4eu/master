@@ -8,10 +8,12 @@ export class SharedService {
     private emitUpdate = new Subject<any>();
     private emitLogout = new Subject<any>();
     private emitClean = new Subject<any>();
+    private emitLanguage = new Subject<any>();
 
     updateEmitter = this.emitUpdate.asObservable();
     logoutEmitter = this.emitLogout.asObservable();
     cleanEmitter = this.emitClean.asObservable();
+    languageEmitter = this.emitLanguage.asObservable();
 
     constructor(private translateService: TranslateService, private uxService: UxService) {
     }
@@ -29,6 +31,10 @@ export class SharedService {
 
     clean() {
         this.emitClean.next();
+    }
+
+    changeLanguage() {
+        this.emitLanguage.next();
     }
 
     growlTranslation(translatedString: string, keyToTranslate: string, type: string) {

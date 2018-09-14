@@ -1,0 +1,179 @@
+<div class="container">
+    <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
+        <a class="link-label" routerLink=".." routerLinkActive="active">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+        </a>
+        <p class="beneficiaryTitle">Managment Publication of the call</p>
+    </div>
+    <p-tabView class="white" (onChange)="changeCall($event)">
+        <p-tabPanel *ngFor="let call of calls; let i=index" [header]="'Call '+(i+1)">
+            <div class="form-group ui-g">
+
+                <div class="ui-g-12">
+                    <div class="ui-g-8">
+                        <p class="beneficiaryMayor">{{ 'dgConn.publication.dashboard' | translate}}</p></div>
+                    <div class="ui-g-2">
+                        <!--<button type="button" class="btn" style="background: none; padding: 0;"-->
+                                <!--(click)="displayInfo(i)">-->
+                            <!--<i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{-->
+                            <!--'shared.edit.button' | translate}}-->
+                        <!--</button>-->
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="ui-g-2 ui-md-3">
+                        <div class="form-group left">
+                            <label class="labelModal" for="startDate" style="width: 100%">{{'dgConn.opening.date' |
+                                translate }}</label>
+                            <input type="text" value="{{call.startDate | date:'dd-MM-yy'}}"
+                                   style="background: white;" disabled><i
+                                class="fa fa-calendar margin-calendar"
+                                aria-hidden="true" style="margin-left: 0.2em;font-size: 1.3em; color: #254872;"></i>
+
+                        </div>
+                    </div>
+                    <div class="ui-g-1"></div>
+                    <div class="ui-g-2">
+                        <div class="form-group left">
+                            <label class="labelModal" for="startTime">{{'dgConn.start.time' | translate }}</label>
+                            <input type="text" value="{{call.startDate | date:'shortTime'}}"
+                                   style="background: white;"
+                                   disabled>
+                        </div>
+                    </div>
+                    <div class="ui-g-6"></div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="ui-g-2 ui-md-3">
+                        <div class="form-group left">
+                            <label class="labelModal" for="endDate" style="width: 100%">{{'dgConn.end.date' | translate
+                                }}</label>
+                            <input type="text" value="{{call.endDate | date:'dd-MM-yy'}}"
+                                   style="background: white;" disabled><i
+                                class="fa fa-calendar margin-calendar"
+                                aria-hidden="true" style="margin-left: 0.2em;font-size: 1.3em; color: #254872;"></i>
+
+                        </div>
+                    </div>
+                    <div class="ui-g-1"></div>
+                    <div class="ui-g-2">
+                        <div class="form-group left">
+                            <label class="labelModal" for="endTime">{{'dgConn.end.time' | translate }}</label>
+                            <input type="text" value="{{call.endDate | date:'shortTime'}}"
+                                   style="background: white;"
+                                   disabled>
+                        </div>
+                    </div>
+                    <div class="ui-g-6"></div>
+                </div>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+    <hr class="beneficiaryHr">
+
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <div class="ui-g-6">
+                <p-dataTable [value]="voucherManagementsFirst">
+                    <p-column [sortable]="true" field="member_state"
+                              header="{{ 'dgConn.helpdesk.memberState' | translate}}"></p-column>
+                    <p-column [sortable]="true" field="minimum"
+                              header="{{ 'dgConn.voucher.minimum' | translate}}"></p-column>
+                    <p-column [sortable]="true" field="maximum"
+                              header="{{ 'dgConn.voucher.maximum' | translate}}"></p-column>
+                </p-dataTable>
+            </div>
+            <div class="ui-g-6">
+                <p-dataTable [value]="voucherManagementsSecond" *ngIf="displayTable">
+                    <p-column [sortable]="true" field="member_state"
+                              header="{{ 'dgConn.helpdesk.memberState' | translate}}"></p-column>
+                    <p-column [sortable]="true" field="minimum"
+                              header="{{ 'dgConn.voucher.minimum' | translate}}"></p-column>
+                    <p-column [sortable]="true" field="maximum"
+                              header="{{ 'dgConn.voucher.maximum' | translate}}"></p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+    <!--MODALS BELOW-->
+    <!--<div class="container font">-->
+    <!--<div class="ui-g-1"></div>-->
+    <!--<p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"-->
+    <!--[draggable]="false" [closable]="false" [closeOnEscape]="false">-->
+    <!--<button type="button" (click)="cancelPublication()" class="closeButton">X</button>-->
+    <!--<p class="beneficiaryMayorModal">{{'dgConn.publication.call' | translate }}</p>-->
+    <!--<form (ngSubmit)="onSubmit()" #publicationForm="ngForm">-->
+    <!--<div class="containerTimeline center">-->
+    <!--<div class="form-group ui-g">-->
+    <!--<div class="ui-g-12">-->
+    <!--<div class="form-group left">-->
+    <!--<p class="beneficiaryMayor" for="event">Call {{indexRow}}</p>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="form-group ui-g">-->
+    <!--<div class="ui-g-3">-->
+    <!--<div class="form-group left">-->
+    <!--<label class="labelModal" for="startDate">{{'dgConn.opening.date' | translate }}</label>-->
+    <!--<p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"-->
+    <!--[showIcon]="true" type="text" dateFormat="dd/mm/yy" [(ngModel)]="startDate"-->
+    <!--name="startDate" onkeydown="return false" [disabled]="editableField"-->
+    <!--required (onSelect)="checkDate()"></p-calendar>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="ui-g-1"></div>-->
+    <!--<div class="ui-g-2">-->
+    <!--<div class="form-group left">-->
+    <!--<label class="labelModal" for="startTime">{{'dgConn.start.time' | translate }}</label>-->
+    <!--<p-calendar timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text"-->
+    <!--[(ngModel)]="startTime" name="startTime"-->
+    <!--onkeydown="return false" [disabled]="editableField" required-->
+    <!--(onSelect)="checkDate()"></p-calendar>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="ui-g-6"></div>-->
+    <!--</div>-->
+    <!--<div class="form-group ui-g">-->
+    <!--<div class="ui-g-3">-->
+    <!--<div class="form-group left">-->
+    <!--<label class="labelModal" for="endDate">{{'dgConn.closing.date' | translate }}</label>-->
+    <!--<p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"-->
+    <!--[showIcon]="true" type="text" dateFormat="dd/mm/yy" [(ngModel)]="endDate"-->
+    <!--name="endDate" onkeydown="return false" required-->
+    <!--(onSelect)="checkDate()"></p-calendar>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class=" ui-g-1-->
+    <!--">-->
+    <!--</div>-->
+    <!--<div class="ui-g-2">-->
+    <!--<div class="form-group left">-->
+    <!--<label class="labelModal" for="endTime">{{'dgConn.end.time' | translate }}</label>-->
+    <!--<p-calendar timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text"-->
+    <!--[(ngModel)]="endTime" name="endTime"-->
+    <!--onkeydown="return false" required (onSelect)="checkDate()"></p-calendar>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="ui-g-6"></div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="form-group ui-g">-->
+    <!--<div class="ui-g-3"></div>-->
+    <!--<div class="ui-g-2" style="text-align: center !important">-->
+    <!--<button type="button" (click)="cancelPublication()" class="btn btn-primary cancel-button">-->
+    <!--{{ 'shared.cancel.button' | translate }}-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--<div class="ui-g-1"></div>-->
+    <!--<div class="ui-g-2" style="text-align: center !important">-->
+    <!--<button type="button" (click)="createPublication()" class="btn btn-primary publish-button"-->
+    <!--[disabled]="!(publicationForm.form.valid && enableButton)">-->
+    <!--{{ 'dgConn.change.publication' | translate }}-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--<div class="ui-g-3"></div>-->
+    <!--</div>-->
+    <!--</form>-->
+    <!--</p-dialog>-->
+    <!--</div>-->
+</div>

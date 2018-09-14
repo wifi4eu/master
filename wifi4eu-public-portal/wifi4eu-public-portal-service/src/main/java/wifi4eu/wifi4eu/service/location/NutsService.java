@@ -17,10 +17,6 @@ public class NutsService {
     @Autowired
     NutsRepository nutsRepository;
 
-    public NutsDTO getNutsById(int nutsId) {
-        return nutsMapper.toDTO(nutsRepository.findOne(nutsId));
-    }
-
     public List<NutsDTO> getNutsByLevel(Integer level) {
         return nutsMapper.toDTOList(Lists.newArrayList(nutsRepository.findByLevel(level)));
     }

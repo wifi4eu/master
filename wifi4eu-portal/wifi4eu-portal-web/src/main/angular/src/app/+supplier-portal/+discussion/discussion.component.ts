@@ -102,14 +102,25 @@ export class DiscussionComponent {
                             this.userThreads = userThread;
                             this.supplierApi.getSupplierByUserId(this.userThreads[i].userId).subscribe(
                                 (suppliers: SupplierDTOBase) => {
-                                    if (this.user.id != suppliers.userId) {
-                                        this.otherSuppliers.push(suppliers);
-                                        console.log(this.otherSuppliers);
-                                        this.counter++;
-                                        if (this.counter >= this.userThreads.length) {
-                                            this.hasAuthor = true;
+                                    this.supplierApi.getUserIdFromSupplier(this.ownSupplier.id).subscribe(
+                                        (supplierId : number) =>{
+                                            for(let i = 0 ; i < suppliers; i++){
+                                                if(supplierId == suppliers[i].id){
+                                                    this.otherSuppliers.push(suppliers);
+                                                    console.log(this.otherSuppliers);
+                                                    this.counter++;
+                                                    if (this.counter >= this.userThreads.length) {
+                                                        this.hasAuthor = true;
+                                                    }
+                                                }
+                                            }
+                                        }, error=>{
+                                            console.log(error);
+                                            
                                         }
-                                    }
+
+
+                                    );
                                 }, error => {
                                     console.log(error);
                                 }
@@ -174,7 +185,9 @@ export class DiscussionComponent {
         );
     }
 
-    private askMediation() {
+    //COMMENTED BY ORDER OF BERT 06/09/2018
+
+    /*private askMediation() {
         this.mediationBlocked = true;
         this.showAlert = true;
         window.scrollTo(0, 0);
@@ -193,7 +206,7 @@ export class DiscussionComponent {
           error => {
             this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');          }
         )
-    }
+    }*/
 
     private editRegistration() {
         this.router.navigateByUrl('/supplier-portal/profile');
@@ -212,10 +225,12 @@ export class DiscussionComponent {
         );
     }
 
-    private closeModal() {
+    //COMMENTED BY ORDER OF BERT 06/09/2018
+
+    /*private closeModal() {
         this.isSendMessage = false;
         this.displayMessage = false;
         this.displayMediation = false;
-    }
+    }*/
 
 }

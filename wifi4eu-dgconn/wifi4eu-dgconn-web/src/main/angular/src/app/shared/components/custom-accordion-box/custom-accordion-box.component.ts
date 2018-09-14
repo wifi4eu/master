@@ -1,5 +1,6 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, forwardRef, Host, Inject, Input, Output} from "@angular/core";
 import {UxAccordionBoxComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UxAccordionBoxesComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-ui-elements/ux-accordion-box/ux-accordion-boxes.component";
 
 @Component({
     selector: 'custom-accordion-box',
@@ -9,37 +10,26 @@ import {UxAccordionBoxComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons"
                 <span *ngIf="closable" class="closable" [style.padding]="rightSide ? '0.65rem 0 0 1rem' : '0.65rem 1rem 0 0'"
                       style="cursor: pointer;" [style.float]="rightSide ? 'left' : 'right'"(click)="close()"><i class="fa fa-times"></i></span>
                 <span class="title" [style.padding]="rightSide ? '0.65rem 1rem 0 0' : '0.65rem 0 0 1rem'"
-                      style="cursor: pointer;" [style.float]="rightSide ? 'right' : 'left'" (click)="toggle()">{{ label | translate}}
-                    <i [class]="expandHideClass" style="font-size: 15px; margin-left: 3px;"></i></span>
+                      style="cursor: pointer;" [style.float]="rightSide ? 'right' : 'left'" (click)="toggle()">
+                    <span *ngIf="isExpanded">{{ 'shared.hide.label' | translate}}</span>
+                    <span *ngIf="!isExpanded">{{ 'shared.expand.label' | translate}}</span>
+                    <i [class]="isExpanded ? 'fa fa-2x fa-chevron-up' : 'fa fa-2x fa-chevron-down'" style="font-size: 15px; margin-left: 3px;"></i></span>
             </div>
             <div class="content" (click)="clickInside($event)">
                 <ng-content></ng-content>
             </div>
         </div>
-  `
+    `
 })
 
 export class CustomAccordionBoxComponent extends UxAccordionBoxComponent {
     @Input() rightSide: boolean = false;
     @Input() isExpanded: boolean = false;
     @Input() closable: boolean = false;
-    @Input() label: string = this.isExpanded ? 'shared.hide.label' : 'shared.expand.label';
-    expandHideClass: string = this.isExpanded ? 'fa fa-2x fa-chevron-up' : 'fa fa-2x fa-chevron-down';
     @Output('onClose') onClose: EventEmitter<any> = new EventEmitter();
 
-    toggle() {
-        super.toggle();
-        if (this.isExpanded) {
-            this.label = 'shared.hide.label';
-            this.expandHideClass = 'fa fa-2x fa-chevron-up';
-        } else {
-            this.label = 'shared.expand.label';
-            this.expandHideClass = 'fa fa-2x fa-chevron-down';
-        }
-    }
-
     clickInside(event: any) {
-        return event.preventDefault();
+        // return event.preventDefault();
     }
 
     close() {

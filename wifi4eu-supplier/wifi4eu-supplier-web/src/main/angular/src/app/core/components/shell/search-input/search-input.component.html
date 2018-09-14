@@ -1,0 +1,10 @@
+<div class="row">
+    <div class="search-input">
+        <ux-search-input [suggestionsService]="suggestionsService" (search)="onSearch($event)"></ux-search-input>
+    </div>
+    <div class="search-button">
+        <button type="button" class="btn btn-secondary btn-block" (click)="onSearchButtonClick()">
+            <span class="fa fa-search"></span>
+        </button>            
+    </div>
+</div>

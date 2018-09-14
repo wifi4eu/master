@@ -15,11 +15,13 @@ export class SharedService {
     private emitLogin = new Subject<any>();
     private emitLogout = new Subject<any>();
     private emitClean = new Subject<any>();
+    emitLanguage = new Subject<any>();
 
     updateEmitter = this.emitUpdate.asObservable();
     loginEmitter = this.emitLogin.asObservable();
     logoutEmitter = this.emitLogout.asObservable();
     cleanEmitter = this.emitClean.asObservable();
+    languageEmitter = this.emitLanguage.asObservable();
 
     user: UserDTOBase = null;
 
@@ -45,40 +47,50 @@ export class SharedService {
         this.emitClean.next();
     }
 
-    growlTranslation(translatedString: string, keyToTranslate: string, type: string, params?: any) {
+    growlTranslation(translatedString: string, keyToTranslate: any, type: string, params?: any, life?: number) {
+        if (life === undefined || !life) {
+            life = 10000;
+        }
+
+        const successSummary = this.translateService.instant('summary.success');
+        const errorSummary = this.translateService.instant('summary.error');
+        const warningSummary = this.translateService.instant('summary.warning');
+        const infoSummary = this.translateService.instant('summary.info');
+        
         this.translateService.get(keyToTranslate, params).subscribe(
-            (translation: string) => {
+            (translation: any) => {
                 if (translation) {
                     translatedString = translation;
                 }
+                
                 switch (type) {
                     case 'success':
-                        this.uxService.growl({
-                            severity: 'success',
-                            summary: 'SUCCESS',
-                            detail: translatedString
-                        });
-                        break;
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: successSummary,
+                        detail: translatedString
+                    }, false, false, life);
+                    break;
                     case 'error':
                         this.uxService.growl({
                             severity: 'error',
-                            summary: 'ERROR',
+                            summary: errorSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'warn':
                         this.uxService.growl({
                             severity: 'warn',
-                            summary: 'WARNING',
+                            summary: warningSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'info':
                         this.uxService.growl({
                             severity: 'info',
-                            summary: 'INFO',
+                            summary: infoSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                 }
             }, error => {
@@ -86,34 +98,94 @@ export class SharedService {
                     case 'success':
                         this.uxService.growl({
                             severity: 'success',
-                            summary: 'SUCCESS',
+                            summary: successSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'error':
                         this.uxService.growl({
                             severity: 'error',
-                            summary: 'ERROR',
+                            summary: errorSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'warn':
                         this.uxService.growl({
                             severity: 'warn',
-                            summary: 'WARNING',
+                            summary: warningSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                     case 'info':
                         this.uxService.growl({
                             severity: 'info',
-                            summary: 'INFO',
+                            summary: infoSummary,
                             detail: translatedString
-                        });
+                        }, false, false, life);
                         break;
                 }
             }
         );
+    }
+
+    getMimeType(base64string: string) {
+        let mimeType = null;
+        if (base64string != null) {
+            if (base64string.startsWith('data:') && base64string.indexOf(';base64') != -1) {
+                mimeType = base64string.substr(5, (base64string.indexOf(';base64') - 5));
+            }
+        }
+        return mimeType;
+    }
+
+    getFileExtension(base64string: string) {
+        let fileExtension = null;
+        if (base64string != null) {
+            let mimeType = this.getMimeType(base64string);
+            switch (mimeType) {
+                case 'text/plain':
+                    fileExtension = '.txt';
+                    break;
+                case 'text/csv':
+                    fileExtension = '.csv';
+                    break;
+                case 'application/msword':
+                    fileExtension = '.doc';
+                    break;
+                case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                    fileExtension = '.docx';
+                    break;
+                case 'application/vnd.ms-excel':
+                    fileExtension = '.xls';
+                    break;
+                case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                    fileExtension = '.xlsx';
+                    break;
+                case 'application/pdf':
+                    fileExtension = '.pdf';
+                    break;
+                case 'image/png':
+                    fileExtension = '.png';
+                    break;
+                case 'image/jpg':
+                    fileExtension = '.jpg';
+                    break;
+                case 'image/jpeg':
+                    fileExtension = '.jpeg';
+                    break;
+            }
+        }
+        return fileExtension;
+    }
+
+    getBase64Data(base64string: string) {
+        let base64Data = null;
+        if (base64string != null) {
+            if (base64string.startsWith('data:') && base64string.indexOf(';base64,') != -1) {
+                base64Data = base64string.substr(base64string.indexOf(';base64,') + 8);
+            }
+        }
+        return base64Data;
     }
 }
 

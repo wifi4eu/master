@@ -1,28 +1,33 @@
-import {Component} from "@angular/core";
-import {MunicipalityApi} from "../shared/swagger/api/MunicipalityApi";
-import {SupplierApi} from "../shared/swagger/api/SupplierApi";
-import {UserDTOBase} from "../shared/swagger/model/UserDTO";
-import {CallDTOBase} from "../shared/swagger/model/CallDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {CallApi} from "../shared/swagger/api/CallApi";
-import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
+import { Component } from "@angular/core";
+import { MunicipalityApi } from "../shared/swagger/api/MunicipalityApi";
+import { UserDTOBase } from "../shared/swagger/model/UserDTO";
+import { CallDTOBase } from "../shared/swagger/model/CallDTO";
+import { LocalStorageService } from "angular-2-local-storage";
+import { ResponseDTOBase } from "../shared/swagger/model/ResponseDTO";
+import { CallcustomApi, CallCustomBase } from "../shared/swagger";
 
 @Component({
     selector: 'app-home',
     templateUrl: 'home.component.html',
-    providers: [MunicipalityApi, CallApi, SupplierApi]
+    providers: [MunicipalityApi, CallcustomApi]
 })
 
 export class HomeComponent {
+    /*
+    -- callState values --
+    0 = There are no calls created
+    1 = There is a call created, but not started. DISPLAY TIME
+    2 & 3 = There is a call created, already started. DISPLAY CALL OPEN
+    */
     private municipalitiesCounter: number;
     private user: UserDTOBase;
-    private currentCall: CallDTOBase;
+    private currentCall: CallCustomBase;
     private dateNumber: string;
     private hourNumber: string;
-    private showTimeline: boolean = false;
     private showTimer: boolean = false;
+    private callState: number;
 
-    constructor(private municipalityApi: MunicipalityApi, private localStorage: LocalStorageService, private callApi: CallApi, private supplierApi: SupplierApi) {
+    constructor(private municipalityApi: MunicipalityApi, private localStorage: LocalStorageService, private callCustomApi: CallcustomApi) {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
         this.currentCall = new CallDTOBase();
@@ -30,7 +35,7 @@ export class HomeComponent {
         this.municipalityApi.getMunicipalitiesCountGroupedByLauId().subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
-                    this.municipalitiesCounter = response.data.length;
+                    this.municipalitiesCounter = response.data;
                 }
             }, error => {
                 console.log(error);
@@ -40,22 +45,24 @@ export class HomeComponent {
     }
 
     checkForCalls() {
-        this.callApi.allCalls().subscribe(
-            calls => {
-                this.currentCall = calls[0];
-                if (this.currentCall.startDate > Date.now()) {
-                    this.showTimeline = true;
-                    this.showTimer = true;
-                    let date = new Date(this.currentCall.startDate);
-                    this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                    this.hourNumber = ('0' + date.getUTCHours()).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+        this.callCustomApi.getCallForApply(new Date().getTime()).subscribe(
+            (call: CallCustomBase) => {
+                this.currentCall = call;
+                if (this.currentCall) {
+                    this.callState = this.currentCall.voucherCompetitionState;
+                    if (this.callState == 1) {
+                        let date = new Date(this.currentCall.startDate);
+                        this.dateNumber = ('0' + date.getUTCDate()).toString().slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                        this.hourNumber = ('0' + (date.getUTCHours() + 2)).toString().slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+                        this.showTimer = true;
+                    }
                 } else {
-                    this.showTimeline = false;
+                    this.callState = 0;
                     this.showTimer = false;
                 }
             }, error => {
-                console.log(error);
-                this.currentCall = null;
+                this.callState = 0;
+                this.showTimer = false;
             }
         );
     }

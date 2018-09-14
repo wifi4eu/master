@@ -28,20 +28,20 @@
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.name.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactName}}</b></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactName}}</b></div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.surname.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactSurname}}</b></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactSurname}}</b></div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.phone.number' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactPhonePrefix}} {{supplier.contactPhoneNumber}}</b>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactPhonePrefix}} {{supplier.contactPhoneNumber}}</b>
         </div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.email.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactEmail}}</b></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.contactEmail}}</b></div>
     </div>
 
     <hr class="beneficiaryHr marginHr">
@@ -58,31 +58,23 @@
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.company.name' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.name}}</b></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.name}}</b></div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.legal.address' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.address}}</b></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.address}}</b></div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.vat.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.vat}}</b></div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.bic.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.bic}}</b></div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.bank.account' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.accountNumber}}</b></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.vat}}</b></div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.company.web' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.website}}</b></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><b>{{supplier.website}}</b></div>
     </div>
     <div class="ui-g" *ngIf="supplier.logo != null">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.company.logo' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><img src="{{logoUrl.result}}" alt="logo" height="60"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7" style="word-wrap: break-word"><img src="{{logoUrl.result}}" alt="logo" height="60"></div>
     </div>
 
     <hr class="beneficiaryHr marginHr">
@@ -149,7 +141,7 @@
 
         <div class="ui-lg-1"></div>
     </div>
-    <div class="ui-g" style="text-align: left;">
+    <!-- <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
         <div class="ui-g-10 ui-md-10 ui-lg-10">
             <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_5"><input type="checkbox" id="check_5"
@@ -159,14 +151,10 @@
         </div>
 
         <div class="ui-lg-1"></div>
-    </div>
+    </div> -->
     <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
         <div class="ui-g-10 ui-md-10 ui-lg-10">
-            <br>
-            <br>
-            <br>
-            <br>
 
             <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_2"><input type="checkbox" id="check_2"
                                                                           [(ngModel)]="legalChecks[1]">
@@ -181,13 +169,15 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <a href="#/home">
-                <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' | translate }}
+                <button type="button" class="btn btn-primary cancel-button">
+                    {{ 'shared.cancel.button' | translate }}
                 </button>
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn  btn-primary publish-button" (click)="submit()"
-                    [disabled]=" !legalChecks[1]|| !legalChecks[2] || !legalChecks[3] || !legalChecks[4]">
+                    [disabled]=" !legalChecks[1]|| !legalChecks[2] || !legalChecks[3]">
+                    <!-- removed "!legalChecks[4]" from disabled in issue WIFIFOREU-3347 -->
                 {{ 'shared.confirm.button' | translate}}
             </button>
         </div>

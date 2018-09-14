@@ -7,7 +7,7 @@ import { UxLayoutLink } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-l
     template: `
         <nav id="top-menu">
             <ul>
-                <li class="icon-menu-item" style="max-height:50px" routerLinkActive="selected" [routerLinkActiveOptions]="{exact:true}">
+                <li class="icon-menu-item" routerLinkActive="selected" [routerLinkActiveOptions]="{exact:true}">
                     <a *ngIf="!goToHomeButton" [routerLink]="homeUrl" (click)="onLinkClick({id:'home',url:homeUrl})">
                         <span class="fa fa-home" style="line-height: 27px; vertical-align: bottom;"></span>
                     </a>
@@ -51,7 +51,7 @@ export class CustomLayoutNavBarTopMenuComponent extends UxLayoutNavBarTopMenuCom
     @Input() goToHomeButton: boolean = false;
 
     get hasLinks(): boolean {
-        return this.links.length != 0;
+        return this.links != null && this.links.length != 0;
     }
 
     goToHome() {

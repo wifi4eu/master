@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <style type="text/css">
+            .myButton {
+                -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                box-shadow:inset 0px 1px 0px 0px #ffffff;
+                background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f6f6f6));
+                background:-moz-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                background:-o-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                background:-ms-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0);
+                background-color:#ffffff;
+                -moz-border-radius:6px;
+                -webkit-border-radius:6px;
+                border-radius:6px;
+                border:1px solid #dcdcdc;
+                display:inline-block;
+                cursor:pointer;
+                color:#1841a8;
+                font-family:Arial;
+                font-size:19px;
+                font-weight:bold;
+                padding:32px 76px;
+                text-decoration:none;
+                text-shadow:0px 1px 0px #ffffff;
+            }
+            .myButton:hover {
+                background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f6f6f6), color-stop(1, #ffffff));
+                background:-moz-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+                background:-webkit-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+                background:-o-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+                background:-ms-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+                background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0);
+                background-color:#f6f6f6;
+            }
+            .myButton:active {
+                position:relative;
+                top:1px;
+            }
+
+            label{
+                -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                box-shadow:inset 0px 1px 0px 0px #ffffff;
+                background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f6f6f6));
+                background:-moz-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                background:-o-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                background:-ms-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0);
+                background-color:#ffffff;
+                -moz-border-radius:6px;
+                -webkit-border-radius:6px;
+                border-radius:6px;
+                border:1px solid #dcdcdc;
+                display:inline-block;
+                cursor:pointer;
+                color:#1841a8;
+                font-family:Arial;
+                font-size:19px;
+                font-weight:bold;
+                padding:32px 76px;
+                text-decoration:none;
+                text-shadow:0px 1px 0px #ffffff;
+            }
+
+            input[type="file"] {
+                display: none;
+            }
+        </style>
+    </head>
+    <!--<body bgcolor="white">-->
+    <div class="exportImport"></div>
+    <div class="container">
+        <br/><br/><br/>
+        <font size="5" color="#003366" align="left"><b>Wifi4eu Financial</b></font>
+        <br/>
+        <span>Export/Import Data</span>
+        <br/><br/><br/>
+        <font size="2" color="black" align="left"><b>Legal Entities (LEF)</b></font>
+        <br/><br/><br/>
+        <table style="width:100%">
+            <tr style="height:100px">
+                <th align="center" valign="top">
+                    <label id="#bb"> Create Legal Entities to in ABAC from WIFI4EU files <br/><br/> <font size="2" color="black" align="left">Based on the file given by Wifi4eu portal, this button will import <br/> all parameters necessary for the Wifi4eu Interface to create the <br/> data. Wifi4eu will launch request in ABAC.</font>
+                        <input type="file" class="myButton" (change)="importLegalEntityF($event)"  accept=".json,application/json"/>
+                    </label>
+                </th>
+                <th align="center" valign="top">
+                    <!--<a href="#" class="myButton">Check Statuts of LEFs in ABAC <br/><br/> <font size="2" color="black" align="left">This button will check in ABAC the status of the LEFs for wich <br/> request creatation. In case there is a regected LEF, it will display <br/> a screen (country + municility + ABAC ref) so tou can provide <br/> the correct ABAC reference number for all regected LEFs.It will <br/> create a file  wich you can download a later must import into <br/> the Wifi4eu Portal.</font></a>-->
+                    <a class="myButton" (click)="exportLegalEntityFBCValidate()" type="button">Check Statuts of LEFs in ABAC <br/><br/> <font size="2" color="black" align="left">This button will check in ABAC the status of the LEFs <br/> which request creation. In case there is a regected LEF, <br/>  it will display a screen (country + municility + ABAC ref) <br/> so you can provide the correct ABAC reference number <br/> for all regected LEFs. It will create a file which <br/> you can download a later must import into the <br/> Wifi4eu Portal.</font></a>
+                </th>
+            </tr>
+        </table>
+        <br/><br/><br/>
+        <font size="2" color="black" align="left"><b>Budgetary Commitment (BC)</b></font>
+        <br/><br/><br/>
+        <table style="width:100%">
+            <tr style="height:100px">
+                <th align="center" valign="top">
+                    <label id="#bc"> Create BC <br/><br/> <font size="2" color="black" align="left">This button will import all parameters necessary for the Wifi4eu <br/> Interface to create the data and it will create the BC in ABAC.</font>
+                        <input type="file" class="myButton" (change)="importBudgetaryCommitment($event)"  accept=".json,application/json"/>
+                    </label>
+                </th>
+                <th align="center" valign="top">
+                    <a href="#" class="myButton">Check Statuts of BCs in ABAC <br/><br/> <font size="2" color="black" align="left">Once create by the Wifi4eu Interface and validated by your <br/> AOSD, clicking on this button will allow you to retrieve the data <br/> in a file so to updated the portal.</font></a>
+                </th>
+            </tr>
+        </table>
+    </div>
+    <!--</body>-->
+</html>
+

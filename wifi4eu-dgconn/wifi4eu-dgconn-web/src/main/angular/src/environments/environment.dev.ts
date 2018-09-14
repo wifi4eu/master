@@ -4,6 +4,7 @@
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
 export const environment = {
-    production: true,
-    logoutUrl: "https://webgate.stress.ec.europa.eu/cas/logout"
+    production: false,
+    logoutUrl: "https://ecas.acceptance.ec.europa.eu/cas/logout",
+    context: "dashboard"
 };

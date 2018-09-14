@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.service.thread;
 
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +11,6 @@ import wifi4eu.wifi4eu.repository.thread.ThreadMessageRepository;
 import wifi4eu.wifi4eu.repository.thread.ThreadRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +34,6 @@ public class ThreadService {
 
     @Autowired
     MunicipalityService municipalityService;
-
-    public List<ThreadDTO> getAllThreads() {
-        return threadMapper.toDTOList(Lists.newArrayList(threadRepository.findAll()));
-    }
 
     public ThreadDTO getThreadById(int threadId) {
         return threadMapper.toDTO(threadRepository.findOne(threadId));
@@ -79,16 +71,6 @@ public class ThreadService {
                 threadDTO.setMessages(correctMessages);
                 return threadMapper.toDTO(threadRepository.save(threadMapper.toEntity(threadDTO)));
             }
-        }
-    }
-
-    public ThreadDTO deleteThread(int threadId) {
-        ThreadDTO threadDTO = threadMapper.toDTO(threadRepository.findOne(threadId));
-        if (threadDTO != null) {
-            threadRepository.delete(threadMapper.toEntity(threadDTO));
-            return threadDTO;
-        } else {
-            return null;
         }
     }
 

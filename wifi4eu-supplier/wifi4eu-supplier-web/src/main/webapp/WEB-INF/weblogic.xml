@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd
+                  http://xmlns.oracle.com/weblogic/weblogic-web-app
+                  http://xmlns.oracle.com/weblogic/weblogic-web-app/1.5/weblogic-web-app.xsd">
+
+  <session-descriptor>
+        <debug-enabled>true</debug-enabled>
+        <encode-session-id-in-query-params>false</encode-session-id-in-query-params>
+        <cookie-path>/wifi4eu</cookie-path>
+  </session-descriptor>
+
+  <jsp-descriptor>
+    <keepgenerated>true</keepgenerated>
+    <verbose>true</verbose>
+    <debug>true</debug>
+        <compress-html-template>true</compress-html-template>
+        <optimize-java-expression>true</optimize-java-expression>
+      
+        <precompile>true</precompile>
+        <precompile-continue>true</precompile-continue>
+        <backward-compatible>false</backward-compatible>
+  </jsp-descriptor>
+
+    <!-- we want to allow some resources to be accessed by authenticated users which do not possess any role -->
+    <container-descriptor>
+        <allow-all-roles>true</allow-all-roles>
+    </container-descriptor>
+
+    <context-root>/wifi4eu</context-root>
+
+    <weblogic-version>12.1.3</weblogic-version>
+
+
+
+
+</weblogic-web-app>
+
+
+
+
+
+

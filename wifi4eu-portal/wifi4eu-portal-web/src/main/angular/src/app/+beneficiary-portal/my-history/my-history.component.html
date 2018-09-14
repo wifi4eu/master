@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="ui-g-12" style="margin-top: 1em;">
+        <a class="link-label" routerLink=".." routerLinkActive="active">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+        </a>
+        <p class="beneficiaryTitle">{{ 'benefPortal.myHistory.title' | translate }}</p>
+        <p>{{ 'benefPortal.myHistory.desc' | translate }}</p>
+        <i *ngIf="fetchingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+    </div>
+    <div *ngIf="!fetchingData" class="ui-g-12 center">
+        <p-tabView (onChange)="changeCall($event)">
+            <p-tabPanel *ngFor="let call of calls; let i = index"
+                        header="{{ 'dgConn.call.number' | translate:{number:i+1} }}"
+                        [selected]="i == currentIndex"
+                        [headerStyle]="{'margin-left': '-3px', 'padding-left': '7px', 'padding-right': '13px'}">
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+    <div *ngIf="!fetchingData && !changingCalls" class="ui-g-12 center">
+        <ux-accordion-boxes>
+            <div *ngFor="let municipality of municipalities">
+                <p class="beneficiaryMayor" style="text-align: left;">{{ municipality }}</p>
+                <custom-accordion-box [isExpanded]="true" [rightSide]="true" style="text-align: left;">
+                    <p-dataTable [value]="historyItems[municipality]">
+                        <p-column field="actionPerformed" [sortable]="false" header="{{ 'benefPortal.myHistory.actionPerformed' | translate }}">
+                            <ng-template let-row="rowData" pTemplate="body">
+                                {{ row.actionPerformed | translate }}
+                            </ng-template>
+                        </p-column>
+                        <p-column field="date" [sortable]="true" header="{{ 'dgConn.dateandtime' | translate }}">
+                            <ng-template let-row="rowData" pTemplate="body">
+                                 {{ row.date | date: 'short' }}
+                            </ng-template>
+                        </p-column>
+                    </p-dataTable>
+                </custom-accordion-box>
+                <br/><br/>
+            </div>
+        </ux-accordion-boxes>
+    </div>
+    <i *ngIf="changingCalls" [@enterSpinner] class="fa fa-spinner loading-icon" style="margin-bottom: 1em;"></i>
+</div>

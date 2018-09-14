@@ -4,12 +4,12 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.CallDTO;
-import wifi4eu.wifi4eu.common.dto.model.VoucherManagementDTO;
 import wifi4eu.wifi4eu.mapper.call.CallMapper;
 import wifi4eu.wifi4eu.mapper.voucherManagement.VoucherManagementMapper;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
 import wifi4eu.wifi4eu.repository.voucherManagement.VoucherManagementRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -34,23 +34,34 @@ public class CallService {
         return callMapper.toDTO(callRepository.findOne(callId));
     }
 
-    public CallDTO createCall(CallDTO callDTO) {
-        CallDTO resCallDTO = callMapper.toDTO(callRepository.save(callMapper.toEntity(callDTO)));
-        VoucherManagementDTO voucherManagementDTO = new VoucherManagementDTO();
-        voucherManagementDTO.setCall_id(resCallDTO.getId());
-        voucherManagementRepository.save(voucherManagementMapper.toEntity(voucherManagementDTO));
-        return callMapper.toDTO(callRepository.findOne(resCallDTO.getId()));
-    }
-
-    public CallDTO deleteCall(int callId) {
-
-        //TODO: change to a logic delete
-        CallDTO callDTO = callMapper.toDTO(callRepository.findOne(callId));
-        if (callDTO != null) {
-            callRepository.delete(callMapper.toEntity(callDTO));
-            return callDTO;
-        } else {
-            return null;
+    public boolean isCallClosed(int callId) {
+        CallDTO call = getCallById(callId);
+        if (call != null) {
+            long currentTime = new Date().getTime();
+            if (call.getStartDate() < currentTime && currentTime > call.getEndDate()) {
+                return true;
+            }
         }
+        return false;
     }
+
+//    public CallDTO createCall(CallDTO callDTO) {
+//        CallDTO resCallDTO = callMapper.toDTO(callRepository.save(callMapper.toEntity(callDTO)));
+//        VoucherManagementDTO voucherManagementDTO = new VoucherManagementDTO();
+//        voucherManagementDTO.setCall_id(resCallDTO.getId());
+//        voucherManagementRepository.save(voucherManagementMapper.toEntity(voucherManagementDTO));
+//        return callMapper.toDTO(callRepository.findOne(resCallDTO.getId()));
+//    }
+//
+//    public CallDTO deleteCall(int callId) {
+//
+//        //TODO: change to a logic delete
+//        CallDTO callDTO = callMapper.toDTO(callRepository.findOne(callId));
+//        if (callDTO != null) {
+//            callRepository.delete(callMapper.toEntity(callDTO));
+//            return callDTO;
+//        } else {
+//            return null;
+//        }
+//    }
 }

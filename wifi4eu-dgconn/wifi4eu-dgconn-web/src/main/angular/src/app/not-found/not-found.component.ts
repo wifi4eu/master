@@ -1,11 +1,10 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-@Component({selector: 'not-found-component', templateUrl: 'not-found.component.html'})
+@Component({ selector: 'not-found-component', templateUrl: 'not-found.component.html' })
 export class NotFoundComponent {
 
-
-    goToHome(){
-        window.location.href="/#/home";
+    private goToHome() {
+        window.location.href = "/#/home";
     }
 
 }

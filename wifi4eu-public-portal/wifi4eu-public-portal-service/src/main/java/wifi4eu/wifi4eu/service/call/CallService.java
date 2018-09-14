@@ -20,8 +20,4 @@ public class CallService {
     public List<CallDTO> getAllCalls() {
         return callMapper.toDTOList(Lists.newArrayList(callRepository.findAll()));
     }
-
-    public CallDTO getCallById(int callId) {
-        return callMapper.toDTO(callRepository.findOne(callId));
-    }
 }
