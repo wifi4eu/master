@@ -66,4 +66,15 @@ final public class Validator {
         }
     }
 
+    public static boolean isEmpty(String s) {
+        if (s == null) {
+            return true;
+        }
+
+        return s.isEmpty();
+    }
+    
+    public static boolean isNotEmpty(String s) {
+    	return !isNull(s);
+    }
 }

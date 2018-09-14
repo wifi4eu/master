@@ -180,11 +180,21 @@
         <cns.notification.group.code>WiFi4EU_NOTIF</cns.notification.group.code>
         <cns.notification.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/NotificationWebService</cns.notification.service.url>
         <cns.user.preferences.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/UserPreferencesWebService</cns.user.preferences.service.url>
+        <!-- Encryption -->
+        <secret.key.encryption>IU4zdyNLM3kjUDRzcyExOA==</secret.key.encryption>
         <!-- SMTP -->
         <encrypted.azure.smtp.password>2yjdOTqqi4iVtcQmSwMcGVauFDwrdz3buvTzvyxweaVg16y5gij2kIKS/s5FggRniHETj9EhRgVoNgQlLPGpOQ==</encrypted.azure.smtp.password>
         <encrypted.smtp.password>8G6DpkmzyVSH/2SHiGZfh58xX05W8k0EM0ncdrz6tms=</encrypted.smtp.password>
-        <secret.key.encryption>IU4zdyNLM3kjUDRzcyExOA==</secret.key.encryption>
-        <azure.blob.storage.key>aIo1n7IUPpzaHEV1P0j23m6i/c/jR1vU4nDLK24q4yl1yzQ8+/6PgQezHPGGJ+C/JcFSiLoGzv9q6e1Lp/gBu/JkaIJxSTGgRre3SIRWfmF0lEucTtyS6xQYD04p0scjAIMCe8Uj0hUwcRu7k9DazuxoAfLlwvCmov+QDkzG786N3QnshnYy6IYt4y7M0hUMm31juQNXvRLrYC0wX/UWC36fui4i6Akn6vN01n6kp2CA6an0/6wGu6ceRUkbyT6d0fymsL92enrFojwNDhP7VTkJGxDmx0BBvItw8ecBAqw=</azure.blob.storage.key>
+        <!-- Azure Blob Storage -->
+        <azure.blob.storage.key>aIo1n7IUPpzaHEV1P0j23m6i/c/jR1vU4nDLK24q4yl1yzQ8+/6PgQezHPGGJ+C/JcFSiLoGzv9q6e1Lp/gBu/JkaIJxSTGgRre3SIRWfmF0lEucTtyS6xQYD04p0scjAIMCe8Uj0hUwcRu7k9DazuxoAfLlwvCmov+QDkzG786N3QnshnYy6IYt4y7M0hUMm31juQNXvRLrYC0wX/UWC36fui4i6Akn6vN01n6kp2CA6an0/6wGu6ceRUkbyT6d0fymsL92enrFojwNDhP7VTkJGxDmx0BBvItw8ecBAqw=</azure.blob.storage.key>        
+        <azure.blob.storage.key.dev>aIo1n7IUPpzaHEV1P0j23m6i/c/jR1vU4nDLK24q4yl1yzQ8+/6PgQezHPGGJ+C/JcFSiLoGzv9q6e1Lp/gBu/JkaIJxSTGgRre3SIRWfmF0lEucTtyS6xQYD04p0scjAIMCe8Uj0hUwcRu7k9DazuxoAfLlwvCmov+QDkzG786N3QnshnYy6IYt4y7M0hUMm31juQNXvRLrYC0wX/UWC36fui4i6Akn6vN01n6kp2CA6an0/6wGu6ceRUkbyT6d0fymsL92enrFojwNDhP7VTkJGxDmx0BBvItw8ecBAqw=</azure.blob.storage.key.dev>
+        <azure.blob.storage.key.acc>aIo1n7IUPpzaHEV1P0j23m6i/c/jR1vU4nDLK24q4yl1yzQ8+/6PgQezHPGGJ+C/JcFSiLoGzv9q6e1Lp/gBu/JkaIJxSTGgRre3SIRWfmF0lEucTtyS6xQYD04p0scjAIMCe8Uj0hUwcRu7k9DazuxoAfLlwvCmov+QDkzG786N3QnshnYy6IYt4y7M0hUMm31juQNXvRLrYC0wX/UWC36fui4i6Akn6vN01n6kp2CA6an0/6wGu6ceRUkbyT6d0fymsL92enrFojwNDhP7VTkJGxDmx0BBvItw8ecBAqw=</azure.blob.storage.key.acc>
+        <azure.blob.storage.key.pro>aIo1n7IUPpzaHEV1P0j23m6i/c/jR1vU4nDLK24q4yl1yzQ8+/6PgQezHPGGJ+C/JcFSiLoGzv9q6e1Lp/gBu/JkaIJxSTGgRre3SIRWfmF0lEucTtyS6xQYD04p0scjAIMCe8Uj0hUwcRu7k9DazuxoAfLlwvCmov+QDkzG786N3QnshnYy6IYt4y7M0hUMm31juQNXvRLrYC0wX/UWC36fui4i6Akn6vN01n6kp2CA6an0/6wGu6ceRUkbyT6d0fymsL92enrFojwNDhP7VTkJGxDmx0BBvItw8ecBAqw=</azure.blob.storage.key.pro>
+        <azure.blob.legal.files.key>NvSiZXysA6btQMSI0YtPkChT8wVYV4av2Fx26/TOWm7pTmiIoHlAKK+6MPCkMu8sWvWTHbTObll0uFRddKfL3WWe4n3R9KL835U2kiYfs5TF/ZfeN4w3QFkFNShjTnkFNCGsWDt+JDFAlDWyntnf3eQTReecJNTJBbjzor4LSCEjw8Y6jH+lNsGeexUeTosIUf2jCtCG8VRAuGd35VpWsb3SLezfANrjyKh58v1uCzxg+Bs5fqoBGAvhMZfbmfa9Kzhmk3w8D7mhRpi9v4R7kw==</azure.blob.legal.files.key>
+        <azure.blob.legal.files.key.dev>NvSiZXysA6btQMSI0YtPkChT8wVYV4av2Fx26/TOWm7pTmiIoHlAKK+6MPCkMu8sWvWTHbTObll0uFRddKfL3WWe4n3R9KL835U2kiYfs5TF/ZfeN4w3QFkFNShjTnkFNCGsWDt+JDFAlDWyntnf3eQTReecJNTJBbjzor4LSCEjw8Y6jH+lNsGeexUeTosIUf2jCtCG8VRAuGd35VpWsb3SLezfANrjyKh58v1uCzxg+Bs5fqoBGAvhMZfbmfa9Kzhmk3w8D7mhRpi9v4R7kw==</azure.blob.legal.files.key.dev>
+        <azure.blob.legal.files.key.acc>zqBZWadZC4F/HLusFhXVOFiJQXsZR7kvh23ZNVHdx/3Z52wajRmvEZxdXp5yi9O8/YJw0tfXB1H48i9jivAWYeO8zmPuaXXMZNu9eITY2czSzmzUtD/tw2UdhgKxahWva/d3migWWmj1Dj6G9jXDEfvqB8pI9CVCNSPx+kZ8pNJGz2YGY6IqED0NyGgjycGns+X/gNNbwxKxVjulk++UfGWNj4vc3d289BpVgh4Uy9SewBt6buNmLSmNeLoHzMLQNkfWFhRQbhgyLikVXGR42A==</azure.blob.legal.files.key.acc>
+        <azure.blob.legal.files.key.acchf>W2+UHoitjN9ctD4DhGh6r7s6uJLH24q+X1CGxdkR1l6eZsNXqhY0uZKFQTvcXHHmcS4sFNGIv2ydjyHg5FYOzgFfyUYPuRKSED4ZgwPic6FK5ikOhzrXF0NgsS8Qc4xRVFADyGCGp1iBs6mwN4GVk2ngM2o4da0u5d8qBCwRm/m7RBKanGfwWlldYDKxZiD0zXbCl70LFaDMtrNhmgVtPgfGlot7f2S+yKSB52/TPgT6SePqnye6tmmajYhpNXMGxQL6KpxDfymPSFmKv/IEKw==</azure.blob.legal.files.key.acchf>
+        <azure.blob.legal.files.key.pro>9GCRl1rzZFa+p3vnZX+rcQvIZExBSry601fDXJ+a1QjrQ1amhTtjNju/aPaOq5vlUrFfMUJ9vQYJfgEtn3ES7w3HYVclvtr8iK1MzizNWsTjlb2YxZjWsnruv4Djw3ksmThnwHbgkVE/3ucgmy6lt/R2dRN7b9mRHFNShVxvU+epRCbq6WS+I/W2EUWjKkzc4S1WAnaycqxYy5U/Ly910iemAXN2DqF1LvzPdSdUwYAQucutNNsTVsfDiBT7PE8dKrz2oFcAgbKPGjLaF0sAFA==</azure.blob.legal.files.key.pro>
 
         <mail.smtp.host>localhost</mail.smtp.host>
         <mail.smtp.port>25</mail.smtp.port>
@@ -358,6 +368,8 @@
                 <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
                 <mail.serv.using.smtp>false</mail.serv.using.smtp>
                 <mail.serv.using.cns>true</mail.serv.using.cns>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -395,6 +407,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -432,6 +446,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -471,6 +487,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -508,6 +526,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -545,6 +565,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -582,6 +604,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -619,6 +643,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -658,6 +684,8 @@
                 <rabbitmq.password></rabbitmq.password>
                 <redis.enabled>true</redis.enabled>
                 <redis.sentinel.uris>202.3.2.4,202.3.2.5,202.3.2.6</redis.sentinel.uris>
+                <azure.blob.storage.key>${azure.blob.storage.key.acc}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.acc}</azure.blob.legal.files.key>
                 <mail.serv.using.smtp>false</mail.serv.using.smtp>
                 <mail.serv.using.cns>true</mail.serv.using.cns>
             </properties>
@@ -699,6 +727,8 @@
                 <rabbitmq.password></rabbitmq.password>
                 <redis.enabled>true</redis.enabled>
                 <redis.sentinel.uris>202.3.2.11,202.3.2.12,202.3.2.13</redis.sentinel.uris>
+                <azure.blob.storage.key>${azure.blob.storage.key.acc}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.acchf}</azure.blob.legal.files.key>
                 <mail.serv.using.smtp>false</mail.serv.using.smtp>
                 <mail.serv.using.cns>true</mail.serv.using.cns>
             </properties>
@@ -724,6 +754,8 @@
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.pro}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.pro}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -748,6 +780,8 @@
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.pro}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.pro}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -779,6 +813,8 @@
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.pro}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.pro}</azure.blob.legal.files.key>
             </properties>
         </profile>
     </profiles>
