@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac.integration;
+package wifi4eu.wifi4eu.abac.integration.hrs;
 
 import org.apache.xml.serializer.DOMSerializer;
 import org.apache.xml.serializer.Method;

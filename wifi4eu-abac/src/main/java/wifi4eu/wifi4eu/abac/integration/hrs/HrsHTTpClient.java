@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
-import wifi4eu.wifi4eu.abac.integration.EcasProxyTicketClient;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

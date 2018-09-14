@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.abac.integration;
+package wifi4eu.wifi4eu.abac.integration.hrs;
 
 import eu.cec.digit.ecas.client.script.ScriptClient;
 import org.slf4j.Logger;
