@@ -4,12 +4,15 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.net.URLCodec;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,30 +74,40 @@ public class AzureBlobConnector {
 		// Returning value
 		String fileUri = null;
 		
-		// Validating the paramenters
-		this.checkContainerName(containerName);
-		this.checkFileName(fileName);
-				
-		CloudBlobContainer container = this.getContainerReference(containerName);
+		String encodedFileName = null;
+		try {
+			encodedFileName = URLEncoder.encode(fileName, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.error("Error", e);
+		}
 		
-		if (container != null) {
-			//Getting a blob reference
-			CloudBlockBlob blob = null;
-			try {
-				blob = container.getBlockBlobReference(fileName);
-			} catch (URISyntaxException | StorageException e) {
-				LOGGER.error("Error", e);
-			}
+		if (encodedFileName != null) {
 
-			if (blob != null) {
+			// Validating the paramenters
+			this.checkContainerName(containerName);
+			this.checkFileName(encodedFileName);
+
+			CloudBlobContainer container = this.getContainerReference(containerName);
+
+			if (container != null) {
+				//Getting a blob reference
+				CloudBlockBlob blob = null;
 				try {
-					blob.uploadText(content);
-				} catch (StorageException | IOException e) {
+					blob = container.getBlockBlobReference(encodedFileName);
+				} catch (URISyntaxException | StorageException e) {
 					LOGGER.error("Error", e);
 				}
+
+				if (blob != null) {
+					try {
+						blob.uploadText(content);
+					} catch (StorageException | IOException e) {
+						LOGGER.error("Error", e);
+					}
+				}
+
+				fileUri = blob.getUri().toString();
 			}
-			
-			fileUri = blob.getUri().toString();
 		}
 		
 		return fileUri;
@@ -246,7 +259,7 @@ public class AzureBlobConnector {
 		//System.out.println("UPLOAD=>" + uriUploadedFile);
 		//System.out.println("DOWNLOAD =>" + pathDownloadedFile);
 		
-		blobConnector.listAllWifi4EuOnConsole("wifi4eu");
+		blobConnector.listAllWifi4EuOnFile("wifi4eu");
 		
 	}
 	
@@ -269,8 +282,10 @@ public class AzureBlobConnector {
         String uri = null;
         
         try {
+            final String encondedFileName = URLEncoder.encode(fileName, "UTF-8");
+            
         	LOGGER.info("UPLOADING DOCUMENT container[{}] fileName[{}]", DEFAULT_CONTAINER_NAME, fileName);
-        	uri = uploadText(DEFAULT_CONTAINER_NAME, fileName, content);
+        	uri = uploadText(DEFAULT_CONTAINER_NAME, encondedFileName, content);
         	LOGGER.info("URI [{}]", uri);
         } catch (Exception e) {
         	LOGGER.error("error", e);

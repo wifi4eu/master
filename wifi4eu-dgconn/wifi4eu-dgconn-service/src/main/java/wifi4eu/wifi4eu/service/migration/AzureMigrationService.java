@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.service.migration;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -91,6 +92,10 @@ public class AzureMigrationService implements Runnable {
 	}
 
 	public void listFilesOnWifi4eu() {
-		this.azureBlobConnector.listAllWifi4EuOnConsole("wifi4wu");
+		try {
+			this.azureBlobConnector.listAllWifi4EuOnFile("wifi4eu");
+		} catch (IOException e) {
+			LOGGER.error("Error", e);
+		}
 	}
 }
