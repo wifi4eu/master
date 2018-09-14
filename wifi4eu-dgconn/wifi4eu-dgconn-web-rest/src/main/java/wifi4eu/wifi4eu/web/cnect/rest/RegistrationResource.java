@@ -407,7 +407,7 @@ public class RegistrationResource {
 			if (!Validator.isEmpty(content)) {
 				try {
 					response.setContentType(fileMime);
-					response.setHeader("Content-disposition", "inline; filename=\"" + fileName + fileExtension + "\"");
+					response.setHeader("Content-disposition", "attachment; filename=\"" + fileName + fileExtension + "\"");
 
 					byte[] fileBytes = Base64Utils.decodeFromString(content);
 					response.getOutputStream().write(fileBytes);
