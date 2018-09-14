@@ -73,7 +73,7 @@ public class ExportImportWifi4euAbacResource {
     public ResponseDTO importBudgetaryCommitment(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         _log.debug("importBudgetaryCommitment: file size = {}", file.getSize());
 
-        return null;
+        return new ResponseDTO(true);
     }
 
     @RequestMapping(value = "/importLegalCommitment", method = RequestMethod.POST, produces = "application/JSON")
@@ -81,7 +81,7 @@ public class ExportImportWifi4euAbacResource {
     public ResponseDTO importLegalCommitment(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         _log.debug("importLegalCommitment: file size = {}", file.getSize());
 
-        return null;
+        return new ResponseDTO(true);
     }
 
     @ApiOperation(value = "Export Beneficiary Information")
@@ -118,46 +118,6 @@ public class ExportImportWifi4euAbacResource {
         return null;
     }
 
-    @ApiOperation(value = "Export registration data")
-    @RequestMapping(value = "/exportRegistrationData", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO exportRegistrationData() {
-        try {
-            _log.debug("exportRegistrationData");
-
-            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
-                throw new AccessDeniedException("");
-            }
-            exportImportWifi4euAbacService.exportRegistrationData();
-            return new ResponseDTO(true, null, null);
-        } catch (AccessDeniedException ade) {
-            return new ResponseDTO(false, null, new ErrorDTO(0, null));
-        } catch (Exception e) {
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
-    @ApiOperation(value = "Import registration data")
-    @RequestMapping(value = "/importRegistrationData", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO importRegistrationData() {
-        try {
-            _log.debug("importRegistrationData");
-
-            exportImportWifi4euAbacService.importRegistrationData();
-
-            return new ResponseDTO(true, null, null);
-        } catch (AccessDeniedException ade) {
-            _log.error("Error with permission on operation.", ade);
-            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
-        } catch (Exception e) {
-            _log.error("Error on operation.", e);
-            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
-        }
-    }
-
     @ApiOperation(value = "Export Budgetary Commitment")
     @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET, produces = "text/csv")
     @ResponseBody
@@ -190,5 +150,47 @@ public class ExportImportWifi4euAbacResource {
             response.sendError(HttpStatus.BAD_REQUEST.value());
         }
         return null;
+    }
+
+    @Deprecated
+    @ApiOperation(value = "Export registration data")
+    @RequestMapping(value = "/exportRegistrationData", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO exportRegistrationData() {
+        try {
+            _log.debug("exportRegistrationData");
+
+            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
+                throw new AccessDeniedException("");
+            }
+            exportImportWifi4euAbacService.exportRegistrationData();
+            return new ResponseDTO(true, null, null);
+        } catch (AccessDeniedException ade) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, null));
+        } catch (Exception e) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @Deprecated
+    @ApiOperation(value = "Import registration data")
+    @RequestMapping(value = "/importRegistrationData", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO importRegistrationData() {
+        try {
+            _log.debug("importRegistrationData");
+
+            exportImportWifi4euAbacService.importRegistrationData();
+
+            return new ResponseDTO(true, null, null);
+        } catch (AccessDeniedException ade) {
+            _log.error("Error with permission on operation.", ade);
+            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
+        } catch (Exception e) {
+            _log.error("Error on operation.", e);
+            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+        }
     }
 }

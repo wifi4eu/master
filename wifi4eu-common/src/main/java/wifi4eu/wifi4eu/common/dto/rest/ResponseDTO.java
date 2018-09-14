@@ -12,6 +12,10 @@ public class ResponseDTO {
 
     public ResponseDTO(){}
 
+    public ResponseDTO(boolean success) {
+        this.success = success;
+    }
+
     public ResponseDTO(boolean success, Object data, ErrorDTO error) {
         this.success = success;
         this.data = data;
