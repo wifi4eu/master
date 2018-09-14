@@ -221,3 +221,8 @@ delete from nuts where label like 'EXTRA%'
 -- 2018-09-03 Convert the date of the applications from nanos to millis (10 digits)
 UPDATE applications set date = LEFT(date, 13) where LEN(date) > 13 
 
+-- 2018-09-13 Azure Blob storage for legal files, this new column stores the URI in Azure
+alter table legal_files add azure_uri varchar(2048);
+
+
+
