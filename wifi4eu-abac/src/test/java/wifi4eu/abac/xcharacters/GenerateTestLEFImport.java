@@ -38,9 +38,9 @@ public class GenerateTestLEFImport {
     @Test
     //@Ignore
     public void generateLEFImport() throws Exception{
-        int startMunID=30000;
-        int start=3395;
-        int limit = 500;
+        int startMunID=20000;
+        int start=2;
+        int limit = 1500;
 
         try (
                 BufferedReader reader = new BufferedReader(

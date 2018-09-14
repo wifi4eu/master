@@ -9,7 +9,7 @@ public enum LegalEntityDocumentCSVColumn {
 	DOCUMENT_MIMETYPE("doc_mimeType"),
 	DOCUMENT_DATE("doc_date"),
 	DOCUMENT_TYPE("doc_type"),
-	ARES_REFERENCE("doc_aresReference"),
+	ARES_REFERENCE("ares_reference"),
 	DATE_EXPORTED("doc_lastDateExported"),
 	USER_EXPORTED("doc_lastUserExported");
 
