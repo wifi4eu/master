@@ -49,12 +49,19 @@ Vagrant.configure("2") do |config|
       args: "-e \"ACCEPT_EULA=Y\" -e \"SA_PASSWORD=SQLserver1\" -p 1433:1433 --name sql1 --restart always -v /home/bargee/dev/sql:/tmp/sql"
   end
 
+  config.vm.provision "blob", type: "docker" do |d|
+      d.pull_images "arafato/azurite"
+      d.run "blob",
+        image: "arafato/azurite",
+        args: "-e executable=blob -p 10000:10000 --name blob --restart always"
+  end
+
   config.vm.provision "tomcat", type: "docker" do |d|
       d.pull_images "tomcat:8.5"
       d.run "tomcat",
           image: "tomcat:8.5",
           cmd:"catalina.sh jpda run",
-          args:"--link sql1:sqlserver -e JPDA_TRANSPORT=dt_socket -e JPDA_ADDRESS=8000 -p 8080:8080 -p 8000:8000 -v /home/bargee/dev/webapps:/usr/local/tomcat/webapps -v /home/bargee/dev/logs:/usr/local/tomcat/logs --name tomcat --restart always"
+          args:"--link sql1:sqlserver --link blob:blob -e JPDA_TRANSPORT=dt_socket -e JPDA_ADDRESS=8000 -p 8080:8080 -p 8000:8000 -v /home/bargee/dev/webapps:/usr/local/tomcat/webapps -v /home/bargee/dev/logs:/usr/local/tomcat/logs --name tomcat --restart always"
   end
 
   # configure tomcat with jdbc driver and ECAS client
@@ -69,6 +76,9 @@ Vagrant.configure("2") do |config|
 
   #sql server port forwarding
   config.vm.network "forwarded_port", guest: 1433, host: 1433
+
+  #blob server port forwarding
+  config.vm.network "forwarded_port", guest: 10000, host: 10000
 
   config.vm.provider "virtualbox" do |vb|
    # Customize the amount of memory on the VM:
