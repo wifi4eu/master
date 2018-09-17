@@ -80,7 +80,7 @@
                     <td *ngIf="col.field == 'selected'" class="text-center">
                         <p-checkbox *ngIf="row.readyToBeCounterSigned" [(ngModel)]="row.isSelected" name="selectedRows" value="{{row}}" binary="true"></p-checkbox>
                     </td>
-                    <td *ngIf="(col.field != 'selected') && showColumn(col.isFor)">{{row[col.field]}}</td>
+                    <td *ngIf="col.field != 'selected' && showColumn(col.isFor)">{{row[col.field]}}</td>
                 </ng-container>
             </tr>
         </ng-template>
