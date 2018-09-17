@@ -19,8 +19,8 @@ public interface BeneficiaryInformationRepository extends CrudRepository<Benefic
 			+ "left join municipalities_abac as ma on ma.municipality = m.id "
 			+ "left join laus as l on m.lau = l.id "
 			+ "left join GRANT_AGREEMENT as ga on ga.application_id = a.id "
-			+ "where m.name is not null "
-			+ "and ga.date_signature is not null "
-			+ "and ga.date_counter_signature is null", nativeQuery = true)
+			+ "inner join voucher_simulations as vs on vs.municipality = m.id "
+			+ "inner join wifi4eu.dbo.voucher_assignments as va on va.id = vs.voucher_assignment "
+			+ "where m.name is not null and va.status = 3", nativeQuery = true)
 	List<BeneficiaryInformation> getBeneficiariesInformationSignedAndNotCounterSigned();
 }
