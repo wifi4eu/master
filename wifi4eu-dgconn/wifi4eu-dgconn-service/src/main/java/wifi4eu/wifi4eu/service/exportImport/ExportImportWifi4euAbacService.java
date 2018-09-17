@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportBudgetaryCommitmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
@@ -226,8 +227,9 @@ public class ExportImportWifi4euAbacService {
     private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation, StringBuilder csvDocumentData, List<ExportFile> exportFiles) {
         if (StringUtils.isNotBlank(beneficiaryInformation.getAzureUri())) {
             // What if a file is too big?
-            String fileData = azureBlobConnector.downloadLegalFile(beneficiaryInformation.getAzureUri());
-            ExportFile exportFile = new ExportFile(beneficiaryInformation.getDoc_fileName(), fileData.getBytes());
+            String base64FileData = azureBlobConnector.downloadLegalFile(beneficiaryInformation.getAzureUri());
+            byte[] fileData = StringUtils.isNotEmpty(base64FileData) ? Base64Utils.decodeFromString(base64FileData) : new byte[0];
+            ExportFile exportFile = new ExportFile(beneficiaryInformation.getDoc_fileName(), fileData);
             exportFiles.add(exportFile);
         }
         csvDocumentData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtils.SEPARATOR)
