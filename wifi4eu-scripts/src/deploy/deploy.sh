@@ -13,6 +13,10 @@ if [ $1 == "dev" ];
 then
 	echo "dev"
     source "$mydir"/config-dev.sh
+elif [ $1 == "devnf" ];
+then
+	echo "devnf"
+    source "$mydir"/config-devnf.sh
 elif [ $1 == "acc" ];
 then
     echo "acc"
