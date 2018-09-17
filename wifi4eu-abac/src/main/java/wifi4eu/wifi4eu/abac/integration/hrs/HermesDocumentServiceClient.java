@@ -140,7 +140,13 @@ public class HermesDocumentServiceClient {
             return document;
         }
 
-        String fileName = String.format("Grant n° Inea/Wifi4EU/Call %d identifying %d/%s/%s", legalEntity.getCallNumber(), legalEntity.getMid(), legalEntity.getAbacLatinName(), legalEntity.getCountry().getName());
+        String fileName = String.format(
+                "Grant n° %s/Wifi4EU/Call %d identifying %d/%s/%s",
+                legalEntity.getRegistrationNumber(),
+                legalEntity.getCallNumber(),
+                legalEntity.getMid(),
+                legalEntity.getAbacLatinName(),
+                legalEntity.getCountry().getName());
 
         createFileRequest.setEnglishName(fileName);
         createFileRequest.setChefDeFile(chefDeFile);
