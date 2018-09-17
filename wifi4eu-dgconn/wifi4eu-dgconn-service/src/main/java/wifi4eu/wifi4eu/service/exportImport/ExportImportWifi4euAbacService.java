@@ -11,13 +11,11 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.ExportImportBeneficiaryInformationDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportBudgetaryCommitmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
@@ -27,6 +25,7 @@ import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.helper.ParserJSON2CSV;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation;
 import wifi4eu.wifi4eu.entity.exportImport.ExportFile;
 import wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF;
@@ -54,9 +53,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,8 +69,6 @@ public class ExportImportWifi4euAbacService {
     private static final String FILENAME_EXPORT_DOCUMENTS_DATA = "portal_exportBeneficiaryDocuments.csv";
 
     private static final String FILENAME_EXPORT_BENEFICIARIES_DATA = "portal_exportBeneficiaryInformation.csv";
-
-    private static final String DOC_TYPE_GRANT_AGREEMENT_SIGNATURE = "GRANT_AGREEMENT_SIGNATURE";
 
     @Autowired
     private ExportImportRegistrationDataMapper exportImportRegistrationDataMapper;
@@ -120,6 +114,9 @@ public class ExportImportWifi4euAbacService {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    private AzureBlobConnector azureBlobConnector;
 
     @Transactional
     public boolean importLegalEntityFBCValidate(InputStream fileDataStream) throws IOException {
@@ -227,44 +224,12 @@ public class ExportImportWifi4euAbacService {
     }
 
     private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation, StringBuilder csvDocumentData, List<ExportFile> exportFiles) {
-        // Those values are not in database, hardcoded
-        String prefix = "doc" + beneficiaryInformation.getMun_id();
-        beneficiaryInformation.setDoc_name(prefix);
-        beneficiaryInformation.setDoc_type(DOC_TYPE_GRANT_AGREEMENT_SIGNATURE);
-
-        // Recover file from the URL
-        String docURL = beneficiaryInformation.getDoc_location();
-        if (docURL != null && !docURL.isEmpty()) {
-            URL urlObject = null;
-            try {
-                urlObject = new URL(docURL);
-            } catch (MalformedURLException e) {
-                _log.error("Error with the assigned URL: " + docURL, e);
-            }
-            if (urlObject != null) {
-                // Get file name
-                String urlPath = urlObject.getPath();
-                String fileName = urlPath.substring(urlPath.lastIndexOf('/') + 1);
-                beneficiaryInformation.setDoc_fileName(prefix + fileName);
-                // Get mimetype based on file name
-                String mimetype = URLConnection.guessContentTypeFromName(fileName);
-                beneficiaryInformation.setDoc_mimeType(mimetype);
-                try (InputStream in = urlObject.openStream()) {
-                    // Get file bytes
-                    byte[] docBytes = IOUtils.toByteArray(in);
-                    // Add file to export
-                    ExportFile doc = new ExportFile(beneficiaryInformation.getDoc_fileName(), docBytes);
-                    exportFiles.add(doc);
-                } catch (IOException e) {
-                    _log.error("Error recovering file contents from: " + docURL, e);
-                }
-            } else {
-                _log.warn("The URL for the document was not valid: " + docURL);
-            }
-        } else {
-            _log.warn("No document was specified for register: " + beneficiaryInformation.getMun_registrationNumber());
+        if (StringUtils.isNotBlank(beneficiaryInformation.getAzureUri())) {
+            // What if a file is too big?
+            String fileData = azureBlobConnector.downloadLegalFile(beneficiaryInformation.getAzureUri());
+            ExportFile exportFile = new ExportFile(beneficiaryInformation.getDoc_fileName(), fileData.getBytes());
+            exportFiles.add(exportFile);
         }
-
         csvDocumentData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getDoc_portalId())).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getDoc_name())).append(ExportFileUtils.SEPARATOR)
@@ -274,32 +239,6 @@ public class ExportImportWifi4euAbacService {
                 .append(defaultEmpty(beneficiaryInformation.getDoc_type())).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getAresReference()));
         csvDocumentData.append("\r\n");
-    }
-
-    /**
-     * Generates a JSON with the municipalities to export.
-     *
-     * @param applicationsBeneficiaryInformation
-     * @return
-     */
-    private JsonArray generateJsonWithMunicipalitiesToExport(
-            List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation) {
-        Gson gson = new GsonBuilder().create();
-        JsonParser parser = new JsonParser();
-        JsonObject rootElement = new JsonObject();
-        JsonArray result = new JsonArray();
-
-        JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
-
-        for (ExportImportBeneficiaryInformationDTO application : applicationsBeneficiaryInformation) {
-            JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
-            applicationsBeneficiaryInformationJsonArray.add(applicationJson);
-        }
-
-        rootElement.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
-        result.add(rootElement);
-
-        return result;
     }
 
     public void exportRegistrationData() throws Exception {
