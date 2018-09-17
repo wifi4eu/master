@@ -67,6 +67,9 @@ export class SupplierEditProfileComponent {
     private addUser: boolean = false;
     private displayDeactivatemodal : boolean = false;
 
+    private prefixRegex = new RegExp('^[+]?[1-9]{1}[0-9]{1,2}$');
+    private phoneNumberRegex = new RegExp('^[0-9]{1,}$');
+
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
         let allow = true;
         if (this.sharedService.user) {
@@ -313,12 +316,16 @@ export class SupplierEditProfileComponent {
         if (this.users[i]['phoneNumber'] != null && this.users[i]['phonePrefix'] != null
             && this.users[i]['surname'] != null  && this.users[i]['name'] != null
             && this.users[i]['phoneNumber'].trim() != "" && this.users[i]['phonePrefix'].trim() != ""
-            && this.users[i]['surname'].trim() != "" && this.users[i]['name'].trim() != "")
+            && this.users[i]['surname'].trim() != "" && this.users[i]['name'].trim() != "" && this.checkPrefixAndNumberRegex(i))
             this.buttonUserEnabled = true;
         else
             this.buttonUserEnabled = false;
         if (this.buttonUserEnabled && this.buttonCompanyEnabled)
             this.buttonEnabled = true;
+    }
+
+    private checkPrefixAndNumberRegex(i) : boolean{
+        return this.users[i]['phonePrefix'].trim().match(this.prefixRegex) != null && this.users[i]['phoneNumber'].trim().match(this.phoneNumberRegex) != null;
     }
 
     private checkRegions(event: any) {

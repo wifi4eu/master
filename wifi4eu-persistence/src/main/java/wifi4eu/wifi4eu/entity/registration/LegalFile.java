@@ -36,6 +36,8 @@ public class LegalFile {
 	@Column(name = "file_name")
 	private String fileName;
 
+	@Column(name = "azure_uri")
+	private String azureUri;
 
 	public LegalFile() {
 	}
@@ -122,4 +124,12 @@ public class LegalFile {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+
+	public String getAzureUri() {
+		return azureUri;
+	}
+
+	public void setAzureUri(String azureUri) {
+		this.azureUri = azureUri;
+	}
 }

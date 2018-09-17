@@ -43,6 +43,7 @@ import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
+import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
@@ -416,7 +417,7 @@ public class VoucherService {
             List<String> participatingCountries = new ArrayList<>();
 
             // List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
-            long dateNanoSeconds = call.getStartDate() * 1000000;
+            long dateNanoSeconds = call.getStartDate();
             List<ApplicationDTO> listOfApplications = applicationService.findByCallIdOrderByDateBeforeCallDateAsc(call.getId(), dateNanoSeconds);
 
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Initializing municipalities, laus & registrations");
@@ -859,17 +860,29 @@ public class VoucherService {
         return false;
     }
 
-    public void sendNotificationForApplicants(int callId) {
-
+    public ResponseDTO sendNotificationForApplicants(int callId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         if (!permissionChecker.checkIfDashboardUser()) {
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
 
+        VoucherAssignmentAuxiliar voucherAssignment = voucherAssignmentAuxiliarRepository
+                .findByCallIdAndStatusAux(callId, VoucherAssignmentStatus.FREEZE_LIST.getValue());
+
+            if(voucherAssignment.getNotifiedDate() != null){
+                return new ResponseDTO(false, voucherAssignment, null);
+            } else {
+                AdminActions adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
+                if(adminActions.isRunning()){
+                    return new ResponseDTO(false, adminActions, null);
+                }
+            }
+
         // Let the task executor manage the execution of the new thread to send the mails
         _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Launched notification for applicants, starting thread...");
-        taskExecutor.execute(context.getBean(SendNotificationsAsync.class, callId, userConnected));    	
+        taskExecutor.execute(context.getBean(SendNotificationsAsync.class, callId, userConnected));
+        return new ResponseDTO(true, null, null);
     }
 
 }

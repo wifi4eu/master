@@ -15,6 +15,7 @@ DELETE FROM rights
 DELETE FROM conditions_agreement
 DELETE FROM users
 DELETE FROM legal_files
+DELETE FROM registration_warnings
 DELETE FROM registrations
 DELETE FROM mayors
 DELETE FROM application_invalidate_reason
@@ -33,6 +34,7 @@ DBCC CHECKIDENT ('applications', RESEED, 0);
 DBCC CHECKIDENT ('rights', RESEED, 0);
 DBCC CHECKIDENT ('temp_tokens', RESEED, 0);
 DBCC CHECKIDENT ('registration_users', RESEED, 0);
+DBCC CHECKIDENT ('conditions_agreement', RESEED, 0);
 DECLARE @i INT = 0
 DECLARE @u VARCHAR(255) = ''
 DECLARE @m_id VARCHAR(255) = ''
@@ -41,7 +43,7 @@ DECLARE @r_id VARCHAR(255) = ''
 DECLARE @t_id VARCHAR(255) = ''
 DECLARE @f_id1 VARCHAR(255) = ''
 DECLARE @f_id3 VARCHAR(255) = ''
-WHILE @i < 3001
+WHILE @i < 60001
 BEGIN
   set @u = 'uid'+RIGHT(CONCAT('00000', CONVERT(VARCHAR, @i)), 5)
   -- Add user

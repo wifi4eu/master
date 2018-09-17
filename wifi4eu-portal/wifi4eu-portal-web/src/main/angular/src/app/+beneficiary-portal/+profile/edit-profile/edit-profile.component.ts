@@ -410,7 +410,7 @@ export class BeneficiaryEditProfileComponent {
                     this.successRegistration = true;
                     this.sharedService.growlTranslation('Your municipality has been added successfully.', 'benefPortal.beneficiary.addMunicipalities.Success', 'success');
                     this.submittingData = false;
-                    this.goBackToProfile();
+                    this.updateMunicipalities();
                 } else {
                     this.sharedService.growlTranslation('An error ocurred while trying to add the municipalities. Please try again latern', 'benefPortal.beneficiary.addMunicipalities.Error', 'error');
                     this.submittingData = false;
@@ -443,7 +443,7 @@ export class BeneficiaryEditProfileComponent {
                 (response: ResponseDTOBase) => {
                     if (response.success) {
                         this.registrations = response.data;
-                        this.editProfileData();
+                        this.editMunicipalitiesContactsData();
                     } else {
                         this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
                         this.submittingData = false;
@@ -451,67 +451,77 @@ export class BeneficiaryEditProfileComponent {
                 }
             );
         } else {
-            this.editProfileData();
+            this.editMunicipalitiesContactsData();
         }
     }
 
-    private editProfileData() {
-        for (let i = 0; i < this.municipalities.length; i++) {
-            if (this.isMunicipalityEditable[this.municipalities[i].id]) {
-                this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
-                    (response: ResponseDTOBase) => {
-                        if (response.success) {
-                            this.mayorApi.updateMayorDetails(this.mayors[i]).subscribe(
-                                (response: ResponseDTOBase) => {
-                                    if (response.success) {
-                                        this.mayors[this.currentEditIndex] = response.data;
-                                        let usersToSubmit: UserContactDetailsBase[] = [];
-                                        if (i === 0) {
-                                            for (let index = 0; index < this.registrations.length; index++) {
-                                                for (let z = 0; z < this.users[this.registrations[index].municipalityId].length; z++) {
-                                                    let user = this.users[this.registrations[index].municipalityId][z];
-                                                    if (user.main === 1) {
-                                                        user = this.userMain;
-                                                    }
-                                                    if (this.usersModified.indexOf(user.id) != -1) {
-                                                        usersToSubmit.push(user);
-                                                    }
-                                                }
-                                            }
-                                            if (usersToSubmit.length > 0) {
-                                                let update = {};
-                                                update['users'] = usersToSubmit;
-                                                this.userApi.updateUserDetails(update).subscribe(
-                                                    (response: ResponseDTOBase) => {
-                                                        if (response.success) {
-                                                            this.createMultipleMunicipalities();
-                                                        } else {
-                                                            this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
-                                                            this.submittingData = false;
-                                                        }
-                                                    }, error => {
-                                                        this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
-                                                        this.submittingData = false;
-                                                    }
-                                                );
-                                            } else {
-                                                this.createMultipleMunicipalities();
-                                            }
-                                        }
-                                    } else {
-                                        this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
-                                        this.submittingData = false;
-                                    }
+    public updateMunicipalities() {
+      let disabled = 0;
+      for (let i = 0; i < this.municipalities.length; i++) {
+        if (this.isMunicipalityEditable[this.municipalities[i].id]) {
+            this.municipalityApi.updateMunicipalityDetails(this.municipalities[i]).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        this.mayorApi.updateMayorDetails(this.mayors[i]).subscribe(
+                            (response: ResponseDTOBase) => {
+                                if (response.success) {
+                                    this.mayors[this.currentEditIndex] = response.data;
+                                    this.goBackToProfile();
+                                } else {
+                                    this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                                    this.submittingData = false;
                                 }
-                            );
-                        } else {
-                            this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
-                            this.submittingData = false;
-                        }
+                            }
+                        );
+                    } else {
+                        this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                        this.submittingData = false;
                     }
-                );
+                }
+            );
+        }else{
+          disabled++;
+          if(disabled >= this.municipalities.length){
+            this.goBackToProfile();
+          }
+        }
+      }
+    }
+
+    private editMunicipalitiesContactsData() {
+      let usersToSubmit: UserContactDetailsBase[] = [];
+      for (let index = 0; index < this.registrations.length; index++) {
+        for (let z = 0; z < this.users[this.registrations[index].municipalityId].length; z++) {
+            let user = this.users[this.registrations[index].municipalityId][z];
+            if (user.main === 1) {
+                user = this.userMain;
+            }
+            if (this.usersModified.indexOf(user.id) != -1) {
+                usersToSubmit.push(user);
             }
         }
+      }
+      if (usersToSubmit.length > 0) {
+          let update = {};
+          update['users'] = usersToSubmit;
+          this.userApi.updateUserDetails(update).subscribe(
+              (response: ResponseDTOBase) => {
+                  if (response.success) {
+                      this.createMultipleMunicipalities();                      
+                  } else {
+                      this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                      this.submittingData = false;
+                  }
+              }, error => {
+                  this.sharedService.growlTranslation('An error ocurred while trying to update your profile data. Please, try again later.', 'shared.editProfile.save.error', 'error');
+                  this.submittingData = false;
+              }
+          );
+      } else {
+          console.log("usersToSubmit = 0")
+          this.createMultipleMunicipalities();
+      }
+
     }
 
     private createMultipleMunicipalities() {
@@ -519,7 +529,7 @@ export class BeneficiaryEditProfileComponent {
             this.submitNewMunicipalities();
         } else {
             this.sharedService.growlTranslation('Your profile data was updated successfully.', 'shared.editProfile.save.success', 'success');
-            this.goBackToProfile();
+            this.updateMunicipalities();
         }
     }
 
