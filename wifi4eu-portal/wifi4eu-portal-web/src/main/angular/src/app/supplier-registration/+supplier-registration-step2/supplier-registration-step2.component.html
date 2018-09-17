@@ -10,10 +10,10 @@
 <div class="container">
     <div class="ui-g">
         <div class="ui-lg-1"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-5 marginSelect">
+        <div class="ui-g-12 ui-md-12 ui-lg-5">
             <!-- select countries -->
             <label class="label">{{ 'suppRegistration.registration.selectCountry' | translate }}</label>
-            <p-multiSelect id="selectCountry" #selectCountry
+            <p-multiSelect id="selectCountry" #selectCountry name="selectCountry"
                            defaultLabel="{{ 'shared.choose.label' | translate }}"
                            [options]="allCountriesSelect" [(ngModel)]="selectedCountries"
                            (onChange)="checkIfRegionsSelected()"></p-multiSelect>
@@ -22,14 +22,15 @@
             <!-- select regions from specific country -->
             <label class="label">{{ 'suppRegistration.registration.chooseAreas' | translate }}</label>
             <p-tabView class="white">
-                <p-tabPanel *ngFor="let country of selectedCountries;" [header]="country.label">
-                    <div class="ui-g">
-                        <p-multiSelect #selectRegions defaultLabel="{{ 'shared.choose.label' | translate }}" id="selectRegions"
-                                       [options]="allRegionsSelect[country.label]"
-                                       [(ngModel)]="selectedRegions[country.label]"
-                                       (onChange)="checkIfRegionsSelected()">
-                        </p-multiSelect>
-                    </div>
+                <p-tabPanel *ngFor="let country of selectedCountries; let i = index" id="{{'tab'+country.label}}"
+                            header="{{country.label | slice:0:1 | uppercase }}{{country.label | slice:1:country.label.length | lowercase }}">
+                    <p-multiSelect id="{{'selectRegion'+country.label}}" #selectRegions
+                                   name="{{'selectRegion'+country.label}}"
+                                   defaultLabel="{{ 'shared.choose.label' | translate }}"
+                                   [options]="allRegionsSelect[country.label]"
+                                   [(ngModel)]="selectedRegions[country.label]"
+                                   (onChange)="checkIfRegionsSelected()">
+                    </p-multiSelect>
                 </p-tabPanel>
             </p-tabView>
         </div>

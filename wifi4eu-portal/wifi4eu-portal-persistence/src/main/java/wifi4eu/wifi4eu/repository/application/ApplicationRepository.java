@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.application.Application;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ApplicationRepository extends CrudRepository<Application, Integer> {
@@ -25,6 +26,9 @@ public interface ApplicationRepository extends CrudRepository<Application, Integ
     List<Application> findByCallIdOrderByDateAsc(Integer callId);
 
     List<Application> findByCallIdAndStatus(Integer callId, Integer status);
+
+    @Query(value = "SELECT a.* from applications a INNER JOIN registrations r ON r.id = a.registration INNER JOIN municipalities m ON r.municipality = m.id WHERE m.id IN (SELECT m.id FROM municipalities m INNER JOIN registrations r ON r.municipality = m.id INNER JOIN registration_users ru ON ru.registration = r.id WHERE ru._user = ?1 and ru.status != 3 and ru.main = 1)", nativeQuery = true)
+    List<Application> findApplicationsByMunicipalities(Integer userId);
 
     @Query(value = "SELECT ap.* FROM applications ap INNER JOIN registrations r ON ap.registration = r.id WHERE r._status != 1 AND ap.call_id = ?1", nativeQuery = true)
 //    AND r.allFilesFlag = 1
@@ -67,4 +71,8 @@ public interface ApplicationRepository extends CrudRepository<Application, Integ
 
     @Query(value = "SELECT a.* FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN registration_users ru ON ru.registration = r.id INNER JOIN users u ON ru._user = u.id WHERE a.id IN (SELECT vs.application FROM voucher_simulations vs WHERE vs.voucher_assignment = ?1 AND vs.selection_status = ?2)", nativeQuery = true)
     List<Application> getApplicationsSelectedInVoucherAssignment(Integer voucherAssignmentId, Integer selectionStatus);
+
+    @Query(value = "SELECT a.* FROM applications a WHERE a.voucher_awarded = 1 AND a.call_id = ?#{[0]} AND a.registration = ?#{[1]}", nativeQuery = true)
+    Application findVoucherApplicationByCallIdAndRegistrationId(Integer callId, Integer registrationId);
+
 }

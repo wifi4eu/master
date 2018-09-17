@@ -4,13 +4,18 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationWarningDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
+import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
+import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class VoucherSimulationExportGenerator<T> {
@@ -19,10 +24,14 @@ public class VoucherSimulationExportGenerator<T> {
     private Class dataClass;
     private ArrayList<String> fieldNames;
     private ArrayList<String> displayedFieldNames;
+    private T parent;
 
-    public VoucherSimulationExportGenerator(List<T> data, Class dataClass) {
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+    public VoucherSimulationExportGenerator(List<T> data, T parent, Class dataClass) {
         this.data = data;
         this.dataClass = dataClass;
+        this.parent = parent;
         generateFields();
     }
 
@@ -98,6 +107,10 @@ public class VoucherSimulationExportGenerator<T> {
                                 break;
                         }
                         cell.setCellValue( value);
+                    } else if(fieldNames.get(i).equalsIgnoreCase("appdate")) {
+                        VoucherSimulationDTO voucherSimulationDTO = (VoucherSimulationDTO) obj;
+                        Date applicationDate = new Date(voucherSimulationDTO.getApplication().getDate());
+                        cell.setCellValue(dateFormat.format(applicationDate));
                     } else {
 
                         if (fieldNames.get(i).equalsIgnoreCase("registrationId")) {
@@ -132,8 +145,10 @@ public class VoucherSimulationExportGenerator<T> {
             fieldNames.add("countryRank");
             displayedFieldNames.add("Country Rank");
 
-            displayedFieldNames.add("changes");
-            fieldNames.add("Changes");
+            if(((VoucherAssignmentDTO) parent).getStatus() != VoucherAssignmentStatus.FREEZE_LIST.getValue()){
+                displayedFieldNames.add("changes");
+                fieldNames.add("Changes");
+            }
 
             fieldNames.add("selectionStatus");
             displayedFieldNames.add("Selection Status");
@@ -147,6 +162,9 @@ public class VoucherSimulationExportGenerator<T> {
             displayedFieldNames.add("Status");
             fieldNames.add("numApplications");
             displayedFieldNames.add("Duplicated");
+            //-- New ones
+            fieldNames.add("appdate");
+            displayedFieldNames.add("Apply date");
 //            fieldNames.add("rejected");
 //            displayedFieldNames.add("Rejected");
             fieldNames.add("registration");

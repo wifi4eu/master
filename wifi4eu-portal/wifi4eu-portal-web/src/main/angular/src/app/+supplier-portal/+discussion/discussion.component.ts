@@ -185,7 +185,9 @@ export class DiscussionComponent {
         );
     }
 
-    private askMediation() {
+    //COMMENTED BY ORDER OF BERT 06/09/2018
+
+    /*private askMediation() {
         this.mediationBlocked = true;
         this.showAlert = true;
         window.scrollTo(0, 0);
@@ -204,7 +206,7 @@ export class DiscussionComponent {
           error => {
             this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');          }
         )
-    }
+    }*/
 
     private editRegistration() {
         this.router.navigateByUrl('/supplier-portal/profile');
@@ -223,10 +225,12 @@ export class DiscussionComponent {
         );
     }
 
-    private closeModal() {
+    //COMMENTED BY ORDER OF BERT 06/09/2018
+
+    /*private closeModal() {
         this.isSendMessage = false;
         this.displayMessage = false;
         this.displayMediation = false;
-    }
+    }*/
 
 }

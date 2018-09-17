@@ -1,29 +1,35 @@
 package wifi4eu.wifi4eu.web.rest;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -67,6 +73,40 @@ public class ApplicationResource {
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application is retrieved correctly");
         }
         return responseApp;
+    }
+
+    @ApiOperation(value = "Get voucher application by call and registration id")
+    @RequestMapping(value = "/call/{callId}/registration/{registrationId}/voucher", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO getVoucherApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        ResponseDTO responseDTO = new ResponseDTO();
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting voucher application by call id " + callId + " and registration id " + registrationId);
+        try {
+            if (Validator.isNotNull(userConnected)) {
+                if (permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
+                    responseDTO.setSuccess(true);
+                    responseDTO.setData(applicationService.getVoucherApplicationByCallIdAndRegistrationId(callId, registrationId));
+                    _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application is retrieved correctly");
+                }else{
+                    responseDTO.setSuccess(false);
+                    responseDTO.setData("");
+                    responseDTO.setError(new ErrorDTO(401, "Access denied"));
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Permission not found");
+                }
+            } else {
+                responseDTO.setSuccess(false);
+                responseDTO.setData("");
+                responseDTO.setError(new ErrorDTO(404,"User not found"));
+            }
+        } catch (Exception e) {
+            responseDTO.setSuccess(false);
+            responseDTO.setData("");
+            responseDTO.setError(new ErrorDTO(404, "Application not found"));
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
+        }
+        return responseDTO;
     }
 
     @ApiOperation(value = "Check if municipality has edit permissions")

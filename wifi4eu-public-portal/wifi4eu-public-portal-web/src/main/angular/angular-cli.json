@@ -27,8 +27,10 @@
             ],
             "environmentSource": "environments/environment.ts",
             "environments": {
-                "local": "environments/environment.ts",
-                "int": "environments/environment.int.ts",
+                "dev-old": "environments/environment.dev-old.ts",
+                "local":"environments/environment.local.ts",
+                "acc": "environments/environment.acc.ts",
+                "acc-hf": "environments/environment.acchf.ts",
                 "dev": "environments/environment.dev.ts",
                 "test": "environments/environment.test.ts",
                 "prod": "environments/environment.prod.ts"

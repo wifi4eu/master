@@ -1,23 +1,53 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.mail.MailData;
+import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
+import wifi4eu.wifi4eu.common.dto.model.BeneficiaryListItemDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserHistoryActionDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserRegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.InvitationContactStatus;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.common.enums.UserHistoryActionList;
+import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.mail.MailHelper;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.service.mail.MailService;
 import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
+import wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact;
 import wifi4eu.wifi4eu.entity.registration.RegistrationUsers;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
+import wifi4eu.wifi4eu.mapper.history_action.UserHistoryActionMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
-import wifi4eu.wifi4eu.repository.call.CallRepository;
+import wifi4eu.wifi4eu.repository.history_action.UserHistoryActionRepository;
+import wifi4eu.wifi4eu.repository.invitationContacts.InvitationContactRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationUsersRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -32,11 +62,7 @@ import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
-import wifi4eu.wifi4eu.util.MailService;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
-import java.util.*;
+import wifi4eu.wifi4eu.util.RegistrationUtils;
 
 @Service
 public class BeneficiaryService {
@@ -46,6 +72,12 @@ public class BeneficiaryService {
 
     @Autowired
     BeneficiaryListItemRepository beneficiaryListItemRepository;
+
+    @Autowired
+    UserHistoryActionMapper userHistoryActionMapper;
+
+    @Autowired
+    UserHistoryActionRepository userHistoryActionRepository;
 
     @Autowired
     UserService userService;
@@ -84,13 +116,19 @@ public class BeneficiaryService {
     UserRepository userRepository;
 
     @Autowired
-    CallRepository callRepository;
-
-    @Autowired
     ApplicationService applicationService;
 
     @Autowired
     RegistrationUsersRepository registrationUsersRepository;
+
+    @Autowired
+    RegistrationRepository registrationRepository;
+
+    @Autowired
+    InvitationContactRepository invitationContactRepository;
+
+    @Autowired
+    RegistrationUtils registrationUtils;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
 
@@ -121,6 +159,8 @@ public class BeneficiaryService {
             user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
             user.setEmail(beneficiaryDTO.getUser().getEmail());
             user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
+            user.setCity(beneficiaryDTO.getUser().getCity());
+            user.setCountry(beneficiaryDTO.getUser().getCountry());
             user.setType(3);
             isEcasUser = true;
         }
@@ -153,50 +193,38 @@ public class BeneficiaryService {
 
     @Transactional
     public List<RegistrationDTO> submitNewMunicipalities(BeneficiaryDTO beneficiaryDTO, String ip, HttpServletRequest request) throws Exception {
+        /* Get user from ECAS */
+        UserDTO user = new UserDTO();
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        boolean isEcasUser = false;
+
         /* Validate municipalities */
         for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
             MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
                     nutsService.getNutsByLevel(0));
-        }
 
-        /* Get user from ECAS */
-        UserDTO user = new UserDTO();
-        UserContext userContext = UserHolder.getUser();
-        boolean isEcasUser = false;
+            List<RegistrationDTO> registrationDTOList = registrationService.getRegistrationsByUserId(userConnected.getId());
+            for (RegistrationDTO registration : registrationDTOList) {
+                MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+                if (municipality.getLauId() == municipalityDTO.getLauId()) {
+                    throw new Exception("");
+                }
 
-        if (userContext != null) {
-            /* user from ECAS */
-            user = userService.getUserByUserContext(userContext);
-            user.setName(beneficiaryDTO.getUser().getName());
-            user.setSurname(beneficiaryDTO.getUser().getSurname());
-            user.setAddress(beneficiaryDTO.getUser().getAddress());
-            user.setAddressNum(beneficiaryDTO.getUser().getAddressNum());
-            user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
-            user.setEmail(beneficiaryDTO.getUser().getEmail());
-            user.setEcasEmail(beneficiaryDTO.getUser().getEcasEmail());
-            user.setType(3);
-            isEcasUser = true;
-        }
-
-        user.setCreateDate(new Date().getTime());
-        user.setLang(beneficiaryDTO.getLang());
-
-        UserDTO resUser = new UserDTO();
-        if (isEcasUser) {
-            resUser = userService.saveUserChanges(user);
+            }
         }
 
         /* create municipalities and check duplicates */
         List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
 
         /* create registrations between user and municipality */
-        List<RegistrationDTO> registrations = getRegistrationsList(resUser, beneficiaryDTO, resMunicipalities, ip, request);
+        List<RegistrationDTO> registrations = getRegistrationsList(userConnected, beneficiaryDTO, resMunicipalities, ip, request);
 
         /*send request for documents email*/
         registrationService.requestLegalDocuments(registrations.get(0).getId());
 
         /* check Duplicates and crate Threads if apply */
-        checkDuplicates(resUser, resMunicipalities);
+        checkDuplicates(userConnected, resMunicipalities);
 
         return registrations;
     }
@@ -211,7 +239,7 @@ public class BeneficiaryService {
             mayor.setMunicipalityId(municipality.getId());
 
             /* create mayor */
-            MayorDTO mayorDtoOutput = mayorService.createMayor(mayor, request);
+            MayorDTO mayorDtoOutput = mayorService.saveMayor(mayor, request);
             permissionChecker.addTablePermissions(userDTO, Integer.toString(mayorDtoOutput.getId()),
                     RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipalityId());
 
@@ -243,13 +271,11 @@ public class BeneficiaryService {
                 if (userDTO.getLang() != null) {
                     locale = new Locale(userDTO.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                String subject = bundle.getString("mail.discussionMunicipality.subject");
-                String msgBody = bundle.getString("mail.discussionMunicipality.body");
-                if (!userService.isLocalHost()) {
-                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
-                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userDTO.getEcasEmail());
-                }
+                
+                MailData mailData = MailHelper.buildMailMultipleRegistrations(
+                		userDTO.getEcasEmail(), MailService.FROM_ADDRESS, municipalityDTO.getId(), "checkDuplicates", locale);
+            	mailService.sendMail(mailData, true);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userDTO.getEcasEmail());
 
                 if (municipalitiesWithSameLau.size() <= 10) {
                     for (MunicipalityDTO municipality : municipalitiesWithSameLau) {
@@ -264,36 +290,11 @@ public class BeneficiaryService {
                             continue;
                         }
                         locale = new Locale(userRegistration.getLang());
-                        bundle = ResourceBundle.getBundle("MailBundle", locale);
-                        subject = bundle.getString("mail.discussionMunicipality.subject");
-                        msgBody = bundle.getString("mail.discussionMunicipality.body");
-                        if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
-                        }
-                    }
-                }
-
-                if (municipalitiesWithSameLau.size() <= 10) {
-                    for (MunicipalityDTO municipality : municipalitiesWithSameLau) {
-                        RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipality.getId());
-                        if (registrationDTO == null) {
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
-                            continue;
-                        }
-                        UserDTO userRegistration = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-                        if (userRegistration == null || userRegistration.getId() == userDTO.getId()) {
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Registration from the municipality with id " + municipality.getId() + " does not exist");
-                            continue;
-                        }
-                        locale = new Locale(userRegistration.getLang());
-                        bundle = ResourceBundle.getBundle("MailBundle", locale);
-                        subject = bundle.getString("mail.discussionMunicipality.subject");
-                        msgBody = bundle.getString("mail.discussionMunicipality.body");
-                        if (!userService.isLocalHost()) {
-                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody, municipalityDTO.getId(), "checkDuplicates");
-                            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
-                        }
+                        
+                        MailData mailDataIn = MailHelper.buildMailMultipleRegistrations(
+                        		userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, municipalityDTO.getId(), "checkDuplicates", locale);
+                    	mailService.sendMail(mailDataIn, true);
+                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + userRegistration.getEcasEmail());
                     }
                 }
 
@@ -364,7 +365,7 @@ public class BeneficiaryService {
         for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
             /* search for other users registered on the same municipality */
 
-            MunicipalityDTO municipalityDtoOutput = municipalityService.createMunicipality(municipality);
+            MunicipalityDTO municipalityDtoOutput = municipalityService.saveMunicipality(municipality);
             resMunicipalities.add(municipalityDtoOutput);
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality " + municipalityDtoOutput.getId() + " added to the list");
         }
@@ -601,28 +602,81 @@ public class BeneficiaryService {
         return sb.toString();
     }
 
-    public UserRegistrationDTO sendEmailToContacts(UserRegistrationDTO userRegistrationDTO) {
-        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+    public ResponseDTO invitateContactBeneficiary(UserDTO userConnected, int idMunicipality, String newContactEmail) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - START");
+        if (Validator.isNotNull(idMunicipality) && Validator.isNotNull(newContactEmail) && !newContactEmail.isEmpty() 
+          && Validator.isNotNull(registrationRepository.findByMunicipalityId(idMunicipality)) 
+          && Validator.isNotNull(registrationService.getRegistrationByUserAndMunicipality(userConnected.getId(), idMunicipality))) {
+            if (Validator.isNull(invitationContactRepository.findByEmailInvitedAndIdUserRequestNotIn(newContactEmail, userConnected.getId())) 
+              && registrationUtils.enableInvitateContactByUserIdRequested(newContactEmail)) {
+                InvitationContact invitationContact = invitationContactRepository.findByEmailInvitedAndIdUserRequest(newContactEmail, userConnected.getId());
+                Date today = new Date();
+                if (Validator.isNull(invitationContact)) {
+                    invitationContact = new InvitationContact();
+                    invitationContact.setEmailInvited(newContactEmail);
+                    invitationContact.setIdRegistration(registrationRepository.findByMunicipalityId(idMunicipality).getId());
+                    invitationContact.setIdUserRequest(userConnected.getId());
+                    invitationContact.setType((int) Constant.ROLE_REPRESENTATIVE);
+                    invitationContact.setStatus(InvitationContactStatus.PENDING.getValue());
+                    invitationContact.setCreateDate(today);
+                } else if (invitationContact.getIdRegistration().intValue() != registrationRepository.findByMunicipalityId(idMunicipality).getId().intValue()) {
+                    // same user, same email invited, different municipality
+                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - This user has already been invitated. Please, try another user email");
+                    responseDTO.setSuccess(false);
+                    responseDTO.setData("This user has already been invitated. Please, try another user email");
+                    responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
+                    return responseDTO;
+                }
 
-        UserContext userContext = UserHolder.getUser();
-        UserDTO user = userService.getUserByUserContext(userContext);
-        String userName = user.getName() + ' ' + user.getSurname();
+                invitationContact.setLastModified(today);
+                Locale locale = userConnected.getLang() == null ? new Locale(UserConstants.DEFAULT_LANG) : new Locale(userConnected.getLang());
+                MunicipalityDTO municipality = municipalityService.getMunicipalityById(idMunicipality);
+                String municipalityName = municipality.getName();
+                String userName = userConnected.getName() + ' ' + userConnected.getSurname();
+                String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
+                String registrationUrl = userService.getServerAddress() + "/wifi4eu/#/beneficiary-portal/profile";
+                MailData mailData = MailHelper.buildMailNewUserBeneficiary(
+                		newContactEmail, MailService.FROM_ADDRESS, 
+                		userName, municipalityName, additionalInfoUrl, newContactEmail, registrationUrl, locale);
+                mailService.sendMail(mailData, false);
 
-        MunicipalityDTO municipality = municipalityService.getMunicipalityById(userRegistrationDTO.getMunicipalityId());
-        String municipalityName = municipality.getName();
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.sendUserEmail.beneficiary.subject");
-        String msgBody = bundle.getString("mail.sendUserEmail.beneficiary.body");
-        String additionalInfoUrl = userService.getEcasUrl() + "/cas/eim/external/register.cgi?email=";
-        msgBody = MessageFormat.format(msgBody, userName, municipalityName, additionalInfoUrl, userRegistrationDTO.getEmail());
-        if (!userService.isLocalHost()) {
-            mailService.sendEmail(userRegistrationDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            userService.createNewRegistrationUser(userRegistrationDTO);
+                invitationContactRepository.save(invitationContact);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Successfully");
+                responseDTO.setSuccess(true);
+                responseDTO.setData("shared.email.sent");
+            } else {
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - This user has already been invitated. Please, try another user email");
+                responseDTO.setSuccess(false);
+                responseDTO.setData("This user has already been invitated. Please, try another user email");
+                responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.exists"));
+            }
+        } else {
+            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - Some fields are null or empty. Please, complete all the fields");
+            responseDTO.setSuccess(false);
+            responseDTO.setData("Some fields are null or empty. Please, complete all the fields");
+            responseDTO.setError(new ErrorDTO(400, "shared.profile.addContact.emptyOrNull"));
         }
-        return userRegistrationDTO;
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Adding new municipality contact - END");
+        return responseDTO;
     }
 
-    public boolean checkContactEmailWithMunicipality(String email, Integer municipalityId){
+    public boolean checkContactEmailWithMunicipality(String email, Integer municipalityId) {
         return registrationUsersRepository.findByContactEmailAndMunicipality(email, municipalityId) != null;
+    }
+
+    public List<UserHistoryActionDTO> getUserHistoryActionsByUserIdAnCallId(Integer userId, Integer callId) {
+        List<UserHistoryActionDTO> actions = new ArrayList<>();
+        List<UserHistoryActionDTO> lfActions = userHistoryActionMapper.toDTOList(userHistoryActionRepository.findLegalFilesActionsHistoryByUserId(userId));
+        for (UserHistoryActionDTO lfAction : lfActions) {
+            lfAction.setActionPerformed(UserHistoryActionList.SUPPORTING_DOCUMENTS_UPLOADED.getActionPerformed());
+            actions.add(lfAction);
+        }
+        List<UserHistoryActionDTO> appActions = userHistoryActionMapper.toDTOList(userHistoryActionRepository.findApplicationActionsHistoryByUserIdAndCallId(userId, callId));
+        for (UserHistoryActionDTO appAction : appActions) {
+            appAction.setActionPerformed(UserHistoryActionList.APPLICATION_SUBMITTED.getActionPerformed());
+            actions.add(appAction);
+        }
+        return actions;
     }
 }

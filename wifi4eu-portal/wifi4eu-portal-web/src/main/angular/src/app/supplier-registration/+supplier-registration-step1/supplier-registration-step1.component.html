@@ -21,8 +21,8 @@
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
                 <label class="label" for="name">{{ 'suppRegistration.company.name' | translate }}</label>
-                <input class="form-control paddingInput" type="text" id="name" name="name"
-                       [(ngModel)]="supplier.name" #name="ngModel" required>
+                <input class="form-control paddingInput"  maxlength="255" type="text" id="name" name="name"
+                       [(ngModel)]="supplier.name" #name="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="name.valid || name.pristine">
                     {{'suppregistration.company.required'|translate}}
                 </div>
@@ -35,8 +35,8 @@
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
                 <label class="label" for="address">{{ 'suppRegistration.legal.address' | translate }}</label>
-                <input class="form-control paddingInput" type="text" id="address" name="address"
-                       [(ngModel)]="supplier.address" #address="ngModel" required>
+                <input class="form-control paddingInput" maxlength="255" type="text" id="address" name="address"
+                       [(ngModel)]="supplier.address" #address="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="address.valid || address.pristine">
                     {{'suppRegistration.address.required' | translate}}
                 </div>
@@ -49,8 +49,8 @@
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
                 <label class="label" for="vat">{{ 'suppRegistration.vat.label' | translate }}</label>
-                <input class="form-control paddingInput" type="text" id="vat" name="vat"
-                       [(ngModel)]="supplier.vat" #vat="ngModel" required>
+                <input class="form-control paddingInput"  maxlength="255" type="text" id="vat" name="vat"
+                       [(ngModel)]="supplier.vat" #vat="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="vat.valid || vat.pristine">
                     {{'suppRegistration.vat.required' | translate}}
                 </div>
@@ -58,13 +58,13 @@
             </div>
         </div>
     </div>
-    <div class="ui-g">
+    <!-- <div class="ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
                 <label class="label" for="bic">{{ 'suppRegistration.bic.label' | translate }}</label>
-                <input class="form-control paddingInput" type="text" id="bic" name="bic"
-                       [(ngModel)]="supplier.bic" #bic="ngModel" required>
+                <input class="form-control paddingInput" type="text" maxlength="255"  id="bic" name="bic"
+                       [(ngModel)]="supplier.bic" #bic="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">{{'suppRegistration.bic.required'
                     | translate}}
                 </div>
@@ -77,21 +77,21 @@
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
                 <label class="label" for="accountNumber">{{ 'suppRegistration.bank.account' | translate }}</label>
-                <input class="form-control paddingInput" type="text" id="accountNumber" name="accountNumber"
-                       [(ngModel)]="supplier.accountNumber" #accountNumber="ngModel" required>
+                <input class="form-control paddingInput" type="text" maxlength="255" id="accountNumber" name="accountNumber"
+                       [(ngModel)]="supplier.accountNumber" #accountNumber="ngModel" (ngModelChange)="checkButtonEnabled($event)" required>
                 <div class="alert alert-danger" [hidden]="accountNumber.valid || accountNumber.pristine">
                     {{'suppRegistration.bank.required' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
                 <label class="label" for="website">{{ 'suppRegistration.company.web' | translate }}</label>
-                <input class="form-control paddingInput" type="text" id="website" name="website"
+                <input class="form-control paddingInput" maxlength="255" type="text" id="website" name="website"
                        [pattern]="websitePattern"
                        [(ngModel)]="supplier.website" #website="ngModel">
                 <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
@@ -134,13 +134,14 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <a href="#/home">
-                <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' | translate }}
+                <button type="button" class="btn btn-primary cancel-button">
+                    {{ 'shared.back.button' | translate }}
                 </button>
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button" [disabled]="!supplierForm.form.valid">
-                {{ 'shared.confirm.button' | translate }}
+            <button type="submit" class="btn btn-primary publish-button" [disabled]="!supplierForm.form.valid || !buttonEnabled">
+                {{ 'shared.next.button' | translate }}
             </button>
         </div>
         <div class="ui-lg-3"></div>

@@ -1,44 +1,70 @@
 package wifi4eu.wifi4eu.service.voucher;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.*;
+
+import com.google.common.collect.Lists;
+
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.CallDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationWarningDTO;
+import wifi4eu.wifi4eu.common.dto.model.SimpleLauDTO;
+import wifi4eu.wifi4eu.common.dto.model.SimpleMunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.SimpleRegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherManagementDTO;
+import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.admin.AdminActions;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
+import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
-import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherSimulationMapper;
+import wifi4eu.wifi4eu.repository.admin.AdminActionsRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
-import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentAuxiliarRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.call.CallService;
-import wifi4eu.wifi4eu.service.location.LauService;
-import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.user.UserConstants;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
-import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.util.SendNotificationsAsync;
 import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
 
+import javax.annotation.PostConstruct;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -63,6 +89,9 @@ public class VoucherService {
     UserService userService;
 
     @Autowired
+    PermissionChecker permissionChecker;
+
+    @Autowired
     VoucherManagementService voucherManagementService;
 
     @Autowired
@@ -84,12 +113,6 @@ public class VoucherService {
     ApplicationMapper applicationMapper;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    MailService mailService;
-
-    @Autowired
     private SimpleRegistrationService simpleRegistrationService;
 
     @Autowired
@@ -105,16 +128,28 @@ public class VoucherService {
     MunicipalityService municipalityService;
 
     @Autowired
-    LauService lauService;
-
-    @Autowired
     ApplicationRepository applicationRepository;
 
     @Autowired
-    NutsService nutsService;
+    ApplicationContext context;    
 
     @Autowired
-    UserMapper userMapper;
+    TaskExecutor taskExecutor;
+
+    @Autowired
+    AdminActionsRepository adminActionsRepository;
+
+    @PostConstruct
+    public void init() {
+        AdminActions adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
+        if(Validator.isNotNull(adminActions)){
+            adminActions.setAction("voucher_send_notifications");
+            adminActions.setStartDate(null);
+            adminActions.setRunning(false);
+            adminActions.setEndDate(null);
+            adminActionsRepository.save(adminActions);
+        }
+    }
 
     public List<VoucherAssignmentDTO> getAllVoucherAssignment() {
         return voucherAssignmentMapper.toDTOList(Lists.newArrayList(voucherAssignmentRepository.findAll()));
@@ -130,6 +165,16 @@ public class VoucherService {
 
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentByCallAndStatus(int callId, int status) {
         return voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, status));
+    }
+
+    public int checkIfApplicationInFreeze(Integer applicationId){
+        ApplicationDTO applicationDTO = applicationService.getApplicationById(applicationId);
+        return voucherSimulationRepository.checkIfApplicationIsFreeze(applicationDTO.getId(), applicationDTO.getCallId(), VoucherAssignmentStatus.FREEZE_LIST.getValue());
+    }
+
+    public int checkIfApplicationInSimulation(Integer applicationId){
+        ApplicationDTO applicationDTO = applicationService.getApplicationById(applicationId);
+        return voucherSimulationRepository.checkIfSimulationExistByCallId(applicationDTO.getCallId(), VoucherAssignmentStatus.SIMULATION.getValue(), VoucherAssignmentStatus.PRE_LIST.getValue());
     }
 
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(int callId) {
@@ -173,9 +218,16 @@ public class VoucherService {
         }
         if (pageable.getSort().getOrderFor("municipalityName") != null) {
             listSimulation = voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(voucherAssignmentId, municipality, country, pageable.getOffset(), pageable.getPageSize(), sortDirection));
-            totalElements = voucherSimulationRepository.countAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(voucherAssignmentId, municipality, country);
+            totalElements = voucherSimulationRepository.countAllByVoucherAssignmentAndMunicipalityInCountry(voucherAssignmentId, municipality, country);
+        } else if (pageable.getSort().getOrderFor("issues") != null) {
+            sortDirection = pageable.getSort().getOrderFor("issues").getDirection().name();
+            if (sortDirection == "ASC") {
+                listSimulation = voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByIssuesAsc(voucherAssignmentId, municipality, country, pageable.getOffset(), pageable.getPageSize(), sortDirection));
+            } else {
+                listSimulation = voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByIssuesDesc(voucherAssignmentId, municipality, country, pageable.getOffset(), pageable.getPageSize(), sortDirection));
+            }
+            totalElements = voucherSimulationRepository.countAllByVoucherAssignmentAndMunicipalityInCountry(voucherAssignmentId, municipality, country);
         } else {
-
             simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByEuRank(voucherAssignmentId, country, municipality, pageable);
             listSimulation = voucherSimulationMapper.toDTOList(Lists.newArrayList(simulationPaged.getContent()));
         }
@@ -186,7 +238,7 @@ public class VoucherService {
             voucherSimulation.setLau(simpleMunicipalityDTO.getLau());
             voucherSimulation.setRegistrationWarningDTO(warningList);
         }
-        if (pageable.getSort().getOrderFor("municipalityName") != null) {
+        if (pageable.getSort().getOrderFor("municipalityName") != null || pageable.getSort().getOrderFor("issues") != null) {
             return new ResponseDTO(true, listSimulation, (long) totalElements, null);
         }
         return new ResponseDTO(true, listSimulation, simulationPaged.getTotalElements(), null);
@@ -195,8 +247,9 @@ public class VoucherService {
     public byte[] exportVoucherSimulation(int voucherAssignmentId, String country, String municipalityName, Pageable pageable) {
         _log.debug("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Downloading excel voucher simulation with parameters - voucherAssignment: " + voucherAssignmentId + "municipality: " + municipalityName + ", country: " + country);
         List<VoucherSimulationDTO> simulationDTOS = (List<VoucherSimulationDTO>) getVoucherSimulationByVoucherAssignment(voucherAssignmentId, country, municipalityName, pageable).getData();
+        VoucherAssignmentDTO voucherAssignmentDTO = getVoucherAssignmentById(voucherAssignmentId);
 
-        VoucherSimulationExportGenerator excelExportGenerator = new VoucherSimulationExportGenerator(simulationDTOS, VoucherSimulationDTO.class);
+        VoucherSimulationExportGenerator excelExportGenerator = new VoucherSimulationExportGenerator(simulationDTOS, voucherAssignmentDTO, VoucherSimulationDTO.class);
         return excelExportGenerator.exportExcelFile("voucher_simulation").toByteArray();
     }
 
@@ -217,7 +270,7 @@ public class VoucherService {
             throw new AppException("Call not exists");
         }
 
-        if(!checkApplicationAreValidForFreezeList(callId)){
+        if (!checkApplicationAreValidForFreezeList(callId)) {
             throw new AppException("Not all applications are validated to save the freeze list");
         }
 
@@ -254,7 +307,7 @@ public class VoucherService {
             }
             voucherSimulationDTO.setRejected(voucherSimulation.getRejected());
             voucherSimulationDTO.setVoucherAssignment(result.getId());
-            if(voucherSimulationDTO.getSelectionStatus() != SelectionStatus.REJECTED.getValue()){
+            if (voucherSimulationDTO.getSelectionStatus() != SelectionStatus.REJECTED.getValue()) {
                 simulationDTOSet.add(voucherSimulationDTO);
             }
         }
@@ -324,8 +377,8 @@ public class VoucherService {
         }
     }
 
-    public Boolean checkApplicationAreValidForFreezeList(int callId){
-        if(getVoucherAssignmentByCallAndStatus(callId, VoucherAssignmentStatus.PRE_LIST.getValue()) != null){
+    public Boolean checkApplicationAreValidForFreezeList(int callId) {
+        if (getVoucherAssignmentByCallAndStatus(callId, VoucherAssignmentStatus.PRE_LIST.getValue()) != null) {
             return voucherSimulationRepository.checkApplicationAreValidForFreezeList(callId);
         }
         return false;
@@ -364,7 +417,7 @@ public class VoucherService {
             List<String> participatingCountries = new ArrayList<>();
 
             // List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
-            long dateNanoSeconds = call.getStartDate() * 1000000;
+            long dateNanoSeconds = call.getStartDate();
             List<ApplicationDTO> listOfApplications = applicationService.findByCallIdOrderByDateBeforeCallDateAsc(call.getId(), dateNanoSeconds);
 
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Initializing municipalities, laus & registrations");
@@ -375,8 +428,8 @@ public class VoucherService {
             VoucherAssignmentDTO voucherAssignment = getVoucherAssignmentByCall(call.getId());
             boolean hasPreList = getVoucherAssignmentByCallAndStatus(callId, VoucherAssignmentStatus.PRE_LIST.getValue()) != null;
 
-            if(voucherAssignment != null){
-                for (VoucherSimulationDTO simulationDTO: voucherAssignment.getVoucherSimulations()){
+            if (voucherAssignment != null && hasPreList) {
+                for (VoucherSimulationDTO simulationDTO : voucherAssignment.getVoucherSimulations()) {
                     voucherSimulationDTOHashMap.put(simulationDTO.getApplication().getId(), simulationDTO);
                 }
             }
@@ -460,7 +513,7 @@ public class VoucherService {
                             removeFromLOA(supportLOAlist, applicationDTO);
                             continue;
                         }
-                        if (applicationDTO.getRejected()) {
+                        if (applicationDTO.getRejected() && hasPreList) {
                             rejectedApplications.add(applicationDTO);
                             removeFromLOA(supportLOAlist, applicationDTO);
                             continue;
@@ -504,7 +557,7 @@ public class VoucherService {
                         removeFromLOA(supportLOAlist, applicationDTO);
                         continue;
                     }
-                    if (applicationDTO.getRejected()) {
+                    if (applicationDTO.getRejected() && hasPreList) {
                         rejectedApplications.add(applicationDTO);
                         removeFromLOA(supportLOAlist, applicationDTO);
                         continue;
@@ -574,7 +627,7 @@ public class VoucherService {
                                 removeFromLOA(supportLOAlist, application);
                                 continue;
                             }
-                            if (application.getRejected()) {
+                            if (application.getRejected() && hasPreList) {
                                 rejectedApplications.add(application);
                                 removeFromLOA(supportLOAlist, application);
                                 continue;
@@ -675,11 +728,11 @@ public class VoucherService {
 
                 countryRankCounter.put(municipalityDTO.getCountry(), countryRankCounter.getOrDefault(municipalityDTO.getCountry(), 0) + 1);
 
-                if(voucherSimulationDTOHashMap.size() > 0 && hasPreList) {
+                if (voucherSimulationDTOHashMap.size() > 0 && hasPreList) {
                     Integer status;
-                    if(voucherSimulationDTOHashMap.get(applicationAssigned.getId()) != null){
+                    if (voucherSimulationDTOHashMap.get(applicationAssigned.getId()) != null) {
                         status = voucherSimulationDTOHashMap.get(applicationAssigned.getId()).getSelectionStatus();
-                        if(status == SelectionStatus.RESERVE_LIST.getValue()){
+                        if (status == SelectionStatus.RESERVE_LIST.getValue()) {
                             applicationAssigned.setPreSelectedFlag(false);
                             ids.add(applicationAssigned);
                         }
@@ -741,11 +794,11 @@ public class VoucherService {
                 i++;
             }
 
-            if(ids.size() > 0){
-                try{
+            if (ids.size() > 0) {
+                try {
                     _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Marking applications as NEW");
                     applicationRepository.save(applicationMapper.toEntityList(ids));
-                } catch (Exception ex){
+                } catch (Exception ex) {
                     _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Error updating applications" + ex.getMessage(), ex);
                 }
             }
@@ -807,106 +860,29 @@ public class VoucherService {
         return false;
     }
 
-    public void sendNotificationForApplicants(int callId) {
+    public ResponseDTO sendNotificationForApplicants(int callId) {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
-        CallDTO callDTO = callService.getCallById(callId);
-        if (callDTO == null) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Call does not exist with id " + callId);
-            throw new AppException("Call not found with id: " + callId);
-        }
-        long currentTime = new Date().getTime();
-        if (!(callDTO.getStartDate() < currentTime && callDTO.getEndDate() < currentTime)) {
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiaries are only to be notified if the call has been closed. CallId:" + callId);
-            throw new AppException("Beneficiaries are only to be notified if the call has been closed. CallId:" + callId);
+        if (!permissionChecker.checkIfDashboardUser()) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
 
-        List<ApplicationDTO> successfulApplicants;
-        List<ApplicationDTO> reserveApplicants;
-        List<ApplicationDTO> unsuccessfulApplicants = new ArrayList<>();
-        VoucherAssignmentAuxiliarDTO finalVoucherAssignment = getVoucherAssignmentByCallAndStatus(callId, VoucherAssignmentStatus.FREEZE_LIST.getValue());
+        VoucherAssignmentAuxiliar voucherAssignment = voucherAssignmentAuxiliarRepository
+                .findByCallIdAndStatusAux(callId, VoucherAssignmentStatus.FREEZE_LIST.getValue());
 
-        if (finalVoucherAssignment == null) {
-            throw new AppException("Notification could not be sent because there's no freeze list for call with id : " + callId);
-        }
-
-        successfulApplicants = applicationMapper.toDTOList(applicationRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.SELECTED.getValue()));
-        reserveApplicants = applicationMapper.toDTOList(applicationRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.RESERVE_LIST.getValue()));
-        unsuccessfulApplicants.addAll(applicationMapper.toDTOList(applicationRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.REJECTED.getValue())));
-        unsuccessfulApplicants.addAll(applicationMapper.toDTOList(applicationRepository.getApplicationsNotSelectedInVoucherAssignment(callDTO.getId(), finalVoucherAssignment.getId())));
-
-        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-        String subject;
-        String msgBody;
-
-        for (ApplicationDTO successfulApplicant : successfulApplicants) {
-            RegistrationDTO registrationDTO = registrationService.getRegistrationById(successfulApplicant.getRegistrationId());
-            UserDTO userDTO = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-            if (userDTO.getLang() != null) {
-                locale = new Locale(userDTO.getLang());
-            }
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-            msgBody = bundle.getString("mail.dgConn.voucherAssignment.successfulApplicant.body");
-            String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/my-voucher";
-//            subject = MessageFormat.format(subject, successfulApplicant.getCallId());
-            subject = MessageFormat.format(subject, callDTO.getEvent());
-            msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-            // TODO: Change it to work with CNS
-            if (!userService.isLocalHost()) {
-                //mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
-        }
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + successfulApplicants.size() + " successful applicants");
-
-        for (ApplicationDTO reserveApplicant : reserveApplicants) {
-            RegistrationDTO registrationDTO = registrationService.getRegistrationById(reserveApplicant.getRegistrationId());
-            UserDTO userDTO = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-            if (userDTO.getLang() != null) {
-                locale = new Locale(userDTO.getLang());
-            }
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-            msgBody = bundle.getString("mail.dgConn.voucherAssignment.reserveApplicant.body");
-            String additionalInfoUrl = userService.getBaseUrl();
-            subject = MessageFormat.format(subject, callDTO.getEvent());
-            msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-            // TODO: Change it to work with CNS
-            if (!userService.isLocalHost()) {
-                // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
-        }
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + reserveApplicants.size() + " reserve applicants");
-
-        for (ApplicationDTO unsuccessfulApplicant : unsuccessfulApplicants) {
-            RegistrationDTO registrationDTO = registrationService.getRegistrationById(unsuccessfulApplicant.getRegistrationId());
-            UserDTO userDTO = userMapper.toDTO(userRepository.findMainUserFromRegistration(registrationDTO.getId()));
-            if (userDTO.getLang() != null) {
-                locale = new Locale(userDTO.getLang());
-            }
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-            msgBody = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.body");
-            String option;
-
-            if (unsuccessfulApplicant.getInvalidateReason() != null && !unsuccessfulApplicant.getInvalidateReason().isEmpty()) {
-                option = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.option1");
+            if(voucherAssignment.getNotifiedDate() != null){
+                return new ResponseDTO(false, voucherAssignment, null);
             } else {
-                option = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.option2");
+                AdminActions adminActions = adminActionsRepository.findOneByAction("voucher_send_notifications");
+                if(adminActions.isRunning()){
+                    return new ResponseDTO(false, adminActions, null);
+                }
             }
 
-            msgBody = MessageFormat.format(msgBody, option);
-            subject = MessageFormat.format(subject, callDTO.getEvent());
-            // TODO: Change it to work with CNS
-            if (!userService.isLocalHost()) {
-                // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-            }
-        }
-        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sended to " + unsuccessfulApplicants.size() + " unsuccessful applicants");
-
-        VoucherAssignment voucherAssignment = voucherAssignmentRepository.findByCallIdAndStatusEquals(callDTO.getId(), VoucherAssignmentStatus.FREEZE_LIST.getValue());
-        voucherAssignment.setNotifiedDate(new Date().getTime());
-        voucherAssignmentRepository.save(voucherAssignment);
+        // Let the task executor manage the execution of the new thread to send the mails
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Launched notification for applicants, starting thread...");
+        taskExecutor.execute(context.getBean(SendNotificationsAsync.class, callId, userConnected));
+        return new ResponseDTO(true, null, null);
     }
 
 }

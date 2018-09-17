@@ -415,6 +415,21 @@ body {
   background: none;
 }
 
+.sizeBeneficiaryHr{
+  width: 98.5%;
+  margin-top: 20px !important;
+}
+
+.sizeBeneficiaryHr2{
+  width: 100%;
+  margin-top: 20px !important;
+}
+
+.registrationHr {
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  background: none;
+}
+
 .genericHr {
   border: 0;
   border-top: 2px solid rgba(0, 0, 0, 0.1);
@@ -448,7 +463,7 @@ body {
 
 .fa-exclamation-triangle{
   font-size: 2.5em;
-  margin-top: 25%;
+  margin-top: 12%;
   color: #fff;
 }
 
@@ -466,7 +481,7 @@ body {
 
 .changePassword {
   margin-top: 0.5em;
-  width: 71%;
+  width: 85%;
   padding-top: 15px;
   padding-bottom: 15px;
   font-size: 1.2em;
@@ -509,6 +524,7 @@ body {
 
 .profileData {
   font-weight: bold;
+  overflow-wrap: break-word;
 }
 
 .profileDataDiscussion {
@@ -593,14 +609,20 @@ body {
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
-
 }
 
-.row.vertical-align {
-  display: flex;
-  align-items: center;
-  margin-top: 1em;
-
+.row {
+  .vertical-align {
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+  }
+  .conditions-agreement {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: $dark-grey;
+  }
 }
 
 .cancel-button {
@@ -861,8 +883,26 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 }
 
 .progress-indicator {
-  padding-top: 5.3em;
-  width: 100%;
+    padding-top: 5.3em;
+    width: 100%;
+    .completed:focus {
+        color: #4caf50;
+    }
+    .completed:hover {
+        color: #4caf50;
+    }
+    .active:focus {
+        color: #004494;
+    }
+    .active:hover {
+        color: #004494;
+    }
+    li:focus {
+        color: #bdbdbd;
+    }
+    li:hover {
+        color: #bdbdbd;
+    }
 }
 
 #app-header .right-content {
@@ -1486,7 +1526,7 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   background-color: #ffffff;
   color: #004494;
   border: solid 2px #004494;
-  height: 50px;
+  height: 6em;
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
@@ -1810,6 +1850,11 @@ input.email_profile::-ms-clear{
 .whitePanel {
   background-color: white;
   border: 2px solid #d2d2d2;
+  word-break: break-word;
+}
+
+.whitePanelBeneficiary{
+  background-color: white;
 }
 
 
@@ -1843,22 +1888,122 @@ input.email_profile::-ms-clear{
   margin-top: 3em;
 }
 .hoja-ID-card {
-  width: 140px;
-  height: 140px;
-  object-fit: contain;
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
 }
 
 .documents-info {
-
     div.alert {
         background-color: #ffffff !important;
         border: solid 1px #004494 !important;
+        width: 100%;
+        height: auto;
         color: #4a4a4a;
         font-weight: bold;
+        font-size: 11px;
+        text-transform: uppercase;
+        .text.with-icon {
+            margin-top: 0 !important;
+        }
     }
 }
 
-.attachment-label{
-  font-style:italic;
-  color:#727272
+.attachment-label {
+    font-style: italic;
+    color: #727272
+}
+
+.alert-icon {
+    color: #004494;
+    font-size: 15px !important;
+    padding-left: 0.5rem;
+}
+
+.margin-docs:first-child{ 
+    padding-top: 4em;
+}
+
+.table-disabled > *{
+  opacity: 0.5;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.panelMunicipality{
+  font-size: 14px !important;
+  word-break: break-word;
+}
+
+.panel-header{
+  background-color: #fff !important;
+  padding: 1px 1px 0.3px 1px;
+}
+
+.panel-content{
+  padding: 0px !important;
+}
+
+.label{
+  margin-top: 1em;
+}
+
+li.panel .panel-header .toggle{
+  margin-top: 0.5em;
+}
+
+.editRegistrationsLabel{
+  margin-top: 0.3em;
+  font-size: 17px;
+}
+
+.marginSecondSectionBeneficiary{
+  margin-top: 9.80em;
+}
+
+.blueText{
+  color:#254872;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.cursorPointer{
+  cursor: pointer;
+}
+
+li.panel .panel-header .label-wrapper .label {
+  color:#254872 !important;
+}
+
+.mTopCenter{
+  text-align: center;
+  margin-top: 3em;
+}
+
+.timer-height-block {
+  height: 19rem;
+}
+
+@-moz-document url-prefix() {
+  .timer-height-block {
+    @media screen and (max-width: 750px) {
+      height: 19.50rem;
+    }
+    @media screen and (max-width: 450px) {
+      height: 25rem;
+    }
+  }
+}
+
+.forceBlueColorOnLinks a{
+  color:#254872 !important;
+}
+.whiteTableBackground {
+    background-color: #fff !important;
+}
+.whiteTableBackground:hover {
+    background-color: #fff !important;
 }

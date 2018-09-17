@@ -27,11 +27,13 @@
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
-        "local": "environments/environment.local.ts",
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts",
-        "int": "environments/environment.int.ts",
-        "test": "environments/environment.test.ts"
+        "dev-old": "environments/environment.dev-old.ts",
+        "local":"environments/environment.local.ts",
+        "acc": "environments/environment.acc.ts",
+        "acc-hf": "environments/environment.acchf.ts",
+        "dev": "environments/environment.dev.ts",
+        "test": "environments/environment.test.ts",
+        "prod": "environments/environment.prod.ts"
       }
     }
   ],

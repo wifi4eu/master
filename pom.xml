@@ -10,7 +10,6 @@
     <name>wifi4eu</name>
     <description>J2EE, SpringMVC, eUI application</description>
 
-
     <scm>
         <connection>scm:svn:https://webgate.ec.europa.eu/CITnet/svn/wifi4eu</connection>
         <developerConnection>scm:svn:https://webgate.ec.europa.eu/CITnet/svn/wifi4eu
@@ -46,7 +45,8 @@
 
 
     <properties>
-
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
         <!-- DEPENDENCIES VERSIONS -->
 
         <jdk.version>1.7</jdk.version>
@@ -150,6 +150,8 @@
 
         <dgconn.name>dashboard</dgconn.name>
         <dgconn.context.name>/dashboard</dgconn.context.name>
+        <procedures.name>procedures</procedures.name>
+        <procedures.context.name>/procedures</procedures.context.name>
         <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
         <server.azure.test2.address>wifi4eutest.eu</server.azure.test2.address>
         <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
@@ -165,32 +167,49 @@
         <enable.login.start></enable.login.start>
         <enable.login.end></enable.login.end>
         <enable.appinsights.start></enable.appinsights.start>
-        <enable.appinsights.end></enable.appinsights.end>
-        <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
+        <enable.appinsights.end></enable.appinsights.end>        
 
+        <!-- MailService for notifications -->
+        <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
+        <mail.serv.enable>true</mail.serv.enable>
+        <mail.serv.using.smtp>false</mail.serv.using.smtp>
+        <mail.serv.using.cns>true</mail.serv.using.cns>
         <!-- CNS -->
-        <cns.client.system.key>KEY-WiFi4EU-B49nLE82Cx</cns.client.system.key>
+        <cns.client.system.key>KEY-WiFi4EU-HK7hK38a0D</cns.client.system.key>
         <cns.client.system.password>secret</cns.client.system.password>
+        <cns.notification.group.code>WiFi4EU_NOTIF</cns.notification.group.code>
         <cns.notification.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/NotificationWebService</cns.notification.service.url>
         <cns.user.preferences.service.url>https://webgate.acceptance.ec.europa.eu/cns/services/latest/UserPreferencesWebService</cns.user.preferences.service.url>
-        <cns.notification.group.code>WiFi4EU_OP</cns.notification.group.code>
-
+        <!-- Encryption -->
+        <secret.key.encryption>IU4zdyNLM3kjUDRzcyExOA==</secret.key.encryption>
         <!-- SMTP -->
-        <encrypted.azure.smtp.password>EXdNJgAGhKHJNcH3M9F2XuFcjyY0vx4dsvGcOkv8Bkt5HjXq5uvc6fvMP1/jqDo2</encrypted.azure.smtp.password>
-        <encrypted.smtp.password>rAVMaF9Tq672wijgk9LxfA==</encrypted.smtp.password>
-        <secret.key.encryption>SBy2hecZS9lA7wiIGmoRiA==</secret.key.encryption>
+        <encrypted.azure.smtp.password>2yjdOTqqi4iVtcQmSwMcGVauFDwrdz3buvTzvyxweaVg16y5gij2kIKS/s5FggRniHETj9EhRgVoNgQlLPGpOQ==</encrypted.azure.smtp.password>
+        <encrypted.smtp.password>8G6DpkmzyVSH/2SHiGZfh58xX05W8k0EM0ncdrz6tms=</encrypted.smtp.password>
+        <!-- Azure Blob Storage -->
+        <azure.blob.storage.key>aIo1n7IUPpzaHEV1P0j23m6i/c/jR1vU4nDLK24q4yl1yzQ8+/6PgQezHPGGJ+C/JcFSiLoGzv9q6e1Lp/gBu/JkaIJxSTGgRre3SIRWfmF0lEucTtyS6xQYD04p0scjAIMCe8Uj0hUwcRu7k9DazuxoAfLlwvCmov+QDkzG786N3QnshnYy6IYt4y7M0hUMm31juQNXvRLrYC0wX/UWC36fui4i6Akn6vN01n6kp2CA6an0/6wGu6ceRUkbyT6d0fymsL92enrFojwNDhP7VTkJGxDmx0BBvItw8ecBAqw=</azure.blob.storage.key>        
+        <azure.blob.storage.key.dev>aIo1n7IUPpzaHEV1P0j23m6i/c/jR1vU4nDLK24q4yl1yzQ8+/6PgQezHPGGJ+C/JcFSiLoGzv9q6e1Lp/gBu/JkaIJxSTGgRre3SIRWfmF0lEucTtyS6xQYD04p0scjAIMCe8Uj0hUwcRu7k9DazuxoAfLlwvCmov+QDkzG786N3QnshnYy6IYt4y7M0hUMm31juQNXvRLrYC0wX/UWC36fui4i6Akn6vN01n6kp2CA6an0/6wGu6ceRUkbyT6d0fymsL92enrFojwNDhP7VTkJGxDmx0BBvItw8ecBAqw=</azure.blob.storage.key.dev>
+        <azure.blob.storage.key.acc>aIo1n7IUPpzaHEV1P0j23m6i/c/jR1vU4nDLK24q4yl1yzQ8+/6PgQezHPGGJ+C/JcFSiLoGzv9q6e1Lp/gBu/JkaIJxSTGgRre3SIRWfmF0lEucTtyS6xQYD04p0scjAIMCe8Uj0hUwcRu7k9DazuxoAfLlwvCmov+QDkzG786N3QnshnYy6IYt4y7M0hUMm31juQNXvRLrYC0wX/UWC36fui4i6Akn6vN01n6kp2CA6an0/6wGu6ceRUkbyT6d0fymsL92enrFojwNDhP7VTkJGxDmx0BBvItw8ecBAqw=</azure.blob.storage.key.acc>
+        <azure.blob.storage.key.pro>aIo1n7IUPpzaHEV1P0j23m6i/c/jR1vU4nDLK24q4yl1yzQ8+/6PgQezHPGGJ+C/JcFSiLoGzv9q6e1Lp/gBu/JkaIJxSTGgRre3SIRWfmF0lEucTtyS6xQYD04p0scjAIMCe8Uj0hUwcRu7k9DazuxoAfLlwvCmov+QDkzG786N3QnshnYy6IYt4y7M0hUMm31juQNXvRLrYC0wX/UWC36fui4i6Akn6vN01n6kp2CA6an0/6wGu6ceRUkbyT6d0fymsL92enrFojwNDhP7VTkJGxDmx0BBvItw8ecBAqw=</azure.blob.storage.key.pro>
+        <azure.blob.legal.files.key>NvSiZXysA6btQMSI0YtPkChT8wVYV4av2Fx26/TOWm7pTmiIoHlAKK+6MPCkMu8sWvWTHbTObll0uFRddKfL3WWe4n3R9KL835U2kiYfs5TF/ZfeN4w3QFkFNShjTnkFNCGsWDt+JDFAlDWyntnf3eQTReecJNTJBbjzor4LSCEjw8Y6jH+lNsGeexUeTosIUf2jCtCG8VRAuGd35VpWsb3SLezfANrjyKh58v1uCzxg+Bs5fqoBGAvhMZfbmfa9Kzhmk3w8D7mhRpi9v4R7kw==</azure.blob.legal.files.key>
+        <azure.blob.legal.files.key.dev>NvSiZXysA6btQMSI0YtPkChT8wVYV4av2Fx26/TOWm7pTmiIoHlAKK+6MPCkMu8sWvWTHbTObll0uFRddKfL3WWe4n3R9KL835U2kiYfs5TF/ZfeN4w3QFkFNShjTnkFNCGsWDt+JDFAlDWyntnf3eQTReecJNTJBbjzor4LSCEjw8Y6jH+lNsGeexUeTosIUf2jCtCG8VRAuGd35VpWsb3SLezfANrjyKh58v1uCzxg+Bs5fqoBGAvhMZfbmfa9Kzhmk3w8D7mhRpi9v4R7kw==</azure.blob.legal.files.key.dev>
+        <azure.blob.legal.files.key.acc>zqBZWadZC4F/HLusFhXVOFiJQXsZR7kvh23ZNVHdx/3Z52wajRmvEZxdXp5yi9O8/YJw0tfXB1H48i9jivAWYeO8zmPuaXXMZNu9eITY2czSzmzUtD/tw2UdhgKxahWva/d3migWWmj1Dj6G9jXDEfvqB8pI9CVCNSPx+kZ8pNJGz2YGY6IqED0NyGgjycGns+X/gNNbwxKxVjulk++UfGWNj4vc3d289BpVgh4Uy9SewBt6buNmLSmNeLoHzMLQNkfWFhRQbhgyLikVXGR42A==</azure.blob.legal.files.key.acc>
+        <azure.blob.legal.files.key.acchf>W2+UHoitjN9ctD4DhGh6r7s6uJLH24q+X1CGxdkR1l6eZsNXqhY0uZKFQTvcXHHmcS4sFNGIv2ydjyHg5FYOzgFfyUYPuRKSED4ZgwPic6FK5ikOhzrXF0NgsS8Qc4xRVFADyGCGp1iBs6mwN4GVk2ngM2o4da0u5d8qBCwRm/m7RBKanGfwWlldYDKxZiD0zXbCl70LFaDMtrNhmgVtPgfGlot7f2S+yKSB52/TPgT6SePqnye6tmmajYhpNXMGxQL6KpxDfymPSFmKv/IEKw==</azure.blob.legal.files.key.acchf>
+        <azure.blob.legal.files.key.pro>9GCRl1rzZFa+p3vnZX+rcQvIZExBSry601fDXJ+a1QjrQ1amhTtjNju/aPaOq5vlUrFfMUJ9vQYJfgEtn3ES7w3HYVclvtr8iK1MzizNWsTjlb2YxZjWsnruv4Djw3ksmThnwHbgkVE/3ucgmy6lt/R2dRN7b9mRHFNShVxvU+epRCbq6WS+I/W2EUWjKkzc4S1WAnaycqxYy5U/Ly910iemAXN2DqF1LvzPdSdUwYAQucutNNsTVsfDiBT7PE8dKrz2oFcAgbKPGjLaF0sAFA==</azure.blob.legal.files.key.pro>
 
-        <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
-        <mail.smtp.port>587</mail.smtp.port>
+        <mail.smtp.host>localhost</mail.smtp.host>
+        <mail.smtp.port>25</mail.smtp.port>
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
         <mail.smtp.password>${encrypted.smtp.password}</mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
-        <mail.serv.enable>true</mail.serv.enable>
 
         <!-- RabbitMQ -->
         <rabbitmq.host>localhost</rabbitmq.host>
         <rabbitmq.username>guest</rabbitmq.username>
         <rabbitmq.password>guest</rabbitmq.password>
+
+        <!-- Redis -->
+        <redis.enabled>false</redis.enabled>
+        <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
 
         <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
         <!--<war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>-->
@@ -211,12 +230,14 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
 
                 <!-- Webapp modules -->
                 <module>wifi4eu-portal</module>
                 <module>wifi4eu-public-portal</module>
                 <module>wifi4eu-dgconn</module>
                 <module>wifi4eu-supplier</module>
+                <module>wifi4eu-procedures</module>
                 <!--<module>wifi4eu-financial</module>-->
             </modules>
         </profile>
@@ -229,6 +250,7 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
                 <!-- Webapp modules -->
                 <module>wifi4eu-portal</module>
             </modules>
@@ -240,6 +262,7 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
                 <!-- Webapp modules -->
                 <module>wifi4eu-public-portal</module>
             </modules>
@@ -251,6 +274,7 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
                 <!-- Webapp modules -->
                 <module>wifi4eu-dgconn</module>
             </modules>
@@ -262,6 +286,7 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
                 <!-- Webapp modules -->
                 <module>wifi4eu-supplier</module>
             </modules>
@@ -273,6 +298,7 @@
                 <!-- Common modules -->
                 <module>wifi4eu-common</module>
                 <module>wifi4eu-persistence</module>
+                <module>wifi4eu-common-service</module>
                 <!-- Webapp modules -->
                 <module>wifi4eu-financial</module>
             </modules>
@@ -282,7 +308,7 @@
         <profile>
             <id>TEST</id>
             <properties>
-                <ng.env>int</ng.env>
+                <ng.env>test</ng.env>
                 <server.address>${server.test.address}:${server.test.port}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
@@ -294,6 +320,9 @@
                 <ecas.server.address>${server.test.address}</ecas.server.address>
                 <ecas.server.port>8080</ecas.server.port>
                 <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
+                <mail.serv.enable>true</mail.serv.enable>
+                <mail.serv.using.smtp>true</mail.serv.using.smtp>
+                <mail.serv.using.cns>false</mail.serv.using.cns>                
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
@@ -303,7 +332,7 @@
         <profile>
             <id>AZUREDEV</id>
             <properties>
-                <ng.env>dev</ng.env>
+                <ng.env>dev-old</ng.env>
                 <schemes>https</schemes>
                 <server.address>${server.azure.dev.address}</server.address>
                 <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>
@@ -327,7 +356,7 @@
                 <ecas.config.strength>PASSWORD</ecas.config.strength>
                 <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
                 <mail.serv.enable>true</mail.serv.enable>
-                <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
+                <mail.serv.location>https://wifi4eu-dev.everincloud.com/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
@@ -335,6 +364,12 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <redis.enabled>true</redis.enabled>
+                <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
+                <mail.serv.using.smtp>false</mail.serv.using.smtp>
+                <mail.serv.using.cns>true</mail.serv.using.cns>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -372,6 +407,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -409,6 +446,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -439,6 +478,8 @@
                 <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
                 <mail.serv.enable>true</mail.serv.enable>
                 <mail.serv.location>https://${server.azure.devpg.address}/wifi4eu/#/</mail.serv.location>
+                <mail.serv.using.smtp>false</mail.serv.using.smtp>
+                <mail.serv.using.cns>true</mail.serv.using.cns>                
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
@@ -446,6 +487,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -483,6 +526,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -520,6 +565,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -557,6 +604,8 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -594,6 +643,94 @@
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+            </properties>
+        </profile>
+        <profile>
+            <id>ACCEPTANCE</id>
+            <properties>
+                <ng.env>acc</ng.env>
+                <schemes>https</schemes>
+                <server.address>wifi4eu-acc.everincloud.com</server.address>
+                <server.dgconn.address>wifi4eu-acc-cnect.everincloud.com</server.dgconn.address>
+                <dgconn.name>wifi4eu</dgconn.name>
+                <dgconn.context.name>/wifi4eu</dgconn.context.name>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <enable.appinsights.start>--&gt;</enable.appinsights.start>
+                <enable.appinsights.end>&lt;!--</enable.appinsights.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+                <war.output.directory/>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
+                <ecas.config.base.url.dgconn>${server.ecas.acc}</ecas.config.base.url.dgconn>
+                <ecas.server.address>wifi4eu-acc.everincloud.com</ecas.server.address>
+                <ecas.server.dgconn.address>wifi4eu-acc-cnect.everincloud.com</ecas.server.dgconn.address>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
+                <ecas.config.strength>PASSWORD</ecas.config.strength>
+                <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
+                <mail.serv.enable>true</mail.serv.enable>
+                <mail.serv.location>https://wifi4eu-acc.everincloud.com/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <rabbitmq.host></rabbitmq.host>
+                <rabbitmq.username></rabbitmq.username>
+                <rabbitmq.password></rabbitmq.password>
+                <redis.enabled>true</redis.enabled>
+                <redis.sentinel.uris>202.3.2.4,202.3.2.5,202.3.2.6</redis.sentinel.uris>
+                <azure.blob.storage.key>${azure.blob.storage.key.acc}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.acc}</azure.blob.legal.files.key>
+                <mail.serv.using.smtp>false</mail.serv.using.smtp>
+                <mail.serv.using.cns>true</mail.serv.using.cns>
+            </properties>
+        </profile>
+        <profile>
+            <id>ACCEPTANCE-HF</id>
+            <properties>
+                <ng.env>acc-hf</ng.env>
+                <schemes>https</schemes>
+                <server.address>wifi4eu-acchf.everincloud.com</server.address>
+                <server.dgconn.address>wifi4eu-acchf-cnect.everincloud.com</server.dgconn.address>
+                <dgconn.name>wifi4eu</dgconn.name>
+                <dgconn.context.name>/wifi4eu</dgconn.context.name>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <enable.appinsights.start>--&gt;</enable.appinsights.start>
+                <enable.appinsights.end>&lt;!--</enable.appinsights.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
+                <war.output.directory/>
+                <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
+                <ecas.config.base.url.dgconn>${server.ecas.stress}</ecas.config.base.url.dgconn>
+                <ecas.server.address>wifi4eu-acchf.everincloud.com</ecas.server.address>
+                <ecas.server.dgconn.address>wifi4eu-acchf-cnect.everincloud.com</ecas.server.dgconn.address>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
+                <ecas.config.strength>BASIC</ecas.config.strength>
+                <ecas.config.strength.dgconn>BASIC</ecas.config.strength.dgconn>
+                <mail.serv.enable>false</mail.serv.enable>
+                <mail.serv.location>https://wifi4eu-acchf.everincloud.com/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <rabbitmq.host></rabbitmq.host>
+                <rabbitmq.username></rabbitmq.username>
+                <rabbitmq.password></rabbitmq.password>
+                <redis.enabled>true</redis.enabled>
+                <redis.sentinel.uris>202.3.2.11,202.3.2.12,202.3.2.13</redis.sentinel.uris>
+                <azure.blob.storage.key>${azure.blob.storage.key.acc}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.acchf}</azure.blob.legal.files.key>
+                <mail.serv.using.smtp>false</mail.serv.using.smtp>
+                <mail.serv.using.cns>true</mail.serv.using.cns>
             </properties>
         </profile>
         <profile>
@@ -617,6 +754,8 @@
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.pro}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.pro}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -641,6 +780,8 @@
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.pro}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.pro}</azure.blob.legal.files.key>
             </properties>
         </profile>
         <profile>
@@ -670,8 +811,12 @@
                 <rabbitmq.host>10.0.2.123</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
+                <redis.enabled>true</redis.enabled>
+                <redis.sentinel.uris>10.0.2.56,10.0.2.54,10.0.2.55</redis.sentinel.uris>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
                 <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
+                <azure.blob.storage.key>${azure.blob.storage.key.pro}</azure.blob.storage.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.pro}</azure.blob.legal.files.key>
             </properties>
         </profile>
     </profiles>

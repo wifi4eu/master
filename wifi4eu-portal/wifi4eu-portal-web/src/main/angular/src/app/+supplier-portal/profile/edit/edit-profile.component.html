@@ -13,26 +13,26 @@
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'suppPortal.companyInformation' | translate }}</p>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="name">{{ 'suppRegistration.company.name' | translate }}</label><br>
-                <input id="name" type="text" name="name" class="form-control"
-                       [(ngModel)]="supplier.name" required>
+                <input id="name" type="text" name="name" class="form-control" maxlength="255"
+                       [(ngModel)]="supplier.name" (ngModelChange)="enableButton()" required>
             </div>
             <br>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="address">{{ 'suppRegistration.legal.address' | translate }}</label><br>
-                <input id="address" type="text" name="address" class="form-control"
-                       [(ngModel)]="supplier.address" required>
+                <input id="address" type="text" name="address" class="form-control" maxlength="255"
+                       [(ngModel)]="supplier.address" (ngModelChange)="enableButton()" required>
             </div>
             <br>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="vat">{{ 'suppRegistration.vat.label' | translate }}</label><br>
-                <input id="vat" type="text" name="vat" class="form-control"
-                       [(ngModel)]="supplier.vat" required>
+                <input id="vat" type="text" name="vat" class="form-control" maxlength="255"
+                       [(ngModel)]="supplier.vat" (ngModelChange)="enableButton()" required>
             </div>
             <br>
             <div class="form-group ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                 <label for="website">{{ 'suppRegistration.company.web' | translate }}</label><br>
-                <input id="website" type="text" name="website" class="form-control"
-                       [(ngModel)]="supplier.website" [pattern]="websitePattern">
+                <input id="website" type="text" name="website" class="form-control" maxlength="255"
+                       [(ngModel)]="supplier.website"  (ngModelChange)="enableButton()">
             </div>
             <br>
             <div class="form-group ui-g-12">
@@ -53,47 +53,52 @@
                     </span>
                 </label>
             </div>
+            <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
+ <!--ADD CONTACT-->
+               <!-- <p class="edit ui-g-12 cursorPointer" (click)="addNewContactToSupplier()">+ {{ "benefPortal.beneficary.addMunicipality" | translate}}</p>-->
+            </div>
         </div>
 
 
         <div class="ui-g-12">
             <hr class="genericHr" />
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
-            <div *ngFor="let user of supplier.users; let i = index">
-
-                <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12"> 
-                    <b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>
-                    <span class="btn redButton right" (click)="deactivateShowModal(i)" *ngIf="!(user.type == -1) && !(userConnected.id == user.id)">{{ 'shared.deactivate.button' | translate}}</span>
-                </div>  
+            <div *ngFor="let user of users; let i = index">
+                <!--ADD CONTACT-->
+                <!---
+                <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+                   <b>{{ 'suppRegistration.contact.person' | translate }} {{i+1}}</b>
+                    <p  class="edit cursorPointer right"(click)="deactivateShowModal(i)" *ngIf="!(user.type == -1) && !(userConnected.id == user.id)">
+                        <i class="fa fa-ban"></i>
+                        {{ 'shared.deactivate.button' | translate}}</p>
+                    
+                </div> -->
                 <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                     <label>{{ 'shared.name.label' | translate }}</label><br>
                     <input [id]="'name-'+i" type="text" [name]="'name-'+i" class="form-control"
-                        [(ngModel)]="users[i].name" required [disabled]="user.type == -1">
+                        [(ngModel)]="users[i].name" maxlength="255" required  (ngModelChange)="enableButtonUser(i)" [disabled]="user.type == -1">
                 </div>
                 <br>
                 <div class="ui-g-4 ui-lg-4 ui-md-8 ui-sm-12">
                     <label>{{ 'shared.surname.label' | translate }}</label><br>
                     <input [id]="'surname-'+i" type="text" [name]="'surname-'+i" class="form-control"
-                        [(ngModel)]="users[i].surname" required [disabled]="user.type == -1">
+                        [(ngModel)]="users[i].surname" maxlength="255" required (ngModelChange)="enableButtonUser(i)" [disabled]="user.type == -1">
                 </div>
                 <br>
                 <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
                     <label>{{ 'suppRegistration.phone.number' | translate }}</label><br>
-                    <input [id]="'phone-prefix-'+i" type="text" [name]="'phone-prefix-'+i" class="form-control ui-g-2 ui-sm-4"
-                        style="margin-right: 1em;" [(ngModel)]="users[i].phone_prefix" required [disabled]="user.type == -1">
-                    <input [id]="'phone-number-'+i" type="text" [name]="'phone-number-'+i" class="form-control ui-g-3 ui-sm-7"
-                        [(ngModel)]="users[i].phone_number" required [disabled]="user.type == -1">
+                    <input [id]="'phone-prefix-'+i" type="text" [name]="'phonePrefix-'+i" class="form-control ui-g-2 ui-sm-4"
+                        style="margin-right: 1em;" [(ngModel)]="users[i].phonePrefix" (ngModelChange)="enableButtonUser(i)" required pattern="^[+]?[1-9]{1}[0-9]{1,2}$" [disabled]="user.type == -1">
+                    <input [id]="'phone-number-'+i" type="text" [name]="'phoneNumber-'+i" class="form-control ui-g-3 ui-sm-7"
+                        [(ngModel)]="users[i].phoneNumber" required (ngModelChange)="enableButtonUser(i)" pattern="[0-9]{1,}" [disabled]="user.type == -1">
                     <br>
                     <label class="ui-g-2 ui-sm-4" style="font-size: 70%;color: #8f8f8f;">
                         {{ 'suppRegistration.prefix.number' | translate }}
                     </label>
                 </div>
             </div>
-            <div class="form-group ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">   
-                    <p (click)="sendMailToUser()">{{ "benefPortal.beneficary.addMunicipality" | translate}}</p>   
-             </div>
         </div>
-  
+
         <div class="ui-g-12" *ngIf="geographicalScopeLoaded">
             <hr class="genericHr" />
             <p class="beneficiaryTitle" style="font-size: 18px;">{{ 'suppRegistration.entity.support' | translate }}</p>
@@ -106,7 +111,8 @@
                         <br>
                         <p-multiSelect id="selectCountry" #selectCountry name="selectCountry"
                                        defaultLabel="{{ 'shared.choose.label' | translate }}"
-                                       [options]="countryOptions" [(ngModel)]="selectedCountries">
+                                       [options]="countryOptions" [(ngModel)]="selectedCountries"
+                                       (onChange)="checkRegions($event)">
                         </p-multiSelect>
                     </div>
                     <div class="ui-g-8 ui-lg-8 ui-md-12 ui-sm-12">
@@ -115,11 +121,12 @@
                         </label>
                         <br>
                         <p-tabView>
-                            <p-tabPanel *ngFor="let country of selectedCountries; let i = index"
+                            <p-tabPanel *ngFor="let country of selectedCountries; let i = index" id="{{'tab'+country.label}}"
                                         header="{{country.label | slice:0:1 | uppercase }}{{country.label | slice:1:country.label.length | lowercase }}">
-                                <p-multiSelect id="{{'selectRegion'+i}}" #selectRegion name="{{'selectRegion'+i}}"
+                                <p-multiSelect id="{{'selectRegion'+country.label}}" name="{{'selectRegion'+country.label}}"
                                                defaultLabel="{{ 'shared.choose.label' | translate }}"
-                                               [options]="regionOptions[country.label]" [(ngModel)]="selectedRegions[country.label]">
+                                               [options]="regionOptions[country.label]" [(ngModel)]="selectedRegions[country.label]"
+                                               (onChange)="checkRegions($event)">
                                 </p-multiSelect>
                             </p-tabPanel>
                         </p-tabView>
@@ -130,29 +137,28 @@
         <i *ngIf="!geographicalScopeLoaded" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
         <div class="ui-g-12">
             <hr class="genericHr" />
-            <div class="form-group" style="text-align: center;">
-                <button type="button" (click)="goBack()"
-                        class="btn btn-primary whiteButton" style="margin-right: 0.5em;">
+            <div class="col-lg-2"></div>
+            <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+                <button type="button" class="btn btn-primary cancel-button" (click)="goBack()">
                     {{ 'shared.cancel.button' | translate }}
                 </button>
-                <button type="button" (click)="saveSupplierData()" [disabled]="savingData"
-                        class="btn btn-primary blueButton" style="margin-left: 0.5em;">
-                    {{ 'shared.save' | translate }} <i *ngIf="savingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+            </div>
+            <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+                <button (click)="saveSupplierData()" class="btn btn-primary publish-button" [disabled]="savingData || !buttonEnabled || !buttonRegionsEnabled">
+                        {{ 'shared.save' | translate }} <i *ngIf="savingData" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
                 </button>
             </div>
+            <div class="col-lg-2"></div>
             <br style="margin-bottom: 2em;">
         </div>
     </form>
 </div>
-
-
-
-<!-- new user -->
+<!--ADD CONTACT
 <p-dialog [(visible)]="addUser" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <form #addNewUser="ngForm">
         <div class="form-group">
-            
+
             <div class="row marginStep1 landingFirstText">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8 center">
@@ -169,7 +175,7 @@
     <div class="row marginStep1 landingFirstText form-group ">
         <div class="col-lg-2"></div>
         <div class="col-sm-6 col-lg-4" style="text-align: center !important">
-            <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+            <button type="button" class="btn btn-primary cancel-button" (click)="closeAddNewContactModal()">
                 {{ 'shared.cancel.button' | translate }}
             </button>
         </div>
@@ -188,21 +194,27 @@
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
-<p-dialog [(visible)]="displayAddContactModal">
+-->
+<!--MODAL CONFIMATION OF DEACTIVATING CONTACT
+<p-dialog [(visible)]="displayDeactivatemodal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
+        [closeOnEscape]="false">
         <div class="form-group ui-g">
-                <h1 class="Modalh1Confirmation">{{ 'shared.deactivateContactModalAreYouSure' | translate}}</h1>
-            <div class="ui-lg-3"></div>
-            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button (click)="closeModal()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' |
-                        translate }}
-                </button>
+            <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
+                <span>{{ 'shared.deactivate.modalTitle' | translate}}</span>
             </div>
-            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button (click)="deactivateContactModal()" class="btn btn-primary cancel-button">
-                            {{ 'shared.confirm.button' | translate }}
+            <div class="col-sm-12 center" style="padding-bottom:1em;">
+                <span style="line-height: 1.25; font-size: 16px;">{{ 'shared.deactivateContactModalAreYouSure' | translate}}</span>
+            </div>
+            <div class="col-sm-12 center">
+                <div class="offset-lg-2 col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="closeModal()" class="btn btn-primary publish-button">{{ 'shared.cancel.button' | translate }} </button>
+                </div>
+                <div class="col-sm-6 col-g-6 col-md-6 col-lg-4">
+                    <button (click)="deactivateContactModal()" type="button" class="btn btn-primary cancel-button">
+                        {{ 'shared.confirm.button' | translate }}
                     </button>
+                </div>
             </div>
-        
-            <div class="ui-lg-3"></div>
         </div>
     </p-dialog>
+    -->

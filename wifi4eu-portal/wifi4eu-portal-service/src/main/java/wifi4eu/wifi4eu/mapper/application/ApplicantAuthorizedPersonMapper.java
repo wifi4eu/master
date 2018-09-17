@@ -21,5 +21,4 @@ public interface ApplicantAuthorizedPersonMapper {
     })
     ApplicationAuthorizedPerson toEntity(ApplicationAuthorizedPersonDTO vo);
 
-
 }

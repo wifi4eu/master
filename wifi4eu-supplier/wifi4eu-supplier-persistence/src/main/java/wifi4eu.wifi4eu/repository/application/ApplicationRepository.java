@@ -3,10 +3,7 @@ package wifi4eu.wifi4eu.repository.application;
 import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.application.Application;
 
-public interface ApplicationRepository extends CrudRepository<Application,Integer> {
-    Iterable<Application> findBySupplierId(Integer supplierId);
-    Application findByCallIdAndRegistrationId(Integer callId, Integer registrationId);
-    Iterable<Application> findByRegistrationId(Integer registrationId);
-    Iterable<Application> findByCallId(Integer callId);
+public interface ApplicationRepository extends CrudRepository<Application, Integer> {
+
     Application findBySupplierIdAndRegistrationId(Integer suppliedId, Integer registrationId);
 }

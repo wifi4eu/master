@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -23,6 +24,7 @@ import wifi4eu.wifi4eu.mapper.security.RightMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.nio.file.AccessDeniedException;
@@ -44,6 +46,9 @@ public class PermissionChecker {
 
     @Autowired
     RightRepository rightRepository;
+
+    @Autowired
+    ApplicationAuthorizedPersonService applicationAuthorizedPersonService;
 
     @Autowired
     UserService userService;
@@ -80,6 +85,21 @@ public class PermissionChecker {
         }
     }
 
+    @Transactional
+    public void dropTablePermissions(final Integer userId, final String rowId, final String destTable) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + "- Deleting table permissions");
+
+        Iterable<Right> rightsFound = rightRepository.findByRightdescAndUserId(destTable + rowId, userId);
+        if (!Iterables.isEmpty(rightsFound)) {
+            for (Right right : rightsFound) {
+                rightRepository.delete(right);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + "- deleted table permissions ["+destTable+"]- id: +"+rowId+ " for userId " + userId );
+            }
+        }
+    }
+
     public boolean checkIfDashboardUser() {
         UserContext userContext = UserHolder.getUser();
         UserDTO currentUserDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
@@ -87,6 +107,17 @@ public class PermissionChecker {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public boolean checkIfAuthorizedGrantAgreement(Integer applicationId) {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO currentUserDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
+        ApplicationAuthorizedPersonDTO applicationAuthorizedPerson = applicationAuthorizedPersonService.findByApplicationAndAuthorisedPerson(applicationId, currentUserDTO.getId());
+        if(applicationAuthorizedPerson == null){
+            return false;
+        }else{
+            return true;
         }
     }
 

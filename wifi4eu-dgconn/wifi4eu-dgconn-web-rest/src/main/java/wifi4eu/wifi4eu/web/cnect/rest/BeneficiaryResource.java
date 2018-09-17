@@ -23,6 +23,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.BeneficiaryValidator;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -40,7 +41,7 @@ import java.util.List;
 @RequestMapping("beneficiary")
 public class BeneficiaryResource {
 
-    @Autowired
+	@Autowired
     private BeneficiaryService beneficiaryService;
 
     @Autowired

@@ -1,11 +1,11 @@
 <div class="clearfix"></div>
-<div class="container font">
+<div class="container font" *ngIf="contentVisible">
     <div class="clearfix"></div>
     <div class="row">
         <div class="ui-g-4 ui-sm-4">
-            <div class="back-button voucherStatusBackButton">
+           <!--  <div class="back-button voucherStatusBackButton">
                 <a (click)="goBack()"><i class="fa fa-arrow-left"></i>{{ 'shared.back.button' | translate}}</a>
-            </div>
+            </div> -->
         </div>
         <div class="ui-g-8 ui-sm-8 voucherStatusAgreementBorder">
             <div class="row">
@@ -19,12 +19,13 @@
             </div>
         </div>
     </div>
-    <div class="row labelModal">
+     <div class="row labelModal">
         <div class="col-sm-12">
             <p class="beneficiaryTitle">{{ 'benefPortal.grantAgreement.title' | translate }}</p>
             <p [innerHTML]="'benefProtal.grantAgreement.description' | translate"></p>
         </div>
     </div>
+    <!--
     <div class="col-sm-8 whitePanel">
         <div class="row">
             <div class="col-sm-4">
@@ -117,7 +118,7 @@
             <div class="col-sm-8">
                 <p class="profileData">{{authorizedUser?.email}}</p>
             </div>
-        </div>
+        </div> -->
       <!--   <div class="row">
             <div class="col-sm-4">
                 <p>{{ 'benefPortal.granAgreement.addressLabel' | translate }}</p>
@@ -141,21 +142,18 @@
             <div class="col-sm-8">
                 <p class="profileData">{{authorizedUser?.postalCode}}</p>
             </div>
-        </div> -->
-    </div>  
-    <!-- <div class="col-sm-8">
-        <div class="col-sm-12">
-            <br><br>
-            <select name="" id="">
-                <option *ngFor="let lang of languagesArray" [ngValue]="lang.code">
-                    {{lang.label}}
-                </option>
-            </select>
-            <button class="btn btn-primary whiteButton">{{ 'benefPortal.grantAgreement.languageButton' | translate}}</button>
-            <br><br>
         </div>
-    </div> -->
-    <br><br><br>
+    </div>   -->
+    <div class="col-sm-12">
+        <br><br>
+        <select name="" (change)="updateLanguage($event.target.value)" id="">
+            <option *ngFor="let lang of languagesArray" value="{{lang.code}}" [ngValue]="lang.code">
+                {{lang.label}}
+            </option>
+        </select>
+        <br><br>
+    </div>
+    <br>
     <div class="col-sm-12 whitePanel">
         <div class="row">
             <div class="col-sm-2">
@@ -164,18 +162,55 @@
             <div class="col-sm-8">
                 <p class="profileData">{{ 'benefPortal.grantAgreement.document' | translate}}</p>
                 <p class="smallCharacters">{{ 'benefPortal.grantAgreement.documentDownload' | translate}}</p>
-                <a class="smallCharacters" (click)="downladPDF()"><i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate}}</a>
+                <a class="smallCharacters" (click)="downladPDF()"><i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate}} {{language}}</a> 
             </div>   
         </div>
     </div>
     <div class="col-sm-12">
-        <p class="smallCharacters">{{ 'benefPortal.grantAgreement.downloadText' | translate}}</p>
-        <p class="smallCharacters"><input type="checkbox">{{ 'benefPortal.grantAgreement.confirmCheckbox' | translate}}</p>
+        <p class="smallCharacters">{{ 'shared.download.grantAgreementPDF' | translate}}</p>
+        <p class="smallCharacters"><input type="checkbox" (click)="enableButton()">{{ 'benefPortal.grantAgreement.confirmCheckbox' | translate}}</p>
         <br>
-        <button class="btn btn-primary smallCharacters" disabled>{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
+        <button class="btn btn-primary smallCharacters" (click)="openModal()" [disabled]="!enableButtonFront || inputGrantAgreement?.dateSignature">{{ 'benefPortal.myVoucher.datatable.signGrantAgreement' | translate}}</button>
     </div>
 
 </div>
-
+<p-dialog [(visible)]="displaySignAgreement" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <h1 class="beneficiaryMayorModal">{{'benefPortal.grantAgreement.sign.title' | translate }}</h1>
+    <p class="ModalpConfirmation">{{'benefPortal.grantAgreement.sign.description' | translate }}</p>
+    <p></p>
+    <div class="form-group row">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                {{ 'shared.cancel.button' | translate }}
+            </button>
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="submit" class="btn btn-primary publish-button" (click)="signGrantAgreement()"
+                    ><!-- [disabled]="" -->
+                {{ 'benefPortal.grantAgreement.sign.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</p-dialog>
+<p-dialog [(visible)]="showPermissionsModal" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalpConfirmation">{{'benefPortal.grantAgreement.permissionsWarning.description' | translate }}</p>
+    <p></p>
+    <div class="form-group row">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+        </div>
+        <div class="col-sm-6 col-lg-4" style="text-align: center !important">
+            <button type="submit" class="btn btn-primary publish-button" (click)="closeModal()"
+                    ><!-- [disabled]="" -->
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</p-dialog>
 
 <helpdesk-form-component portal="beneficiary-profile"></helpdesk-form-component>

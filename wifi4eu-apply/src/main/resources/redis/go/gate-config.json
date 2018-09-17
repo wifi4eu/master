@@ -1,0 +1,11 @@
+{
+
+	"dbUserName" : "taqof2g1aamcdvf",
+	"dbPassword" : "TFpKzD@8RkK1Be-/yV2D.QbC3lRzTL*H$EN",
+	"dbHost"     : "wifi4eu-dbserver.database.windows.net",
+	"dbPort"     : 1433,
+	"dbName"     : "wifi4eudb-prod_01_2018-05-28T08-30Z",
+
+	"haproxyUri"   : "127.0.0.1:8000",
+	"sentinelUris" : ["10.0.2.31:5000", "10.0.2.32:5000", "10.0.2.33:5000"]
+}

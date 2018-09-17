@@ -1,50 +1,74 @@
 package wifi4eu.wifi4eu.service.exportImport;
 
-import com.google.common.collect.Lists;
-import com.google.gson.*;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.*;
+
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import wifi4eu.wifi4eu.common.dto.model.ExportImportBeneficiaryInformationDTO;
+import wifi4eu.wifi4eu.common.dto.model.ExportImportBudgetaryCommitmentDTO;
+import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
+import wifi4eu.wifi4eu.common.dto.model.LauDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.helper.ParserCSV2JSON;
 import wifi4eu.wifi4eu.common.helper.ParserJSON2CSV;
-import wifi4eu.wifi4eu.common.dto.model.ExportImportBeneficiaryInformationDTO;
+import wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation;
+import wifi4eu.wifi4eu.entity.exportImport.ExportFile;
 import wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF;
-import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
-import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBeneficiaryInformationMapper;
-import wifi4eu.wifi4eu.repository.exportImport.ExportImportBeneficiaryInformationRepository;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBudgetaryCommitmentMapper;
+import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
+import wifi4eu.wifi4eu.repository.exportImport.BeneficiaryInformationRepository;
+import wifi4eu.wifi4eu.repository.exportImport.ExportImportBeneficiaryInformationRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportBudgetaryCommitmentRepository;
+import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ValidatedLefRepository;
+import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
 import wifi4eu.wifi4eu.service.exportImport.file.ReadFile;
+import wifi4eu.wifi4eu.service.location.LauService;
+import wifi4eu.wifi4eu.service.mayor.MayorService;
+import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.service.location.LauService;
-import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
-import wifi4eu.wifi4eu.service.mayor.MayorService;
-import wifi4eu.wifi4eu.entity.municipality.Municipality;
-import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
-import javax.servlet.http.HttpServletRequest;
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Date;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import wifi4eu.wifi4eu.util.DateUtils;
+import wifi4eu.wifi4eu.util.ExportFileUtils;
 
+/**
+ * @author jlopezri
+ *
+ */
 @Service
 public class ExportImportWifi4euAbacService {
 	@Autowired
@@ -64,6 +88,9 @@ public class ExportImportWifi4euAbacService {
 
 	@Autowired
 	ExportImportBudgetaryCommitmentRepository exportImportBudgetaryCommitmentRepository;
+
+	@Autowired
+	BeneficiaryInformationRepository beneficiaryInformationRepository;
 
 	@Autowired
 	ValidatedLefRepository validatedLefRepository;
@@ -87,26 +114,39 @@ public class ExportImportWifi4euAbacService {
 	RegistrationService registrationService;
 
 	@Autowired
+	ExportFileUtils exportFileUtilities;
+
+	@Autowired
+	DateUtils dateUtilities;
+
+	@Autowired
 	HttpServletRequest httpServletRequest;
+
+	private static final String FILENAME_EXPORT_DOCUMENTS_DATA = "portal_exportBeneficiaryDocuments.csv";
+
+	private static final String FILENAME_EXPORT_BENEFICIARIES_DATA = "portal_exportBeneficiaryInformation.csv";
+
+	private static final String DOC_TYPE_GRANT_AGREEMENT_SIGNATURE = "GRANT_AGREEMENT_SIGNATURE";
 
 	private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
 
 	@Transactional
-	public boolean importLegalEntityFBCValidate() throws Exception {
+	public boolean importLegalEntityFBCValidate() throws IOException {
 		_log.info("importLegalEntityFBCValidate");
 		JFileChooser fc = new JFileChooser();
 		fc.setAcceptAllFileFilterUsed(false);
-		
+
 		// WIFIFOREU-2498 JSON -> CSV
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files (*.csv)", "csv");
-		
+
 		fc.setFileFilter(filter);
 		int response = fc.showOpenDialog(null);
 		if (response == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			String content = new String(Files.readAllBytes(file.toPath()));
 
-			// WIFIFOREU-2498 JSON -> CSV - Process the CSV input file into the expected JSON format
+			// WIFIFOREU-2498 JSON -> CSV - Process the CSV input file into the expected
+			// JSON format
 			String jsonStringFile = ParserCSV2JSON.parseCSV2JSON(content, "validatedLEF");
 
 			JsonParser parser = new JsonParser();
@@ -148,80 +188,148 @@ public class ExportImportWifi4euAbacService {
 		return false;
 	}
 
-	public ByteArrayOutputStream exportBeneficiaryInformation() throws Exception {
+	public ByteArrayOutputStream exportBeneficiaryInformation() {
 		_log.info("exportBeneficiaryInformation");
+
+		List<ExportFile> exportFiles = new ArrayList<ExportFile>();
+
+		List<BeneficiaryInformation> applicationsBeneficiaryInformation = Lists
+				.newArrayList(beneficiaryInformationRepository.getBeneficiariesInformationSignedAndNotCounterSigned());
+
+		// Preparation for the Beneficiary CSV file
+		StringBuilder csvBeneficiaryData = new StringBuilder();
+		csvBeneficiaryData.append(exportFileUtilities.generateCSVHeaders(exportFileUtilities.csvMunicipalitiesHeaders))
+				.append("\r\n");
+
+		// Preparation for the Documents CSV file
+		StringBuilder csvDocumentData = new StringBuilder();
+		csvDocumentData.append(exportFileUtilities.generateCSVHeaders(exportFileUtilities.csvDocumentHeaders))
+				.append("\r\n");
+
+		if (applicationsBeneficiaryInformation != null && !applicationsBeneficiaryInformation.isEmpty()) {
+
+			for (BeneficiaryInformation beneficiaryInformation : applicationsBeneficiaryInformation) {
+				processBeneficiaryInformation(beneficiaryInformation, csvBeneficiaryData);
+				processDocumentInformation(beneficiaryInformation, csvDocumentData, exportFiles);
+			}
+		}
+
+		// Add the Beneficiary CSV file
+		ExportFile csvBeneficiariesFile = new ExportFile(FILENAME_EXPORT_BENEFICIARIES_DATA,
+				csvBeneficiaryData.toString().getBytes());
+		exportFiles.add(csvBeneficiariesFile);
+
+		// Add the Document CSV file
+		ExportFile csvDocumentsFile = new ExportFile(FILENAME_EXPORT_DOCUMENTS_DATA,
+				csvDocumentData.toString().getBytes());
+		exportFiles.add(csvDocumentsFile);
+
+		return exportFileUtilities.generateZipFileStream(exportFiles);
+
+	}
+
+	private void processBeneficiaryInformation(BeneficiaryInformation beneficiaryInformation,
+			StringBuilder csvBeneficiaryData) {
+		// Language code is stored as ISO 2 and should be ISO 3
+		String langCode = beneficiaryInformation.getMun_languageCodeISO();
+		if (langCode != null && !langCode.isEmpty()) {
+			Locale locale = new Locale(langCode);
+			beneficiaryInformation.setMun_languageCodeISO(locale.getISO3Language());
+		} else {
+			_log.warn("No language was specified for register: " + beneficiaryInformation.getMun_registrationNumber());
+		}
+
+		// Address include the address street and number, and must be between quotes to
+		// escape the comma ","
+		beneficiaryInformation.setMun_address(
+				ExportFileUtils.QUOTE + beneficiaryInformation.getMun_address() + ExportFileUtils.QUOTE);
+
+		csvBeneficiaryData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_name()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_address()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_postalCode()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_city()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_countryCodeISO()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_languageCodeISO()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getMun_registrationNumber());
+		csvBeneficiaryData.append("\r\n");
+	}
+
+	private void processDocumentInformation(BeneficiaryInformation beneficiaryInformation,
+			StringBuilder csvDocumentData, List<ExportFile> exportFiles) {
+		// Those values are not in database, hardcoded
+		String prefix = "doc" + beneficiaryInformation.getMun_id();
+		beneficiaryInformation.setDoc_name(prefix);
+		beneficiaryInformation.setDoc_type(DOC_TYPE_GRANT_AGREEMENT_SIGNATURE);
+
+		// Recover file from the URL
+		String docURL = beneficiaryInformation.getDoc_location();
+		if (docURL != null && !docURL.isEmpty()) {
+			URL urlObject = null;
+			try {
+				urlObject = new URL(docURL);
+			} catch (MalformedURLException e) {
+				_log.error("Error with the assigned URL: " + docURL, e);
+			}
+			if (urlObject != null) {
+				// Get file name
+				String urlPath = urlObject.getPath();
+				String fileName = urlPath.substring(urlPath.lastIndexOf('/') + 1);
+				beneficiaryInformation.setDoc_fileName(prefix + fileName);
+				// Get mimetype based on file name
+				String mimetype = URLConnection.guessContentTypeFromName(fileName);
+				beneficiaryInformation.setDoc_mimeType(mimetype);
+				try (InputStream in = urlObject.openStream()) {
+					// Get file bytes
+					byte[] docBytes = IOUtils.toByteArray(in);
+					// Add file to export
+					ExportFile doc = new ExportFile(beneficiaryInformation.getDoc_fileName(), docBytes);
+					exportFiles.add(doc);
+				} catch (IOException e) {
+					_log.error("Error recovering file contents from: " + docURL, e);
+				}
+			} else {
+				_log.warn("The URL for the document was not valid: " + docURL);
+			}
+		} else {
+			_log.warn("No document was specified for register: " + beneficiaryInformation.getMun_registrationNumber());
+		}
+
+		csvDocumentData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_portalId()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_name()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_fileName()).append(ExportFileUtils.SEPARATOR)
+				.append(beneficiaryInformation.getDoc_mimeType()).append(ExportFileUtils.SEPARATOR)
+				.append(dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date()))
+				.append(ExportFileUtils.SEPARATOR).append(beneficiaryInformation.getDoc_type());
+		csvDocumentData.append("\r\n");
+
+	}
+
+	/**
+	 * Generates a JSON with the municipalities to export.
+	 * 
+	 * @param applicationsBeneficiaryInformation
+	 * @return
+	 */
+	private JsonArray generateJsonWithMunicipalitiesToExport(
+			List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation) {
 		Gson gson = new GsonBuilder().create();
 		JsonParser parser = new JsonParser();
 		JsonObject rootElement = new JsonObject();
 		JsonArray result = new JsonArray();
 
-		List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation = exportImportBeneficiaryInformationMapper
-				.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findExportImportBI()));
+		JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
 
-		if (applicationsBeneficiaryInformation != null && !applicationsBeneficiaryInformation.isEmpty()) {
-			JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
-
-			for (ExportImportBeneficiaryInformationDTO application : applicationsBeneficiaryInformation) {
-				JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
-				applicationsBeneficiaryInformationJsonArray.add(applicationJson);
-			}
-
-			rootElement.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
+		for (ExportImportBeneficiaryInformationDTO application : applicationsBeneficiaryInformation) {
+			JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
+			applicationsBeneficiaryInformationJsonArray.add(applicationJson);
 		}
 
+		rootElement.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
 		result.add(rootElement);
 
-		String csvStringFile = ParserJSON2CSV.parseJSON2CSV(result.toString(), "beneficiaryInformation",
-				new String[] { "id", "mun_OfficialName", "mun_OfficialAddress", "org_Name", "org_TypeCode", "sup_Name",
-						"sup_BankAccount", "reg_RegistartionNumber" });
-
-		return generateZipFile("exportBeneficiaryInformation", csvStringFile, applicationsBeneficiaryInformation.size());
-	}
-
-	public ByteArrayOutputStream generateZipFile(String containedFileName, String csvString, int numberOfEntries) {
-
-		if (csvString == null || csvString.length() == 0) {
-			_log.error("Invalid parameters - generateZipFile");
-			return new ByteArrayOutputStream();
-		}
-
-		if (containedFileName == null || containedFileName.length() == 0) {
-			containedFileName = "document";
-		}
-
-		//-- Creating a zip
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try(ZipOutputStream zos = new ZipOutputStream(baos)) {
-			ZipEntry entry = new ZipEntry(containedFileName + ".csv"); //-- Not the name of the zip file but the name of the inserted files
-			zos.putNextEntry(entry);
-			zos.write(csvString.getBytes());
-			zos.closeEntry();
-
-			for (int i = 0; i < numberOfEntries; i++) {
-				//-- PDF i
-				Document document = new Document();
-				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-				PdfWriter.getInstance(document, outputStream);
-				document.open();
-				String docName = "PDF Document" + (i+1);
-				document.addTitle(docName);
-				document.addSubject(docName);
-				document.add(new Paragraph(docName));
-				document.close();
-
-				//-- Zip Entry
-				ZipEntry pdfEntry = new ZipEntry("file" + String.valueOf(i+1) + ".pdf");
-				zos.putNextEntry(pdfEntry);
-				zos.write(outputStream.toByteArray());
-				zos.closeEntry();
-			}
-		} catch (IOException ex) {
-			_log.error("Could not generate a zip file for exportZIP.csv");
-		} catch (DocumentException ex) {
-			_log.error("Could not generate PDF inside ZIP file");
-		}
-
-		return baos;
+		return result;
 	}
 
 	public void exportRegistrationData() throws Exception {
@@ -294,7 +402,8 @@ public class ExportImportWifi4euAbacService {
 		result.setSuccess(true);
 		result.setData("[" + resultJson.toString() + "]");
 
-		// WIFIFOREU-2498 JSON -> CSV - Process the JSON output file into the expected CSV
+		// WIFIFOREU-2498 JSON -> CSV - Process the JSON output file into the expected
+		// CSV
 		String csvStringFile = ParserJSON2CSV.parseJSON2CSV((String) result.getData(), "budgetaryCommitment",
 				new String[] { "id", "mun_OfficialName", "mun_OfficialAddress", "org_Name", "org_TypeCode", "sup_Name",
 						"sup_BankAccount", "reg_RegistartionNumber", "app_VoucherAwarded", "app_BcStatus",

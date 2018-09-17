@@ -16,6 +16,9 @@ public class LegalFileCorrectionReason {
     @JoinColumn(name = "registration")
     private Registration registration;
 
+    @Column(name = "id_legal_file")
+    private Integer legalFile;
+
     @Column(name = "type")
     private Integer type;
 
@@ -26,14 +29,15 @@ public class LegalFileCorrectionReason {
     private Integer correctionReason;
 
     @Column(name = "request_correction_date")
-    private Date requestCorrectionDate;
+    private Long requestCorrectionDate;
 
     public LegalFileCorrectionReason() {
     }
 
-    public LegalFileCorrectionReason(Integer id, Registration registration, Integer type, Boolean requestCorrection, Integer correctionReason, Date requestCorrectionDate) {
+    public LegalFileCorrectionReason(Integer id, Registration registration, Integer legalFile, Integer type, Boolean requestCorrection, Integer correctionReason, Long requestCorrectionDate) {
         this.id = id;
         this.registration = registration;
+        this.legalFile = legalFile;
         this.type = type;
         this.requestCorrection = requestCorrection;
         this.correctionReason = correctionReason;
@@ -80,11 +84,19 @@ public class LegalFileCorrectionReason {
         this.correctionReason = correctionReason;
     }
 
-    public Date getRequestCorrectionDate() {
+    public Long getRequestCorrectionDate() {
         return requestCorrectionDate;
     }
 
-    public void setRequestCorrectionDate(Date requestCorrectionDate) {
+    public void setRequestCorrectionDate(Long requestCorrectionDate) {
         this.requestCorrectionDate = requestCorrectionDate;
+    }
+
+    public Integer getLegalFile() {
+        return legalFile;
+    }
+
+    public void setLegalFile(Integer legalFile) {
+        this.legalFile = legalFile;
     }
 }

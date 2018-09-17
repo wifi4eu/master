@@ -3,8 +3,9 @@ import { Observable } from 'rxjs/Rx';
 import { Http } from '@angular/http';
 import { SharedService } from '../../shared.service';
 import { CallApi } from "../../swagger/api/CallApi";
+import { environment } from 'environments/environment';
 
-@Component({ selector: 'timer-component', templateUrl: 'timer.component.html' , styleUrls: ['timer.component.scss'], providers: [CallApi]})
+@Component({ selector: 'timer-component', templateUrl: 'timer.component.html', styleUrls: ['timer.component.scss'], providers: [CallApi] })
 export class TimerComponent {
     @Output() timerEvent = new EventEmitter<any>();
     private currentTimestamp: number;
@@ -13,8 +14,9 @@ export class TimerComponent {
     private hours: number;
     private minutes: number;
     private seconds: number;
-    @Input('baseURLApi') baseURLApi : string;
-    private timeGate: string = "/time";
+    @Input('baseURLApi') baseURLApi: string;
+    private timeGate: string = environment.applyVoucherUrl + "/time";
+    private queryParameter: string = "?time=" + new Date().getTime();
 
     constructor(private http: Http, private sharedService: SharedService, private callApi: CallApi) {
     }
@@ -25,7 +27,7 @@ export class TimerComponent {
 
         //every second we change the timer
         let subscription = Observable.interval(1000).map((x) => { }).subscribe((x) => {
-            this.currentTimestamp += 600;
+            this.currentTimestamp += 1000;
             this.toEpoch(this.expirationTimestamp - this.currentTimestamp);
             if (this.checkIfFinished(this.expirationTimestamp - this.currentTimestamp)) {
                 subscription.unsubscribe();
@@ -54,7 +56,7 @@ export class TimerComponent {
     }
 
     private getTime() {
-        let url = this.baseURLApi + this.timeGate;
+        let url = this.timeGate + this.queryParameter;
         this.http.get(url).subscribe(
             response => {
                 if (response.status == 200 && !isNaN(parseInt(response.text()))) {
@@ -71,7 +73,6 @@ export class TimerComponent {
                 this.currentTimestamp = date;
             }
         );*/
-
     }
 
     private handleTimeError() {

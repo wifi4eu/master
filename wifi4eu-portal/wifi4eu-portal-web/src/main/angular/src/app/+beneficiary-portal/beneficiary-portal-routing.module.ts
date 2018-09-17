@@ -9,9 +9,9 @@ import {InstallationDetailsComponent} from "./details-installation/installation-
 import {AccessPointListComponent} from "./access-point-list/access-point-list.component";
 import {AccessPointDetailsComponent} from "./access-point-details/access-point-details.component";
 import { BeneficiaryEditProfileComponent } from "./+profile/edit-profile/edit-profile.component";
-import { GrantAgreementComponent } from "./+grant-agreement/grant-agreement.component";
+import { MyHistoryComponent } from "./my-history/my-history.component";
+import { MyVoucherComponent } from "./+grant-agreement/grant-agreement.component";
 import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agreement/sign-grant-agreement.component";
-
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -46,14 +46,15 @@ import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agre
             path: 'profile/edit-profile',
             component: BeneficiaryEditProfileComponent
         }, {
-            path: 'my-voucher/grant-agreement',
-            component: GrantAgreementComponent,
+            path: 'my-history',
+            component: MyHistoryComponent
         }, {
-            path: 'my-voucher/grant-agreement/sign-grant-agreement',
+            path: 'my-voucher/grant-agreement',
+            component: MyVoucherComponent,
+        }, {
+            path: 'my-voucher/grant-agreement/sign-grant-agreement/:id',
             component: SignGrantAgreementComponent,
         }
-        
-        
     ])],
     exports: [RouterModule]
 })

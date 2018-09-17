@@ -23,8 +23,10 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
+import wifi4eu.wifi4eu.common.utils.SupplierValidator;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
@@ -230,6 +232,33 @@ public class SupplierResource {
             return null;
         }
         return supplierService.findSimilarSuppliers(supplierId);
+    }
+
+    @ApiOperation(value = "Get suppliers that have the same VAT and/or Account Number as the specific supplier paged")
+    @RequestMapping(value = "/similarSuppliers/paged/{supplierId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO findSimilarSuppliersPaged(@PathVariable("supplierId") final Integer supplierId,
+                                                 @RequestParam(value = "offset", defaultValue = "0") Integer offset,
+                                                 @RequestParam(value = "size", defaultValue = "20") Integer size ,
+                                                 HttpServletResponse response) throws IOException {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        if(Validator.isNull(offset)){
+            offset = 0;
+        }
+        if(Validator.isNull(size)){
+            size = 10;
+        }
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to find similar suppliers", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+        return supplierService.findSimilarSuppliersPaged(supplierId, offset,  size);
     }
 
     @ApiOperation(value = "Request legal documents")
