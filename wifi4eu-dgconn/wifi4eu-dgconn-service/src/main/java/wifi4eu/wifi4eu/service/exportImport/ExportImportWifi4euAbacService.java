@@ -28,7 +28,7 @@ import wifi4eu.wifi4eu.common.helper.ParserJSON2CSV;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation;
 import wifi4eu.wifi4eu.entity.exportImport.ExportFile;
-import wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF;
+import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBudgetaryCommitmentMapper;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
@@ -123,28 +123,35 @@ public class ExportImportWifi4euAbacService {
         _log.debug("importLegalEntityFBCValidate");
 
         try (InputStreamReader inputStreamReader = new InputStreamReader(fileDataStream)) {
-            CSVParser csvParser = CSVParser.parse(inputStreamReader, CSVFormat.EXCEL);
+
+            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
             csvParser.forEach(csvRecord -> {
-                ValidatedLEF validatedLEF = parseValidatedLEF(csvRecord);
+                ExportImportRegistrationData validatedLEF = parseValidatedLEF(csvRecord);
                 if (validatedLEF != null) {
-                    validatedLefRepository.save(validatedLEF);
+                    //todo: this is not going to work in case there is already one record
+                    exportImportRegistrationDataRepository.save(validatedLEF);
                 }
             });
         }
         return true;
     }
 
-    private ValidatedLEF parseValidatedLEF(CSVRecord csvRecord) {
-        // TODO: make it recognize headers and then use .get(:name).
-        String abacReference = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.getAirGapColumnIndex());
+    private ExportImportRegistrationData parseValidatedLEF(CSVRecord csvRecord) {
+        String abacReference = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE);
         if (StringUtils.isNotEmpty(abacReference)) {
-            String abacStatus = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_STATUS.getAirGapColumnIndex());
+            String municipalityId = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID);
+            String abacStatus = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_STATUS);
+            String abacLatinName = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME);
 
             _log.info("ABAC Reference from LEF reference [{}] and status [{}]", abacReference, abacStatus);
 
             try {
-                Long abacId = Long.parseLong(abacReference);
-                return new ValidatedLEF(abacId);
+                ExportImportRegistrationData municpalitiesAbac =  new ExportImportRegistrationData();
+                municpalitiesAbac.setMunicipality(Integer.parseInt(municipalityId));
+                municpalitiesAbac.setAbacReference(abacReference);
+                municpalitiesAbac.setAbacStandarName(abacLatinName);
+
+                return municpalitiesAbac;
             } catch (NumberFormatException e) {
                 _log.error("Error parsing the CSV", e);
             }
