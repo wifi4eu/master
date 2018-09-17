@@ -811,7 +811,9 @@
                 <eclipselink.logging.level>WARNING</eclipselink.logging.level>
                 <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
+                <!--
                 <ecas.config.base.url>${ecas.config.base.url}</ecas.config.base.url>
+                -->
                 <ecas.config.base.url.dgconn>${ecas.config.base.url}</ecas.config.base.url.dgconn>
                 <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
                 <ecas.server.dgconn.address>${server.azure.pro.dgconn.address}</ecas.server.dgconn.address>
