@@ -39,6 +39,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private css_class_municipalities: string[] = ['notValid'];
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private userEcas: UserDTOBase;
+    private isOk: boolean = false;
 
     constructor(private lauApi: LauApi, private localStorage: LocalStorageService, private sharedService: SharedService) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
@@ -73,6 +74,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     clearMunicipality(index) {
         if (typeof this.laus[index] == "string") {
             this.laus[index] = null;
+            this.css_class_municipalities[index] = 'notValid';
         }
     }
 
@@ -87,21 +89,28 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     }
 
     private checkMunicipalities(){
-        for (let i = 0; i < this.laus.length; i++) {
-            if (!this.laus[i] || !this.laus[i].id){
-                 this.buttonEnabledStep2 = false
-                break;
+        if (this.laus.length != this.municipalities.length){
+            this.buttonEnabledStep2 = false
+        }else{
+            for (let i = 0; i < this.laus.length; i++) {
+                if (!this.laus[i] || !this.laus[i].id){
+                     this.buttonEnabledStep2 = false
+                    break;
+                }
             }
-        }
+        }    
     } 
 
-
     private checkMunicipalitySelector(event, i : number){
-        if (event.id){
+        if (event.type == "input"){
             this.css_class_municipalities[i] = 'notValid';
+            this.isOk = false;
         }else{
             this.css_class_municipalities[i] = 'isValid';
+            this.isOk = true;
         }
+
+        this.checkButtonEnabled(event, i);
     }
 
     private checkEmailsMatch() {

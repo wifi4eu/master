@@ -30,9 +30,9 @@
                                 <p-autoComplete id="municipality" class="form-control {{css_class_municipalities[0]}}"
                                                 name="municipality" field="name1" [(ngModel)]="laus[0]"
                                                 [suggestions]="lauSuggestions" (completeMethod)="search($event)"
-                                                (onSelect)="checkMunicipalitiesSelected()"
-                                                (input)="checkMunicipalitiesSelected()"
-                                                (focusout)="clearMunicipality(0)" required></p-autoComplete>
+                                                (onSelect)="checkMunicipalitySelector(0)"
+                                                (input)="checkMunicipalitySelector($event, 0)"
+                                                (focusout)="clearMunicipality(0)" [required] = "isOk"></p-autoComplete>
                             </div>
                         </div>
                     </div>
@@ -143,10 +143,10 @@
                                                             [(ngModel)]="laus[i]"
                                                             [suggestions]="lauSuggestions"
                                                             (completeMethod)="search($event)"
-                                                            (onSelect)="checkMunicipalitySelector($event, i)"
+                                                            (onSelect)="checkMunicipalitySelector(i)"
                                                             (input)="checkMunicipalitySelector($event, i)"
                                                             (focusout)="clearMunicipality(i)"
-                                                            required></p-autoComplete>
+                                                            [required] = "isOk"></p-autoComplete>
                                         </div>
                                     </div>
                                 </div>
