@@ -116,7 +116,7 @@ public class SupplierResource {
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating contact details");
         try {
             SupplierDTO supplier = supplierService.getSupplierByUserId(userConnected.getId());
-            boolean access = false;
+            /*boolean access = false;
             for (UserDTO user : supplier.getUsers()) {
                 if (user.getId() == userConnected.getId()) {
                     access = true;
@@ -125,6 +125,14 @@ public class SupplierResource {
 
             }
             if (!access) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }*/
+            if(Validator.isNotNull(supplier)) {
+                if (supplierDTO.getId() != supplier.getId()) {
+                    throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+                }
+            }
+            else{
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             List<UserDTO> resSupplier = supplierService.updateContactDetails(supplierDTO);
