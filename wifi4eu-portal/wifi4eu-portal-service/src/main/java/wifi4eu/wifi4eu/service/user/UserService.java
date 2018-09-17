@@ -683,7 +683,7 @@ public class UserService {
         List<Integer> voucherAwarded = userRepository.getIfUserHasVouchersAwarded(userDTO.getId());
         if (Validator.isNotNull(voucherAwarded)) {
             for (int vouch : voucherAwarded) {
-                if (vouch == 1) {
+                if (vouch >= 1) {
                     return true;
                 }
             }

@@ -76,10 +76,10 @@
                 <p-column header="{{ 'shared.municipality.label' | translate }}" styleClass="text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <div class="beneficiarRegistrationCheck">
-                            <div class="align-self-center">
+                            <div class="align-self-center" style="margin-right: 6px;">
                                 <img alt="" class="municipality-icon" src="assets/images/account-balance-material-icons-regular.png">
                             </div>
-                            <div  class="align-self-center">
+                            <div  class="align-self-center" style="line-height: 24px;">
                                 <!-- <a (click)="goToDocuments(i)">{{municipality.name}}</a> -->
                                 <span>{{ municipality.name }}</span> 
                             </div>
