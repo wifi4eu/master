@@ -18,7 +18,7 @@ REDIS_2_CRED=client-acc-dev@202.3.2.12
 REDIS_3_CRED=client-acc-dev@202.3.2.13
 REDIS_LIST="$REDIS_1_CRED $REDIS_2_CRED $REDIS_3_CRED"
 
-PEM_REDIS_CERT_PATH=/Users/rgarcita/security/wifi4eu-dev/client-acc-dev.pem
-PEM_FO_CERT_PATH=/Users/rgarcita/security/wifi4eu-dev/client-acc-dev.pem
-PEM_BO_CERT_PATH=/Users/rgarcita/security/wifi4eu-dev/client-acc-dev.pem
-PEM_VARNISH_CERT_PATH=/Users/rgarcita/security/wifi4eu-dev/client-acc-dev.pem
+PEM_REDIS_CERT_PATH=/home/cliente/security/jenkins-pems/client-acc-dev.pem
+PEM_FO_CERT_PATH=/home/cliente/security/jenkins-pems/client-acc-dev.pem
+PEM_BO_CERT_PATH=/home/cliente/security/jenkins-pems/client-acc-dev.pem
+PEM_VARNISH_CERT_PATH=/home/cliente/security/jenkins-pems/client-acc-dev.pem
