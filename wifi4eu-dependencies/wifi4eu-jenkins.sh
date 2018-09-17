@@ -8,19 +8,19 @@ npm config set "//ecdevops.eu/repository/npm-all/:_authToken=828d555c-441f-3ee2-
 npm config set registry https://ecdevops.eu/repository/npm-all/
 echo "NPM install on angular folders"
 if [[ -z $2 || $2 = *"wifi4eu-portal"* ]]; then
-npm install --prefix ./wifi4eu-portal/wifi4eu-portal-web/src/main/angular/
+(cd ./wifi4eu-portal/wifi4eu-portal-web/src/main/angular/;npm install)
 fi
 if [[ -z $2 || $2 = *"wifi4eu-public-portal"* ]]; then
-npm install --prefix ./wifi4eu-public-portal/wifi4eu-public-portal-web/src/main/angular/
+(cd ./wifi4eu-public-portal/wifi4eu-public-portal-web/src/main/angular/;npm install)
 fi
 if [[ -z $2 || $2 = *"wifi4eu-dgconn"* ]]; then
-npm install --prefix ./wifi4eu-dgconn/wifi4eu-dgconn-web/src/main/angular/
+(cd ./wifi4eu-dgconn/wifi4eu-dgconn-web/src/main/angular/;npm install)
 fi
 if [[ -z $2 || $2 = *"wifi4eu-supplier"* ]]; then
-npm install --prefix ./wifi4eu-supplier/wifi4eu-supplier-web/src/main/angular/
+(cd ./wifi4eu-supplier/wifi4eu-supplier-web/src/main/angular/;npm install)
 fi
 if [[ -z $2 || $2 = *"wifi4eu-financial"* ]]; then
-npm install --prefix ./wifi4eu-financial/wifi4eu-financial-web/src/main/angular/
+(cd ./wifi4eu-financial/wifi4eu-financial-web/src/main/angular/;npm install)
 fi
 #echo "Install ecas-tomcat-8.0 dependency"
 /usr/local/lib/apache-maven/bin/mvn install:install-file -Dfile=wifi4eu-dependencies/ecas-tomcat-8.0-4.24.0-20180320.004350-3.jar  -DgroupId=eu.europa.ec.digit.iam.ecas.client -DartifactId=ecas-tomcat-8.0 -Dversion=4.24.0 -Dpackaging=jar
