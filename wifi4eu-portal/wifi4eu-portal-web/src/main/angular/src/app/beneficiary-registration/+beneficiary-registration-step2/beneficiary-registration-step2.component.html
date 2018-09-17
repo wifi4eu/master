@@ -32,7 +32,7 @@
                                                 [suggestions]="lauSuggestions" (completeMethod)="search($event)"
                                                 (onSelect)="checkMunicipalitySelector(0)"
                                                 (input)="checkMunicipalitySelector($event, 0)"
-                                                (focusout)="clearMunicipality(0)" [required] = "isOk"></p-autoComplete>
+                                                (focusout)="clearMunicipality(0)" [required] = "municipalityIsSelected[0]"></p-autoComplete>
                             </div>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                                                             (onSelect)="checkMunicipalitySelector(i)"
                                                             (input)="checkMunicipalitySelector($event, i)"
                                                             (focusout)="clearMunicipality(i)"
-                                                            [required] = "isOk"></p-autoComplete>
+                                                            [required] = "municipalityIsSelected[i]"></p-autoComplete>
                                         </div>
                                     </div>
                                 </div>

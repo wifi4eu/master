@@ -39,7 +39,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private css_class_municipalities: string[] = ['notValid'];
     private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
     private userEcas: UserDTOBase;
-    private isOk: boolean = false;
+    private municipalityIsSelected: boolean[] = [false];
 
     constructor(private lauApi: LauApi, private localStorage: LocalStorageService, private sharedService: SharedService) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
@@ -104,10 +104,10 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private checkMunicipalitySelector(event, i : number){
         if (event.type == "input"){
             this.css_class_municipalities[i] = 'notValid';
-            this.isOk = false;
+            this.municipalityIsSelected[i] = false;
         }else{
             this.css_class_municipalities[i] = 'isValid';
-            this.isOk = true;
+            this.municipalityIsSelected[i] = true;
         }
 
         this.checkButtonEnabled(event, i);
@@ -134,6 +134,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private addMunicipality() {
         if (this.multipleMunicipalities) {
             this.municipalities.push(new MunicipalityDTOBase());
+            this.municipalityIsSelected.push(false);
             //this.laus.push();
             this.mayors.push(new UserDTOBase());
             this.emailConfirmations.push('');
@@ -145,6 +146,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
 
     private removeMunicipality(index: number, deleteCount: number = 1) {
         this.municipalities.splice(index, deleteCount);
+        this.municipalityIsSelected.splice(index, deleteCount);
         this.laus.splice(index, deleteCount);
         this.mayors.splice(index, deleteCount);
         this.emailConfirmations.splice(index, deleteCount);
