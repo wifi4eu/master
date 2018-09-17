@@ -89,4 +89,11 @@
 		<p *ngIf='errorMessage !== undefined'>{{errorMessage}}</p>
 		<p>The file was not imported!</p>
 	</ux-message-box>
+	<ux-modal id="messagebox_upload_progress" titleLabel="Uploading file..." [isFooterVisible]="false" [isShowCloseButton]="false">
+	    <uxModalBody>
+	        <p class="ux-u-text-align-center">Your file is being uploaded.</p>
+	        <p class="ux-u-text-align-center ux-u-font-size-h1">{{uploadProgress}}% complete</p>
+	        <p class="ux-u-text-align-center">Please do not close this window.</p>
+	    </uxModalBody>
+	</ux-modal>
 </div>
