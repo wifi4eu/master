@@ -7,7 +7,7 @@ public enum LegalEntityDocumentCSVColumn {
 
 	MUNICIPALITY_PORTAL_ID("mun_id"),
 	DOCUMENT_PORTAL_ID("doc_portalId"),
-	DOCUMENT_NAME("doc_Name"),
+	DOCUMENT_NAME("doc_name"),
    	DOCUMENT_FILENAME("doc_fileName"),
 	DOCUMENT_MIMETYPE("doc_mimeType"),
 	DOCUMENT_DATE("doc_date"),
