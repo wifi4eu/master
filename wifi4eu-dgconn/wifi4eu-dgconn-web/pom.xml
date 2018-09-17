@@ -201,7 +201,7 @@
             </build>
             <properties>
                 <azure.blob.storage.key>${azure.blob.storage.key.dev}</azure.blob.storage.key>
-                <azure.blob.legal.files.key>${azure.blob.legal.files.key.dev}</azure.blob.legal.files.key>
+                <azure.blob.legal.files.key>${azure.blob.legal.files.key.local}</azure.blob.legal.files.key>
             </properties>
         </profile>
 
