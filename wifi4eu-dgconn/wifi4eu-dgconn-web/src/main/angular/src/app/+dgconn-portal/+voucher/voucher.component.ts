@@ -590,9 +590,4 @@ export class DgConnVoucherComponent {
     this.loadingFreezeList = false;
   }
 
- /*  private checkAllowedUser(){
-
-    this.showFreezeModal = false;
-  }
- */
 }
