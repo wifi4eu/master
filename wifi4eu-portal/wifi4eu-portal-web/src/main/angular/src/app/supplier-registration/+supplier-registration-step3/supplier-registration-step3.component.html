@@ -22,7 +22,7 @@
             <div class="form-group">
                 <label class="label floatLeft" for="contactName">{{ 'shared.name.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="contactName" name="contactName" maxlength="255"
-                       [(ngModel)]="supplier.contactName" #contactName="ngModel" required>
+                       [(ngModel)]="supplier.contactName" (ngModelChange)="checkButtonEnabled($event)" #contactName="ngModel" required>
                 <!--
                 <div class="alert alert-danger" [hidden]="contactName.valid || contactName.pristine">
                     {{'shared.name.required' | translate }}
@@ -40,6 +40,7 @@
                     }}</label>
                 <input class="form-control paddingInput" type="text" maxlength="255"
                        id="contactSurname" name="contactSurname" [(ngModel)]="supplier.contactSurname"
+                       (ngModelChange)="checkButtonEnabled($event)"
                        #contactSurname="ngModel" required>
                 <!--
                 <div class="alert alert-danger" [hidden]="contactSurname.valid || contactSurname.pristine">
