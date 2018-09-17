@@ -88,6 +88,22 @@ then
         sudo service varnish restart" </dev/null
     done
 
+elif [ $2 = "redis" ]
+then 
+    
+    echo "Redis restart"
+
+    # Redis restart
+
+    for REDIS_CRED in $REDIS_LIST
+    do
+        echo "SSH connection to Redis"
+        echo $REDIS_CRED
+        ssh -i $PEM_REDIS_CERT_PATH $REDIS_CRED "uname -a;
+        sudo ./wifi4eu-gate-restart.sh"
+    done
+
+
 else
     echo "No action to do"
 fi
