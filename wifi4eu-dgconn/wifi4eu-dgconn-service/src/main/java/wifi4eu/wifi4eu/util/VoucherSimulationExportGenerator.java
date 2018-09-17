@@ -13,7 +13,9 @@ import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class VoucherSimulationExportGenerator<T> {
@@ -23,6 +25,8 @@ public class VoucherSimulationExportGenerator<T> {
     private ArrayList<String> fieldNames;
     private ArrayList<String> displayedFieldNames;
     private T parent;
+
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     public VoucherSimulationExportGenerator(List<T> data, T parent, Class dataClass) {
         this.data = data;
@@ -103,6 +107,10 @@ public class VoucherSimulationExportGenerator<T> {
                                 break;
                         }
                         cell.setCellValue( value);
+                    } else if(fieldNames.get(i).equalsIgnoreCase("appdate")) {
+                        VoucherSimulationDTO voucherSimulationDTO = (VoucherSimulationDTO) obj;
+                        Date applicationDate = new Date(voucherSimulationDTO.getApplication().getDate());
+                        cell.setCellValue(dateFormat.format(applicationDate));
                     } else {
 
                         if (fieldNames.get(i).equalsIgnoreCase("registrationId")) {
@@ -154,6 +162,9 @@ public class VoucherSimulationExportGenerator<T> {
             displayedFieldNames.add("Status");
             fieldNames.add("numApplications");
             displayedFieldNames.add("Duplicated");
+            //-- New ones
+            fieldNames.add("appdate");
+            displayedFieldNames.add("Apply date");
 //            fieldNames.add("rejected");
 //            displayedFieldNames.add("Rejected");
             fieldNames.add("registration");
