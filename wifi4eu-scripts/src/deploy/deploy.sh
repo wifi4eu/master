@@ -1,21 +1,26 @@
 #!/bin/bash
-
 # command line parameter
+# get the script directory
+mydir="${0%/*}"
+
+# config load
+
+echo $mydir
 echo $1
 
 # select environment to get the configuration
 if [ $1 == "dev" ];
 then
 	echo "dev"
-    source config-dev.sh
+    source "$mydir"/config-dev.sh
 elif [ $1 == "acc" ];
 then
     echo "acc"
-    source config-acc.sh
+    source "$mydir"/config-acc.sh
 elif [ $1 == "acchf" ];
 then
     echo "acchf";
-    source config-acchf.sh
+    source "$mydir"/config-acchf.sh
 else
     echo "please, provide valid environment name"
 	exit 1
