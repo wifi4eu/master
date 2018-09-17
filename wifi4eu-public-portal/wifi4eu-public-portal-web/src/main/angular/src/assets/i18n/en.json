@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Your message",
   "shared.back.button": "Back",
   "discussionForum.title": "Discussion forum for multiple registrations ",
-  "discussionForum.description": "The system has detected that {{duplicateCount}} other representatives have also registered for {{municipality}} on the WiFi4EU portal. Use the discussion forum below to clarify this issue with the other registered users. If no agreement is reached on the valid registration, the WiFi4EU team may intervene.",
+  "discussionForum.description": "The system has detected that {{duplicateCount}} other representatives have also registered for {{municipality}} on the WiFi4EU portal. Use the discussion forum below to clarify this issue with the other registered users.",
   "discussionForum.beneficiary.registrations": "Registrations",
   "discussionForum.beneficiary.registration1": "Registration {{selfRegistration}} (you)",
   "shared.postal-code.label": "Postal code",
@@ -403,7 +403,7 @@
   "benefPortal.request.additionalInfo.instructions": "The system has detected that several representatives registered with your municipality as an eligible entity. The dedicated discussion area did not allow you to resolve this issue.<br><br>We therefore need to request the documentation detailed below.",
   "suppPortal.request.additionalInfo.provideDocs1": "Please provide the following documents for the legal representative mentioned above:",
   "suppPortal.request.additionalInfo.provideDocs2": "In addition, please provide the following documents for the LEAR mentioned above:",
-  "benefPortal.request.additionalInfo.doc1.label": "1) The complete Proof of Agreement form of the legal representative (mayor/head of municipality) <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\" target=\"_blank\"> </a>, INCLUDING a copy of his/her identity document (ID card/passport).",
+  "benefPortal.request.additionalInfo.doc1.label": "1) The complete <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\" target=\"_blank\">Proof of Agreement form</a>  of the legal representative (mayor/head of municipality), INCLUDING a copy of his/her identity document (ID card/passport).",
   "benefPortal.request.additionalInfo.doc2.label": "2) The copy of an act of nomination or document establishing that the legal representative (mayor/head of municipality) represents the municipality",
   "benefPortal.request.additionalInfo.doc3.label": "3) The <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624099\" target=\"_blank\">authorised person form</a>, signed by both the legal representative (mayor/head of municipality) and the person to be authorised.",
   "benefPortal.request.additionalInfo.doc4.label": "4) A copy of the authorised person’s identity document (ID card, passport)",
@@ -1025,5 +1025,6 @@
   "benefPortal.profile.addNewContact.empty": "Please, complete the email field to add a new contact",
   "discussionForum.discussionForum.discussion.growl": "The Commission does not provide a mediation service.",
   "supplierPortal.profile.addNewContact.empty": "Please, complete the email field to add a new contact",
-  "benefPortal.voucher.applied.callEnded": "Applied on {{date}} at {{hour}}"
+  "benefPortal.voucher.applied.callEnded": "Applied on {{date}} at {{hour}}",
+  "suppRegistration.uploadLogo.info": "Please upload your logo, ensuring that the files you upload are in a suitable file format (.png or .jpg)."
 }

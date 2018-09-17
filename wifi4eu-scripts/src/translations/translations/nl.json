@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Uw bericht",
   "shared.back.button": "Terug",
   "discussionForum.title": "Overlegforum voor meervoudige inschrijvingen ",
-  "discussionForum.description": "Uit onze gegevens blijkt dat zich nog {{duplicateCount}} anderen op het WiFi4EU-portaal hebben ingeschreven namens {{municipality}}. Gebruik onderstaand overlegforum om het met de andere inschrijvers eens te worden over de validatie van de inschrijving. Lukt dit niet, dan zal het WiFi4EU-team de knoop doorhakken.",
+  "discussionForum.description": "Uit onze gegevens blijkt dat zich nog {{duplicateCount}} anderen op het WiFi4EU-portaal hebben ingeschreven namens {{municipality}}. Gebruik onderstaand overlegforum om het met de andere inschrijvers eens te worden over de validatie van de inschrijving. ",
   "discussionForum.beneficiary.registrations": "Inschrijvingen",
   "discussionForum.beneficiary.registration1": "Inschrijving {{selfRegistration}} (uw inschrijving)",
   "shared.postal-code.label": "Postcode",
