@@ -33,7 +33,15 @@ import java.util.Properties;
 @Service
 public class NotificationService {
 
-    private final Logger log = LoggerFactory.getLogger(NotificationService.class);
+	private static final String LEF_FINISHED_BATCH_EMAIL_SUBJECT = "[WIFI4EU] %s LEFs finished processing for BatchRef %s";
+	private static final String BC_FINISHED_BATCH_EMAIL_SUBJECT = "[WIFI4EU] %s BCs finished processing for BatchRef %s";
+	private static final String LC_FINISHED_BATCH_EMAIL_SUBJECT = "[WIFI4EU] %s LCs finished processing for BatchRef %s";
+
+	private static final String LEF_MAIL_TEMPLATE = "templates/LEF_MAIL_REPORT_TEMPLATE.html";
+	private static final String BC_MAIL_TEMPLATE = "templates/BC_MAIL_REPORT_TEMPLATE.html";
+	private static final String LC_MAIL_TEMPLATE = "templates/LC_MAIL_REPORT_TEMPLATE.html";
+
+	private final Logger log = LoggerFactory.getLogger(NotificationService.class);
 
     @Value("${notifications.default.recipients}")
     private String defaultRecipients;
@@ -70,70 +78,93 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
+	@Transactional
+	public void notifyBatchProcessFinished(){
+		List<Notification> notificationsPending = notificationRepository.findAllByNotificationStatusEquals(NotificationStatus.PENDING);
 
-    @Transactional
-    public void notifyLegalEntityProcessFinished(){
-        List<Notification> notificationsPending = notificationRepository.findAllByNotificationStatusEqualsAndNotificationTypeEquals(NotificationStatus.PENDING, NotificationType.LEF_CREATION);
+		for(Notification notification:notificationsPending){
 
-        for(Notification notification:notificationsPending){
-            if(legalEntityService.isBatchProcessed(notification.getBatchRef())){
-                log.info("LEF BATCH Processing finished for BatchRef {}", notification.getBatchRef());
-                //send email
-                sendEmailNotification(defaultRecipients, "LEF BATCH Processing finished for BatchRef <" + notification.getBatchRef() + ">", buildLegalEntityNotificationFinishedMessage(notification.getBatchRef()));
+			Boolean batchIsFinished = Boolean.FALSE;
+			switch (notification.getNotificationType()) {
+				case LEF_CREATION:
+					batchIsFinished = notifyLegalEntityProcessFinished(notification.getBatchRef());
+					break;
+				case BC_CREATION:
+					batchIsFinished = notifyBudgetaryCommitmentProcessFinished(notification.getBatchRef());
+					break;
+				case LC_CREATION:
+					batchIsFinished = notifyLegalCommitmentProcessFinished(notification.getBatchRef());
+					break;
+			}
+			if(batchIsFinished) {
+				//update notification status
+				notification.setNotificationStatus(NotificationStatus.SENT);
+				notificationRepository.save(notification);
+			}
+		}
+	}
 
-                //update notification status
-                notification.setNotificationStatus(NotificationStatus.SENT);
-                notificationRepository.save(notification);
-            }
-        }
+	private Boolean notifyLegalEntityProcessFinished(String batchRef){
+    	Boolean batchIsFinished = legalEntityService.isBatchProcessed(batchRef);
+		if(batchIsFinished){
+			List<LegalEntity> legalEntities = legalEntityService.getAllByBatchRef(batchRef);
 
+			Integer legalEntitiesCount = legalEntities.size();
+			Long legalEntitiesValidCount = legalEntities.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)).count();
+			Long legalEntitiesRejectedCount = legalEntities.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_REJECTED)).count();
+			Long legalEntitiesErrorCount = legalEntities.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_ERROR)).count();
+
+			if (legalEntitiesCount > 0) {
+				String subject = String.format(LEF_FINISHED_BATCH_EMAIL_SUBJECT, legalEntitiesCount, batchRef);
+				String message = buildNotificationFinishedMessage(BC_MAIL_TEMPLATE, batchRef, legalEntitiesCount, legalEntitiesValidCount, legalEntitiesRejectedCount, legalEntitiesErrorCount);
+				sendEmailNotification(defaultRecipients, subject, message);
+				log.info(subject);
+			}
+		}
+		return batchIsFinished;
     }
 
-    @Transactional
-    public void notifyBudgetaryCommitmentProcessFinished(){
-        List<Notification> notificationsPending = notificationRepository.findAllByNotificationStatusEqualsAndNotificationTypeEquals(NotificationStatus.PENDING, NotificationType.BC_CREATION);
+	private Boolean notifyBudgetaryCommitmentProcessFinished(String batchRef){
+		Boolean batchIsFinished = budgetaryCommitmentService.isBatchProcessed(batchRef);
+		if(batchIsFinished) {
+			List<BudgetaryCommitment> budgetaryCommitments = budgetaryCommitmentService.getAllByBatchRef(batchRef);
 
-        for(Notification notification:notificationsPending){
-            if(budgetaryCommitmentService.isBatchProcessed(notification.getBatchRef())){
-                log.info("BC BATCH Processing finished for BatchRef {}", notification.getBatchRef());
-                //send email
-                sendEmailNotification(defaultRecipients, "BC BATCH Processing finished for BatchRef <" + notification.getBatchRef() + ">", buildBudgetaryCommitmentNotificationFinishedMessage(notification.getBatchRef()));
+			Integer entitiesCount = budgetaryCommitments.size();
+			Long entitiesValidCount = budgetaryCommitments.stream().filter(bc -> bc.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)).count();
+			Long entitiesRejectedCount = budgetaryCommitments.stream().filter(bc -> bc.getWfStatus().equals(AbacWorkflowStatus.ABAC_REJECTED)).count();
+			Long entitiesErrorCount = budgetaryCommitments.stream().filter(bc -> bc.getWfStatus().equals(AbacWorkflowStatus.ABAC_ERROR)).count();
 
-                //update notification status
-                notification.setNotificationStatus(NotificationStatus.SENT);
-                notificationRepository.save(notification);
-            }
+			if (entitiesCount > 0) {
+				String subject = String.format(BC_FINISHED_BATCH_EMAIL_SUBJECT, entitiesCount, batchRef);
+				String message = buildNotificationFinishedMessage(BC_MAIL_TEMPLATE, batchRef, entitiesCount, entitiesValidCount, entitiesRejectedCount, entitiesErrorCount);
+				sendEmailNotification(defaultRecipients, subject, message);
+				log.info(subject);
+			}
         }
-
+		return batchIsFinished;
     }
 
+    private Boolean notifyLegalCommitmentProcessFinished(String batchRef){
+		Boolean batchIsFinished = legalCommitmentService.isBatchProcessed(batchRef);
+		if(batchIsFinished) {
+			List<LegalCommitment> legalCommitments = legalCommitmentService.getAllByBatchRef(batchRef);
 
-    @Transactional
-    public void notifyLegalCommitmentProcessFinished(){
-        List<Notification> notificationsPending = notificationRepository.findAllByNotificationStatusEqualsAndNotificationTypeEquals(NotificationStatus.PENDING, NotificationType.LC_CREATION);
+			Integer entitiesCount = legalCommitments.size();
+			Long entitiesValidCount = legalCommitments.stream().filter(lc -> lc.getWfStatus().equals(LegalCommitmentWorkflowStatus.ABAC_VALID)).count();
+			Long entitiesRejectedCount = legalCommitments.stream().filter(lc -> lc.getWfStatus().equals(LegalCommitmentWorkflowStatus.ABAC_REJECTED)).count();
+			Long entitiesErrorCount = legalCommitments.stream().filter(lc -> lc.getWfStatus().equals(LegalCommitmentWorkflowStatus.ABAC_ERROR)).count();
 
-        for(Notification notification:notificationsPending){
-            if(legalCommitmentService.isBatchProcessed(notification.getBatchRef())){
-                log.info("LC BATCH Processing finished for BatchRef {}", notification.getBatchRef());
-                //send email
-                sendEmailNotification(defaultRecipients, "LC BATCH Processing finished for BatchRef <" + notification.getBatchRef() + ">", buildLegalCommitmentNotificationFinishedMessage(notification.getBatchRef()));
-
-                //update notification status
-                notification.setNotificationStatus(NotificationStatus.SENT);
-                notificationRepository.save(notification);
-            }
-        }
-
+			if (entitiesCount > 0) {
+				String subject = String.format(LC_FINISHED_BATCH_EMAIL_SUBJECT, entitiesCount, batchRef);
+				String message = buildNotificationFinishedMessage(LC_MAIL_TEMPLATE, batchRef, entitiesCount, entitiesValidCount, entitiesRejectedCount, entitiesErrorCount);
+				sendEmailNotification(defaultRecipients, subject, message);
+				log.info(subject);
+			}
+		}
+		return batchIsFinished;
     }
 
-    private String buildLegalEntityNotificationFinishedMessage(String batchRef){
-        List<LegalEntity> legalEntities = legalEntityService.getAllByBatchRef(batchRef);
-
-        Integer legalEntitiesCount = legalEntities.size();
-        Long legalEntitiesValidCount = legalEntities.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)).count();
-        Long legalEntitiesRejectedCount = legalEntities.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_REJECTED)).count();
-        Long legalEntitiesErrorCount = legalEntities.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_ERROR)).count();
-
+    private String buildNotificationFinishedMessage(String templateName, String batchRef, Integer legalEntitiesCount, Long legalEntitiesValidCount, Long legalEntitiesRejectedCount, Long legalEntitiesErrorCount){
         VelocityContext velocityContext = new VelocityContext();
         velocityContext.put("monitoringTableURL", monitoringTableUrl);
         velocityContext.put("entitiesCount", legalEntitiesCount);
@@ -143,55 +174,10 @@ public class NotificationService {
         velocityContext.put("reportDate", Calendar.getInstance().getTime().toString());
 
         StringWriter stringWriter = new StringWriter();
-        velocityEngine.mergeTemplate("templates/LEF_MAIL_REPORT_TEMPLATE.html", "UTF-8", velocityContext, stringWriter);
+        velocityEngine.mergeTemplate(templateName, "UTF-8", velocityContext, stringWriter);
 
         return stringWriter.toString();
     }
-
-    private String buildBudgetaryCommitmentNotificationFinishedMessage(String batchRef){
-        List<BudgetaryCommitment> budgetaryCommitments = budgetaryCommitmentService.getAllByBatchRef(batchRef);
-
-        Integer entitiesCount = budgetaryCommitments.size();
-        Long entitiesValidCount = budgetaryCommitments.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_VALID)).count();
-        Long entitiesRejectedCount = budgetaryCommitments.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_REJECTED)).count();
-        Long entitiesErrorCount = budgetaryCommitments.stream().filter(le -> le.getWfStatus().equals(AbacWorkflowStatus.ABAC_ERROR)).count();
-
-        VelocityContext velocityContext = new VelocityContext();
-        velocityContext.put("monitoringTableURL", monitoringTableUrl);
-        velocityContext.put("entitiesCount", entitiesCount);
-        velocityContext.put("entitiesValidCount", entitiesValidCount);
-        velocityContext.put("entitiesRejectedCount", entitiesRejectedCount);
-        velocityContext.put("entitiesErrorCount", entitiesErrorCount);
-        velocityContext.put("reportDate", Calendar.getInstance().getTime().toString());
-
-        StringWriter stringWriter = new StringWriter();
-        velocityEngine.mergeTemplate("templates/BC_MAIL_REPORT_TEMPLATE.html", "UTF-8", velocityContext, stringWriter);
-
-        return stringWriter.toString();
-    }
-
-    private String buildLegalCommitmentNotificationFinishedMessage(String batchRef){
-        List<LegalCommitment> legalCommitments = legalCommitmentService.getAllByBatchRef(batchRef);
-
-        Integer entitiesCount = legalCommitments.size();
-        Long entitiesValidCount = legalCommitments.stream().filter(le -> le.getWfStatus().equals(LegalCommitmentWorkflowStatus.ABAC_VALID)).count();
-        Long entitiesRejectedCount = legalCommitments.stream().filter(le -> le.getWfStatus().equals(LegalCommitmentWorkflowStatus.ABAC_REJECTED)).count();
-        Long entitiesErrorCount = legalCommitments.stream().filter(le -> le.getWfStatus().equals(LegalCommitmentWorkflowStatus.ABAC_ERROR)).count();
-
-        VelocityContext velocityContext = new VelocityContext();
-        velocityContext.put("monitoringTableURL", monitoringTableUrl);
-        velocityContext.put("entitiesCount", entitiesCount);
-        velocityContext.put("entitiesValidCount", entitiesValidCount);
-        velocityContext.put("entitiesRejectedCount", entitiesRejectedCount);
-        velocityContext.put("entitiesErrorCount", entitiesErrorCount);
-        velocityContext.put("reportDate", Calendar.getInstance().getTime().toString());
-
-        StringWriter stringWriter = new StringWriter();
-        velocityEngine.mergeTemplate("templates/LC_MAIL_REPORT_TEMPLATE.html", "UTF-8", velocityContext, stringWriter);
-
-        return stringWriter.toString();
-    }
-
 
     private void sendEmailNotification(String recipients, String subject, String body){
         Properties props = new Properties();
@@ -202,8 +188,7 @@ public class NotificationService {
             msg.setFrom(new InternetAddress(defaultSender));
 
             for(String recipient: recipients.split(",")) {
-                msg.addRecipient(Message.RecipientType.TO,
-                        new InternetAddress(recipient));
+                msg.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
             }
             msg.setSubject(subject);
             msg.setText(body,"utf-8", "html");

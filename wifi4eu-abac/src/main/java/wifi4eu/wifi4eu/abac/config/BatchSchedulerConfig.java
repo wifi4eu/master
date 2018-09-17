@@ -81,9 +81,7 @@ public class BatchSchedulerConfig {
 
     @Scheduled(cron = "${notifications.batch.crontable}")
     public void sendNotifications() {
-        notificationService.notifyLegalEntityProcessFinished();
-        notificationService.notifyBudgetaryCommitmentProcessFinished();
-        notificationService.notifyLegalCommitmentProcessFinished();
+        notificationService.notifyBatchProcessFinished();
     }
 
     @Scheduled(cron = "${batch.documents.ares.upload}")
