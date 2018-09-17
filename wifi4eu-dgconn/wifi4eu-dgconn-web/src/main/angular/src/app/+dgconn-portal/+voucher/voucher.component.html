@@ -277,7 +277,7 @@
               </div>
               <div class="row">
                 <div class="col-md-3 offset-md-2">
-                  <button type="button" class="btn btn-primary preSelection-button" [disabled]="callVoucherAssignment == null || callVoucherAssignment?.hasPreListSaved || !preSelectedEnabledButton"
+                  <button type="button" class="btn btn-primary preSelection-button text-adjust" [disabled]="callVoucherAssignment == null || callVoucherAssignment?.hasPreListSaved || !preSelectedEnabledButton"
                     (click)="checkPreListEnabled()">
                     <i class="fa fa-spinner fa-spin" *ngIf="loadingPreList"></i>
                     {{'dgConn.voucherAssignment.preSelectionSave.button' | translate}}
@@ -285,7 +285,7 @@
                   <span class="dates-voucher-assignment" *ngIf="callVoucherAssignment?.hasPreListSaved" [innerHTML]="'dgConn.voucherAssignment.preList.date' | translate:{date:dateNumberPreList,hour:hourNumberPreList}"></span>
                 </div>
                 <div class="col-md-3">
-                  <button type="button" class="btn btn-primary freezeList-button" [disabled]="!callVoucherAssignment?.hasPreListSaved || callVoucherAssignment?.hasFreezeListSaved || !freezeButtonEnabled"
+                  <button type="button" class="btn btn-primary freezeList-button text-adjust" [disabled]="!callVoucherAssignment?.hasPreListSaved || callVoucherAssignment?.hasFreezeListSaved || !freezeButtonEnabled"
                     (click)="freezeList()" disabled>
                     <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i>
                     {{'dgConn.voucherAssignment.freezeList.button' | translate}}
@@ -293,7 +293,7 @@
                   <span class="dates-voucher-assignment" *ngIf="callVoucherAssignment?.hasFreezeListSaved && dateNumberFreeze" [innerHTML]="'dgConn.voucherAssignment.freezeList.date' | translate:{date:dateNumberFreeze,hour:hourNumberFreeze}"></span>
                 </div>
                 <div class="col-md-4">
-                  <button type="button" class="btn btn-primary sendNotification-button" (click)="sendNotificationToApplicants()" [disabled]="!callVoucherAssignment?.hasFreezeListSaved || !hasCallEnded || pressedNotificationButton || callVoucherAssignment?.notifiedDate">
+                  <button type="button" class="btn btn-primary sendNotification-button text-adjust" (click)="sendNotificationToApplicants()" [disabled]="!callVoucherAssignment?.hasFreezeListSaved || !hasCallEnded || pressedNotificationButton || callVoucherAssignment?.notifiedDate">
                     {{'dgConn.voucherAssignment.sendNotification.button' | translate}}
                   </button>
                   <span class="dates-voucher-assignment" *ngIf="startSendingNotifications.startSendingDate && !callVoucherAssignment.notifiedDate">{{ 'dgConn.voucherAssignment.sendingNotifications.process.startDate' | translate:{date: startSendingNotifications?.startSendingDate,time: startSendingNotifications?.startSendingHour} }}</span>
