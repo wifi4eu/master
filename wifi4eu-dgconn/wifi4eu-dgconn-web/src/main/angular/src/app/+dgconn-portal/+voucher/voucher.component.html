@@ -286,14 +286,13 @@
                 </div>
                 <div class="col-md-3">
                   <button type="button" class="btn btn-primary freezeList-button" [disabled]="!callVoucherAssignment?.hasPreListSaved || callVoucherAssignment?.hasFreezeListSaved || !freezeButtonEnabled"
-                    (click)="freezeList()" disabled>
-                    <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i>
+                    (click)="showFreezePopUp()" disabled>
                     {{'dgConn.voucherAssignment.freezeList.button' | translate}}
                   </button>
                   <span class="dates-voucher-assignment" *ngIf="callVoucherAssignment?.hasFreezeListSaved && dateNumberFreeze" [innerHTML]="'dgConn.voucherAssignment.freezeList.date' | translate:{date:dateNumberFreeze,hour:hourNumberFreeze}"></span>
                 </div>
                 <div class="col-md-4">
-                  <button type="button" class="btn btn-primary sendNotification-button" (click)="sendNotificationToApplicants()" [disabled]="!callVoucherAssignment?.hasFreezeListSaved || !hasCallEnded || pressedNotificationButton || callVoucherAssignment?.notifiedDate">
+                  <button type="button" class="btn btn-primary sendNotification-button" (click)="showNotificationPopUp()" [disabled]="!callVoucherAssignment?.hasFreezeListSaved || !hasCallEnded || pressedNotificationButton || callVoucherAssignment?.notifiedDate">
                     {{'dgConn.voucherAssignment.sendNotification.button' | translate}}
                   </button>
                   <span class="dates-voucher-assignment" *ngIf="startSendingNotifications.startSendingDate && !callVoucherAssignment.notifiedDate">{{ 'dgConn.voucherAssignment.sendingNotifications.process.startDate' | translate:{date: startSendingNotifications?.startSendingDate,time: startSendingNotifications?.startSendingHour} }}</span>
@@ -387,6 +386,27 @@
     </div>
   </div>
 </p-dialog>
+
+<p-dialog [(visible)]="showFreezeModal" [modal]="true" [responsive]="true" [resizable]="false"
+  [draggable]="false" [closable]="false" [closeOnEscape]="false">
+  <div class="row center">
+    <div class="col-sm-12 marginStep1">
+      <input type="password"  [(ngModel)]="psswdFreeze"  class="searchInput" >
+      <button class="btn btn-primary publish-button" (click)="saveFreezeList()" [disabled]="!confirmFreezeBtn || psswdFreeze == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog [(visible)]="showNotificationModal" [modal]="true" [responsive]="true" [resizable]="false"
+  [draggable]="false" [closable]="false" [closeOnEscape]="false">
+  <div class="row center">
+    <div class="col-sm-12 marginStep1">
+      <input type="password"  [(ngModel)]="psswdNotification"  class="searchInput" >
+      <button class="btn btn-primary publish-button" (click)="sendNotificationToApplicants()" [disabled]="!confirmFreezeBtn || psswdNotification == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>
+
 
 <style>
   .duplicate-warn {
