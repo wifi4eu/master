@@ -78,7 +78,7 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 							LegalEntityDocumentCSVColumn.DOCUMENT_TYPE.toString(),
 							LegalEntityDocumentCSVColumn.ARES_REFERENCE.toString(),
 							LegalEntityDocumentCSVColumn.DATE_EXPORTED.toString(),
-							LegalCommitmentCSVColumn.USER_EXPORTED.toString()
+							LegalEntityDocumentCSVColumn.USER_EXPORTED.toString()
 					));
 
 			for (Document document : documents) {
