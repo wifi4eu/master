@@ -19,9 +19,13 @@ export class HomeComponent{
     importLegalEntity(event){
         this.errorMessage = undefined;
         if (event && event.target && event.target.files && event.target.files.length === 1) {
+            this.showProgress();
             let file: File = event.target.files['0'];
             this.api.importLegalEntity(file).subscribe(
                 uploadEvent => {
+                  
+                    console.log(uploadEvent.type);
+                  
                     if (uploadEvent.type === HttpEventType.UploadProgress) {
                         this.uploadProgress = Math.round(100 * uploadEvent.loaded / uploadEvent.total);
                     } else if (uploadEvent instanceof HttpResponse) {
@@ -29,6 +33,7 @@ export class HomeComponent{
                     }
                 },
                 (err) => {
+                    this.hideProgress();
                     this.showError(undefined);
                 }
             );
@@ -39,6 +44,7 @@ export class HomeComponent{
     importBudgetaryCommitment(event){
         this.errorMessage = undefined;
         if (event && event.target && event.target.files && event.target.files.length === 1) {
+            this.showProgress();
             let file: File = event.target.files['0'];
             this.api.importBudgetaryCommitment(file).subscribe(
                 uploadEvent => {
@@ -49,6 +55,7 @@ export class HomeComponent{
                     }
                 },
                 (err) => {
+                    this.hideProgress();
                     this.showError(undefined);
                 }
             );
@@ -59,6 +66,7 @@ export class HomeComponent{
     importLegalCommitment(event){
         this.errorMessage = undefined;
         if (event && event.target && event.target.files && event.target.files.length === 1) {
+            this.showProgress();          
             let file: File = event.target.files['0'];
             this.api.importLegalCommitment(file).subscribe(
                 uploadEvent => {
@@ -69,6 +77,7 @@ export class HomeComponent{
                     }
                 },
                 (err) => {
+                    this.hideProgress();
                     this.showError(undefined);
                 }
             );
@@ -81,6 +90,7 @@ export class HomeComponent{
   
     handleResponse(response: ResponseDTO){
         this.errorMessage = undefined;
+        this.hideProgress();
         if (response.success) {
             this.showSuccess();
         } else {
@@ -101,6 +111,15 @@ export class HomeComponent{
         let element: HTMLElement = document.getElementById('abac-upload-' + fieldClass);
         element.setAttribute('value', null);
         element.click();
+    }
+  
+    showProgress(){
+        this.uploadProgress = 0;
+        this.uxService.openMessageBox('messagebox_upload_progress');
+    }
+  
+    hideProgress(){
+        this.uxService.closeMessageBox('messagebox_upload_progress');
     }
   
     todo(event){
