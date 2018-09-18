@@ -743,4 +743,17 @@ public class UserService {
         userRepository.save(contactToDeactivate);
     }
 
+    /*
+     *   MAIN USERS can edit themselves and contacts
+     *   CONTACT USERS only can edit themselves
+     */
+    public boolean userIsAuthorisedToMakeThisChanges(List<UserContactDetails> usersList, UserDTO user){
+        List<RegistrationUsers> registrationUsersList = registrationUsersRepository.findByContactEmail(user.getEcasEmail());
+        if (registrationUsersList.isEmpty()) return false;
+
+        RegistrationUsers ru = registrationUsersList.get(0);
+        if (ru.getMain() == 1) return true;
+
+        return usersList.size() == 1 && user.getEcasEmail().equals(usersList.get(0).getEmail());
+    }
 }
