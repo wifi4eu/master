@@ -92,7 +92,8 @@
 	<ux-modal id="messagebox_upload_progress" titleLabel="Uploading file..." [isFooterVisible]="false" [isShowCloseButton]="false">
 	    <uxModalBody>
 	        <p class="ux-u-text-align-center">Your file is being uploaded.</p>
-	        <p class="ux-u-text-align-center ux-u-font-size-h1">{{uploadProgress}}% complete</p>
+	        <p *ngIf='uploadProgress < 100' class="ux-u-text-align-center ux-u-font-size-h1">{{uploadProgress}}% complete</p>
+	        <p *ngIf='uploadProgress == 100' class="ux-u-text-align-center ux-u-font-size-h1">File uploaded! Processing...</p>
 	        <p class="ux-u-text-align-center">Please do not close this window.</p>
 	    </uxModalBody>
 	</ux-modal>

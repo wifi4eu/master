@@ -5,7 +5,11 @@
 	xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app">
 
 	<context-root>/wifi4eu</context-root>
-
+	
+	<session-descriptor>
+    	<timeout-secs>3600</timeout-secs>
+ 	</session-descriptor>
+	
 	<container-descriptor>
 		<prefer-application-packages>
 			<package-name>org.apache.logging.*</package-name>
@@ -22,7 +26,7 @@
 			<package-name>org.apache.xerces.*</package-name>
 			<package-name>com.thoughtworks.xstream.*</package-name>
 		</prefer-application-packages>
-
 		<allow-all-roles>true</allow-all-roles>
 	</container-descriptor>
+	
 </weblogic-web-app>
