@@ -373,6 +373,21 @@
   </div>
 </p-dialog>
 
+<p-dialog [(visible)]="displayAlreadyLaunched" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+  [closable]="false" [closeOnEscape]="false">
+  <span class="center paddingStats col-sm-12" *ngIf="startSendingNotifications.startSendingDate && !dateNumberNotified">{{
+    'dgConn.voucherAssignment.sendingNotifications.process.startDate' | translate:{date: startSendingNotifications?.startSendingDate,time:
+    startSendingNotifications?.startSendingHour} }}</span>
+  <span class="center paddingStats col-sm-12" *ngIf="dateNumberNotified && !startSendingNotifications.startSendingDate">{{
+    'dgConn.voucherAssignment.sendNotifications.date' | translate:{date:dateNumberNotified,hour:hourNumberNotified} }}</span>
+  <div class="row center col-sm-12">
+    <div class="marginStep1">
+      <button (click)="displayAlreadyLaunched = false" class="btn btn-primary cancel-button">{{ 'shared.confirm.button' |
+        translate }}</button>
+    </div>
+  </div>
+</p-dialog>
+
 <style>
   .duplicate-warn {
     background: #ff4545;
