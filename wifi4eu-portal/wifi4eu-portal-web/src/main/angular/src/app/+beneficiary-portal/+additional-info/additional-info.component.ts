@@ -14,7 +14,7 @@ import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 import { LegalFileDTOBase, LegalFilesViewDTOBase } from "../../shared/swagger";
 import { Location } from "@angular/common";
-import { NgForm } from "@angular/forms";
+import { NgForm, FormGroup } from "@angular/forms";
 import { Subject } from "rxjs";
 
 
@@ -47,7 +47,7 @@ export class AdditionalInfoComponent {
     private displayConfirmDelete: boolean = false;
     private removingFile: number;
     private changedDocs: number;
-    private previousUrl: string;
+    dirty: boolean = false;
 
     private fileURL: string = '/wifi4eu/api/registration/getDocument/';
 
@@ -224,15 +224,19 @@ export class AdditionalInfoComponent {
                                 switch (type) {
                                     case 1:
                                         this.documentFilesType1.push(file);
+                                        this.dirty = true;
                                         break;
                                     case 2:
                                         this.documentFilesType2.push(file);
+                                        this.dirty = true;
                                         break;
                                     case 3:
                                         this.documentFilesType3.push(file);
+                                        this.dirty = true;
                                         break;
                                     case 4:
                                         this.documentFilesType4.push(file);
+                                        this.dirty = true;
                                         break;
                                     default:
                                         break;
@@ -354,36 +358,26 @@ export class AdditionalInfoComponent {
 
     action(value: boolean) {
         this.displayConfirmClose = false;
-        this.canDeactivate(value);
         /* this.subject.next(value);
         this.subject.complete(); */
     }
 
 
     goBack() {
-        console.log('backing')
-        this.displayConfirmClose = false;
-        this.displayConfirmDelete = false;
-        this.location.back();
+        if (this.legalFilesToUpload.length > 0 || this.changedDocs > 0){
+            console.log('backing')
+            this.dirty = true;
+            console.log(this.dirty);
+            this.displayConfirmClose = false;
+            this.displayConfirmDelete = false;
+            this.location.back();
+            
+        }else{
+            this.displayConfirmClose = false;
+            this.displayConfirmDelete = false;
+            this.location.back();
+        }
+        
     }
-
-    canDeactivate(bool: boolean) {
-        console.log('Run you fools');
-        return bool;
-        /* this.confirmClose(); */
-        /* if (this.fileForm.dirty) {
-            console.log('No, Gandalf, we stay!');
-            return confirm('The form blabla bla'); */
-            /*             this.displayConfirmClose = true;
-                        return true; */
-        /*} else{
-            console.log('Bye Gandalf, good luck with the Balrog');
-            this.displayConfirmClose = true;
-            return false;
-        } */
-        /* return true; */
-    }
-
-
 
 }

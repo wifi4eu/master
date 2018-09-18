@@ -13,7 +13,7 @@ import { MyHistoryComponent } from "./my-history/my-history.component";
 import { MyVoucherComponent } from "./+grant-agreement/grant-agreement.component";
 import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agreement/sign-grant-agreement.component";
 import { CanDeactivateGuard } from "../can-deactivate-guard.service";
-import { ConfirmationService } from "primeng/primeng";
+import { ConfirmationService, ConfirmDialogModule } from "primeng/primeng";
 
 @NgModule({
     imports: [RouterModule.forChild([

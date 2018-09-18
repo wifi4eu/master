@@ -2007,3 +2007,19 @@ li.panel .panel-header .label-wrapper .label {
 .whiteTableBackground:hover {
     background-color: #fff !important;
 }
+
+.confirmDialogDocs{
+  .ui-dialog-titlebar{
+    padding-bottom:1em !important; 
+    color: #004494 !important; 
+    font-size:20px !important; 
+    font-weight: bold !important;
+  }
+  .ui-dialog-content{
+    line-height: 1.25 !important; 
+    padding-bottom: 3em !important;
+    padding-left: 2em !important; 
+    padding-right: 2em !important; 
+    font-size: 16px !important;
+  }
+}

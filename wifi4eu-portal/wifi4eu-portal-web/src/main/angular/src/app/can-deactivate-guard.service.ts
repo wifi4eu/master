@@ -17,12 +17,12 @@ export class CanDeactivateGuard implements CanDeactivate<AdditionalInfoComponent
     }
 
     canDeactivate(component: AdditionalInfoComponent) {
-        if (!component.fileForm.dirty) {
+        if (!component.dirty) {
             return true;
         }
         return Observable.create((observer: Observer<boolean>) => {
             this.confirmationService.confirm({
-                message: 'potato',
+                message: "",
                 accept: () => {
                     observer.next(true);
                     observer.complete();

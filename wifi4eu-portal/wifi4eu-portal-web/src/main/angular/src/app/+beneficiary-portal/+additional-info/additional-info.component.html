@@ -314,7 +314,6 @@
             <div class="ui-lg-3"></div>
         </div>
     </form>
-
     <p-dialog [(visible)]="displayConfirmClose" [modal] = "true" [responsive]="true" [resizable]="false" [draggable]="false">
         <div class="form-group ui-g">
             <div class="col-sm-12 center" style="padding-bottom:1em; color: #004494; font-size:20px; font-weight: bold;">
@@ -335,7 +334,16 @@
             <div class="ui-lg-2"></div>
         </div>
     </p-dialog>
-    </p-dialog>
+    <p-confirmDialog
+        class="form-group ui-g confirmDialogDocs" 
+        header="{{ 'shared.supportingDocuments.leavePage.title' | translate}}" 
+        message="{{ 'shared.supportingDocuments.leavePage.body' | translate}}" 
+        acceptLabel="{{ 'shared.yes' | translate }}"
+        rejectLabel="{{ 'shared.no' | translate }}"
+        responsive ="true"
+        width="400">
+        
+    </p-confirmDialog>
     <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
         [closable]="false" [closeOnEscape]="false">
         <p class="ModalLoaderDots">
@@ -346,7 +354,7 @@
         <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
         <p class="ModalpConfirmation">{{ 'shared.loading.modal.title3' | translate }}</p>
     </p-dialog>
-
+    
     <p-dialog [(visible)]="displayConfirmDelete" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false"
         [closeOnEscape]="false">
         <div class="form-group ui-g">
