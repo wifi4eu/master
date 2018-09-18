@@ -14,6 +14,6 @@ BO_TOMCAT_PATH=/opt/tomcat-latest
 VARNISH_1_CRED=everis@202.1.1.4
 VARNISH_2_CRED=everis@202.1.1.4
 
-PEM_FO_CERT_PATH=/home/cliente/security/jenkins-pems/azurevm.pem
-PEM_BO_CERT_PATH=/home/cliente/security/jenkins-pems/azurevm.pem
-PEM_VARNISH_CERT_PATH=/home/cliente/security/jenkins-pems/azurevm.pem
+PEM_FO_CERT_PATH=/usr/local/lib/security/jenkins-pems/azurevm.pem
+PEM_BO_CERT_PATH=/usr/local/lib/security/jenkins-pems/azurevm.pem
+PEM_VARNISH_CERT_PATH=/usr/local/lib/security/jenkins-pems/azurevm.pem
