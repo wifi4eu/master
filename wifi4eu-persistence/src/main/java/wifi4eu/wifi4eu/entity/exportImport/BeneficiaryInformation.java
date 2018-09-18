@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.entity.exportImport;
 
+import wifi4eu.wifi4eu.entity.registration.FileType;
+
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -44,11 +46,13 @@ public class BeneficiaryInformation {
 
 	private Date doc_date;
 
-	private String doc_type;
+	private Integer doc_type;
 	
 	private String doc_location;
 
 	private String aresReference;
+
+	private String azureUri;
 
 	public String getMun_id() {
 		return mun_id;
@@ -138,13 +142,17 @@ public class BeneficiaryInformation {
 		this.doc_date = doc_date;
 	}
 
-	public String getDoc_type() {
-		return doc_type;
+	public FileType getDoc_type() {
+		return FileType.fromCode(doc_type);
 	}
 
-	public void setDoc_type(String doc_type) {
+	public void setDoc_type(Integer doc_type) {
 		this.doc_type = doc_type;
 	}
+
+    public void setDoc_type(FileType fileType) {
+        this.doc_type = fileType != null ? fileType.getCode() : null;
+    }
 
 	public String getDoc_location() {
 		return doc_location;
@@ -209,4 +217,12 @@ public class BeneficiaryInformation {
 	public void setDoc_portalId(Long doc_portalId) {
 		this.doc_portalId = doc_portalId;
 	}
+
+    public String getAzureUri() {
+        return azureUri;
+    }
+
+    public void setAzureUri(String azureUri) {
+        this.azureUri = azureUri;
+    }
 }
