@@ -50,3 +50,48 @@ SELECT
 -- delete from applications
 
 
+
+-- Return all the applications -Preparation to be sent as a CSV (with municipality, laus, apply date, etc...)
+select m.country, m.name as municipality, l.name1 as lau_name,
+    dateadd(HOUR, 2, dateadd(s, convert(bigint, a.date) / 1000, convert(datetime, '1-1-1970 00:00:00'))) as apply_date,
+    CASE a._status WHEN 0 THEN 'Applied' WHEN 1 THEN 'Invalid' WHEN 2 THEN 'Valid' WHEN 3 THEN 'Pending followup' END AS status,
+    r.id as reg_id, m.id as mun_id, a.id as application_id
+from applications a
+inner join registrations r ON a.registration = r.id
+inner join municipalities m ON r.municipality = m.id
+inner join laus l ON m.lau = l.id
+WHERE m.name is not null
+ORDER BY m.country;
+
+
+
+-- DELETE AND CREATE NEW APPLICATIONS
+--------------------------------------
+    -- Clean the applications
+    DELETE FROM voucher_simulations
+    DELETE FROM voucher_assignments
+    DELETE FROM grant_agreement
+    DELETE FROM application_comment
+    DELETE FROM authorized_person_application
+    DELETE FROM application_invalidate_reason
+    DELETE FROM applications
+
+
+    -- Create call from Thursday, 13 September 2018 15:30:00 to Thursday, 13 September 2018 16:00:00
+    UPDATE calls SET start_date = 1536845400000, end_date = 1536847200000 where id = 1
+
+
+    -- Create 10k application from current registrations
+
+    INSERT INTO applications (call_id, registration, supplier, voucher_awarded, date, _status, invalidate_reason, lef_export,
+    lef_import, lef_status, bc_export, bc_import, bc_status,lc_export, lc_import, lc_status)
+    select top 10000 1, r.id, NULL, 0, 1536845400000 + FLOOR(1000000 * RAND(convert(varbinary, newid()))), 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    from registrations r
+    inner join municipalities m
+        ON m.id = r.municipality
+    where m.lau in (select m.lau from registrations r
+    inner join municipalities m
+        ON m.id = r.municipality
+         group by m.lau having COUNT(*) = 1)
+    order by r.id desc;
+

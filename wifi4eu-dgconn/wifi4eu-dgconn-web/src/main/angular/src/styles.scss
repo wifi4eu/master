@@ -1410,7 +1410,6 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   margin-right: 0em;
   background-color: white;
   padding: 1em;
-  word-break: break-all;
 }
 
 .municipality-name {
@@ -1772,4 +1771,9 @@ input.email_profile::-ms-clear{
         border-radius: 100%;
         height: 1.2%;
     }
+}
+
+.text-adjust {
+  overflow: hidden;
+  white-space: normal;
 }
