@@ -241,7 +241,7 @@ public class ExportImportWifi4euAbacService {
         }
         csvDocumentData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getDoc_portalId())).append(ExportFileUtils.SEPARATOR)
-                .append(defaultEmpty(beneficiaryInformation.getDoc_name())).append(ExportFileUtils.SEPARATOR)
+                .append(StringUtils.defaultString(beneficiaryInformation.getDoc_name(), beneficiaryInformation.getDoc_fileName())).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getDoc_fileName())).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getDoc_mimeType())).append(ExportFileUtils.SEPARATOR)
                 .append(dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date())).append(ExportFileUtils.SEPARATOR)
