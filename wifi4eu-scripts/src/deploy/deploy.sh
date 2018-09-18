@@ -43,13 +43,13 @@ then
     do
         echo "SCP connection to Tomcat"
         echo $FO_TOMCAT
-        scp -i $PEM_FO_CERT_PATH $LOCAL_SOURCECODE$FO_WAR1_FOLDER $FO_TOMCAT:$REMOTE_COPYFOLDER
-        scp -i $PEM_FO_CERT_PATH $LOCAL_SOURCECODE$FO_WAR2_FOLDER $FO_TOMCAT:$REMOTE_COPYFOLDER
+        scp -i  $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $LOCAL_SOURCECODE$FO_WAR1_FOLDER $FO_TOMCAT:$REMOTE_COPYFOLDER
+        scp -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $LOCAL_SOURCECODE$FO_WAR2_FOLDER $FO_TOMCAT:$REMOTE_COPYFOLDER
 
         # Stop tomcat server
         # Copy files to webapps
         # Start tomcat server
-        ssh -i $PEM_FO_CERT_PATH $FO_TOMCAT "uname -a;
+        ssh -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $FO_TOMCAT "uname -a;
         sudo service tomcat stop;
         sudo rm -R $FO_TOMCAT_PATH/webapps/*.war;
         sudo rm -fR $FO_TOMCAT_PATH/webapps/ROOT;
@@ -69,12 +69,12 @@ then
     do
         echo "SCP connection to Tomcat"
         echo $BO_TOMCAT
-        scp -i $PEM_BO_CERT_PATH $LOCAL_SOURCECODE$BO_WAR1_FOLDER $BO_TOMCAT:$REMOTE_COPYFOLDER
+        scp -i $PEM_BO_CERT_PATH -o StrictHostKeyChecking=no $LOCAL_SOURCECODE$BO_WAR1_FOLDER $BO_TOMCAT:$REMOTE_COPYFOLDER
 
         # Stop tomcat server
         # Copy files to webapps
         # Start tomcat server
-        ssh -i $PEM_BO_CERT_PATH $BO_TOMCAT "uname -a;
+        ssh -i $PEM_BO_CERT_PATH -o StrictHostKeyChecking=no $BO_TOMCAT "uname -a;
         sudo service tomcat stop;
         sudo rm -R $BO_TOMCAT_PATH/webapps/wifi4eu.war;
         sudo cp $REMOTE_COPYFOLDER/*.war $BO_TOMCAT_PATH/webapps;
@@ -93,7 +93,7 @@ then
     do
         echo "SSH connection to Varnish"
         echo $VARNISH_CRED
-        ssh -i $PEM_VARNISH_CERT_PATH $VARNISH_CRED "uname -a;
+        ssh -i $PEM_VARNISH_CERT_PATH -o StrictHostKeyChecking=no $VARNISH_CRED "uname -a;
         sudo service varnish restart" </dev/null
     done
 
@@ -108,7 +108,7 @@ then
     do
         echo "SSH connection to Redis"
         echo $REDIS_CRED
-        ssh -i $PEM_REDIS_CERT_PATH $REDIS_CRED "uname -a;
+        ssh -i $PEM_REDIS_CERT_PATH -o StrictHostKeyChecking=no $REDIS_CRED "uname -a;
         sudo ./wifi4eu-gate-restart.sh"
     done
 
