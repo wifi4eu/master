@@ -13,8 +13,9 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 import { LegalFileDTOBase, LegalFilesViewDTOBase } from "../../shared/swagger";
-import { CanDeactivateGuard } from "../../can-deactivate-guard.service";
 import { Location } from "@angular/common";
+import { NgForm } from "@angular/forms";
+import { Subject } from "rxjs";
 
 
 @Component({
@@ -36,6 +37,7 @@ export class AdditionalInfoComponent {
     private reader: FileReader = new FileReader();
     private filesUploaded: boolean = false;
     private isMayor: boolean = false;
+    @ViewChild('legalForm') fileForm: NgForm;
     @ViewChild('document1') private document1: any;
     @ViewChild('document2') private document2: any;
     @ViewChild('document3') private document3: any;
@@ -54,8 +56,8 @@ export class AdditionalInfoComponent {
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router, private location: Location, ) {
         let storedUser = this.localStorageService.get('user');
         this.changedDocs = 0;
-         
-       
+
+
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             let municipalityId;
@@ -350,12 +352,11 @@ export class AdditionalInfoComponent {
         this.removingFile = null;
     }
 
-    action(value: boolean){
-       if(value){
-        this.goBack();
-       }else{
-        this.cancelBack();
-       }
+    action(value: boolean) {
+        this.displayConfirmClose = false;
+        this.canDeactivate(value);
+        /* this.subject.next(value);
+        this.subject.complete(); */
     }
 
 
@@ -366,17 +367,21 @@ export class AdditionalInfoComponent {
         this.location.back();
     }
 
-    canDeactivate(): boolean | Observable<boolean> {
+    canDeactivate(bool: boolean) {
         console.log('Run you fools');
-        this.confirmClose();
-        if (!this.displayConfirmClose) {
+        return bool;
+        /* this.confirmClose(); */
+        /* if (this.fileForm.dirty) {
             console.log('No, Gandalf, we stay!');
-            this.displayConfirmClose = false;
-            return true;
-        }
-        console.log('Bye Gandalf, good luck with the Balrog');
-        this.displayConfirmClose = true;
-        return false;
+            return confirm('The form blabla bla'); */
+            /*             this.displayConfirmClose = true;
+                        return true; */
+        /*} else{
+            console.log('Bye Gandalf, good luck with the Balrog');
+            this.displayConfirmClose = true;
+            return false;
+        } */
+        /* return true; */
     }
 
 

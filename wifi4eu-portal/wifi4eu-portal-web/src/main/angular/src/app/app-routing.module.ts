@@ -9,6 +9,7 @@ import {ForgotComponent} from "./+forgot/forgot.component";
 import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.component";
 import { InvitedContactDetailsComponent } from "./invited-contact-details/invited-contact-details.component";
 import { DeactivatedUserComponent } from "./deactivated-user/deactivated-user.component";
+import { ConfirmationService } from "primeng/primeng";
 
 // import {EcasComponent} from "./+ecas/ecas.component";
 
@@ -77,7 +78,7 @@ import { DeactivatedUserComponent } from "./deactivated-user/deactivated-user.co
             redirectTo: 'notfound'
         }
     ], {useHash: true})],
-    providers: [AppGuard],
+    providers: [AppGuard, ConfirmationService],
     exports: [RouterModule]
 })
 export class AppRoutingModule {

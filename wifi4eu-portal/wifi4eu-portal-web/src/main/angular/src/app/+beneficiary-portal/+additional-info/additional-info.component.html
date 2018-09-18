@@ -2,7 +2,7 @@
     <div class="row" *ngIf="registration">
         <div style="display: flex; padding-top: 2em;">
             <div class="ui-g-1" style="margin-top: 1em; font-size: 16px; width: none !important;">
-                <a class="link-label" (click)="confirmClose()">
+                <a class="link-label" (click)="goBack()">
                     <i class="fa fa-long-arrow-left fa-2" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
                 </a>
             </div>
@@ -303,7 +303,7 @@
         <div class="form-group ui-g">
             <div class="ui-lg-3"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button type="button" (click)="confirmClose()" class="btn btn-primary cancel-button" [disabled]="!legalForm.form.valid || !filesUploaded">{{ 'shared.cancel.button' | translate }}
+                <button type="button" (click)="goBack()" class="btn btn-primary cancel-button" [disabled]="!legalForm.form.valid || !filesUploaded">{{ 'shared.cancel.button' | translate }}
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
@@ -335,7 +335,7 @@
             <div class="ui-lg-2"></div>
         </div>
     </p-dialog>
-
+    </p-dialog>
     <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
         [closable]="false" [closeOnEscape]="false">
         <p class="ModalLoaderDots">
