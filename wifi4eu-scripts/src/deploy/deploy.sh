@@ -50,12 +50,10 @@ then
         # Copy files to webapps
         # Start tomcat server
         ssh -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $FO_TOMCAT "uname -a;
-        sudo service $FO_TOMCAT_SERVICE stop;
         sudo rm -R $FO_TOMCAT_PATH/webapps/*.war;
         sudo rm -fR $FO_TOMCAT_PATH/webapps/ROOT;
         sudo rm -fR $FO_TOMCAT_PATH/webapps/wifi4eu;
-        sudo cp $REMOTE_COPYFOLDER/*.war $FO_TOMCAT_PATH/webapps;
-        sudo service $FO_TOMCAT_SERVICE start"</dev/null
+        sudo cp $REMOTE_COPYFOLDER/*.war $FO_TOMCAT_PATH/webapps"</dev/null
 
     done
 
@@ -75,10 +73,8 @@ then
         # Copy files to webapps
         # Start tomcat server
         ssh -i $PEM_BO_CERT_PATH -o StrictHostKeyChecking=no $BO_TOMCAT "uname -a;
-        sudo service $BO_TOMCAT_SERVICE stop;
         sudo rm -R $BO_TOMCAT_PATH/webapps/wifi4eu.war;
-        sudo cp $REMOTE_COPYFOLDER/*.war $BO_TOMCAT_PATH/webapps;
-        sudo service $BO_TOMCAT_SERVICE start"</dev/null
+        sudo cp $REMOTE_COPYFOLDER/*.war $BO_TOMCAT_PATH/webapps"</dev/null
 
     done
 

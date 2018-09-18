@@ -1,7 +1,7 @@
 # Parameters
 ENV=DEVNF
 LOCAL_SOURCECODE=.
-REMOTE_COPYFOLDER=/home/everis/deploy
+REMOTE_COPYFOLDER=/home/everis/deploy/auto
 FO_WAR1_FOLDER=/wifi4eu-portal/wifi4eu-portal-web/target/*.war
 FO_WAR2_FOLDER=/wifi4eu-public-portal/wifi4eu-public-portal-web/target/*.war
 FO_TOMCAT_1_CRED=everis@202.1.1.4
