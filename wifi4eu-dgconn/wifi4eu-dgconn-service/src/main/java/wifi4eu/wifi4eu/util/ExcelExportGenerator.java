@@ -94,8 +94,8 @@ public class ExcelExportGenerator<T> {
             displayedFieldNames.add("Number of registrations");
             fieldNames.add("status");
             displayedFieldNames.add("Status");
-            fieldNames.add("mediation");
-            displayedFieldNames.add("Mediation");
+            // fieldNames.add("mediation");
+            // displayedFieldNames.add("Mediation");
 //            fieldNames.add("issueStatus");
 //            displayedFieldNames.add("Issue");
         } else if (dataClass == ApplicantListItem.class || dataClass == ApplicantListItemDTO.class) {
@@ -109,8 +109,8 @@ public class ExcelExportGenerator<T> {
             displayedFieldNames.add("Number of applications");
             fieldNames.add("status");
             displayedFieldNames.add("Status");
-            fieldNames.add("mediation");
-            displayedFieldNames.add("Mediation");
+            // fieldNames.add("mediation");
+            /// displayedFieldNames.add("Mediation");
             fieldNames.add("issueStatus");
             displayedFieldNames.add("Issue Status");
             fieldNames.add("applicationDate");
@@ -140,13 +140,6 @@ public class ExcelExportGenerator<T> {
                             value = "Applied";
                         } else {
                             value = "Registered";
-                        }
-                        break;
-                    case "mediation":
-                        if ((boolean) field.get(objectData)) {
-                            value = "YES";
-                        } else {
-                            value = "NO";
                         }
                         break;
                     case "issueStatus":
@@ -186,13 +179,6 @@ public class ExcelExportGenerator<T> {
                             default:
                                 value = "";
                                 break;
-                        }
-                        break;
-                    case "mediation":
-                        if ((boolean) field.get(objectData)) {
-                            value = "YES";
-                        } else {
-                            value = "NO";
                         }
                         break;
                     case "issueStatus":
