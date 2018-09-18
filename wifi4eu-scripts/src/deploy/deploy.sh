@@ -84,7 +84,6 @@ then
         fi
         # Copy files to webapps
         ssh -i $PEM_BO_CERT_PATH -o StrictHostKeyChecking=no $BO_TOMCAT "uname -a;
-        sudo rm -R $BO_TOMCAT_PATH/webapps/wifi4eu.war;
         sudo cp $REMOTE_COPYFOLDER/*.war $BO_TOMCAT_PATH/webapps"</dev/null
 		# Start tomcat server
         if [[ $3 = *"start"* ]]; then
