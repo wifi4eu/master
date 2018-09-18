@@ -8,9 +8,11 @@ FO_TOMCAT_1_CRED=aperez@10.0.2.13
 FO_TOMCAT_2_CRED=aperez@10.0.2.14
 FO_TOMCAT_LIST="$FO_TOMCAT_1_CRED $FO_TOMCAT_2_CRED"
 FO_TOMCAT_PATH=/opt/tomcat
+FO_TOMCAT_SERVICE=tomcat
 BO_WAR1_FOLDER=/wifi4eu/wifi4eu-portal/wifi4eu-portal-web/target/*.war
 BO_TOMCAT_1_CRED=aperez@10.0.4.244
 BO_TOMCAT_PATH=/opt/tomcat-latest
+BO_TOMCAT_SERVICE=tomcat
 VARNISH_1_CRED=everis@10.0.2.4
 VARNISH_2_CRED=everis@10.0.2.5
 

@@ -10,9 +10,11 @@ FO_TOMCAT_3_CRED=client-acc-dev@202.3.1.13
 FO_TOMCAT_4_CRED=client-acc-dev@202.3.1.14
 FO_TOMCAT_LIST="$FO_TOMCAT_1_CRED $FO_TOMCAT_2_CRED $FO_TOMCAT_3_CRED $FO_TOMCAT_4_CRED"
 FO_TOMCAT_PATH=/opt/tomcat
+FO_TOMCAT_SERVICE=tomcat
 BO_WAR1_FOLDER=/wifi4eu/wifi4eu-dgconn/wifi4eu-dgconn-web/target/*.war
 BO_TOMCAT_1_CRED=client-acc-dev@202.3.3.8
 BO_TOMCAT_PATH=/opt/tomcat-latest
+BO_TOMCAT_SERVICE=tomcat
 VARNISH_1_CRED=client-acc-dev@202.3.3.11
 VARNISH_2_CRED=client-acc-dev@202.3.3.12
 
