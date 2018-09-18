@@ -47,13 +47,23 @@ then
         scp -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $LOCAL_SOURCECODE$FO_WAR2_FOLDER $FO_TOMCAT:$REMOTE_COPYFOLDER
 
         # Stop tomcat server
+        if [ $3 = *"stop"*]
+        then
+            ssh -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $FO_TOMCAT "uname -a;
+            sudo service $FO_TOMCAT_SERVICE stop"</dev/null
+        fi
         # Copy files to webapps
-        # Start tomcat server
         ssh -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $FO_TOMCAT "uname -a;
         sudo rm -R $FO_TOMCAT_PATH/webapps/*.war;
         sudo rm -fR $FO_TOMCAT_PATH/webapps/ROOT;
         sudo rm -fR $FO_TOMCAT_PATH/webapps/wifi4eu;
         sudo cp $REMOTE_COPYFOLDER/*.war $FO_TOMCAT_PATH/webapps"</dev/null
+        # Start tomcat server
+        if [ $3 = *"start"* ]
+        then
+            ssh -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $FO_TOMCAT "uname -a;
+            sudo service $FO_TOMCAT_SERVICE start"</dev/null
+        fi
 
     done
 
@@ -70,11 +80,21 @@ then
         scp -i $PEM_BO_CERT_PATH -o StrictHostKeyChecking=no $LOCAL_SOURCECODE$BO_WAR1_FOLDER $BO_TOMCAT:$REMOTE_COPYFOLDER
 
         # Stop tomcat server
+        if [ $3 = *"stop"*]
+        then
+            ssh -i $PEM_BO_CERT_PATH -o StrictHostKeyChecking=no $BO_TOMCAT "uname -a;
+            sudo service $BO_TOMCAT_SERVICE stop"</dev/null
+        fi
         # Copy files to webapps
-        # Start tomcat server
         ssh -i $PEM_BO_CERT_PATH -o StrictHostKeyChecking=no $BO_TOMCAT "uname -a;
         sudo rm -R $BO_TOMCAT_PATH/webapps/wifi4eu.war;
         sudo cp $REMOTE_COPYFOLDER/*.war $BO_TOMCAT_PATH/webapps"</dev/null
+		# Start tomcat server
+        if [ $3 = *"start"* ]
+        then
+            ssh -i $PEM_BO_CERT_PATH -o StrictHostKeyChecking=no $BO_TOMCAT "uname -a;
+            sudo service $BO_TOMCAT_SERVICE start"</dev/null
+        fi
 
     done
 
