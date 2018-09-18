@@ -56,7 +56,7 @@ public class VoucherResource {
     UserService userService;
 
     @Autowired
-    PermissionChecker permissionChecker;	
+    PermissionChecker permissionChecker;
 
     @ApiOperation(value = "Get if application is in freeze list")
     @RequestMapping(value = "/in-freeze/application/{applicationId}", method = RequestMethod.GET, produces = "application/json")
@@ -316,7 +316,7 @@ public class VoucherResource {
     @ApiOperation(value = "Send notifications  to applicants")
     @RequestMapping(value = "/assignment/send-notifications", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO sendNotificationForApplicants(@RequestBody final Integer callId, HttpServletResponse response) throws IOException {
+    public ResponseDTO sendNotificationForApplicants(@RequestParam("psswdNotification") final String psswdNotification, @RequestBody final Integer callId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending notification to applicants on call id " + callId);
@@ -325,7 +325,7 @@ public class VoucherResource {
                 throw new AccessDeniedException("Access denied: sendNotificationForApplicants");
             }
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - The process of sending notifications has started successfully");
-            return voucherService.sendNotificationForApplicants(callId);
+            return voucherService.sendNotificationForApplicants(psswdNotification, callId);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to send notifications", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -340,7 +340,7 @@ public class VoucherResource {
     @ApiOperation(value = "Freeze simulation list")
     @RequestMapping(value = "/assignment/freeze-simulation-list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO saveFreezeListSimulation(@RequestParam("assignmentId") Integer assignmentId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
+    public ResponseDTO saveFreezeListSimulation(@RequestParam("freezePsswd") final String freezePsswd, @RequestParam("assignmentId") Integer assignmentId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Freezing simulation list with assignment id " + assignmentId + " and call id " + callId);
@@ -348,7 +348,7 @@ public class VoucherResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: saveFreezeListSimulation");
             }
-            VoucherAssignmentDTO result = voucherService.saveFreezeListSimulation(assignmentId, callId);
+            VoucherAssignmentDTO result = voucherService.saveFreezeListSimulation(freezePsswd, assignmentId, callId);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Success on freezing simulation list");
             return new ResponseDTO(true, result, null);
         } catch (AccessDeniedException ade) {
@@ -437,7 +437,7 @@ public class VoucherResource {
     @RequestMapping(value = "/assignment/check-freeze-enabled/by/call/{callId}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Boolean> checkApplicationAreValidForFreezeList(@PathVariable("callId") final Integer callId,
-                                                               HttpServletResponse response) throws IOException {
+                                                                         HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Checking if freeze list is enabled by call ID " + callId);
@@ -447,13 +447,12 @@ public class VoucherResource {
             }
             Boolean enabled = voucherService.checkApplicationAreValidForFreezeList(callId);
             return new ResponseEntity<>(enabled, HttpStatus.OK);
-        }
-        catch (AccessDeniedException ade){
+        } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " -  You have no permissions to check if freeze list is enabled", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
-        }catch (Exception ex){
-            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " -  Error checking if freeze list is enabled" + ex.getMessage() , ex);
+        } catch (Exception ex) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " -  Error checking if freeze list is enabled" + ex.getMessage(), ex);
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }

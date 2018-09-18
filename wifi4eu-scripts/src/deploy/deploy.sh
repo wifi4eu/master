@@ -21,6 +21,11 @@ elif [ $1 == "acchf" ];
 then
     echo "acchf";
     source "$mydir"/config-acchf.sh
+
+elif [ $1 == "prod" ];
+then
+    echo "prod";
+    source "$mydir"/config-prod.sh
 else
     echo "please, provide valid environment name"
 	exit 1
@@ -45,13 +50,13 @@ then
         # Stop tomcat server
         # Copy files to webapps
         # Start tomcat server
-        ssh -i $PEM_FO_CERT_PATH $FO_TOMCAT "uname -a;
-        sudo service tomcat stop;
-        sudo rm -R $FO_TOMCAT_PATH/webapps/*.war;
-        sudo rm -fR $FO_TOMCAT_PATH/webapps/ROOT;
-        sudo rm -fR $FO_TOMCAT_PATH/webapps/wifi4eu;
-        sudo cp $REMOTE_COPYFOLDER/*.war $FO_TOMCAT_PATH/webapps;
-        sudo service tomcat start"</dev/null
+        # ssh -i $PEM_FO_CERT_PATH $FO_TOMCAT "uname -a;
+        # sudo service tomcat stop;
+        # sudo rm -R $FO_TOMCAT_PATH/webapps/*.war;
+        # sudo rm -fR $FO_TOMCAT_PATH/webapps/ROOT;
+        # sudo rm -fR $FO_TOMCAT_PATH/webapps/wifi4eu;
+        # sudo cp $REMOTE_COPYFOLDER/*.war $FO_TOMCAT_PATH/webapps;
+        # sudo service tomcat start"</dev/null
 
     done
 

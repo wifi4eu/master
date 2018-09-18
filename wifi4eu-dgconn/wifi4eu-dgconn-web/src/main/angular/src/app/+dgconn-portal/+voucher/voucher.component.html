@@ -388,6 +388,27 @@
   </div>
 </p-dialog>
 
+<p-dialog [(visible)]="showFreezeModal" [modal]="true" [responsive]="true" [resizable]="false"
+  [draggable]="false" [closable]="false" [closeOnEscape]="false">
+  <div class="row center">
+    <div class="col-sm-12 marginStep1">
+      <input type="password"  [(ngModel)]="psswdFreeze"  class="searchInput" >
+      <button class="btn btn-primary publish-button" (click)="saveFreezeList()" [disabled]="!confirmFreezeBtn || psswdFreeze == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog [(visible)]="showNotificationModal" [modal]="true" [responsive]="true" [resizable]="false"
+  [draggable]="false" [closable]="false" [closeOnEscape]="false">
+  <div class="row center">
+    <div class="col-sm-12 marginStep1">
+      <input type="password"  [(ngModel)]="psswdNotification"  class="searchInput" >
+      <button class="btn btn-primary publish-button" (click)="sendNotificationToApplicants()" [disabled]="!confirmFreezeBtn || psswdNotification == ''"> <i class="fa fa-spinner fa-spin" *ngIf="loadingFreezeList"></i> {{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>
+
+
 <style>
   .duplicate-warn {
     background: #ff4545;

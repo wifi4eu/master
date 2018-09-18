@@ -96,6 +96,13 @@ export class DgConnVoucherComponent {
   private searchedMunicipality = null;
   private selectedCountry = 'All';
 
+  private showFreezeModal:boolean = false;
+  private psswdFreeze: string = '';
+  private psswdNotification: string ='';
+  private confirmFreezeBtn : boolean = true;
+  private confirmNotificationsBtn: boolean = true;
+  private showNotificationModal : boolean = false;
+
   @ViewChild("paginator") paginator: Paginator;
   @ViewChild("tableVoucher") tableVoucher: DataTable;
   @ViewChild("tabCalls") tabCalls: TabView;
@@ -495,7 +502,7 @@ export class DgConnVoucherComponent {
 
   private freezeList() {
     this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
-      this.displayFreezeConfirmation = enabled;
+      this.showFreezeModal = enabled;
       this.pressedNotificationButton = !enabled;
       if (!enabled) {
         this.sharedService.growlTranslation('It\'s not possible to freeze the list with applications left to be validated', 'dgConn.voucherAssignment.warning.savingFreezeList', 'warn');
@@ -506,8 +513,11 @@ export class DgConnVoucherComponent {
   }
 
   private saveFreezeList(saveFreezeBtn) {
-    saveFreezeBtn.disabled = true;
-    this.voucherApi.saveFreezeListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
+    this.loadingFreezeList = true;
+    this.confirmFreezeBtn = false;
+    
+    
+    this.voucherApi.saveFreezeListSimulation(this.psswdFreeze, this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
       this.displayFreezeConfirmation = false;
       this.callVoucherAssignment.id = response.data.id;
       this.callVoucherAssignment.hasFreezeListSaved = true;
@@ -517,13 +527,18 @@ export class DgConnVoucherComponent {
       this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
       this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
       this.loadPage();
-      saveFreezeBtn.disabled = false;
+      this.showFreezeModal = false;
+      this.displayConfirmingData = false;
     }, error => {
       this.sharedService.growlTranslation('An error occurred while freezing the list.', 'dgConn.voucherAssignment.error.savingFreezeList', 'error');
+      this.showFreezeModal = false;
+      this.displayConfirmingData = false;
     });
   }
 
   private sendNotificationToApplicants() {
+    this.showNotificationModal = false;
+    this.confirmNotificationsBtn = false;
     if (this.callVoucherAssignment.notifiedDate != null) {
       return;
     }
@@ -531,9 +546,10 @@ export class DgConnVoucherComponent {
       return;
     }
     this.pressedNotificationButton = true;
-    this.voucherApi.sendNotificationForApplicants(this.callSelected.id).subscribe((response: ResponseDTO) => {
+    this.voucherApi.sendNotificationForApplicants(this.psswdNotification, this.callSelected.id).subscribe((response: ResponseDTO) => {
       if (response.success) {
         this.pressedNotificationButton = true;
+        this.showNotificationModal = false;
         this.sharedService.growlTranslation('The process of sending notifications has started.', 'dgConn.voucherAssignment.success.sendingNotifications', 'success');
         this.router.navigate(['../voucher'], { relativeTo: this.route });
       } else {
@@ -549,14 +565,29 @@ export class DgConnVoucherComponent {
             this.hourNumberNotified = ('0' + (dateNotified.getUTCHours() + 2)).slice(-2) + ":" + ('0' + dateNotified.getUTCMinutes()).slice(-2);
           }
           this.pressedNotificationButton = true;
-          this.displayAlreadyLaunched = true;
+          this.displayAlreadyLaunched = true;;
         } else {
           this.pressedNotificationButton = false;
         }
       }
+      this.showNotificationModal = false;
     }, (error) => {
+      this.showNotificationModal = false;
       this.sharedService.growlTranslation('An error occurred while sending notifications.', 'dgConn.voucherAssignment.error.sendingNotifications', 'error');
     })
+   
+  }
+
+  private showFreezePopUp(){
+    this.psswdFreeze = '';
+    this.showFreezeModal = true;
+    this.loadingFreezeList = false;
+  }
+
+  private showNotificationPopUp(){
+    this.psswdNotification = '';
+    this.showNotificationModal = true;
+    this.loadingFreezeList = false;
   }
 
 }
