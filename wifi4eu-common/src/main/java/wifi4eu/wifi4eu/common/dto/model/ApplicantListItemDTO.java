@@ -7,7 +7,6 @@ public class ApplicantListItemDTO {
     private String countryCode;
     private String name;
     private Integer counter;
-    private Boolean mediation;
     private Integer status;
     private List<Integer> issueStatus;
     private Long applicationDate;
@@ -20,12 +19,11 @@ public class ApplicantListItemDTO {
     public ApplicantListItemDTO() {
     }
     
-    public ApplicantListItemDTO(Integer lauId, String countryCode, String name, Integer counter, Boolean mediation, Integer status, List<Integer> issueStatus, Long applicationDate, String invalidateReason, Boolean warning1, Boolean warning2, Boolean warning3, Integer supportingDocuments) {
+    public ApplicantListItemDTO(Integer lauId, String countryCode, String name, Integer counter, Integer status, List<Integer> issueStatus, Long applicationDate, String invalidateReason, Boolean warning1, Boolean warning2, Boolean warning3, Integer supportingDocuments) {
       this.lauId = lauId;
       this.countryCode = countryCode;
         this.name = name;
         this.counter = counter;
-        this.mediation = mediation;
         this.status = status;
         this.issueStatus = issueStatus;
         this.applicationDate = applicationDate;
@@ -66,14 +64,6 @@ public class ApplicantListItemDTO {
 
     public void setCounter(Integer counter) {
         this.counter = counter;
-    }
-    
-    public Boolean getMediation() {
-        return mediation;
-    }
-
-    public void setMediation(Boolean mediation) {
-      this.mediation = mediation;
     }
 
     public Integer getStatus() {
