@@ -516,8 +516,11 @@ export class DgConnVoucherComponent {
     this.loadingFreezeList = true;
     this.confirmFreezeBtn = false;
     
-    
-    this.voucherApi.saveFreezeListSimulation(this.psswdFreeze, this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
+    this.voucherApi.saveFreezeListSimulation(this.psswdFreeze, this.callVoucherAssignment.id, this.callSelected.id).finally(() => {
+      this.loadingFreezeList = false;
+      this.confirmFreezeBtn = true;
+      
+    }).subscribe((response: ResponseDTO) => {
       this.displayFreezeConfirmation = false;
       this.callVoucherAssignment.id = response.data.id;
       this.callVoucherAssignment.hasFreezeListSaved = true;
@@ -537,7 +540,7 @@ export class DgConnVoucherComponent {
   }
 
   private sendNotificationToApplicants() {
-    this.showNotificationModal = false;
+    this.showNotificationModal = true;
     this.confirmNotificationsBtn = false;
     if (this.callVoucherAssignment.notifiedDate != null) {
       return;
@@ -573,6 +576,7 @@ export class DgConnVoucherComponent {
       this.showNotificationModal = false;
     }, (error) => {
       this.showNotificationModal = false;
+      this.pressedNotificationButton = false;
       this.sharedService.growlTranslation('An error occurred while sending notifications.', 'dgConn.voucherAssignment.error.sendingNotifications', 'error');
     })
    
