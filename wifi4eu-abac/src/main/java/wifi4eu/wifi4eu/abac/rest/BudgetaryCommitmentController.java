@@ -9,12 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
+import wifi4eu.wifi4eu.abac.data.entity.ImportLog;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.BudgetaryCommitmentService;
 import wifi4eu.wifi4eu.abac.service.ExportDataService;
@@ -45,8 +47,13 @@ public class BudgetaryCommitmentController {
 
 		ResponseVO result = new ResponseVO();
 		try {
-			importDataService.importBudgetaryCommitments(file.getOriginalFilename(), file.getBytes());
-			result.success("Imported OK!");
+			ImportLog importLog = importDataService.importBudgetaryCommitments(file.getOriginalFilename(), file.getBytes());
+			if (StringUtils.isEmpty(importLog.getErrors())) {
+				log.error("error importing");
+				result.error("error importing");
+			} else {
+				result.success("Imported OK!");
+			}
 		}catch(Exception e) {
 			result.error(e.getMessage());
 		}

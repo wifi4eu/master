@@ -54,9 +54,9 @@ public class LegalEntityController {
 			if (StringUtils.isEmpty(importLog.getErrors())) {
 				log.error("error importing");
 				result.error("error importing");
+			} else {
+				result.success("Imported OK!");
 			}
-
-			result.success("Imported OK!");
 		}catch(Exception e) {
 			log.error(e.getMessage());
 			result.error(e.getMessage());

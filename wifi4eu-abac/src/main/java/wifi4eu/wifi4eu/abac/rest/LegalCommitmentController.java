@@ -9,9 +9,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import wifi4eu.wifi4eu.abac.data.dto.FileDTO;
+import wifi4eu.wifi4eu.abac.data.entity.ImportLog;
 import wifi4eu.wifi4eu.abac.rest.vo.ResponseVO;
 import wifi4eu.wifi4eu.abac.service.ExportDataService;
 import wifi4eu.wifi4eu.abac.service.ImportDataService;
@@ -42,8 +44,13 @@ public class LegalCommitmentController {
 		log.info("importLegalCommitment");
 		ResponseVO result = new ResponseVO();
 		try {
-			importDataService.importLegalCommitments(file.getOriginalFilename(), file.getBytes());
-			result.success("Imported OK!");
+			ImportLog importLog = importDataService.importLegalCommitments(file.getOriginalFilename(), file.getBytes());
+			if (StringUtils.isEmpty(importLog.getErrors())) {
+				log.error("error importing");
+				result.error("error importing");
+			} else {
+				result.success("Imported OK!");
+			}
 		}catch(Exception e) {
 			log.error(e.getMessage());
 			result.error(e.getMessage());
