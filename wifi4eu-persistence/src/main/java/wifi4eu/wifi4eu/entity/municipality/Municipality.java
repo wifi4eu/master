@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.entity.municipality;
 
 import wifi4eu.wifi4eu.entity.exportImport.BudgetaryCommitment;
+import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
 import wifi4eu.wifi4eu.entity.location.Lau;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 
@@ -41,6 +42,10 @@ public class Municipality {
 
     @OneToMany(mappedBy = "municipality")
     private List<BudgetaryCommitment> budgetaryCommitments;
+
+    @OneToMany(mappedBy = "municipality", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExportImportRegistrationData> municipalitiesAbac;
+
 
     public Municipality() {
     }
@@ -129,5 +134,16 @@ public class Municipality {
 
     public void setBudgetaryCommitments(List<BudgetaryCommitment> budgetaryCommitments) {
         this.budgetaryCommitments = budgetaryCommitments;
+    }
+
+    public List<ExportImportRegistrationData> getMunicipalitiesAbac() {
+        if (municipalitiesAbac == null) {
+            municipalitiesAbac = new ArrayList<>(0);
+        }
+        return municipalitiesAbac;
+    }
+
+    public void setMunicipalitiesAbac(List<ExportImportRegistrationData> municipalitiesAbac) {
+        this.municipalitiesAbac = municipalitiesAbac;
     }
 }
