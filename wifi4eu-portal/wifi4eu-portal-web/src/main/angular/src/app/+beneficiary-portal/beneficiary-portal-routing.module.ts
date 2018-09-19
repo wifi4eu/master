@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { RouterModule, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
+import { RouterModule } from "@angular/router";
 import { VoucherComponent } from "./+voucher/voucher.component";
 import { DiscussionComponent } from "./+discussion/discussion.component";
 import { BeneficiaryProfileComponent } from "./+profile/profile.component";
@@ -13,7 +13,7 @@ import { MyHistoryComponent } from "./my-history/my-history.component";
 import { MyVoucherComponent } from "./+grant-agreement/grant-agreement.component";
 import { SignGrantAgreementComponent } from "./+grant-agreement/+sign-grant-agreement/sign-grant-agreement.component";
 import { CanDeactivateGuard } from "../can-deactivate-guard.service";
-import { ConfirmationService, ConfirmDialogModule } from "primeng/primeng";
+import { ConfirmationService } from "primeng/primeng";
 
 @NgModule({
     imports: [RouterModule.forChild([

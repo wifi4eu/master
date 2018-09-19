@@ -15,7 +15,6 @@ import { WebsockApi } from "./shared/swagger";
 import { Observable } from "rxjs/Observable";
 import { CookieService } from 'ngx-cookie-service';
 import { IntervalObservable } from "../../node_modules/rxjs/observable/IntervalObservable";
-import { CanDeactivateGuard } from "./can-deactivate-guard.service";
 
 
 enableProdMode();
