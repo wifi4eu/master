@@ -159,7 +159,7 @@ public class ExportImportWifi4euAbacService {
 
             try {
                 ExportImportRegistrationData municpalitiesAbac = new ExportImportRegistrationData();
-                Municipality municipality = municipalityRepository.getOne(Integer.parseInt(municipalityId));
+                Municipality municipality = municipalityRepository.findOne(Integer.parseInt(municipalityId));
                 municpalitiesAbac.setMunicipality(municipality);
                 municpalitiesAbac.setAbacReference(abacReference);
                 municpalitiesAbac.setAbacStandarName(abacLatinName);
