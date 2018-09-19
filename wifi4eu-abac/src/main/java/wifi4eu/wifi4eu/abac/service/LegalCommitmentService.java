@@ -104,7 +104,7 @@ public class LegalCommitmentService {
 		}
 	}
 
-	private void createLegalCommitment(Document grantAgreement, String batchRef) {
+	public void createLegalCommitment(Document grantAgreement, String batchRef) {
 		LegalCommitment legalCommitment = new LegalCommitment();
 		legalCommitment.setLegalEntity(grantAgreement.getLegalEntity());
 		legalCommitment.setGrantAgreementDocument(grantAgreement);

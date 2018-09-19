@@ -41,17 +41,17 @@ public class LegalEntityService {
 
 	//TODO This should be refactored to use javax validation.
 	private void validate(LegalEntity legalEntity) {
-		if (legalEntity.getMid() == null) throw new RuntimeException("Municipality ID empty.");
-		if (legalEntity.getOfficialName() == null) throw new RuntimeException("Official Name is empty");
-		if (legalEntity.getOfficialAddress() == null) throw new RuntimeException("Official Address is empty");
+		if (legalEntity.getMid() == null) throw new RuntimeException("Municipality ID is empty");
+		if (StringUtils.isEmpty(legalEntity.getOfficialName())) throw new RuntimeException("Official Name is empty");
+		if (StringUtils.isEmpty(legalEntity.getOfficialAddress())) throw new RuntimeException("Official Address is empty");
 		if (legalEntity.getRegistrationNumber() == null) throw new RuntimeException("Registration Number is empty");
 		if (legalEntity.getCountry() == null) throw new RuntimeException("Country is empty or invalid");
 		if (legalEntity.getCallNumber() == null) throw new RuntimeException("Call Number is empty");
 		if (legalEntity.getPostalCode() != null && legalEntity.getPostalCode().length() > 10) throw new RuntimeException("Postal code should be up to 10 digits");
 	}
 
-	public LegalEntity getLegalEntityByMunicipalityPortalId(Long mid) {
-		return legalEntityRepository.findByMid(mid);
+	public LegalEntity getLegalEntityByMunicipalityPortalIdOrOfficialNameIgnoreCase(Long mid, String officialName) {
+		return legalEntityRepository.findByMidOrOfficialNameIgnoreCase(mid, officialName);
 	}
 
 	public LegalEntity saveLegalEntity(LegalEntity legalEntity) {
@@ -124,5 +124,9 @@ public class LegalEntityService {
 
 	public List<LegalEntity> getAllLegalEntitiesForExport() {
 		return legalEntityRepository.findLegalEntitiesProcessedInAbac();
+	}
+
+	public LegalEntity getLegalEntityByMunicipalityPortalId(Long municipalityPortalId) {
+		return legalEntityRepository.findByMid(municipalityPortalId);
 	}
 }

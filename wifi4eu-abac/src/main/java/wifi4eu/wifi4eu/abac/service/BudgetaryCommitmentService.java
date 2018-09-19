@@ -52,11 +52,11 @@ public class BudgetaryCommitmentService {
 		if(budgetaryCommitment != null) {
 			position.setBudgetaryCommitment(budgetaryCommitment);
 		} else {
-			budgetaryCommitment = new BudgetaryCommitment();
+			position.setBudgetaryCommitment(new BudgetaryCommitment());
 		}
 
 		LegalEntity legalEntity = legalEntityService.getLegalEntityByMunicipalityPortalId(budgetaryCommitmentCSVRow.getMunicipalityPortalId());
-		budgetaryCommitment.setLegalEntity(legalEntity);
+		position.getBudgetaryCommitment().setLegalEntity(legalEntity);
 
 		return position;
 	}

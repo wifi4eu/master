@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.abac.data.dto.LegalEntityInformationCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.*;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 
+import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
 import wifi4eu.wifi4eu.abac.data.enums.NotificationType;
 import wifi4eu.wifi4eu.abac.data.repository.ImportLogRepository;
 
@@ -94,7 +95,6 @@ public class ImportDataService {
 		return importLog;
 	}
 
-	@Transactional
 	public ImportLog importBudgetaryCommitments(String filename, byte[] file) {
 
 		FileDTO fileDTO = new FileDTO();
@@ -155,18 +155,12 @@ public class ImportDataService {
 	 * Legal Commitments will be treated as a regular upload of documents where the docType is GRANT_AGREEMENT
 	 * @param file
 	 */
-	@Transactional(Transactional.TxType.REQUIRED)
 	public ImportLog importLegalCommitments(String filename, byte[] file) {
 
 		//generate a unique batch file ID
 		String batchRef = UUID.randomUUID().toString();
 
 		String errors = importDataViaZipFile(file, batchRef);
-
-		//create the lines in the database
-		if(StringUtils.isEmpty(errors)) {
-			legalCommitmentService.createLegalCommitments(batchRef);
-		}
 
 		//log the imported file
 		ImportLog importLog = logImport(filename, batchRef, ecasUserService.getCurrentUsername(), errors);
@@ -207,7 +201,7 @@ public class ImportDataService {
 		}
 
 		if(documentsCSVFile != null) {
-			errors.appendln(importDocuments(documentsCSVFile));
+			errors.appendln(importDocuments(documentsCSVFile, batchRef));
 		}
 
 		return errors.toString();
@@ -228,7 +222,7 @@ public class ImportDataService {
 		for (LegalEntityInformationCSVRow legalEntityInformationCSVRow : legalEntities) {
 
 			try  {
-				LegalEntity legalEntity = legalEntityService.getLegalEntityByMunicipalityPortalId(legalEntityInformationCSVRow.getMid());
+				LegalEntity legalEntity = legalEntityService.getLegalEntityByMunicipalityPortalIdOrOfficialNameIgnoreCase(legalEntityInformationCSVRow.getMid(), legalEntityInformationCSVRow.getOfficialName());
 
 				if (legalEntity == null) {
 					//map the csv row to the LegalEntity object
@@ -279,7 +273,7 @@ public class ImportDataService {
 		documentsToBeImported.put(fileDTO.getFileName(), fileDTO);
 	}
 
-	private String importDocuments(FileDTO fileDTO) {
+	private String importDocuments(FileDTO fileDTO, String batchRef) {
 
 		StrBuilder errors = new StrBuilder();
 		List<LegalEntityDocumentCSVRow> documents = new ArrayList<>();
@@ -294,7 +288,10 @@ public class ImportDataService {
 		for (LegalEntityDocumentCSVRow documentCSVRow : documents) {
 
 			try {
-				Document document = documentService.getDocumentByPortalId(documentCSVRow.getDocumentPortalId());
+				Document document = null;
+				if (documentCSVRow.getDocumentPortalId() != null){
+					document = documentService.getDocumentByPortalId(documentCSVRow.getDocumentPortalId());
+				}
 
 				if (document == null) {
 					document = documentService.mapDocumentCSVToEntity(documentCSVRow);
@@ -302,8 +299,12 @@ public class ImportDataService {
 						document.setData(documentsToBeImported.get(documentCSVRow.getDocumentFileName()).getContent());
 					}
 					documentService.saveDocument(document);
+
+					if(document.getType().equals(DocumentType.GRANT_AGREEMENT)) {
+						legalCommitmentService.createLegalCommitment(document, batchRef);
+					}
 				} else {
-					String warn = String.format("Document ID %s: Portal ID/Name %s/%s already exists in the DB", document.getPortalId(), document.getName());
+					String warn = String.format("Document ID %s: already exists", document.getPortalId(), document.getPortalId(), document.getName());
 					errors.appendln(warn);
 					log.warn(warn);
 				}
