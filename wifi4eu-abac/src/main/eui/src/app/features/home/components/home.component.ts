@@ -11,13 +11,13 @@ import { UxService } from '@eui/ux-core';
 export class HomeComponent{
   
     private errorMessage: string;
+    private errorBatchRef: string;
     private uploadProgress: number;
   
     constructor(protected api: ApiModule, protected uxService: UxService){
     }
   
     importLegalEntity(event){
-        this.errorMessage = undefined;
         if (event && event.target && event.target.files && event.target.files.length === 1) {
             this.showProgress();
             let file: File = event.target.files['0'];
@@ -34,7 +34,7 @@ export class HomeComponent{
                 },
                 (err) => {
                     this.hideProgress();
-                    this.showError(undefined);
+                    this.showError();
                 }
             );
             
@@ -42,7 +42,6 @@ export class HomeComponent{
     }
   
     importBudgetaryCommitment(event){
-        this.errorMessage = undefined;
         if (event && event.target && event.target.files && event.target.files.length === 1) {
             this.showProgress();
             let file: File = event.target.files['0'];
@@ -56,7 +55,7 @@ export class HomeComponent{
                 },
                 (err) => {
                     this.hideProgress();
-                    this.showError(undefined);
+                    this.showError();
                 }
             );
             
@@ -64,7 +63,6 @@ export class HomeComponent{
     }
   
     importLegalCommitment(event){
-        this.errorMessage = undefined;
         if (event && event.target && event.target.files && event.target.files.length === 1) {
             this.showProgress();          
             let file: File = event.target.files['0'];
@@ -78,7 +76,7 @@ export class HomeComponent{
                 },
                 (err) => {
                     this.hideProgress();
-                    this.showError(undefined);
+                    this.showError();
                 }
             );
         }
@@ -90,16 +88,18 @@ export class HomeComponent{
   
     handleResponse(response: ResponseDTO){
         this.errorMessage = undefined;
+        this.errorBatchRef = undefined;
         this.hideProgress();
         if (response.success) {
             this.showSuccess();
         } else {
-            this.showError(response.message);
+            this.showError(response.message, response.batchRef);
         }
     }
     
-    showError(message: string){
-        this.errorMessage = message;
+    showError(message?: string, batchRef?: string){
+        this.errorMessage = message ? message : undefined;
+        this.errorBatchRef = batchRef ? batchRef : undefined;
         this.uxService.openMessageBox('messagebox_file_import_fail');
     }
   
