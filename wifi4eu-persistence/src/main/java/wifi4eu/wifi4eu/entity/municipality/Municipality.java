@@ -1,9 +1,11 @@
 package wifi4eu.wifi4eu.entity.municipality;
 
+import wifi4eu.wifi4eu.entity.exportImport.BudgetaryCommitment;
 import wifi4eu.wifi4eu.entity.location.Lau;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -36,6 +38,9 @@ public class Municipality {
 
     @OneToMany(mappedBy = "municipality")
     private List<Registration> registrations;
+
+    @OneToMany(mappedBy = "municipality")
+    private List<BudgetaryCommitment> budgetaryCommitments;
 
     public Municipality() {
     }
@@ -113,5 +118,16 @@ public class Municipality {
 
     public void setRegistrations(List<Registration> registrations) {
         this.registrations = registrations;
+    }
+
+    public List<BudgetaryCommitment> getBudgetaryCommitments() {
+        if (budgetaryCommitments == null) {
+            budgetaryCommitments = new ArrayList<>(0);
+        }
+        return budgetaryCommitments;
+    }
+
+    public void setBudgetaryCommitments(List<BudgetaryCommitment> budgetaryCommitments) {
+        this.budgetaryCommitments = budgetaryCommitments;
     }
 }

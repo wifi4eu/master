@@ -1,14 +1,10 @@
 package wifi4eu.wifi4eu.service.exportImport;
 
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,25 +13,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
-import wifi4eu.wifi4eu.common.dto.model.ExportImportBudgetaryCommitmentDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.common.helper.ParserJSON2CSV;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
+import wifi4eu.wifi4eu.entity.exportImport.AbacStatus;
 import wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation;
+import wifi4eu.wifi4eu.entity.exportImport.BudgetaryCommitment;
 import wifi4eu.wifi4eu.entity.exportImport.ExportFile;
 import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
+import wifi4eu.wifi4eu.entity.exportImport.GlobalCommitment;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBudgetaryCommitmentMapper;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
 import wifi4eu.wifi4eu.repository.exportImport.BeneficiaryInformationRepository;
+import wifi4eu.wifi4eu.repository.exportImport.BudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportBudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
+import wifi4eu.wifi4eu.repository.exportImport.GlobalCommitmentRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ValidatedLefRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
@@ -47,6 +45,7 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.DateUtils;
 import wifi4eu.wifi4eu.util.ExportFileUtils;
+import wifi4eu.wifi4eu.util.parsing.BudgetaryCommitmentCSVColumn;
 import wifi4eu.wifi4eu.util.parsing.LegalEntityCSVColumn;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,8 +53,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -70,6 +72,9 @@ public class ExportImportWifi4euAbacService {
     private static final String FILENAME_EXPORT_DOCUMENTS_DATA = "portal_exportBeneficiaryDocuments.csv";
 
     private static final String FILENAME_EXPORT_BENEFICIARIES_DATA = "portal_exportBeneficiaryInformation.csv";
+
+    // TODO: make it an external property @Value
+    private static final Integer GRANTED_AMOUNT = 15000;
 
     @Autowired
     private ExportImportRegistrationDataMapper exportImportRegistrationDataMapper;
@@ -119,6 +124,12 @@ public class ExportImportWifi4euAbacService {
     @Autowired
     private AzureBlobConnector azureBlobConnector;
 
+    @Autowired
+    private BudgetaryCommitmentRepository budgetaryCommitmentRepository;
+
+    @Autowired
+    private GlobalCommitmentRepository globalCommitmentRepository;
+
     @Transactional
     public boolean importLegalEntityFBCValidate(InputStream fileDataStream) throws IOException {
         _log.debug("importLegalEntityFBCValidate");
@@ -147,8 +158,9 @@ public class ExportImportWifi4euAbacService {
             _log.info("ABAC Reference from LEF reference [{}] and status [{}]", abacReference, abacStatus);
 
             try {
-                ExportImportRegistrationData municpalitiesAbac =  new ExportImportRegistrationData();
-                municpalitiesAbac.setMunicipality(Integer.parseInt(municipalityId));
+                ExportImportRegistrationData municpalitiesAbac = new ExportImportRegistrationData();
+                Municipality municipality = municipalityRepository.getOne(Integer.parseInt(municipalityId));
+                municpalitiesAbac.setMunicipality(municipality);
                 municpalitiesAbac.setAbacReference(abacReference);
                 municpalitiesAbac.setAbacStandarName(abacLatinName);
 
@@ -241,7 +253,7 @@ public class ExportImportWifi4euAbacService {
         }
         csvDocumentData.append(beneficiaryInformation.getMun_id()).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getDoc_portalId())).append(ExportFileUtils.SEPARATOR)
-                .append(defaultEmpty(beneficiaryInformation.getDoc_name())).append(ExportFileUtils.SEPARATOR)
+                .append(StringUtils.defaultString(beneficiaryInformation.getDoc_name(), beneficiaryInformation.getDoc_fileName())).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getDoc_fileName())).append(ExportFileUtils.SEPARATOR)
                 .append(defaultEmpty(beneficiaryInformation.getDoc_mimeType())).append(ExportFileUtils.SEPARATOR)
                 .append(dateUtilities.convertDate2String(beneficiaryInformation.getDoc_date())).append(ExportFileUtils.SEPARATOR)
@@ -300,37 +312,97 @@ public class ExportImportWifi4euAbacService {
         rF.readExcelFileRegistrationData();
     }
 
-    public ResponseDTO exportBudgetaryCommitment() throws Exception {
+    public byte[] exportBudgetaryCommitment() throws IOException {
         _log.debug("exportBudgetaryCommitment");
-        ResponseDTO result = new ResponseDTO();
-        Gson gson = new GsonBuilder().create();
-        JsonParser parser = new JsonParser();
-        JsonObject resultJson = new JsonObject();
-        List<ExportImportBudgetaryCommitmentDTO> applicationsBudgetaryCommitment = exportImportBudgetaryCommitmentMapper
-                .toDTOList(Lists.newArrayList(exportImportBudgetaryCommitmentRepository.findExportImportBC()));
-        JsonArray applicationsBudgetaryCommitmentJsonArray = new JsonArray();
-        if (applicationsBudgetaryCommitment != null && !applicationsBudgetaryCommitment.isEmpty()) {
-            for (ExportImportBudgetaryCommitmentDTO application : applicationsBudgetaryCommitment) {
-                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
-                applicationsBudgetaryCommitmentJsonArray.add(applicationJson);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+             CSVPrinter printer = new CSVPrinter(outputStreamWriter, getBudgetaryCommitmentCSVHeaders())) {
+            List<BudgetaryCommitment> budgetaryCommitments = createBudgetaryCommitments();
+            budgetaryCommitments.forEach(budgetaryCommitment -> {
+                _log.debug("Writing a CSV record for the municipality with an id [{}]", budgetaryCommitment.getMunicipality().getId());
+
+                writeBudgetaryCommitmentRecord(printer, budgetaryCommitment);
+            });
+        }
+
+        return outputStream.toByteArray();
+    }
+
+    private List<BudgetaryCommitment> createBudgetaryCommitments() {
+        List<ExportImportRegistrationData> exportImportRegistrationData = exportImportRegistrationDataRepository.findRegistrationDataForBudgetaryCommitment();
+        if (CollectionUtils.isNotEmpty(exportImportRegistrationData)) {
+
+            // TODO: take all. Later we will select the one based on the call.
+            List<GlobalCommitment> currentGlobalCommitments = globalCommitmentRepository.findAllByOrderByPriority();
+            if (CollectionUtils.isNotEmpty(currentGlobalCommitments)) {
+
+                List<BudgetaryCommitment> budgetaryCommitments = new ArrayList<>();
+
+                int globalCommitmentIndex = 0;
+                GlobalCommitment[] globalCommitments = currentGlobalCommitments.toArray(new GlobalCommitment[0]);
+
+                for (ExportImportRegistrationData registrationData : exportImportRegistrationData) {
+
+                    int neededAmount = GRANTED_AMOUNT;
+                    while (neededAmount > 0) {
+
+                        int currentGlobalAmount = globalCommitments[globalCommitmentIndex].getAmmount();
+
+                        if (currentGlobalAmount <= 0 && globalCommitmentIndex >= globalCommitments.length - 1) {
+                            // It means that there are no Global Commitments with money
+                            break;
+                        } else {
+                            if (currentGlobalAmount > 0) {
+                                globalCommitments[globalCommitmentIndex].setAmmount(Math.max(currentGlobalAmount - neededAmount, 0));
+
+                                BudgetaryCommitment budgetaryCommitment = new BudgetaryCommitment();
+                                budgetaryCommitment.setMunicipality(registrationData.getMunicipality());
+                                budgetaryCommitment.setGlobalCommitment(globalCommitments[globalCommitmentIndex]);
+                                budgetaryCommitment.setPosition(globalCommitmentIndex + 1);
+                                budgetaryCommitment.setAmmount(Math.min(currentGlobalAmount, neededAmount));
+                                budgetaryCommitments.add(budgetaryCommitment);
+
+                                neededAmount -= budgetaryCommitment.getAmmount();
+                            } else {
+                                ++globalCommitmentIndex;
+                            }
+                        }
+                    }
+
+                }
+
+                globalCommitmentRepository.save(Arrays.asList(globalCommitments));
+                budgetaryCommitmentRepository.save(budgetaryCommitments);
+
+                return budgetaryCommitments;
             }
         }
-        resultJson.addProperty("createTime", new Date().getTime());
-        resultJson.add("budgetaryCommitment", applicationsBudgetaryCommitmentJsonArray);
-        result.setSuccess(true);
-        result.setData("[" + resultJson.toString() + "]");
-
-        // WIFIFOREU-2498 JSON -> CSV - Process the JSON output file into the expected
-        // CSV
-        String csvStringFile = ParserJSON2CSV.parseJSON2CSV((String) result.getData(), "budgetaryCommitment",
-                new String[]{"id", "mun_OfficialName", "mun_OfficialAddress", "org_Name", "org_TypeCode", "sup_Name",
-                        "sup_BankAccount", "reg_RegistartionNumber", "app_VoucherAwarded", "app_BcStatus",
-                        "app_BcExport", "app_BcImport", "app_LefStatus", "app_LefExport", "app_LefImport"});
-        result.setData(csvStringFile);
-
-        result.setError(null);
-        return result;
+        return Collections.emptyList();
     }
+
+    private CSVFormat getBudgetaryCommitmentCSVHeaders() {
+        return CSVFormat.EXCEL.withHeader(
+                BudgetaryCommitmentCSVColumn.MUNICIPALITY_ID.getValue(),
+                BudgetaryCommitmentCSVColumn.GLOBAL_COMMITMENT_ABAC_KEY.getValue(),
+                BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_POSITION.getValue(),
+                BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_POSITION_AMOUNT.getValue()
+        );
+    }
+
+    private void writeBudgetaryCommitmentRecord(CSVPrinter printer, BudgetaryCommitment budgetaryCommitment) {
+        try {
+            printer.printRecord(
+                    budgetaryCommitment.getMunicipality().getId(),
+                    budgetaryCommitment.getGlobalCommitment().getGlobalCommitment(),
+                    budgetaryCommitment.getPosition(),
+                    budgetaryCommitment.getAmmount()
+            );
+        } catch (IOException e) {
+            _log.error("Error writing a BC record to a CSV file", e);
+        }
+    }
+
 
     private Integer setIssueToDgconnBeneficiary(Integer lauId) {
         Integer issueType = 0;
@@ -662,6 +734,48 @@ public class ExportImportWifi4euAbacService {
             }
         }
         return issueType;
+    }
+
+
+    @Transactional
+    public boolean importBudgetaryCommitment(InputStream fileDataStream) throws IOException {
+        _log.debug("importBudgetaryCommitment");
+
+        try (InputStreamReader inputStreamReader = new InputStreamReader(fileDataStream)) {
+            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
+            csvParser.forEach(csvRecord -> {
+                BudgetaryCommitment budgetaryCommitment = parseBudgetaryCommitment(csvRecord);
+                if (budgetaryCommitment != null) {
+                    budgetaryCommitmentRepository.save(budgetaryCommitment);
+                }
+            });
+        }
+        return true;
+    }
+
+    private BudgetaryCommitment parseBudgetaryCommitment(CSVRecord csvRecord) {
+
+        AbacStatus abacStatus = AbacStatus.valueOf(csvRecord.get(BudgetaryCommitmentCSVColumn.ABAC_STATUS));
+        if (abacStatus == AbacStatus.ABAC_VALID) {
+            String municipalityId = csvRecord.get(BudgetaryCommitmentCSVColumn.MUNICIPALITY_ID);
+            String commitmentLevel2Position = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_POSITION);
+            String commitmentLevel2PositionAmount = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_POSITION_AMOUNT);
+
+            BudgetaryCommitment budgetaryCommitment = budgetaryCommitmentRepository.findByMunicipalityIdAndPositionAndAmmount(
+                    Integer.parseInt(municipalityId),
+                    Integer.parseInt(commitmentLevel2Position),
+                    Integer.parseInt(commitmentLevel2PositionAmount)
+            );
+
+            if (budgetaryCommitment != null) {
+                String level2AbacKey = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_ABAC_KEY);
+                budgetaryCommitment.setAbacBcKey(level2AbacKey);
+
+                return budgetaryCommitment;
+            }
+        }
+
+        return null;
     }
 
 }
