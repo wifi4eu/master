@@ -1,0 +1,97 @@
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="wifi4euPersistenceTest" transaction-type="RESOURCE_LOCAL">
+
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
+        <class>wifi4eu.wifi4eu.repository.logEmails.LogEmailRepository</class>
+        <class>wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository</class>
+        <class>wifi4eu.wifi4eu.entity.thread.UserThreads</class>
+        <class>wifi4eu.wifi4eu.entity.thread.Thread</class>
+        <class>wifi4eu.wifi4eu.entity.thread.ThreadMessage</class>
+        <class>wifi4eu.wifi4eu.entity.history_action.UserHistoryAction</class>
+        <class>wifi4eu.wifi4eu.entity.access_point.AccessPoint</class>
+        <class>wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement</class>
+        <class>wifi4eu.wifi4eu.entity.installation.InstallationSite</class>
+        <class>wifi4eu.wifi4eu.entity.installation.InstallationSiteWhitelist</class>
+        <class>wifi4eu.wifi4eu.entity.organization.Organization</class>
+        <class>wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF</class>
+        <class>wifi4eu.wifi4eu.entity.exportImport.BudgetaryCommitment</class>
+        <class>wifi4eu.wifi4eu.entity.exportImport.ExportImportBeneficiaryInformation</class>
+        <class>wifi4eu.wifi4eu.entity.exportImport.BeneficiaryInformation</class>
+        <class>wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData</class>
+        <class>wifi4eu.wifi4eu.entity.exportImport.GlobalCommitment</class>
+        <class>wifi4eu.wifi4eu.entity.exportImport.ExportImportBudgetaryCommitment</class>
+        <class>wifi4eu.wifi4eu.entity.exportImport.ExportFile</class>
+        <class>wifi4eu.wifi4eu.entity.exportImport.ValidatedBC</class>
+        <class>wifi4eu.wifi4eu.entity.admin.AdminActions</class>
+        <class>wifi4eu.wifi4eu.entity.logEmails.LogEmail</class>
+        <class>wifi4eu.wifi4eu.entity.mayor.Mayor</class>
+        <class>wifi4eu.wifi4eu.entity.timeline.Timeline</class>
+        <class>wifi4eu.wifi4eu.entity.voucherManagement.VoucherManagement</class>
+        <class>wifi4eu.wifi4eu.entity.audit.AuditData</class>
+        <class>wifi4eu.wifi4eu.entity.supplier.SupplierUser</class>
+        <class>wifi4eu.wifi4eu.entity.supplier.SupplierListItem</class>
+        <class>wifi4eu.wifi4eu.entity.supplier.Supplier</class>
+        <class>wifi4eu.wifi4eu.entity.supplier.SuppliedRegion</class>
+        <class>wifi4eu.wifi4eu.entity.municipality.Municipality</class>
+        <class>wifi4eu.wifi4eu.entity.call.Call</class>
+        <class>wifi4eu.wifi4eu.entity.call.CallCustom</class>
+        <class>wifi4eu.wifi4eu.entity.user.UserContactDetails</class>
+        <class>wifi4eu.wifi4eu.entity.user.UserAuthorizedPerson</class>
+        <class>wifi4eu.wifi4eu.entity.user.User</class>
+        <class>wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar</class>
+        <class>wifi4eu.wifi4eu.entity.voucher.SimpleLau</class>
+        <class>wifi4eu.wifi4eu.entity.voucher.VoucherComponent</class>
+        <class>wifi4eu.wifi4eu.entity.voucher.VoucherAssignment</class>
+        <class>wifi4eu.wifi4eu.entity.voucher.SimpleMunicipality</class>
+        <class>wifi4eu.wifi4eu.entity.voucher.SimpleRegistration</class>
+        <class>wifi4eu.wifi4eu.entity.voucher.VoucherSimulation</class>
+        <class>wifi4eu.wifi4eu.entity.registration.ConditionsAgreement</class>
+        <class>wifi4eu.wifi4eu.entity.registration.RegistrationUsers</class>
+        <class>wifi4eu.wifi4eu.entity.registration.FileType</class>
+        <class>wifi4eu.wifi4eu.entity.registration.LegalFile</class>
+        <class>wifi4eu.wifi4eu.entity.registration.LegalFileCorrectionReason</class>
+        <class>wifi4eu.wifi4eu.entity.registration.Registration</class>
+        <class>wifi4eu.wifi4eu.entity.security.TempToken</class>
+        <class>wifi4eu.wifi4eu.entity.security.RightConstants</class>
+        <class>wifi4eu.wifi4eu.entity.security.Right</class>
+        <class>wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem</class>
+        <class>wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryDisplayedList</class>
+        <class>wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryFinalListItem</class>
+        <class>wifi4eu.wifi4eu.entity.location.NutCallCustom</class>
+        <class>wifi4eu.wifi4eu.entity.location.Nuts</class>
+        <class>wifi4eu.wifi4eu.entity.location.Lau</class>
+        <class>wifi4eu.wifi4eu.entity.invitationContacts.InvitationContact</class>
+        <class>wifi4eu.wifi4eu.entity.representation.Representation</class>
+        <class>wifi4eu.wifi4eu.entity.warnings.RegistrationWarning</class>
+        <class>wifi4eu.wifi4eu.entity.application.ApplicantListItem</class>
+        <class>wifi4eu.wifi4eu.entity.application.CorrectionRequestEmail</class>
+        <class>wifi4eu.wifi4eu.entity.application.ApplyVoucher</class>
+        <class>wifi4eu.wifi4eu.entity.application.ApplicationInvalidateReason</class>
+        <class>wifi4eu.wifi4eu.entity.application.ApplicationAuthorizedPerson</class>
+        <class>wifi4eu.wifi4eu.entity.application.ApplicationComment</class>
+        <class>wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil</class>
+        <class>wifi4eu.wifi4eu.entity.application.Application</class>
+        <class>wifi4eu.wifi4eu.entity.helpdesk.HelpdeskIssue</class>
+        <class>wifi4eu.wifi4eu.entity.helpdesk.HelpdeskComment</class>
+
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+        <properties>
+            <property name="eclipselink.logging.level" value="WARNING"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
+            <property name="eclipselink.logging.level.sql" value="WARNING"/>
+
+            <property name="eclipselink.deploy-on-startup" value="true"/>
+            <property name="eclipselink.target-database" value="SQLServer"/>
+            <property name="eclipselink.cache.shared.default" value="false"/>
+
+            <property name="eclipselink.weaving" value="false"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>

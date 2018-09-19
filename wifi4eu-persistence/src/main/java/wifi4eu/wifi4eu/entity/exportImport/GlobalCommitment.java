@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.entity.exportImport;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity

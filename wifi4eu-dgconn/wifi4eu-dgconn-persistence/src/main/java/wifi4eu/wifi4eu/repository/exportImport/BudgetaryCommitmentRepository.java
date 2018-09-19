@@ -6,7 +6,7 @@ import wifi4eu.wifi4eu.entity.exportImport.BudgetaryCommitment;
 
 public interface BudgetaryCommitmentRepository extends JpaRepository<BudgetaryCommitment, Integer> {
 
-    @Query(value = "select sum(ammount) from BudgetaryCommitment where GlobalCommitment.id = :globalCommitmentId")
+    @Query(value = "select sum(bc.ammount) from BudgetaryCommitment bc where bc.global_commitment = :globalCommitmentId")
     Integer totalSpentForGlobalCommitment(Integer globalCommitmentId);
 
     BudgetaryCommitment findByMunicipalityIdAndPositionAndAmmount(Integer municipalityId, Integer position, Integer ammount);
