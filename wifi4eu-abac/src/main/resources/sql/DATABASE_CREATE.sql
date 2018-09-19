@@ -16,7 +16,7 @@ case
   when oj.obj_status_cd = 'VALID' and oj.wkflw_stat_cd in ('INIT','PEND')
   then 'WAITING_APPROVAL'
 
-  when oj.obj_status_cd = 'INVALID' or err.msg_txt is not null
+  when err.msg_txt is not null
   then 'ABAC_ERROR'
   else 'UNMAPPED_STATUS'
 end  as status
@@ -41,7 +41,7 @@ case
   when oj.obj_status_cd = 'VALID' and oj.wkflw_stat_cd = 'FIN'
   then 'ABAC_VALID'
 
-  when oj.obj_status_cd = 'INVALID' or err.msg_txt is not null
+  when err.msg_txt is not null
   then 'ABAC_ERROR'
   else 'UNMAPPED_STATUS'
 end  as status
@@ -352,14 +352,21 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 	"FILENAME" VARCHAR2(200 BYTE),
 	"IMPORT_DATE" DATE,
 	"USER_ID" VARCHAR2(20 BYTE),
-	"BATCH_REF" VARCHAR2(50 BYTE)
+	"BATCH_REF" VARCHAR2(50 BYTE),
+	"ERRORS" CLOB
    ) SEGMENT CREATION IMMEDIATE
   PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255
  NOCOMPRESS LOGGING
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
   BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
-  TABLESPACE "WIFI4EU_ABAC" ;
+  TABLESPACE "WIFI4EU_ABAC"
+ LOB ("ERRORS") STORE AS BASICFILE (
+  TABLESPACE "WIFI4EU_ABAC" ENABLE STORAGE IN ROW CHUNK 8192 RETENTION
+  NOCACHE LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)) ;
 --------------------------------------------------------
 --  DDL for Table WIF_LANGUAGE
 --------------------------------------------------------
@@ -486,7 +493,7 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --  DDL for Sequence SEQ_ABAC_RUN_ID
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_ABAC_RUN_ID"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 22120 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_ABAC_RUN_ID"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 325820 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_BANK_ACCOUNT
 --------------------------------------------------------
@@ -496,42 +503,42 @@ group by LOC_OBJ_FOREIGN_ID, status, le_key;
 --  DDL for Sequence SEQ_BC_LEVEL2_POSITION
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BC_LEVEL2_POSITION"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 81 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BC_LEVEL2_POSITION"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 181 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_BUDGETARY_COMMITMENT
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BUDGETARY_COMMITMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 81 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_BUDGETARY_COMMITMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 201 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_DOCUMENT
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_DOCUMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 501 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_DOCUMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 741 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_IMPORT_LOG
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_IMPORT_LOG"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 121 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_IMPORT_LOG"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 161 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_LEGAL_COMMITMENT
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_COMMITMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 61 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_COMMITMENT"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 81 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_LEGAL_ENTITY
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_ENTITY"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 711 NOCACHE  NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_LEGAL_ENTITY"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 983 NOCACHE  NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_NOTIFICATION
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_NOTIFICATION"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 121 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_NOTIFICATION"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 181 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence SEQ_WIF_ABAC_STATUS
 --------------------------------------------------------
 
-   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_WIF_ABAC_STATUS"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 461 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "WIFI4EU_ABAC"."SEQ_WIF_ABAC_STATUS"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 218961 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Index WIF_DOCUMENT_TYPE_PK
 --------------------------------------------------------
@@ -736,7 +743,7 @@ set define off;
   user_imported_name        varchar2(100);
   supporting_doc_ares_ref   varchar2(100);
   request_type              varchar2(20) := 'BUDGETARY_COMMITMENT';
-  status_waiting_for_abac   varchar2(2) := 'WAITING_FOR_ABAC';
+  status_waiting_for_abac   varchar2(20) := 'WAITING_FOR_ABAC';
 BEGIN
 
   --global constants
@@ -747,7 +754,7 @@ BEGIN
 
   select
     le.ABAC_FEL_ID, 'WIFI4EU ' || upper(le.OFFICIAL_NAME), l_loc_obj_foreign_id || '.SECONDARY.' || le.ABAC_FEL_ID,
-    le.user_imported as user_imported_login, (upper(u.last_name) || ' ' || u.first_name) as user_imported_name,
+    upper(le.user_imported) as user_imported_login, (upper(u.last_name) || ' ' || u.first_name) as user_imported_name,
     doc.ares_reference as supporting_doc_ares_ref
     into ABAC_FEL_ID, header_title, CONTR_REF_LOC_OBJ_FOREIGN_ID, user_imported_login, user_imported_name, supporting_doc_ares_ref
   from WIF_LEGAL_ENTITY le
@@ -850,7 +857,7 @@ BEGIN
    ACTION_CD, SIGNATURE, COMMENT_TXT, AGENT_ID, WRKFLW_CENTER_CD, WRKFLW_ORG_NAME, SIGN_AS_AGENT_TYPE, SUPPLIED_AGENT_NAME)
   Values
     (l_run_id, 80, l_loc_sys_cd, l_destination, 'COM', 'COM', 'CREATE', 'VISA', l_loc_obj_foreign_id, 'N',
-    'AC', user_imported_name, 'VISA GIVEN BY WIFI4EU', user_imported_name, 'WIFI4EU', 'INEA', 'FA', user_imported_name);
+    'AC', user_imported_name, 'VISA GIVEN BY WIFI4EU', user_imported_login, 'WIFI4EU', 'INEA', 'FA', user_imported_login);
 
   --STEP 7 - Call the stored procedure to process the data
   pck_abac_batchint_client.p_submit_batch@ABAC_SHARED(l_run_id, l_loc_sys_cd, 'BATCH_QUE1', l_que_id);
@@ -896,7 +903,7 @@ BEGIN
 
   FOR legalCommitment in (
     select le.abac_fel_id as le_fel_id, lc.id as lc_id, bc.COMMITMENT_L2_KEY, bc_l2.COMMITMENT_L2_AMOUNT, lc.GRANT_AGREEMENT_CNTRSIGN_DATE, le.OFFICIAL_NAME,
-    le.user_imported as user_imported_login, (upper(u.last_name) || ' ' || u.first_name) as user_imported_name
+    upper(le.user_imported) as user_imported_login, (upper(u.last_name) || ' ' || u.first_name) as user_imported_name
     from wif_legal_commitment lc
     join wif_legal_entity le on le.id = lc.legal_entity_id
     join WIF_AUTH_USERS u on le.user_imported = u.USERNAME
@@ -922,7 +929,7 @@ BEGIN
      Values
        (l_run_id, 10, l_loc_sys_cd, l_destination, 'LCM',
         'LCH', 'CREATE', 'LEGAL COMMITMENT HEADER', l_loc_obj_foreign_id, 'N',
-        'GRT', 'BRUSSELS WIFI 4EU - NULL - SIMULATION',
+        'GRT', 'WIFI 4EU ' || legalCommitment.OFFICIAL_NAME,
         'NR', '\\EU\CE\INEA',
         'EGY', 'Y',
         'FR2018', 'FR2018', to_char(legalCommitment.GRANT_AGREEMENT_CNTRSIGN_DATE, 'DD-MON-YYYY'),
@@ -1119,8 +1126,8 @@ BEGIN
        (l_run_id, 80, l_loc_sys_cd, l_destination, l_trans_area_cd,
         l_trans_tp_cd, l_trans_action_cd, l_visa_table_alias, l_loc_obj_foreign_id, 'N',
         l_visa_action_cd, legalEntity.user_import_name, l_visa_comment, NULL, NULL,
-        NULL, legalEntity.user_imported, l_visa_wlkflw_center_cd, l_visa_wlkflw_orgname, l_visa_agent_type,
-        legalEntity.user_imported, NULL);
+        NULL, upper(legalEntity.user_imported), l_visa_wlkflw_center_cd, l_visa_wlkflw_orgname, l_visa_agent_type,
+        upper(legalEntity.user_imported), NULL);
 
       -- submit batch transmission in ABAC :
       pck_abac_batchint_client.p_submit_batch@ABAC_SHARED(l_run_id, l_loc_sys_cd, 'BATCH_QUE1', l_que_id);
@@ -1337,7 +1344,6 @@ END UPDATE_LEF_STATUS_FROM_ABAC;
   TABLESPACE "WIFI4EU_ABAC"  ENABLE;
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("DATE_CREATED" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("WF_STATUS" NOT NULL ENABLE);
-  ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("POSTAL_CODE" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("OFFICIAL_ADDRESS" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("COUNTRY_CODE" NOT NULL ENABLE);
   ALTER TABLE "WIFI4EU_ABAC"."WIF_LEGAL_ENTITY" MODIFY ("OFFICIAL_NAME" NOT NULL ENABLE);
