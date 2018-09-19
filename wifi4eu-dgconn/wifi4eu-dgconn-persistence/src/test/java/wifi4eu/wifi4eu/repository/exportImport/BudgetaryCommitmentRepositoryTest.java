@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.repository.exportImport;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class BudgetaryCommitmentRepositoryTest {
     }
 
     @Test
+    @Ignore
     public void totalSpentForGlobalCommitment() {
 
         budgetaryCommitmentRepository.totalSpentForGlobalCommitment(1);
