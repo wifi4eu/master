@@ -28,6 +28,9 @@ public class DateTimeUtils {
 	}
 
 	public static Date parseDate(String date, String format) throws ParseException {
+
+		if (date == null) return null;
+
 		DateFormat dateFormat = new SimpleDateFormat(format);
 		Date parsedDate = null;
 		try {

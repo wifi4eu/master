@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.enums.DocumentType;
@@ -44,13 +45,17 @@ public class DocumentCSVFileParser extends AbstractCSVFileParser {
 			for (CSVRecord csvRecord : csvParser) {
 				LegalEntityDocumentCSVRow documentCSVRow = new LegalEntityDocumentCSVRow();
 
-				documentCSVRow.setMunicipalityPortalId(Long.parseLong(csvRecord.get(LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID)));
-				documentCSVRow.setDocumentPortalId(Long.parseLong(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID)));
+				documentCSVRow.setMunicipalityPortalId(StringUtils.isEmpty(csvRecord.get(LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID)) ?  null :
+																		Long.parseLong(csvRecord.get(LegalEntityDocumentCSVColumn.MUNICIPALITY_PORTAL_ID)));
+				documentCSVRow.setDocumentPortalId(StringUtils.isEmpty(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID)) ?  null :
+																		Long.parseLong(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_PORTAL_ID)));
 				documentCSVRow.setDocumentName(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_NAME));
 				documentCSVRow.setDocumentFileName(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_FILENAME));
 				documentCSVRow.setDocumentMimeType(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_MIMETYPE));
-				documentCSVRow.setDocumentDate(DateTimeUtils.parseDate(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_DATE), PORTAL_CSV_DATE_FORMAT));
-				documentCSVRow.setDocumentType(DocumentType.valueOf(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_TYPE)));
+				documentCSVRow.setDocumentDate(StringUtils.isEmpty(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_DATE)) ? null :
+																		DateTimeUtils.parseDate(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_DATE), PORTAL_CSV_DATE_FORMAT));
+				documentCSVRow.setDocumentType(StringUtils.isEmpty(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_TYPE)) ? null :
+																		DocumentType.valueOf(csvRecord.get(LegalEntityDocumentCSVColumn.DOCUMENT_TYPE)));
 				documentCSVRow.setAresReference(csvRecord.get(LegalEntityDocumentCSVColumn.ARES_REFERENCE));
 				documents.add(documentCSVRow);
 			}

@@ -47,6 +47,7 @@ public class LegalEntityService {
 		if (legalEntity.getRegistrationNumber() == null) throw new RuntimeException("Registration Number is empty");
 		if (legalEntity.getCountry() == null) throw new RuntimeException("Country is empty or invalid");
 		if (legalEntity.getCallNumber() == null) throw new RuntimeException("Call Number is empty");
+		if (legalEntity.getPostalCode() != null && legalEntity.getPostalCode().length() > 10) throw new RuntimeException("Postal code should be up to 10 digits");
 	}
 
 	public LegalEntity getLegalEntityByMunicipalityPortalId(Long mid) {
@@ -59,9 +60,9 @@ public class LegalEntityService {
 
 		//clean-up the name sent to ABAC
 		if(StringUtils.isEmpty(legalEntity.getAbacLatinName())){
-			legalEntity.setAbacLatinName(StringUtils.abbreviate(XCharacterDecoder.decode(legalEntity.getOfficialName()), ABAC_NAME_MAX_CHARS));
+			legalEntity.setAbacLatinName(XCharacterDecoder.decode(legalEntity.getOfficialName()));
 		}else{
-			legalEntity.setAbacLatinName(StringUtils.abbreviate(legalEntity.getAbacLatinName(),ABAC_NAME_MAX_CHARS));
+			legalEntity.setAbacLatinName(legalEntity.getAbacLatinName());
 		}
 
 		//clean-up the address sent to ABAC

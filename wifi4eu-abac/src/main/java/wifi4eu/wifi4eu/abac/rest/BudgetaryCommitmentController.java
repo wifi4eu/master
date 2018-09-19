@@ -49,10 +49,10 @@ public class BudgetaryCommitmentController {
 		try {
 			ImportLog importLog = importDataService.importBudgetaryCommitments(file.getOriginalFilename(), file.getBytes());
 			if (!StringUtils.isEmpty(importLog.getErrors())) {
-				log.error("error importing");
-				result.error("error importing");
+				log.error("The file was not imported. BatchREF: %s", importLog.getBatchRef());
+				result.error("The file was not imported.", importLog.getBatchRef());
 			} else {
-				result.success("Imported OK!");
+				result.success("The file was successfully.");
 			}
 		}catch(Exception e) {
 			result.error(e.getMessage());
