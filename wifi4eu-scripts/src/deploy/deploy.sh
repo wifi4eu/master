@@ -17,6 +17,18 @@ elif [ $1 == "devnf" ];
 then
 	echo "devnf"
     source "$mydir"/config-devnf.sh
+elif [ $1 == "devbf" ];
+then
+	echo "devbf"
+    source "$mydir"/config-devbf.sh
+elif [ $1 == "devhf" ];
+then
+	echo "devhf"
+    source "$mydir"/config-devhf.sh
+elif [ $1 == "devpg" ];
+then
+	echo "devpg"
+    source "$mydir"/config-devpg.sh
 elif [ $1 == "acc" ];
 then
     echo "acc"
