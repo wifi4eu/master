@@ -1,5 +1,5 @@
-import { Component, ViewChild, HostListener } from "@angular/core";
-import { ActivatedRoute, Router, NavigationEnd, RoutesRecognized } from "@angular/router";
+import { Component, ViewChild } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { LocalStorageService } from "angular-2-local-storage";
 import { Observable } from "rxjs/Observable";
 import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
@@ -14,8 +14,7 @@ import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 import { LegalFileDTOBase, LegalFilesViewDTOBase } from "../../shared/swagger";
 import { Location } from "@angular/common";
-import { NgForm, FormGroup } from "@angular/forms";
-import { Subject } from "rxjs";
+import { NgForm } from "@angular/forms";
 
 
 @Component({
@@ -43,7 +42,6 @@ export class AdditionalInfoComponent {
     @ViewChild('document3') private document3: any;
     @ViewChild('document4') private document4: any;
     private displayConfirmingData: boolean = false;
-    private displayConfirmClose: boolean = false;
     private displayConfirmDelete: boolean = false;
     private removingFile: number;
     private changedDocs: number;
@@ -51,12 +49,9 @@ export class AdditionalInfoComponent {
 
     private fileURL: string = '/wifi4eu/api/registration/getDocument/';
 
-
-
-    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router, private location: Location, ) {
+    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router, private location: Location ) {
         let storedUser = this.localStorageService.get('user');
         this.changedDocs = 0;
-
 
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -125,7 +120,6 @@ export class AdditionalInfoComponent {
                         }
                     }
                 );
-
             }
 
         } else {
@@ -155,6 +149,9 @@ export class AdditionalInfoComponent {
             } else {
                 this.filesUploaded = false;
             }
+        }
+        if (this.legalFilesToUpload.length <= 0 || this.changedDocs <= 0) {
+            this.dirty = false;
         }
     }
 
@@ -345,39 +342,20 @@ export class AdditionalInfoComponent {
         }
     }
 
-    confirmClose() {
-        this.displayConfirmClose = true;
-    }
-
     cancelBack() {
-        console.log('cancelling')
-        this.displayConfirmClose = false;
         this.displayConfirmDelete = false;
         this.removingFile = null;
     }
 
-    action(value: boolean) {
-        this.displayConfirmClose = false;
-        /* this.subject.next(value);
-        this.subject.complete(); */
-    }
-
-
     goBack() {
-        if (this.legalFilesToUpload.length > 0 || this.changedDocs > 0){
-            console.log('backing')
+        if (this.legalFilesToUpload.length > 0 || this.changedDocs > 0) {
             this.dirty = true;
-            console.log(this.dirty);
-            this.displayConfirmClose = false;
             this.displayConfirmDelete = false;
             this.location.back();
-            
-        }else{
-            this.displayConfirmClose = false;
+        } else {
             this.displayConfirmDelete = false;
             this.location.back();
         }
-        
     }
 
 }
