@@ -4,14 +4,16 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import wifi4eu.wifi4eu.abac.data.dto.MonitoringRow;
 import wifi4eu.wifi4eu.abac.data.entity.Country;
+import wifi4eu.wifi4eu.abac.data.entity.ImportLog;
 import wifi4eu.wifi4eu.abac.service.MonitoringService;
 
 @RestController
@@ -36,5 +38,16 @@ public class MonitoringController {
 	public List<Country> countries() throws IOException {
 		return  monitoringService.getCountries();
 	}
-
+	
+	@PreAuthorize ("hasRole('ROLE_INEA_OFFICER')")
+	@RequestMapping(value = "errorLog/{batchRef}", method = RequestMethod.GET, produces = "text/plain")
+	@ResponseBody
+	public String errorLog(@PathVariable String batchRef) throws IOException {
+		String result="";
+		List<ImportLog> importLogs = monitoringService.getImportLogByBatchRef(batchRef);
+		for(ImportLog importLog : importLogs) {
+			result = result.concat(importLog.getErrors()).concat("\n");
+		}
+		return result;
+	}
 }

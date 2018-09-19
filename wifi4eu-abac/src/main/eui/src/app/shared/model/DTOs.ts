@@ -25,4 +25,5 @@ export interface MonitoringRowDTO {
 export interface ResponseDTO {
     success?: boolean;
     message?: any;
+    batchRef?: string;
 }

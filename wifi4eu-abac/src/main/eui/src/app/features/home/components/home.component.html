@@ -87,7 +87,7 @@
 	<ux-message-box id="messagebox_file_import_fail" titleLabel="ERROR" typeClass="danger" messageBoxType="ok">
 		<p>An error has occurred!</p>
 		<p *ngIf='errorMessage !== undefined'>{{errorMessage}}</p>
-		<p>The file was not imported!</p>
+		<p *ngIf='errorBatchRef !== undefined'>For more information <a href='monitor/errorLog/{{errorBatchRef}}' target='_blank'>click here</a>.</p>
 	</ux-message-box>
 	<ux-modal id="messagebox_upload_progress" titleLabel="Uploading file..." [isFooterVisible]="false" [isShowCloseButton]="false">
 	    <uxModalBody>
