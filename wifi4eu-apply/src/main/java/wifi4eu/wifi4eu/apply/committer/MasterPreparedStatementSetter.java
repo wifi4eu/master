@@ -25,7 +25,7 @@ public class MasterPreparedStatementSetter implements BatchPreparedStatementSett
 		ps.setLong(1, this.getListLocalEntities().get(i).getCallId());
 		ps.setLong(2, this.getListLocalEntities().get(i).getRegistrationId());
 		ps.setLong(3, this.getListLocalEntities().get(i).getDate());
-		ps.setLong(4, this.getListLocalEntities().get(i).getOrder());
+		// ps.setLong(4, this.getListLocalEntities().get(i).getOrder());
 	}
 
 	@Override

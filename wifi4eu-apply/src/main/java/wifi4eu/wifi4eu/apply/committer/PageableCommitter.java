@@ -105,10 +105,16 @@ public class PageableCommitter implements ICommitter {
 			List<ApplicationSQLite> tempList = listLocalEntities.subList(i, end);
 			
 			//
+			/*
 			List<ApplicationSQLServer> applications = tempList.stream().map(a ->
 				new ApplicationSQLServer(Long.valueOf(a.getCallId()), Long.valueOf(a.getRegistrationId()), Long.valueOf(a.getId().substring(0, a.getId().indexOf('-'))), (a.getId().contains("-") ? Long.parseLong(a.getId().substring(a.getId().indexOf("-")) + 1) : 0L))
 			).collect(Collectors.toList());
-			
+			*/
+
+			List<ApplicationSQLServer> applications = tempList.stream().map(a ->
+					new ApplicationSQLServer(Long.valueOf(a.getCallId()), Long.valueOf(a.getRegistrationId()), Long.valueOf(a.getId().substring(0, a.getId().indexOf('-'))))
+			).collect(Collectors.toList());
+
 			masterPreparedStatementSetter.setListLocalEntities(applications);
 
 			this.LOGGER.info("COMMITTING FROM [{}] TO [{}]", i, end);

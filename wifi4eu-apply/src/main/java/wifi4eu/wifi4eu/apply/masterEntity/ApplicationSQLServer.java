@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.apply.masterEntity;
 
+import java.util.Date;
+
 public class ApplicationSQLServer {
 
 	public long callId;
@@ -8,24 +10,13 @@ public class ApplicationSQLServer {
 
 	public long date;
 
-	public long order;
-
 	public ApplicationSQLServer() {
 	}
 
-	public ApplicationSQLServer(long callId, long registrationId, long date, long order) {
+	public ApplicationSQLServer(long callId, long registrationId, long date) {
 		this.callId = callId;
 		this.registrationId = registrationId;
 		this.date = date;
-		this.order = order;
-	}
-
-	public long getOrder() {
-		return order;
-	}
-
-	public void setOrder(long order) {
-		this.order = order;
 	}
 
 	public long getCallId() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>wifi4eu.wifi4eu</groupId>
@@ -22,7 +22,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-	  	  <skipTests>true</skipTests>
+		<skipTests>true</skipTests>
+		<wifi4eu.queue.uri.1>10.0.2.31</wifi4eu.queue.uri.1>
+		<wifi4eu.queue.uri.2>10.0.2.32</wifi4eu.queue.uri.2>
+		<wifi4eu.queue.uri.3>10.0.2.33</wifi4eu.queue.uri.3>
 	</properties>
 
 	<dependencies>
@@ -30,11 +33,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 			<exclusions>
-			<exclusion>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-tomcat</artifactId>
-			</exclusion>
-		</exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -53,8 +56,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>io.lettuce</groupId>
 			<artifactId>lettuce-core</artifactId>
@@ -88,13 +91,61 @@
 		</dependency>
 
 		<dependency>
-    		<groupId>org.springframework</groupId>
-    		<artifactId>spring-jdbc</artifactId>
-    	</dependency>
-    	
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+
 	</dependencies>
 
+	<profiles>
+		<!-- ENVIRONMENT PROFILES -->
+		<profile>
+			<id>DEV</id>
+			<properties>
+				<wifi4eu.queue.uri.1>10.0.2.31</wifi4eu.queue.uri.1>
+				<wifi4eu.queue.uri.2>10.0.2.32</wifi4eu.queue.uri.2>
+				<wifi4eu.queue.uri.3>10.0.2.33</wifi4eu.queue.uri.3>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>ACC</id>
+			<properties>
+				<wifi4eu.queue.uri.1>202.3.2.4</wifi4eu.queue.uri.1>
+				<wifi4eu.queue.uri.2>202.3.2.5</wifi4eu.queue.uri.2>
+				<wifi4eu.queue.uri.3>202.3.2.6</wifi4eu.queue.uri.3>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>ACC-HF</id>
+			<properties>
+				<wifi4eu.queue.uri.1>202.3.2.11</wifi4eu.queue.uri.1>
+				<wifi4eu.queue.uri.2>202.3.2.12</wifi4eu.queue.uri.2>
+				<wifi4eu.queue.uri.3>202.3.2.13</wifi4eu.queue.uri.3>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>PROD</id>
+			<properties>
+				<wifi4eu.queue.uri.1>10.0.2.70</wifi4eu.queue.uri.1>
+				<wifi4eu.queue.uri.2>10.0.2.71</wifi4eu.queue.uri.2>
+				<wifi4eu.queue.uri.3>10.0.2.72</wifi4eu.queue.uri.3>
+			</properties>
+		</profile>
+
+	</profiles>
+
 	<build>
+		<!-- alex -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<!-- end -->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
