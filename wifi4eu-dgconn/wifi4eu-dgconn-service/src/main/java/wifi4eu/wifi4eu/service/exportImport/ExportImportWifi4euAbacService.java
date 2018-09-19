@@ -45,6 +45,7 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.DateUtils;
 import wifi4eu.wifi4eu.util.ExportFileUtils;
+import wifi4eu.wifi4eu.util.ZipFileReader;
 import wifi4eu.wifi4eu.util.parsing.BudgetaryCommitmentCSVColumn;
 import wifi4eu.wifi4eu.util.parsing.LegalEntityCSVColumn;
 
@@ -778,4 +779,16 @@ public class ExportImportWifi4euAbacService {
         return null;
     }
 
+    public boolean importLegalCommitment(InputStream inputStream) {
+
+        try (ZipFileReader zipFileReader = new ZipFileReader(inputStream)) {
+            ZipFileReader.ZipFileEntry fileEntry = zipFileReader.nextEntry();
+
+            // if (fileEntry.getName())
+
+        } catch (IOException e) {
+            _log.error("Error parsing Zip file", e);
+        }
+
+    }
 }
