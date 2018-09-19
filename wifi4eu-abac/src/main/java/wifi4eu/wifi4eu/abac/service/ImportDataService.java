@@ -77,7 +77,7 @@ public class ImportDataService {
 	FileDTO documentsCSVFile;
 	private Map<String, FileDTO> documentsToBeImported = new TreeMap<>();
 
-	public void importLegalEntities(String filename, byte[] file) {
+	public ImportLog importLegalEntities(String filename, byte[] file) {
 
 		//generate a unique batch file ID
 		String batchRef = UUID.randomUUID().toString();
@@ -85,14 +85,12 @@ public class ImportDataService {
 		String errors = importDataViaZipFile(file, batchRef);
 
 		//log the imported file
-		logImport(filename, batchRef, ecasUserService.getCurrentUsername(), errors);
+		ImportLog importLog = logImport(filename, batchRef, ecasUserService.getCurrentUsername(), errors);
 
 		//create user notification
 		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LEF_CREATION);
 
-		if(!StringUtils.isEmpty(errors)) {
-			throw new RuntimeException(errors);
-		}
+		return importLog;
 	}
 
 	@Transactional
@@ -243,14 +241,13 @@ public class ImportDataService {
 		return  errors.toString();
 	}
 
-	private void logImport(String filename, String batchRef, String userId, String errors){
+	private ImportLog logImport(String filename, String batchRef, String userId, String errors){
 		ImportLog importLog = new ImportLog();
 		importLog.setFileName(filename);
 		importLog.setBatchRef(batchRef);
 		importLog.setUserId(userId);
 		importLog.setErrors(errors);
-
-		importLogRepository.save(importLog);
+		return importLogRepository.save(importLog);
 	}
 
 	private void addDocumentsCSVIndexFile(final FileDTO fileDTO) {
