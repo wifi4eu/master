@@ -56,6 +56,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -71,6 +72,9 @@ public class ExportImportWifi4euAbacService {
     private static final String FILENAME_EXPORT_DOCUMENTS_DATA = "portal_exportBeneficiaryDocuments.csv";
 
     private static final String FILENAME_EXPORT_BENEFICIARIES_DATA = "portal_exportBeneficiaryInformation.csv";
+
+    // TODO: make it an external property @Value
+    private static final Integer GRANTED_AMOUNT = 15000;
 
     @Autowired
     private ExportImportRegistrationDataMapper exportImportRegistrationDataMapper;
@@ -329,35 +333,46 @@ public class ExportImportWifi4euAbacService {
         List<ExportImportRegistrationData> exportImportRegistrationData = exportImportRegistrationDataRepository.findRegistrationDataForBudgetaryCommitment();
         if (CollectionUtils.isNotEmpty(exportImportRegistrationData)) {
 
-            // TODO: take any. Later we will select the one we actually need.
-            List<GlobalCommitment> globalCommitments = globalCommitmentRepository.findAll();
-            if (CollectionUtils.isNotEmpty(globalCommitments)) {
-                GlobalCommitment globalCommitment = globalCommitments.get(0);
+            // TODO: take all. Later we will select the one based on the call.
+            List<GlobalCommitment> currentGlobalCommitments = globalCommitmentRepository.findAllByOrderByPriority();
+            if (CollectionUtils.isNotEmpty(currentGlobalCommitments)) {
 
                 List<BudgetaryCommitment> budgetaryCommitments = new ArrayList<>();
-                exportImportRegistrationData.forEach(registrationData -> {
 
-                    BudgetaryCommitment budgetaryCommitment = new BudgetaryCommitment();
+                int globalCommitmentIndex = 0;
+                GlobalCommitment[] globalCommitments = currentGlobalCommitments.toArray(new GlobalCommitment[0]);
 
-                    budgetaryCommitment.setGlobalCommitment(globalCommitment);
-                    budgetaryCommitment.setMunicipality(registrationData.getMunicipality());
+                for (ExportImportRegistrationData registrationData : exportImportRegistrationData) {
 
-                    if (globalCommitment.getAmmount() >= 15000) {
-                        budgetaryCommitment.setPosition(1);
-                        budgetaryCommitment.setAmmount(15000);
+                    int neededAmount = GRANTED_AMOUNT;
+                    while (neededAmount > 0) {
 
-                        globalCommitment.setAmmount(globalCommitment.getAmmount() - 15000);
-                    } else {
-                        budgetaryCommitment.setPosition(2);
-                        budgetaryCommitment.setAmmount(globalCommitment.getAmmount());
+                        int currentGlobalAmount = globalCommitments[globalCommitmentIndex].getAmmount();
 
-                        globalCommitment.setAmmount(0);
+                        if (currentGlobalAmount <= 0 && globalCommitmentIndex >= globalCommitments.length - 1) {
+                            // It means that there are no Global Commitments with money
+                            break;
+                        } else {
+                            if (currentGlobalAmount > 0) {
+                                globalCommitments[globalCommitmentIndex].setAmmount(Math.max(currentGlobalAmount - neededAmount, 0));
+
+                                BudgetaryCommitment budgetaryCommitment = new BudgetaryCommitment();
+                                budgetaryCommitment.setMunicipality(registrationData.getMunicipality());
+                                budgetaryCommitment.setGlobalCommitment(globalCommitments[globalCommitmentIndex]);
+                                budgetaryCommitment.setPosition(globalCommitmentIndex + 1);
+                                budgetaryCommitment.setAmmount(Math.min(currentGlobalAmount, neededAmount));
+                                budgetaryCommitments.add(budgetaryCommitment);
+
+                                neededAmount -= budgetaryCommitment.getAmmount();
+                            } else {
+                                ++globalCommitmentIndex;
+                            }
+                        }
                     }
 
-                    budgetaryCommitments.add(budgetaryCommitment);
-                });
+                }
 
-                globalCommitmentRepository.save(globalCommitment);
+                globalCommitmentRepository.save(Arrays.asList(globalCommitments));
                 budgetaryCommitmentRepository.save(budgetaryCommitments);
 
                 return budgetaryCommitments;
@@ -752,10 +767,12 @@ public class ExportImportWifi4euAbacService {
                     Integer.parseInt(commitmentLevel2PositionAmount)
             );
 
-            String level2AbacKey = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_ABAC_KEY);
-            budgetaryCommitment.setAbacBcKey(level2AbacKey);
+            if (budgetaryCommitment != null) {
+                String level2AbacKey = csvRecord.get(BudgetaryCommitmentCSVColumn.COMMITMENT_LEVEL2_ABAC_KEY);
+                budgetaryCommitment.setAbacBcKey(level2AbacKey);
 
-            return budgetaryCommitment;
+                return budgetaryCommitment;
+            }
         }
 
         return null;

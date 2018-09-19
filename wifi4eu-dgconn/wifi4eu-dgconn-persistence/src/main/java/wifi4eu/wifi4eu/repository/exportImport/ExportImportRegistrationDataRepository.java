@@ -29,7 +29,7 @@ public interface ExportImportRegistrationDataRepository extends CrudRepository<E
     Iterable<ExportImportRegistrationData> findExportImportRD();
 
 
-    @Query(value = "select d from ExportImportRegistrationData d where d.abacReference is not null and d.municipality.budgetaryCommitments is empty")
+    @Query(value = "select distinct d from ExportImportRegistrationData d where d.abacReference is not null and d.municipality.budgetaryCommitments is empty")
     List<ExportImportRegistrationData> findRegistrationDataForBudgetaryCommitment();
 
 }

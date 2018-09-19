@@ -10,7 +10,7 @@ public enum BudgetaryCommitmentCSVColumn {
 
     COMMITMENT_LEVEL2_POSITION_AMOUNT("abac_commitmentLevel2PositionAmount"),
 
-    ABAC_STATUS("mun_abacStatus"),
+    ABAC_STATUS("bc_abacStatus"),
 
     ABAC_MESSAGE("abac_Message"),
 
