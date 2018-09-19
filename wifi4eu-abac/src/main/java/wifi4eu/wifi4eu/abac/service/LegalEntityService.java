@@ -44,6 +44,7 @@ public class LegalEntityService {
 	}
 
 	public LegalEntity saveLegalEntity(LegalEntity legalEntity) {
+
 		//clean-up the name sent to ABAC
 		if(StringUtils.isEmpty(legalEntity.getAbacLatinName())){
 			legalEntity.setAbacLatinName(StringUtils.abbreviate(XCharacterDecoder.decode(legalEntity.getOfficialName()), ABAC_NAME_MAX_CHARS));

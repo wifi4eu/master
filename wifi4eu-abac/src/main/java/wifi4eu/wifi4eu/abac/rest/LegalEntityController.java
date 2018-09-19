@@ -47,7 +47,7 @@ public class LegalEntityController {
 	public ResponseVO importLegalEntity(@RequestParam("file") MultipartFile file) {
 		ResponseVO result = new ResponseVO();
 		try {
-			importDataService.importLegalEntities(file.getBytes());
+			importDataService.importLegalEntities(file.getOriginalFilename(), file.getBytes());
 			result.success("Imported OK!");
 		}catch(Exception e) {
 			log.error(e.getMessage());

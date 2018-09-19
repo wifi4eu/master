@@ -33,6 +33,9 @@ public class ImportLog {
     @Column(name="BATCH_REF")
     private String batchRef;
 
+    @Column(name="ERRORS")
+    private String errors;
+
     @PrePersist
     protected void onCreate() {
         this.importDate = Calendar.getInstance().getTime();
@@ -76,5 +79,13 @@ public class ImportLog {
 
     public void setBatchRef(String batchRef) {
         this.batchRef = batchRef;
+    }
+
+    public String getErrors() {
+        return errors;
+    }
+
+    public void setErrors(String errors) {
+        this.errors = errors;
     }
 }
