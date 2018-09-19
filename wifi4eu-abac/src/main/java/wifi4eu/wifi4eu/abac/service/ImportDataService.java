@@ -102,12 +102,18 @@ public class ImportDataService {
 		fileDTO.setSize(new Long(file.length));
 		fileDTO.setFileName(filename);
 
-		List<BudgetaryCommitmentCSVRow> budgetaryCommitmentCSVRows = (List<BudgetaryCommitmentCSVRow>) budgetaryCommitmentCSVFileParser.parseFile(fileDTO);
-
 		//generate a unique batch file ID
 		String batchRef = UUID.randomUUID().toString();
 
 		StrBuilder errors = new StrBuilder();
+		List<BudgetaryCommitmentCSVRow> budgetaryCommitmentCSVRows = new ArrayList<>();
+		try {
+			budgetaryCommitmentCSVRows = (List<BudgetaryCommitmentCSVRow>) budgetaryCommitmentCSVFileParser.parseFile(fileDTO);
+		} catch(Exception e) {
+			String error = String.format("BC: Parsing error. Please check your file. %s", e.getMessage());
+			errors.appendln(error);
+			log.error(error);
+		}
 
 		for (BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow : budgetaryCommitmentCSVRows) {
 
@@ -208,9 +214,16 @@ public class ImportDataService {
 	}
 
 	private String processLegalEntityInformationFile(FileDTO fileDTO, String batchRef) {
-		List<LegalEntityInformationCSVRow> legalEntities = (List<LegalEntityInformationCSVRow>) legalEntityCSVFileParser.parseFile(fileDTO);
 
 		StrBuilder errors = new StrBuilder();
+		List<LegalEntityInformationCSVRow> legalEntities = new ArrayList<>();
+		try {
+			legalEntities = (List<LegalEntityInformationCSVRow>) legalEntityCSVFileParser.parseFile(fileDTO);
+		} catch(Exception e) {
+			String error = String.format("LEF: Parsing error. Please check your file. %s", e.getMessage());
+			errors.appendln(error);
+			log.error(error);
+		}
 
 		for (LegalEntityInformationCSVRow legalEntityInformationCSVRow : legalEntities) {
 
@@ -267,8 +280,17 @@ public class ImportDataService {
 	}
 
 	private String importDocuments(FileDTO fileDTO) {
-		List<LegalEntityDocumentCSVRow> documents = (List<LegalEntityDocumentCSVRow>) documentCSVFileParser.parseFile(fileDTO);
+
 		StrBuilder errors = new StrBuilder();
+		List<LegalEntityDocumentCSVRow> documents = new ArrayList<>();
+		try {
+			documents = (List<LegalEntityDocumentCSVRow>) documentCSVFileParser.parseFile(fileDTO);
+		} catch(Exception e) {
+			String error = String.format("Documents: Parsing error. Please check your file. %s", e.getMessage());
+			errors.appendln(error);
+			log.error(error);
+		}
+
 		for (LegalEntityDocumentCSVRow documentCSVRow : documents) {
 
 			try {

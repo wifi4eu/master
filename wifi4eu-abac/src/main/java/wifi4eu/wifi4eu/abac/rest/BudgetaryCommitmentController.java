@@ -48,7 +48,7 @@ public class BudgetaryCommitmentController {
 		ResponseVO result = new ResponseVO();
 		try {
 			ImportLog importLog = importDataService.importBudgetaryCommitments(file.getOriginalFilename(), file.getBytes());
-			if (StringUtils.isEmpty(importLog.getErrors())) {
+			if (!StringUtils.isEmpty(importLog.getErrors())) {
 				log.error("error importing");
 				result.error("error importing");
 			} else {

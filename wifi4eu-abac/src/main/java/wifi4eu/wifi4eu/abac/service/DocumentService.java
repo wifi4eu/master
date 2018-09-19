@@ -42,6 +42,7 @@ public class DocumentService {
 
     private void validate(Document document) {
     	if (document.getLegalEntity() == null) throw new RuntimeException("Municipality ID is empty or invalid");
+    	if(document.getPortalId() == null) throw new RuntimeException("Portal ID is empty");
 		if (StringUtils.isEmpty(document.getName())) throw new RuntimeException("Name is empty");
 		if (StringUtils.isEmpty(document.getFileName())) throw new RuntimeException("Filename is empty");
 		if (document.getPortalDate() == null) throw new RuntimeException("Date is empty");

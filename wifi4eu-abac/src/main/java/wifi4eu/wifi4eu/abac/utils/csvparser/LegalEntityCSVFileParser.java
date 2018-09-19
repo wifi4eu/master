@@ -46,7 +46,8 @@ public class LegalEntityCSVFileParser extends AbstractCSVFileParser {
 
 			LegalEntityInformationCSVRow legalEntityInformationCSVRow = new LegalEntityInformationCSVRow();
 
-			legalEntityInformationCSVRow.setMid(Long.parseLong(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID)));
+			legalEntityInformationCSVRow.setMid(StringUtils.isEmpty(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID)) ? null :
+														Long.parseLong(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID)));
 			legalEntityInformationCSVRow.setOfficialName(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_NAME));
 			legalEntityInformationCSVRow.setAbacLatinName(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME));
 			legalEntityInformationCSVRow.setOfficialAddress(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ADDRESS));

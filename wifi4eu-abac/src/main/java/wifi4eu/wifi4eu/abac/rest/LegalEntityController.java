@@ -51,7 +51,7 @@ public class LegalEntityController {
 		try {
 			ImportLog importLog = importDataService.importLegalEntities(file.getOriginalFilename(), file.getBytes());
 
-			if (StringUtils.isEmpty(importLog.getErrors())) {
+			if (!StringUtils.isEmpty(importLog.getErrors())) {
 				log.error("error importing");
 				result.error("error importing");
 			} else {
