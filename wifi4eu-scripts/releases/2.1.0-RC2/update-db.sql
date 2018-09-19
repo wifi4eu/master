@@ -52,6 +52,19 @@ CREATE TABLE dbo.log_emails(
     	ON UPDATE CASCADE
 );
 
+CREATE TABLE [dbo].[supplier_users](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[creation_date] [datetime2](7) NULL,
+	[email] [varchar](255) NULL,
+	[main] [int] NULL,
+	[status] [int] NULL,
+	[supplier_id] [int] NULL,
+	[user_id] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 
 -- 27/07/2018 -  populate table supplier_users with supplier table values. ONLY on db where supplier_users is empty and you have supplier's table with information.
 INSERT INTO [dbo].[supplier_users]
@@ -128,6 +141,12 @@ from [dbo].registrations r inner join
 [dbo].[legal_files] l on l.registration = r.id where l.type = 4
 
 --delete columns from registrations
+ALTER TABLE [dbo].[registrations] DROP CONSTRAINT [DF__registrat__legal__4321E620];
+ALTER TABLE [dbo].[registrations] DROP CONSTRAINT [DF__registrat__legal__44160A59];
+ALTER TABLE [dbo].[registrations] DROP CONSTRAINT [DF__registrat__legal__450A2E92];
+ALTER TABLE [dbo].[registrations] DROP CONSTRAINT [DF__registrat__legal__45FE52CB];
+ALTER TABLE [dbo].[registrations] DROP CONSTRAINT [DF__registrat__legal__46F27704];
+ALTER TABLE [dbo].[registrations] DROP CONSTRAINT [DF__registrat__legal__47E69B3D];
 ALTER TABLE dbo.registrations DROP COLUMN upload_time, legal_file1_size, legal_file1_mime,
 legal_file2_size, legal_file2_mime, legal_file3_size, legal_file3_mime, legal_file4_size, legal_file4_mime, legal_file1, legal_file2, legal_file3, legal_file4;
 
@@ -167,6 +186,28 @@ create table invitation_contacts(
        ON DELETE CASCADE
        ON UPDATE CASCADE
 );
+
+CREATE TABLE [dbo].[application_comment](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[COMMENT] [nvarchar](256) NOT NULL,
+	[date_posted] [numeric](19, 0) NULL,
+	[application_id] [int] NULL,
+	[user_id] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+
+ALTER TABLE [dbo].[application_comment]  WITH CHECK ADD  CONSTRAINT [pplctncommentpplctonid] FOREIGN KEY([application_id])
+REFERENCES [dbo].[applications] ([id])
+
+ALTER TABLE [dbo].[application_comment] CHECK CONSTRAINT [pplctncommentpplctonid]
+
+ALTER TABLE [dbo].[application_comment]  WITH CHECK ADD  CONSTRAINT [pplicationcommentserid] FOREIGN KEY([user_id])
+REFERENCES [dbo].[users] ([id])
+
+ALTER TABLE [dbo].[application_comment] CHECK CONSTRAINT [pplicationcommentserid]
 
 ALTER TABLE application_comment ALTER COLUMN [comment] NVARCHAR(256) NOT NULL;
 
