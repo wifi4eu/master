@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.util;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 import java.util.Date;
 import java.util.EnumSet;
 
@@ -30,6 +31,7 @@ import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorage;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorageUtils;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -59,6 +61,9 @@ public class EcasSignatureUtil {
 
     @Autowired
     ApplicationService applicationService;
+
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
 
     /**
      * Sample Snippets to interact with the EU Login Signature Service.
@@ -182,9 +187,7 @@ public class EcasSignatureUtil {
 
             byte[] data = outputStream.toByteArray();
 
-            SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicy(EnumSet.of(SharedAccessBlobPermissions.READ), 20);
-
-            String downloadURL = azureBlobStorage.getDocumentWithTokenAzureStorage("grant_agreement_" + grantAgreementID + "_signed.pdf", data, policy);
+            String downloadURL = azureBlobConnector.uploadByteArray("grant-agreement", "grant_agreement_" + grantAgreement.getApplicationId() + "_signed.pdf", data);
 
             grantAgreement.setDocumentLocation(downloadURL);
             grantAgreement.setDateSignature(new Date());

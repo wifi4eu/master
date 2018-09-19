@@ -26,6 +26,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 
+import org.springframework.util.Base64Utils;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
@@ -35,7 +36,9 @@ import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.helper.Validator;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorage;
+import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 import wifi4eu.wifi4eu.mapper.grantAgreement.GrantAgreementMapper;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
@@ -54,6 +57,9 @@ public class GrantAgreementService {
     private final static String FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX = "grant_agreement_0918_";
 
     private final static String FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION = ".pdf";
+
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
 
     @Autowired
     ApplicationService applicationService;
@@ -93,9 +99,9 @@ public class GrantAgreementService {
         languagesMap.put("et", "eesti keel");
         languagesMap.put("el", "ελληνικά");
         languagesMap.put("en", "English");
-        languagesMap.put("es","español");
+        languagesMap.put("es",  "español");
         languagesMap.put("fr", "français");
-        languagesMap.put("ga","Gaeilge");
+        languagesMap.put("ga",  "Gaeilge");
         languagesMap.put("it", "italiano");
         languagesMap.put("lv", "latviešu valoda");
         languagesMap.put("lt",  "lietuvių kalba");
@@ -154,7 +160,7 @@ public class GrantAgreementService {
     	fileName.append(FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX).append(language).append(FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION);
 
     	// Template files are stored in Azure: wifi4eustoredocuments - Storage Explorer
-    	//return azureBlobStorage.getFileFromContainer("docs", fileName.toString());
+       // return azureBlobStorage.getFileFromContainer("docs", fileName.toString());
 
         // TODO FIXME remove local reference
         File file = new File("C:\\grant_agreements\\"+fileName);
@@ -228,6 +234,7 @@ public class GrantAgreementService {
             pdfReader = new PdfReader(generateGrantAgreementDocument(grantAgreement).toByteArray());
             pdfStamper = new PdfStamper(pdfReader, outputStream);
             AcroFields fields = pdfStamper.getAcroFields();
+            pdfStamper.setFormFlattening(true);
 
             final BaseFont font = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.EMBEDDED);
             fields.setField("field-signature", signString);
@@ -266,6 +273,16 @@ public class GrantAgreementService {
             e.printStackTrace();
         }
         return outputStream;
+    }
+
+    public byte[] downloadGrantAgreementSigned(Integer applicationId, GrantAgreementDTO grantAgreementDTO) {
+        byte[] fileBytes = null;
+        try {
+            fileBytes = azureBlobConnector.downloadGrantAgreementSigned(grantAgreementDTO.getDocumentLocation());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileBytes;
     }
 
 }

@@ -94,7 +94,7 @@
                         </div>
                         <div class="beneficiarRegistrationCheck left" *ngIf="hasSigned[i]">
                             <span>
-                                {{ 'benefPortal.myVoucher.signedByApplicant' | translate:{date:date[i]} }}
+                                {{ 'benefPortal.myVoucher.signedByApplicant' | translate:{date: hasSigned[i]?.formattedDateSignature } }}
                             </span>
                         </div>
                 
