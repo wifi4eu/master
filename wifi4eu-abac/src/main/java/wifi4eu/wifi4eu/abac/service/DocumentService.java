@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.dto.LegalEntityDocumentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
@@ -39,8 +40,18 @@ public class DocumentService {
     @Autowired
     HermesDocumentServiceClient hermesDocumentServiceClient;
 
+    private void validate(Document document) {
+    	if (document.getLegalEntity() == null) throw new RuntimeException("Municipality ID is empty or invalid");
+		if (StringUtils.isEmpty(document.getName())) throw new RuntimeException("Name is empty");
+		if (StringUtils.isEmpty(document.getFileName())) throw new RuntimeException("Filename is empty");
+		if (document.getPortalDate() == null) throw new RuntimeException("Date is empty");
+		if (document.getType() == null) throw new RuntimeException("Type is empty or invalid");
+		if (document.getData() == null) throw new RuntimeException(String.format("File %s not found in the zipfile", document.getFileName()));
+	}
+
 	@Transactional
 	public Document saveDocument(Document document) {
+		validate(document);
 		return documentRepository.save(document);
 	}
 

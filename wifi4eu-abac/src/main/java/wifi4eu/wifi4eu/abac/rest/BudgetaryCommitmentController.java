@@ -45,7 +45,7 @@ public class BudgetaryCommitmentController {
 
 		ResponseVO result = new ResponseVO();
 		try {
-			importDataService.importBudgetaryCommitments(file.getBytes());
+			importDataService.importBudgetaryCommitments(file.getOriginalFilename(), file.getBytes());
 			result.success("Imported OK!");
 		}catch(Exception e) {
 			result.error(e.getMessage());

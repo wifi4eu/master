@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.abac.data.dto.BudgetaryCommitmentCSVRow;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitmentPosition;
@@ -47,12 +48,15 @@ public class BudgetaryCommitmentService {
 		position.setCommitmentLevel2Position(budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
 		position.setCommitmentLevel2Amount(budgetaryCommitmentCSVRow.getAbacGlobalCommitmentPositionAmmount());
 
-		BudgetaryCommitment budgetaryCommitment = new BudgetaryCommitment();
+		BudgetaryCommitment budgetaryCommitment = getByMunicipalityPortalId(budgetaryCommitmentCSVRow.getMunicipalityPortalId());
+		if(budgetaryCommitment != null) {
+			position.setBudgetaryCommitment(budgetaryCommitment);
+		} else {
+			budgetaryCommitment = new BudgetaryCommitment();
+		}
 
 		LegalEntity legalEntity = legalEntityService.getLegalEntityByMunicipalityPortalId(budgetaryCommitmentCSVRow.getMunicipalityPortalId());
 		budgetaryCommitment.setLegalEntity(legalEntity);
-
-		position.setBudgetaryCommitment(budgetaryCommitment);
 
 		return position;
 	}
@@ -61,7 +65,15 @@ public class BudgetaryCommitmentService {
 		return budgetaryCommitmentyPositionRepository.findByBudgetaryCommitmentLegalEntityMidAndCommitmentLevel2Position(municipalityPortalId, abacCommitmentLevel2Position);
 	}
 
+	private void validateBCPosition(BudgetaryCommitmentPosition position) {
+		if(position.getBudgetaryCommitment().getLegalEntity() == null) throw new RuntimeException("Municipality ID is empty or invalid");
+		if(StringUtils.isEmpty(position.getGlobalCommitmentLevel1PositionKey())) throw new RuntimeException("Global Commitment Level 1 is empty");
+		if(position.getCommitmentLevel2Position() == null) throw new RuntimeException("Commitment Level 2 position is empty");
+		if(position.getCommitmentLevel2Amount() == null) throw new RuntimeException("Amount is empty");
+	}
+
 	public BudgetaryCommitmentPosition saveBCPosition(BudgetaryCommitmentPosition budgetaryCommitmentPosition) {
+		validateBCPosition(budgetaryCommitmentPosition);
 		return budgetaryCommitmentyPositionRepository.save(budgetaryCommitmentPosition);
 	}
 

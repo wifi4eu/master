@@ -29,6 +29,7 @@ import wifi4eu.wifi4eu.abac.utils.csvparser.LegalEntityCSVFileParser;
 
 import javax.print.Doc;
 import javax.transaction.Transactional;
+import javax.wsdl.Import;
 
 import java.io.IOException;
 
@@ -94,49 +95,54 @@ public class ImportDataService {
 	}
 
 	@Transactional
-	public void importBudgetaryCommitments(byte[] file) {
+	public ImportLog importBudgetaryCommitments(String filename, byte[] file) {
 
 		FileDTO fileDTO = new FileDTO();
 		fileDTO.setContent(file);
 		fileDTO.setSize(new Long(file.length));
-		fileDTO.setFileName("portal_EXP_TO_AIRGAP_BC.csv");
+		fileDTO.setFileName(filename);
 
 		List<BudgetaryCommitmentCSVRow> budgetaryCommitmentCSVRows = (List<BudgetaryCommitmentCSVRow>) budgetaryCommitmentCSVFileParser.parseFile(fileDTO);
 
 		//generate a unique batch file ID
 		String batchRef = UUID.randomUUID().toString();
 
+		StrBuilder errors = new StrBuilder();
+
 		for (BudgetaryCommitmentCSVRow budgetaryCommitmentCSVRow : budgetaryCommitmentCSVRows) {
 
-			BudgetaryCommitmentPosition budgetaryCommitmentPosition = budgetaryCommitmentService.getBCPosition(budgetaryCommitmentCSVRow.getMunicipalityPortalId(), budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
+			try {
+				BudgetaryCommitmentPosition budgetaryCommitmentPosition = budgetaryCommitmentService.getBCPosition(budgetaryCommitmentCSVRow.getMunicipalityPortalId(), budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
 
-			if(budgetaryCommitmentPosition == null) {
-				log.info("importing BC {} for mid {}", budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey(), budgetaryCommitmentCSVRow.getMunicipalityPortalId());
+				if(budgetaryCommitmentPosition == null) {
+					log.info("importing BC {} for mid {}", budgetaryCommitmentCSVRow.getAbacGlobalCommitmentLevel1PositionKey(), budgetaryCommitmentCSVRow.getMunicipalityPortalId());
 
-				budgetaryCommitmentPosition = budgetaryCommitmentService.mapBudgetaryCommitmentCSVToEntity(budgetaryCommitmentCSVRow);
+					budgetaryCommitmentPosition = budgetaryCommitmentService.mapBudgetaryCommitmentCSVToEntity(budgetaryCommitmentCSVRow);
 
-				//TODO Check if this code can be moved inside the map functional above
-				BudgetaryCommitment budgetaryCommitment = budgetaryCommitmentService.getByMunicipalityPortalId(budgetaryCommitmentCSVRow.getMunicipalityPortalId());
-				if (budgetaryCommitment != null) {
-					budgetaryCommitmentPosition.setBudgetaryCommitment(budgetaryCommitment);
+					budgetaryCommitmentPosition.getBudgetaryCommitment().setBatchRef(batchRef);
+
+					budgetaryCommitmentService.saveBCPosition(budgetaryCommitmentPosition);
+				} else {
+					String warn = String.format("Municipality ID %s: Commitment Level 2 Position %s already exists",
+							budgetaryCommitmentCSVRow.getMunicipalityPortalId(),
+							budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
+					errors.appendln(warn);
+					log.warn(warn);
 				}
-
-				budgetaryCommitmentPosition.getBudgetaryCommitment().setBatchRef(batchRef);
-
-				budgetaryCommitmentService.saveBCPosition(budgetaryCommitmentPosition);
-			} else {
-				//TODO update or ignore?
-				log.info("Legal entity mid {} already has a Budgetary commitment position {}. Ignoring it for now",
-						budgetaryCommitmentCSVRow.getMunicipalityPortalId(),
-						budgetaryCommitmentCSVRow.getAbacCommitmentLevel2Position());
+			} catch(Exception e) {
+				String error = String.format("Municipality ID %s: %s", budgetaryCommitmentCSVRow.getMunicipalityPortalId(), e.getMessage());
+				errors.appendln(error);
+				log.error(error);
 			}
 		}
 
 		//log the imported file
-		logImport("TODO", batchRef, ecasUserService.getCurrentUsername(), ecasUserService.getCurrentUsername());
+		ImportLog importLog = logImport(filename, batchRef, ecasUserService.getCurrentUsername(), errors.toString());
 
 		//create user notification
 		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.BC_CREATION);
+
+		return importLog;
 	}
 
 	/**
@@ -144,23 +150,25 @@ public class ImportDataService {
 	 * @param file
 	 */
 	@Transactional(Transactional.TxType.REQUIRED)
-	public void importLegalCommitments(byte[] file) {
-		FileDTO fileDTO = new FileDTO();
-		fileDTO.setContent(file);
-		fileDTO.setSize(new Long(file.length));
-		fileDTO.setFileName("import_LC_from_portal");
+	public ImportLog importLegalCommitments(String filename, byte[] file) {
 
-		importDataViaZipFile(file, "TO DO");
 		//generate a unique batch file ID
 		String batchRef = UUID.randomUUID().toString();
+
+		String errors = importDataViaZipFile(file, batchRef);
+
 		//create the lines in the database
-		legalCommitmentService.createLegalCommitments(batchRef);
+		if(StringUtils.isEmpty(errors)) {
+			legalCommitmentService.createLegalCommitments(batchRef);
+		}
 
 		//log the imported file
-		logImport("TODO", batchRef, ecasUserService.getCurrentUsername(), null);
+		ImportLog importLog = logImport(filename, batchRef, ecasUserService.getCurrentUsername(), errors);
 
 		//create user notification
 		notificationService.createValidationProcessPendingNotification(batchRef, NotificationType.LC_CREATION);
+
+		return importLog;
 	}
 
 	@Transactional(Transactional.TxType.REQUIRES_NEW)
@@ -193,7 +201,7 @@ public class ImportDataService {
 		}
 
 		if(documentsCSVFile != null) {
-			importDocuments(documentsCSVFile);
+			errors.appendln(importDocuments(documentsCSVFile));
 		}
 
 		return errors.toString();
@@ -258,20 +266,31 @@ public class ImportDataService {
 		documentsToBeImported.put(fileDTO.getFileName(), fileDTO);
 	}
 
-	private void importDocuments(FileDTO fileDTO) {
+	private String importDocuments(FileDTO fileDTO) {
 		List<LegalEntityDocumentCSVRow> documents = (List<LegalEntityDocumentCSVRow>) documentCSVFileParser.parseFile(fileDTO);
+		StrBuilder errors = new StrBuilder();
 		for (LegalEntityDocumentCSVRow documentCSVRow : documents) {
 
-			Document document = documentService.getDocumentByPortalId(documentCSVRow.getDocumentPortalId());
+			try {
+				Document document = documentService.getDocumentByPortalId(documentCSVRow.getDocumentPortalId());
 
-			if (document == null) {
-				document = documentService.mapDocumentCSVToEntity(documentCSVRow);
-				document.setData(documentsToBeImported.get(documentCSVRow.getDocumentFileName()).getContent());
-				documentService.saveDocument(document);
-			} else {
-				//TODO update or ignore?
-				log.info("Document with Portal ID/Name {}/{} already exists in the DB. Ignoring it for now", document.getPortalId(), document.getName());
+				if (document == null) {
+					document = documentService.mapDocumentCSVToEntity(documentCSVRow);
+					if(documentsToBeImported.get(documentCSVRow.getDocumentFileName()) != null){
+						document.setData(documentsToBeImported.get(documentCSVRow.getDocumentFileName()).getContent());
+					}
+					documentService.saveDocument(document);
+				} else {
+					String warn = String.format("Document ID %s: Portal ID/Name %s/%s already exists in the DB", document.getPortalId(), document.getName());
+					errors.appendln(warn);
+					log.warn(warn);
+				}
+			} catch(Exception e) {
+				String error = String.format("Document ID %s: %s", documentCSVRow.getDocumentPortalId(), e.getMessage());
+				errors.appendln(error);
+				log.error(error);
 			}
 		}
+		return errors.toString();
 	}
 }

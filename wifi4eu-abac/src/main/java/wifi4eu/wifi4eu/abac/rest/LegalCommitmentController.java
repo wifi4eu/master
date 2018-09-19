@@ -42,7 +42,7 @@ public class LegalCommitmentController {
 		log.info("importLegalCommitment");
 		ResponseVO result = new ResponseVO();
 		try {
-			importDataService.importLegalCommitments(file.getBytes());
+			importDataService.importLegalCommitments(file.getOriginalFilename(), file.getBytes());
 			result.success("Imported OK!");
 		}catch(Exception e) {
 			log.error(e.getMessage());
