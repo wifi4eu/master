@@ -28,6 +28,8 @@ public class BudgetaryCommitmentRepositoryTest {
     @Test
     public void totalSpentForGlobalCommitment() {
 
-        assertEquals("Incorrect total ammount for commitment", 45000, budgetaryCommitmentRepository.totalSpentForGlobalCommitment(1).intValue());
+        budgetaryCommitmentRepository.totalSpentForGlobalCommitment(1);
+
+        assertEquals("Incorrect total ammount for commitment", 45000, budgetaryCommitmentRepository.totalSpentForGlobalCommitment(1));
     }
 }
