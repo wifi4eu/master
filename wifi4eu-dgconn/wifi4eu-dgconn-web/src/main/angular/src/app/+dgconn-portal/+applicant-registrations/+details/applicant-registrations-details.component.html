@@ -326,9 +326,9 @@
                                                     </ng-template>
                                                 </p-column>
                                                 <p-column [style]="{'width':'53%'}" field="comment" header="{{ 'dgConn.applicantDetails.comments.table.comment' | translate }}"
-                                                    styleClass="padding-cell">
+                                                    styleClass="padding-cell text-adjust">
                                                     <ng-template let-row="rowData" pTemplate="body">
-                                                        <p style="margin: 0px; white-space: pre-wrap;word-break: break-all;">{{ row.comment }}</p>
+                                                        <p style="margin: 0px; white-space: pre-wrap;">{{ row.comment }}</p>
                                                     </ng-template>
                                                 </p-column>
                                             </p-dataTable>
