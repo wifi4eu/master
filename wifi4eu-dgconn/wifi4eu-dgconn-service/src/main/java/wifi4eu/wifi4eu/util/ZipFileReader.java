@@ -69,7 +69,7 @@ public class ZipFileReader implements AutoCloseable {
 
         private FileTime lastModifiedTime;
 
-        public ZipFileEntry(String name, byte[] content, FileTime lastModifiedTime) {
+        ZipFileEntry(String name, byte[] content, FileTime lastModifiedTime) {
             this.name = name;
             this.content = content;
             this.lastModifiedTime = lastModifiedTime;

@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.entity.application;
 
+import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 
 import javax.persistence.Column;
@@ -9,8 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "applications")
@@ -93,6 +97,9 @@ public class Application {
 
     @Column(name = "registration", insertable = false, updatable = false)
     private Integer registrationId;
+
+    @OneToMany(mappedBy = "application")
+    private List<GrantAgreement> grantAgreements;
 
 
 //    @Column(name = "sent_email_date")
@@ -250,9 +257,13 @@ public class Application {
         this.rejected = rejected;
     }
 
-    public Integer getAuthorizedPerson(){ return authorizedPerson; }
+    public Integer getAuthorizedPerson() {
+        return authorizedPerson;
+    }
 
-    public void setAuthorizedPerson(Integer authorizedPerson) { this.authorizedPerson = authorizedPerson; }
+    public void setAuthorizedPerson(Integer authorizedPerson) {
+        this.authorizedPerson = authorizedPerson;
+    }
 
     public Date getDateSignature() {
         return dateSignature;
@@ -291,6 +302,16 @@ public class Application {
         return registrationId;
     }
 
+    public List<GrantAgreement> getGrantAgreements() {
+        if (grantAgreements == null) {
+            grantAgreements = new ArrayList<>(0);
+        }
+        return grantAgreements;
+    }
+
+    public void setGrantAgreements(List<GrantAgreement> grantAgreements) {
+        this.grantAgreements = grantAgreements;
+    }
 
 //    public Date getSentEmailDate() {
 //        return sentEmailDate;

@@ -269,6 +269,7 @@ public class ExportImportWifi4euAbacService {
         csvDocumentData.append("\r\n");
     }
 
+    @Deprecated
     public void exportRegistrationData() throws Exception {
         _log.info("exportRegistrationData");
         List<ExportImportRegistrationDataDTO> exportImportRegistrationDataList = exportImportRegistrationDataMapper
@@ -312,6 +313,7 @@ public class ExportImportWifi4euAbacService {
         cF.createExcelFileRegistrationData(header, document, "ExportRegistrationData.xlsx");
     }
 
+    @Deprecated
     @Transactional
     public void importRegistrationData() throws Exception {
         _log.debug("importRegistrationData");
@@ -410,7 +412,7 @@ public class ExportImportWifi4euAbacService {
         }
     }
 
-
+    @Deprecated
     private Integer setIssueToDgconnBeneficiary(Integer lauId) {
         Integer issueType = 0;
         LauDTO lau = lauService.getLauById(lauId);
@@ -787,11 +789,82 @@ public class ExportImportWifi4euAbacService {
 
     // Since Zip can be very big we cannot read it in one path and keep the data in a memory.
     public boolean importLegalCommitment(InputStream inputStream) throws IOException {
-        // What if it is too big?
+
         // TODO: needs o be improved for the really big files
         byte[] zipFile = IOUtils.toByteArray(inputStream);
 
-        ZipFileReader.ZipFileEntry documentFile = parseFile(new ByteArrayInputStream(zipFile), AIRGAP_EXPORT_BENEFICIARY_DOCUMENTS_CSV);
+        ZipFileReader.ZipFileEntry informationFile = parseEntryFromFile(new ByteArrayInputStream(zipFile), AIRGAP_EXPORT_LEGAL_COMMITMENT_INFORMATION_CSV);
+
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(informationFile.getContent());
+             InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream)) {
+
+            Map<Integer, String> municipalityDocuments = parseLegalCommitmentFileNames(new ByteArrayInputStream(zipFile));
+
+            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
+            csvParser.forEach(csvRecord -> {
+
+                AbacStatus abacStatus = AbacStatus.valueOf(csvRecord.get(LegalCommitmentCSVColumn.ABAC_STATUS));
+                if (abacStatus == AbacStatus.ABAC_VALID) {
+                    updateGrantAgreement(csvRecord, municipalityDocuments, zipFile);
+                }
+            });
+        }
+
+        return true;
+    }
+
+    private void updateGrantAgreement(CSVRecord csvRecord, Map<Integer, String> municipalityDocuments, byte[] zipFile) {
+
+        Integer municipalityId = Integer.parseInt(csvRecord.get(LegalCommitmentCSVColumn.MUNICIPALITY_ID));
+
+        GrantAgreement grantAgreement =
+                grantAgreementRepository.findByApplicationRegistrationMunicipalityIdAndDateCounterSignatureIsNull(municipalityId);
+
+        if (grantAgreement == null) {
+            _log.error("Cannot find a grant agreement for the municipality [{}]", municipalityId);
+        } else {
+            Date counterSignatureDate = dateUtilities.convertToDate(csvRecord.get(LegalCommitmentCSVColumn.COUNTERSIGNATURE_DATE));
+            grantAgreement.setDateCounterSignature(counterSignatureDate);
+
+            // TODO: needs to be saved in Budgetary Commitment. The import file format needs to be changed for it.
+//            String abacKey = csvRecord.get(LegalCommitmentCSVColumn.ABAC_KEY);
+
+            String pdfFileName = municipalityDocuments.get(municipalityId);
+
+            if (StringUtils.isEmpty(pdfFileName)) {
+                _log.error("Inconsistency in the documents list and legal commitments files. Specified pdf file cannot be found.");
+            } else {
+                String counterSignedDocumentPath = uploadCounterSignedDocument(pdfFileName, zipFile);
+
+                grantAgreement.setDocumentLocationCounterSigned(counterSignedDocumentPath);
+
+                grantAgreementRepository.save(grantAgreement);
+            }
+
+        }
+    }
+
+    private String uploadCounterSignedDocument(String pdfFileName, byte[] zipFile) {
+        try {
+
+            ZipFileReader.ZipFileEntry pdfFile = parseEntryFromFile(new ByteArrayInputStream(zipFile), pdfFileName);
+
+            if (pdfFile == null || pdfFile.getContent() == null) {
+                throw new IllegalStateException("Error parsing a file " + pdfFileName + ". Please, check if Zip file is consistent.");
+            }
+
+            return azureBlobConnector.uploadLegalFile(pdfFileName, new String(pdfFile.getContent()));
+
+        } catch (IOException e) {
+            _log.error("Error processing and uploading the file " + pdfFileName, e);
+        }
+
+        return null;
+    }
+
+    private Map<Integer, String> parseLegalCommitmentFileNames(ByteArrayInputStream zipFile) throws IOException {
+
+        ZipFileReader.ZipFileEntry documentFile = parseEntryFromFile(zipFile, AIRGAP_EXPORT_BENEFICIARY_DOCUMENTS_CSV);
 
         // TODO: needs o be improved for the really big files
         // Too heavy to hold all FileEntries thus we keep only file names.
@@ -811,62 +884,10 @@ public class ExportImportWifi4euAbacService {
             });
         }
 
-
-        ZipFileReader.ZipFileEntry informationFile = parseFile(new ByteArrayInputStream(zipFile), AIRGAP_EXPORT_LEGAL_COMMITMENT_INFORMATION_CSV);
-
-        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(informationFile.getContent());
-             InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream)) {
-
-            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
-            csvParser.forEach(csvRecord -> {
-
-                AbacStatus abacStatus = AbacStatus.valueOf(csvRecord.get(LegalCommitmentCSVColumn.ABAC_STATUS));
-                if (abacStatus == AbacStatus.ABAC_VALID) {
-                    Integer municipalityId = Integer.parseInt(csvRecord.get(LegalCommitmentCSVColumn.MUNICIPALITY_ID));
-
-                    GrantAgreement grantAgreement =
-                            grantAgreementRepository.findByApplicationRegistrationMunicipalityIdAndDateCounterSignatureIsNull(municipalityId);
-
-                    if (grantAgreement == null) {
-                        // What should we do?
-                        throw new IllegalStateException("Cannot find a grant agreement for the specified signature date and municipality");
-                    }
-
-                    Date counterSignatureDate = dateUtilities.convertToDate(csvRecord.get(LegalCommitmentCSVColumn.COUNTERSIGNATURE_DATE));
-                    grantAgreement.setDateCounterSignature(counterSignatureDate);
-
-                    String abacKey = csvRecord.get(LegalCommitmentCSVColumn.ABAC_KEY);
-                    grantAgreement.setCounterSignatureId(abacKey);
-
-                    String pdfFileName = municipalityDocuments.get(municipalityId);
-
-                    try {
-
-                        ZipFileReader.ZipFileEntry pdfFile = parseFile(new ByteArrayInputStream(zipFile), pdfFileName);
-
-                        if (pdfFile == null || pdfFile.getContent() == null) {
-                            throw new IllegalStateException("Error parsing a file " + pdfFileName + ". Please, check if Zip file is consistent.");
-                        }
-
-                        String filePath = azureBlobConnector.uploadLegalFile(pdfFileName, new String(pdfFile.getContent()));
-
-                        grantAgreement.setDocumentLocationCounterSigned(filePath);
-
-                        grantAgreementRepository.save(grantAgreement);
-
-                    } catch (IOException e) {
-                        _log.error("Error processing and uploading the file " + pdfFileName, e);
-                    }
-
-                }
-
-            });
-        }
-
-        return true;
+        return municipalityDocuments;
     }
 
-    private ZipFileReader.ZipFileEntry parseFile(ByteArrayInputStream zipFile, String fileName) throws IOException {
+    private ZipFileReader.ZipFileEntry parseEntryFromFile(ByteArrayInputStream zipFile, String fileName) throws IOException {
 
         try (ZipFileReader zipFileReader = new ZipFileReader(zipFile)) {
 

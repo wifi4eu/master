@@ -1,11 +1,13 @@
 package wifi4eu.wifi4eu.entity.registration;
 
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +23,9 @@ public class Registration {
     @ManyToOne
     @JoinColumn(name = "municipality")
     private Municipality municipality;
+
+    @OneToMany(mappedBy = "registration")
+    private List<Application> applications;
 
     @Column(name = "role")
     private String role;
@@ -299,5 +304,16 @@ public class Registration {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public List<Application> getApplications() {
+        if (applications == null) {
+            applications = new ArrayList<>(0);
+        }
+        return applications;
+    }
+
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
     }
 }

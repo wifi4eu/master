@@ -163,6 +163,7 @@ public class ExportImportWifi4euAbacResource {
         return null;
     }
 
+    // TODO: is it used anywhere?
     @Deprecated
     @ApiOperation(value = "Export registration data")
     @RequestMapping(value = "/exportRegistrationData", method = RequestMethod.GET)
@@ -184,6 +185,7 @@ public class ExportImportWifi4euAbacResource {
         }
     }
 
+    // TODO: is it used anywhere?
     @Deprecated
     @ApiOperation(value = "Import registration data")
     @RequestMapping(value = "/importRegistrationData", method = RequestMethod.POST)
