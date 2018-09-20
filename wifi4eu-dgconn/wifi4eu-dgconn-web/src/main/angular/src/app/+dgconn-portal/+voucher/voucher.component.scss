@@ -1,4 +1,11 @@
 
+.password_popup_header{
+  font-size: 21px;
+  font-weight: bold;
+  color: #254872;
+}
+
+
 .voucher_call_tabs .ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li{
     padding-top: 1.5em;
     padding-bottom: 1em;
@@ -221,4 +228,8 @@
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
+}
+
+.ui-overlaypanel-content {
+  width: 9rem;
 }
