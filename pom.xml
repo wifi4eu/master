@@ -214,6 +214,8 @@
         <redis.enabled>false</redis.enabled>
         <redis.sentinel.uris>10.0.2.31,10.0.2.32,10.0.2.33</redis.sentinel.uris>
 
+        <war.plugin.version>3.2.2</war.plugin.version>
+
     </properties>
 
 
