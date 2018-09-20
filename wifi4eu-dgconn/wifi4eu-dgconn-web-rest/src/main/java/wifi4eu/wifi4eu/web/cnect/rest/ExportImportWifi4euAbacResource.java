@@ -31,6 +31,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 
 @CrossOrigin(origins = "*")
@@ -58,7 +59,7 @@ public class ExportImportWifi4euAbacResource {
 
             _log.debug("Import of the LEF result: {}", success);
 
-            return new ResponseDTO(success, null, null);
+            return new ResponseDTO(success);
         } catch (AccessDeniedException ade) {
             _log.error("Error with permission on operation.", ade);
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
@@ -72,8 +73,13 @@ public class ExportImportWifi4euAbacResource {
     @ResponseBody
     public ResponseDTO importBudgetaryCommitment(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         _log.debug("importBudgetaryCommitment: file size = {}", file.getSize());
-
-        return new ResponseDTO(true);
+        try {
+            boolean success = exportImportWifi4euAbacService.importBudgetaryCommitment(file.getInputStream());
+            return new ResponseDTO(success);
+        } catch (IOException e) {
+            _log.error("Error on operation.", e);
+            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+        }
     }
 
     @RequestMapping(value = "/importLegalCommitment", method = RequestMethod.POST, produces = "application/JSON")
@@ -135,12 +141,12 @@ public class ExportImportWifi4euAbacResource {
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-            _log.info("exportBudgetaryCommitment - generating csv file content");
-            String responseData = exportImportWifi4euAbacService.exportBudgetaryCommitment().getData().toString();
+            _log.debug("exportBudgetaryCommitment - generating csv file content");
+            byte[] responseData = exportImportWifi4euAbacService.exportBudgetaryCommitment();
             // getBytes(Charset.forName("UTF-8"));
-            ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(responseData.getBytes(), headers, HttpStatus.OK);
+            ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(responseData, headers, HttpStatus.OK);
 
-            _log.info("exportBudgetaryCommitment - csv file exported successfully");
+            _log.debug("exportBudgetaryCommitment - csv file exported successfully");
             return responseReturn;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export budgetary commitment", ade.getMessage());

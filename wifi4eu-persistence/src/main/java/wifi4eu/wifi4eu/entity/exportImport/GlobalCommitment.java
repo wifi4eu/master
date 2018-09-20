@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.entity.exportImport;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,20 +20,13 @@ public class GlobalCommitment {
     private String globalCommitment;
 
     @Column(name = "ammount")
-    private String ammount;
+    // TODO: BigDecimal
+    private Integer ammount;
 
     @Column(name = "priority")
     private Integer priority;
 
     public GlobalCommitment() {}
-
-    public GlobalCommitment(Integer id, Integer call, String globalCommitment, String ammount, Integer priority) {
-        this.id = id;
-        this.call = call;
-        this.globalCommitment = globalCommitment;
-        this.ammount = ammount;
-        this.priority = priority;
-    }
 
     public Integer getId() {
         return id;
@@ -58,11 +52,11 @@ public class GlobalCommitment {
         this.globalCommitment = globalCommitment;
     }
 
-    public String getAmmount() {
+    public Integer getAmmount() {
         return ammount;
     }
 
-    public void setAmmount(String ammount) {
+    public void setAmmount(Integer ammount) {
         this.ammount = ammount;
     }
 

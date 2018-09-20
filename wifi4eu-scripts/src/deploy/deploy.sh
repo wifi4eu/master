@@ -1,21 +1,31 @@
 #!/bin/bash
-
 # command line parameter
+# get the script directory
+mydir="${0%/*}"
+
+# config load
+
+echo $mydir
 echo $1
 
 # select environment to get the configuration
 if [ $1 == "dev" ];
 then
 	echo "dev"
-    source config-dev.sh
+    source "$mydir"/config-dev.sh
 elif [ $1 == "acc" ];
 then
     echo "acc"
-    source config-acc.sh
+    source "$mydir"/config-acc.sh
 elif [ $1 == "acchf" ];
 then
     echo "acchf";
-    source config-acchf.sh
+    source "$mydir"/config-acchf.sh
+
+elif [ $1 == "prod" ];
+then
+    echo "prod";
+    source "$mydir"/config-prod.sh
 else
     echo "please, provide valid environment name"
 	exit 1
@@ -40,13 +50,13 @@ then
         # Stop tomcat server
         # Copy files to webapps
         # Start tomcat server
-        ssh -i $PEM_FO_CERT_PATH $FO_TOMCAT "uname -a;
-        sudo service tomcat stop;
-        sudo rm -R $FO_TOMCAT_PATH/webapps/*.war;
-        sudo rm -fR $FO_TOMCAT_PATH/webapps/ROOT;
-        sudo rm -fR $FO_TOMCAT_PATH/webapps/wifi4eu;
-        sudo cp $REMOTE_COPYFOLDER/*.war $FO_TOMCAT_PATH/webapps;
-        sudo service tomcat start"</dev/null
+        # ssh -i $PEM_FO_CERT_PATH $FO_TOMCAT "uname -a;
+        # sudo service tomcat stop;
+        # sudo rm -R $FO_TOMCAT_PATH/webapps/*.war;
+        # sudo rm -fR $FO_TOMCAT_PATH/webapps/ROOT;
+        # sudo rm -fR $FO_TOMCAT_PATH/webapps/wifi4eu;
+        # sudo cp $REMOTE_COPYFOLDER/*.war $FO_TOMCAT_PATH/webapps;
+        # sudo service tomcat start"</dev/null
 
     done
 
@@ -87,6 +97,22 @@ then
         ssh -i $PEM_VARNISH_CERT_PATH $VARNISH_CRED "uname -a;
         sudo service varnish restart" </dev/null
     done
+
+elif [ $2 = "redis" ]
+then 
+    
+    echo "Redis restart"
+
+    # Redis restart
+
+    for REDIS_CRED in $REDIS_LIST
+    do
+        echo "SSH connection to Redis"
+        echo $REDIS_CRED
+        ssh -i $PEM_REDIS_CERT_PATH $REDIS_CRED "uname -a;
+        sudo ./wifi4eu-gate-restart.sh"
+    done
+
 
 else
     echo "No action to do"

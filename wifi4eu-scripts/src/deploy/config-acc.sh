@@ -13,7 +13,12 @@ BO_TOMCAT_1_CRED=client-acc-dev@202.3.3.7
 BO_TOMCAT_PATH=/opt/tomcat-latest
 VARNISH_1_CRED=client-acc-dev@202.3.3.4
 VARNISH_2_CRED=client-acc-dev@202.3.3.5
+REDIS_1_CRED=client-acc-dev@202.3.2.11
+REDIS_2_CRED=client-acc-dev@202.3.2.12
+REDIS_3_CRED=client-acc-dev@202.3.2.13
+REDIS_LIST="$REDIS_1_CRED $REDIS_2_CRED $REDIS_3_CRED"
 
+PEM_REDIS_CERT_PATH=/Users/rgarcita/security/wifi4eu-dev/client-acc-dev.pem
 PEM_FO_CERT_PATH=/Users/rgarcita/security/wifi4eu-dev/client-acc-dev.pem
 PEM_BO_CERT_PATH=/Users/rgarcita/security/wifi4eu-dev/client-acc-dev.pem
 PEM_VARNISH_CERT_PATH=/Users/rgarcita/security/wifi4eu-dev/client-acc-dev.pem
