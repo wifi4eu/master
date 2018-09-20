@@ -62,20 +62,29 @@ export class VoucherComponent {
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             this.callCustomApi.getCallForApply().subscribe(
-                (call: CallCustomBase) => {
-                    this.currentCall = call;
-                    if (this.currentCall) {
-                        this.voucherCompetitionState = this.currentCall.voucherCompetitionState;
-                        if (this.voucherCompetitionState == 2) {
-                            this.openedCalls = "greyImage";
+                (responseDTO: ResponseDTOBase) => {
+                    console.log("NOT ERROR");
+                    if (responseDTO.success){
+                        console.log("SUCCESS");
+                        this.currentCall = responseDTO.data;
+                        if (this.currentCall) {
+                            this.voucherCompetitionState = this.currentCall.voucherCompetitionState;
+                            if (this.voucherCompetitionState == 2) {
+                                this.openedCalls = "greyImage";
+                            }
+                            this.loadVoucherData();
+                        } else {
+                            this.voucherCompetitionState = 0;
+                            this.loadVoucherDataWithoutCall(-1);
                         }
-                        this.loadVoucherData();
-                    } else {
+                    }else{
+                        console.log("NOT SUCCESS");
                         this.voucherCompetitionState = 0;
-                        this.loadVoucherDataWithoutCall(-1);
                     }
                 },
                 error => {
+                    console.log("ERROR");
+                    console.log(error);
                     this.voucherCompetitionState = 0;
                 }
             );
