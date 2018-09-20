@@ -824,7 +824,8 @@ public class ExportImportWifi4euAbacService {
                 if (abacStatus == AbacStatus.ABAC_VALID) {
                     Integer municipalityId = Integer.parseInt(csvRecord.get(LegalCommitmentCSVColumn.MUNICIPALITY_ID));
                     Date signatureDate = dateUtilities.convertToDate(csvRecord.get(LegalCommitmentCSVColumn.SIGNATURE_DATE));
-                    GrantAgreement grantAgreement = grantAgreementRepository.findByDateCounterSignatureAndApplicationRegistrationMunicipalityId(signatureDate, municipalityId);
+                    GrantAgreement grantAgreement =
+                            grantAgreementRepository.findByDateSignatureAndApplicationRegistrationMunicipalityIdAndDateCounterSignatureIsNull(signatureDate, municipalityId);
 
                     if (grantAgreement == null) {
                         // What should we do?

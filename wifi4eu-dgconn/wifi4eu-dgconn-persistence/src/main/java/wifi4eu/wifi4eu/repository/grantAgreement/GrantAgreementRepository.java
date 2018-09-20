@@ -10,6 +10,6 @@ public interface GrantAgreementRepository extends CrudRepository<GrantAgreement,
     Integer countByApplicationId(int applicationId);
 
     //TODO: it is not enough to look by municipalityId as 1 municipality can have several grant agreements even with the same date
-    GrantAgreement findByDateCounterSignatureAndApplicationRegistrationMunicipalityId(Date signatureDate, Integer municipalityId);
+    GrantAgreement findByDateSignatureAndApplicationRegistrationMunicipalityIdAndDateCounterSignatureIsNull(Date signatureDate, Integer municipalityId);
 
 }
