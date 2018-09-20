@@ -74,6 +74,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @author jlopezri
@@ -764,11 +766,6 @@ public class ExportImportWifi4euAbacService {
         return issueType;
     }
     
-    public ByteArrayOutputStream exportLegalCommitment() {
-    	final String COLUMN_SEPARATOR = ",";
-    	final String LINE_SEPARATOR = System.getProperty("line.separator");
-
-
     @Transactional
     public boolean importBudgetaryCommitment(InputStream fileDataStream) throws IOException {
         _log.debug("importBudgetaryCommitment");
@@ -809,6 +806,10 @@ public class ExportImportWifi4euAbacService {
 
         return null;
     }
+
+    public ByteArrayOutputStream exportLegalCommitment() {
+    	final String COLUMN_SEPARATOR = ",";
+    	final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     	_log.debug("exportLegalCommitment");
         
@@ -866,7 +867,19 @@ public class ExportImportWifi4euAbacService {
 	private List<ExportImportLegalCommitmentInformation> searchLegalCommitments() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-	    List<Application> listApplications = this.applicationRepository.findByCallIdAndStatus(1, 2);
+		List<BudgetaryCommitment> listBudgetaryCommitment = this.budgetaryCommitmentRepository.findByAbacBcKeyIsNotNullAndAbacLcKeyIsNull();
+	    this._log.info("listBudgetaryCommitment.size [{}]", listBudgetaryCommitment.size());
+		List<Application> listApplications = null;
+		
+		// TODO Change this query logic
+		for (BudgetaryCommitment budgetaryCommitment : listBudgetaryCommitment) {
+			Municipality municipality = budgetaryCommitment.getMunicipality();
+			List<Registration> listRegistrations = municipality.getRegistrations();
+			
+			List<Integer> registrationIds = listRegistrations.stream().map(Registration::getId).collect(Collectors.toList());
+			listApplications = this.applicationRepository.findByRegistrationIdIn(registrationIds);
+		}
+		
 	    int listApplicationsSize = listApplications.size();
 	    this._log.info("Applications.size [{}]", listApplicationsSize);
 		
@@ -880,6 +893,7 @@ public class ExportImportWifi4euAbacService {
 			
 			Integer registrationId = application.getRegistrationId();
 			Registration registration = this.registrationRepository.findOne(registrationId);
+			
 			this._log.info("Registration. registration.Id [{}]", registrationId);
 
 			List<GrantAgreement> listGrantAgreement = this.grantAgreementRepository.findByApplicationId(applicationId);
