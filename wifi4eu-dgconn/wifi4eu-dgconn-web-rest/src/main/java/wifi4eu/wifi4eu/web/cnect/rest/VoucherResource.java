@@ -436,7 +436,7 @@ public class VoucherResource {
     @ApiOperation(value = "Check freeze list is enabled")
     @RequestMapping(value = "/assignment/check-freeze-enabled/by/call/{callId}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Boolean> checkApplicationAreValidForFreezeList(@PathVariable("callId") final Integer callId,
+    public ResponseEntity<Boolean> checkApplicationAreValidForFreezeList(@PathVariable("callId") final Integer callId, @RequestParam("timestamp") final Long timestamp,
                                                                          HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
