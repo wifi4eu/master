@@ -29,6 +29,14 @@ elif [ $1 == "devpg" ];
 then
 	echo "devpg"
     source "$mydir"/config-devpg.sh
+elif [ $1 == "testnf" ];
+then
+	echo "testnf"
+    source "$mydir"/config-testnf.sh
+elif [ $1 == "testbf" ];
+then
+	echo "testbf"
+    source "$mydir"/config-testbf.sh
 elif [ $1 == "acc" ];
 then
     echo "acc"
@@ -55,7 +63,7 @@ then
     do
         echo "SCP connection to Tomcat"
         echo $FO_TOMCAT
-        scp -i  $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $LOCAL_SOURCECODE$FO_WAR1_FOLDER $FO_TOMCAT:$REMOTE_COPYFOLDER
+        scp -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $LOCAL_SOURCECODE$FO_WAR1_FOLDER $FO_TOMCAT:$REMOTE_COPYFOLDER
         scp -i $PEM_FO_CERT_PATH -o StrictHostKeyChecking=no $LOCAL_SOURCECODE$FO_WAR2_FOLDER $FO_TOMCAT:$REMOTE_COPYFOLDER
 
         # Stop tomcat server
