@@ -7,6 +7,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,14 @@ import wifi4eu.wifi4eu.entity.exportImport.BudgetaryCommitment;
 import wifi4eu.wifi4eu.entity.exportImport.ExportFile;
 import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
 import wifi4eu.wifi4eu.entity.exportImport.GlobalCommitment;
+import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
-import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBudgetaryCommitmentMapper;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
 import wifi4eu.wifi4eu.repository.exportImport.BeneficiaryInformationRepository;
 import wifi4eu.wifi4eu.repository.exportImport.BudgetaryCommitmentRepository;
-import wifi4eu.wifi4eu.repository.exportImport.ExportImportBudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.repository.exportImport.GlobalCommitmentRepository;
-import wifi4eu.wifi4eu.repository.exportImport.ValidatedLefRepository;
+import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
 import wifi4eu.wifi4eu.service.exportImport.file.ReadFile;
@@ -47,9 +47,12 @@ import wifi4eu.wifi4eu.util.DateUtils;
 import wifi4eu.wifi4eu.util.ExportFileUtils;
 import wifi4eu.wifi4eu.util.ZipFileReader;
 import wifi4eu.wifi4eu.util.parsing.BudgetaryCommitmentCSVColumn;
+import wifi4eu.wifi4eu.util.parsing.LegalCommitmentCSVColumn;
+import wifi4eu.wifi4eu.util.parsing.LegalCommitmentDocumentCSVColumn;
 import wifi4eu.wifi4eu.util.parsing.LegalEntityCSVColumn;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,8 +62,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author jlopezri
@@ -69,6 +75,12 @@ import java.util.Locale;
 public class ExportImportWifi4euAbacService {
 
     private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
+
+    // TODO: externalize
+    private static final String AIRGAP_EXPORT_LEGAL_COMMITMENT_INFORMATION_CSV = "airgap_exportLegalCommitmentInformation.csv";
+
+    // TODO: externalize
+    private static final String AIRGAP_EXPORT_BENEFICIARY_DOCUMENTS_CSV = "airgap_exportBeneficiaryDocuments.csv";
 
     private static final String FILENAME_EXPORT_DOCUMENTS_DATA = "portal_exportBeneficiaryDocuments.csv";
 
@@ -84,16 +96,7 @@ public class ExportImportWifi4euAbacService {
     private ExportImportRegistrationDataRepository exportImportRegistrationDataRepository;
 
     @Autowired
-    private ExportImportBudgetaryCommitmentMapper exportImportBudgetaryCommitmentMapper;
-
-    @Autowired
-    private ExportImportBudgetaryCommitmentRepository exportImportBudgetaryCommitmentRepository;
-
-    @Autowired
     private BeneficiaryInformationRepository beneficiaryInformationRepository;
-
-    @Autowired
-    private ValidatedLefRepository validatedLefRepository;
 
     @Autowired
     private UserService userService;
@@ -130,6 +133,9 @@ public class ExportImportWifi4euAbacService {
 
     @Autowired
     private GlobalCommitmentRepository globalCommitmentRepository;
+
+    @Autowired
+    private GrantAgreementRepository grantAgreementRepository;
 
     @Transactional
     public boolean importLegalEntityFBCValidate(InputStream fileDataStream) throws IOException {
@@ -779,16 +785,98 @@ public class ExportImportWifi4euAbacService {
         return null;
     }
 
-    public boolean importLegalCommitment(InputStream inputStream) {
+    // Since Zip can be very big we cannot read it in one path and keep the data in a memory.
+    public boolean importLegalCommitment(InputStream inputStream) throws IOException {
+        // What if it is too big?
+        // TODO: needs o be improved for the really big files
+        byte[] zipFile = IOUtils.toByteArray(inputStream);
 
-        try (ZipFileReader zipFileReader = new ZipFileReader(inputStream)) {
-            ZipFileReader.ZipFileEntry fileEntry = zipFileReader.nextEntry();
+        ZipFileReader.ZipFileEntry documentFile = parseFile(new ByteArrayInputStream(zipFile), AIRGAP_EXPORT_BENEFICIARY_DOCUMENTS_CSV);
 
-            // if (fileEntry.getName())
+        // TODO: needs o be improved for the really big files
+        // Too heavy to hold all FileEntries thus we keep only file names.
+        Map<Integer, String> municipalityDocuments = new HashMap<>();
 
-        } catch (IOException e) {
-            _log.error("Error parsing Zip file", e);
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(documentFile.getContent());
+             InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream)) {
+
+            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
+            csvParser.forEach(csvRecord -> {
+
+                String municipalityId = csvRecord.get(LegalCommitmentDocumentCSVColumn.MUNICIPALITY_ID);
+                String documentFileName = csvRecord.get(LegalCommitmentDocumentCSVColumn.DOC_FILE_NAME);
+
+                municipalityDocuments.put(Integer.parseInt(municipalityId), documentFileName);
+
+            });
         }
 
+
+        ZipFileReader.ZipFileEntry informationFile = parseFile(new ByteArrayInputStream(zipFile), AIRGAP_EXPORT_LEGAL_COMMITMENT_INFORMATION_CSV);
+
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(informationFile.getContent());
+             InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream)) {
+
+            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
+            csvParser.forEach(csvRecord -> {
+
+                AbacStatus abacStatus = AbacStatus.valueOf(csvRecord.get(LegalCommitmentCSVColumn.ABAC_STATUS));
+                if (abacStatus == AbacStatus.ABAC_VALID) {
+                    Integer municipalityId = Integer.parseInt(csvRecord.get(LegalCommitmentCSVColumn.MUNICIPALITY_ID));
+                    Date signatureDate = dateUtilities.convertToDate(csvRecord.get(LegalCommitmentCSVColumn.SIGNATURE_DATE));
+                    GrantAgreement grantAgreement = grantAgreementRepository.findByDateCounterSignatureAndApplicationRegistrationMunicipalityId(signatureDate, municipalityId);
+
+                    if (grantAgreement == null) {
+                        // What should we do?
+                        throw new IllegalStateException("Cannot find a grant agreement for the specified signature date and municipality");
+                    }
+
+                    Date counterSignatureDate = dateUtilities.convertToDate(csvRecord.get(LegalCommitmentCSVColumn.COUNTERSIGNATURE_DATE));
+                    grantAgreement.setDateCounterSignature(counterSignatureDate);
+
+                    String abacKey = csvRecord.get(LegalCommitmentCSVColumn.ABAC_KEY);
+                    grantAgreement.setCounterSignatureId(abacKey);
+
+                    String pdfFileName = municipalityDocuments.get(municipalityId);
+
+                    try {
+
+                        ZipFileReader.ZipFileEntry pdfFile = parseFile(new ByteArrayInputStream(zipFile), pdfFileName);
+
+                        if (pdfFile == null || pdfFile.getContent() == null) {
+                            throw new IllegalStateException("Error parsing a file " + pdfFileName + ". Please, check if Zip file is consistent.");
+                        }
+
+                        String filePath = azureBlobConnector.uploadLegalFile(pdfFileName, new String(pdfFile.getContent()));
+
+                        grantAgreement.setDocumentLocationCounterSigned(filePath);
+
+                        grantAgreementRepository.save(grantAgreement);
+
+                    } catch (IOException e) {
+                        _log.error("Error processing and uploading the file " + pdfFileName, e);
+                    }
+
+                }
+
+            });
+        }
+
+        return true;
     }
+
+    private ZipFileReader.ZipFileEntry parseFile(ByteArrayInputStream zipFile, String fileName) throws IOException {
+
+        try (ZipFileReader zipFileReader = new ZipFileReader(zipFile)) {
+
+            ZipFileReader.ZipFileEntry fileEntry = zipFileReader.getFileEntry(fileName);
+            if (fileEntry != null) {
+                return fileEntry;
+            } else {
+                throw new IllegalStateException("File " + fileName + " is missing");
+            }
+
+        }
+    }
+
 }

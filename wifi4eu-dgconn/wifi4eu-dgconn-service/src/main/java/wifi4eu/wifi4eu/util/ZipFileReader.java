@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.attribute.FileTime;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -20,16 +21,27 @@ public class ZipFileReader implements AutoCloseable {
     public ZipFileEntry nextEntry() throws IOException {
 
         ZipFileEntry zipFileEntry = null;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
         ZipEntry zipEntry = zipInputStream.getNextEntry();
         if (zipEntry != null) {
-            int bytesRead;
-            byte[] buffer = new byte[BUFFER_SIZE];
-            while ((bytesRead = zipInputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
+            zipFileEntry = readData(zipEntry);
+        }
+        zipInputStream.closeEntry();
+
+        return zipFileEntry;
+    }
+
+    public ZipFileEntry getFileEntry(String name) throws IOException {
+        Objects.requireNonNull(name);
+
+        ZipFileEntry zipFileEntry = null;
+        ZipEntry zipEntry;
+        while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+            if (zipEntry.getName().equals(name)) {
+                zipFileEntry = readData(zipEntry);
+                zipInputStream.closeEntry();
+                break;
             }
-            zipFileEntry = new ZipFileEntry(zipEntry.getName(), outputStream.toByteArray(), zipEntry.getLastModifiedTime());
+            zipInputStream.closeEntry();
         }
 
         return zipFileEntry;
@@ -37,6 +49,16 @@ public class ZipFileReader implements AutoCloseable {
 
     public void close() throws IOException {
         zipInputStream.close();
+    }
+
+    private ZipFileEntry readData(ZipEntry zipEntry) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        int bytesRead;
+        byte[] buffer = new byte[BUFFER_SIZE];
+        while ((bytesRead = zipInputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+        return new ZipFileEntry(zipEntry.getName(), outputStream.toByteArray(), zipEntry.getLastModifiedTime());
     }
 
     public static final class ZipFileEntry {

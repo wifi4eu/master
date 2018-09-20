@@ -709,17 +709,17 @@ public class ReportCallOpen {
                     for (int i = 0; i < allApplicants.size(); i++) {
                         boolean warning = false;
                         if (!warning) {
-                            warning = registrationHasWarning1(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                            warning = registrationHasWarning1(allApplicants.get(i).getRegistration());
                             if (warning) {
                                 applicantsResult++;
                             } else {
                                 if (!warning) {
-                                    warning = registrationHasWarning2(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                                    warning = registrationHasWarning2(allApplicants.get(i).getRegistration());
                                     if (warning) {
                                         applicantsResult++;
                                     } else {
                                         if (!warning) {
-                                            warning = registrationHasWarning3(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                                            warning = registrationHasWarning3(allApplicants.get(i).getRegistration());
                                             if (warning) {
                                                 applicantsResult++;
                                             }
@@ -737,14 +737,14 @@ public class ReportCallOpen {
                         boolean secondWarning = false;
                         boolean warning = false;
                         if (!warning) {
-                            warning = registrationHasWarning1(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                            warning = registrationHasWarning1(allApplicants.get(i).getRegistration());
                             if (warning) {
                                 firstWarning = warning;
                                 warning = false;
                             }
                         }
                         if (!warning) {
-                            warning = registrationHasWarning2(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                            warning = registrationHasWarning2(allApplicants.get(i).getRegistration());
                             if (warning) {
                                 if (firstWarning) {
                                     secondWarning = warning;
@@ -755,7 +755,7 @@ public class ReportCallOpen {
                             }
                         }
                         if (!warning) {
-                            warning = registrationHasWarning3(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                            warning = registrationHasWarning3(allApplicants.get(i).getRegistration());
                             if (warning) {
                                 secondWarning = warning;
                             }
@@ -771,9 +771,9 @@ public class ReportCallOpen {
                         boolean firstWarning = false;
                         boolean secondWarning = false;
                         boolean thirdWarning = false;
-                        firstWarning = registrationHasWarning1(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
-                        secondWarning = registrationHasWarning2(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
-                        thirdWarning = registrationHasWarning3(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()));
+                        firstWarning = registrationHasWarning1(allApplicants.get(i).getRegistration());
+                        secondWarning = registrationHasWarning2(allApplicants.get(i).getRegistration());
+                        thirdWarning = registrationHasWarning3(allApplicants.get(i).getRegistration());
                         if (firstWarning && secondWarning && thirdWarning) {
                             applicantsResult++;
                         }
@@ -799,7 +799,7 @@ public class ReportCallOpen {
             switch (warningType) {
                 case 1: {
                     for (int i = 0; i < allApplicants.size(); i++) {
-                        if (registrationHasWarning1(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()))) {
+                        if (registrationHasWarning1(allApplicants.get(i).getRegistration())) {
                             warningsResult++;
                         }
                     }
@@ -807,7 +807,7 @@ public class ReportCallOpen {
                 }
                 case 2: {
                     for (int i = 0; i < allApplicants.size(); i++) {
-                        if (registrationHasWarning2(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()))) {
+                        if (registrationHasWarning2(allApplicants.get(i).getRegistration())) {
                             warningsResult++;
                         }
                     }
@@ -815,7 +815,7 @@ public class ReportCallOpen {
                 }
                 case 3: {
                     for (int i = 0; i < allApplicants.size(); i++) {
-                        if (registrationHasWarning3(registrationRepository.findOne(allApplicants.get(i).getRegistrationId()))) {
+                        if (registrationHasWarning3(allApplicants.get(i).getRegistration())) {
                             warningsResult++;
                         }
                     }
