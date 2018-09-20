@@ -16,6 +16,8 @@
 
     <jpa:repositories base-package="wifi4eu.wifi4eu.repository.exportImport"/>
 
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
+
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 
         <property name="persistenceUnitName" value="wifi4euPersistenceTest" />
