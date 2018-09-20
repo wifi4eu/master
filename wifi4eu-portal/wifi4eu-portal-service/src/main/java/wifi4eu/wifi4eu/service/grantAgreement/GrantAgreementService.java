@@ -1,8 +1,6 @@
 package wifi4eu.wifi4eu.service.grantAgreement;
 
 import java.io.ByteArrayOutputStream;
-//
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.text.DateFormat;
@@ -15,8 +13,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import com.itextpdf.text.pdf.*;
-//
-import com.microsoft.applicationinsights.core.dependencies.apachecommons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +22,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 
-import org.springframework.util.Base64Utils;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationAuthorizedPersonDTO;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
@@ -38,7 +33,6 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.helper.Validator;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorage;
-import wifi4eu.wifi4eu.entity.grantAgreement.GrantAgreement;
 import wifi4eu.wifi4eu.mapper.grantAgreement.GrantAgreementMapper;
 import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationAuthorizedPersonService;
@@ -53,7 +47,6 @@ import wifi4eu.wifi4eu.util.ParametrizedDocConverter;
 public class GrantAgreementService {
     Logger _log = LogManager.getLogger(GrantAgreementService.class);
 
-    //
     private final static String FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX = "grant_agreement_0918_";
 
     private final static String FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION = ".pdf";
@@ -160,11 +153,7 @@ public class GrantAgreementService {
     	fileName.append(FILE_TEMPLATE_GRANT_AGREEMENT_PREFIX).append(language).append(FILE_TEMPLATE_GRANT_AGREEMENT_EXTENSION);
 
     	// Template files are stored in Azure: wifi4eustoredocuments - Storage Explorer
-       // return azureBlobStorage.getFileFromContainer("docs", fileName.toString());
-
-        // TODO FIXME remove local reference
-        File file = new File("C:\\grant_agreements\\"+fileName);
-        return FileUtils.readFileToByteArray(file);
+        return azureBlobStorage.getFileFromContainer("docs", fileName.toString());
     }
 
     public ByteArrayOutputStream fillGrantAgreementDocument(GrantAgreementDTO grantAgreement, Map<String, String> mapProperties) throws IOException {
