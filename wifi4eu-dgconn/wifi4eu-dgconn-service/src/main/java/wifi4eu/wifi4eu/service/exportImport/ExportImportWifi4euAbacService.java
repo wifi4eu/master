@@ -63,6 +63,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,7 +84,7 @@ public class ExportImportWifi4euAbacService {
 
     private static final String FILENAME_EXPORT_BENEFICIARIES_DATA = "portal_exportBeneficiaryInformation.csv";
 
-    private static final String FILENAME_EXPORT_LEGAL_COMMITMENT_DATA = "portal_exportLegalCommitment.csv";
+    private static final String FILENAME_EXPORT_LEGAL_COMMITMENT_DATA = "portal_exportBeneficiaryDocuments.csv";
 
     @Autowired
     private ExportImportRegistrationDataMapper exportImportRegistrationDataMapper;
@@ -690,13 +692,22 @@ public class ExportImportWifi4euAbacService {
     }
     
     public ByteArrayOutputStream exportLegalCommitment() {
+    	final String COLUMN_SEPARATOR = ",";
     	final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     	_log.debug("exportLegalCommitment");
         
         // Preparation for the Beneficiary CSV file
-		StringBuilder builder = new StringBuilder();
-		builder.append("mun_id;doc_portalId;doc_name;doc_fileName;doc_mimeType;doc_date;doc_type;ares_reference").append(LINE_SEPARATOR);
+    	StringBuilder builder = new StringBuilder();
+    	builder.append("mun_id").append(COLUMN_SEPARATOR)
+    		.append("doc_portalId").append(COLUMN_SEPARATOR)
+    		.append("doc_name").append(COLUMN_SEPARATOR)
+    		.append("doc_fileName").append(COLUMN_SEPARATOR)
+    		.append("doc_mimeType").append(COLUMN_SEPARATOR)
+    		.append("doc_date").append(COLUMN_SEPARATOR)
+    		.append("doc_type").append(COLUMN_SEPARATOR)
+    		.append("ares_reference").append(COLUMN_SEPARATOR)
+    		.append(LINE_SEPARATOR);
 
         String file = "";
         
@@ -710,14 +721,14 @@ public class ExportImportWifi4euAbacService {
         		List<ExportFile> listExportFile = legalCommitmentInformation.getFiles();
         		
         		for (ExportFile exportFile : listExportFile) {
-        			builder.append( legalCommitmentInformation.getMunicipalityId() ).append(";");
-        			builder.append( legalCommitmentInformation.getDocumentId() ).append(";");
-        			builder.append( legalCommitmentInformation.getDocumentName() ).append(";");
-        			builder.append( legalCommitmentInformation.getZipFileDocumentName() ).append(";");
-        			builder.append( legalCommitmentInformation.getDocumentMimeType() ).append(";");
-        			builder.append( legalCommitmentInformation.getDocumentSignatureDate() ).append(";");
-        			builder.append( legalCommitmentInformation.getDocumentType() ).append(";");
-        			builder.append( legalCommitmentInformation.getAresReference() ).append(";");
+        			builder.append( legalCommitmentInformation.getMunicipalityId() ).append(COLUMN_SEPARATOR);
+        			builder.append( legalCommitmentInformation.getDocumentId() ).append(COLUMN_SEPARATOR);
+        			builder.append( legalCommitmentInformation.getDocumentName() ).append(COLUMN_SEPARATOR);
+        			builder.append( legalCommitmentInformation.getZipFileDocumentName() ).append(COLUMN_SEPARATOR);
+        			builder.append( legalCommitmentInformation.getDocumentMimeType() ).append(COLUMN_SEPARATOR);
+        			builder.append( legalCommitmentInformation.getDocumentSignatureDate() ).append(COLUMN_SEPARATOR);
+        			builder.append( legalCommitmentInformation.getDocumentType() ).append(COLUMN_SEPARATOR);
+        			builder.append( legalCommitmentInformation.getAresReference() ).append(COLUMN_SEPARATOR);
         			builder.append( LINE_SEPARATOR );
 
         	        exportFiles.add(exportFile);
@@ -738,17 +749,14 @@ public class ExportImportWifi4euAbacService {
     
     
 	private List<ExportImportLegalCommitmentInformation> searchLegalCommitments() {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		final Integer LEGAL_FILE_TYPE = 3;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
 	    List<Application> listApplications = this.applicationRepository.findByCallIdAndStatus(1, 2);
 	    int listApplicationsSize = listApplications.size();
 	    this._log.info("Applications.size [{}]", listApplicationsSize);
 		
 		List<ExportImportLegalCommitmentInformation> listLegalCommitmentInformation = new ArrayList<>();
-		int i= 0;
-		
-		AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
+		int i = 0;
 		
 		for (Application application : listApplications) {
 			Integer applicationId = application.getId();
@@ -759,11 +767,6 @@ public class ExportImportWifi4euAbacService {
 			Registration registration = this.registrationRepository.findOne(registrationId);
 			this._log.info("Registration. registration.Id [{}]", registrationId);
 
-//			this._log.info("Querying legal files type 3");
-//			List<LegalFile> listLegalFiles = Lists.newArrayList(this.legalFilesRepository.findByRegistrationAndFileType(registrationId, LEGAL_FILE_TYPE));
-//			List<LegalFile> listLegalFiles = this.legalFilesRepository.findLegalFilesByRegistrationAndFileType(registrationId, LEGAL_FILE_TYPE);
-//			this._log.info("   listLegalFiles.size()[{}]", listLegalFiles.size());
-			
 			List<GrantAgreement> listGrantAgreement = this.grantAgreementRepository.findByApplicationId(applicationId);
 			this._log.info("   listGrantAgreement.size()[{}]", listGrantAgreement.size());
 
@@ -774,32 +777,42 @@ public class ExportImportWifi4euAbacService {
 			legalCommitmentInformation.setFiles(new ArrayList<ExportFile>());
 			
 			if (grantAgreement != null ) {
-				String path = grantAgreement.getDocumentLocation();
-				String containerName = path.substring(1, path.lastIndexOf("/"));
-				String fileName = path.substring(path.lastIndexOf("/") + 1);
+				String documentLocation = grantAgreement.getDocumentLocation();
 
-//			for (LegalFile legalFile : listLegalFiles) {
-				legalCommitmentInformation.setMunicipalityId(registration.getMunicipality().getId().longValue());
-				legalCommitmentInformation.setDocumentId(grantAgreement.getId().longValue());
-				legalCommitmentInformation.setDocumentName(fileName);
-				legalCommitmentInformation.setZipFileDocumentName(fileName);
-				legalCommitmentInformation.setDocumentMimeType("application/pdf");
-				
-				String signatureDate = grantAgreement == null ? "" : sdf.format(grantAgreement.getDateSignature());
-				legalCommitmentInformation.setDocumentSignatureDate(signatureDate);
-				legalCommitmentInformation.setDocumentType("GRANT_AGREEMENT");
-				legalCommitmentInformation.setAresReference("");
-				
-				//
-				byte[] base64FileData = azureBlobConnector.downloadFileByUri(path);
-				
-		        byte[] fileData = base64FileData == null ? new byte[0] : base64FileData;
-				this._log.info("   Downloaded base64FileData.length [{}] bytes", base64FileData == null ? "NULL" : base64FileData.length);
-		        ExportFile exportFile = new ExportFile(legalCommitmentInformation.getDocumentName(), fileData);
-				
-		        legalCommitmentInformation.getFiles().add(exportFile);
-				
-//			}			
+				byte[] content = null;
+				_log.info("Downloading from URI [{}]", documentLocation);
+
+				URL aURL = null;
+				try {
+					aURL = new URL(documentLocation);
+				} catch (MalformedURLException e) {
+					_log.error("Error", e);
+				}
+
+				if (aURL != null) {
+					String path = aURL.getPath();
+
+					String fileName = path.substring(path.lastIndexOf("/") + 1);
+
+					legalCommitmentInformation.setMunicipalityId(registration.getMunicipality().getId().longValue());
+					legalCommitmentInformation.setDocumentId(grantAgreement.getId().longValue());
+					legalCommitmentInformation.setDocumentName(fileName);
+					legalCommitmentInformation.setZipFileDocumentName(fileName);
+					legalCommitmentInformation.setDocumentMimeType("application/pdf");
+
+					String signatureDate = grantAgreement == null ? "" : sdf.format(grantAgreement.getDateSignature());
+					legalCommitmentInformation.setDocumentSignatureDate(signatureDate);
+					legalCommitmentInformation.setDocumentType("GRANT_AGREEMENT");
+					legalCommitmentInformation.setAresReference("");
+
+					byte[] fileContent = this.azureBlobConnector.downloadFileByUri(documentLocation);
+
+					byte[] fileData = fileContent == null ? new byte[0] : fileContent;
+					this._log.info("   Downloaded fileContent.length [{}] bytes", fileContent == null ? "NULL" : fileContent.length);
+					ExportFile exportFile = new ExportFile(legalCommitmentInformation.getDocumentName(), fileData);
+
+					legalCommitmentInformation.getFiles().add(exportFile);
+				}
 			}
 
 			listLegalCommitmentInformation.add(legalCommitmentInformation);

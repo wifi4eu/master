@@ -1,21 +1,15 @@
 package wifi4eu.wifi4eu.common.service.azureblobstorage;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.codec.net.URLCodec;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +24,6 @@ import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.ListBlobItem;
-
 import wifi4eu.wifi4eu.common.service.encryption.EncrypterService;
 
 /**
@@ -54,7 +46,6 @@ public class AzureBlobConnector {
     @PostConstruct
     public void init() throws Exception {
         storageConnectionString = encrypterService.getAzureKeyStorageLegalFiles();
-        LOGGER.info("Connection=>" + storageConnectionString);
     }
     
 	private CloudBlobContainer getContainerReference(final String containerName) {
@@ -176,14 +167,18 @@ public class AzureBlobConnector {
 		CloudBlockBlob blob = null;
 		try {
 			blob = container.getBlockBlobReference(fileName);
+			blob.downloadAttributes();
 		} catch (URISyntaxException | StorageException e) {
 			LOGGER.error("Error", e);
 		}
 
 		if (blob != null) {
-			LOGGER.info("Downloading from containerName[{}], fileName[{}]", containerName, fileName);
+			
+			long fileSize = blob.getProperties().getLength();
+			LOGGER.info("Downloading from containerName[{}], fileName[{}], fileSize[{}]", containerName, fileName, fileSize);
 
 			try {
+				content = new byte[(int)fileSize];
 				blob.downloadToByteArray(content, 0);
 				LOGGER.info("Content downloaded. Content.length [{}]", content == null ? "NULL" : String.valueOf(content.length));
 			} catch (StorageException e) {
