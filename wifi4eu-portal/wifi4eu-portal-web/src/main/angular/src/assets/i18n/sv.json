@@ -374,7 +374,7 @@
   "shared.error.api.generic": "Ett fel har inträffat. Uppgifterna gick inte att hämta från servern. Försök igen senare.",
   "helpdesk.helpdeskform.success": "Ditt ärende har skickats till EU-kommissionen. Vi kontaktar dig så fort som möjligt när vi har löst problemet.",
   "benefPortal.request.additionalInfo.instructions": "Systemet har upptäckt att flera ombud har registrerat din kommun som sökande organ. Det gick inte att lösa problemet via forumet.<br><br>Vi behöver därför nedanstående handlingar.",
-  "benefPortal.request.additionalInfo.doc1.label": "1) Ett fullständigt intyg om samtycke till ansökan från kommunens företrädare (borgmästare/kommunalråd) <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\" target=\"_blank\"> </a> med en kopia av företrädarens id-kort eller pass.",
+  "benefPortal.request.additionalInfo.doc1.label": "1) Ett fullständigt <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624101\" target=\"_blank\">intyg om samtycke till ansökan</a> från kommunens företrädare (borgmästare/kommunalråd)  med en kopia av företrädarens id-kort eller pass.",
   "benefPortal.request.additionalInfo.doc2.label": "2) En kopia av företrädarens utnämningshandling eller en handling som visar att borgmästaren/kommunalrådet företräder kommunen.",
   "benefPortal.request.additionalInfo.doc3.label": "3) <a href=\"https://ec.europa.eu/digital-single-market/news-redirect/624099\" target=\"_blank\">Formuläret om bemyndigad person</a>, undertecknat av borgmästaren/kommunalrådet och den bemyndigade personen.",
   "benefPortal.request.additionalInfo.doc4.label": "4) En kopia av den bemyndigade personens id-kort eller pass",

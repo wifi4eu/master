@@ -45,6 +45,11 @@ elif [ $1 == "acchf" ];
 then
     echo "acchf";
     source "$mydir"/config-acchf.sh
+
+elif [ $1 == "prod" ];
+then
+    echo "prod";
+    source "$mydir"/config-prod.sh
 else
     echo "please, provide valid environment name"
 	exit 1
