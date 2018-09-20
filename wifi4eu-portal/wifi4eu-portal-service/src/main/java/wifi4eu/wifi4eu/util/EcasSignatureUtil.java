@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.util;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 import java.util.Date;
 import java.util.EnumSet;
 
@@ -30,6 +31,7 @@ import wifi4eu.wifi4eu.common.dto.model.GrantAgreementDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobConnector;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorage;
 import wifi4eu.wifi4eu.common.service.azureblobstorage.AzureBlobStorageUtils;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -60,6 +62,9 @@ public class EcasSignatureUtil {
     @Autowired
     ApplicationService applicationService;
 
+    @Autowired
+    AzureBlobConnector azureBlobConnector;
+
     /**
      * Sample Snippets to interact with the EU Login Signature Service.
      * <p>
@@ -72,12 +77,12 @@ public class EcasSignatureUtil {
      **/
 
     public String constructSignatureHDSCallbackUrl(HttpServletRequest request, String documentToBeSigned) {
-        //String url = userService.getBaseUrl().substring(0, userService.getBaseUrl().indexOf("#"));
         // TODO for local testing use:
     	// String url = "http://localhost:8080/wifi4eu/";
     	// TODO this should not be environment dependent, right now is hardcoded pointing to dev
-    	String url = "https://wifi4eu-dev.everincloud.com/wifi4eu/";
-        url += "api/signature/handleSignature/" + documentToBeSigned;
+    	//String url = "https://wifi4eu-dev.everincloud.com/wifi4eu/";
+    	String url = userService.getServerSchemes().concat("://").concat(userService.getServerAddress()).concat("/wifi4eu/");
+        url = url.concat("api/signature/handleSignature/").concat(documentToBeSigned);
         System.out.println("URL: "+  url);
         return url;
     }
@@ -182,9 +187,7 @@ public class EcasSignatureUtil {
 
             byte[] data = outputStream.toByteArray();
 
-            SharedAccessBlobPolicy policy = azureBlobStorageUtils.createSharedAccessPolicy(EnumSet.of(SharedAccessBlobPermissions.READ), 20);
-
-            String downloadURL = azureBlobStorage.getDocumentWithTokenAzureStorage("grant_agreement_" + grantAgreementID + "_signed.pdf", data, policy);
+            String downloadURL = azureBlobConnector.uploadByteArray("grant-agreement", "grant_agreement_" + grantAgreement.getApplicationId() + "_signed.pdf", data);
 
             grantAgreement.setDocumentLocation(downloadURL);
             grantAgreement.setDateSignature(new Date());
