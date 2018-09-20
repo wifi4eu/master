@@ -62,6 +62,11 @@ public class QueueConsumer implements Runnable {
     private long    cfgReadTimeout = 5000;
     private long    cfgBatchSize   = 300;
 
+    private String wifiQueueUri1;
+
+    private String wifiQueueUri2;
+
+    private String wifiQueueUri3;
 
     public QueueConsumer()  throws IOException {
 
@@ -110,6 +115,11 @@ public class QueueConsumer implements Runnable {
         String sentinelUri2 = Config.getEnvironment("wifi4eu.queue.uri.2");
         String sentinelUri3 = Config.getEnvironment("wifi4eu.queue.uri.3");
 
+        logger.info("sentinelUri1 => "+sentinelUri1);
+        logger.info("sentinelUri2 => "+sentinelUri2);
+        logger.info("sentinelUri3 => "+sentinelUri3);
+
+        /*
         Integer sentinelPort = Integer.valueOf(Config.getEnvironment("wifi4eu.queue.sentinel.port"));
 
         RedisURI redisUri = RedisURI.Builder.sentinel(sentinelUri1, sentinelPort, "master1")
@@ -124,6 +134,8 @@ public class QueueConsumer implements Runnable {
         streamCommands = connection.sync();
 
         logger.info("Connected to sentinel");
+        */
+
     }
 
     /*
