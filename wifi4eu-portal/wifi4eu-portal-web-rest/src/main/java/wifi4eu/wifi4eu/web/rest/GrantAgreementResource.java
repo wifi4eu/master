@@ -116,8 +116,10 @@ public class GrantAgreementResource {
         }
 
         GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
-        grantAgreementDTO.setDocumentLocation(null);
-        grantAgreementDTO.setDocumentLocationCounterSigned(null);
+        if(Validator.isNotNull(grantAgreementDTO)){
+            grantAgreementDTO.setDocumentLocation(null);
+            grantAgreementDTO.setDocumentLocationCounterSigned(null);
+        }
         return grantAgreementDTO;
     }
 
@@ -135,7 +137,7 @@ public class GrantAgreementResource {
             throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
         }
 
-        GrantAgreementDTO grantAgreementDTO = getGrantAgreementByApplicationId(applicationId);
+        GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByApplicationId(applicationId);
         byte[] file = grantAgreementService.downloadGrantAgreementSigned(applicationId, grantAgreementDTO);
 
         HttpHeaders headers = new HttpHeaders();

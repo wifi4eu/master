@@ -87,37 +87,6 @@ public class ParametrizedDocConverter {
 
 		return outputStream;
 	}
-
-	private static BaseFont getIdentityFont(String path) throws DocumentException, IOException {
-		URL fontResource = ParametrizedDocConverter.class.getResource(path);
-		if (fontResource == null)
-			return null;
-		String fontPath = fontResource.toExternalForm();
-		if (path.toLowerCase().endsWith(".ttc")) {
-			//String[] ttcNames = BaseFont.enumerateTTCNames(path);
-			// first entry
-			fontPath = fontPath + ",0";
-		}
-
-		fontPath = "C:\\grant_agreements\\times.ttf";
-
-		BaseFont baseFont = BaseFont.createFont(fontPath,
-		BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-		baseFont.setSubset(true);
-		return baseFont;
-	}
-
-	private static BaseFont getFontFromFile(PdfReader reader, String fontName) throws IOException, DocumentException {
-        ArrayList fonts = BaseFont.getDocumentFonts(reader);
-        BaseFont baseFont = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.EMBEDDED);
-        for(int i = 0; i < fonts.size(); i++){
-            Object[] obj = (Object[])fonts.get(i);
-            if(obj[0].equals(fontName)){
-                baseFont = BaseFont.createFont((PRIndirectReference)(obj[1]));
-            }
-        }
-        return baseFont;
-    }
 	
 	private static void setFieldValue(AcroFields fields, String find, String repl, PdfReader reader) {
 		try {
@@ -126,18 +95,12 @@ public class ParametrizedDocConverter {
 				fields.setFieldProperty(find, "textfont", baseFontBold, null);
 			}
 			else {
-				//BaseFont baseFont = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.EMBEDDED);
-				//fields.setFieldProperty(find, "textfont", baseFont, null);
-
-                fields.setFieldProperty(find, "textfont", getFontFromFile(reader, "Times New Roman"), null);
-
-                /*InputStream inputStream =  ParametrizedDocConverter.class.getClassLoader().getResourceAsStream("times.ttf");
+                InputStream inputStream =  ParametrizedDocConverter.class.getClassLoader().getResourceAsStream("times.ttf");
                 byte[] bytes = IOUtils.toByteArray(inputStream);
                 BaseFont fontTimesNewRoman = BaseFont.createFont("times.ttf", BaseFont.IDENTITY_H,BaseFont.EMBEDDED,true, bytes,null);
                 fontTimesNewRoman.setSubset(true);
                 fields.setFieldProperty(find, "textfont", fontTimesNewRoman, null);
-                if(inputStream!=null) inputStream.close();*/
-
+                if(inputStream!=null) inputStream.close();
 			}
 
 			if (find.equalsIgnoreCase("header")) {
