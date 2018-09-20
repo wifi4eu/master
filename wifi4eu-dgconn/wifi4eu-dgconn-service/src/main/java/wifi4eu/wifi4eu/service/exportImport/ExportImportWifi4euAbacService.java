@@ -787,7 +787,6 @@ public class ExportImportWifi4euAbacService {
         return null;
     }
 
-    // Since Zip can be very big we cannot read it in one path and keep the data in a memory.
     public boolean importLegalCommitment(InputStream inputStream) throws IOException {
 
         // TODO: needs o be improved for the really big files
