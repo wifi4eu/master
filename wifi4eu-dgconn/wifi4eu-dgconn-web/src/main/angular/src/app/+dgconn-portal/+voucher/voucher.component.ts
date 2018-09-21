@@ -209,7 +209,7 @@ export class DgConnVoucherComponent {
                   }, (error) => {
                     this.sharedService.growlTranslation('An error occured while checking if pre-list is enabled', 'dgConn.voucherAssignment.error.checkPreList', 'error');
                   })
-                this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id)
+                this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime())
                   .finally(() => {
                     this.loadingFreezeList = false;
                   })
@@ -428,7 +428,7 @@ export class DgConnVoucherComponent {
             })
         }
         this.loadPage();
-        this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id)
+        this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime())
           .finally(() => {
             this.loadingFreezeList = false;
           })
@@ -501,7 +501,7 @@ export class DgConnVoucherComponent {
   }
 
   private freezeList() {
-    this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
+    this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime()).subscribe((enabled) => {
       this.showFreezeModal = enabled;
       this.pressedNotificationButton = !enabled;
       if (!enabled) {

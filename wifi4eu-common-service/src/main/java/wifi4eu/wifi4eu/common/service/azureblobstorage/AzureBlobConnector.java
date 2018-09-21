@@ -10,6 +10,9 @@ import java.security.InvalidKeyException;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.net.URLCodec;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +41,8 @@ public class AzureBlobConnector {
 
 	private static final String DEFAULT_CONTAINER_NAME = "wifi4eu";
 
+    private static final String GRANT_AGREEMENT_CONTAINER_NAME = "grant-agreement";
+
     @Autowired
     EncrypterService encrypterService;
 
@@ -64,7 +69,48 @@ public class AzureBlobConnector {
 
 		return container;
 	}
-	
+
+	public String uploadByteArray(final String containerName, final String fileName, final byte[] data){
+        String fileUri = null;
+
+        String encodedFileName = null;
+        try {
+            encodedFileName = URLEncoder.encode(fileName, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error("Error", e);
+        }
+
+        if (encodedFileName != null) {
+
+            // Validating the paramenters
+            this.checkContainerName(containerName);
+            this.checkFileName(encodedFileName);
+
+            CloudBlobContainer container = this.getContainerReference(containerName);
+
+            if (container != null) {
+                //Getting a blob reference
+                CloudBlockBlob blob = null;
+                try {
+                    blob = container.getBlockBlobReference(encodedFileName);
+                } catch (URISyntaxException | StorageException e) {
+                    LOGGER.error("Error", e);
+                }
+
+                if (blob != null) {
+                    try {
+                        blob.uploadFromByteArray(data,0, data.length);
+                        fileUri = blob.getUri().toString();
+                    } catch (StorageException | IOException e) {
+                        LOGGER.error("Error", e);
+                    }
+                }
+            }
+        }
+
+        return fileUri;
+    }
+
 	public String uploadText(final String containerName, final String fileName, final String content) {
 		// Returning value
 		String fileUri = null;
@@ -125,7 +171,37 @@ public class AzureBlobConnector {
 		
 		return result;
 	}
-	
+
+	public byte[] downloadAsBytes(final String containerName, final String fileName){
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        // Validating the paramenters
+        this.checkContainerName(containerName);
+        this.checkFileName(fileName);
+
+        CloudBlobContainer container = this.getContainerReference(containerName);
+        CloudBlockBlob blob = null;
+        try {
+            blob = container.getBlockBlobReference(fileName);
+        } catch (URISyntaxException | StorageException e) {
+            LOGGER.error("Error", e);
+        }
+
+        if (blob != null) {
+            LOGGER.info("Downloading from containerName[{}], fileName[{}]", containerName, fileName);
+
+            try {
+                blob.download(outputStream);
+                outputStream.close();
+                LOGGER.info("Content downloaded. Content.length [{}]", outputStream == null ? "NULL" : String.valueOf(outputStream.size()));
+            } catch (StorageException | IOException e) {
+                LOGGER.error("Error", e);
+            }
+        }
+
+        return outputStream.toByteArray();
+    }
+
 	public String downloadText(final String containerName, final String fileName) {
 		String content = null;
 		
@@ -154,64 +230,30 @@ public class AzureBlobConnector {
 		
 		return content;
 	}
-	
-	public byte[] downloadAsByteArray(final String containerName, final String fileName) {
-		byte[] content = null;
-		LOGGER.info("Downloading from container [{}]. FileName [{}]", containerName, fileName);
-		
-		// Validating the paramenters
-		this.checkContainerName(containerName);
-		this.checkFileName(fileName);
-				
-		CloudBlobContainer container = this.getContainerReference(containerName);
-		CloudBlockBlob blob = null;
-		try {
-			blob = container.getBlockBlobReference(fileName);
-			blob.downloadAttributes();
-		} catch (URISyntaxException | StorageException e) {
-			LOGGER.error("Error", e);
-		}
 
-		if (blob != null) {
-			
-			long fileSize = blob.getProperties().getLength();
-			LOGGER.info("Downloading from containerName[{}], fileName[{}], fileSize[{}]", containerName, fileName, fileSize);
+    public byte[] downloadFileByUri(final String azureUri) {
+        URL aURL = null;
+        byte[] content = null;
+        LOGGER.info("Downloading from URI [{}]", azureUri);
 
-			try {
-				content = new byte[(int)fileSize];
-				blob.downloadToByteArray(content, 0);
-				LOGGER.info("Content downloaded. Content.length [{}]", content == null ? "NULL" : String.valueOf(content.length));
-			} catch (StorageException e) {
-				LOGGER.error("Error", e);
-			}
-		} 
-		
-		return content;
-	}
-	
-	public byte[] downloadFileByUri(final String azureUri) {
-		URL aURL = null;
-		byte[] content = null;
-		LOGGER.info("Downloading from URI [{}]", azureUri);
-		
-		try {
-			aURL = new URL(azureUri);
+        try {
+            aURL = new URL(azureUri);
 
-			String path = aURL.getPath();
-			LOGGER.info("Path [{}]", path);
+            String path = aURL.getPath();
+            LOGGER.info("Path [{}]", path);
 
-			String containerName = path.substring(1, path.lastIndexOf("/"));
-			String fileName = path.substring(path.lastIndexOf("/") + 1);
-			
-			content = downloadAsByteArray(containerName, fileName);
-		} catch (MalformedURLException e) {
-			LOGGER.error("ERROR", e);
-		}
+            String containerName = path.substring(1, path.lastIndexOf("/"));
+            String fileName = path.substring(path.lastIndexOf("/") + 1);
 
-		return content;
-	}
-	
-	public boolean delete(final String containerName, final String fileName) {
+            content = downloadAsByteArray(containerName, fileName);
+        } catch (MalformedURLException e) {
+            LOGGER.error("ERROR", e);
+        }
+
+        return content;
+    }
+
+    public boolean delete(final String containerName, final String fileName) {
 		boolean result = false;
 		CloudBlobContainer container = this.getContainerReference(containerName);
 
@@ -270,7 +312,22 @@ public class AzureBlobConnector {
 			throw new IllegalArgumentException(errorMessage);
 		}
 	}
-	
+
+	public byte[] downloadGrantAgreementSigned(final String data) {
+		String fileNameDownload = data.substring(data.lastIndexOf('/') + 1);
+		AzureBlobConnector azureBlobConnector = new AzureBlobConnector();
+		byte[] content = null;
+
+		try {
+			LOGGER.info("Downloading container [{}] fileName[{}]", GRANT_AGREEMENT_CONTAINER_NAME, fileNameDownload);
+            content = downloadAsBytes(GRANT_AGREEMENT_CONTAINER_NAME, fileNameDownload);
+		} catch (Exception e) {
+			LOGGER.error("ERROR", e);
+		}
+
+		return content;
+	}
+
 	public String downloadLegalFile(final String data) {
 	    String fileNameDownload = data.substring(data.lastIndexOf('/') + 1);
 	    AzureBlobConnector azureBlobConnector = new AzureBlobConnector();

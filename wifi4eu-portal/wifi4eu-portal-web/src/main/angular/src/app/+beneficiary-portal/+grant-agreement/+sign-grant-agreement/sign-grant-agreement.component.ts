@@ -158,7 +158,7 @@ export class SignGrantAgreementComponent {
             this.grantAgreementApi.downloadGrantAgreementPdf(this.inputGrantAgreement).subscribe(          
                 (response) => {
                     let blob = new Blob([response], {type: 'application/pdf'});
-                    FileSaver.saveAs(blob, 'grantAgreementPdf_'+this.inputGrantAgreement.documentLanguage+'.pdf');
+                    FileSaver.saveAs(blob, `grant_agreement_${this.application.id}_${this.inputGrantAgreement.documentLanguage}.pdf`);
                     this.sharedService.growlTranslation("Your file have been downloaded correctly!", "dgconn.dashboard.card.messageDownload", "success");              
                 }, error => {
                     this.sharedService.growlTranslation("An error occurred while trying to retrieve the data from the server. Please, try again later.", "shared.error.api.generic", "error");
