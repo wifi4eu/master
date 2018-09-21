@@ -1,18 +1,17 @@
 package wifi4eu.wifi4eu.common.enums;
 
 public enum LegalFileStatus {
-    UNTOUCHED(0),
-    CORRECTION_REQUESTED(1),
-    VALID(2),
-    INVALID(3);
+    OLD(0),
+    RECENT(1),
+    NEW(2);
 
-    private int status;
+    private int isNew;
 
-    LegalFileStatus(int status) {
-        this.status = status;
+    LegalFileStatus(int isNew) {
+        this.isNew = isNew;
     }
 
     public int getValue() {
-        return this.status;
+        return this.isNew;
     }
 }
