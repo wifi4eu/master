@@ -348,10 +348,10 @@ public class ExportImportWifi4euAbacService {
         if (CollectionUtils.isNotEmpty(exportImportRegistrationData)) {
             exportImportRegistrationData.forEach(data -> {
 
-                String abacName = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME);
+                String abacName = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME.getValue());
                 data.setAbacStandarName(abacName);
 
-                String abacReference = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE);
+                String abacReference = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.getValue());
                 data.setAbacReference(abacReference);
 
             });
