@@ -6,7 +6,7 @@ import { VoucherApi } from "../../shared/swagger/api/VoucherApi";
 import { ApplicationVoucherInfoDTOBase } from "../../shared/swagger/model/ApplicationVoucherInfoDTO";
 import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
-import { Observable } from 'rxJs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { SharedService } from "../../shared/shared.service";
 import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO, VoucherAssignmentAuxiliarDTOBase, RegistrationWarningApi, VoucherAssignmentDTOBase, AdminactionsApi } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
@@ -209,7 +209,7 @@ export class DgConnVoucherComponent {
                   }, (error) => {
                     this.sharedService.growlTranslation('An error occured while checking if pre-list is enabled', 'dgConn.voucherAssignment.error.checkPreList', 'error');
                   })
-                this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id)
+                this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime())
                   .finally(() => {
                     this.loadingFreezeList = false;
                   })
@@ -428,7 +428,7 @@ export class DgConnVoucherComponent {
             })
         }
         this.loadPage();
-        this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id)
+        this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime())
           .finally(() => {
             this.loadingFreezeList = false;
           })
@@ -501,7 +501,7 @@ export class DgConnVoucherComponent {
   }
 
   private freezeList() {
-    this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id).subscribe((enabled) => {
+    this.voucherApi.checkApplicationAreValidForFreezeList(this.callSelected.id, new Date().getTime()).subscribe((enabled) => {
       this.showFreezeModal = enabled;
       this.pressedNotificationButton = !enabled;
       if (!enabled) {
@@ -516,8 +516,11 @@ export class DgConnVoucherComponent {
     this.loadingFreezeList = true;
     this.confirmFreezeBtn = false;
     
-    
-    this.voucherApi.saveFreezeListSimulation(this.psswdFreeze, this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
+    this.voucherApi.saveFreezeListSimulation(this.psswdFreeze, this.callVoucherAssignment.id, this.callSelected.id).finally(() => {
+      this.loadingFreezeList = false;
+      this.confirmFreezeBtn = true;
+      
+    }).subscribe((response: ResponseDTO) => {
       this.displayFreezeConfirmation = false;
       this.callVoucherAssignment.id = response.data.id;
       this.callVoucherAssignment.hasFreezeListSaved = true;
@@ -537,7 +540,7 @@ export class DgConnVoucherComponent {
   }
 
   private sendNotificationToApplicants() {
-    this.showNotificationModal = false;
+    this.showNotificationModal = true;
     this.confirmNotificationsBtn = false;
     if (this.callVoucherAssignment.notifiedDate != null) {
       return;
@@ -573,6 +576,7 @@ export class DgConnVoucherComponent {
       this.showNotificationModal = false;
     }, (error) => {
       this.showNotificationModal = false;
+      this.pressedNotificationButton = false;
       this.sharedService.growlTranslation('An error occurred while sending notifications.', 'dgConn.voucherAssignment.error.sendingNotifications', 'error');
     })
    

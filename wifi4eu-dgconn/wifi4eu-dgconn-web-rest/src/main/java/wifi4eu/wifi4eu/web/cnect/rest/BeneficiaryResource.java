@@ -14,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
-import wifi4eu.wifi4eu.common.dto.model.BeneficiaryListItemDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -26,6 +23,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.BeneficiaryValidator;
 import wifi4eu.wifi4eu.common.utils.RequestIpRetriever;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
+import wifi4eu.wifi4eu.service.grantAgreement.GrantAgreementService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -49,6 +47,9 @@ public class BeneficiaryResource {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GrantAgreementService grantAgreementService;
 
     private final Logger _log = LogManager.getLogger(BeneficiaryResource.class);
 
@@ -242,7 +243,7 @@ public class BeneficiaryResource {
     @ApiOperation(value = "Download PDF grant agreement by beneficiaryId")
     @RequestMapping(value = "exportBeneficiaryPdfGrantAgreement", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<byte[]> exportBeneficiaryPdfGrantAgreement(@RequestParam("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+    public ResponseEntity<byte[]> exportBeneficiaryPdfGrantAgreement(@RequestParam("registrationId") final Integer registrationId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
         UserContext userContext = UserHolder.getUser();
         UserDTO userConnected = userService.getUserByUserContext(userContext);
         try {
@@ -254,9 +255,10 @@ public class BeneficiaryResource {
             String filename = "grantAgreementPdf.pdf";
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-            ByteArrayOutputStream file = beneficiaryService.downloadGrantAgreementPdfFromRegistrationId(registrationId);
+            GrantAgreementDTO grantAgreementDTO = grantAgreementService.getGrantAgreementByCallAndRegistrationId(registrationId, callId);
+            byte[] file = grantAgreementService.downloadGrantAgreementSigned(grantAgreementDTO.getApplicationId(), grantAgreementDTO);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - PDF Grant Agreement generated correctly");
-            return new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
+            return new ResponseEntity<>(file, headers, HttpStatus.OK);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to download the PDF Grant Agreement", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());

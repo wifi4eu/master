@@ -132,7 +132,7 @@
                 </goals>
                 <configuration>
                   <executable>
-                    /var/quark/binaries/node/node-v8.9.3-linux-x64/lib/node_modules/@angular/cli/bin/ng
+                    /usr/lib/node_modules/@angular/cli/bin/ng
                   </executable>
                   <workingDirectory>src/main/angular</workingDirectory>
                   <arguments>

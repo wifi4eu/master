@@ -45,7 +45,8 @@ acl purge {
 acl demo {
         "localhost";
         "192.168.55.0"/24;
-	    "217.124.189.100";
+	"217.124.189.100";
+	"176.83.8.79";
 }
 
 sub vcl_recv {
@@ -87,8 +88,11 @@ sub vcl_recv {
         #}
 
 	#TODO Temploral hasta apartura de PRO bloqueo por IP
-	if (!client.ip ~ demo) {
+	if (!std.ip(req.http.True-Client-IP,"0.0.0.0") ~ demo) {
         return (synth(302, "https://ec.europa.eu/digital-single-market/en/policies/wifi4eu-free-wi-fi-europeans"));
+    }else{
+        set req.http.X-Cacheable = "NO: User interaction";
+        return(pass);
     }
 
 	if (req.url ~ "^/queue") {
@@ -218,9 +222,14 @@ sub vcl_synth {
 		synthetic(std.fileread("/etc/varnish/error/error.html"));
 		return(deliver);
 	} else if (resp.status == 301 || resp.status == 302) {
-        set resp.http.location = resp.reason;
-        set resp.reason = "Moved";
-        return (deliver);
+	        set resp.http.location = resp.reason;
+        	set resp.reason = "Moved";
+		set resp.http.test2=req.http.X-Forwarded-For;
+		set resp.http.test=client.ip;
+		set resp.http.test3=req.http.X-True-Client-IP;
+		set resp.http.test4=req.http.True-Client-IP;
+		set resp.http.test5=req.http.X-Original-Host;
+	        return (deliver);
     }
 }
 

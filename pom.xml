@@ -149,7 +149,7 @@
         <procedures.context.name>/procedures</procedures.context.name>
         <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
         <server.azure.test2.address>wifi4eutest.eu</server.azure.test2.address>
-        <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
+        <server.azure.pro.address>www.wifi4eu.eu</server.azure.pro.address>
         <server.azure.pro.dgconn.address>cnect.wifi4eu.eu</server.azure.pro.dgconn.address>
         <server.azure.port>80</server.azure.port>
         <server.pro.address>www.wifi4eu.eu</server.pro.address>
@@ -742,63 +742,12 @@
             </properties>
         </profile>
         <profile>
-            <id>AZUREPROD</id>
-            <properties>
-                <ng.env>prod</ng.env>
-                <schemes>https</schemes>
-                <server.address>${server.azure.pro.address}</server.address>
-                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
-                <enable.security.start>--&gt;</enable.security.start>
-                <enable.security.end>&lt;!--</enable.security.end>
-                <enable.login.start>--&gt;</enable.login.start>
-                <enable.login.end>&lt;!--</enable.login.end>
-                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
-                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
-                <war.output.directory/>
-                <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
-                <ecas.server.port>${server.pro.port}</ecas.server.port>
-                <mail.serv.location>https://wifi4euprod.azurewebsites.net/wifi4eu/#/</mail.serv.location>
-                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
-                <mail.smtp.port>587</mail.smtp.port>
-                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
-                <azure.blob.storage.key>${azure.blob.storage.key.pro}</azure.blob.storage.key>
-                <azure.blob.legal.files.key>${azure.blob.legal.files.key.pro}</azure.blob.legal.files.key>
-            </properties>
-        </profile>
-        <profile>
-            <id>AZUREPROD-DGCONN</id>
-            <properties>
-                <ng.env>prod</ng.env>
-                <schemes>https</schemes>
-                <server.dgconn.address>${server.azure.pro.dgconn.address}</server.dgconn.address>
-                <dgconn.name>wifi4eu</dgconn.name>
-                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
-                <enable.security.start>--&gt;</enable.security.start>
-                <enable.security.end>&lt;!--</enable.security.end>
-                <enable.login.start>--&gt;</enable.login.start>
-                <enable.login.end>&lt;!--</enable.login.end>
-                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
-                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
-                <war.output.directory/>
-                <ecas.server.address>${server.azure.pro.dgconn.address}</ecas.server.address>
-                <ecas.server.port>${server.pro.port}</ecas.server.port>
-                <mail.serv.location>https://wifi4euprod.azurewebsites.net/wifi4eu/#/</mail.serv.location>
-                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
-                <mail.smtp.port>587</mail.smtp.port>
-                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>${encrypted.azure.smtp.password}</mail.smtp.password>
-                <azure.blob.storage.key>${azure.blob.storage.key.pro}</azure.blob.storage.key>
-                <azure.blob.legal.files.key>${azure.blob.legal.files.key.pro}</azure.blob.legal.files.key>
-            </properties>
-        </profile>
-        <profile>
             <id>PROD</id>
             <properties>
                 <ng.env>prod</ng.env>
                 <schemes>https</schemes>
-                <server.address>${server.pro.address}</server.address>
-                <server.dgconn.address>${server.azure.dev.dgconn.address}</server.dgconn.address>
+                <server.address>${server.azure.pro.address}</server.address>
+                <server.dgconn.address>${server.azure.pro.dgconn.address}</server.dgconn.address>
                 <dgconn.name>wifi4eu</dgconn.name>
                 <dgconn.context.name>/wifi4eu</dgconn.context.name>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
@@ -811,9 +760,6 @@
                 <eclipselink.logging.level>WARNING</eclipselink.logging.level>
                 <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
-                <!--
-                <ecas.config.base.url>${ecas.config.base.url}</ecas.config.base.url>
-                -->
                 <ecas.config.base.url.dgconn>${ecas.config.base.url}</ecas.config.base.url.dgconn>
                 <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
                 <ecas.server.dgconn.address>${server.azure.pro.dgconn.address}</ecas.server.dgconn.address>
@@ -821,7 +767,7 @@
                 <ecas.config.strength>PASSWORD</ecas.config.strength>
                 <ecas.config.strength.dgconn>PASSWORD</ecas.config.strength.dgconn>
                 <mail.serv.enable>true</mail.serv.enable>
-                <mail.serv.location>https://${server.pro.address}/wifi4eu/#/</mail.serv.location>
+                <mail.serv.location>https://${server.azure.pro.address}/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
@@ -844,6 +790,16 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.ttf</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources/fonts</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.ttf</include>
+                </includes>
             </resource>
         </resources>
 

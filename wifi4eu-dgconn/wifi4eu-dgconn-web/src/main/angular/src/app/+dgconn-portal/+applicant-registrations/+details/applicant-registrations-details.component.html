@@ -58,7 +58,7 @@
                         <br>
                         <br>
                         <span class="entity-subtitle">
-                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date | date:'dd-MM-yyyy h:mm a'}}
+                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date | date:'dd-MM-yyyy'}} {{ applications[i].date | date:'shortTime'}}
                         </span>
                     </span>
                     <!-- Validate & Invalidate application buttons -->
