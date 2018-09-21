@@ -5,7 +5,6 @@ import { ExportImportApi } from '../../shared/swagger/api/ExportImportApi';
 import { SharedService } from '../../shared/shared.service';
 import { ApplicationApi } from '../../shared/swagger/api/ApplicationApi';
 import { CallApi } from '../../shared/swagger/api/CallApi';
-import { ResponseDTOBase } from '../../shared/swagger/model/ResponseDTO';
 import { TranslateService } from 'ng2-translate';
 import * as FileSaver from 'file-saver';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -40,32 +39,19 @@ export class DgConnExportImportComponent {
     }
 
     onNavigateToImportLefFile(): void {
-        this.router.navigate(['lef'], {relativeTo: this.route});
+        this.router.navigate(['lef'], { relativeTo: this.route });
     }
 
     onNavigateToImportBcFile(): void {
-        this.router.navigate(['bc'], {relativeTo: this.route});
+        this.router.navigate(['bc'], { relativeTo: this.route });
     }
 
     onNavigateToImportLcFile(): void {
-        this.router.navigate(['lc'], {relativeTo: this.route});
+        this.router.navigate(['lc'], { relativeTo: this.route });
     }
 
-    importRegistrationData() {
-        this.processingOperation = true;
-
-        this.exportImportApi.importRegistrationData().subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success)
-                    this.sharedService.growlTranslation('Your file have been imported correctly!', 'dgconn.dashboard.card.messageImport', 'success');
-                else
-                    this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
-                this.processingOperation = false;
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
-                this.processingOperation = false;
-            }
-        );
+    importDbBudgFinalList() {
+        this.router.navigate(['dgBudg'], { relativeTo: this.route });
     }
 
     exportBeneficiaryInformation() {
