@@ -163,7 +163,40 @@ public class ExportImportWifi4euAbacResource {
         return null;
     }
 
-    // TODO: is it used anywhere?
+    @ApiOperation(value = "Export Beneficiary Information")
+    @RequestMapping(value = "/exportLegalCommitment", method = RequestMethod.GET, produces = "application/zip")
+    @ResponseBody
+    public ResponseEntity<byte[]> exportLegalCommitment(final HttpServletResponse response) throws Exception {
+        _log.debug("exportLegalCommitment");
+        UserContext userContext = UserHolder.getUser();
+        UserDTO userConnected = userService.getUserByUserContext(userContext);
+        try {
+            if (Validator.isNull(userConnected) || userConnected.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/zip"));
+
+            String filename = "exportLegalCommitment.zip";
+            headers.setContentDispositionFormData(filename, filename);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+            _log.debug("exportLegalCommitment - generating zip file content");
+            ByteArrayOutputStream file = exportImportWifi4euAbacService.exportLegalCommitment();
+            ResponseEntity<byte[]> responseReturn = new ResponseEntity<>(file.toByteArray(), headers, HttpStatus.OK);
+
+            _log.info("exportLegalCommitmentInformation - csv file exported successfully");
+            return responseReturn;
+        } catch (AccessDeniedException ade) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export legal commitment", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e) {
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The exportLegalCommitment cannot be executed", e);
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+        }
+        return null;
+    }
+
     @Deprecated
     @ApiOperation(value = "Export registration data")
     @RequestMapping(value = "/exportRegistrationData", method = RequestMethod.GET)

@@ -8,15 +8,7 @@ module VagrantPlugins
   end
 end
 
-# script to set http proxy to allow docker provider to download images, you don't need this if your outside the EC network
-$script_setproxy = <<-SCRIPT
-sudo su
-echo 'export http_proxy="http://manalmi:@147.67.117.13:8012/"' >> /etc/default/docker
-echo 'export https_proxy="https://manalmi:@147.67.117.13:8012/"' >> /etc/default/docker
-/etc/init.d/docker restart
-SCRIPT
-
-# script to set http proxy to allow docker provider to download images, you don't need this if your outside the EC network
+# script to move configuration files and libraries to Tomcat container
 $script_tomcatConfig = <<-SCRIPT
 docker cp /home/bargee/dev/lib/jtds-1.3.1.jar tomcat:/usr/local/tomcat/lib
 docker cp /home/bargee/dev/lib/ecas-tomcat-8.0-4.26.0.jar tomcat:/usr/local/tomcat/lib
@@ -38,9 +30,6 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "LocalDevelopment/tomcat/lib", "/home/bargee/dev/lib", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
 
   config.vm.synced_folder "LocalDevelopment/sql", "/home/bargee/dev/sql", :create => true, :owner => "bargee", :group => "bargees", :mount_options  => ["dmode=755","fmode=755"]
-
-  # comment this out if you are outside the EC network
-  config.vm.provision "proxy", type: "shell", inline: $script_setproxy
 
   config.vm.provision "sqlserver", type: "docker" do |d|
     d.pull_images "microsoft/mssql-server-linux:2017-latest"

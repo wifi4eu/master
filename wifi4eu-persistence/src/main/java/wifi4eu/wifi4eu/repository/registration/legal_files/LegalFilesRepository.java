@@ -14,6 +14,8 @@ public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer>
 	void deleteByRegistrationAndFileType(Integer registrationId, Integer fileType);
 	LegalFile findByIdAndUserId(Integer registrationId, Integer userId);
 
+	List<LegalFile> findLegalFilesByRegistrationAndFileType(Integer registrationId, Integer fileType);
+
 	@Query(value = "select id, registration, type, upload_time, id_user, file_size, file_mime, file_name from legal_files where registration = ?1 order by type, upload_time desc", nativeQuery = true)
 	List<LegalFile> findHistoryAll(Integer registrationId);
 
@@ -41,7 +43,9 @@ public interface LegalFilesRepository extends CrudRepository<LegalFile, Integer>
             "file_size, file_mime, file_name from legal_files where registration = ?1 " +
             "and (type=1 or type = 3 or id_user = ?2 ) order by type, upload_time desc", nativeQuery = true)
     List<LegalFile> findHistoryAll(Integer registrationId, Integer userId);
-
+    
+    List<LegalFile> findByFileTypeAndUploadTimeBetween(Integer fileType, Long startTime, Long endTime);
+    
 /*	@Query(nativeQuery = true, value = "select * from legal_files where registration in (select top 30 r.id from registrations r \n" +
 			"inner join municipalities m on r.municipality = m.id \n" +
 			"inner join laus l on m.lau = l.id\n" +

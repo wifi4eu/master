@@ -21,6 +21,7 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     Iterable<Application> findByCallIdOrderByIdAsc(Integer callId);
     List<Application> findByCallIdOrderByDateAsc(Integer callId);
     List<Application> findByCallIdAndStatus(Integer callId, Integer status);
+    List<Application> findByRegistrationIdIn(List<Integer> ids);
 
     @Query(value = "SELECT ap.* FROM applications ap INNER JOIN registrations r ON ap.registration = r.id WHERE r._status != 1 AND ap.call_id = ?1", nativeQuery = true)
 //    AND r.allFilesFlag = 1

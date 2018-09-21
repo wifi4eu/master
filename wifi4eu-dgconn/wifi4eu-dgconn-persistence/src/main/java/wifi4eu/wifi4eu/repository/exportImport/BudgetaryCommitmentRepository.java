@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.repository.exportImport;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,4 +13,6 @@ public interface BudgetaryCommitmentRepository extends JpaRepository<BudgetaryCo
     int totalSpentForGlobalCommitment(@Param("globalCommitmentId") Integer globalCommitmentId);
 
     BudgetaryCommitment findByMunicipalityIdAndPositionAndAmmount(Integer municipalityId, Integer position, Integer ammount);
+
+    List<BudgetaryCommitment> findByAbacBcKeyIsNotNullAndAbacLcKeyIsNull();
 }
