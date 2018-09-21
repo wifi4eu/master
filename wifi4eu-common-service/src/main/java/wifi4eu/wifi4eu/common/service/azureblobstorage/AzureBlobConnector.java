@@ -1,19 +1,15 @@
 package wifi4eu.wifi4eu.common.service.azureblobstorage;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.codec.net.URLCodec;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +24,6 @@ import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.ListBlobItem;
-
 import wifi4eu.wifi4eu.common.service.encryption.EncrypterService;
 
 /**
@@ -158,6 +152,62 @@ public class AzureBlobConnector {
 			}
 		} 
 		
+		return content;
+	}
+	
+	public byte[] downloadAsByteArray(final String containerName, final String fileName) {
+		byte[] content = null;
+		LOGGER.info("Downloading from container [{}]. FileName [{}]", containerName, fileName);
+		
+		// Validating the paramenters
+		this.checkContainerName(containerName);
+		this.checkFileName(fileName);
+				
+		CloudBlobContainer container = this.getContainerReference(containerName);
+		CloudBlockBlob blob = null;
+		try {
+			blob = container.getBlockBlobReference(fileName);
+			blob.downloadAttributes();
+		} catch (URISyntaxException | StorageException e) {
+			LOGGER.error("Error", e);
+		}
+
+		if (blob != null) {
+			
+			long fileSize = blob.getProperties().getLength();
+			LOGGER.info("Downloading from containerName[{}], fileName[{}], fileSize[{}]", containerName, fileName, fileSize);
+
+			try {
+				content = new byte[(int)fileSize];
+				blob.downloadToByteArray(content, 0);
+				LOGGER.info("Content downloaded. Content.length [{}]", content == null ? "NULL" : String.valueOf(content.length));
+			} catch (StorageException e) {
+				LOGGER.error("Error", e);
+			}
+		} 
+		
+		return content;
+	}
+	
+	public byte[] downloadFileByUri(final String azureUri) {
+		URL aURL = null;
+		byte[] content = null;
+		LOGGER.info("Downloading from URI [{}]", azureUri);
+		
+		try {
+			aURL = new URL(azureUri);
+
+			String path = aURL.getPath();
+			LOGGER.info("Path [{}]", path);
+
+			String containerName = path.substring(1, path.lastIndexOf("/"));
+			String fileName = path.substring(path.lastIndexOf("/") + 1);
+			
+			content = downloadAsByteArray(containerName, fileName);
+		} catch (MalformedURLException e) {
+			LOGGER.error("ERROR", e);
+		}
+
 		return content;
 	}
 	
