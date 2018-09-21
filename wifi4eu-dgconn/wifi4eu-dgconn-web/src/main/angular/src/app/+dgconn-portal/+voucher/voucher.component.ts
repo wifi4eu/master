@@ -63,6 +63,7 @@ export class DgConnVoucherComponent {
   private listAssignment: VoucherSimulationDTO[] = [];
   private municipalityMunicipality = null;
   private simulationRequest = null;
+  private preListLoaded = false;
 
   private indexTab = 0;
   private totalRecords: number = null;
@@ -197,6 +198,7 @@ export class DgConnVoucherComponent {
                 this.loadingPreList = true;
                 this.loadingFreezeList = true;
                 this.callVoucherAssignment = data;
+                this.preListLoaded = data.hasPreListSaved;
                 let date = new Date(this.callVoucherAssignment.preListExecutionDate);
                 this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
                 this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
