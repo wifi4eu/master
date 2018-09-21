@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.abac.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
+import wifi4eu.wifi4eu.abac.data.entity.Country;
 import wifi4eu.wifi4eu.abac.data.entity.Document;
 import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
@@ -35,6 +36,34 @@ public class MonitoringRow {
 	public MonitoringRow() {
 	}
 	
+	public MonitoringRow(
+		Long id, Country country, String municipality, Long registrationNumber,
+		AbacWorkflowStatus lefStatus, String lefAbacRef,
+		AbacWorkflowStatus bcStatus, String bcAbacRef,
+		LegalCommitmentWorkflowStatus lcStatus, String lcAbacRef,
+		Date signatureDate, Date counterSignatureDate,
+		String lefDocAresRef, String lcDocAresRef
+	) {
+		super();
+		this.setId(id);
+		if(country != null){
+			this.setCountryCode(country.getIso2Code());
+		}
+		this.setMunicipality(municipality);
+		this.setRegistrationNumber(registrationNumber);
+		this.setLefStatus(lefStatus);
+		this.setLefAbacRef(lefAbacRef);
+		this.setBcStatus(bcStatus);
+		this.setBcAbacRef(bcAbacRef);
+		this.setLcStatus(lcStatus);
+		this.setLcAbacRef(lcAbacRef);
+		this.setLefDocAresRef(lefDocAresRef);
+		this.setLcDocAresRef(lcDocAresRef);
+		this.setSignatureDate(signatureDate);
+		this.setCounterSignatureDate(counterSignatureDate);
+		calculateReadyToBeCounterSigned();
+	}
+
 	public MonitoringRow(LegalEntity legalEntity, BudgetaryCommitment budgetaryCommitment, LegalCommitment legalCommitment, Document lefDoc, Document lcDoc) {
 
 		//Legal Entity data
@@ -72,7 +101,11 @@ public class MonitoringRow {
 			this.setLcDocAresRef(lcDoc.getAresReference());
 		}
 
-		readyToBeCounterSigned = legalCommitment != null && legalCommitment.getWfStatus().equals(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED);
+		calculateReadyToBeCounterSigned();
+	}
+	
+	private void calculateReadyToBeCounterSigned() {
+		readyToBeCounterSigned = this.lcStatus != null && this.lcStatus.equals(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED.toString());
 	}
 	
 	public Long getId() {
@@ -116,7 +149,9 @@ public class MonitoringRow {
 	}
 	
 	public void setLefStatus(AbacWorkflowStatus lefStatus) {
-		this.lefStatus = lefStatus.getUserInterfaceTitle();
+		if(lefStatus != null) {
+			this.lefStatus = lefStatus.getUserInterfaceTitle();
+		}
 	}
 
 	public String getBcStatus() {
@@ -128,7 +163,9 @@ public class MonitoringRow {
 	}
 	
 	public void setBcStatus(AbacWorkflowStatus bcStatus) {
-		this.bcStatus = bcStatus.getUserInterfaceTitle();
+		if(bcStatus != null) {
+			this.bcStatus = bcStatus.getUserInterfaceTitle();
+		}
 	}
 
 	public String getLcStatus() {
@@ -140,7 +177,9 @@ public class MonitoringRow {
 	}
 	
 	public void setLcStatus(LegalCommitmentWorkflowStatus lcStatus) {
-		this.lcStatus = lcStatus.getUserInterfaceTitle();
+		if(lcStatus != null) {
+			this.lcStatus = lcStatus.getUserInterfaceTitle();
+		}
 	}
 
 	public Date getSignatureDate() {

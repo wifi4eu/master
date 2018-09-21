@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.abac.data.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,21 @@ public interface LegalEntityRepository extends CrudRepository<LegalEntity, Integ
 			"LEFT JOIN LegalCommitment lc on lc.legalEntity.id = le.id " +
 			"LEFT JOIN Document lefdoc on lefdoc.legalEntity.id = le.id and lefdoc.type='IDENTIFICATION_FORM' " + 
 			"LEFT JOIN Document lcdoc on lcdoc.legalEntity.id = le.id and lcdoc.type='COUNTERSIGNED_GRANT_AGREEMENT' "
+	)
+	List<MonitoringRow> findMonitoringData_old();
+	
+	@Query(value =
+			"SELECT new wifi4eu.wifi4eu.abac.data.dto.MonitoringRow(" +
+				"le.id, le.country, le.officialName, le.registrationNumber, le.wfStatus, le.abacFelId, " +
+				"bc.wfStatus, bc.commitmentLevel2Key, " +
+				"lc.wfStatus, lc.abacKey, lc.grantAgreementSignatureDate, lc.grantAgreementCounterSignatureDate, " +
+				"lefdoc.aresReference, lcdoc.aresReference " +
+			") " +
+			"FROM LegalEntity le " +
+			"LEFT JOIN FETCH BudgetaryCommitment bc on bc.legalEntity.id = le.id " +
+			"LEFT JOIN FETCH LegalCommitment lc on lc.legalEntity.id = le.id " +
+			"LEFT JOIN FETCH Document lefdoc on lefdoc.legalEntity.id = le.id and lefdoc.type='IDENTIFICATION_FORM' " + 
+			"LEFT JOIN FETCH Document lcdoc on lcdoc.legalEntity.id = le.id and lcdoc.type='COUNTERSIGNED_GRANT_AGREEMENT' "
 	)
 	List<MonitoringRow> findMonitoringData();
 	
