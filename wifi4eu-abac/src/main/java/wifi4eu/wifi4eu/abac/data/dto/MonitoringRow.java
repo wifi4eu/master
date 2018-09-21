@@ -1,11 +1,7 @@
 package wifi4eu.wifi4eu.abac.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import wifi4eu.wifi4eu.abac.data.entity.BudgetaryCommitment;
 import wifi4eu.wifi4eu.abac.data.entity.Country;
-import wifi4eu.wifi4eu.abac.data.entity.Document;
-import wifi4eu.wifi4eu.abac.data.entity.LegalCommitment;
-import wifi4eu.wifi4eu.abac.data.entity.LegalEntity;
 import wifi4eu.wifi4eu.abac.data.enums.AbacWorkflowStatus;
 import wifi4eu.wifi4eu.abac.data.enums.LegalCommitmentWorkflowStatus;
 
@@ -64,48 +60,8 @@ public class MonitoringRow {
 		calculateReadyToBeCounterSigned();
 	}
 
-	public MonitoringRow(LegalEntity legalEntity, BudgetaryCommitment budgetaryCommitment, LegalCommitment legalCommitment, Document lefDoc, Document lcDoc) {
-
-		//Legal Entity data
-		if(legalEntity != null) {
-			this.setId(legalEntity.getId());
-			if (legalEntity.getCountry() != null) {
-				this.setCountryCode(legalEntity.getCountry().getIso2Code());
-			}
-			this.setMunicipality(legalEntity.getOfficialName());
-			this.setRegistrationNumber(legalEntity.getRegistrationNumber());
-			this.setSignatureDate(legalEntity.getSignatureDate());
-			this.setLefStatus(legalEntity.getWfStatus());
-			this.setLefAbacRef(legalEntity.getAbacFelId());
-		}
-
-		//Budgetary Commitment Data
-		if(budgetaryCommitment != null) {
-			this.setBcStatus(budgetaryCommitment.getWfStatus());
-			this.setBcAbacRef(budgetaryCommitment.getCommitmentLevel2Key());
-		}
-
-		//Legal Commitment Data
-		if(legalCommitment != null) {
-			this.setLcStatus(legalCommitment.getWfStatus());
-			this.setSignatureDate(legalCommitment.getGrantAgreementSignatureDate());
-			this.setCounterSignatureDate(legalCommitment.getGrantAgreementCounterSignatureDate());
-			this.setLcAbacRef(legalCommitment.getAbacKey());
-		}
-		
-		if(lefDoc != null) {
-			this.setLefDocAresRef(lefDoc.getAresReference());
-		}
-		
-		if(lcDoc != null) {
-			this.setLcDocAresRef(lcDoc.getAresReference());
-		}
-
-		calculateReadyToBeCounterSigned();
-	}
-	
 	private void calculateReadyToBeCounterSigned() {
-		readyToBeCounterSigned = this.lcStatus != null && this.lcStatus.equals(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED.toString());
+		readyToBeCounterSigned = this.lcStatus != null && this.lcStatus.equals(LegalCommitmentWorkflowStatus.READY_TO_BE_COUNTERSIGNED.getUserInterfaceTitle());
 	}
 	
 	public Long getId() {
