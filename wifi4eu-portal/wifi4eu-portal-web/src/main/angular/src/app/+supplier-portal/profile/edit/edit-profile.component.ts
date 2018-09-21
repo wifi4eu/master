@@ -298,7 +298,7 @@ export class SupplierEditProfileComponent {
         if (this.supplier.name != null && this.supplier.address != null
             && this.supplier.vat != null && this.supplier.name.trim() != "" && this.supplier.address.trim() != ""
             &&  this.supplier.vat.trim() != "") {
-            if (this.supplier.website != null && this.supplier.website.trim() != "") {
+            if (this.supplier.website.trim() != "") {
                 let pattern = new RegExp(this.websitePattern);
                 this.buttonCompanyEnabled = pattern.test(this.supplier.website);
             } else {
