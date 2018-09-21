@@ -51,22 +51,6 @@ export class DgConnExportImportComponent {
         this.router.navigate(['lc'], {relativeTo: this.route});
     }
 
-    exportRegistrationData() {
-        this.processingOperation = true;
-        this.exportImportApi.exportRegistrationData().subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success)
-                    this.sharedService.growlTranslation('Your file have been exported correctly!', 'dgconn.dashboard.card.messageExport', 'success');
-                else
-                    this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
-                this.processingOperation = false;
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
-                this.processingOperation = false;
-            }
-        );
-    }
-
     importRegistrationData() {
         this.processingOperation = true;
 

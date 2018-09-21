@@ -61,10 +61,10 @@ public class ExportImportWifi4euAbacResource {
 
             return new ResponseDTO(success);
         } catch (AccessDeniedException ade) {
-            _log.error("Error with permission on operation.", ade);
+            _log.error("Error with permission in operation.", ade);
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
-            _log.error("Error on operation.", e);
+            _log.error("Error in operation.", e);
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
@@ -77,7 +77,7 @@ public class ExportImportWifi4euAbacResource {
             boolean success = exportImportWifi4euAbacService.importBudgetaryCommitment(file.getInputStream());
             return new ResponseDTO(success);
         } catch (IOException e) {
-            _log.error("Error on operation.", e);
+            _log.error("Error in operation.", e);
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
@@ -86,8 +86,13 @@ public class ExportImportWifi4euAbacResource {
     @ResponseBody
     public ResponseDTO importLegalCommitment(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         _log.debug("importLegalCommitment: file size = {}", file.getSize());
-
-        return new ResponseDTO(true);
+        try {
+            boolean success = exportImportWifi4euAbacService.importLegalCommitment(file.getInputStream());
+            return new ResponseDTO(success);
+        } catch (IOException e) {
+            _log.error("Error in operation.", e);
+            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+        }
     }
 
     @ApiOperation(value = "Export Beneficiary Information")
@@ -213,6 +218,7 @@ public class ExportImportWifi4euAbacResource {
         }
     }
 
+    // TODO: is it used anywhere?
     @Deprecated
     @ApiOperation(value = "Import registration data")
     @RequestMapping(value = "/importRegistrationData", method = RequestMethod.POST)
@@ -226,10 +232,10 @@ public class ExportImportWifi4euAbacResource {
 
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
-            _log.error("Error with permission on operation.", ade);
+            _log.error("Error with permission in operation.", ade);
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
-            _log.error("Error on operation.", e);
+            _log.error("Error in operation.", e);
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
