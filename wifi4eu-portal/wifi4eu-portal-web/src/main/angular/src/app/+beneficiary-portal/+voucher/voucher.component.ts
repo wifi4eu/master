@@ -101,12 +101,12 @@ export class VoucherComponent {
                     for (let i = 0; i < this.applyVouchersData.length; i++) {
                         if (this.applyVouchersData[i].filesUploaded == 1) {
                             let uploaddate = new Date(this.applyVouchersData[i].uploadTime);
-                            let applydate = new Date(this.applyVouchersData[i].applyTime)
                             this.uploadDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
                             this.uploadHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
-                            this.applyDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + applydate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (applydate.getMonth() + 1)).slice(-2) + "/" + applydate.getFullYear();
-                            this.applyHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + applydate.getHours()).toString().slice(-2) + ":" + ('0' + applydate.getMinutes()).slice(-2);
                         }
+                        let applydate = new Date(this.applyVouchersData[i].applyTime);
+                        this.applyDateTime[this.applyVouchersData[i].idMunicipality] = ('0' + applydate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (applydate.getMonth() + 1)).slice(-2) + "/" + applydate.getFullYear();
+                        this.applyHourTime[this.applyVouchersData[i].idMunicipality] = ('0' + applydate.getHours()).toString().slice(-2) + ":" + ('0' + applydate.getMinutes()).slice(-2);
                     }
                 },
                 error => {
