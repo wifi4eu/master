@@ -37,4 +37,6 @@ public interface ExportImportRegistrationDataRepository extends CrudRepository<E
             "and a.grantAgreements is not empty")
     List<ExportImportRegistrationData> findRegistrationDataForBudgetaryCommitment();
 
+    List<ExportImportRegistrationData> findByMunicipalityId(Integer municipalityId);
+
 }

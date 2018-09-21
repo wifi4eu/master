@@ -6,6 +6,7 @@ import { DgConnExportImportComponent } from './exportImport.component';
 import { ImportBudgetaryCommitmentComponent } from './budgetaryCommitment/importBudgetaryCommitment.component';
 import { FileSelectorComponent } from './shared/fileSelector.component';
 import { ImportLegalCommitmentComponent } from 'app/+dgconn-portal/+exportImport/legalCommitment/importLegalCommitment.component';
+import { ImportDgBudgFinalListComponent } from './dgBudgFinalList/importDgBudgFinalList.component';
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import { ImportLegalCommitmentComponent } from 'app/+dgconn-portal/+exportImport
         ImportLefComponent,
         ImportBudgetaryCommitmentComponent,
         ImportLegalCommitmentComponent,
+        ImportDgBudgFinalListComponent,
         DgConnExportImportComponent,
         FileSelectorComponent
     ],

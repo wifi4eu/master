@@ -218,19 +218,16 @@ public class ExportImportWifi4euAbacResource {
         }
     }
 
-    // TODO: is it used anywhere?
-    @Deprecated
-    @ApiOperation(value = "Import registration data")
     @RequestMapping(value = "/importRegistrationData", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO importRegistrationData() {
+    public ResponseDTO importRegistrationData(@Validated @NotNull @RequestParam("importFile") MultipartFile file) {
         try {
             _log.debug("importRegistrationData");
 
-            exportImportWifi4euAbacService.importRegistrationData();
+            boolean success = exportImportWifi4euAbacService.importDbBudgFinalList(file.getInputStream());
 
-            return new ResponseDTO(true, null, null);
+            return new ResponseDTO(success);
         } catch (AccessDeniedException ade) {
             _log.error("Error with permission in operation.", ade);
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));

@@ -42,7 +42,6 @@ import wifi4eu.wifi4eu.repository.grantAgreement.GrantAgreementRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
-import wifi4eu.wifi4eu.service.exportImport.file.ReadFile;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -330,12 +329,35 @@ public class ExportImportWifi4euAbacService {
         cF.createExcelFileRegistrationData(header, document, "ExportRegistrationData.xlsx");
     }
 
-    @Deprecated
     @Transactional
-    public void importRegistrationData() throws Exception {
+    public boolean importDbBudgFinalList(InputStream inputStream) throws Exception {
         _log.debug("importRegistrationData");
-        ReadFile rF = new ReadFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
-        rF.readExcelFileRegistrationData();
+
+        try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
+
+            CSVParser csvParser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
+            csvParser.forEach(this::updateAbacReferences);
+        }
+        return true;
+    }
+
+    private void updateAbacReferences(CSVRecord csvRecord) {
+        Integer municipalityId = Integer.parseInt(csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID));
+        List<ExportImportRegistrationData> exportImportRegistrationData = exportImportRegistrationDataRepository.findByMunicipalityId(municipalityId);
+
+        if (CollectionUtils.isNotEmpty(exportImportRegistrationData)) {
+            exportImportRegistrationData.forEach(data -> {
+
+                String abacName = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME.getValue());
+                data.setAbacStandarName(abacName);
+
+                String abacReference = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE.getValue());
+                data.setAbacReference(abacReference);
+
+            });
+
+            exportImportRegistrationDataRepository.save(exportImportRegistrationData);
+        }
     }
 
     public byte[] exportBudgetaryCommitment() throws IOException {
@@ -868,6 +890,7 @@ public class ExportImportWifi4euAbacService {
                 throw new IllegalStateException("Error parsing a file " + pdfFileName + ". Please, check if Zip file is consistent.");
             }
 
+            // TODO: big files are not accepted?
             return azureBlobConnector.uploadLegalFile(pdfFileName, new String(pdfFile.getContent()));
 
         } catch (IOException e) {
