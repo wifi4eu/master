@@ -187,7 +187,7 @@ public class ImportDataService {
 			switch (fileDTO.getFileName()) {
 				case LEGAL_ENTITY_INFORMATION_CSV_FILENAME:
 					fileDTO.setFileType(FileDTO.FileType.LEGAL_ENTITY_INFORMATION_CSV);
-					errors.appendln(processLegalEntityInformationFile(fileDTO, batchRef));
+					errors.append(processLegalEntityInformationFile(fileDTO, batchRef));
 					break;
 				case LEGAL_ENTITY_DOCUMENTS_CSV_FILENAME:
 					fileDTO.setFileType(FileDTO.FileType.LEGAL_ENTITY_DOCUMENTS_CSV);
@@ -201,7 +201,7 @@ public class ImportDataService {
 		}
 
 		if(documentsCSVFile != null) {
-			errors.appendln(importDocuments(documentsCSVFile, batchRef));
+			errors.append(importDocuments(documentsCSVFile, batchRef));
 		}
 
 		return errors.toString();

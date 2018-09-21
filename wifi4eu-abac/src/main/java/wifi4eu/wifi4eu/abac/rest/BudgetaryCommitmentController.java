@@ -48,7 +48,7 @@ public class BudgetaryCommitmentController {
 		ResponseVO result = new ResponseVO();
 		try {
 			ImportLog importLog = importDataService.importBudgetaryCommitments(file.getOriginalFilename(), file.getBytes());
-			if (!StringUtils.isEmpty(importLog.getErrors())) {
+			if (!StringUtils.isEmpty(importLog.getErrors().trim())) {
 				log.error("The file was not imported. BatchREF: {}", importLog.getBatchRef());
 				result.error("The file has invalid data.", importLog.getBatchRef());
 			} else {

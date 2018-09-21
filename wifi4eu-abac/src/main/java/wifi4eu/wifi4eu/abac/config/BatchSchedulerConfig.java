@@ -19,8 +19,10 @@ import wifi4eu.wifi4eu.abac.service.DocumentService;
 import wifi4eu.wifi4eu.abac.service.LegalCommitmentService;
 import wifi4eu.wifi4eu.abac.service.LegalEntityService;
 import wifi4eu.wifi4eu.abac.service.NotificationService;
+import wifi4eu.wifi4eu.abac.utils.DateTimeUtils;
 
 import javax.xml.ws.soap.SOAPFaultException;
+import java.util.Calendar;
 import java.util.List;
 
 @Configuration
@@ -50,6 +52,7 @@ public class BatchSchedulerConfig {
 
     @Scheduled(cron = "${batch.legalentity.create.crontable}")
     public void createLegalEntitiesInABAC() {
+        log.info("hi {}", Calendar.getInstance().getTime());
         //check-update the LE status for ABAC (change from IMPORTED to READY_FOR_ABAC)
         legalEntityService.checkLegalEntityReadyForAbac();
         //submit LE to ABAC

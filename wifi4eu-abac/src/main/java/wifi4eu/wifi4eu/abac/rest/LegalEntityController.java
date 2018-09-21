@@ -51,7 +51,7 @@ public class LegalEntityController {
 		try {
 			ImportLog importLog = importDataService.importLegalEntities(file.getOriginalFilename(), file.getBytes());
 
-			if (!StringUtils.isEmpty(importLog.getErrors())) {
+			if (!StringUtils.isEmpty(importLog.getErrors().trim())) {
 				log.error("The file was not imported. BatchREF: {}", importLog.getBatchRef());
 				result.error("The file has invalid data.", importLog.getBatchRef());
 			} else {
