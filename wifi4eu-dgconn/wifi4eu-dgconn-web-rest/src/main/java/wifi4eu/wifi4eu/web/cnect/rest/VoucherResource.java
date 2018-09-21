@@ -348,9 +348,9 @@ public class VoucherResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: saveFreezeListSimulation");
             }
-            VoucherAssignmentDTO result = voucherService.saveFreezeListSimulation(freezePsswd, assignmentId, callId);
+            ResponseDTO result = voucherService.saveFreezeListSimulation(freezePsswd, assignmentId, callId);
             _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Success on freezing simulation list");
-            return new ResponseDTO(true, result, null);
+            return result;
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to freeze simulation", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
