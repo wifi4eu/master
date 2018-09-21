@@ -210,6 +210,8 @@ export class AdditionalInfoComponent {
                                 file.fileName = event.target.files[0].name;
                                 file.fileSize = event.target.files[0].size;
                                 file.registration = this.registration.id;
+                                file.status = 0;
+                                file.isNew = 1;
                                 this.legalFilesToUpload.push(file);
                                 this.checkDocuments();
                                 switch (type) {

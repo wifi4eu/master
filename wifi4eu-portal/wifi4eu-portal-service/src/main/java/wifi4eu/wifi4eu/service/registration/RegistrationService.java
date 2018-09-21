@@ -696,4 +696,5 @@ public class RegistrationService {
         }
         return newRegistrations;
     }
+
 }

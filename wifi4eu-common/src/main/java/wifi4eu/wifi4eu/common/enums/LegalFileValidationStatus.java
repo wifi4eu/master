@@ -1,14 +1,13 @@
 package wifi4eu.wifi4eu.common.enums;
 
-public enum LegalFileStatus {
+public enum LegalFileValidationStatus {
     UNTOUCHED(0),
-    CORRECTION_REQUESTED(1),
-    VALID(2),
-    INVALID(3);
+    INVALID(1),
+    VALID(2);
 
     private int status;
 
-    LegalFileStatus(int status) {
+    LegalFileValidationStatus(int status) {
         this.status = status;
     }
 

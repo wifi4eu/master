@@ -7,42 +7,48 @@ import java.util.Date;
 @Table(name = "legal_files")
 public class LegalFile {
 
-	@Column(name = "id")
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	@Column(name = "registration")
-	private int registration;
+    @Column(name = "registration")
+    private int registration;
 
-	@Column(name = "data")
-	private String fileData;
+    @Column(name = "data")
+    private String fileData;
 
-	@Column(name = "type")
-	private int fileType;
+    @Column(name = "type")
+    private int fileType;
 
-	@Column(name = "upload_time")
-	private Long uploadTime;
+    @Column(name = "upload_time")
+    private Long uploadTime;
 
-	@Column(name = "id_user")
-	private Integer userId;
+    @Column(name = "id_user")
+    private Integer userId;
 
-	@Column(name = "file_size")
-	private int fileSize;
+    @Column(name = "file_size")
+    private int fileSize;
 
-	@Column(name = "file_mime")
-	private String fileMime;
+    @Column(name = "file_mime")
+    private String fileMime;
 
-	@Column(name = "file_name")
-	private String fileName;
+    @Column(name = "file_name")
+    private String fileName;
 
-	@Column(name = "azure_uri")
-	private String azureUri;
+    @Column(name = "azure_uri")
+    private String azureUri;
 
-	public LegalFile() {
-	}
+    @Column(name = "status")
+    private Integer status;
 
-    public LegalFile(int registration, String fileData, int fileType, Long uploadTime, Integer userId, int fileSize, String fileMime, String fileName) {
+    @Column(name = "new")
+    private Integer isNew;
+
+    public LegalFile() {
+    }
+
+    public LegalFile(int registration, String fileData, int fileType, Long uploadTime, Integer userId, int fileSize, String fileMime, String fileName, Integer status, Integer isNew) {
         this.registration = registration;
         this.fileData = fileData;
         this.fileType = fileType;
@@ -51,47 +57,49 @@ public class LegalFile {
         this.fileSize = fileSize;
         this.fileMime = fileMime;
         this.fileName = fileName;
+        this.status = status;
+        this.isNew = isNew;
     }
 
     public Integer getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public int getRegistration() {
-		return registration;
-	}
+    public int getRegistration() {
+        return registration;
+    }
 
-	public void setRegistration(int registration) {
-		this.registration = registration;
-	}
+    public void setRegistration(int registration) {
+        this.registration = registration;
+    }
 
-	public String getFileData() {
-		return fileData;
-	}
+    public String getFileData() {
+        return fileData;
+    }
 
-	public void setFileData(String fileData) {
-		this.fileData = fileData;
-	}
+    public void setFileData(String fileData) {
+        this.fileData = fileData;
+    }
 
-	public int getFileType() {
-		return fileType;
-	}
+    public int getFileType() {
+        return fileType;
+    }
 
-	public void setFileType(int fileType) {
-		this.fileType = fileType;
-	}
+    public void setFileType(int fileType) {
+        this.fileType = fileType;
+    }
 
-	public Long getUploadTime() {
-		return uploadTime;
-	}
+    public Long getUploadTime() {
+        return uploadTime;
+    }
 
-	public void setUploadTime(Long uploadTime) {
-		this.uploadTime = uploadTime;
-	}
+    public void setUploadTime(Long uploadTime) {
+        this.uploadTime = uploadTime;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -125,11 +133,19 @@ public class LegalFile {
         this.fileName = fileName;
     }
 
-	public String getAzureUri() {
-		return azureUri;
-	}
+    public String getAzureUri() {
+        return azureUri;
+    }
 
-	public void setAzureUri(String azureUri) {
-		this.azureUri = azureUri;
-	}
+    public void setAzureUri(String azureUri) {
+        this.azureUri = azureUri;
+    }
+
+    public Integer getStatus() { return status; }
+
+    public void setStatus(Integer status) { this.status = status; }
+
+    public Integer getIsNew() { return isNew; }
+
+    public void setIsNew(Integer isNew) { this.isNew = isNew; }
 }
