@@ -323,8 +323,12 @@ public class VoucherService {
     }
 
     @Transactional
-    public VoucherAssignmentDTO savePreListSimulation(int voucherAssignmentId, int callId) {
+    public ResponseDTO savePreListSimulation(String savePrelistPsswd, int voucherAssignmentId, int callId) {
         CallDTO callDTO = callService.getCallById(callId);
+        
+        if (!INEAPermissionChecker.savePrelistPsswd.equals(savePrelistPsswd)) {
+            return new ResponseDTO(false, null, new ErrorDTO(20, "dgConn.voucherAssignment.error.incorrectPassword"));
+        }
 
         if (callDTO == null) {
             throw new AppException("Call not exists");
@@ -377,7 +381,7 @@ public class VoucherService {
             result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
 
             voucherSimulationRepository.updateApplicationsInVoucherSimulationByVoucherAssignment(1, result.getId());
-            return result;
+            return new ResponseDTO(true, result, null);
         } else {
             throw new AppException("Error saving pre-selected list");
         }
