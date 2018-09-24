@@ -74,7 +74,22 @@ export class DgConnExportImportComponent {
         this.exportImportApi.exportBudgetaryCommitment().subscribe(
             (response) => {
                 let blob = new Blob([response], { type: 'text/csv' });
-                FileSaver.saveAs(blob, 'ExportBudgetaryCommitment.csv');
+                FileSaver.saveAs(blob, 'portal_exportBudgetaryCommitment.csv');
+                this.sharedService.growlTranslation('Your file have been exported correctly!', 'dgconn.dashboard.card.messageExport', 'success');
+                this.processingOperation = false;
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later.', 'shared.error.api.generic', 'error');
+                this.processingOperation = false;
+            }
+        );
+    }
+
+    exportLegalCommitment() {
+        this.processingOperation = true;
+        this.exportImportApi.exportLegalCommitment().subscribe(
+            (response) => {
+                let blob = new Blob([response], { type: 'text/csv' });
+                FileSaver.saveAs(blob, 'portal_exportLegalCommitment.zip');
                 this.sharedService.growlTranslation('Your file have been exported correctly!', 'dgconn.dashboard.card.messageExport', 'success');
                 this.processingOperation = false;
             }, error => {

@@ -69,6 +69,7 @@ public class BeneficiaryInformationRepository {
 
         List<BeneficiaryInformation> beneficiaryInformations = new ArrayList<>();
 
+        // TODO: this is a temp solution subject to change when we refactor out native sql queries
         if (CollectionUtils.isNotEmpty(bcs)) {
             for (Object[] object : bcs) {
                 beneficiaryInformations.add(new BeneficiaryInformation(

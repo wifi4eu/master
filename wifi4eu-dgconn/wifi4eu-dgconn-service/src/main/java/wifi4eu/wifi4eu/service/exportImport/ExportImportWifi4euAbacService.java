@@ -172,29 +172,32 @@ public class ExportImportWifi4euAbacService {
     }
 
     private ExportImportRegistrationData parseValidatedLEF(CSVRecord csvRecord) {
+        ExportImportRegistrationData municipalitiesAbac = null;
         String abacReference = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_REFERENCE);
         if (StringUtils.isNotEmpty(abacReference)) {
             String municipalityId = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_PORTAL_ID);
             String abacStatus = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_STATUS);
             String abacLatinName = csvRecord.get(LegalEntityCSVColumn.MUNICIPALITY_ABAC_LATIN_NAME);
 
-            _log.info("ABAC Reference from LEF reference [{}] and status [{}]", abacReference, abacStatus);
+            _log.debug("ABAC Reference from LEF reference [{}] and status [{}]", abacReference, abacStatus);
 
             try {
-                ExportImportRegistrationData municpalitiesAbac = new ExportImportRegistrationData();
                 Municipality municipality = municipalityRepository.findOne(Integer.parseInt(municipalityId));
-                municpalitiesAbac.setMunicipality(municipality);
-                municpalitiesAbac.setAbacReference(abacReference);
-                municpalitiesAbac.setAbacStandarName(abacLatinName);
-
-                return municpalitiesAbac;
+                if (municipality != null) {
+                    municipalitiesAbac = new ExportImportRegistrationData();
+                    municipalitiesAbac.setMunicipality(municipality);
+                    municipalitiesAbac.setAbacReference(abacReference);
+                    municipalitiesAbac.setAbacStandarName(abacLatinName);
+                } else {
+                    _log.warn("Municipality cannot be found: [{}]. Skipped.", municipalityId);
+                }
             } catch (NumberFormatException e) {
                 _log.error("Error parsing the CSV", e);
             }
         } else {
             _log.info("ABAC Reference is Empty");
         }
-        return null;
+        return municipalitiesAbac;
     }
 
     public ByteArrayOutputStream exportBeneficiaryInformation() {
@@ -1033,7 +1036,7 @@ public class ExportImportWifi4euAbacService {
             this._log.info("   First Grant Agreement. grantAgreement.id [{}]", grantAgreement == null ? "NULL" : grantAgreement.getId());
 
             ExportImportLegalCommitmentInformation legalCommitmentInformation = new ExportImportLegalCommitmentInformation();
-            legalCommitmentInformation.setFiles(new ArrayList<ExportFile>());
+            legalCommitmentInformation.setFiles(new ArrayList<>());
 
             if (grantAgreement != null) {
                 String documentLocation = grantAgreement.getDocumentLocation();

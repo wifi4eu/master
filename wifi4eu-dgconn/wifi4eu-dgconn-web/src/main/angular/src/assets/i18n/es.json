@@ -881,6 +881,7 @@
   "dgConn.importexport.bc.import": "Import BC from ABAC interface",
   "dgConn.importexport.bc.import.desc": "This button will import the ABAC reference numbers into the portal.",
   "dgConn.importexport.lc": "Legal Commitment (LC)",
+  "dgConn.importexport.lc.export": "Export Legal Commitments",
   "dgConn.importexport.lc.export.desc": "This button will export all parameters necessary for the WiFI4EU interface to create the data.",
   "dgConn.importexport.lc.import": "Import LC from ABAC interface",
   "dgConn.importexport.lc.import.desc": "This button will import the ABAC reference numbers into the portal.",
